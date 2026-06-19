@@ -3907,6 +3907,26 @@ def main() -> int:
         )
         assert coverage_certificate.covered_lag_count == len(js_covered_lags)
         assert coverage_certificate.uncovered_lag_count == sequence_length - 1 - len(js_covered_lags)
+        assert coverage_certificate.local_window_complete_coverage_threshold == (
+            sequence_length - 1
+        )
+        assert coverage_certificate.local_window_complete_coverage_shortfall == max(
+            0,
+            sequence_length - 1 - local_window,
+        )
+        assert coverage_certificate.local_window_reaches_complete_coverage_threshold == (
+            sequence_length - 1 <= local_window
+        )
+        assert coverage_certificate.local_window_threshold_certifies_complete == (
+            coverage_certificate.local_window_reaches_complete_coverage_threshold
+            and coverage_certificate.coverage_complete
+        )
+        assert coverage_certificate.first_gap_repair_window_reaches_complete_threshold == (
+            None
+            if coverage_certificate.first_uncovered_lag_repair_window is None
+            else sequence_length - 1
+            <= coverage_certificate.first_uncovered_lag_repair_window
+        )
         assert coverage_certificate.candidate_budget_per_query == len(js_family_sets[0])
         assert coverage_certificate.raw_candidate_budget_upper_bound == (
             local_window + path_length * len(strides)

@@ -392,6 +392,8 @@ def test_coprime_rational_turn_ratio_certifies_margin_before_denominator_gap() -
     assert "AIRA-T0227" in ROPE_REAL_PHASE_PRECURSOR_THEOREMS
     assert "AIRA-T0228" in ROPE_REAL_PHASE_PRECURSOR_THEOREMS
     assert "AIRA-T0229" in ROPE_REAL_PHASE_PRECURSOR_THEOREMS
+    assert "AIRA-T0230" in ROPE_REAL_PHASE_PRECURSOR_THEOREMS
+    assert "AIRA-T0231" in ROPE_REAL_PHASE_PRECURSOR_THEOREMS
 
 
 def test_one_over_denominator_rational_certificate_uses_generic_exact_margin_theorem() -> None:
@@ -407,12 +409,18 @@ def test_one_over_denominator_rational_certificate_uses_generic_exact_margin_the
     assert ROPE_ONE_OVER_NAT_EXACT_MARGIN_THEOREMS == ("AIRA-T0222", "AIRA-T0223")
     assert "AIRA-T0222" in certificate.theorem_ids
     assert "AIRA-T0223" in certificate.theorem_ids
+    assert "AIRA-T0230" in certificate.theorem_ids
+    assert "AIRA-T0231" in certificate.theorem_ids
     assert (
         "Circle.Applications.ropeTurnRatioOneOverNat_gapOneNearestIntegerMargin"
         in certificate.lean_declarations
     )
     assert (
         "Circle.Applications.ropeTurnRatioOneOverNat_exactWeakestGapMargin_report"
+        in certificate.lean_declarations
+    )
+    assert (
+        "Circle.Applications.ropeTurnRatioExactWeakestGapMargin_request_iff"
         in certificate.lean_declarations
     )
     scanned_margin, gap, turns = scan_turn_ratio_finite_margin(
@@ -458,6 +466,8 @@ def test_coprime_rational_certificate_uses_modular_inverse_exact_margin_theorem(
     assert "AIRA-T0224" in certificate.theorem_ids
     assert "AIRA-T0225" in certificate.theorem_ids
     assert "AIRA-T0226" in certificate.theorem_ids
+    assert "AIRA-T0230" in certificate.theorem_ids
+    assert "AIRA-T0231" in certificate.theorem_ids
     assert (
         "Circle.Applications.ropeTurnRatioGapNearestIntegerMargin_le_error"
         in certificate.lean_declarations
@@ -468,6 +478,10 @@ def test_coprime_rational_certificate_uses_modular_inverse_exact_margin_theorem(
     )
     assert (
         "Circle.Applications.ropeTurnRatioNatRatio_exactWeakestGapMargin_report_of_modular_inverse_witness"
+        in certificate.lean_declarations
+    )
+    assert (
+        "Circle.Applications.not_ropeTurnRatioFiniteMargin_of_exactWeakestGapMargin_lt_request"
         in certificate.lean_declarations
     )
 
@@ -489,6 +503,8 @@ def test_coprime_rational_full_denominator_context_reports_existential_exact_mar
     assert "AIRA-T0227" in certificate.theorem_ids
     assert "AIRA-T0228" in certificate.theorem_ids
     assert "AIRA-T0229" in certificate.theorem_ids
+    assert "AIRA-T0230" in certificate.theorem_ids
+    assert "AIRA-T0231" in certificate.theorem_ids
     assert (
         "Circle.Applications.ropeTurnRatioNatRatio_exists_exactWeakestGapMargin_report_of_coprime"
         in certificate.lean_declarations
@@ -527,6 +543,7 @@ def test_coprime_rational_full_denominator_requested_margin_uses_exact_threshold
     )
     assert passing.requested_margin == "1/7"
     assert passing.requested_margin_pass is True
+    assert passing.requested_margin_status == "proved"
     assert passing.requested_margin_failure_reason is None
     assert passing.exact_threshold_margin == "1/7"
     assert passing.exact_threshold_witness_gap in {2, 5}
@@ -541,6 +558,7 @@ def test_coprime_rational_full_denominator_requested_margin_uses_exact_threshold
     )
     assert failing.requested_margin == "1/6"
     assert failing.requested_margin_pass is False
+    assert failing.requested_margin_status == "impossible"
     assert (
         failing.requested_margin_failure_reason
         == "requested_margin_exceeds_exact_full_denominator_threshold"
@@ -559,6 +577,40 @@ def test_coprime_rational_full_denominator_requested_margin_uses_exact_threshold
         )
 
 
+def test_coprime_rational_requested_margin_status_distinguishes_unproved_and_zero_gap() -> None:
+    conservative_lower_bound = certify_rational_turn_ratio_finite_margin(
+        numerator=2,
+        denominator=9,
+        context_length=2,
+        requested_margin=Fraction(1, 5),
+    )
+    assert conservative_lower_bound.pass_certificate
+    assert conservative_lower_bound.requested_margin_pass is False
+    assert (
+        conservative_lower_bound.requested_margin_status
+        == "unproved_above_certified_lower_bound"
+    )
+    assert (
+        conservative_lower_bound.requested_margin_failure_reason
+        == "requested_margin_exceeds_certified_rational_margin"
+    )
+
+    zero_gap = certify_rational_turn_ratio_finite_margin(
+        numerator=3,
+        denominator=7,
+        context_length=8,
+        requested_margin=Fraction(1, 100),
+    )
+    assert zero_gap.pass_certificate is False
+    assert zero_gap.zero_margin_witness == (7, 3)
+    assert zero_gap.requested_margin_pass is False
+    assert zero_gap.requested_margin_status == "impossible"
+    assert (
+        zero_gap.requested_margin_failure_reason
+        == "positive_requested_margin_hits_exact_zero_gap"
+    )
+
+
 def test_named_rational_turn_ratio_certificate_is_theorem_backed() -> None:
     certificate = certify_rational_preset_4099()
     assert certificate.schema_id == "circle_calculus.rational_turn_ratio_finite_margin.v0"
@@ -575,6 +627,8 @@ def test_named_rational_turn_ratio_certificate_is_theorem_backed() -> None:
     assert "AIRA-T0182" in certificate.theorem_ids
     assert "AIRA-T0183" in certificate.theorem_ids
     assert "AIRA-T0214" in certificate.theorem_ids
+    assert "AIRA-T0230" in certificate.theorem_ids
+    assert "AIRA-T0231" in certificate.theorem_ids
     assert "AIRA-T0060" in certificate.theorem_ids
     assert "AIRA-T0177" in certificate.theorem_ids
     assert "AIRA-T0186" in certificate.theorem_ids

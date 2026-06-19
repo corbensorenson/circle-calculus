@@ -89,6 +89,50 @@ The next widget focuses on the compression reframing directly. It compares expli
 
 <div class="widget-panel" data-widget="generator_comparison_search" data-theorem-id="GEN-T0005" data-dictionary-ids="COMMON-0064 COMMON-0065 COMMON-0066"></div>
 
+The public Circle AI contract pack exports the same bounded-search boundary as
+machine-readable evidence. A downstream project can read:
+
+```text
+bounded_search_candidate_count = 3
+bounded_search_exact_candidate_count = 2
+bounded_search_has_best_exact = true
+bounded_search_has_best_shorter = true
+bounded_search_candidate_ids_by_generator_length =
+  finite_circle_unit_fixture,
+  finite_circle_broken_fixture,
+  finite_circle_public_fixture
+bounded_search_best_exact_candidate_id = finite_circle_unit_fixture
+bounded_search_best_shorter_candidate_id = finite_circle_public_fixture
+```
+
+The theorem-backed part is the finite accounting: exact candidates cannot
+outnumber declared candidates (`GEN-T0044`), a positive exact count is
+equivalent to the existence of a best exact candidate (`GEN-T0037`), and any
+returned best exact candidate implies a nonempty declared search space
+(`GEN-T0045`). This still says nothing about global minimality.
+
+The generic AI contract pack exposes this as two copy-safe recommendation
+records. `SEED-RULE-USE-EXACT-REGENERATION-RECIPE` names the public
+finite-circle seed/rule recipe, and
+`SEED-RULE-SELECT-BOUNDED-SHORTER-CANDIDATE` names the shorter exact candidate
+inside the declared finite search. A downstream project can read them with
+`python scripts/circle_ai_contract_ready.py --kind seed_rule_exact_regeneration --digest --field storage_saving --include-recommendations`.
+The candidate ids matter because several declared records share
+`artifact_id=finite_circle`: the unit fixture is the smallest exact generator
+by description length, while the public `C_128` fixture is the exact generator
+that actually saves storage under the declared metric.
+These are fixture-level generator/provenance records, not global minimality,
+Kolmogorov-complexity, compression, semantic-equivalence, or model-quality
+claims.
+
+Run the public certifier directly:
+
+```bash
+python scripts/seed_rule_certify.py
+python scripts/seed_rule_certify.py --n 8
+python scripts/seed_rule_certify.py --format json
+```
+
 <script type="module" src="../../widgets/generative/seed_rule_diagram_generator.js"></script>
 <script type="module" src="../../widgets/generative/orbit_family_generator.js"></script>
 <script type="module" src="../../widgets/generative/proof_glyph_certificate.js"></script>
@@ -112,60 +156,24 @@ Read these in two honest tiers. The **substantive** facts are the orbit and rege
 theory: `GEN-T0003` and `GEN-T0006`–`GEN-T0013` (orbit count, period, coverage, formal
 orbit-class agreement, canonical-representative coverage and disjointness — the same
 non-trivial gcd/orbit spine as S1) and `GEN-T0014`–`GEN-T0019` (exact regeneration as a
-reflexive/symmetric/transitive relation). The remaining `GEN-T0020`–`GEN-T0045` are
+reflexive/symmetric/transitive relation). The remaining `GEN-T0020`–`GEN-T0050` are
 **elementary bookkeeping** — generated-list lengths and finite-search bounds (empty search
-returns nothing, a returned candidate lies in the declared list, counts are bounded). Those
-are honest and keep the search code sound, but they are the trivial finite-closure family,
-not evidence that seed-rule records are smaller or better. And the fixtures are exploratory:
-a generator record is not automatically a compression win.
+returns nothing, a returned candidate lies in the declared list, counts are bounded) plus
+finite storage accounting for one declared `C_128` fixture. Those are honest and keep the
+search and contract code sound, but they are the trivial finite-closure family, not evidence
+of global minimality or a universal compression win. And the fixtures are exploratory: a
+generator record is not automatically a compression win.
 
-The theorem cards below are checked by Lean for finite regeneration statements. `GEN-T0003` proves exact regeneration of the representative-indexed orbit-schedule list. `GEN-T0006` through `GEN-T0013` add count, period, coverage, formal orbit-class agreement, canonical representative coverage, and disjointness facts. `GEN-T0014` through `GEN-T0019` make exact regeneration reusable as a reflexive, symmetric, transitive, and field-equality-gated relation for constructed generator comparisons. `GEN-T0020` and `GEN-T0021` certify generated-list lengths for finite-circle nodes and single coil-orbit schedules. `GEN-T0022` through `GEN-T0024` prove the empty declared-search boundary for the bounded generator search. `GEN-T0031` through `GEN-T0034` prove the positive singleton exact-search boundary. `GEN-T0025` through `GEN-T0027` prove that any returned best exact candidate belongs to the declared exact list, belongs to the declared finite search space, and satisfies exact regeneration. `GEN-T0028` through `GEN-T0030` connect no-best-exact and best-exact cases to exact-candidate emptiness/count facts. `GEN-T0035` through `GEN-T0039` add exact-candidate list soundness, best-exact existence, and singleton membership gates. `GEN-T0040` through `GEN-T0043` tighten finite-circle generation: membership is exactly the `< n` node range, generated nodes are duplicate-free, the zero-size case is empty, and positive sizes are nonempty. `GEN-T0044` and `GEN-T0045` add finite-search count guardrails: exact candidates are bounded by declared candidates, and a returned best exact candidate implies a nonempty declared search. Ranking nonempty candidates remains Python-scoped and finite-list scoped. These artifacts still do not prove optimality or minimality.
+The theorem cards below are representative audit handles. `GEN-T0003` proves exact regeneration of the representative-indexed orbit-schedule list. `GEN-T0013` closes the canonical orbit-family disjointness fact. `GEN-T0019` makes field equality sufficient for exact regeneration. `GEN-T0025` proves that a returned best exact candidate belongs to the declared exact list. `GEN-T0040` and `GEN-T0045` are finite generation and bounded-search guardrails. `GEN-T0046` and `GEN-T0050` expose the public storage-accounting contract boundary. The full theorem-card trail lives in the [Generative Structures Proof Audit](generative_audit.qmd).
 
-<div class="theorem-box" data-theorem-id="GEN-T0001"></div>
-<div class="theorem-box" data-theorem-id="GEN-T0002"></div>
 <div class="theorem-box" data-theorem-id="GEN-T0003"></div>
-<div class="theorem-box" data-theorem-id="GEN-T0004"></div>
-<div class="theorem-box" data-theorem-id="GEN-T0005"></div>
-<div class="theorem-box" data-theorem-id="GEN-T0006"></div>
-<div class="theorem-box" data-theorem-id="GEN-T0007"></div>
-<div class="theorem-box" data-theorem-id="GEN-T0008"></div>
-<div class="theorem-box" data-theorem-id="GEN-T0009"></div>
-<div class="theorem-box" data-theorem-id="GEN-T0010"></div>
-<div class="theorem-box" data-theorem-id="GEN-T0011"></div>
-<div class="theorem-box" data-theorem-id="GEN-T0012"></div>
 <div class="theorem-box" data-theorem-id="GEN-T0013"></div>
-<div class="theorem-box" data-theorem-id="GEN-T0014"></div>
-<div class="theorem-box" data-theorem-id="GEN-T0015"></div>
-<div class="theorem-box" data-theorem-id="GEN-T0016"></div>
-<div class="theorem-box" data-theorem-id="GEN-T0017"></div>
-<div class="theorem-box" data-theorem-id="GEN-T0018"></div>
 <div class="theorem-box" data-theorem-id="GEN-T0019"></div>
-<div class="theorem-box" data-theorem-id="GEN-T0020"></div>
-<div class="theorem-box" data-theorem-id="GEN-T0021"></div>
-<div class="theorem-box" data-theorem-id="GEN-T0022"></div>
-<div class="theorem-box" data-theorem-id="GEN-T0023"></div>
-<div class="theorem-box" data-theorem-id="GEN-T0024"></div>
 <div class="theorem-box" data-theorem-id="GEN-T0025"></div>
-<div class="theorem-box" data-theorem-id="GEN-T0026"></div>
-<div class="theorem-box" data-theorem-id="GEN-T0027"></div>
-<div class="theorem-box" data-theorem-id="GEN-T0028"></div>
-<div class="theorem-box" data-theorem-id="GEN-T0029"></div>
-<div class="theorem-box" data-theorem-id="GEN-T0030"></div>
-<div class="theorem-box" data-theorem-id="GEN-T0031"></div>
-<div class="theorem-box" data-theorem-id="GEN-T0032"></div>
-<div class="theorem-box" data-theorem-id="GEN-T0033"></div>
-<div class="theorem-box" data-theorem-id="GEN-T0034"></div>
-<div class="theorem-box" data-theorem-id="GEN-T0035"></div>
-<div class="theorem-box" data-theorem-id="GEN-T0036"></div>
-<div class="theorem-box" data-theorem-id="GEN-T0037"></div>
-<div class="theorem-box" data-theorem-id="GEN-T0038"></div>
-<div class="theorem-box" data-theorem-id="GEN-T0039"></div>
 <div class="theorem-box" data-theorem-id="GEN-T0040"></div>
-<div class="theorem-box" data-theorem-id="GEN-T0041"></div>
-<div class="theorem-box" data-theorem-id="GEN-T0042"></div>
-<div class="theorem-box" data-theorem-id="GEN-T0043"></div>
-<div class="theorem-box" data-theorem-id="GEN-T0044"></div>
 <div class="theorem-box" data-theorem-id="GEN-T0045"></div>
+<div class="theorem-box" data-theorem-id="GEN-T0046"></div>
+<div class="theorem-box" data-theorem-id="GEN-T0050"></div>
 
 ## Dictionary Trail
 

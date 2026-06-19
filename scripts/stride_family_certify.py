@@ -124,6 +124,47 @@ def summary_lines(payload: dict[str, Any], sample_limit: int) -> list[str]:
             "theorems=AIT-T0096,AIT-T0103"
         ),
         (
+            "first_uncovered_interval="
+            f"start={payload['first_uncovered_lag_interval_start']} "
+            f"stop={payload['first_uncovered_lag_interval_stop']} "
+            f"length={payload['first_uncovered_lag_interval_length']} "
+            "repair_window="
+            f"{payload['first_uncovered_lag_interval_repair_window']} "
+            "additional_local_slots="
+            f"{payload['first_uncovered_lag_interval_additional_local_slots']} "
+            "target_interval_reached="
+            f"{payload['first_uncovered_interval_repair_reaches_interval']} "
+            "theorems=AIT-T0104,AIT-T0171"
+        ),
+        (
+            "first_interval_repair_next_gap="
+            f"{payload['first_interval_repair_next_uncovered_lag']} "
+            "still_has_gap="
+            f"{payload['first_interval_repair_still_has_gap']} "
+            "covers_context="
+            f"{payload['first_interval_repair_covers_context']} "
+            "fixture_theorems=AIT-T0166,AIT-T0167"
+        ),
+        (
+            "largest_uncovered_interval="
+            f"start={payload['largest_uncovered_interval_start']} "
+            f"stop={payload['largest_uncovered_interval_stop']} "
+            f"length={payload['largest_uncovered_interval_length']} "
+            "repair_window="
+            f"{payload['largest_uncovered_interval_repair_window']} "
+            "additional_local_slots="
+            f"{payload['largest_uncovered_interval_additional_local_slots']} "
+            "target_interval_reached="
+            f"{payload['largest_uncovered_interval_repair_reaches_interval']} "
+            "next_gap_after_repair="
+            f"{payload['largest_interval_repair_next_uncovered_lag']} "
+            "covers_context="
+            f"{payload['largest_interval_repair_covers_context']} "
+            "is_tail="
+            f"{payload['largest_uncovered_interval_is_tail']} "
+            "source=largest_certificate_gap_interval"
+        ),
+        (
             "covered_count_shortfall="
             f"{payload['covered_count_shortfall']} "
             "gap_witness_equiv="
@@ -221,12 +262,14 @@ def summary_lines(payload: dict[str, Any], sample_limit: int) -> list[str]:
             "lag_budget_status="
             f"{lag_budget_status} unique_lag_candidates="
             f"{payload['theorem_side_unique_lag_candidate_count']} "
+            f"lag_dedup_loss={payload['theorem_side_lag_candidate_dedup_loss']} "
             f"lag_no_collision={payload['theorem_side_lag_candidates_no_collision']}"
         ),
         (
             "query_budget_status="
             f"{query_budget_status} unique_query_candidates="
             f"{payload['theorem_side_unique_query_candidate_count']} "
+            f"query_dedup_loss={payload['theorem_side_query_candidate_dedup_loss']} "
             f"query_no_collision={payload['theorem_side_query_candidates_no_collision']} "
             "query_le_unique_lag="
             f"{payload['theorem_side_query_count_le_unique_lag_count']} "
@@ -234,6 +277,108 @@ def summary_lines(payload: dict[str, Any], sample_limit: int) -> list[str]:
             "query_matches_unique_lag="
             f"{payload['theorem_side_query_count_matches_unique_lag_count']} "
             "when_injective_theorem=AIT-T0109"
+        ),
+        (
+            "dedup_loss_collision="
+            f"lag_positive={payload['theorem_side_lag_candidate_dedup_loss_positive']} "
+            f"lag_matches_collision={payload['lag_dedup_loss_positive_matches_collision']} "
+            f"query_positive={payload['theorem_side_query_candidate_dedup_loss_positive']} "
+            f"query_matches_collision={payload['query_dedup_loss_positive_matches_collision']} "
+            "theorems=AIT-T0147,AIT-T0148"
+        ),
+        (
+            "dedup_loss_accounting="
+            f"lag_unique_plus_loss_eq_raw={payload['lag_dedup_loss_accounting_matches_raw']} "
+            f"query_unique_plus_loss_eq_raw={payload['query_dedup_loss_accounting_matches_raw']} "
+            "theorems=AIT-T0149,AIT-T0150"
+        ),
+        (
+            "collision_pair_counts="
+            f"lag={payload['theorem_side_lag_candidate_collision_pair_count']} "
+            f"query={payload['theorem_side_query_candidate_collision_pair_count']} "
+            "lag_zero_matches_no_collision="
+            f"{payload['lag_collision_pair_count_zero_matches_no_collision']} "
+            "lag_positive_matches_collision="
+            f"{payload['lag_collision_pair_count_positive_matches_collision']} "
+            "query_zero_matches_no_collision="
+            f"{payload['query_collision_pair_count_zero_matches_no_collision']} "
+            "query_positive_matches_collision="
+            f"{payload['query_collision_pair_count_positive_matches_collision']} "
+            "theorems=AIT-T0155,AIT-T0156,AIT-T0157,AIT-T0158 "
+            "fixture_theorems=see_fixture_theorem_ids"
+        ),
+        (
+            "collision_pair_severity="
+            "lag_bounds_dedup_loss="
+            f"{payload['lag_collision_pair_count_bounds_dedup_loss']} "
+            "lag_excess_over_dedup_loss="
+            f"{payload['lag_collision_pair_count_excess_over_dedup_loss']} "
+            "query_bounds_dedup_loss="
+            f"{payload['query_collision_pair_count_bounds_dedup_loss']} "
+            "query_excess_over_dedup_loss="
+            f"{payload['query_collision_pair_count_excess_over_dedup_loss']} "
+            "theorems=AIT-T0159,AIT-T0160"
+        ),
+        (
+            "first_gap_local_repair="
+            f"shortfall={payload['first_uncovered_lag_local_window_shortfall']} "
+            f"needed_window={payload['first_uncovered_lag_repair_window']} "
+            "current_window_below_first_gap="
+            f"{payload['first_uncovered_lag_exceeds_local_window']} "
+            "repair_window_reaches_first_gap="
+            f"{payload['first_uncovered_lag_repair_window_reaches']} "
+            "repair_window_covers_context="
+            f"{payload['first_uncovered_lag_repair_window_covers_context']} "
+            "repair_window_is_final_positive_lag="
+            f"{payload['first_gap_repair_window_is_final_positive_lag']} "
+            "repair_threshold_matches_final_lag="
+            f"{payload['first_gap_repair_threshold_matches_final_lag']} "
+            "theorems=AIT-T0161,AIT-T0162,AIT-T0164,AIT-T0165 "
+            "fixture_theorems=AIT-T0163"
+        ),
+        (
+            "local_window_complete_threshold="
+            f"threshold={payload['local_window_complete_coverage_threshold']} "
+            f"shortfall={payload['local_window_complete_coverage_shortfall']} "
+            "reaches_threshold="
+            f"{payload['local_window_reaches_complete_coverage_threshold']} "
+            "threshold_certifies_complete="
+            f"{payload['local_window_threshold_certifies_complete']} "
+            "exact_local_minimum="
+            f"{payload['local_window_complete_threshold_is_exact_local_minimum']} "
+            "first_gap_repair_reaches_threshold="
+            f"{payload['first_gap_repair_window_reaches_complete_threshold']} "
+            "theorems=AIT-T0023,AIT-T0034"
+        ),
+        (
+            "complete_local_repair="
+            f"window={payload['complete_repair_window']} "
+            "additional_slots="
+            f"{payload['complete_repair_window_additional_local_slots']} "
+            "covers_context="
+            f"{payload['complete_repair_window_covers_context']} "
+            "uses_dense_threshold="
+            f"{payload['complete_repair_window_uses_dense_threshold']} "
+            "exact_local_minimum="
+            f"{payload['local_window_complete_threshold_is_exact_local_minimum']} "
+            "minimal_for_declared_family="
+            f"{payload['complete_repair_window_minimal_for_declared_stride_family']} "
+            "minimal_witness_lag="
+            f"{payload['complete_repair_window_minimal_witness_lag']} "
+            "theorems=AIT-T0023,AIT-T0034 fixture_theorems=AIT-T0168,AIT-T0169,AIT-T0170"
+        ),
+        (
+            "interval_repair_plan="
+            f"steps={payload['interval_repair_plan_step_count']} "
+            f"final_window={payload['interval_repair_plan_final_window']} "
+            f"covers_context={payload['interval_repair_plan_covers_context']} "
+            "strictly_progresses="
+            f"{payload['interval_repair_plan_strictly_progresses']} "
+            "first_step="
+            f"{tuple(payload['interval_repair_plan'][0]) if payload['interval_repair_plan'] else None} "
+            "last_step="
+            f"{tuple(payload['interval_repair_plan'][-1]) if payload['interval_repair_plan'] else None} "
+            "source=successive_first_uncovered_intervals"
         ),
         (
             "unique_query_shortfall="
@@ -275,6 +420,7 @@ def main() -> None:
         local_window=args.local_window,
     )
     payload = asdict(certificate)
+    payload["schema_id"] = "circle_calculus.stride_family_sparse_attention_certificate.v0"
     if args.json_out is not None:
         write_json(args.json_out, payload)
     if args.format == "json":

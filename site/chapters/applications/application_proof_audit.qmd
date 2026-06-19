@@ -1,0 +1,50 @@
+---
+title: "Application Proof Audit"
+---
+
+This appendix collects the representative application theorem cards that were moved out of the [Applications](index.qmd) overview. The overview is for choosing a learning track; this page is for checking the current finite proved seeds across those tracks.
+
+::: {.warning-box}
+Application theorem cards certify finite models, wrappers, or contract facts only at their stated scope. The cards are not proof artifacts, not performance claims, and not model-quality claims; they do not prove physics realism, global optimality, runtime improvement, or real-world performance.
+:::
+
+## Data, Compute, Rendering, Layout, And Sampling
+
+<div class="theorem-box" data-theorem-id="APPD-T0005"></div>
+<div class="theorem-box" data-theorem-id="COMPC-T0005"></div>
+<div class="theorem-box" data-theorem-id="COMPR-T0005"></div>
+<div class="theorem-box" data-theorem-id="COMPL-T0005"></div>
+<div class="theorem-box" data-theorem-id="COMPS-T0004"></div>
+
+## AI Seeds And Contracts
+
+<div class="theorem-box" data-theorem-id="AIA-T0005"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0005"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0010"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0069"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0073"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0074"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0075"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0076"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0077"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0078"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0079"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0033"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0005"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0024"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0078"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0090"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0091"></div>
+
+## Where To Go Next
+
+- [AI Contract Suite](ai_contract_suite.qmd) for the compact proof-carrying AI entry point.
+- [AI Contract Ladder Proof Audit](ai_contract_ladder_audit.qmd) for the focused AI theorem trail.
+- [Theorem Index](../../theorems.qmd) for the generated complete theorem registry.
+
+<div class="book-navigation">
+<a href="index.qmd">Back: Applications</a>
+<a href="erdos_bridges.qmd">Next: Classical Bridges</a>
+</div>
+
+<script type="module" src="../../widgets/shared/widget_base.js"></script>

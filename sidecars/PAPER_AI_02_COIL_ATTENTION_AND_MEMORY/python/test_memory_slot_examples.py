@@ -4,22 +4,34 @@ import sys
 from pathlib import Path
 
 from circle_math.applications.circle_ai import (
+    active_inactive_token_count_accounting,
+    active_token_count_at_step,
     active_token_counts_by_budget,
+    active_token_counts_bounded_by_token_count,
+    active_token_counts_descending_by_step,
+    active_tokens_at_step,
+    active_tokens_descending_by_step,
+    active_tokens_nodup_by_step,
+    active_tokens_at_step_exact,
     average_candidate_count,
     certify_kv_cache_adapter_request_trace,
     certify_kv_cache_batch,
     certify_kv_cache_live_window,
     certify_kv_cache_live_window_request,
+    certify_kv_cache_sink_window,
     certify_kv_cache_window,
     certify_stride_family_coverage,
     consecutive_integer_intervals,
     coil_attention_path,
     content_route_label,
     fit_loop_budget_lookup,
+    inactive_token_count_at_step,
+    inactive_token_counts_ascending_by_step,
     fit_loop_block_lookup,
     fit_content_route_lookup,
     fit_memory_slot_lookup,
     fit_recurrence_resolution_lookup,
+    full_loop_token_work,
     hybrid_attention_candidates,
     kv_cache_adapter_request_trace_pass_compact,
     kv_cache_batch_trace_fresh_iff_next_overwrite_boundary,
@@ -30,6 +42,10 @@ from circle_math.applications.circle_ai import (
     kv_cache_live_window_slots_distinct,
     kv_cache_live_window_start,
     kv_cache_live_window_tokens,
+    kv_cache_sink_prefix_length,
+    kv_cache_sink_window_contains,
+    kv_cache_sink_window_tokens,
+    kv_cache_sink_window_tokens_exact,
     kv_cache_next_overwrite_after_current,
     kv_cache_next_overwrite_token,
     kv_cache_no_same_slot_overwrite_before_current,
@@ -90,6 +106,7 @@ from circle_math.applications.circle_ai import (
     run_stride_family_sparse_attention_benchmark,
     run_training_free_loop_wrapper_benchmark,
     run_token_level_recurrence_benchmark,
+    scheduled_work_saving,
     shifted_recurrence_resolutions,
     stride_family_attention_candidates,
     stride_family_covered_lags,
@@ -120,6 +137,8 @@ from circle_math.applications.circle_ai import (
     structured_hybrid_target_lags,
     token_active_at_step,
     synthetic_memory_slot_dataset,
+    total_active_token_work,
+    total_inactive_token_work,
     token_recurrence_budget,
     token_recurrence_budgets,
     training_free_loop_budget,
@@ -654,6 +673,41 @@ def test_kv_cache_ring_buffer_sidecar_emits_json_and_markdown() -> None:
     assert "AIM-T0087" in payload["live_window_request_certificate"]["theorem_ids"]
     assert "AIM-T0088" in payload["live_window_request_certificate"]["theorem_ids"]
     assert "AIM-T0089" in payload["live_window_request_certificate"]["fixture_theorem_ids"]
+    assert payload["sink_window_certificate"]["sink_size"] == 4
+    assert payload["sink_window_certificate"]["sink_prefix_length"] == 4
+    assert payload["sink_window_certificate"]["tokens"] == [0, 1, 2, 3, *range(16, 32)]
+    assert payload["sink_window_certificate"]["token_count"] == 20
+    assert payload["sink_window_certificate"]["token_count_bound"] == 20
+    assert payload["sink_window_certificate"]["token_count_le_sink_plus_cache"] is True
+    assert payload["sink_window_certificate"]["live_window_start"] == 16
+    assert payload["sink_window_certificate"]["live_window_length"] == 16
+    assert payload["sink_window_certificate"]["sink_prefix_fully_seen"] is True
+    assert payload["sink_window_certificate"]["sink_prefix_before_live_window"] is True
+    assert payload["sink_window_certificate"]["disjoint_exact_token_count"] == 20
+    assert (
+        payload["sink_window_certificate"][
+            "token_count_eq_sink_plus_live_window_when_disjoint"
+        ]
+        is True
+    )
+    assert payload["sink_window_certificate"]["tokens_distinct"] is True
+    assert payload["sink_window_certificate"]["generated_tokens_exact_policy"] is True
+    assert payload["sink_window_certificate"]["rolling_tokens_retained"] is True
+    assert payload["sink_window_certificate"]["sink_tokens_non_future"] is True
+    assert (
+        payload["sink_window_certificate"]["sink_tokens_retained_by_policy"]
+        is True
+    )
+    assert "AIM-T0104" in payload["sink_window_certificate"]["theorem_ids"]
+    assert "AIM-T0108" in payload["sink_window_certificate"]["theorem_ids"]
+    assert "AIM-T0110" in payload["sink_window_certificate"]["theorem_ids"]
+    assert "AIM-T0117" in payload["sink_window_certificate"]["theorem_ids"]
+    assert "AIM-T0119" in payload["sink_window_certificate"]["theorem_ids"]
+    assert "AIM-T0136" in payload["sink_window_certificate"]["theorem_ids"]
+    assert "AIM-T0137" in payload["sink_window_certificate"]["theorem_ids"]
+    assert "AIM-T0105" in payload["sink_window_certificate"]["fixture_theorem_ids"]
+    assert "AIM-T0109" in payload["sink_window_certificate"]["fixture_theorem_ids"]
+    assert "AIM-T0118" in payload["sink_window_certificate"]["fixture_theorem_ids"]
     assert "not model-quality" in payload["claim_boundary"]
 
     markdown_result = subprocess.run(
@@ -687,6 +741,20 @@ def test_kv_cache_ring_buffer_sidecar_emits_json_and_markdown() -> None:
     assert "Live start" in markdown_result.stdout
     assert "Exact live-window request" in markdown_result.stdout
     assert "generated_live_window_read" in markdown_result.stdout
+    assert "Sink size" in markdown_result.stdout
+    assert "Count within bound" in markdown_result.stdout
+    assert "Sink tokens non-future" in markdown_result.stdout
+    assert "Sink tokens retained by policy" in markdown_result.stdout
+    assert "AIM-T0104" in markdown_result.stdout
+    assert "AIM-T0105" in markdown_result.stdout
+    assert "AIM-T0108" in markdown_result.stdout
+    assert "AIM-T0109" in markdown_result.stdout
+    assert "AIM-T0110" in markdown_result.stdout
+    assert "AIM-T0117" in markdown_result.stdout
+    assert "AIM-T0118" in markdown_result.stdout
+    assert "AIM-T0119" in markdown_result.stdout
+    assert "AIM-T0136" in markdown_result.stdout
+    assert "AIM-T0137" in markdown_result.stdout
     assert "AIM-T0073" in markdown_result.stdout
     assert "AIM-T0074" in markdown_result.stdout
     assert "AIM-T0075" in markdown_result.stdout
@@ -706,6 +774,40 @@ def test_kv_cache_ring_buffer_sidecar_emits_json_and_markdown() -> None:
     assert "AIM-T0101" in markdown_result.stdout
     assert "AIM-T0102" in markdown_result.stdout
     assert "AIM-T0103" in markdown_result.stdout
+
+
+def test_kv_cache_sink_window_policy_certificate() -> None:
+    certificate = certify_kv_cache_sink_window(
+        sink_size=4,
+        cache_size=16,
+        current=31,
+    )
+    assert certificate.sink_prefix_length == kv_cache_sink_prefix_length(4, 31) == 4
+    assert certificate.sink_tokens == (0, 1, 2, 3)
+    assert certificate.rolling_tokens == tuple(range(16, 32))
+    assert certificate.tokens == kv_cache_sink_window_tokens(4, 16, 31)
+    assert certificate.token_count == 20
+    assert certificate.token_count_bound == 20
+    assert certificate.token_count_le_sink_plus_cache
+    assert certificate.live_window_start == 16
+    assert certificate.live_window_length == 16
+    assert certificate.sink_prefix_fully_seen
+    assert certificate.sink_prefix_before_live_window
+    assert certificate.disjoint_exact_token_count == 20
+    assert certificate.token_count_eq_sink_plus_live_window_when_disjoint
+    assert certificate.tokens_distinct
+    assert certificate.generated_tokens_exact_policy
+    assert certificate.sink_tokens_non_future
+    assert certificate.sink_tokens_retained_by_policy
+    assert kv_cache_sink_window_tokens_exact(4, 16, 31)
+    assert kv_cache_sink_window_contains(4, 16, 31, 2)
+    assert kv_cache_sink_window_contains(4, 16, 31, 20)
+    assert not kv_cache_sink_window_contains(4, 16, 31, 12)
+    assert "AIM-T0117" in certificate.theorem_ids
+    assert "AIM-T0119" in certificate.theorem_ids
+    assert "AIM-T0136" in certificate.theorem_ids
+    assert "AIM-T0137" in certificate.theorem_ids
+    assert "AIM-T0118" in certificate.fixture_theorem_ids
 
 
 def test_committed_kv_cache_ring_buffer_results_match_generator(tmp_path: Path) -> None:
@@ -1089,7 +1191,15 @@ def test_stride_family_sparse_attention_benchmark_has_budget_and_negative_contro
     assert result.coverage_certificate.theorem_side_lag_candidate_dedup_loss == (
         stride_family_lag_candidate_dedup_loss(120, (7, 13), 3, 4)
     )
+    assert result.coverage_certificate.theorem_side_lag_candidate_collision_pair_count == 0
+    assert result.coverage_certificate.lag_collision_pair_count_zero_matches_no_collision
+    assert result.coverage_certificate.lag_collision_pair_count_positive_matches_collision
+    assert result.coverage_certificate.lag_collision_pair_count_bounds_dedup_loss
+    assert result.coverage_certificate.lag_collision_pair_count_excess_over_dedup_loss == 0
     assert result.coverage_certificate.lag_dedup_loss_zero_matches_no_collision
+    assert not result.coverage_certificate.theorem_side_lag_candidate_dedup_loss_positive
+    assert result.coverage_certificate.lag_dedup_loss_positive_matches_collision
+    assert result.coverage_certificate.lag_dedup_loss_accounting_matches_raw
     assert result.coverage_certificate.theorem_side_unique_lag_candidate_count <= (
         result.coverage_certificate.raw_candidate_budget_upper_bound
     )
@@ -1127,7 +1237,15 @@ def test_stride_family_sparse_attention_benchmark_has_budget_and_negative_contro
     assert result.coverage_certificate.theorem_side_query_candidate_dedup_loss == (
         stride_family_query_candidate_dedup_loss(120, 0, (7, 13), 3, 4)
     )
+    assert result.coverage_certificate.theorem_side_query_candidate_collision_pair_count == 0
+    assert result.coverage_certificate.query_collision_pair_count_zero_matches_no_collision
+    assert result.coverage_certificate.query_collision_pair_count_positive_matches_collision
+    assert result.coverage_certificate.query_collision_pair_count_bounds_dedup_loss
+    assert result.coverage_certificate.query_collision_pair_count_excess_over_dedup_loss == 0
     assert result.coverage_certificate.query_dedup_loss_zero_matches_no_collision
+    assert not result.coverage_certificate.theorem_side_query_candidate_dedup_loss_positive
+    assert result.coverage_certificate.query_dedup_loss_positive_matches_collision
+    assert result.coverage_certificate.query_dedup_loss_accounting_matches_raw
     assert result.coverage_certificate.theorem_side_unique_query_candidate_count <= (
         result.coverage_certificate.raw_candidate_budget_upper_bound
     )
@@ -1177,12 +1295,40 @@ def test_stride_family_sparse_attention_benchmark_has_budget_and_negative_contro
     assert result.coverage_certificate.candidate_budget_per_query <= (
         result.coverage_certificate.deduplicated_candidate_budget_upper_bound
     )
+    assert result.coverage_certificate.complete_repair_window == 119
+    assert (
+        result.coverage_certificate.complete_repair_window_additional_local_slots
+        == 115
+    )
+    assert result.coverage_certificate.complete_repair_window_covers_context
+    assert result.coverage_certificate.complete_repair_window_uses_dense_threshold
+    assert (
+        result.coverage_certificate
+        .complete_repair_window_minimal_for_declared_stride_family
+    )
+    assert (
+        result.coverage_certificate.complete_repair_window_minimal_witness_lag
+        == 119
+    )
+    assert (
+        result.coverage_certificate
+        .local_window_complete_threshold_is_exact_local_minimum
+    )
     assert result.coverage_certificate.fixture_theorem_ids == (
         "AIT-T0084",
         "AIT-T0085",
         "AIT-T0091",
         "AIT-T0102",
         "AIT-T0104",
+        "AIT-T0151",
+        "AIT-T0152",
+        "AIT-T0171",
+        "AIT-T0163",
+        "AIT-T0166",
+        "AIT-T0167",
+        "AIT-T0168",
+        "AIT-T0169",
+        "AIT-T0170",
     )
     assert result.coverage_certificate.full_attention_budget == 120
     assert result.coverage_certificate.deduplicated_candidate_budget_upper_bound <= (
@@ -1308,6 +1454,21 @@ def test_stride_family_sparse_attention_benchmark_has_budget_and_negative_contro
         "AIT-T0138",
         "AIT-T0145",
         "AIT-T0146",
+        "AIT-T0147",
+        "AIT-T0148",
+        "AIT-T0149",
+        "AIT-T0150",
+        "AIT-T0155",
+        "AIT-T0156",
+        "AIT-T0157",
+        "AIT-T0158",
+        "AIT-T0159",
+        "AIT-T0160",
+        "AIT-T0161",
+        "AIT-T0162",
+        "AIT-T0171",
+        "AIT-T0164",
+        "AIT-T0165",
     )
     assert result.nonstructured_full_attention_accuracy == 1.0
     assert result.nonstructured_family_accuracy < result.nonstructured_full_attention_accuracy
@@ -1342,6 +1503,28 @@ def test_stride_family_sparse_attention_sidecar_emits_json_and_markdown() -> Non
     assert certificate["first_uncovered_lag_matches_uncovered_list_head"] is True
     assert certificate["no_first_uncovered_lag_matches_coverage_complete"] is True
     assert certificate["first_uncovered_lag_gap_witness"] is True
+    assert certificate["first_uncovered_lag_local_window_shortfall"] == 1
+    assert certificate["first_uncovered_lag_repair_window"] == 5
+    assert certificate["first_uncovered_lag_exceeds_local_window"] is True
+    assert certificate["first_uncovered_lag_repair_window_reaches"] is True
+    assert certificate["first_uncovered_lag_repair_window_covers_context"] is False
+    assert certificate["first_gap_repair_window_is_final_positive_lag"] is False
+    assert certificate["first_gap_repair_threshold_matches_final_lag"] is True
+    assert certificate["local_window_complete_coverage_threshold"] == 119
+    assert certificate["local_window_complete_coverage_shortfall"] == 115
+    assert certificate["local_window_reaches_complete_coverage_threshold"] is False
+    assert certificate["local_window_threshold_certifies_complete"] is False
+    assert certificate["local_window_complete_threshold_is_exact_local_minimum"] is True
+    assert certificate["complete_repair_window"] == 119
+    assert certificate["complete_repair_window_additional_local_slots"] == 115
+    assert certificate["complete_repair_window_covers_context"] is True
+    assert certificate["complete_repair_window_uses_dense_threshold"] is True
+    assert (
+        certificate["complete_repair_window_minimal_for_declared_stride_family"]
+        is True
+    )
+    assert certificate["complete_repair_window_minimal_witness_lag"] == 119
+    assert certificate["first_gap_repair_window_reaches_complete_threshold"] is False
     assert certificate["uncovered_count_positive_matches_gap_witness"] is True
     assert certificate["positive_lag_count"] == 119
     assert certificate["covered_uncovered_count_sum"] == 119
@@ -1362,7 +1545,15 @@ def test_stride_family_sparse_attention_sidecar_emits_json_and_markdown() -> Non
     assert certificate["raw_budget_shortfall_certifies_incomplete"] is True
     assert certificate["theorem_side_unique_lag_candidate_count"] == 10
     assert certificate["theorem_side_lag_candidate_dedup_loss"] == 0
+    assert certificate["theorem_side_lag_candidate_collision_pair_count"] == 0
+    assert certificate["lag_collision_pair_count_zero_matches_no_collision"] is True
+    assert certificate["lag_collision_pair_count_positive_matches_collision"] is True
+    assert certificate["lag_collision_pair_count_bounds_dedup_loss"] is True
+    assert certificate["lag_collision_pair_count_excess_over_dedup_loss"] == 0
     assert certificate["lag_dedup_loss_zero_matches_no_collision"] is True
+    assert certificate["theorem_side_lag_candidate_dedup_loss_positive"] is False
+    assert certificate["lag_dedup_loss_positive_matches_collision"] is True
+    assert certificate["lag_dedup_loss_accounting_matches_raw"] is True
     assert certificate["theorem_side_lag_candidates_positive_in_context"] is True
     assert certificate["unique_lag_count_shortfall_certifies_incomplete"] is True
     assert (
@@ -1385,6 +1576,15 @@ def test_stride_family_sparse_attention_sidecar_emits_json_and_markdown() -> Non
         "AIT-T0091",
         "AIT-T0102",
         "AIT-T0104",
+        "AIT-T0151",
+        "AIT-T0152",
+        "AIT-T0171",
+        "AIT-T0163",
+        "AIT-T0166",
+        "AIT-T0167",
+        "AIT-T0168",
+        "AIT-T0169",
+        "AIT-T0170",
     ]
     assert certificate["theorem_side_lag_candidates_no_collision"] is True
     assert "AIT-T0021" in certificate["theorem_ids"]
@@ -1438,6 +1638,18 @@ def test_stride_family_sparse_attention_sidecar_emits_json_and_markdown() -> Non
     assert "AIT-T0138" in certificate["theorem_ids"]
     assert "AIT-T0145" in certificate["theorem_ids"]
     assert "AIT-T0146" in certificate["theorem_ids"]
+    assert "AIT-T0147" in certificate["theorem_ids"]
+    assert "AIT-T0148" in certificate["theorem_ids"]
+    assert "AIT-T0149" in certificate["theorem_ids"]
+    assert "AIT-T0150" in certificate["theorem_ids"]
+    assert "AIT-T0155" in certificate["theorem_ids"]
+    assert "AIT-T0156" in certificate["theorem_ids"]
+    assert "AIT-T0157" in certificate["theorem_ids"]
+    assert "AIT-T0158" in certificate["theorem_ids"]
+    assert "AIT-T0159" in certificate["theorem_ids"]
+    assert "AIT-T0160" in certificate["theorem_ids"]
+    assert "AIT-T0161" in certificate["theorem_ids"]
+    assert "AIT-T0162" in certificate["theorem_ids"]
     assert certificate["no_wrap_separated_candidate_range_sufficient_condition"] is False
     assert certificate["no_zero_residue_candidate_range_sufficient_condition"] is True
     assert certificate["singleton_stride_period"] is None
@@ -1477,7 +1689,15 @@ def test_stride_family_sparse_attention_sidecar_emits_json_and_markdown() -> Non
     assert certificate["theorem_side_query_count_matches_unique_lag_count"] is True
     assert certificate["theorem_side_unique_query_candidate_count"] == 10
     assert certificate["theorem_side_query_candidate_dedup_loss"] == 0
+    assert certificate["theorem_side_query_candidate_collision_pair_count"] == 0
+    assert certificate["query_collision_pair_count_zero_matches_no_collision"] is True
+    assert certificate["query_collision_pair_count_positive_matches_collision"] is True
+    assert certificate["query_collision_pair_count_bounds_dedup_loss"] is True
+    assert certificate["query_collision_pair_count_excess_over_dedup_loss"] == 0
     assert certificate["query_dedup_loss_zero_matches_no_collision"] is True
+    assert certificate["theorem_side_query_candidate_dedup_loss_positive"] is False
+    assert certificate["query_dedup_loss_positive_matches_collision"] is True
+    assert certificate["query_dedup_loss_accounting_matches_raw"] is True
     assert (
         certificate[
             "unique_query_count_shortfall_matches_gap_witness_under_candidate_range_and_injective"
@@ -1512,6 +1732,17 @@ def test_stride_family_sparse_attention_sidecar_emits_json_and_markdown() -> Non
     assert complete["first_uncovered_lag_matches_uncovered_list_head"] is True
     assert complete["no_first_uncovered_lag_matches_coverage_complete"] is True
     assert complete["first_uncovered_lag_gap_witness"] is True
+    assert complete["first_uncovered_lag_local_window_shortfall"] is None
+    assert complete["first_uncovered_lag_repair_window"] is None
+    assert complete["first_uncovered_lag_exceeds_local_window"] is True
+    assert complete["first_uncovered_lag_repair_window_reaches"] is True
+    assert complete["first_gap_repair_window_is_final_positive_lag"] is None
+    assert complete["first_gap_repair_threshold_matches_final_lag"] is None
+    assert complete["local_window_complete_coverage_threshold"] == 8
+    assert complete["local_window_complete_coverage_shortfall"] == 6
+    assert complete["local_window_reaches_complete_coverage_threshold"] is False
+    assert complete["local_window_threshold_certifies_complete"] is False
+    assert complete["first_gap_repair_window_reaches_complete_threshold"] is None
     assert complete["uncovered_count_positive_matches_gap_witness"] is True
     assert complete["positive_lag_count"] == 8
     assert complete["covered_uncovered_count_sum"] == 8
@@ -1526,7 +1757,13 @@ def test_stride_family_sparse_attention_sidecar_emits_json_and_markdown() -> Non
     assert complete["raw_budget_shortfall_certifies_incomplete"] is True
     assert complete["theorem_side_unique_lag_candidate_count"] == 8
     assert complete["theorem_side_lag_candidate_dedup_loss"] == 0
+    assert complete["theorem_side_lag_candidate_collision_pair_count"] == 0
+    assert complete["lag_collision_pair_count_zero_matches_no_collision"] is True
+    assert complete["lag_collision_pair_count_positive_matches_collision"] is True
     assert complete["lag_dedup_loss_zero_matches_no_collision"] is True
+    assert complete["theorem_side_lag_candidate_dedup_loss_positive"] is False
+    assert complete["lag_dedup_loss_positive_matches_collision"] is True
+    assert complete["lag_dedup_loss_accounting_matches_raw"] is True
     assert complete["theorem_side_lag_candidates_positive_in_context"] is True
     assert complete["no_zero_residue_candidate_range_sufficient_condition"] is True
     assert complete["singleton_stride_period"] is None
@@ -1574,7 +1811,13 @@ def test_stride_family_sparse_attention_sidecar_emits_json_and_markdown() -> Non
     )
     assert complete["theorem_side_unique_query_candidate_count"] == 8
     assert complete["theorem_side_query_candidate_dedup_loss"] == 0
+    assert complete["theorem_side_query_candidate_collision_pair_count"] == 0
+    assert complete["query_collision_pair_count_zero_matches_no_collision"] is True
+    assert complete["query_collision_pair_count_positive_matches_collision"] is True
     assert complete["query_dedup_loss_zero_matches_no_collision"] is True
+    assert complete["theorem_side_query_candidate_dedup_loss_positive"] is False
+    assert complete["query_dedup_loss_positive_matches_collision"] is True
+    assert complete["query_dedup_loss_accounting_matches_raw"] is True
     assert complete["theorem_side_query_count_le_unique_lag_count"] is True
     assert complete["theorem_side_query_count_matches_unique_lag_count"] is True
     assert (
@@ -1621,7 +1864,29 @@ def test_stride_family_sparse_attention_sidecar_emits_json_and_markdown() -> Non
         "AIT-T0091",
         "AIT-T0102",
         "AIT-T0104",
+        "AIT-T0151",
+        "AIT-T0152",
+        "AIT-T0171",
+        "AIT-T0163",
+        "AIT-T0166",
+        "AIT-T0167",
+        "AIT-T0168",
+        "AIT-T0169",
+        "AIT-T0170",
     ]
+    assert planner_rows["default_gap_fixture_120"]["complete_repair_window"] == 119
+    assert (
+        planner_rows["default_gap_fixture_120"][
+            "complete_repair_window_minimal_for_declared_stride_family"
+        ]
+        is True
+    )
+    assert (
+        planner_rows["default_gap_fixture_120"][
+            "complete_repair_window_minimal_witness_lag"
+        ]
+        == 119
+    )
     assert (
         planner_rows["default_gap_fixture_120"][
             "no_zero_residue_candidate_range_sufficient_condition"
@@ -1690,6 +1955,18 @@ def test_stride_family_sparse_attention_sidecar_emits_json_and_markdown() -> Non
     assert "AIT-T0138" in singleton_probe["core_coverage_theorem_ids"]
     assert "AIT-T0145" in singleton_probe["core_coverage_theorem_ids"]
     assert "AIT-T0146" in singleton_probe["core_coverage_theorem_ids"]
+    assert "AIT-T0147" in singleton_probe["core_coverage_theorem_ids"]
+    assert "AIT-T0148" in singleton_probe["core_coverage_theorem_ids"]
+    assert "AIT-T0149" in singleton_probe["core_coverage_theorem_ids"]
+    assert "AIT-T0150" in singleton_probe["core_coverage_theorem_ids"]
+    assert "AIT-T0155" in singleton_probe["core_coverage_theorem_ids"]
+    assert "AIT-T0156" in singleton_probe["core_coverage_theorem_ids"]
+    assert "AIT-T0157" in singleton_probe["core_coverage_theorem_ids"]
+    assert "AIT-T0158" in singleton_probe["core_coverage_theorem_ids"]
+    assert "AIT-T0159" in singleton_probe["core_coverage_theorem_ids"]
+    assert "AIT-T0160" in singleton_probe["core_coverage_theorem_ids"]
+    assert "AIT-T0161" in singleton_probe["core_coverage_theorem_ids"]
+    assert "AIT-T0162" in singleton_probe["core_coverage_theorem_ids"]
     alias_probe = planner_rows["alias_collision_probe_16"]
     assert alias_probe["sequence_length"] == 16
     assert alias_probe["strides"] == [4, 8]
@@ -1701,9 +1978,25 @@ def test_stride_family_sparse_attention_sidecar_emits_json_and_markdown() -> Non
     assert alias_probe["uncovered_lag_count"] == 10
     assert alias_probe["theorem_side_unique_lag_candidate_count"] == 6
     assert alias_probe["theorem_side_lag_candidate_dedup_loss"] == 4
+    assert alias_probe["theorem_side_lag_candidate_collision_pair_count"] == 6
+    assert alias_probe["lag_collision_pair_count_zero_matches_no_collision"] is True
+    assert alias_probe["lag_collision_pair_count_positive_matches_collision"] is True
+    assert alias_probe["lag_collision_pair_count_bounds_dedup_loss"] is True
+    assert alias_probe["lag_collision_pair_count_excess_over_dedup_loss"] == 2
     assert alias_probe["lag_dedup_loss_zero_matches_no_collision"] is True
+    assert alias_probe["theorem_side_lag_candidate_dedup_loss_positive"] is True
+    assert alias_probe["lag_dedup_loss_positive_matches_collision"] is True
+    assert alias_probe["lag_dedup_loss_accounting_matches_raw"] is True
     assert alias_probe["theorem_side_query_candidate_dedup_loss"] == 4
+    assert alias_probe["theorem_side_query_candidate_collision_pair_count"] == 6
+    assert alias_probe["query_collision_pair_count_zero_matches_no_collision"] is True
+    assert alias_probe["query_collision_pair_count_positive_matches_collision"] is True
+    assert alias_probe["query_collision_pair_count_bounds_dedup_loss"] is True
+    assert alias_probe["query_collision_pair_count_excess_over_dedup_loss"] == 2
     assert alias_probe["query_dedup_loss_zero_matches_no_collision"] is True
+    assert alias_probe["theorem_side_query_candidate_dedup_loss_positive"] is True
+    assert alias_probe["query_dedup_loss_positive_matches_collision"] is True
+    assert alias_probe["query_dedup_loss_accounting_matches_raw"] is True
     assert alias_probe["raw_budget_survives_lag_dedup"] is False
     assert alias_probe["raw_budget_survives_query_dedup"] is False
     assert alias_probe["coil_residues_no_collision"] is False
@@ -1714,6 +2007,18 @@ def test_stride_family_sparse_attention_sidecar_emits_json_and_markdown() -> Non
     assert alias_probe["zero_residue_total_count_matches_sum_formula"] is True
     assert "AIT-T0145" in alias_probe["core_coverage_theorem_ids"]
     assert "AIT-T0146" in alias_probe["core_coverage_theorem_ids"]
+    assert "AIT-T0147" in alias_probe["core_coverage_theorem_ids"]
+    assert "AIT-T0148" in alias_probe["core_coverage_theorem_ids"]
+    assert "AIT-T0149" in alias_probe["core_coverage_theorem_ids"]
+    assert "AIT-T0150" in alias_probe["core_coverage_theorem_ids"]
+    assert "AIT-T0155" in alias_probe["core_coverage_theorem_ids"]
+    assert "AIT-T0156" in alias_probe["core_coverage_theorem_ids"]
+    assert "AIT-T0157" in alias_probe["core_coverage_theorem_ids"]
+    assert "AIT-T0158" in alias_probe["core_coverage_theorem_ids"]
+    assert "AIT-T0159" in alias_probe["core_coverage_theorem_ids"]
+    assert "AIT-T0160" in alias_probe["core_coverage_theorem_ids"]
+    assert "AIT-T0161" in alias_probe["core_coverage_theorem_ids"]
+    assert "AIT-T0162" in alias_probe["core_coverage_theorem_ids"]
     long_no_wrap = planner_rows["long_context_no_wrap_probe_4096"]
     assert long_no_wrap["sequence_length"] == 4096
     assert long_no_wrap["strides"] == [33, 160, 800]
@@ -1869,15 +2174,19 @@ def test_stride_family_sparse_attention_sidecar_emits_json_and_markdown() -> Non
     )
     assert "Stride-Family Sparse-Attention Certificate Results" in markdown_result.stdout
     assert "| 120 | 120 | 4 | 3 | 7, 13 | 5, 9 | False | 0.084 |" in markdown_result.stdout
+    assert "Complete local threshold" in markdown_result.stdout
+    assert "| 1 | 5 | True | False | False | True | 119 | 115 | False | False | True | False |" in markdown_result.stdout
     assert (
         "| 9 | 2 | 2 | 3, 4, 7 | True | 0 | None | True | True | True | True | "
-        "False | True | 8 | True | 8 | 0 | True | True | False | True | None | "
-        "None | True | True | True | True | True | True | True | 8 | 0 | True | "
-        "True | True | True | True | True | True | AIT-T0086, AIT-T0087, AIT-T0088, "
+        "False | True | 8 | True | 8 | 0 | True | False | True | True | True | False | True | None | "
+        "None | True | True | True | True | True | True | True | 8 | 0 | True | False | "
+        "True | True | True | True | True | True | True | True | AIT-T0086, AIT-T0087, AIT-T0088, "
         "AIT-T0089, AIT-T0105 |"
     ) in markdown_result.stdout
     assert "Planner-style declared plans" in markdown_result.stdout
     assert "Raw shortfall certifies incomplete" in markdown_result.stdout
+    assert "Lag loss positive iff collision" in markdown_result.stdout
+    assert "Query loss positive iff collision" in markdown_result.stdout
     assert "Fixture theorem ids" in markdown_result.stdout
     assert "AIT-T0139, AIT-T0140, AIT-T0143" in markdown_result.stdout
     assert "AIT-T0141, AIT-T0142, AIT-T0144" in markdown_result.stdout
@@ -1885,26 +2194,26 @@ def test_stride_family_sparse_attention_sidecar_emits_json_and_markdown() -> Non
         "| long_context_no_wrap_probe_4096 | 4096 | 32 | 4 | "
         "33, 160, 800 | False | 0.011 | 44 | 0.011 | 4095 | 4095 | 4051 | "
         "34 | True | True | True | True | True | True | 12 | True | True | True | True | "
-        "None | None | True | True | True | True | True | True | True | 0 | True | 0 | True | lag=True, query=True | "
+        "None | None | True | True | True | True | True | True | True | 0 | 0 | True | True | True | False | True | True | 0 | 0 | True | True | True | False | True | True | lag=True, query=True | "
         "AIT-T0139, AIT-T0140, AIT-T0143 |"
     ) in markdown_result.stdout
     assert (
         "| singleton_period_probe_12 | 12 | 1 | 2 | 4 | False | 0.273 | 3 | "
         "0.250 | 11 | 11 | 8 | 2 | True | True | True | True | True | True | "
         "3 | True | True | True | True | 3 | True | True | True | True | "
-        "True | True | True | True | 0 | True | 0 | True | lag=True, query=True |"
+        "True | True | True | True | 0 | 0 | True | True | True | False | True | True | 0 | 0 | True | True | True | False | True | True | lag=True, query=True |"
     ) in markdown_result.stdout
     assert (
         "| alias_collision_probe_16 | 16 | 2 | 4 | 4, 8 | False | 0.333 | 6 | "
         "0.375 | 15 | 15 | 10 | 3 | True | True | True | True | True | True | "
         "4 | True | False | False | False | None | None | True | True | True | "
-        "True | True | True | True | 4 | True | 4 | True | lag=False, query=False |"
+        "True | True | True | True | 4 | 6 | True | True | True | True | True | True | 4 | 6 | True | True | True | True | True | True | lag=False, query=False |"
     ) in markdown_result.stdout
     assert (
         "| long_context_coprime_probe_8192 | 8192 | 64 | 8 | "
         "127, 509, 1021, 2039 | False | 0.012 | 96 | 0.012 | 8191 | 8191 | "
         "8095 | 65 | True | True | True | True | True | True | 32 | True | True | False | True | "
-        "None | None | True | True | True | True | True | True | True | 0 | True | 0 | True | lag=True, query=True | "
+        "None | None | True | True | True | True | True | True | True | 0 | 0 | True | True | True | False | True | True | 0 | 0 | True | True | True | False | True | True | lag=True, query=True | "
         "AIT-T0141, AIT-T0142, AIT-T0144 |"
     ) in markdown_result.stdout
     assert "AIT-T0091" in markdown_result.stdout
@@ -2561,6 +2870,42 @@ def test_token_level_recurrence_budget_helpers_are_deterministic() -> None:
     assert all(token_active_at_step(4, token + 3 * 4, 2) == token_active_at_step(4, token, 2) for token in tokens)
     assert all(not token_active_at_step(4, token, 5) for token in tokens)
     assert active_token_counts_by_budget(budgets, 4) == (8, 6, 4, 2)
+    assert active_tokens_at_step(4, 8, 1) == (0, 1, 2, 3, 4, 5, 6, 7)
+    assert active_tokens_at_step(4, 8, 2) == (1, 2, 3, 5, 6, 7)
+    assert active_tokens_at_step(4, 8, 3) == (2, 3, 6, 7)
+    assert active_tokens_at_step(4, 8, 4) == (3, 7)
+    assert active_tokens_at_step(4, 8, 5) == ()
+    assert active_token_count_at_step(4, 8, 1) == 8
+    assert inactive_token_count_at_step(4, 8, 1) == 0
+    assert active_token_count_at_step(4, 8, 2) == 6
+    assert inactive_token_count_at_step(4, 8, 2) == 2
+    assert active_token_count_at_step(4, 8, 5) == 0
+    assert inactive_token_count_at_step(4, 8, 5) == 8
+    assert active_inactive_token_count_accounting(4, 8, 2) is True
+    assert active_inactive_token_count_accounting(4, 8, 5) is True
+    assert active_tokens_at_step_exact(4, 8, 2) is True
+    assert active_tokens_at_step_exact(4, 8, 1) is True
+    assert active_tokens_at_step_exact(4, 8, 5) is True
+    assert active_tokens_descending_by_step(4, 8, 5) is True
+    assert active_tokens_nodup_by_step(4, 8, 5) is True
+    assert active_token_counts_bounded_by_token_count(4, 8, 5) is True
+    assert active_token_counts_descending_by_step(4, 8, 5) is True
+    assert inactive_token_counts_ascending_by_step(4, 8, 5) is True
+    assert total_active_token_work(4, 8, 4) == 20
+    assert total_inactive_token_work(4, 8, 4) == 12
+    assert full_loop_token_work(8, 4) == 32
+    assert scheduled_work_saving(4, 8, 4) == 12
+    assert (
+        total_active_token_work(4, 8, 4)
+        + total_inactive_token_work(4, 8, 4)
+        == full_loop_token_work(8, 4)
+    )
+    assert scheduled_work_saving(4, 8, 4) == total_inactive_token_work(4, 8, 4)
+    assert (
+        scheduled_work_saving(4, 8, 4)
+        + total_active_token_work(4, 8, 4)
+        == full_loop_token_work(8, 4)
+    )
     assert recurrence_resolution_levels(4) == ("coarse", "fine", "coarse", "fine")
 
 

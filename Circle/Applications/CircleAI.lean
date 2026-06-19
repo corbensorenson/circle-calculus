@@ -1160,6 +1160,252 @@ theorem kvCacheLiveWindowRequestTraceContract_default_16_31 :
     (by decide)).2
   native_decide
 
+/-! ### Pinned sink-prefix plus rolling-window KV-cache policy -/
+
+/-- The number of pinned sink-prefix tokens that have actually been seen at
+the current read point. -/
+def kvCacheSinkPrefixLength (sinkSize current : Nat) : Nat :=
+  min sinkSize (current + 1)
+
+/-- A pinned-prefix plus rolling-window KV-cache policy retains either a seen
+early sink token or a token in the ordinary rolling live window.
+
+This models the finite index-policy shape used by sink-token attention
+patterns. It is not a claim about retrieval quality, paging strategy, serving
+implementation, or model behavior. -/
+def kvCacheSinkWindowContains
+    (sinkSize cacheSize current token : Nat) : Prop :=
+  token < kvCacheSinkPrefixLength sinkSize current ∨
+    kvCacheWindowContains cacheSize current token
+
+/-- The explicit token list for the pinned-prefix plus rolling-window policy.
+
+The generated rolling-window suffix filters out any token already present in
+the pinned prefix, so the executable certificate can expose one deterministic
+list for the policy instead of a multiset-style union. -/
+def kvCacheSinkWindowTokens
+    (sinkSize cacheSize current : Nat) : List Nat :=
+  List.range (kvCacheSinkPrefixLength sinkSize current) ++
+    (kvCacheLiveWindowTokens cacheSize current).filter
+      (fun token => kvCacheSinkPrefixLength sinkSize current ≤ token)
+
+/-- The generated pinned-prefix plus rolling-window list has exactly the
+membership predicate declared by the policy.
+
+This is the theorem-backed bridge used by the executable sink-window
+certificate: a token is in the generated request list exactly when it is either
+one of the pinned sink-prefix tokens or retained by the ordinary rolling
+KV-cache live window. -/
+theorem kvCacheSinkWindowContains_iff_mem_sinkWindowTokens
+    {sinkSize cacheSize current token : Nat} :
+    kvCacheSinkWindowContains sinkSize cacheSize current token ↔
+      token ∈ kvCacheSinkWindowTokens sinkSize cacheSize current := by
+  unfold kvCacheSinkWindowContains kvCacheSinkWindowTokens
+  rw [List.mem_append, List.mem_filter]
+  constructor
+  · intro hpolicy
+    rcases hpolicy with hsink | hrolling
+    · exact Or.inl (List.mem_range.mpr hsink)
+    · by_cases hsink : token < kvCacheSinkPrefixLength sinkSize current
+      · exact Or.inl (List.mem_range.mpr hsink)
+      · exact Or.inr
+          ⟨(kvCacheWindowContains_iff_mem_liveWindowTokens).1 hrolling,
+            by simp [le_of_not_gt hsink]⟩
+  · intro hmem
+    rcases hmem with hprefix | hrolling
+    · exact Or.inl (List.mem_range.mp hprefix)
+    · exact Or.inr
+        ((kvCacheWindowContains_iff_mem_liveWindowTokens).2 hrolling.1)
+
+/-- Every generated rolling-suffix token in a sink-window policy is still an
+ordinary rolling-window token.
+
+This is the theorem-backed freshness side of the sink-window certificate: pinning
+seen prefix tokens does not relax the freshness predicate for the generated
+rolling suffix. -/
+theorem kvCacheSinkWindowRollingTokens_all_retained
+    {sinkSize cacheSize current : Nat} :
+    ∀ token ∈ (kvCacheLiveWindowTokens cacheSize current).filter
+      (fun token => kvCacheSinkPrefixLength sinkSize current ≤ token),
+      kvCacheWindowContains cacheSize current token := by
+  intro token hmem
+  rw [List.mem_filter] at hmem
+  exact (kvCacheWindowContains_iff_mem_liveWindowTokens).2 hmem.1
+
+/-- Every generated sink-prefix token has already been seen by the current
+token position.
+
+The sink prefix is clipped by `current + 1`, so a generated pinned token is
+never a future token. This is the theorem-backed non-future side of the
+sink-prefix policy. -/
+theorem kvCacheSinkWindowPrefixTokens_le_current
+    {sinkSize current token : Nat}
+    (hmem : token ∈ List.range (kvCacheSinkPrefixLength sinkSize current)) :
+    token ≤ current := by
+  have hlt_prefix : token < kvCacheSinkPrefixLength sinkSize current :=
+    List.mem_range.mp hmem
+  have hlt_current_succ : token < current + 1 := by
+    exact lt_of_lt_of_le hlt_prefix
+      (by
+        unfold kvCacheSinkPrefixLength
+        exact Nat.min_le_right sinkSize (current + 1))
+  exact Nat.lt_succ_iff.mp hlt_current_succ
+
+/-- Every generated sink-prefix token is retained by the declared sink-window
+policy.
+
+This is policy retention, not ordinary rolling-window freshness: pinned early
+tokens may be outside the ordinary rolling live window, but they are retained by
+the explicit sink-prefix branch of the policy. -/
+theorem kvCacheSinkWindowPrefixTokens_policy_retained
+    {sinkSize cacheSize current token : Nat}
+    (hmem : token ∈ List.range (kvCacheSinkPrefixLength sinkSize current)) :
+    kvCacheSinkWindowContains sinkSize cacheSize current token := by
+  exact Or.inl (List.mem_range.mp hmem)
+
+/-- In the disjoint sink-prefix case, generated sink-prefix tokens are not
+ordinary rolling-window retained tokens.
+
+This is the planner-facing distinction for sink-token policies: the pinned
+prefix is retained by the explicit sink-policy branch, while the rolling suffix
+is retained by the ordinary live-window branch. -/
+theorem kvCacheSinkWindowPrefixTokens_not_rolling_retained_of_sinkSize_le_start
+    {sinkSize cacheSize current token : Nat}
+    (hsink_seen : sinkSize ≤ current + 1)
+    (hdisjoint : sinkSize ≤ kvCacheLiveWindowStart cacheSize current)
+    (hmem : token ∈ List.range (kvCacheSinkPrefixLength sinkSize current)) :
+    ¬ kvCacheWindowContains cacheSize current token := by
+  intro hwindow
+  have hprefix :
+      kvCacheSinkPrefixLength sinkSize current = sinkSize := by
+    unfold kvCacheSinkPrefixLength
+    exact Nat.min_eq_left hsink_seen
+  have htoken_lt_sink : token < sinkSize := by
+    simpa [hprefix] using (List.mem_range.mp hmem)
+  rcases hwindow with ⟨htoken_current, hlag⟩
+  unfold kvCacheLiveWindowStart at hdisjoint
+  omega
+
+/-- The generated pinned-prefix plus rolling-window request has no duplicate
+token entries.
+
+The construction filters the rolling suffix to tokens at or above the pinned
+prefix length, so the prefix range and rolling suffix are disjoint by value.
+This makes duplicate-free sink-window request lists a general contract, not
+just a public fixture fact. -/
+theorem kvCacheSinkWindowTokens_nodup
+    (sinkSize cacheSize current : Nat) :
+    (kvCacheSinkWindowTokens sinkSize cacheSize current).Nodup := by
+  unfold kvCacheSinkWindowTokens
+  rw [List.nodup_append]
+  refine ⟨List.nodup_range, ?_, ?_⟩
+  · exact List.Sublist.nodup List.filter_sublist
+      (by unfold kvCacheLiveWindowTokens; exact List.nodup_range')
+  · intro a ha b hb _heq
+    have ha_lt : a < kvCacheSinkPrefixLength sinkSize current :=
+      List.mem_range.mp ha
+    have hb_ge : kvCacheSinkPrefixLength sinkSize current ≤ b := by
+      simpa using (List.mem_filter.mp hb).2
+    omega
+
+/-- The generated pinned-prefix plus rolling-window request is bounded by the
+declared sink prefix budget plus the ordinary rolling cache budget.
+
+This is the request-size contract for sink-window policies: the deterministic
+request list may be smaller when the two regions overlap or the seen prefix is
+short, but it never exceeds `sinkSize + cacheSize`. -/
+theorem kvCacheSinkWindowTokens_length_le_sinkSize_add_cacheSize
+    (sinkSize cacheSize current : Nat) :
+    (kvCacheSinkWindowTokens sinkSize cacheSize current).length ≤
+      sinkSize + cacheSize := by
+  unfold kvCacheSinkWindowTokens
+  rw [List.length_append, List.length_range]
+  have hprefix :
+      kvCacheSinkPrefixLength sinkSize current ≤ sinkSize := by
+    unfold kvCacheSinkPrefixLength
+    exact Nat.min_le_left sinkSize (current + 1)
+  have hfilter_live :
+      ((kvCacheLiveWindowTokens cacheSize current).filter
+        (fun token => kvCacheSinkPrefixLength sinkSize current ≤ token)).length ≤
+        (kvCacheLiveWindowTokens cacheSize current).length :=
+    List.Sublist.length_le (List.filter_sublist)
+  have hlive_cache :
+      (kvCacheLiveWindowTokens cacheSize current).length ≤ cacheSize := by
+    unfold kvCacheLiveWindowTokens kvCacheLiveWindowLength
+    rw [List.length_range']
+    exact Nat.min_le_left cacheSize (current + 1)
+  omega
+
+/-- If the requested sink prefix has been fully seen and lies before the live
+rolling window, then the generated request size is exactly the sink size plus
+the live-window length.
+
+This is the exact-count companion to the request-size bound. It applies to the
+common non-overlap case where pinned sink tokens are an early prefix and the
+ordinary rolling KV-cache window has moved strictly beyond that prefix. -/
+theorem kvCacheSinkWindowTokens_length_eq_sinkSize_add_liveWindowLength_of_sinkSize_le_start
+    {sinkSize cacheSize current : Nat}
+    (hsink_seen : sinkSize ≤ current + 1)
+    (hdisjoint : sinkSize ≤ kvCacheLiveWindowStart cacheSize current) :
+    (kvCacheSinkWindowTokens sinkSize cacheSize current).length =
+      sinkSize + kvCacheLiveWindowLength cacheSize current := by
+  unfold kvCacheSinkWindowTokens
+  rw [List.length_append, List.length_range]
+  have hprefix :
+      kvCacheSinkPrefixLength sinkSize current = sinkSize := by
+    unfold kvCacheSinkPrefixLength
+    exact Nat.min_eq_left hsink_seen
+  rw [hprefix]
+  have hfilter :
+      ((kvCacheLiveWindowTokens cacheSize current).filter
+        (fun token => sinkSize ≤ token)).length =
+        (kvCacheLiveWindowTokens cacheSize current).length := by
+    have hfilter_eq :
+        (kvCacheLiveWindowTokens cacheSize current).filter
+          (fun token => sinkSize ≤ token) =
+          kvCacheLiveWindowTokens cacheSize current := by
+      apply List.filter_eq_self.2
+      intro token hmem
+      have hstart_le : kvCacheLiveWindowStart cacheSize current ≤ token := by
+        unfold kvCacheLiveWindowTokens at hmem
+        rcases List.mem_range'.mp hmem with ⟨i, _hi, rfl⟩
+        omega
+      exact decide_eq_true (le_trans hdisjoint hstart_le)
+    rw [hfilter_eq]
+  rw [hfilter]
+  unfold kvCacheLiveWindowTokens
+  rw [List.length_range']
+
+/-- Public fixture: with four pinned sink tokens, cache size `16`, and current
+token `31`, the generated policy request is exactly tokens `0..3` followed by
+the rolling live window `16..31`. -/
+theorem kvCacheSinkWindowTokens_default_4_16_31 :
+    kvCacheSinkWindowTokens 4 16 31 = List.range 4 ++ List.range' 16 16 := by
+  native_decide
+
+/-- Public fixture: the default pinned-prefix plus rolling-window request has no
+duplicate token entries. -/
+theorem kvCacheSinkWindowTokens_default_4_16_31_nodup :
+    (kvCacheSinkWindowTokens 4 16 31).Nodup := by
+  native_decide
+
+/-- Public fixture: the default pinned-prefix plus rolling-window request has
+exactly twenty token positions. -/
+theorem kvCacheSinkWindowTokens_default_4_16_31_length :
+    (kvCacheSinkWindowTokens 4 16 31).length = 20 := by
+  native_decide
+
+/-- Public fixture: the default pinned sink tokens are outside the ordinary
+rolling live window. They are retained only by the sink-policy branch. -/
+theorem kvCacheSinkWindowPrefixTokens_default_4_16_31_not_rolling_retained
+    {token : Nat}
+    (hmem : token ∈ List.range (kvCacheSinkPrefixLength 4 31)) :
+    ¬ kvCacheWindowContains 16 31 token := by
+  exact
+    kvCacheSinkWindowPrefixTokens_not_rolling_retained_of_sinkSize_le_start
+      (sinkSize := 4) (cacheSize := 16) (current := 31) (token := token)
+      (by decide) (by decide) hmem
+
 def loopRequiredSteps (loopPeriod sample : Nat) : Nat :=
   phaseChannel loopPeriod sample + 1
 
@@ -1291,6 +1537,14 @@ theorem tokenActiveAtStep_add_mul_loopPeriod {loopPeriod : Nat}
   unfold tokenActiveAtStep
   rw [tokenRecurrenceBudget_add_mul_loopPeriod h]
 
+/-- Token activity is monotone in the loop step: if a token is active at a
+later step, it was active at every earlier step. -/
+theorem tokenActiveAtStep_of_step_le
+    {loopPeriod token early late : Nat} (hstep : early ≤ late)
+    (hactive : tokenActiveAtStep loopPeriod token late) :
+    tokenActiveAtStep loopPeriod token early :=
+  Nat.le_trans hstep hactive
+
 theorem tokenActiveAtStep_step_le_loopPeriod {loopPeriod : Nat}
     (h : 0 < loopPeriod) {token step : Nat}
     (hactive : tokenActiveAtStep loopPeriod token step) :
@@ -1302,6 +1556,450 @@ theorem tokenInactiveAtStep_of_loopPeriod_lt_step {loopPeriod : Nat}
     ¬ tokenActiveAtStep loopPeriod token step := by
   intro hactive
   exact Nat.not_lt_of_ge (tokenActiveAtStep_step_le_loopPeriod h hactive) hstep
+
+def activeTokensAtStep (loopPeriod tokenCount step : Nat) : List Nat :=
+  (List.range tokenCount).filter (fun token =>
+    decide (step ≤ tokenRecurrenceBudget loopPeriod token))
+
+theorem activeTokensAtStep_mem_iff {loopPeriod tokenCount step token : Nat} :
+    token ∈ activeTokensAtStep loopPeriod tokenCount step ↔
+      token < tokenCount ∧ tokenActiveAtStep loopPeriod token step := by
+  unfold activeTokensAtStep tokenActiveAtStep
+  simp only [List.mem_filter, List.mem_range, decide_eq_true_eq]
+
+/-- Later active-token lists are subsets of earlier active-token lists.
+
+This is the monotone-work contract for token-level recurrence schedules: as the
+loop step advances, the generated active-token set can only shrink. -/
+theorem activeTokensAtStep_late_subset_early_of_step_le
+    {loopPeriod tokenCount early late token : Nat} (hstep : early ≤ late)
+    (hmem : token ∈ activeTokensAtStep loopPeriod tokenCount late) :
+    token ∈ activeTokensAtStep loopPeriod tokenCount early := by
+  rcases (activeTokensAtStep_mem_iff).1 hmem with ⟨htoken, hactive⟩
+  exact (activeTokensAtStep_mem_iff).2
+    ⟨htoken, tokenActiveAtStep_of_step_le hstep hactive⟩
+
+/-- A generated active-token list never schedules the same token twice. -/
+theorem activeTokensAtStep_nodup
+    (loopPeriod tokenCount step : Nat) :
+    (activeTokensAtStep loopPeriod tokenCount step).Nodup := by
+  unfold activeTokensAtStep
+  exact List.Sublist.nodup List.filter_sublist List.nodup_range
+
+/-- A generated active-token list never exceeds the declared token count. -/
+theorem activeTokensAtStep_length_le_tokenCount
+    (loopPeriod tokenCount step : Nat) :
+    (activeTokensAtStep loopPeriod tokenCount step).length ≤ tokenCount := by
+  unfold activeTokensAtStep
+  simpa using
+    (List.Sublist.length_le
+      (List.filter_sublist
+        (p := fun token => decide (step ≤ tokenRecurrenceBudget loopPeriod token))
+        (l := List.range tokenCount)))
+
+/-- At the first loop step, every token in the declared range is active.
+
+This is the start-boundary form of the token-level recurrence schedule
+contract: the generated active-token list is the full token range at step one. -/
+theorem activeTokensAtStep_one_eq_range
+    (loopPeriod tokenCount : Nat) :
+    activeTokensAtStep loopPeriod tokenCount 1 = List.range tokenCount := by
+  unfold activeTokensAtStep
+  apply List.filter_eq_self.2
+  intro token _htoken
+  exact decide_eq_true (tokenActiveAtStep_one loopPeriod token)
+
+/-- After the declared loop period, no token remains active.
+
+This is the overrun-boundary form of the token-level recurrence schedule
+contract: once a requested step is beyond the loop period, the generated
+active-token list is empty. -/
+theorem activeTokensAtStep_eq_nil_of_loopPeriod_lt_step
+    {loopPeriod step : Nat} (hpositive : 0 < loopPeriod)
+    (hstep : loopPeriod < step) (tokenCount : Nat) :
+    activeTokensAtStep loopPeriod tokenCount step = [] := by
+  apply List.eq_nil_iff_forall_not_mem.2
+  intro token hmem
+  rw [activeTokensAtStep, List.mem_filter] at hmem
+  have hactive : tokenActiveAtStep loopPeriod token step := by
+    simpa [tokenActiveAtStep] using hmem.2
+  exact (tokenInactiveAtStep_of_loopPeriod_lt_step hpositive hstep) hactive
+
+theorem activeTokensAtStep_default_4_8_2 :
+    activeTokensAtStep 4 8 2 = [1, 2, 3, 5, 6, 7] := by
+  native_decide
+
+def activeTokenCountAtStep (loopPeriod tokenCount step : Nat) : Nat :=
+  (activeTokensAtStep loopPeriod tokenCount step).length
+
+def inactiveTokenCountAtStep (loopPeriod tokenCount step : Nat) : Nat :=
+  tokenCount - activeTokenCountAtStep loopPeriod tokenCount step
+
+def totalActiveTokenWork (loopPeriod tokenCount : Nat) : Nat → Nat
+  | 0 => 0
+  | steps + 1 =>
+      totalActiveTokenWork loopPeriod tokenCount steps +
+        activeTokenCountAtStep loopPeriod tokenCount (steps + 1)
+
+def totalInactiveTokenWork (loopPeriod tokenCount : Nat) : Nat → Nat
+  | 0 => 0
+  | steps + 1 =>
+      totalInactiveTokenWork loopPeriod tokenCount steps +
+        inactiveTokenCountAtStep loopPeriod tokenCount (steps + 1)
+
+def fullLoopTokenWork (tokenCount steps : Nat) : Nat :=
+  steps * tokenCount
+
+def scheduledWorkSaving (loopPeriod tokenCount steps : Nat) : Nat :=
+  fullLoopTokenWork tokenCount steps -
+    totalActiveTokenWork loopPeriod tokenCount steps
+
+/-- The active-token count is bounded by the declared token count. -/
+theorem activeTokenCountAtStep_le_tokenCount
+    (loopPeriod tokenCount step : Nat) :
+    activeTokenCountAtStep loopPeriod tokenCount step ≤ tokenCount := by
+  unfold activeTokenCountAtStep
+  exact activeTokensAtStep_length_le_tokenCount loopPeriod tokenCount step
+
+/-- Active-token counts are monotone nonincreasing as the loop step advances. -/
+theorem activeTokenCountAtStep_late_le_early_of_step_le
+    {loopPeriod tokenCount early late : Nat} (hstep : early ≤ late) :
+    activeTokenCountAtStep loopPeriod tokenCount late ≤
+      activeTokenCountAtStep loopPeriod tokenCount early := by
+  unfold activeTokenCountAtStep
+  exact List.Subperm.length_le
+    (List.Nodup.subperm
+      (activeTokensAtStep_nodup loopPeriod tokenCount late)
+      (by
+        intro token hmem
+        exact activeTokensAtStep_late_subset_early_of_step_le hstep hmem))
+
+/-- At the first recurrence step, the active-token count is the full token count. -/
+theorem activeTokenCountAtStep_one_eq_tokenCount
+    (loopPeriod tokenCount : Nat) :
+    activeTokenCountAtStep loopPeriod tokenCount 1 = tokenCount := by
+  unfold activeTokenCountAtStep
+  rw [activeTokensAtStep_one_eq_range, List.length_range]
+
+/-- After the loop-period overrun boundary, the active-token count is zero. -/
+theorem activeTokenCountAtStep_eq_zero_of_loopPeriod_lt_step
+    {loopPeriod step : Nat} (hpositive : 0 < loopPeriod)
+    (hstep : loopPeriod < step) (tokenCount : Nat) :
+    activeTokenCountAtStep loopPeriod tokenCount step = 0 := by
+  unfold activeTokenCountAtStep
+  rw [activeTokensAtStep_eq_nil_of_loopPeriod_lt_step hpositive hstep tokenCount]
+  simp
+
+/-- Active plus inactive tokens exactly accounts for the declared token count. -/
+theorem activeTokenCountAtStep_add_inactiveTokenCountAtStep_eq_tokenCount
+    (loopPeriod tokenCount step : Nat) :
+    activeTokenCountAtStep loopPeriod tokenCount step +
+      inactiveTokenCountAtStep loopPeriod tokenCount step = tokenCount := by
+  unfold inactiveTokenCountAtStep
+  exact Nat.add_sub_of_le
+    (activeTokenCountAtStep_le_tokenCount loopPeriod tokenCount step)
+
+/-- Inactive-token counts are monotone nondecreasing as the loop step advances. -/
+theorem inactiveTokenCountAtStep_early_le_late_of_step_le
+    {loopPeriod tokenCount early late : Nat} (hstep : early ≤ late) :
+    inactiveTokenCountAtStep loopPeriod tokenCount early ≤
+      inactiveTokenCountAtStep loopPeriod tokenCount late := by
+  unfold inactiveTokenCountAtStep
+  exact Nat.sub_le_sub_left
+    (activeTokenCountAtStep_late_le_early_of_step_le hstep)
+    tokenCount
+
+/-- At the first recurrence step, no declared token is inactive. -/
+theorem inactiveTokenCountAtStep_one_eq_zero
+    (loopPeriod tokenCount : Nat) :
+    inactiveTokenCountAtStep loopPeriod tokenCount 1 = 0 := by
+  unfold inactiveTokenCountAtStep
+  rw [activeTokenCountAtStep_one_eq_tokenCount]
+  simp
+
+/-- After the loop-period overrun boundary, every declared token is inactive. -/
+theorem inactiveTokenCountAtStep_eq_tokenCount_of_loopPeriod_lt_step
+    {loopPeriod step : Nat} (hpositive : 0 < loopPeriod)
+    (hstep : loopPeriod < step) (tokenCount : Nat) :
+    inactiveTokenCountAtStep loopPeriod tokenCount step = tokenCount := by
+  unfold inactiveTokenCountAtStep
+  rw [activeTokenCountAtStep_eq_zero_of_loopPeriod_lt_step hpositive hstep tokenCount]
+  simp
+
+/-- Active and inactive token-work together recover the fixed-depth token-step
+budget over the same finite loop horizon. -/
+theorem totalActiveTokenWork_add_totalInactiveTokenWork_eq_fullLoopTokenWork
+    (loopPeriod tokenCount steps : Nat) :
+    totalActiveTokenWork loopPeriod tokenCount steps +
+        totalInactiveTokenWork loopPeriod tokenCount steps =
+      fullLoopTokenWork tokenCount steps := by
+  induction steps with
+  | zero =>
+      simp [totalActiveTokenWork, totalInactiveTokenWork, fullLoopTokenWork]
+  | succ steps ih =>
+      simp [totalActiveTokenWork, totalInactiveTokenWork]
+      have hfull :
+          fullLoopTokenWork tokenCount (steps + 1) =
+            fullLoopTokenWork tokenCount steps + tokenCount := by
+        simp [fullLoopTokenWork, Nat.succ_mul]
+      have hstep :
+          activeTokenCountAtStep loopPeriod tokenCount (steps + 1) +
+              inactiveTokenCountAtStep loopPeriod tokenCount (steps + 1) =
+            tokenCount :=
+        activeTokenCountAtStep_add_inactiveTokenCountAtStep_eq_tokenCount
+          loopPeriod tokenCount (steps + 1)
+      rw [hfull]
+      omega
+
+/-- Total scheduled token work over a finite loop horizon is bounded by the
+fixed-depth schedule that processes every token at every step. -/
+theorem totalActiveTokenWork_le_fullLoopTokenWork
+    (loopPeriod tokenCount steps : Nat) :
+    totalActiveTokenWork loopPeriod tokenCount steps ≤
+      fullLoopTokenWork tokenCount steps := by
+  induction steps with
+  | zero =>
+      simp [totalActiveTokenWork, fullLoopTokenWork]
+  | succ steps ih =>
+      simp [totalActiveTokenWork]
+      have hfull :
+          fullLoopTokenWork tokenCount (steps + 1) =
+            fullLoopTokenWork tokenCount steps + tokenCount := by
+        simp [fullLoopTokenWork, Nat.succ_mul]
+      rw [hfull]
+      have hcount :
+          activeTokenCountAtStep loopPeriod tokenCount (steps + 1) ≤ tokenCount :=
+        activeTokenCountAtStep_le_tokenCount loopPeriod tokenCount (steps + 1)
+      omega
+
+/-- The scheduled-work saving field exactly accounts for the difference between
+the full fixed-depth budget and the certified active-token work. -/
+theorem scheduledWorkSaving_add_totalActiveTokenWork_eq_fullLoopTokenWork
+    (loopPeriod tokenCount steps : Nat) :
+    scheduledWorkSaving loopPeriod tokenCount steps +
+        totalActiveTokenWork loopPeriod tokenCount steps =
+      fullLoopTokenWork tokenCount steps := by
+  unfold scheduledWorkSaving
+  exact Nat.sub_add_cancel
+    (totalActiveTokenWork_le_fullLoopTokenWork loopPeriod tokenCount steps)
+
+/-- The saved-work field is exactly the total inactive token-work over the same
+finite recurrence horizon. -/
+theorem scheduledWorkSaving_eq_totalInactiveTokenWork
+    (loopPeriod tokenCount steps : Nat) :
+    scheduledWorkSaving loopPeriod tokenCount steps =
+      totalInactiveTokenWork loopPeriod tokenCount steps := by
+  have hsave :=
+    scheduledWorkSaving_add_totalActiveTokenWork_eq_fullLoopTokenWork
+      loopPeriod tokenCount steps
+  have hinactive :=
+    totalActiveTokenWork_add_totalInactiveTokenWork_eq_fullLoopTokenWork
+      loopPeriod tokenCount steps
+  omega
+
+/-- Scheduled work saving is positive exactly when the scheduled active-token
+work is strictly below the full fixed-depth token-step budget. -/
+theorem scheduledWorkSaving_pos_iff_totalActiveTokenWork_lt_fullLoopTokenWork
+    (loopPeriod tokenCount steps : Nat) :
+    0 < scheduledWorkSaving loopPeriod tokenCount steps ↔
+      totalActiveTokenWork loopPeriod tokenCount steps <
+        fullLoopTokenWork tokenCount steps := by
+  unfold scheduledWorkSaving
+  exact Nat.sub_pos_iff_lt
+
+/-- Scheduled work saving is zero exactly when scheduled active-token work
+matches the full fixed-depth token-step budget. -/
+theorem scheduledWorkSaving_eq_zero_iff_totalActiveTokenWork_eq_fullLoopTokenWork
+    (loopPeriod tokenCount steps : Nat) :
+    scheduledWorkSaving loopPeriod tokenCount steps = 0 ↔
+      totalActiveTokenWork loopPeriod tokenCount steps =
+        fullLoopTokenWork tokenCount steps := by
+  unfold scheduledWorkSaving
+  constructor
+  · intro hzero
+    have hfull_le_active :
+        fullLoopTokenWork tokenCount steps ≤
+          totalActiveTokenWork loopPeriod tokenCount steps :=
+      (Nat.sub_eq_zero_iff_le).mp hzero
+    exact le_antisymm
+      (totalActiveTokenWork_le_fullLoopTokenWork loopPeriod tokenCount steps)
+      hfull_le_active
+  · intro heq
+    rw [heq]
+    simp
+
+/-- Extending the horizon after the loop-period boundary adds no active-token
+work. This is the aggregate schedule form of the overrun boundary: once every
+token is inactive, another recurrence step contributes zero active work. -/
+theorem totalActiveTokenWork_succ_eq_self_of_loopPeriod_lt_succ
+    {loopPeriod tokenCount steps : Nat} (hpositive : 0 < loopPeriod)
+    (hstep : loopPeriod < steps + 1) :
+    totalActiveTokenWork loopPeriod tokenCount (steps + 1) =
+      totalActiveTokenWork loopPeriod tokenCount steps := by
+  simp [
+    totalActiveTokenWork,
+    activeTokenCountAtStep_eq_zero_of_loopPeriod_lt_step
+      hpositive hstep tokenCount,
+  ]
+
+/-- Extending the horizon after the loop-period boundary adds one full token
+count of inactive work. -/
+theorem totalInactiveTokenWork_succ_eq_add_tokenCount_of_loopPeriod_lt_succ
+    {loopPeriod tokenCount steps : Nat} (hpositive : 0 < loopPeriod)
+    (hstep : loopPeriod < steps + 1) :
+    totalInactiveTokenWork loopPeriod tokenCount (steps + 1) =
+      totalInactiveTokenWork loopPeriod tokenCount steps + tokenCount := by
+  simp [
+    totalInactiveTokenWork,
+    inactiveTokenCountAtStep_eq_tokenCount_of_loopPeriod_lt_step
+      hpositive hstep tokenCount,
+  ]
+
+/-- Extending the horizon after the loop-period boundary increases the
+scheduled-work saving by exactly one full token count. -/
+theorem scheduledWorkSaving_succ_eq_add_tokenCount_of_loopPeriod_lt_succ
+    {loopPeriod tokenCount steps : Nat} (hpositive : 0 < loopPeriod)
+    (hstep : loopPeriod < steps + 1) :
+    scheduledWorkSaving loopPeriod tokenCount (steps + 1) =
+      scheduledWorkSaving loopPeriod tokenCount steps + tokenCount := by
+  rw [
+    scheduledWorkSaving_eq_totalInactiveTokenWork loopPeriod tokenCount (steps + 1),
+    scheduledWorkSaving_eq_totalInactiveTokenWork loopPeriod tokenCount steps,
+  ]
+  exact
+    totalInactiveTokenWork_succ_eq_add_tokenCount_of_loopPeriod_lt_succ
+      hpositive hstep
+
+/-- After the loop-period boundary, extending by any number of extra horizon
+steps adds no active-token work. -/
+theorem totalActiveTokenWork_add_extra_eq_self_of_loopPeriod_le_steps
+    {loopPeriod tokenCount steps extraSteps : Nat} (hpositive : 0 < loopPeriod)
+    (hsteps : loopPeriod ≤ steps) :
+    totalActiveTokenWork loopPeriod tokenCount (steps + extraSteps) =
+      totalActiveTokenWork loopPeriod tokenCount steps := by
+  induction extraSteps with
+  | zero =>
+      simp
+  | succ extraSteps ih =>
+      have hboundary : loopPeriod < steps + extraSteps + 1 :=
+        Nat.lt_succ_of_le (le_trans hsteps (Nat.le_add_right steps extraSteps))
+      calc
+        totalActiveTokenWork loopPeriod tokenCount (steps + (extraSteps + 1)) =
+            totalActiveTokenWork loopPeriod tokenCount (steps + extraSteps + 1) := by
+              rw [Nat.add_assoc]
+        _ = totalActiveTokenWork loopPeriod tokenCount (steps + extraSteps) := by
+              exact totalActiveTokenWork_succ_eq_self_of_loopPeriod_lt_succ
+                hpositive hboundary
+        _ = totalActiveTokenWork loopPeriod tokenCount steps := ih
+
+/-- After the loop-period boundary, extending by `extraSteps` adds exactly
+`extraSteps * tokenCount` inactive-token work. -/
+theorem totalInactiveTokenWork_add_extra_eq_add_mul_tokenCount_of_loopPeriod_le_steps
+    {loopPeriod tokenCount steps extraSteps : Nat} (hpositive : 0 < loopPeriod)
+    (hsteps : loopPeriod ≤ steps) :
+    totalInactiveTokenWork loopPeriod tokenCount (steps + extraSteps) =
+      totalInactiveTokenWork loopPeriod tokenCount steps + extraSteps * tokenCount := by
+  induction extraSteps with
+  | zero =>
+      simp
+  | succ extraSteps ih =>
+      have hboundary : loopPeriod < steps + extraSteps + 1 :=
+        Nat.lt_succ_of_le (le_trans hsteps (Nat.le_add_right steps extraSteps))
+      calc
+        totalInactiveTokenWork loopPeriod tokenCount (steps + (extraSteps + 1)) =
+            totalInactiveTokenWork loopPeriod tokenCount (steps + extraSteps + 1) := by
+              rw [Nat.add_assoc]
+        _ = totalInactiveTokenWork loopPeriod tokenCount (steps + extraSteps) + tokenCount := by
+              exact totalInactiveTokenWork_succ_eq_add_tokenCount_of_loopPeriod_lt_succ
+                hpositive hboundary
+        _ = (totalInactiveTokenWork loopPeriod tokenCount steps + extraSteps * tokenCount) +
+            tokenCount := by
+              rw [ih]
+        _ = totalInactiveTokenWork loopPeriod tokenCount steps +
+            (extraSteps + 1) * tokenCount := by
+              rw [Nat.add_mul]
+              omega
+
+/-- After the loop-period boundary, extending by `extraSteps` increases the
+scheduled-work saving by exactly `extraSteps * tokenCount`. -/
+theorem scheduledWorkSaving_add_extra_eq_add_mul_tokenCount_of_loopPeriod_le_steps
+    {loopPeriod tokenCount steps extraSteps : Nat} (hpositive : 0 < loopPeriod)
+    (hsteps : loopPeriod ≤ steps) :
+    scheduledWorkSaving loopPeriod tokenCount (steps + extraSteps) =
+      scheduledWorkSaving loopPeriod tokenCount steps + extraSteps * tokenCount := by
+  rw [
+    scheduledWorkSaving_eq_totalInactiveTokenWork loopPeriod tokenCount (steps + extraSteps),
+    scheduledWorkSaving_eq_totalInactiveTokenWork loopPeriod tokenCount steps,
+  ]
+  exact
+    totalInactiveTokenWork_add_extra_eq_add_mul_tokenCount_of_loopPeriod_le_steps
+      hpositive hsteps
+
+theorem activeTokenCountAtStep_default_4_8_2 :
+    activeTokenCountAtStep 4 8 2 = 6 := by
+  native_decide
+
+theorem inactiveTokenCountAtStep_default_4_8_2 :
+    inactiveTokenCountAtStep 4 8 2 = 2 := by
+  native_decide
+
+theorem totalActiveTokenWork_default_4_8_4 :
+    totalActiveTokenWork 4 8 4 = 20 := by
+  native_decide
+
+theorem fullLoopTokenWork_default_8_4 :
+    fullLoopTokenWork 8 4 = 32 := by
+  native_decide
+
+theorem scheduledWorkSaving_default_4_8_4 :
+    scheduledWorkSaving 4 8 4 = 12 := by
+  native_decide
+
+theorem totalInactiveTokenWork_default_4_8_4 :
+    totalInactiveTokenWork 4 8 4 = 12 := by
+  native_decide
+
+theorem scheduledWorkSaving_default_4_8_4_accounting :
+    scheduledWorkSaving 4 8 4 + totalActiveTokenWork 4 8 4 =
+      fullLoopTokenWork 8 4 := by
+  native_decide
+
+theorem totalActiveTokenWork_default_5_8_5 :
+    totalActiveTokenWork 5 8 5 = 21 := by
+  native_decide
+
+theorem fullLoopTokenWork_default_8_5 :
+    fullLoopTokenWork 8 5 = 40 := by
+  native_decide
+
+theorem scheduledWorkSaving_default_5_8_5 :
+    scheduledWorkSaving 5 8 5 = 19 := by
+  native_decide
+
+theorem totalInactiveTokenWork_default_5_8_5 :
+    totalInactiveTokenWork 5 8 5 = 19 := by
+  native_decide
+
+theorem scheduledWorkSaving_default_5_8_5_accounting :
+    scheduledWorkSaving 5 8 5 + totalActiveTokenWork 5 8 5 =
+      fullLoopTokenWork 8 5 := by
+  native_decide
+
+theorem totalActiveTokenWork_default_5_8_6_eq_default_5_8_5 :
+    totalActiveTokenWork 5 8 6 = totalActiveTokenWork 5 8 5 := by
+  native_decide
+
+theorem scheduledWorkSaving_default_5_8_6_add_step :
+    scheduledWorkSaving 5 8 6 = scheduledWorkSaving 5 8 5 + 8 := by
+  native_decide
+
+theorem totalActiveTokenWork_default_5_8_8_eq_default_5_8_5 :
+    totalActiveTokenWork 5 8 8 = totalActiveTokenWork 5 8 5 := by
+  native_decide
+
+theorem scheduledWorkSaving_default_5_8_8_add_extra :
+    scheduledWorkSaving 5 8 8 = scheduledWorkSaving 5 8 5 + 3 * 8 := by
+  native_decide
 
 def middleBlockRoute (start width sample : Nat) : Nat :=
   start + phaseChannel width sample

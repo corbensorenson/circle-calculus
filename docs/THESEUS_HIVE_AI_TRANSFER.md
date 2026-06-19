@@ -189,22 +189,43 @@ Guardrail: a smaller generator is not automatically better or more meaningful.
 
 ## First Milestone
 
-The first concrete milestone is implemented as a public Circle contract pack plus a local private Theseus-Hive consumer:
+The first concrete milestone is implemented as a generic public Circle contract pack, plus a compatibility export for a local private Theseus-Hive consumer:
 
 ```text
+circle_math/applications/circle_ai_contracts.py
 circle_math/applications/theseus_hive_contracts.py
+scripts/export_circle_ai_contracts.py
 scripts/export_theseus_hive_ai_contracts.py
+site/data/generated/circle_ai_contract_pack.json
 site/data/generated/theseus_hive_ai_contracts.json
 tests/test_theseus_hive_ai_contracts.py
 ```
 
-Generate the public-safe contract pack with:
+Generate the standalone public-safe contract pack with:
+
+```bash
+make circle-ai-contracts
+```
+
+Generate the Theseus-Hive compatibility view with:
 
 ```bash
 make theseus-ai-contracts
 ```
 
-The exported pack currently contains six deterministic contract families:
+The generic schema is `circle_calculus.ai_contract_pack.v0`. The Theseus-Hive file is a downstream compatibility view, not the public center of gravity. The public generic pack currently contains nine deterministic contract families:
+
+- RoPE position-distinguishability contract;
+- KV-cache ring-buffer freshness contract;
+- sparse-attention coverage contract;
+- recurrence schedule and loop-exit contract;
+- strided candidate-fanout coverage contract;
+- cyclic memory residue-plus-winding contract;
+- MultiCoil and relative-phase feature contract;
+- circulant/block-cyclic mixer contract;
+- seed-rule exact-regeneration contract.
+
+The Theseus-Hive compatibility export currently contains the six downstream-transfer families that were wired before the public pack expanded:
 
 - recurrence schedule and loop-exit contract;
 - strided candidate-fanout coverage contract;
@@ -260,7 +281,7 @@ python scripts/circle_ai_contract_consumer.py \
   --contracts "../circle math/site/data/generated/theseus_hive_ai_contracts.json"
 ```
 
-Its current state is intentionally `YELLOW`: all six contract families load, all required axes are reported, and every governance gate is report-clean, but there are not yet named private benchmark results. The generated report has `external_inference_calls = 0`, `training_mutation = false`, `promotion_evidence = false`, and `public_calibration_used = false`.
+Its current state is intentionally `YELLOW`: all six compatibility contract families load, all required axes are reported, and every governance gate is report-clean, but there are not yet named private benchmark results. The generated report has `external_inference_calls = 0`, `training_mutation = false`, `promotion_evidence = false`, and `public_calibration_used = false`.
 
 Import the sanitized feedback handoff into Circle with:
 

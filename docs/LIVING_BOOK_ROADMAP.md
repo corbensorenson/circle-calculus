@@ -54,6 +54,7 @@ Each chapter must distinguish intuition, example, Python model, and formal theor
 - Keep reference pages available as appendices, not as substitutes for chapters.
 - Give each reader-facing lesson a goal, plain-language explanation, interactive diagram or widget when available, short learner task, checkpoint, and source trail.
 - Keep theorem cards, dictionary boxes, paper links, Lean links, and Python examples close to the lesson they support, but do not let them replace the lesson.
+- Move exhaustive theorem-card walls into focused audit appendices when they interrupt the learning flow. Main lessons should keep only representative proof cards and link to the audit page or generated theorem index.
 - Prefer the lesson order `Lesson 0 toolkit -> S0 -> S1 finite addresses -> rotation -> coils -> period/gcd/primes -> winding -> S2/S3/higher dimensions -> Phase II -> applications`.
 - Add worked examples and common-mistake notes to mature lessons so a reader can learn from the page without leaving it.
 - Use indexes as reference shelves, not as the main reading experience.
@@ -88,6 +89,7 @@ Each chapter must distinguish intuition, example, Python model, and formal theor
 - Use MLX/Mac-first language for local compute work.
 - Add Phase VII physics/generative-structure lessons from the first bounded fixtures: finite gauge loops, holonomy, Hopf hidden phase, spin sign ambiguity, periodic winding dynamics, winding-defect toys, seed-rule provenance, generator comparison, and proof-carrying generated diagrams.
 - Current physics/generative interactives cover finite path algebra, plaquette holonomy, Wilson-loop certificates, Hopf hidden phase, quaternion spin sign ambiguity, generated seed-rule records, proof-glyph certificates, and bounded generator comparisons.
+- Application overview, AI ladder, RoPE, KV-cache, sparse-attention, looped-recurrence, and generative-structure audit trails now use focused appendix pages so the reader path can teach concepts first while preserving full theorem-card access.
 
 ## Dedicated Circle AI Deep Program
 
@@ -137,6 +139,7 @@ Required reader-facing additions:
 - an ML-engineer quickstart for `scripts/rope_certify.py`;
 - a reproducible RoPE results note for named presets and model-like configurations;
 - clear separation between exact integer-period phase-bank certificates and numerical real-phase margin scans;
+- focused AI proof-audit appendices for exhaustive theorem trails, with the flagship lessons kept readable for non-Lean engineers;
 - future theorem boxes for real-phase bounds, collision counts, sparse-coverage iffs, and ring-buffer/KV-cache safety only when their manifest entries exist;
 - a short explanation of the proof-depth/vacuity guard and its review categories.
 

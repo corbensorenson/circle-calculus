@@ -4581,6 +4581,52 @@ theorem ropeTurnRatioFiniteMargin_mono_margin
   intro gap hgap_pos hgap_context turns
   exact le_trans hmargin_le (hmargin gap hgap_pos hgap_context turns)
 
+/-- An exact weakest-gap margin certificate gives the exact request threshold.
+
+Once a report has proved that `weakestMargin` is the least scalar
+nearest-integer gap margin in the inspected context, a requested finite-margin
+contract holds exactly when the requested margin is no larger than that
+weakest certified margin. This is the reusable pass/fail theorem for
+certificate rows that expose an exact weakest-gap field. -/
+theorem ropeTurnRatioExactWeakestGapMargin_request_iff
+    {turnRatio weakestMargin requestedMargin : ℝ} {context witnessGap : Nat}
+    (hcert :
+      ropeTurnRatioExactWeakestGapMargin turnRatio weakestMargin context witnessGap) :
+    ropeTurnRatioFiniteMargin turnRatio requestedMargin context ↔
+      requestedMargin ≤ weakestMargin := by
+  constructor
+  · intro hrequested
+    rcases hcert with ⟨hmem, hpos, hrealized, _hlower⟩
+    have hgap :
+        requestedMargin ≤
+          ropeTurnRatioGapNearestIntegerMargin turnRatio witnessGap :=
+      (ropeTurnRatioFiniteMargin_iff_gapNearestIntegerMargin
+        (turnRatio := turnRatio) (margin := requestedMargin)
+        (context := context)).1 hrequested witnessGap hmem hpos
+    simpa [hrealized] using hgap
+  · intro hrequested_le
+    rcases
+        (ropeTurnRatioExactWeakestGapMargin_iff_finiteMargin_and_realized
+          (turnRatio := turnRatio) (margin := weakestMargin)
+          (context := context) (witnessGap := witnessGap)).1 hcert with
+      ⟨_hmem, _hpos, _hrealized, hweakest⟩
+    exact ropeTurnRatioFiniteMargin_mono_margin hrequested_le hweakest
+
+/-- The exact weakest-gap margin certificate also gives the report-facing
+negative branch: any request above the weakest certified margin cannot satisfy
+the finite-context margin contract. -/
+theorem not_ropeTurnRatioFiniteMargin_of_exactWeakestGapMargin_lt_request
+    {turnRatio weakestMargin requestedMargin : ℝ} {context witnessGap : Nat}
+    (hcert :
+      ropeTurnRatioExactWeakestGapMargin turnRatio weakestMargin context witnessGap)
+    (hrequest : weakestMargin < requestedMargin) :
+    ¬ ropeTurnRatioFiniteMargin turnRatio requestedMargin context := by
+  intro hmargin
+  have hle :
+      requestedMargin ≤ weakestMargin :=
+    (ropeTurnRatioExactWeakestGapMargin_request_iff hcert).1 hmargin
+  exact (not_le_of_gt hrequest) hle
+
 /-- A finite-context margin certificate plus one obstruction gap gives a
 range bracket.
 

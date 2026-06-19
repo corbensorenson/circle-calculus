@@ -1,0 +1,502 @@
+---
+title: "AI Contract Suite"
+---
+
+This lesson is the working front door for the Circle Calculus AI contracts. The goal is not to claim better models. The goal is to make finite AI infrastructure questions checkable before they become vague architecture claims.
+
+::: {.lesson-goal}
+
+## Goal
+
+Use the four v0.2 flagship contracts as a guided suite: RoPE position distinguishability, KV-cache ring-buffer freshness plus sink-window policy, sparse-attention coverage, and looped recurrence schedule accounting. For each one, identify the circular address space, run or export the certificate, read the theorem ids, and state what the certificate does not prove.
+
+:::
+
+## Concept
+
+The common object is a finite cyclic boundary inside an AI system:
+
+```text
+RoPE position      -> residue in a declared phase period
+KV-cache token     -> slot modulo cache size plus time boundary
+sparse dependency  -> lag reached by local window or stride family
+recurrence schedule -> loop step and active-token work count
+```
+
+Circle Calculus is useful here when it turns the boundary into a proof-carrying contract:
+
+```text
+finite address space
+  -> repeated action
+  -> theorem-backed pass/fail or count field
+  -> Python report
+  -> claim boundary
+```
+
+## Picture
+
+```text
+ML component
+   |
+   v
+finite circular model
+   |
+   v
+Lean theorem ids -----> theorem manifest
+   |
+   v
+Python certificate --> text / JSON report
+   |
+   v
+Living Book lesson --> what this proves / does not prove
+```
+
+The diagram is explanatory only. The theorem ids and Lean declarations are the proof layer.
+
+::: {.warning-box}
+The certifiers on this page prove finite structural facts only. They do not prove model quality, speed, memory savings, context-length improvement, reasoning ability, deployment safety, or implementation correctness.
+:::
+
+## Reading Path
+
+Use this page as the guided entrance to the contract lane, then open the focused lesson for the component you care about:
+
+| Step | Lesson | What To Learn | First Command |
+| --- | --- | --- | --- |
+| 1 | [RoPE certifier](rope_certifier.qmd) | how a rotary phase bank becomes a position-distinguishability contract | `python scripts/circle_ai_contract_ready.py --kind rope_position_distinguishability` |
+| 2 | [KV-cache ring buffer](kv_cache_ring_buffer.qmd) | how residue plus overwrite boundary gives freshness and stale-read certificates | `python scripts/circle_ai_contract_ready.py --kind kv_cache_ring_buffer` |
+| 3 | [Sparse attention coverage](sparse_attention_contract.qmd) | how local windows and stride families expose covered lags, gaps, and repair targets | `python scripts/circle_ai_contract_ready.py --kind sparse_attention_coverage` |
+| 4 | [Looped recurrence contracts](looped_recurrence_contracts.qmd) | how recurrence schedules expose finite work, exit, and index-reuse contracts | `python scripts/circle_ai_contract_ready.py --kind recurrence_schedule` |
+| 5 | [AI contract pack audit](ai_contract_pack_audit.qmd) | how another project consumes the public JSON pack without reading Lean files | `python scripts/circle_ai_contract_ready.py --fingerprints` |
+
+Each focused lesson follows the same reading shape: concept, finite circular object, worked example, theorem ids, executable certificate, and exact non-claims. Use the audit pages only when you want the full theorem-card trail.
+
+The suite-level machine-readable artifact is the generic Circle pack:
+
+```bash
+make circle-ai-contracts
+make circle-ai-contracts-check
+make circle-ai-contracts-ready
+python scripts/circle_ai_contract_ready.py --kind sparse_attention_coverage
+```
+
+It writes `site/data/generated/circle_ai_contract_pack.json` with schema `circle_calculus.ai_contract_pack.v0`. The pack includes explicit records for the four contracts on this page plus broader integration fixtures for strided fanout, cyclic memory, multicoil phase features, structured mixers, and seed-rule regeneration with finite storage accounting for the public `C_128` fixture. The older Theseus-Hive JSON export is a compatibility view for one downstream private lane, not the public center of this contract suite.
+
+The first downstream gate is machine-readable:
+
+```text
+contract_schema.required_contract_keys
+contract_schema.minimum_fields_by_kind
+contract_readiness_index.<kind>.ready_for_downstream_fixture_use
+contract_readiness_index.<kind>.all_theorem_ids_proved
+contract_readiness_index.<kind>.planner_recommendation_count
+contract_readiness_index.<kind>.planner_recommendation_ids
+contract_fingerprint_index.<kind>.content_fingerprint
+contract.consumer_check.ready_for_downstream_fixture_use
+contract.proof_status.all_theorem_ids_proved
+```
+
+If either readiness field is false, the consumer should reject the fixture before adding private metrics or benchmark rows. The readiness index is the quick path for external tools; the fingerprint index is the stable audit-log surface; the full contract record is the detailed evidence trail.
+
+`make circle-ai-contracts-check` validates the generated JSON artifact itself: schema id, required contract keys, minimum fields, theorem ids, proof-status metadata, dictionary ids, source paths, quickstart docs, Living Book pages, and Python entrypoint paths.
+
+For a single contract kind, the consumer CLI performs the pack validation first, then exits `0` only when the requested kind is ready:
+
+```bash
+make circle-ai-contracts-ready
+python scripts/circle_ai_contract_ready.py --kind sparse_attention_coverage
+python scripts/circle_ai_contract_ready.py --kind sparse_attention_coverage --format json
+python scripts/circle_ai_contract_ready.py --list-kinds
+python scripts/circle_ai_contract_ready.py --list-recommendations
+python scripts/circle_ai_contract_ready.py --fingerprints
+python scripts/circle_ai_contract_ready.py --action-plan
+python scripts/circle_ai_contract_ready.py --kind seed_rule_exact_regeneration --action-plan --include-values --format json
+python scripts/circle_ai_contract_ready.py --kind rope_position_distinguishability --digest --format json --field d19_proved_request_status --field d19_impossible_request_status --include-recommendations
+python scripts/circle_ai_contract_ready.py --kind kv_cache_ring_buffer --digest --field stale_probe_first_stale_token --include-recommendations
+python scripts/circle_ai_contract_ready.py --kind sparse_attention_coverage --digest --field first_uncovered_lag --include-recommendations
+python scripts/circle_ai_contract_ready.py --kind strided_candidate_fanout --digest --field full_coverage --field effective_candidate_budget --field duplicate_count --include-recommendations
+python scripts/circle_ai_contract_ready.py --kind cyclic_memory_residue_winding --digest --field max_alias_load --include-recommendations
+python scripts/circle_ai_contract_ready.py --kind multicoil_phase_feature --digest --field joint_repeat_horizon --field relative_phase --include-recommendations
+python scripts/circle_ai_contract_ready.py --kind circulant_block_cyclic_mixer --digest --field max_abs_dense_delta --field block_to_dense_ratio --include-recommendations
+python scripts/circle_ai_contract_ready.py --kind recurrence_schedule --digest --field scheduled_work_saving --field post_period_multi_extension_scheduled_work_saving --include-recommendations
+python scripts/circle_ai_contract_ready.py --kind seed_rule_exact_regeneration --digest --field storage_saving --include-recommendations
+```
+
+A ready line should have this shape:
+
+```text
+ready=True proof_resolved=True proof_proved=True missing_fields=0 unresolved=0 unproved=0
+```
+
+For audit logs, record this shape too:
+
+```bash
+python scripts/circle_ai_contract_ready.py --fingerprints
+```
+
+That prints the deterministic `sha256-json-v1` pack fingerprint and one content
+fingerprint per contract kind. The fingerprints identify the exported contract
+record; they are reproducibility metadata, not mathematical proofs.
+Use `--expect-pack-fingerprint <sha256>` and
+`--expect-contract-fingerprint kind=<sha256>` in downstream CI when a project
+should fail if the exported pack or one selected contract record changed.
+
+For Python projects, the same gate is available as an importable adapter:
+
+```python
+from circle_math.applications.circle_ai_contract_consumer import (
+    contract_digest,
+    contract_recommendations,
+    load_contract_pack,
+    planner_action_plan,
+    require_ready_contract,
+)
+
+pack = load_contract_pack("site/data/generated/circle_ai_contract_pack.json")
+contract = require_ready_contract(pack, "kv_cache_ring_buffer")
+digest = contract_digest(pack, "kv_cache_ring_buffer")
+
+assert digest["ready_for_downstream_fixture_use"] is True
+assert digest["missing_requested_fields"] == []
+assert digest["evidence_fields"]["stale_requested_count"] == 0
+assert contract_recommendations(pack, "sparse_attention_coverage")
+planner = planner_action_plan(pack, ["sparse_attention_coverage"], include_values=True)
+assert planner["action_plan"][0]["action_parameters"]["proposed_local_window"] == 6
+assert planner["action_plan"][0]["validation_commands"]
+print(contract["id"], digest["theorem_ids"])
+```
+
+This adapter checks the public JSON invariants needed by a downstream project:
+schema id, readiness-index consistency, minimum evidence fields, proof-status
+flags, and the non-claim boundary. `planner_action_plan` is the data-first
+surface for repair and audit actions; each action also carries validation
+commands so an external project can rerun the relevant checks before consuming
+the recommendation. The shell examples below are a copyable way to inspect the
+same information. It does not replace Circle's
+repository-side Lean, manifest, dictionary, or Living Book checks.
+
+The direct `--action-plan` CLI is the same idea for non-Python consumers. It
+turns planner recommendations into a theorem-linked action list, and
+`--include-values` resolves evidence fields into concrete certificate values.
+For the seed-rule fixture, this exposes the exact-regeneration recipe and the
+bounded shorter-candidate selection with stable candidate ids.
+
+The `--digest` form is the smallest copy-safe surface for another AI project:
+it emits the contract id, theorem ids, selected evidence fields, source trails,
+and the non-claim boundary without asking that project to know Circle's
+manifests or Lean file layout.
+When `--include-recommendations` is passed, the digest also includes optional
+copy-safe repair/audit actions such as the sparse first-interval repair target
+and largest-gap repair target and dense-local fallback, the KV stale-token/sink-window actions, or the
+RoPE exact integer-bank audit and D19 margin-frontier actions, or the
+strided-fanout full-coverage and duplicate-budget audits, or the cyclic-memory
+winding/provenance and alias-load records. Phase-feature recommendations expose
+joint-repeat and relative-shift records. Mixer recommendations expose
+dense-parity and block-cyclic parameter-budget records. Recurrence
+recommendations expose active-work and whole-period index-reuse records.
+Seed-rule recommendations expose an exact-regeneration recipe and a bounded
+finite-search shorter-candidate selection.
+
+For a copyable downstream-consumer pattern, run:
+
+```bash
+python scripts/example_consume_circle_ai_contract_pack.py --kind rope_position_distinguishability --field d19_proved_request_status --field d19_impossible_request_status --include-recommendations
+python scripts/example_consume_circle_ai_contract_pack.py --kind sparse_attention_coverage --field first_uncovered_lag --include-recommendations
+python scripts/example_consume_circle_ai_contract_pack.py --kind strided_candidate_fanout --field full_coverage --field effective_candidate_budget --field duplicate_count --include-recommendations
+python scripts/example_consume_circle_ai_contract_pack.py --kind cyclic_memory_residue_winding --field max_alias_load --include-recommendations
+python scripts/example_consume_circle_ai_contract_pack.py --kind multicoil_phase_feature --field joint_repeat_horizon --field relative_phase --include-recommendations
+python scripts/example_consume_circle_ai_contract_pack.py --kind circulant_block_cyclic_mixer --field max_abs_dense_delta --field block_to_dense_ratio --include-recommendations
+python scripts/example_consume_circle_ai_contract_pack.py --kind recurrence_schedule --field scheduled_work_saving --include-recommendations
+python scripts/example_consume_circle_ai_contract_pack.py --kind seed_rule_exact_regeneration --field storage_saving --include-recommendations
+python scripts/example_consume_circle_ai_contract_pack.py --planner --planner-kind sparse_attention_coverage --planner-kind rope_position_distinguishability
+python scripts/example_consume_circle_ai_contract_pack.py --planner --planner-kind sparse_attention_coverage --planner-include-values
+```
+
+The `--planner` form reads the generated recommendation index and emits a
+copy-safe action plan. Each action keeps theorem ids, source links, evidence
+field names, and non-claims attached, so a downstream project can choose which
+finite audit or repair target to try without treating the record as model-quality
+or performance evidence.
+Add `--planner-include-values` when a downstream planner needs the resolved
+field values and action parameters too. For the sparse first-interval repair,
+that includes the proposed local window `6`, the next uncovered lag `8`, and the
+`AIT-T0104`/`AIT-T0166`/`AIT-T0167` theorem boundary.
+For the sparse largest-gap action, it includes target interval `40..119`,
+proposed local window `119`, and the explicit `not_claimed` boundary saying the
+record is a finite audit action, not an optimal sparse-layout or performance
+claim.
+
+## Suite Table
+
+| Contract | Circular Address Space | Repeated Action | Certificate |
+| --- | --- | --- | --- |
+| RoPE certifier | positions modulo declared phase periods | position gap | collision, distinguishability, count, and bounded real-phase seed fields |
+| KV-cache ring buffer | token slot modulo cache size | token write step | retained-window, next-overwrite, stale-member, live-window coverage, and optional sink-window policy fields |
+| Sparse attention coverage | positive lags in a finite context | local window plus stride-family steps | covered lags, gap witnesses, budget shortfalls, no-zero and no-collision fields |
+| Looped recurrence schedule | token index and loop step | repeated block pass | required depth, exit step, active/inactive work counts, total active-token work, saved-work accounting, post-period boundary fields, and whole-period shift invariants |
+
+## Example
+
+Run one representative command from each contract:
+
+```bash
+python scripts/rope_certify.py --preset llama_style_10000_4k
+python scripts/kv_cache_certify.py --cache-size 16 --current 31 --token 20 --batch-tokens 20,24,29,31 --sink-size 4
+python scripts/stride_family_certify.py --context 120 --strides 7,13 --path-length 3 --local-window 4
+python scripts/strided_candidate_fanout_certify.py
+python scripts/circle_ai_contract_ready.py --kind strided_candidate_fanout --digest --field full_coverage --field effective_candidate_budget --field duplicate_count --include-recommendations
+python scripts/recurrence_schedule_certify.py
+python scripts/cyclic_memory_certify.py
+python scripts/circle_ai_contract_ready.py --kind multicoil_phase_feature --digest --field joint_repeat_horizon --field relative_phase --include-recommendations
+python scripts/circle_ai_contract_ready.py --kind circulant_block_cyclic_mixer --digest --field max_abs_dense_delta --field block_to_dense_ratio --include-recommendations
+```
+
+The important habit is not just reading `PASS` or `GAPS`. Read the theorem ids and the non-claim text attached to the report.
+
+## Contract Pack Fields
+
+For a downstream AI project, the generic pack is the stable integration surface. Start by checking `contract_readiness_index`, then read the minimum evidence fields for the contract kind you consume.
+
+The complete generated-field checklist is intentionally kept out of this lesson. Use the [AI Contract Pack Audit](ai_contract_pack_audit.qmd) page when wiring another project to the JSON schema.
+
+Those fields are contract evidence, not performance evidence. Attach benchmark rows beside them in downstream projects instead of overwriting them.
+
+## Sample Report Shapes
+
+The reports are intentionally field-heavy. For a first read, focus on the status line, the main evidence fields, the theorem ids, and the boundary.
+
+RoPE exact-discrete failure example:
+
+```text
+exact_discrete_contract=FAIL
+common_collision_gap=114
+total_bank_collision_pair_count=14
+sample_collision_pairs=((0, 114), ...)
+theorem_ids=AIRA-T0021,AIRA-T0024,AIRA-T0036,...
+boundary=Exact pass/fail is for the declared integer-period discretized RoPE model.
+```
+
+KV-cache live request with sink-window policy:
+
+```text
+kv_cache_contract=LIVE cache_size=16 current=31 token=20 slot=4
+adapter_request_trace=PASS tokens=(20, 24, 29, 31)
+stale_requested_count=0
+sink_window_policy=PINNED_PREFIX_PLUS_ROLLING sink_size=4
+tokens_distinct=True
+token_count=20 token_count_bound=20 token_count_le_sink_plus_cache=True
+disjoint_exact_token_count=20 token_count_eq_sink_plus_live_window_when_disjoint=True
+sink_tokens_non_future=True sink_tokens_retained_by_policy=True
+theorem_ids=AIM-T0069,AIM-T0097,AIM-T0102,AIM-T0104,AIM-T0108,AIM-T0110,...
+```
+
+Sparse-attention gap certificate:
+
+```text
+stride_family_contract=GAPS context=120 strides=(7, 13)
+covered_lags=10 uncovered_lags=109 first_gap=5
+raw_budget_shortfall=True certifies_incomplete=True
+unique_lag_shortfall=True certifies_incomplete=True
+collision_pair_counts=lag=0 query=0
+collision_pair_severity=lag_bounds_dedup_loss=True lag_excess_over_dedup_loss=0 query_bounds_dedup_loss=True query_excess_over_dedup_loss=0
+first_gap_local_repair=shortfall=1 needed_window=5 current_window_below_first_gap=True repair_window_reaches_first_gap=True repair_window_covers_context=False repair_window_is_final_positive_lag=False repair_threshold_matches_final_lag=True
+first_interval_repair_next_gap=8 still_has_gap=True covers_context=False
+complete_local_repair=window=119 additional_slots=115 covers_context=True uses_dense_threshold=True exact_local_minimum=True
+theorem_ids=AIT-T0020,AIT-T0078,AIT-T0110,AIT-T0111,...
+```
+
+Looped recurrence schedule certifier:
+
+```text
+recurrence_schedule=READY required_steps=4 exit_step=4
+work_count_step=2 active=6 inactive=2 active_plus_inactive_eq_token_count=True
+total_active_token_work=21 total_inactive_token_work=19 full_loop_token_work=40 scheduled_work_saving=19 scheduled_work_saving_accounting=True
+active_inactive_work_accounting=True scheduled_work_saving_matches_inactive_work=True
+scheduled_work_saving_positive=True active_work_below_full_loop_work=True scheduled_work_saving_positive_iff_active_work_shortfall=True
+scheduled_work_saving_zero=False active_work_equals_full_loop_work=False scheduled_work_saving_zero_iff_no_active_work_shortfall=True
+active_token_counts_descend=True inactive_token_counts_ascend=True
+post_period_active_token_count=0 post_period_inactive_token_count=8
+public_fixture_4_8_4_total_active_token_work=20 public_fixture_4_8_4_total_inactive_token_work=12 public_fixture_8_4_full_loop_token_work=32 public_fixture_4_8_4_scheduled_work_saving=12
+default_fixture_5_8_5_total_active_token_work=21 default_fixture_5_8_5_total_inactive_token_work=19 default_fixture_8_5_full_loop_token_work=40 default_fixture_5_8_5_scheduled_work_saving=19
+post_period_extension_horizon_steps=6 post_period_extension_total_active_token_work=21 post_period_extension_total_inactive_token_work=27 post_period_extension_full_loop_token_work=48 post_period_extension_scheduled_work_saving=27
+post_period_extension_active_work_unchanged=True post_period_extension_inactive_work_added_token_count=True post_period_extension_saving_added_token_count=True
+post_period_extra_steps=3 post_period_multi_extension_horizon_steps=8 post_period_multi_extension_scheduled_work_saving=43
+post_period_multi_extension_active_work_unchanged=True post_period_multi_extension_saving_added_extra_token_count=True
+periodic_shift=base_token=7 passes=3 shifted_token=22 required_steps_invariant=True recurrence_budget_invariant=True active_at_step_invariant=True
+theorem_ids=AIM-T0026,AIM-T0027,AIM-T0028,AIM-T0029,AIM-T0030,AIM-T0033,AIM-T0034,AIM-T0036,AIM-T0111,AIM-T0112,AIM-T0120,AIM-T0123,AIM-T0128,AIM-T0129,AIM-T0126,AIM-T0127,AIM-T0130,AIM-T0131,AIM-T0144,AIM-T0145,AIM-T0138,AIM-T0139,AIM-T0132,AIM-T0133,AIM-T0134,AIM-T0146,AIM-T0135,AIM-T0140,AIM-T0141,AIM-T0142,AIM-T0147,AIM-T0143,AIM-T0150,AIM-T0151,AIM-T0152,AIM-T0153,AIM-T0154,AIM-T0155,AIM-T0156,AIM-T0157,AIM-T0158,AIM-T0159,...
+```
+
+Seed-rule exact-regeneration fixture:
+
+```text
+seed_rule_contract=READY artifact_id=finite_circle fixture_n=128 exact_regeneration=True generator_shorter=True
+storage_accounting=explicit_length=454 generator_length=383 storage_saving=71 storage_saving_positive=True
+bounded_search=candidate_count=3 exact_candidate_count=2 has_best_exact=True has_best_shorter=True
+```
+
+These snippets are examples of report fields, not proofs. The proof status comes from the cited theorem ids and Lean declarations.
+
+## Theorem Clusters
+
+Use this map before opening theorem cards:
+
+| Contract | First Proof Question | Audit Page |
+| --- | --- | --- |
+| RoPE | do the declared phase-bank and D19 frontier fields resolve to proved theorem ids? | [RoPE proof audit](rope_certifier_audit.qmd) |
+| KV-cache | does the live-window/stale-read predicate match the ring-buffer overwrite boundary? | [KV-cache proof audit](kv_cache_ring_buffer_audit.qmd) |
+| Sparse attention | do covered/uncovered lag lists, candidate budgets, and repair fields resolve to proved theorem ids? | [Sparse attention proof audit](sparse_attention_audit.qmd) |
+| Looped recurrence | do active-token work, post-period extension, and whole-period shift fields resolve to proved theorem ids? | [Looped recurrence audit](looped_recurrence_audit.qmd) |
+| Contract pack | do minimum fields, source links, validation commands, and planner recommendations match the generated JSON schema? | [AI contract pack audit](ai_contract_pack_audit.qmd) |
+
+The cards below are representative anchors, not a reading requirement for the first pass. The individual lessons and audit pages contain the fuller theorem trails.
+
+<details class="audit-detail">
+<summary>Representative theorem-card shelf for the AI contract suite</summary>
+
+### RoPE
+
+<div class="theorem-box" data-theorem-id="AIRA-T0021"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0024"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0036"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0179"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0180"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0214"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0215"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0216"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0217"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0222"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0231"></div>
+
+### KV-Cache
+
+<div class="theorem-box" data-theorem-id="AIM-T0069"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0074"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0091"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0097"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0102"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0103"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0104"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0105"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0108"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0110"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0117"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0118"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0119"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0136"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0137"></div>
+
+### Sparse Attention
+
+<div class="theorem-box" data-theorem-id="AIT-T0020"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0078"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0094"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0095"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0110"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0111"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0145"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0146"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0147"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0148"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0149"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0150"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0151"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0152"></div>
+
+### Looped Recurrence
+
+<div class="theorem-box" data-theorem-id="AIM-T0111"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0112"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0120"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0128"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0121"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0122"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0123"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0129"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0124"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0125"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0126"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0127"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0130"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0131"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0144"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0145"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0132"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0133"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0134"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0146"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0135"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0138"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0139"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0140"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0141"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0142"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0147"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0143"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0150"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0151"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0152"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0153"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0154"></div>
+
+</details>
+
+## Code
+
+The CLI surfaces are the non-Lean entry points:
+
+- [RoPE quickstart](https://github.com/corbensorenson/circle-calculus/blob/main/docs/ROPE_CERTIFIER_QUICKSTART.md)
+- [KV-cache quickstart](https://github.com/corbensorenson/circle-calculus/blob/main/docs/KV_CACHE_CERTIFIER_QUICKSTART.md)
+- [Sparse-attention quickstart](https://github.com/corbensorenson/circle-calculus/blob/main/docs/SPARSE_ATTENTION_CERTIFIER_QUICKSTART.md)
+- [AI Contract Suite note](https://github.com/corbensorenson/circle-calculus/blob/main/docs/AI_CONTRACT_SUITE.md)
+
+## Certificate Schemas
+
+Current stable or named certificate identifiers:
+
+```text
+circle_calculus.rope_position_distinguishability.v0
+circle_calculus.integer_phase_bank_distinguishability.v0
+circle_calculus.rational_turn_ratio_finite_margin.v0
+circle_calculus.standard_rope_interval_margin.v0
+circle_calculus.kv_cache_ring_buffer_certificate.v0
+circle_calculus.stride_family_sparse_attention_certificate.v0
+circle_calculus.ai_contract_pack.v0
+```
+
+The sparse-attention report is field-oriented, but it now has the same kind of top-level schema id as the RoPE and KV-cache reports.
+
+## What This Does Not Prove
+
+- RoPE certificates do not prove that real-valued RoPE models have better context length or perplexity.
+- KV-cache certificates do not prove paging policy, kernel correctness, serving-stack safety, throughput, or retrieval quality.
+- Sink-window certificates do not prove StreamingLLM quality or sink-token usefulness; they only prove finite request-list membership.
+- Sparse-attention certificates do not prove attention quality, runtime, memory savings, or long-context model quality.
+- Looped recurrence certificates do not prove recursive reasoning, adaptive-exit quality, throughput, memory savings, or model quality.
+- Seed-rule certificates do not prove global minimality, universal compression, or semantic usefulness.
+- Python reports and browser widgets are executable references, not Lean proofs.
+
+## Reading Order
+
+1. [RoPE Certifier](rope_certifier.qmd)
+2. [KV-Cache Ring Buffer](kv_cache_ring_buffer.qmd)
+3. [Sparse Attention Coverage](sparse_attention_contract.qmd)
+4. [Looped Recurrence Contracts](looped_recurrence_contracts.qmd)
+5. [Generative Structures](generative.qmd)
+6. [AI Contract Ladder](ai_contract_ladder.qmd)
+
+## Dictionary
+
+<div class="dictionary-box" data-dictionary-id="COMMON-0076"></div>
+<div class="dictionary-box" data-dictionary-id="COMMON-0077"></div>
+<div class="dictionary-box" data-dictionary-id="COMMON-0028"></div>
+<div class="dictionary-box" data-dictionary-id="COMMON-0081"></div>
+<div class="dictionary-box" data-dictionary-id="COMMON-0090"></div>
+<div class="dictionary-box" data-dictionary-id="COMMON-0075"></div>
+<div class="dictionary-box" data-dictionary-id="COMMON-0079"></div>
+
+<div class="book-navigation">
+<a href="ai.qmd">Previous: AI Overview</a>
+<a href="rope_certifier.qmd">Next: RoPE Certifier</a>
+</div>
+
+<script type="module" src="../../widgets/shared/widget_base.js"></script>

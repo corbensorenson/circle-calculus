@@ -14,6 +14,7 @@ from circle_math.applications import (
     certify_kv_cache_batch,
     certify_kv_cache_live_window,
     certify_kv_cache_live_window_request,
+    certify_kv_cache_sink_window,
     certify_kv_cache_window,
 )
 
@@ -46,6 +47,15 @@ def parse_args() -> argparse.Namespace:
         type=parse_tokens,
         default=(),
         help="Optional comma-separated retained batch to certify, for example 20,24,29,31.",
+    )
+    parser.add_argument(
+        "--sink-size",
+        type=int,
+        default=0,
+        help=(
+            "Optional pinned sink-prefix size. When positive, emit an additional "
+            "sink-prefix plus rolling-window policy certificate."
+        ),
     )
     parser.add_argument(
         "--request-id",
@@ -93,7 +103,7 @@ def build_payload(args: argparse.Namespace) -> dict[str, Any]:
         current=args.current,
         request_id=f"{args.request_id}_generated_live_window",
     )
-    return {
+    payload = {
         "schema_id": "circle_calculus.kv_cache_ring_buffer_certificate.v0",
         "claim_boundary": CLAIM_BOUNDARY,
         "window_certificate": asdict(window),
@@ -102,6 +112,14 @@ def build_payload(args: argparse.Namespace) -> dict[str, Any]:
         "live_window_certificate": asdict(live_window),
         "live_window_request_certificate": asdict(live_window_request),
     }
+    if args.sink_size:
+        sink_window = certify_kv_cache_sink_window(
+            sink_size=args.sink_size,
+            cache_size=args.cache_size,
+            current=args.current,
+        )
+        payload["sink_window_certificate"] = asdict(sink_window)
+    return payload
 
 
 def write_json(path: Path, payload: dict[str, Any]) -> None:
@@ -126,9 +144,10 @@ def summary_lines(payload: dict[str, Any]) -> list[str]:
     adapter_request = payload["adapter_request_trace_certificate"]
     live_window = payload["live_window_certificate"]
     live_window_request = payload["live_window_request_certificate"]
+    sink_window = payload.get("sink_window_certificate")
     freshness = "LIVE" if window["retained"] else "STALE_OR_FUTURE"
     coverage = "FULL" if live_window["full_coverage_contract"] else "PREFIX"
-    return [
+    lines = [
         (
             "kv_cache_contract="
             f"{freshness} cache_size={window['cache_size']} current={window['current']} "
@@ -230,12 +249,64 @@ def summary_lines(payload: dict[str, Any]) -> list[str]:
             f"live_window_request_contract={live_window_request['live_window_request_contract']} "
             f"fixture_theorem_ids={tuple(live_window_request['fixture_theorem_ids'])}"
         ),
-        (
-            "theorem_ids="
-            f"{unique_theorem_ids(window['theorem_ids'], batch['theorem_ids'], adapter_request['theorem_ids'], live_window['theorem_ids'], live_window_request['theorem_ids'], live_window_request['fixture_theorem_ids'])}"
-        ),
-        f"boundary={payload['claim_boundary']}",
     ]
+    theorem_groups = [
+        window["theorem_ids"],
+        batch["theorem_ids"],
+        adapter_request["theorem_ids"],
+        live_window["theorem_ids"],
+        live_window_request["theorem_ids"],
+        live_window_request["fixture_theorem_ids"],
+    ]
+    if sink_window is not None:
+        lines.append(
+            "sink_window_policy="
+            "PINNED_PREFIX_PLUS_ROLLING "
+            f"sink_size={sink_window['sink_size']} "
+            f"prefix_length={sink_window['sink_prefix_length']} "
+            f"cache_size={sink_window['cache_size']} current={sink_window['current']} "
+            f"token_count={sink_window['token_count']} "
+            f"token_count_bound={sink_window['token_count_bound']} "
+            "token_count_le_sink_plus_cache="
+            f"{sink_window['token_count_le_sink_plus_cache']} "
+            f"live_window_start={sink_window['live_window_start']} "
+            f"live_window_length={sink_window['live_window_length']} "
+            "sink_prefix_disjoint_from_live_window="
+            f"{sink_window['sink_prefix_disjoint_from_live_window']} "
+            f"disjoint_exact_token_count={sink_window['disjoint_exact_token_count']} "
+            "token_count_eq_sink_plus_live_window_when_disjoint="
+            f"{sink_window['token_count_eq_sink_plus_live_window_when_disjoint']} "
+            f"sink_tokens={tuple(sink_window['sink_tokens'])} "
+            f"rolling_tokens={tuple(sink_window['rolling_tokens'])} "
+            f"rolling_slots={tuple(sink_window['rolling_slots'])} "
+            f"tokens_distinct={sink_window['tokens_distinct']} "
+            "generated_tokens_exact_policy="
+            f"{sink_window['generated_tokens_exact_policy']} "
+            "rolling_tokens_retained="
+            f"{sink_window['rolling_tokens_retained']} "
+            "sink_tokens_non_future="
+            f"{sink_window['sink_tokens_non_future']} "
+            "sink_tokens_retained_by_policy="
+            f"{sink_window['sink_tokens_retained_by_policy']} "
+            "sink_tokens_outside_ordinary_rolling_window="
+            f"{sink_window['sink_tokens_outside_ordinary_rolling_window']}"
+        )
+        theorem_groups.extend(
+            [
+                sink_window["theorem_ids"],
+                sink_window["fixture_theorem_ids"],
+            ]
+        )
+    lines.extend(
+        [
+            (
+                "theorem_ids="
+                f"{unique_theorem_ids(*theorem_groups)}"
+            ),
+            f"boundary={payload['claim_boundary']}",
+        ]
+    )
+    return lines
 
 
 def main() -> None:

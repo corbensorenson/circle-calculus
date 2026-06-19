@@ -1560,6 +1560,898 @@ theorems:
         - tests/test_kv_cache_certifier_cli.py::test_kv_cache_certifier_cli_text_and_json_out
         - tests/test_kv_cache_certifier_cli.py::test_kv_cache_certifier_cli_reports_stale_request_witness
     blocker: ""
+  - id: AIM-T0104
+    status: lean_proved
+    lean_name: Circle.Applications.kvCacheSinkWindowContains_iff_mem_sinkWindowTokens
+    informal_statement: "For a pinned sink-prefix plus rolling KV-cache policy, a token is retained by the policy exactly when it appears in the generated sink-window token list."
+    formal_statement: "forall {sinkSize cacheSize current token : Nat}, Circle.Applications.kvCacheSinkWindowContains sinkSize cacheSize current token <-> token in Circle.Applications.kvCacheSinkWindowTokens sinkSize cacheSize current"
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0081", "COMMON-0090"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_kv_cache_certifier_cli.py::test_kv_cache_certifier_cli_reports_sink_window_policy
+        - tests/test_kv_cache_certifier_cli.py::test_kv_cache_certifier_cli_text_reports_sink_window_policy
+    blocker: ""
+  - id: AIM-T0105
+    status: lean_proved
+    lean_name: Circle.Applications.kvCacheSinkWindowTokens_default_4_16_31
+    informal_statement: "For the public sink-size 4, cache-size 16, current-token 31 fixture, the generated sink-window request is tokens 0 through 3 followed by the rolling live window 16 through 31."
+    formal_statement: "Circle.Applications.kvCacheSinkWindowTokens 4 16 31 = List.range 4 ++ List.range' 16 16"
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0081", "COMMON-0090"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_kv_cache_certifier_cli.py::test_kv_cache_certifier_cli_reports_sink_window_policy
+        - tests/test_kv_cache_certifier_cli.py::test_kv_cache_certifier_cli_text_reports_sink_window_policy
+    blocker: ""
+  - id: AIM-T0108
+    status: lean_proved
+    lean_name: Circle.Applications.kvCacheSinkWindowRollingTokens_all_retained
+    informal_statement: "Every generated rolling-suffix token in a pinned sink-prefix plus rolling KV-cache policy is retained by the ordinary rolling live-window predicate."
+    formal_statement: "forall {sinkSize cacheSize current : Nat}, forall token, token in (Circle.Applications.kvCacheLiveWindowTokens cacheSize current).filter (fun token => Circle.Applications.kvCacheSinkPrefixLength sinkSize current <= token) -> Circle.Applications.kvCacheWindowContains cacheSize current token"
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0081", "COMMON-0090"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_kv_cache_certifier_cli.py::test_kv_cache_certifier_cli_reports_sink_window_policy
+        - tests/test_kv_cache_certifier_cli.py::test_kv_cache_certifier_cli_text_reports_sink_window_policy
+    blocker: ""
+  - id: AIM-T0109
+    status: lean_proved
+    lean_name: Circle.Applications.kvCacheSinkWindowTokens_default_4_16_31_nodup
+    informal_statement: "For the public sink-size 4, cache-size 16, current-token 31 fixture, the generated sink-window request has no duplicate token entries."
+    formal_statement: "(Circle.Applications.kvCacheSinkWindowTokens 4 16 31).Nodup"
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0081", "COMMON-0090"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_kv_cache_certifier_cli.py::test_kv_cache_certifier_cli_reports_sink_window_policy
+        - tests/test_kv_cache_certifier_cli.py::test_kv_cache_certifier_cli_text_reports_sink_window_policy
+    blocker: ""
+  - id: AIM-T0110
+    status: lean_proved
+    lean_name: Circle.Applications.kvCacheSinkWindowTokens_nodup
+    informal_statement: "For any pinned sink-prefix plus rolling KV-cache policy, the generated sink-window request list has no duplicate token entries."
+    formal_statement: "forall sinkSize cacheSize current : Nat, (Circle.Applications.kvCacheSinkWindowTokens sinkSize cacheSize current).Nodup"
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0081", "COMMON-0090"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_kv_cache_certifier_cli.py::test_kv_cache_certifier_cli_reports_sink_window_policy
+        - tests/test_kv_cache_certifier_cli.py::test_kv_cache_certifier_cli_text_reports_sink_window_policy
+        - tests/test_circle_ai_contract_pack.py::test_generic_contract_pack_is_standalone_with_compatibility_aliases
+    blocker: ""
+  - id: AIM-T0117
+    status: lean_proved
+    lean_name: Circle.Applications.kvCacheSinkWindowTokens_length_le_sinkSize_add_cacheSize
+    informal_statement: "For any pinned sink-prefix plus rolling KV-cache policy, the generated sink-window request length is bounded by sink size plus cache size."
+    formal_statement: "forall sinkSize cacheSize current : Nat, (Circle.Applications.kvCacheSinkWindowTokens sinkSize cacheSize current).length <= sinkSize + cacheSize"
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0081", "COMMON-0090"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_kv_cache_certifier_cli.py::test_kv_cache_certifier_cli_reports_sink_window_policy
+        - tests/test_kv_cache_certifier_cli.py::test_kv_cache_certifier_cli_text_reports_sink_window_policy
+        - tests/test_circle_ai_contract_pack.py::test_generic_contract_pack_is_standalone_with_compatibility_aliases
+    blocker: ""
+  - id: AIM-T0118
+    status: lean_proved
+    lean_name: Circle.Applications.kvCacheSinkWindowTokens_default_4_16_31_length
+    informal_statement: "For the public sink-size 4, cache-size 16, current-token 31 fixture, the generated sink-window request has exactly twenty token positions."
+    formal_statement: "(Circle.Applications.kvCacheSinkWindowTokens 4 16 31).length = 20"
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0081", "COMMON-0090"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_kv_cache_certifier_cli.py::test_kv_cache_certifier_cli_reports_sink_window_policy
+        - tests/test_kv_cache_certifier_cli.py::test_kv_cache_certifier_cli_text_reports_sink_window_policy
+        - tests/test_circle_ai_contract_pack.py::test_generic_contract_pack_is_standalone_with_compatibility_aliases
+    blocker: ""
+  - id: AIM-T0119
+    status: lean_proved
+    lean_name: Circle.Applications.kvCacheSinkWindowTokens_length_eq_sinkSize_add_liveWindowLength_of_sinkSize_le_start
+    informal_statement: "If the sink prefix has been fully seen and lies before the rolling live window, the generated sink-window request length is exactly sink size plus live-window length."
+    formal_statement: "forall sinkSize cacheSize current : Nat, sinkSize <= current + 1 -> sinkSize <= Circle.Applications.kvCacheLiveWindowStart cacheSize current -> (Circle.Applications.kvCacheSinkWindowTokens sinkSize cacheSize current).length = sinkSize + Circle.Applications.kvCacheLiveWindowLength cacheSize current"
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0081", "COMMON-0090"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_kv_cache_certifier_cli.py::test_kv_cache_certifier_cli_reports_sink_window_policy
+        - tests/test_kv_cache_certifier_cli.py::test_kv_cache_certifier_cli_text_reports_sink_window_policy
+        - tests/test_circle_ai_contract_pack.py::test_generic_contract_pack_is_standalone_with_compatibility_aliases
+    blocker: ""
+  - id: AIM-T0136
+    status: lean_proved
+    lean_name: Circle.Applications.kvCacheSinkWindowPrefixTokens_le_current
+    informal_statement: "Every generated sink-prefix token in a pinned-prefix plus rolling KV-cache policy has already been seen by the current token position."
+    formal_statement: "forall {sinkSize current token : Nat}, token in List.range (Circle.Applications.kvCacheSinkPrefixLength sinkSize current) -> token <= current"
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0081", "COMMON-0090"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_kv_cache_certifier_cli.py::test_kv_cache_certifier_cli_reports_sink_window_policy
+        - tests/test_kv_cache_certifier_cli.py::test_kv_cache_certifier_cli_text_reports_sink_window_policy
+        - tests/test_circle_ai_contract_pack.py::test_generic_contract_pack_is_standalone_with_compatibility_aliases
+    blocker: ""
+  - id: AIM-T0137
+    status: lean_proved
+    lean_name: Circle.Applications.kvCacheSinkWindowPrefixTokens_policy_retained
+    informal_statement: "Every generated sink-prefix token is retained by the explicit pinned-prefix branch of the sink-window policy."
+    formal_statement: "forall {sinkSize cacheSize current token : Nat}, token in List.range (Circle.Applications.kvCacheSinkPrefixLength sinkSize current) -> Circle.Applications.kvCacheSinkWindowContains sinkSize cacheSize current token"
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0081", "COMMON-0090"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_kv_cache_certifier_cli.py::test_kv_cache_certifier_cli_reports_sink_window_policy
+        - tests/test_kv_cache_certifier_cli.py::test_kv_cache_certifier_cli_text_reports_sink_window_policy
+        - tests/test_circle_ai_contract_pack.py::test_generic_contract_pack_is_standalone_with_compatibility_aliases
+    blocker: ""
+  - id: AIM-T0148
+    status: lean_proved
+    lean_name: Circle.Applications.kvCacheSinkWindowPrefixTokens_not_rolling_retained_of_sinkSize_le_start
+    informal_statement: "When the pinned sink prefix has been seen and lies before the rolling live window, generated sink-prefix tokens are not ordinary rolling-window retained tokens."
+    formal_statement: "forall {sinkSize cacheSize current token : Nat}, sinkSize <= current + 1 -> sinkSize <= Circle.Applications.kvCacheLiveWindowStart cacheSize current -> token in List.range (Circle.Applications.kvCacheSinkPrefixLength sinkSize current) -> not Circle.Applications.kvCacheWindowContains cacheSize current token"
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0081", "COMMON-0090"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_kv_cache_certifier_cli.py::test_kv_cache_certifier_cli_reports_sink_window_policy
+        - tests/test_kv_cache_certifier_cli.py::test_kv_cache_certifier_cli_text_reports_sink_window_policy
+        - tests/test_circle_ai_contract_pack.py::test_generic_contract_pack_is_standalone_with_compatibility_aliases
+    blocker: ""
+  - id: AIM-T0149
+    status: lean_proved
+    lean_name: Circle.Applications.kvCacheSinkWindowPrefixTokens_default_4_16_31_not_rolling_retained
+    informal_statement: "In the public sink-window fixture with sink size 4, cache size 16, and current token 31, pinned sink-prefix tokens are outside the ordinary rolling live window."
+    formal_statement: "forall {token : Nat}, token in List.range (Circle.Applications.kvCacheSinkPrefixLength 4 31) -> not Circle.Applications.kvCacheWindowContains 16 31 token"
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0081", "COMMON-0090"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_kv_cache_certifier_cli.py::test_kv_cache_certifier_cli_reports_sink_window_policy
+        - tests/test_kv_cache_certifier_cli.py::test_kv_cache_certifier_cli_text_reports_sink_window_policy
+        - tests/test_circle_ai_contract_pack.py::test_generic_contract_pack_is_standalone_with_compatibility_aliases
+    blocker: ""
+  - id: AIM-T0111
+    status: lean_proved
+    lean_name: Circle.Applications.activeTokensAtStep_one_eq_range
+    informal_statement: "At the first loop step in a token-level recurrence schedule, every token in the declared range is active."
+    formal_statement: "forall loopPeriod tokenCount : Nat, Circle.Applications.activeTokensAtStep loopPeriod tokenCount 1 = List.range tokenCount"
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0059"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_token_level_recurrence_budget_helpers_are_deterministic
+        - tests/test_theseus_hive_ai_contracts.py::test_recurrence_contract_records_exit_and_token_budgets
+        - tests/test_circle_ai_contract_pack.py::test_generic_contract_pack_is_standalone_with_compatibility_aliases
+    blocker: ""
+  - id: AIM-T0112
+    status: lean_proved
+    lean_name: Circle.Applications.activeTokensAtStep_eq_nil_of_loopPeriod_lt_step
+    informal_statement: "After the declared loop period in a token-level recurrence schedule, the generated active-token list is empty."
+    formal_statement: "forall {loopPeriod step : Nat}, 0 < loopPeriod -> loopPeriod < step -> forall tokenCount : Nat, Circle.Applications.activeTokensAtStep loopPeriod tokenCount step = []"
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0059"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_token_level_recurrence_budget_helpers_are_deterministic
+        - tests/test_theseus_hive_ai_contracts.py::test_recurrence_contract_records_exit_and_token_budgets
+        - tests/test_circle_ai_contract_pack.py::test_generic_contract_pack_is_standalone_with_compatibility_aliases
+    blocker: ""
+  - id: AIM-T0113
+    status: lean_proved
+    lean_name: Circle.Applications.tokenActiveAtStep_of_step_le
+    informal_statement: "Token activity is monotone in the loop step: if a token is active at a later step, it was active at every earlier step."
+    formal_statement: "forall {loopPeriod token early late : Nat}, early <= late -> Circle.Applications.tokenActiveAtStep loopPeriod token late -> Circle.Applications.tokenActiveAtStep loopPeriod token early"
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0059"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_token_level_recurrence_budget_helpers_are_deterministic
+        - tests/test_theseus_hive_ai_contracts.py::test_recurrence_contract_records_exit_and_token_budgets
+        - tests/test_circle_ai_contract_pack.py::test_generic_contract_pack_is_standalone_with_compatibility_aliases
+    blocker: ""
+  - id: AIM-T0114
+    status: lean_proved
+    lean_name: Circle.Applications.activeTokensAtStep_late_subset_early_of_step_le
+    informal_statement: "Later active-token lists are subsets of earlier active-token lists in a token-level recurrence schedule."
+    formal_statement: "forall {loopPeriod tokenCount early late token : Nat}, early <= late -> token in Circle.Applications.activeTokensAtStep loopPeriod tokenCount late -> token in Circle.Applications.activeTokensAtStep loopPeriod tokenCount early"
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0059"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_token_level_recurrence_budget_helpers_are_deterministic
+        - tests/test_theseus_hive_ai_contracts.py::test_recurrence_contract_records_exit_and_token_budgets
+        - tests/test_circle_ai_contract_pack.py::test_generic_contract_pack_is_standalone_with_compatibility_aliases
+    blocker: ""
+  - id: AIM-T0115
+    status: lean_proved
+    lean_name: Circle.Applications.activeTokensAtStep_nodup
+    informal_statement: "Every generated active-token list has no duplicate token entries."
+    formal_statement: "forall loopPeriod tokenCount step : Nat, (Circle.Applications.activeTokensAtStep loopPeriod tokenCount step).Nodup"
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0059"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_token_level_recurrence_budget_helpers_are_deterministic
+        - tests/test_theseus_hive_ai_contracts.py::test_recurrence_contract_records_exit_and_token_budgets
+        - tests/test_circle_ai_contract_pack.py::test_generic_contract_pack_is_standalone_with_compatibility_aliases
+    blocker: ""
+  - id: AIM-T0116
+    status: lean_proved
+    lean_name: Circle.Applications.activeTokensAtStep_length_le_tokenCount
+    informal_statement: "The generated active-token list length is bounded by the declared token count."
+    formal_statement: "forall loopPeriod tokenCount step : Nat, (Circle.Applications.activeTokensAtStep loopPeriod tokenCount step).length <= tokenCount"
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0059"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_token_level_recurrence_budget_helpers_are_deterministic
+        - tests/test_theseus_hive_ai_contracts.py::test_recurrence_contract_records_exit_and_token_budgets
+        - tests/test_circle_ai_contract_pack.py::test_generic_contract_pack_is_standalone_with_compatibility_aliases
+    blocker: ""
+  - id: AIM-T0120
+    status: lean_proved
+    lean_name: Circle.Applications.activeTokenCountAtStep_le_tokenCount
+    informal_statement: "The generated active-token count is bounded by the declared token count."
+    formal_statement: "forall loopPeriod tokenCount step : Nat, Circle.Applications.activeTokenCountAtStep loopPeriod tokenCount step <= tokenCount"
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0059"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_theseus_hive_ai_contracts.py::test_recurrence_contract_records_exit_and_token_budgets
+        - tests/test_circle_ai_contract_pack.py::test_generic_contract_pack_is_standalone_with_compatibility_aliases
+    blocker: ""
+  - id: AIM-T0128
+    status: lean_proved
+    lean_name: Circle.Applications.activeTokenCountAtStep_late_le_early_of_step_le
+    informal_statement: "Active-token counts are monotone nonincreasing as the recurrence loop step advances."
+    formal_statement: "forall {loopPeriod tokenCount early late : Nat}, early <= late -> Circle.Applications.activeTokenCountAtStep loopPeriod tokenCount late <= Circle.Applications.activeTokenCountAtStep loopPeriod tokenCount early"
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0059"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_theseus_hive_ai_contracts.py::test_recurrence_contract_records_exit_and_token_budgets
+        - tests/test_circle_ai_contract_pack.py::test_generic_contract_pack_is_standalone_with_compatibility_aliases
+    blocker: ""
+  - id: AIM-T0121
+    status: lean_proved
+    lean_name: Circle.Applications.activeTokenCountAtStep_one_eq_tokenCount
+    informal_statement: "At the first recurrence step, the active-token count is the full declared token count."
+    formal_statement: "forall loopPeriod tokenCount : Nat, Circle.Applications.activeTokenCountAtStep loopPeriod tokenCount 1 = tokenCount"
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0059"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_theseus_hive_ai_contracts.py::test_recurrence_contract_records_exit_and_token_budgets
+        - tests/test_circle_ai_contract_pack.py::test_generic_contract_pack_is_standalone_with_compatibility_aliases
+    blocker: ""
+  - id: AIM-T0122
+    status: lean_proved
+    lean_name: Circle.Applications.activeTokenCountAtStep_eq_zero_of_loopPeriod_lt_step
+    informal_statement: "After the loop-period overrun boundary, the active-token count is zero."
+    formal_statement: "forall {loopPeriod step : Nat}, 0 < loopPeriod -> loopPeriod < step -> forall tokenCount : Nat, Circle.Applications.activeTokenCountAtStep loopPeriod tokenCount step = 0"
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0059"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_theseus_hive_ai_contracts.py::test_recurrence_contract_records_exit_and_token_budgets
+        - tests/test_circle_ai_contract_pack.py::test_generic_contract_pack_is_standalone_with_compatibility_aliases
+    blocker: ""
+  - id: AIM-T0123
+    status: lean_proved
+    lean_name: Circle.Applications.activeTokenCountAtStep_add_inactiveTokenCountAtStep_eq_tokenCount
+    informal_statement: "Active plus inactive token counts exactly account for the declared token count at any recurrence step."
+    formal_statement: "forall loopPeriod tokenCount step : Nat, Circle.Applications.activeTokenCountAtStep loopPeriod tokenCount step + Circle.Applications.inactiveTokenCountAtStep loopPeriod tokenCount step = tokenCount"
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0059"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_theseus_hive_ai_contracts.py::test_recurrence_contract_records_exit_and_token_budgets
+        - tests/test_circle_ai_contract_pack.py::test_generic_contract_pack_is_standalone_with_compatibility_aliases
+    blocker: ""
+  - id: AIM-T0129
+    status: lean_proved
+    lean_name: Circle.Applications.inactiveTokenCountAtStep_early_le_late_of_step_le
+    informal_statement: "Inactive-token counts are monotone nondecreasing as the recurrence loop step advances."
+    formal_statement: "forall {loopPeriod tokenCount early late : Nat}, early <= late -> Circle.Applications.inactiveTokenCountAtStep loopPeriod tokenCount early <= Circle.Applications.inactiveTokenCountAtStep loopPeriod tokenCount late"
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0059"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_theseus_hive_ai_contracts.py::test_recurrence_contract_records_exit_and_token_budgets
+        - tests/test_circle_ai_contract_pack.py::test_generic_contract_pack_is_standalone_with_compatibility_aliases
+    blocker: ""
+  - id: AIM-T0124
+    status: lean_proved
+    lean_name: Circle.Applications.inactiveTokenCountAtStep_one_eq_zero
+    informal_statement: "At the first recurrence step, no declared token is inactive."
+    formal_statement: "forall loopPeriod tokenCount : Nat, Circle.Applications.inactiveTokenCountAtStep loopPeriod tokenCount 1 = 0"
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0059"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_theseus_hive_ai_contracts.py::test_recurrence_contract_records_exit_and_token_budgets
+        - tests/test_circle_ai_contract_pack.py::test_generic_contract_pack_is_standalone_with_compatibility_aliases
+    blocker: ""
+  - id: AIM-T0125
+    status: lean_proved
+    lean_name: Circle.Applications.inactiveTokenCountAtStep_eq_tokenCount_of_loopPeriod_lt_step
+    informal_statement: "After the loop-period overrun boundary, every declared token is inactive."
+    formal_statement: "forall {loopPeriod step : Nat}, 0 < loopPeriod -> loopPeriod < step -> forall tokenCount : Nat, Circle.Applications.inactiveTokenCountAtStep loopPeriod tokenCount step = tokenCount"
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0059"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_theseus_hive_ai_contracts.py::test_recurrence_contract_records_exit_and_token_budgets
+        - tests/test_circle_ai_contract_pack.py::test_generic_contract_pack_is_standalone_with_compatibility_aliases
+    blocker: ""
+  - id: AIM-T0126
+    status: lean_proved
+    lean_name: Circle.Applications.activeTokenCountAtStep_default_4_8_2
+    informal_statement: "For the public loop-period 4, token-count 8, step 2 fixture, the active-token count is 6."
+    formal_statement: "Circle.Applications.activeTokenCountAtStep 4 8 2 = 6"
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0059"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_theseus_hive_ai_contracts.py::test_recurrence_contract_records_exit_and_token_budgets
+        - tests/test_circle_ai_contract_pack.py::test_generic_contract_pack_is_standalone_with_compatibility_aliases
+    blocker: ""
+  - id: AIM-T0127
+    status: lean_proved
+    lean_name: Circle.Applications.inactiveTokenCountAtStep_default_4_8_2
+    informal_statement: "For the public loop-period 4, token-count 8, step 2 fixture, the inactive-token count is 2."
+    formal_statement: "Circle.Applications.inactiveTokenCountAtStep 4 8 2 = 2"
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0059"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_theseus_hive_ai_contracts.py::test_recurrence_contract_records_exit_and_token_budgets
+        - tests/test_circle_ai_contract_pack.py::test_generic_contract_pack_is_standalone_with_compatibility_aliases
+    blocker: ""
+  - id: AIM-T0130
+    status: lean_proved
+    lean_name: Circle.Applications.totalActiveTokenWork_le_fullLoopTokenWork
+    informal_statement: "Total scheduled active-token work over a finite loop horizon is bounded by the full fixed-depth token-step budget."
+    formal_statement: "forall loopPeriod tokenCount steps : Nat, Circle.Applications.totalActiveTokenWork loopPeriod tokenCount steps <= Circle.Applications.fullLoopTokenWork tokenCount steps"
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0059"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_theseus_hive_ai_contracts.py::test_recurrence_contract_records_exit_and_token_budgets
+        - tests/test_circle_ai_contract_pack.py::test_generic_contract_pack_is_standalone_with_compatibility_aliases
+        - tests/test_circle_ai_contract_consumer.py::test_consumer_digest_exposes_recurrence_work_budget_fields
+    blocker: ""
+  - id: AIM-T0131
+    status: lean_proved
+    lean_name: Circle.Applications.scheduledWorkSaving_add_totalActiveTokenWork_eq_fullLoopTokenWork
+    informal_statement: "The scheduled-work saving field plus total scheduled active-token work exactly accounts for the full fixed-depth token-step budget."
+    formal_statement: "forall loopPeriod tokenCount steps : Nat, Circle.Applications.scheduledWorkSaving loopPeriod tokenCount steps + Circle.Applications.totalActiveTokenWork loopPeriod tokenCount steps = Circle.Applications.fullLoopTokenWork tokenCount steps"
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0059"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_theseus_hive_ai_contracts.py::test_recurrence_contract_records_exit_and_token_budgets
+        - tests/test_circle_ai_contract_pack.py::test_generic_contract_pack_is_standalone_with_compatibility_aliases
+        - tests/test_circle_ai_contract_consumer.py::test_consumer_digest_exposes_recurrence_work_budget_fields
+    blocker: ""
+  - id: AIM-T0144
+    status: lean_proved
+    lean_name: Circle.Applications.totalActiveTokenWork_add_totalInactiveTokenWork_eq_fullLoopTokenWork
+    informal_statement: "Over a finite recurrence horizon, scheduled active token-work plus inactive token-work exactly recovers the full fixed-depth token-step budget."
+    formal_statement: "forall loopPeriod tokenCount steps : Nat, Circle.Applications.totalActiveTokenWork loopPeriod tokenCount steps + Circle.Applications.totalInactiveTokenWork loopPeriod tokenCount steps = Circle.Applications.fullLoopTokenWork tokenCount steps"
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0059"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_theseus_hive_ai_contracts.py::test_recurrence_contract_records_exit_and_token_budgets
+        - tests/test_circle_ai_contract_pack.py::test_generic_contract_pack_is_standalone_with_compatibility_aliases
+        - tests/test_circle_ai_contract_consumer.py::test_consumer_digest_exposes_recurrence_work_budget_fields
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_token_level_recurrence_budget_helpers_are_deterministic
+    blocker: ""
+  - id: AIM-T0145
+    status: lean_proved
+    lean_name: Circle.Applications.scheduledWorkSaving_eq_totalInactiveTokenWork
+    informal_statement: "The scheduled-work saving field is exactly the total inactive token-work over the same finite recurrence horizon."
+    formal_statement: "forall loopPeriod tokenCount steps : Nat, Circle.Applications.scheduledWorkSaving loopPeriod tokenCount steps = Circle.Applications.totalInactiveTokenWork loopPeriod tokenCount steps"
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0059", "COMMON-0068"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_theseus_hive_ai_contracts.py::test_recurrence_contract_records_exit_and_token_budgets
+        - tests/test_circle_ai_contract_pack.py::test_generic_contract_pack_is_standalone_with_compatibility_aliases
+        - tests/test_circle_ai_contract_consumer.py::test_consumer_digest_exposes_recurrence_work_budget_fields
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_token_level_recurrence_budget_helpers_are_deterministic
+    blocker: ""
+  - id: AIM-T0132
+    status: lean_proved
+    lean_name: Circle.Applications.totalActiveTokenWork_default_4_8_4
+    informal_statement: "For the public loop-period 4, token-count 8, four-step fixture, total scheduled active-token work is 20 token-steps."
+    formal_statement: "Circle.Applications.totalActiveTokenWork 4 8 4 = 20"
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0059"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_theseus_hive_ai_contracts.py::test_recurrence_contract_records_exit_and_token_budgets
+        - tests/test_circle_ai_contract_pack.py::test_generic_contract_pack_is_standalone_with_compatibility_aliases
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_token_level_recurrence_budget_helpers_are_deterministic
+    blocker: ""
+  - id: AIM-T0133
+    status: lean_proved
+    lean_name: Circle.Applications.fullLoopTokenWork_default_8_4
+    informal_statement: "For the public token-count 8, four-step fixture, the full fixed-depth token-step budget is 32."
+    formal_statement: "Circle.Applications.fullLoopTokenWork 8 4 = 32"
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0059"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_theseus_hive_ai_contracts.py::test_recurrence_contract_records_exit_and_token_budgets
+        - tests/test_circle_ai_contract_pack.py::test_generic_contract_pack_is_standalone_with_compatibility_aliases
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_token_level_recurrence_budget_helpers_are_deterministic
+    blocker: ""
+  - id: AIM-T0134
+    status: lean_proved
+    lean_name: Circle.Applications.scheduledWorkSaving_default_4_8_4
+    informal_statement: "For the public loop-period 4, token-count 8, four-step fixture, the scheduled-work saving against the fixed-depth budget is 12 token-steps."
+    formal_statement: "Circle.Applications.scheduledWorkSaving 4 8 4 = 12"
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0059"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_theseus_hive_ai_contracts.py::test_recurrence_contract_records_exit_and_token_budgets
+        - tests/test_circle_ai_contract_pack.py::test_generic_contract_pack_is_standalone_with_compatibility_aliases
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_token_level_recurrence_budget_helpers_are_deterministic
+    blocker: ""
+  - id: AIM-T0146
+    status: lean_proved
+    lean_name: Circle.Applications.totalInactiveTokenWork_default_4_8_4
+    informal_statement: "For the public loop-period 4, token-count 8, four-step fixture, total inactive token-work is 12 token-steps."
+    formal_statement: "Circle.Applications.totalInactiveTokenWork 4 8 4 = 12"
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0059"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_theseus_hive_ai_contracts.py::test_recurrence_contract_records_exit_and_token_budgets
+        - tests/test_circle_ai_contract_pack.py::test_generic_contract_pack_is_standalone_with_compatibility_aliases
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_token_level_recurrence_budget_helpers_are_deterministic
+    blocker: ""
+  - id: AIM-T0135
+    status: lean_proved
+    lean_name: Circle.Applications.scheduledWorkSaving_default_4_8_4_accounting
+    informal_statement: "For the public loop-period 4, token-count 8, four-step fixture, saved work plus active work equals the full fixed-depth token-step budget."
+    formal_statement: "Circle.Applications.scheduledWorkSaving 4 8 4 + Circle.Applications.totalActiveTokenWork 4 8 4 = Circle.Applications.fullLoopTokenWork 8 4"
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0059"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_theseus_hive_ai_contracts.py::test_recurrence_contract_records_exit_and_token_budgets
+        - tests/test_circle_ai_contract_pack.py::test_generic_contract_pack_is_standalone_with_compatibility_aliases
+        - tests/test_circle_ai_contract_consumer.py::test_consumer_digest_exposes_recurrence_work_budget_fields
+    blocker: ""
+  - id: AIM-T0138
+    status: lean_proved
+    lean_name: Circle.Applications.scheduledWorkSaving_pos_iff_totalActiveTokenWork_lt_fullLoopTokenWork
+    informal_statement: "Scheduled recurrence work saving is positive exactly when scheduled active-token work is strictly below the full fixed-depth token-step budget."
+    formal_statement: "forall loopPeriod tokenCount steps : Nat, 0 < Circle.Applications.scheduledWorkSaving loopPeriod tokenCount steps <-> Circle.Applications.totalActiveTokenWork loopPeriod tokenCount steps < Circle.Applications.fullLoopTokenWork tokenCount steps"
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0059", "COMMON-0068"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_theseus_hive_ai_contracts.py::test_recurrence_contract_records_exit_and_token_budgets
+        - tests/test_circle_ai_contract_pack.py::test_generic_contract_pack_is_standalone_with_compatibility_aliases
+        - tests/test_circle_ai_contract_consumer.py::test_consumer_digest_exposes_recurrence_work_budget_fields
+    blocker: ""
+  - id: AIM-T0139
+    status: lean_proved
+    lean_name: Circle.Applications.scheduledWorkSaving_eq_zero_iff_totalActiveTokenWork_eq_fullLoopTokenWork
+    informal_statement: "Scheduled recurrence work saving is zero exactly when scheduled active-token work matches the full fixed-depth token-step budget."
+    formal_statement: "forall loopPeriod tokenCount steps : Nat, Circle.Applications.scheduledWorkSaving loopPeriod tokenCount steps = 0 <-> Circle.Applications.totalActiveTokenWork loopPeriod tokenCount steps = Circle.Applications.fullLoopTokenWork tokenCount steps"
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0059", "COMMON-0068"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_theseus_hive_ai_contracts.py::test_recurrence_contract_records_exit_and_token_budgets
+        - tests/test_circle_ai_contract_pack.py::test_generic_contract_pack_is_standalone_with_compatibility_aliases
+        - tests/test_circle_ai_contract_consumer.py::test_consumer_digest_exposes_recurrence_work_budget_fields
+    blocker: ""
+  - id: AIM-T0140
+    status: lean_proved
+    lean_name: Circle.Applications.totalActiveTokenWork_default_5_8_5
+    informal_statement: "For the default exported recurrence fixture, loop-period 5, token-count 8, and five-step horizon give 21 scheduled active token-steps."
+    formal_statement: "Circle.Applications.totalActiveTokenWork 5 8 5 = 21"
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0059"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_theseus_hive_ai_contracts.py::test_recurrence_contract_records_exit_and_token_budgets
+        - tests/test_circle_ai_contract_pack.py::test_generic_contract_pack_is_standalone_with_compatibility_aliases
+        - tests/test_circle_ai_contract_consumer.py::test_consumer_digest_exposes_recurrence_work_budget_fields
+    blocker: ""
+  - id: AIM-T0141
+    status: lean_proved
+    lean_name: Circle.Applications.fullLoopTokenWork_default_8_5
+    informal_statement: "For the default exported recurrence fixture, token-count 8 and five-step horizon give a full fixed-depth budget of 40 token-steps."
+    formal_statement: "Circle.Applications.fullLoopTokenWork 8 5 = 40"
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0059"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_theseus_hive_ai_contracts.py::test_recurrence_contract_records_exit_and_token_budgets
+        - tests/test_circle_ai_contract_pack.py::test_generic_contract_pack_is_standalone_with_compatibility_aliases
+        - tests/test_circle_ai_contract_consumer.py::test_consumer_digest_exposes_recurrence_work_budget_fields
+    blocker: ""
+  - id: AIM-T0142
+    status: lean_proved
+    lean_name: Circle.Applications.scheduledWorkSaving_default_5_8_5
+    informal_statement: "For the default exported recurrence fixture, scheduled work saving is 19 token-steps against the full fixed-depth budget."
+    formal_statement: "Circle.Applications.scheduledWorkSaving 5 8 5 = 19"
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0059"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_theseus_hive_ai_contracts.py::test_recurrence_contract_records_exit_and_token_budgets
+        - tests/test_circle_ai_contract_pack.py::test_generic_contract_pack_is_standalone_with_compatibility_aliases
+        - tests/test_circle_ai_contract_consumer.py::test_consumer_digest_exposes_recurrence_work_budget_fields
+    blocker: ""
+  - id: AIM-T0147
+    status: lean_proved
+    lean_name: Circle.Applications.totalInactiveTokenWork_default_5_8_5
+    informal_statement: "For the default exported recurrence fixture, loop-period 5, token-count 8, and five-step horizon give 19 inactive token-steps."
+    formal_statement: "Circle.Applications.totalInactiveTokenWork 5 8 5 = 19"
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0059"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_theseus_hive_ai_contracts.py::test_recurrence_contract_records_exit_and_token_budgets
+        - tests/test_circle_ai_contract_pack.py::test_generic_contract_pack_is_standalone_with_compatibility_aliases
+        - tests/test_circle_ai_contract_consumer.py::test_consumer_digest_exposes_recurrence_work_budget_fields
+    blocker: ""
+  - id: AIM-T0143
+    status: lean_proved
+    lean_name: Circle.Applications.scheduledWorkSaving_default_5_8_5_accounting
+    informal_statement: "For the default exported recurrence fixture, saved work plus scheduled active-token work equals the full fixed-depth token-step budget."
+    formal_statement: "Circle.Applications.scheduledWorkSaving 5 8 5 + Circle.Applications.totalActiveTokenWork 5 8 5 = Circle.Applications.fullLoopTokenWork 8 5"
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0059"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_theseus_hive_ai_contracts.py::test_recurrence_contract_records_exit_and_token_budgets
+        - tests/test_circle_ai_contract_pack.py::test_generic_contract_pack_is_standalone_with_compatibility_aliases
+        - tests/test_circle_ai_contract_consumer.py::test_consumer_digest_exposes_recurrence_work_budget_fields
+    blocker: ""
+  - id: AIM-T0150
+    status: lean_proved
+    lean_name: Circle.Applications.totalActiveTokenWork_succ_eq_self_of_loopPeriod_lt_succ
+    informal_statement: "After the loop-period overrun boundary, extending a finite recurrence horizon by one step adds no active-token work."
+    formal_statement: "forall {loopPeriod tokenCount steps : Nat}, 0 < loopPeriod -> loopPeriod < steps + 1 -> Circle.Applications.totalActiveTokenWork loopPeriod tokenCount (steps + 1) = Circle.Applications.totalActiveTokenWork loopPeriod tokenCount steps"
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0059", "COMMON-0068"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_recurrence_schedule_certifier_cli.py::test_recurrence_schedule_certifier_cli_text_and_json
+        - tests/test_theseus_hive_ai_contracts.py::test_recurrence_contract_records_exit_and_token_budgets
+        - tests/test_circle_ai_contract_pack.py::test_generic_contract_pack_is_standalone_with_compatibility_aliases
+        - tests/test_circle_ai_contract_consumer.py::test_consumer_digest_exposes_recurrence_work_budget_fields
+    blocker: ""
+  - id: AIM-T0151
+    status: lean_proved
+    lean_name: Circle.Applications.totalInactiveTokenWork_succ_eq_add_tokenCount_of_loopPeriod_lt_succ
+    informal_statement: "After the loop-period overrun boundary, extending a finite recurrence horizon by one step adds exactly one declared token count of inactive work."
+    formal_statement: "forall {loopPeriod tokenCount steps : Nat}, 0 < loopPeriod -> loopPeriod < steps + 1 -> Circle.Applications.totalInactiveTokenWork loopPeriod tokenCount (steps + 1) = Circle.Applications.totalInactiveTokenWork loopPeriod tokenCount steps + tokenCount"
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0059", "COMMON-0068"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_recurrence_schedule_certifier_cli.py::test_recurrence_schedule_certifier_cli_text_and_json
+        - tests/test_theseus_hive_ai_contracts.py::test_recurrence_contract_records_exit_and_token_budgets
+        - tests/test_circle_ai_contract_pack.py::test_generic_contract_pack_is_standalone_with_compatibility_aliases
+        - tests/test_circle_ai_contract_consumer.py::test_consumer_digest_exposes_recurrence_work_budget_fields
+    blocker: ""
+  - id: AIM-T0152
+    status: lean_proved
+    lean_name: Circle.Applications.scheduledWorkSaving_succ_eq_add_tokenCount_of_loopPeriod_lt_succ
+    informal_statement: "After the loop-period overrun boundary, extending a finite recurrence horizon by one step increases scheduled-work saving by exactly one declared token count."
+    formal_statement: "forall {loopPeriod tokenCount steps : Nat}, 0 < loopPeriod -> loopPeriod < steps + 1 -> Circle.Applications.scheduledWorkSaving loopPeriod tokenCount (steps + 1) = Circle.Applications.scheduledWorkSaving loopPeriod tokenCount steps + tokenCount"
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0059", "COMMON-0068"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_recurrence_schedule_certifier_cli.py::test_recurrence_schedule_certifier_cli_text_and_json
+        - tests/test_theseus_hive_ai_contracts.py::test_recurrence_contract_records_exit_and_token_budgets
+        - tests/test_circle_ai_contract_pack.py::test_generic_contract_pack_is_standalone_with_compatibility_aliases
+        - tests/test_circle_ai_contract_consumer.py::test_consumer_digest_exposes_recurrence_work_budget_fields
+    blocker: ""
+  - id: AIM-T0153
+    status: lean_proved
+    lean_name: Circle.Applications.totalActiveTokenWork_default_5_8_6_eq_default_5_8_5
+    informal_statement: "For the default recurrence fixture, extending the horizon from five to six steps leaves total active-token work at the same value."
+    formal_statement: "Circle.Applications.totalActiveTokenWork 5 8 6 = Circle.Applications.totalActiveTokenWork 5 8 5"
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0059"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_recurrence_schedule_certifier_cli.py::test_recurrence_schedule_certifier_cli_text_and_json
+        - tests/test_theseus_hive_ai_contracts.py::test_recurrence_contract_records_exit_and_token_budgets
+        - tests/test_circle_ai_contract_pack.py::test_generic_contract_pack_is_standalone_with_compatibility_aliases
+        - tests/test_circle_ai_contract_consumer.py::test_consumer_digest_exposes_recurrence_work_budget_fields
+    blocker: ""
+  - id: AIM-T0154
+    status: lean_proved
+    lean_name: Circle.Applications.scheduledWorkSaving_default_5_8_6_add_step
+    informal_statement: "For the default recurrence fixture, extending the horizon from five to six steps increases scheduled-work saving by exactly eight token-steps."
+    formal_statement: "Circle.Applications.scheduledWorkSaving 5 8 6 = Circle.Applications.scheduledWorkSaving 5 8 5 + 8"
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0059"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_recurrence_schedule_certifier_cli.py::test_recurrence_schedule_certifier_cli_text_and_json
+        - tests/test_theseus_hive_ai_contracts.py::test_recurrence_contract_records_exit_and_token_budgets
+        - tests/test_circle_ai_contract_pack.py::test_generic_contract_pack_is_standalone_with_compatibility_aliases
+        - tests/test_circle_ai_contract_consumer.py::test_consumer_digest_exposes_recurrence_work_budget_fields
+    blocker: ""
+  - id: AIM-T0155
+    status: lean_proved
+    lean_name: Circle.Applications.totalActiveTokenWork_add_extra_eq_self_of_loopPeriod_le_steps
+    informal_statement: "After the loop-period overrun boundary, extending a finite recurrence horizon by any number of extra steps adds no active-token work."
+    formal_statement: "forall {loopPeriod tokenCount steps extraSteps : Nat}, 0 < loopPeriod -> loopPeriod <= steps -> Circle.Applications.totalActiveTokenWork loopPeriod tokenCount (steps + extraSteps) = Circle.Applications.totalActiveTokenWork loopPeriod tokenCount steps"
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0059", "COMMON-0068"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_recurrence_schedule_certifier_cli.py::test_recurrence_schedule_certifier_cli_text_and_json
+        - tests/test_theseus_hive_ai_contracts.py::test_recurrence_contract_records_exit_and_token_budgets
+        - tests/test_circle_ai_contract_pack.py::test_generic_contract_pack_is_standalone_with_compatibility_aliases
+        - tests/test_circle_ai_contract_consumer.py::test_consumer_digest_exposes_recurrence_work_budget_fields
+    blocker: ""
+  - id: AIM-T0156
+    status: lean_proved
+    lean_name: Circle.Applications.totalInactiveTokenWork_add_extra_eq_add_mul_tokenCount_of_loopPeriod_le_steps
+    informal_statement: "After the loop-period overrun boundary, extending a finite recurrence horizon by extra steps adds exactly extra_steps times the declared token count of inactive work."
+    formal_statement: "forall {loopPeriod tokenCount steps extraSteps : Nat}, 0 < loopPeriod -> loopPeriod <= steps -> Circle.Applications.totalInactiveTokenWork loopPeriod tokenCount (steps + extraSteps) = Circle.Applications.totalInactiveTokenWork loopPeriod tokenCount steps + extraSteps * tokenCount"
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0059", "COMMON-0068"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_recurrence_schedule_certifier_cli.py::test_recurrence_schedule_certifier_cli_text_and_json
+        - tests/test_theseus_hive_ai_contracts.py::test_recurrence_contract_records_exit_and_token_budgets
+        - tests/test_circle_ai_contract_pack.py::test_generic_contract_pack_is_standalone_with_compatibility_aliases
+        - tests/test_circle_ai_contract_consumer.py::test_consumer_digest_exposes_recurrence_work_budget_fields
+    blocker: ""
+  - id: AIM-T0157
+    status: lean_proved
+    lean_name: Circle.Applications.scheduledWorkSaving_add_extra_eq_add_mul_tokenCount_of_loopPeriod_le_steps
+    informal_statement: "After the loop-period overrun boundary, extending a finite recurrence horizon by extra steps increases scheduled-work saving by exactly extra_steps times the declared token count."
+    formal_statement: "forall {loopPeriod tokenCount steps extraSteps : Nat}, 0 < loopPeriod -> loopPeriod <= steps -> Circle.Applications.scheduledWorkSaving loopPeriod tokenCount (steps + extraSteps) = Circle.Applications.scheduledWorkSaving loopPeriod tokenCount steps + extraSteps * tokenCount"
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0059", "COMMON-0068"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_recurrence_schedule_certifier_cli.py::test_recurrence_schedule_certifier_cli_text_and_json
+        - tests/test_theseus_hive_ai_contracts.py::test_recurrence_contract_records_exit_and_token_budgets
+        - tests/test_circle_ai_contract_pack.py::test_generic_contract_pack_is_standalone_with_compatibility_aliases
+        - tests/test_circle_ai_contract_consumer.py::test_consumer_digest_exposes_recurrence_work_budget_fields
+        - tests/test_circle_ai_contract_ready_cli.py::test_contract_ready_cli_emits_recurrence_digest_recommendations
+    blocker: ""
+  - id: AIM-T0158
+    status: lean_proved
+    lean_name: Circle.Applications.totalActiveTokenWork_default_5_8_8_eq_default_5_8_5
+    informal_statement: "For the default recurrence fixture, extending the horizon from five to eight steps leaves total active-token work at the same value."
+    formal_statement: "Circle.Applications.totalActiveTokenWork 5 8 8 = Circle.Applications.totalActiveTokenWork 5 8 5"
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0059"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_recurrence_schedule_certifier_cli.py::test_recurrence_schedule_certifier_cli_text_and_json
+        - tests/test_theseus_hive_ai_contracts.py::test_recurrence_contract_records_exit_and_token_budgets
+        - tests/test_circle_ai_contract_pack.py::test_generic_contract_pack_is_standalone_with_compatibility_aliases
+        - tests/test_circle_ai_contract_consumer.py::test_consumer_digest_exposes_recurrence_work_budget_fields
+    blocker: ""
+  - id: AIM-T0159
+    status: lean_proved
+    lean_name: Circle.Applications.scheduledWorkSaving_default_5_8_8_add_extra
+    informal_statement: "For the default recurrence fixture, extending the horizon from five to eight steps increases scheduled-work saving by exactly three full token counts."
+    formal_statement: "Circle.Applications.scheduledWorkSaving 5 8 8 = Circle.Applications.scheduledWorkSaving 5 8 5 + 3 * 8"
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0059"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_recurrence_schedule_certifier_cli.py::test_recurrence_schedule_certifier_cli_text_and_json
+        - tests/test_theseus_hive_ai_contracts.py::test_recurrence_contract_records_exit_and_token_budgets
+        - tests/test_circle_ai_contract_pack.py::test_generic_contract_pack_is_standalone_with_compatibility_aliases
+        - tests/test_circle_ai_contract_consumer.py::test_consumer_digest_exposes_recurrence_work_budget_fields
+        - tests/test_circle_ai_contract_ready_cli.py::test_contract_ready_cli_emits_recurrence_digest_recommendations
+    blocker: ""
+  - id: AIM-T0106
+    status: lean_proved
+    lean_name: Circle.Applications.activeTokensAtStep_mem_iff
+    informal_statement: "The generated active-token list for a looped recurrence schedule contains exactly the in-range tokens whose recurrence budget keeps them active at the declared step."
+    formal_statement: "forall {loopPeriod tokenCount step token : Nat}, token in Circle.Applications.activeTokensAtStep loopPeriod tokenCount step iff token < tokenCount and Circle.Applications.tokenActiveAtStep loopPeriod token step"
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0059"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_token_level_recurrence_budget_helpers_are_deterministic
+    blocker: ""
+  - id: AIM-T0107
+    status: lean_proved
+    lean_name: Circle.Applications.activeTokensAtStep_default_4_8_2
+    informal_statement: "For the public loop-period 4, token-count 8, step 2 fixture, the active-token list is tokens 1, 2, 3, 5, 6, and 7."
+    formal_statement: "Circle.Applications.activeTokensAtStep 4 8 2 = [1, 2, 3, 5, 6, 7]"
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0059"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_token_level_recurrence_budget_helpers_are_deterministic
+    blocker: ""
   - id: AIM-T0006
     status: lean_proved
     lean_name: Circle.Applications.loopRequiredSteps_pos
@@ -3891,6 +4783,40 @@ theorems:
       no_sorry_required: true
       python_property_tests:
         - tests/test_rope_certifier.py::test_coprime_rational_full_denominator_requested_margin_uses_exact_threshold
+    blocker: ""
+  - id: AIRA-T0230
+    status: lean_proved
+    lean_name: Circle.Applications.ropeTurnRatioExactWeakestGapMargin_request_iff
+    informal_statement: "An exact weakest-gap margin certificate gives the exact request threshold: a requested finite-context turn-ratio margin holds exactly when the request is at most the certified weakest margin."
+    formal_statement: "forall {turnRatio weakestMargin requestedMargin : Real} {context witnessGap : Nat}, Circle.Applications.ropeTurnRatioExactWeakestGapMargin turnRatio weakestMargin context witnessGap -> (Circle.Applications.ropeTurnRatioFiniteMargin turnRatio requestedMargin context <-> requestedMargin <= weakestMargin)"
+    dictionary_dependencies: ["COMMON-0076", "COMMON-0077", "COMMON-0080", "COMMON-0082", "COMMON-0087", "COMMON-0088"]
+    paper_refs: ["papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_rope_certifier.py::test_one_over_denominator_rational_certificate_uses_generic_exact_margin_theorem
+        - tests/test_rope_certifier.py::test_coprime_rational_certificate_uses_modular_inverse_exact_margin_theorem
+        - tests/test_rope_certifier.py::test_coprime_rational_full_denominator_context_reports_existential_exact_margin_theorem
+        - tests/test_rope_certifier.py::test_named_rational_turn_ratio_certificate_is_theorem_backed
+    blocker: ""
+  - id: AIRA-T0231
+    status: lean_proved
+    lean_name: Circle.Applications.not_ropeTurnRatioFiniteMargin_of_exactWeakestGapMargin_lt_request
+    informal_statement: "An exact weakest-gap margin certificate gives the negative branch: any requested margin above the certified weakest margin cannot satisfy the finite-context margin predicate."
+    formal_statement: "forall {turnRatio weakestMargin requestedMargin : Real} {context witnessGap : Nat}, Circle.Applications.ropeTurnRatioExactWeakestGapMargin turnRatio weakestMargin context witnessGap -> weakestMargin < requestedMargin -> not (Circle.Applications.ropeTurnRatioFiniteMargin turnRatio requestedMargin context)"
+    dictionary_dependencies: ["COMMON-0076", "COMMON-0077", "COMMON-0080", "COMMON-0082", "COMMON-0087", "COMMON-0088"]
+    paper_refs: ["papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_rope_certifier.py::test_one_over_denominator_rational_certificate_uses_generic_exact_margin_theorem
+        - tests/test_rope_certifier.py::test_coprime_rational_certificate_uses_modular_inverse_exact_margin_theorem
+        - tests/test_rope_certifier.py::test_coprime_rational_full_denominator_context_reports_existential_exact_margin_theorem
+        - tests/test_rope_certifier.py::test_named_rational_turn_ratio_certificate_is_theorem_backed
     blocker: ""
   - id: AIRA-T0187
     status: lean_proved
@@ -7599,6 +8525,380 @@ theorems:
       python_property_tests:
         - sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/test_memory_slot_examples.py::test_stride_family_sparse_attention_sidecar_emits_json_and_markdown
     blocker: ""
+  - id: AIT-T0147
+    status: lean_proved
+    lean_name: Circle.Applications.hybridFamilyLagCandidateDedupLoss_pos_iff_collision
+    informal_statement: "For theorem-side sparse lag candidates, exact deduplication loss is positive if and only if the raw lag-candidate list has a duplicate-residue collision."
+    formal_statement: "0 < Circle.Applications.hybridFamilyLagCandidateDedupLoss n window pathLength strides iff not Circle.Applications.hybridFamilyLagCandidatesNoCollision n window pathLength strides"
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0029", "COMMON-0047", "COMMON-0075", "COMMON-0079"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common", "S1"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_stride_family_certifier_cli.py::test_stride_family_certifier_cli_dedup_loss_collision_fields
+    blocker: ""
+  - id: AIT-T0148
+    status: lean_proved
+    lean_name: Circle.Applications.hybridFamilyQueryCandidateDedupLoss_pos_iff_collision
+    informal_statement: "For query-indexed sparse predecessor candidates, exact deduplication loss is positive if and only if the raw predecessor-candidate list has a duplicate-address collision."
+    formal_statement: "0 < Circle.Applications.hybridFamilyQueryCandidateDedupLoss n query window pathLength strides iff not Circle.Applications.hybridFamilyQueryCandidatesNoCollision n query window pathLength strides"
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0029", "COMMON-0047", "COMMON-0075", "COMMON-0079"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common", "S1"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_stride_family_certifier_cli.py::test_stride_family_certifier_cli_dedup_loss_collision_fields
+    blocker: ""
+  - id: AIT-T0149
+    status: lean_proved
+    lean_name: Circle.Applications.hybridFamilyUniqueLagCandidateCount_add_dedupLoss_eq_raw
+    informal_statement: "For theorem-side sparse lag candidates, unique deduplicated lag candidates plus exact deduplication loss equals the raw local-plus-stride-family candidate budget."
+    formal_statement: "Circle.Applications.hybridFamilyUniqueLagCandidateCount n window pathLength strides + Circle.Applications.hybridFamilyLagCandidateDedupLoss n window pathLength strides = Circle.Applications.hybridFamilyRawCandidateBudget window pathLength strides"
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0029", "COMMON-0047", "COMMON-0075", "COMMON-0079"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common", "S1"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_stride_family_certifier_cli.py::test_stride_family_certifier_cli_dedup_loss_collision_fields
+    blocker: ""
+  - id: AIT-T0150
+    status: lean_proved
+    lean_name: Circle.Applications.hybridFamilyUniqueQueryCandidateCount_add_dedupLoss_eq_raw
+    informal_statement: "For query-indexed sparse predecessor candidates, unique deduplicated query candidates plus exact deduplication loss equals the raw local-plus-stride-family candidate budget."
+    formal_statement: "Circle.Applications.hybridFamilyUniqueQueryCandidateCount n query window pathLength strides + Circle.Applications.hybridFamilyQueryCandidateDedupLoss n query window pathLength strides = Circle.Applications.hybridFamilyRawCandidateBudget window pathLength strides"
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0029", "COMMON-0047", "COMMON-0075", "COMMON-0079"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common", "S1"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_stride_family_certifier_cli.py::test_stride_family_certifier_cli_dedup_loss_collision_fields
+    blocker: ""
+  - id: AIT-T0151
+    status: lean_proved
+    lean_name: Circle.Applications.hybridFamilyLagCandidateCollisionPairCount_default_120_4_3_7_13
+    informal_statement: "The default public sparse-attention fixture has zero lag-side pair collisions in its raw theorem-side candidate list."
+    formal_statement: "Circle.Applications.hybridFamilyLagCandidateCollisionPairCount 120 4 3 [7, 13] = 0"
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0029", "COMMON-0047", "COMMON-0075", "COMMON-0079"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common", "S1"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_stride_family_certifier_cli.py::test_stride_family_certifier_cli_text_and_json
+    blocker: ""
+  - id: AIT-T0152
+    status: lean_proved
+    lean_name: Circle.Applications.hybridFamilyQueryCandidateCollisionPairCount_default_120_0_4_3_7_13
+    informal_statement: "The default public sparse-attention fixture has zero query-side pair collisions in its raw theorem-side predecessor candidate list."
+    formal_statement: "Circle.Applications.hybridFamilyQueryCandidateCollisionPairCount 120 0 4 3 [7, 13] = 0"
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0029", "COMMON-0047", "COMMON-0075", "COMMON-0079"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common", "S1"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_stride_family_certifier_cli.py::test_stride_family_certifier_cli_text_and_json
+    blocker: ""
+  - id: AIT-T0153
+    status: lean_proved
+    lean_name: Circle.Applications.hybridFamilyLagCandidateCollisionPairCount_aliasProbe_16_2_4_4_8
+    informal_statement: "The public C_16 alias probe has exactly six lag-side pair collisions in its raw theorem-side candidate list."
+    formal_statement: "Circle.Applications.hybridFamilyLagCandidateCollisionPairCount 16 2 4 [4, 8] = 6"
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0029", "COMMON-0047", "COMMON-0075", "COMMON-0079"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common", "S1"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_stride_family_certifier_cli.py::test_stride_family_certifier_cli_dedup_loss_collision_fields
+    blocker: ""
+  - id: AIT-T0154
+    status: lean_proved
+    lean_name: Circle.Applications.hybridFamilyQueryCandidateCollisionPairCount_aliasProbe_16_0_2_4_4_8
+    informal_statement: "The public C_16 alias probe has exactly six query-side pair collisions in its raw theorem-side predecessor candidate list."
+    formal_statement: "Circle.Applications.hybridFamilyQueryCandidateCollisionPairCount 16 0 2 4 [4, 8] = 6"
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0029", "COMMON-0047", "COMMON-0075", "COMMON-0079"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common", "S1"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_stride_family_certifier_cli.py::test_stride_family_certifier_cli_dedup_loss_collision_fields
+    blocker: ""
+  - id: AIT-T0155
+    status: lean_proved
+    lean_name: Circle.Applications.hybridFamilyLagCandidateCollisionPairCount_eq_zero_iff_noCollision
+    informal_statement: "For theorem-side sparse lag candidates, exact pair-collision count is zero if and only if the raw lag-candidate list has no duplicate residues."
+    formal_statement: "Circle.Applications.hybridFamilyLagCandidateCollisionPairCount n window pathLength strides = 0 iff Circle.Applications.hybridFamilyLagCandidatesNoCollision n window pathLength strides"
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0029", "COMMON-0047", "COMMON-0075", "COMMON-0079"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common", "S1"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_stride_family_certifier_cli.py::test_stride_family_certifier_cli_text_and_json
+        - tests/test_stride_family_certifier_cli.py::test_stride_family_certifier_cli_dedup_loss_collision_fields
+    blocker: ""
+  - id: AIT-T0156
+    status: lean_proved
+    lean_name: Circle.Applications.hybridFamilyQueryCandidateCollisionPairCount_eq_zero_iff_noCollision
+    informal_statement: "For query-indexed sparse predecessor candidates, exact pair-collision count is zero if and only if the raw predecessor-candidate list has no duplicate addresses."
+    formal_statement: "Circle.Applications.hybridFamilyQueryCandidateCollisionPairCount n query window pathLength strides = 0 iff Circle.Applications.hybridFamilyQueryCandidatesNoCollision n query window pathLength strides"
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0029", "COMMON-0047", "COMMON-0075", "COMMON-0079"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common", "S1"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_stride_family_certifier_cli.py::test_stride_family_certifier_cli_text_and_json
+        - tests/test_stride_family_certifier_cli.py::test_stride_family_certifier_cli_dedup_loss_collision_fields
+    blocker: ""
+  - id: AIT-T0157
+    status: lean_proved
+    lean_name: Circle.Applications.hybridFamilyLagCandidateCollisionPairCount_pos_iff_collision
+    informal_statement: "For theorem-side sparse lag candidates, exact pair-collision count is positive if and only if the raw lag-candidate list has a duplicate-residue collision."
+    formal_statement: "0 < Circle.Applications.hybridFamilyLagCandidateCollisionPairCount n window pathLength strides iff not Circle.Applications.hybridFamilyLagCandidatesNoCollision n window pathLength strides"
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0029", "COMMON-0047", "COMMON-0075", "COMMON-0079"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common", "S1"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_stride_family_certifier_cli.py::test_stride_family_certifier_cli_text_and_json
+        - tests/test_stride_family_certifier_cli.py::test_stride_family_certifier_cli_dedup_loss_collision_fields
+    blocker: ""
+  - id: AIT-T0158
+    status: lean_proved
+    lean_name: Circle.Applications.hybridFamilyQueryCandidateCollisionPairCount_pos_iff_collision
+    informal_statement: "For query-indexed sparse predecessor candidates, exact pair-collision count is positive if and only if the raw predecessor-candidate list has a duplicate-address collision."
+    formal_statement: "0 < Circle.Applications.hybridFamilyQueryCandidateCollisionPairCount n query window pathLength strides iff not Circle.Applications.hybridFamilyQueryCandidatesNoCollision n query window pathLength strides"
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0029", "COMMON-0047", "COMMON-0075", "COMMON-0079"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common", "S1"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_stride_family_certifier_cli.py::test_stride_family_certifier_cli_text_and_json
+        - tests/test_stride_family_certifier_cli.py::test_stride_family_certifier_cli_dedup_loss_collision_fields
+    blocker: ""
+  - id: AIT-T0159
+    status: lean_proved
+    lean_name: Circle.Applications.hybridFamilyLagCandidateDedupLoss_le_collisionPairCount
+    informal_statement: "For theorem-side sparse lag candidates, exact pair-collision count is at least the lag-candidate deduplication loss."
+    formal_statement: "Circle.Applications.hybridFamilyLagCandidateDedupLoss n window pathLength strides <= Circle.Applications.hybridFamilyLagCandidateCollisionPairCount n window pathLength strides"
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0029", "COMMON-0047", "COMMON-0075", "COMMON-0079"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common", "S1"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_stride_family_certifier_cli.py::test_stride_family_certifier_cli_text_and_json
+        - tests/test_stride_family_certifier_cli.py::test_stride_family_certifier_cli_dedup_loss_collision_fields
+    blocker: ""
+  - id: AIT-T0160
+    status: lean_proved
+    lean_name: Circle.Applications.hybridFamilyQueryCandidateDedupLoss_le_collisionPairCount
+    informal_statement: "For query-indexed sparse predecessor candidates, exact pair-collision count is at least the query-candidate deduplication loss."
+    formal_statement: "Circle.Applications.hybridFamilyQueryCandidateDedupLoss n query window pathLength strides <= Circle.Applications.hybridFamilyQueryCandidateCollisionPairCount n query window pathLength strides"
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0029", "COMMON-0047", "COMMON-0075", "COMMON-0079"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common", "S1"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_stride_family_certifier_cli.py::test_stride_family_certifier_cli_text_and_json
+        - tests/test_stride_family_certifier_cli.py::test_stride_family_certifier_cli_dedup_loss_collision_fields
+    blocker: ""
+  - id: AIT-T0161
+    status: lean_proved
+    lean_name: Circle.Applications.hybridFamilyFirstUncoveredLag_eq_some_window_lt
+    informal_statement: "For a local-window plus stride-family sparse-attention plan, any reported first uncovered lag is strictly beyond the current local window."
+    formal_statement: "forall {n window pathLength lag : Nat} {strides : List Nat}, Circle.Applications.hybridFamilyFirstUncoveredLag n window pathLength strides = some lag -> window < lag"
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0029", "COMMON-0047", "COMMON-0075", "COMMON-0079"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common", "S1"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_stride_family_certifier_cli.py::test_stride_family_certifier_cli_text_and_json
+        - tests/test_stride_family_certifier_cli.py::test_stride_family_certifier_cli_first_gap_repair_fields
+    blocker: ""
+  - id: AIT-T0162
+    status: lean_proved
+    lean_name: Circle.Applications.hybridFamilyFirstUncoveredLag_eq_some_repair_window_reaches
+    informal_statement: "For a reported first uncovered lag, raising the local window to that lag makes that specific lag reachable locally; this is a first-gap repair certificate, not a proof that the full plan becomes complete."
+    formal_statement: "forall {n window pathLength lag : Nat} {strides : List Nat}, Circle.Applications.hybridFamilyFirstUncoveredLag n window pathLength strides = some lag -> Circle.Applications.hybridFamilyLagReach n lag pathLength lag strides"
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0029", "COMMON-0047", "COMMON-0075", "COMMON-0079"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common", "S1"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_stride_family_certifier_cli.py::test_stride_family_certifier_cli_text_and_json
+        - tests/test_stride_family_certifier_cli.py::test_stride_family_certifier_cli_first_gap_repair_fields
+    blocker: ""
+  - id: AIT-T0163
+    status: lean_proved
+    lean_name: Circle.Applications.not_hybridFamilyCoversContext_firstGapRepair_default_120_5_3_7_13
+    informal_statement: "For the default sparse-attention row, raising the local window from 4 to the reported first gap 5 reaches that first gap but still does not give complete context coverage."
+    formal_statement: "not Circle.Applications.hybridFamilyCoversContext 120 5 3 [7, 13]"
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0029", "COMMON-0047", "COMMON-0075", "COMMON-0079"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common", "S1"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_stride_family_certifier_cli.py::test_stride_family_certifier_cli_text_and_json
+        - tests/test_stride_family_certifier_cli.py::test_stride_family_certifier_cli_first_gap_repair_fields
+        - tests/test_circle_ai_contract_consumer.py::test_consumer_digest_exposes_sparse_first_gap_repair_fields
+    blocker: ""
+  - id: AIT-T0164
+    status: lean_proved
+    lean_name: Circle.Applications.hybridFamilyFirstUncoveredLag_eq_some_repair_window_reaches_threshold_iff_last_lag
+    informal_statement: "For any reported first uncovered lag, using that lag as the repair window reaches the dense-local complete-coverage threshold exactly when the first gap is the final positive in-context lag."
+    formal_statement: "forall {n window pathLength lag : Nat} {strides : List Nat}, Circle.Applications.hybridFamilyFirstUncoveredLag n window pathLength strides = some lag -> (n - 1 <= lag <-> lag = n - 1)"
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0029", "COMMON-0047", "COMMON-0075", "COMMON-0079"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common", "S1"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_stride_family_certifier_cli.py::test_stride_family_certifier_cli_first_gap_repair_fields
+        - tests/test_circle_ai_contract_consumer.py::test_consumer_digest_exposes_sparse_first_gap_repair_fields
+    blocker: ""
+  - id: AIT-T0165
+    status: lean_proved
+    lean_name: Circle.Applications.hybridFamilyFirstUncoveredLag_eq_some_last_lag_repair_coversContext
+    informal_statement: "If the first reported uncovered lag is the final positive in-context lag, then raising the local window to that lag certifies complete context coverage by the dense-local threshold."
+    formal_statement: "forall {n window pathLength lag : Nat} {strides : List Nat}, Circle.Applications.hybridFamilyFirstUncoveredLag n window pathLength strides = some lag -> lag = n - 1 -> Circle.Applications.hybridFamilyCoversContext n lag pathLength strides"
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0029", "COMMON-0047", "COMMON-0075", "COMMON-0079"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common", "S1"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_stride_family_certifier_cli.py::test_stride_family_certifier_cli_first_gap_repair_fields
+        - tests/test_circle_ai_contract_consumer.py::test_consumer_digest_exposes_sparse_first_gap_repair_fields
+    blocker: ""
+  - id: AIT-T0166
+    status: lean_proved
+    lean_name: Circle.Applications.hybridFamilyLagGap_firstIntervalRepair_default_120_6_3_7_13_lag8
+    informal_statement: "For the default sparse-attention row, raising the local window from 4 to the first uncovered interval end 6 still leaves lag 8 uncovered."
+    formal_statement: "not Circle.Applications.hybridFamilyLagReach 120 6 3 8 [7, 13]"
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0029", "COMMON-0047", "COMMON-0075", "COMMON-0079"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common", "S1"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_stride_family_certifier_cli.py::test_stride_family_certifier_cli_text_and_json
+        - tests/test_stride_family_certifier_cli.py::test_stride_family_certifier_cli_first_gap_repair_fields
+        - tests/test_circle_ai_contract_consumer.py::test_consumer_digest_exposes_sparse_first_gap_repair_fields
+    blocker: ""
+  - id: AIT-T0167
+    status: lean_proved
+    lean_name: Circle.Applications.not_hybridFamilyCoversContext_firstIntervalRepair_default_120_6_3_7_13
+    informal_statement: "For the default sparse-attention row, repairing only the first uncovered interval by raising the local window to 6 does not certify complete context coverage."
+    formal_statement: "not Circle.Applications.hybridFamilyCoversContext 120 6 3 [7, 13]"
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0029", "COMMON-0047", "COMMON-0075", "COMMON-0079"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common", "S1"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_stride_family_certifier_cli.py::test_stride_family_certifier_cli_text_and_json
+        - tests/test_stride_family_certifier_cli.py::test_stride_family_certifier_cli_first_gap_repair_fields
+        - tests/test_circle_ai_contract_consumer.py::test_consumer_digest_exposes_sparse_first_gap_repair_fields
+    blocker: ""
+  - id: AIT-T0168
+    status: lean_proved
+    lean_name: Circle.Applications.hybridFamilyLagGap_default_120_window_lt_119_3_7_13_lag119
+    informal_statement: "For the default sparse-attention row, lag 119 remains a concrete gap for every local window strictly below 119."
+    formal_statement: "forall {window : Nat}, window < 119 -> not Circle.Applications.hybridFamilyLagReach 120 window 3 119 [7, 13]"
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0029", "COMMON-0047", "COMMON-0075", "COMMON-0079"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common", "S1"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_stride_family_certifier_cli.py::test_stride_family_certifier_cli_text_and_json
+        - tests/test_stride_family_certifier_cli.py::test_stride_family_certifier_cli_first_gap_repair_fields
+        - tests/test_circle_ai_contract_consumer.py::test_consumer_digest_exposes_sparse_first_gap_repair_fields
+    blocker: ""
+  - id: AIT-T0169
+    status: lean_proved
+    lean_name: Circle.Applications.not_hybridFamilyCoversContext_default_120_window_lt_119_3_7_13
+    informal_statement: "For the default sparse-attention row, no local window below 119 certifies complete context coverage."
+    formal_statement: "forall {window : Nat}, window < 119 -> not Circle.Applications.hybridFamilyCoversContext 120 window 3 [7, 13]"
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0029", "COMMON-0047", "COMMON-0075", "COMMON-0079"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common", "S1"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_stride_family_certifier_cli.py::test_stride_family_certifier_cli_text_and_json
+        - tests/test_stride_family_certifier_cli.py::test_stride_family_certifier_cli_first_gap_repair_fields
+        - tests/test_circle_ai_contract_consumer.py::test_consumer_digest_exposes_sparse_first_gap_repair_fields
+    blocker: ""
+  - id: AIT-T0170
+    status: lean_proved
+    lean_name: Circle.Applications.hybridFamilyCoversContext_default_120_iff_119_le_window_3_7_13
+    informal_statement: "For the default C_120 sparse-attention row, complete positive-lag coverage holds exactly when the local window is at least 119."
+    formal_statement: "forall {window : Nat}, Circle.Applications.hybridFamilyCoversContext 120 window 3 [7, 13] iff 119 <= window"
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0029", "COMMON-0047", "COMMON-0075", "COMMON-0079"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common", "S1"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_stride_family_certifier_cli.py::test_stride_family_certifier_cli_text_and_json
+        - tests/test_stride_family_certifier_cli.py::test_stride_family_certifier_cli_first_gap_repair_fields
+        - tests/test_circle_ai_contract_consumer.py::test_consumer_digest_exposes_sparse_first_gap_repair_fields
+    blocker: ""
+  - id: AIT-T0171
+    status: lean_proved
+    lean_name: Circle.Applications.hybridFamilyIntervalRepairWindow_reaches_interval
+    informal_statement: "For any reported uncovered-lag interval, raising the local window to the interval endpoint reaches every lag in that target interval locally."
+    formal_statement: "forall {n pathLength start stop : Nat} {strides : List Nat}, 1 <= start -> forall lag, lag in List.range' start (stop + 1 - start) -> Circle.Applications.hybridFamilyLagReach n stop pathLength lag strides"
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0029", "COMMON-0047", "COMMON-0075", "COMMON-0079"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common", "S1"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_stride_family_certifier_cli.py::test_stride_family_certifier_cli_text_and_json
+        - tests/test_stride_family_certifier_cli.py::test_stride_family_certifier_cli_first_gap_repair_fields
+        - tests/test_circle_ai_contract_consumer.py::test_consumer_digest_exposes_sparse_first_gap_repair_fields
+    blocker: ""
   - id: AIT-T0004
     status: lean_proved
     lean_name: Circle.Applications.rope_relative_shift_invariant
@@ -9196,5 +10496,80 @@ theorems:
       no_sorry_required: true
       python_property_tests:
         - sidecars/PAPER_GEN_01_SEED_RULE_PROVENANCE/python/test_seed_rule_provenance_examples.py::test_bounded_generator_search_reports_scope_and_exact_candidates
+    blocker: ""
+  - id: GEN-T0046
+    status: lean_proved
+    lean_name: Circle.Generative.generatorStorageComparison_shorter_iff_positive_saving
+    informal_statement: "For a finite generator-storage comparison, the generator is shorter exactly when the natural-number storage saving is positive."
+    formal_statement: "For any GeneratorStorageComparison, generatorShorter iff 0 < storageSaving."
+    dictionary_dependencies: ["COMMON-0064", "COMMON-0065", "COMMON-0066"]
+    paper_refs: ["papers/generative/PAPER_GEN_01_SEED_RULE_PROVENANCE.md#theorem-spine"]
+    imports_allowed: ["Generative"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_GEN_01_SEED_RULE_PROVENANCE/python/test_seed_rule_provenance_examples.py::test_generator_comparison_has_positive_and_negative_cases
+        - tests/test_theseus_hive_ai_contracts.py::test_seed_rule_contract_is_exact_regeneration_not_compression_claim
+    blocker: ""
+  - id: GEN-T0047
+    status: lean_proved
+    lean_name: Circle.Generative.generatorStorageComparison_storageSaving_add_generatorLength
+    informal_statement: "For a finite generator-storage comparison with a shorter generator, the storage saving plus generator length recovers the explicit length."
+    formal_statement: "For any GeneratorStorageComparison, generatorShorter implies storageSaving + generatorLength = explicitLength."
+    dictionary_dependencies: ["COMMON-0064", "COMMON-0065", "COMMON-0066"]
+    paper_refs: ["papers/generative/PAPER_GEN_01_SEED_RULE_PROVENANCE.md#theorem-spine"]
+    imports_allowed: ["Generative"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_GEN_01_SEED_RULE_PROVENANCE/python/test_seed_rule_provenance_examples.py::test_generator_comparison_has_positive_and_negative_cases
+        - tests/test_theseus_hive_ai_contracts.py::test_seed_rule_contract_is_exact_regeneration_not_compression_claim
+    blocker: ""
+  - id: GEN-T0048
+    status: lean_proved
+    lean_name: Circle.Generative.finiteCircle128StorageComparison_generatorShorter
+    informal_statement: "The public finite-circle-128 seed-rule fixture has a shorter generator description than its explicit object description under the declared length metric."
+    formal_statement: "finiteCircle128StorageComparison.generatorShorter."
+    dictionary_dependencies: ["CC-0001", "CC-0002", "COMMON-0064", "COMMON-0065", "COMMON-0066"]
+    paper_refs: ["papers/generative/PAPER_GEN_01_SEED_RULE_PROVENANCE.md#theorem-spine"]
+    imports_allowed: ["Generative"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_GEN_01_SEED_RULE_PROVENANCE/python/test_seed_rule_provenance_examples.py::test_generator_comparison_has_positive_and_negative_cases
+        - tests/test_circle_ai_contract_pack.py::test_generic_contract_pack_is_standalone_with_compatibility_aliases
+    blocker: ""
+  - id: GEN-T0049
+    status: lean_proved
+    lean_name: Circle.Generative.finiteCircle128StorageComparison_storageSaving
+    informal_statement: "The public finite-circle-128 seed-rule fixture has storage saving 71 under the declared length metric."
+    formal_statement: "finiteCircle128StorageComparison.storageSaving = 71."
+    dictionary_dependencies: ["CC-0001", "CC-0002", "COMMON-0064", "COMMON-0065", "COMMON-0066"]
+    paper_refs: ["papers/generative/PAPER_GEN_01_SEED_RULE_PROVENANCE.md#theorem-spine"]
+    imports_allowed: ["Generative"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_GEN_01_SEED_RULE_PROVENANCE/python/test_seed_rule_provenance_examples.py::test_generator_comparison_has_positive_and_negative_cases
+        - tests/test_circle_ai_contract_pack.py::test_generic_contract_pack_is_standalone_with_compatibility_aliases
+    blocker: ""
+  - id: GEN-T0050
+    status: lean_proved
+    lean_name: Circle.Generative.finiteCircle128StorageComparison_positive_saving
+    informal_statement: "The public finite-circle-128 seed-rule fixture has positive storage saving under the declared length metric."
+    formal_statement: "0 < finiteCircle128StorageComparison.storageSaving."
+    dictionary_dependencies: ["CC-0001", "CC-0002", "COMMON-0064", "COMMON-0065", "COMMON-0066"]
+    paper_refs: ["papers/generative/PAPER_GEN_01_SEED_RULE_PROVENANCE.md#theorem-spine"]
+    imports_allowed: ["Generative"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - sidecars/PAPER_GEN_01_SEED_RULE_PROVENANCE/python/test_seed_rule_provenance_examples.py::test_generator_comparison_has_positive_and_negative_cases
+        - tests/test_circle_ai_contract_pack.py::test_generic_contract_pack_is_standalone_with_compatibility_aliases
     blocker: ""
 warnings: []

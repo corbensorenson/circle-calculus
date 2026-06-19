@@ -76,6 +76,24 @@ CORE_COVERAGE_THEOREM_IDS = (
     "AIT-T0138",
     "AIT-T0145",
     "AIT-T0146",
+    "AIT-T0147",
+    "AIT-T0148",
+    "AIT-T0149",
+    "AIT-T0150",
+    "AIT-T0151",
+    "AIT-T0152",
+    "AIT-T0153",
+    "AIT-T0154",
+    "AIT-T0155",
+    "AIT-T0156",
+    "AIT-T0157",
+    "AIT-T0158",
+    "AIT-T0159",
+    "AIT-T0160",
+    "AIT-T0161",
+    "AIT-T0162",
+    "AIT-T0164",
+    "AIT-T0165",
 )
 
 PLANNER_STYLE_SPECS: tuple[dict[str, Any], ...] = (
@@ -182,6 +200,61 @@ def compact_planner_certificate(spec: dict[str, Any]) -> dict[str, Any]:
             certificate.no_first_uncovered_lag_matches_coverage_complete
         ),
         "first_uncovered_lag_gap_witness": certificate.first_uncovered_lag_gap_witness,
+        "first_uncovered_lag_local_window_shortfall": (
+            certificate.first_uncovered_lag_local_window_shortfall
+        ),
+        "first_uncovered_lag_repair_window": (
+            certificate.first_uncovered_lag_repair_window
+        ),
+        "first_uncovered_lag_exceeds_local_window": (
+            certificate.first_uncovered_lag_exceeds_local_window
+        ),
+        "first_uncovered_lag_repair_window_reaches": (
+            certificate.first_uncovered_lag_repair_window_reaches
+        ),
+        "first_uncovered_lag_repair_window_covers_context": (
+            certificate.first_uncovered_lag_repair_window_covers_context
+        ),
+        "first_gap_repair_window_is_final_positive_lag": (
+            certificate.first_gap_repair_window_is_final_positive_lag
+        ),
+        "first_gap_repair_threshold_matches_final_lag": (
+            certificate.first_gap_repair_threshold_matches_final_lag
+        ),
+        "local_window_complete_coverage_threshold": (
+            certificate.local_window_complete_coverage_threshold
+        ),
+        "local_window_complete_coverage_shortfall": (
+            certificate.local_window_complete_coverage_shortfall
+        ),
+        "local_window_reaches_complete_coverage_threshold": (
+            certificate.local_window_reaches_complete_coverage_threshold
+        ),
+        "local_window_threshold_certifies_complete": (
+            certificate.local_window_threshold_certifies_complete
+        ),
+        "local_window_complete_threshold_is_exact_local_minimum": (
+            certificate.local_window_complete_threshold_is_exact_local_minimum
+        ),
+        "complete_repair_window": certificate.complete_repair_window,
+        "complete_repair_window_additional_local_slots": (
+            certificate.complete_repair_window_additional_local_slots
+        ),
+        "complete_repair_window_covers_context": (
+            certificate.complete_repair_window_covers_context
+        ),
+        "complete_repair_window_uses_dense_threshold": (
+            certificate.complete_repair_window_uses_dense_threshold
+        ),
+        "complete_repair_window_minimal_for_declared_stride_family": (
+            certificate.complete_repair_window_minimal_for_declared_stride_family
+        ),
+        "complete_repair_window_minimal_witness_lag": (
+            certificate.complete_repair_window_minimal_witness_lag
+        ),
+        "first_gap_repair_window_reaches_complete_threshold": (
+            certificate.first_gap_repair_window_reaches_complete_threshold
+        ),
         "positive_lag_count": certificate.positive_lag_count,
         "covered_uncovered_count_sum": certificate.covered_uncovered_count_sum,
         "covered_uncovered_count_partition": certificate.covered_uncovered_count_partition,
@@ -205,8 +278,32 @@ def compact_planner_certificate(spec: dict[str, Any]) -> dict[str, Any]:
         "theorem_side_lag_candidate_dedup_loss": (
             certificate.theorem_side_lag_candidate_dedup_loss
         ),
+        "theorem_side_lag_candidate_collision_pair_count": (
+            certificate.theorem_side_lag_candidate_collision_pair_count
+        ),
+        "lag_collision_pair_count_zero_matches_no_collision": (
+            certificate.lag_collision_pair_count_zero_matches_no_collision
+        ),
+        "lag_collision_pair_count_positive_matches_collision": (
+            certificate.lag_collision_pair_count_positive_matches_collision
+        ),
+        "lag_collision_pair_count_bounds_dedup_loss": (
+            certificate.lag_collision_pair_count_bounds_dedup_loss
+        ),
+        "lag_collision_pair_count_excess_over_dedup_loss": (
+            certificate.lag_collision_pair_count_excess_over_dedup_loss
+        ),
+        "theorem_side_lag_candidate_dedup_loss_positive": (
+            certificate.theorem_side_lag_candidate_dedup_loss_positive
+        ),
         "lag_dedup_loss_zero_matches_no_collision": (
             certificate.lag_dedup_loss_zero_matches_no_collision
+        ),
+        "lag_dedup_loss_positive_matches_collision": (
+            certificate.lag_dedup_loss_positive_matches_collision
+        ),
+        "lag_dedup_loss_accounting_matches_raw": (
+            certificate.lag_dedup_loss_accounting_matches_raw
         ),
         "theorem_side_lag_candidates_positive_in_context": (
             certificate.theorem_side_lag_candidates_positive_in_context
@@ -304,8 +401,32 @@ def compact_planner_certificate(spec: dict[str, Any]) -> dict[str, Any]:
         "theorem_side_query_candidate_dedup_loss": (
             certificate.theorem_side_query_candidate_dedup_loss
         ),
+        "theorem_side_query_candidate_collision_pair_count": (
+            certificate.theorem_side_query_candidate_collision_pair_count
+        ),
+        "query_collision_pair_count_zero_matches_no_collision": (
+            certificate.query_collision_pair_count_zero_matches_no_collision
+        ),
+        "query_collision_pair_count_positive_matches_collision": (
+            certificate.query_collision_pair_count_positive_matches_collision
+        ),
+        "query_collision_pair_count_bounds_dedup_loss": (
+            certificate.query_collision_pair_count_bounds_dedup_loss
+        ),
+        "query_collision_pair_count_excess_over_dedup_loss": (
+            certificate.query_collision_pair_count_excess_over_dedup_loss
+        ),
+        "theorem_side_query_candidate_dedup_loss_positive": (
+            certificate.theorem_side_query_candidate_dedup_loss_positive
+        ),
         "query_dedup_loss_zero_matches_no_collision": (
             certificate.query_dedup_loss_zero_matches_no_collision
+        ),
+        "query_dedup_loss_positive_matches_collision": (
+            certificate.query_dedup_loss_positive_matches_collision
+        ),
+        "query_dedup_loss_accounting_matches_raw": (
+            certificate.query_dedup_loss_accounting_matches_raw
         ),
         "raw_budget_survives_query_dedup": (
             certificate.theorem_side_query_candidates_no_collision
@@ -456,9 +577,33 @@ def text_results(payload: dict[str, Any]) -> str:
             f"lag_dedup_loss={row['theorem_side_lag_candidate_dedup_loss']} "
             "lag_dedup_loss_zero_iff_no_collision="
             f"{row['lag_dedup_loss_zero_matches_no_collision']} "
+            "lag_dedup_loss_positive="
+            f"{row['theorem_side_lag_candidate_dedup_loss_positive']} "
+            "lag_dedup_loss_positive_iff_collision="
+            f"{row['lag_dedup_loss_positive_matches_collision']} "
+            "lag_unique_plus_loss_eq_raw="
+            f"{row['lag_dedup_loss_accounting_matches_raw']} "
+            "lag_collision_pair_count="
+            f"{row['theorem_side_lag_candidate_collision_pair_count']} "
+            "lag_collision_pair_zero_iff_no_collision="
+            f"{row['lag_collision_pair_count_zero_matches_no_collision']} "
+            "lag_collision_pair_positive_iff_collision="
+            f"{row['lag_collision_pair_count_positive_matches_collision']} "
             f"query_dedup_loss={row['theorem_side_query_candidate_dedup_loss']} "
             "query_dedup_loss_zero_iff_no_collision="
             f"{row['query_dedup_loss_zero_matches_no_collision']} "
+            "query_dedup_loss_positive="
+            f"{row['theorem_side_query_candidate_dedup_loss_positive']} "
+            "query_dedup_loss_positive_iff_collision="
+            f"{row['query_dedup_loss_positive_matches_collision']} "
+            "query_unique_plus_loss_eq_raw="
+            f"{row['query_dedup_loss_accounting_matches_raw']} "
+            "query_collision_pair_count="
+            f"{row['theorem_side_query_candidate_collision_pair_count']} "
+            "query_collision_pair_zero_iff_no_collision="
+            f"{row['query_collision_pair_count_zero_matches_no_collision']} "
+            "query_collision_pair_positive_iff_collision="
+            f"{row['query_collision_pair_count_positive_matches_collision']} "
             f"raw_budget_survives_lag_dedup={row['raw_budget_survives_lag_dedup']} "
             f"raw_budget_survives_query_dedup={row['raw_budget_survives_query_dedup']} "
             f"fixture_theorem_ids={','.join(row['fixture_theorem_ids'])} "
@@ -496,6 +641,27 @@ def text_results(payload: dict[str, Any]) -> str:
         f"{certificate['no_first_uncovered_lag_matches_coverage_complete']} "
         "first_gap_semantic_miss="
         f"{certificate['first_uncovered_lag_gap_witness']} "
+        "first_gap_repair="
+        f"shortfall={certificate['first_uncovered_lag_local_window_shortfall']},"
+        f"window={certificate['first_uncovered_lag_repair_window']},"
+        f"reaches={certificate['first_uncovered_lag_repair_window_reaches']},"
+        f"covers_context={certificate['first_uncovered_lag_repair_window_covers_context']},"
+        "is_final_lag="
+        f"{certificate['first_gap_repair_window_is_final_positive_lag']},"
+        "threshold_iff_final_lag="
+        f"{certificate['first_gap_repair_threshold_matches_final_lag']} "
+        "local_complete_threshold="
+        f"{certificate['local_window_complete_coverage_threshold']} "
+        "local_complete_shortfall="
+        f"{certificate['local_window_complete_coverage_shortfall']} "
+        "local_threshold_reached="
+        f"{certificate['local_window_reaches_complete_coverage_threshold']} "
+        "threshold_certifies_complete="
+        f"{certificate['local_window_threshold_certifies_complete']} "
+        "exact_local_minimum="
+        f"{certificate['local_window_complete_threshold_is_exact_local_minimum']} "
+        "first_gap_repair_reaches_threshold="
+        f"{certificate['first_gap_repair_window_reaches_complete_threshold']} "
         "uncovered_count_witness="
         f"{certificate['uncovered_count_positive_matches_gap_witness']} "
         f"covered_count_shortfall={certificate['covered_count_shortfall']} "
@@ -517,12 +683,36 @@ def text_results(payload: dict[str, Any]) -> str:
         f"{certificate['theorem_side_lag_candidate_dedup_loss']} "
         "lag_dedup_loss_zero_iff_no_collision="
         f"{certificate['lag_dedup_loss_zero_matches_no_collision']} "
+        "lag_dedup_loss_positive="
+        f"{certificate['theorem_side_lag_candidate_dedup_loss_positive']} "
+        "lag_dedup_loss_positive_iff_collision="
+        f"{certificate['lag_dedup_loss_positive_matches_collision']} "
+        "lag_unique_plus_loss_eq_raw="
+        f"{certificate['lag_dedup_loss_accounting_matches_raw']} "
+        "lag_collision_pair_count="
+        f"{certificate['theorem_side_lag_candidate_collision_pair_count']} "
+        "lag_collision_pair_zero_iff_no_collision="
+        f"{certificate['lag_collision_pair_count_zero_matches_no_collision']} "
+        "lag_collision_pair_positive_iff_collision="
+        f"{certificate['lag_collision_pair_count_positive_matches_collision']} "
         "theorem_side_unique_query_candidate_count="
         f"{certificate['theorem_side_unique_query_candidate_count']} "
         "query_candidate_dedup_loss="
         f"{certificate['theorem_side_query_candidate_dedup_loss']} "
         "query_dedup_loss_zero_iff_no_collision="
         f"{certificate['query_dedup_loss_zero_matches_no_collision']} "
+        "query_dedup_loss_positive="
+        f"{certificate['theorem_side_query_candidate_dedup_loss_positive']} "
+        "query_dedup_loss_positive_iff_collision="
+        f"{certificate['query_dedup_loss_positive_matches_collision']} "
+        "query_unique_plus_loss_eq_raw="
+        f"{certificate['query_dedup_loss_accounting_matches_raw']} "
+        "query_collision_pair_count="
+        f"{certificate['theorem_side_query_candidate_collision_pair_count']} "
+        "query_collision_pair_zero_iff_no_collision="
+        f"{certificate['query_collision_pair_count_zero_matches_no_collision']} "
+        "query_collision_pair_positive_iff_collision="
+        f"{certificate['query_collision_pair_count_positive_matches_collision']} "
         "query_count_le_unique_lag_count="
         f"{certificate['theorem_side_query_count_le_unique_lag_count']} "
         "query_count_matches_unique_lag_count="
@@ -734,8 +924,8 @@ def markdown_results(payload: dict[str, Any]) -> str:
                 f"{result['average_full_candidate_count']:.3f} |"
             ),
             "",
-            "| Covered lag count | Uncovered lag count | First gap | First gap is head | No first gap iff complete | First gap is semantic miss | Count witness | Covered shortfall | Shortfall witness | Positive lags | Partition complete | Uncovered intervals | Candidate budget | Raw budget bound | Raw shortfall certifies incomplete | Unique lag candidates | Lag dedup loss | Lag loss zero iff no-collision | Candidate range | No-wrap sufficient | No-zero sufficient | Singleton period | Singleton period threshold | Singleton threshold matches no-zero | Unique count iff complete | Covered count = unique | Uncovered count formula | Unique lag shortfall certifies incomplete | Unique shortfall iff gap | Unique shortfall iff gap under period threshold | Deduplicated bound | Full-attention budget |",
-            "| ---: | ---: | ---: | --- | --- | --- | --- | --- | --- | ---: | --- | ---: | ---: | ---: | --- | ---: | ---: | --- | --- | --- | --- | ---: | --- | --- | --- | --- | --- | --- | --- | --- | ---: | ---: |",
+            "| Covered lag count | Uncovered lag count | First gap | First gap is head | No first gap iff complete | First gap is semantic miss | Count witness | Covered shortfall | Shortfall witness | Positive lags | Partition complete | Uncovered intervals | Candidate budget | Raw budget bound | Raw shortfall certifies incomplete | Unique lag candidates | Lag dedup loss | Lag loss zero iff no-collision | Lag loss positive | Lag loss positive iff collision | Lag unique+loss=raw | Candidate range | No-wrap sufficient | No-zero sufficient | Singleton period | Singleton period threshold | Singleton threshold matches no-zero | Unique count iff complete | Covered count = unique | Uncovered count formula | Unique lag shortfall certifies incomplete | Unique shortfall iff gap | Unique shortfall iff gap under period threshold | Deduplicated bound | Full-attention budget |",
+            "| ---: | ---: | ---: | --- | --- | --- | --- | --- | --- | ---: | --- | ---: | ---: | ---: | --- | ---: | ---: | --- | --- | --- | --- | --- | --- | --- | ---: | --- | --- | --- | --- | --- | --- | --- | --- | ---: | ---: |",
             (
                 f"| {certificate['covered_lag_count']} | "
                 f"{certificate['uncovered_lag_count']} | "
@@ -755,6 +945,9 @@ def markdown_results(payload: dict[str, Any]) -> str:
                 f"{certificate['theorem_side_unique_lag_candidate_count']} | "
                 f"{certificate['theorem_side_lag_candidate_dedup_loss']} | "
                 f"{certificate['lag_dedup_loss_zero_matches_no_collision']} | "
+                f"{certificate['theorem_side_lag_candidate_dedup_loss_positive']} | "
+                f"{certificate['lag_dedup_loss_positive_matches_collision']} | "
+                f"{certificate['lag_dedup_loss_accounting_matches_raw']} | "
                 f"{certificate['theorem_side_lag_candidates_positive_in_context']} | "
                 f"{certificate['no_wrap_separated_candidate_range_sufficient_condition']} | "
                 f"{certificate['no_zero_residue_candidate_range_sufficient_condition']} | "
@@ -771,8 +964,25 @@ def markdown_results(payload: dict[str, Any]) -> str:
                 f"{certificate['full_attention_budget']} |"
             ),
             "",
-            "| Coil residues no collision | Local/coil disjoint | Lag candidates no collision | Predecessor injective | Query candidates no collision | Query dedup loss | Query loss zero iff no-collision | Query count <= unique lag count | Query count = unique lag count | Query shortfall iff gap under candidate-range+injective | Query shortfall iff gap under no-wrap | Query shortfall iff gap under no-zero | Query shortfall iff gap under period threshold |",
-            "| --- | --- | --- | --- | --- | ---: | --- | --- | --- | --- | --- | --- | --- |",
+            "| First-gap local shortfall | First-gap repair window | Repair reaches first gap | Repair covers context | Repair is final positive lag | Threshold iff final lag | Complete local threshold | Complete local shortfall | Threshold reached | Threshold certifies complete | Exact local minimum | First-gap repair reaches threshold |",
+            "| ---: | ---: | --- | --- | --- | --- | ---: | ---: | --- | --- | --- | --- |",
+            (
+                f"| {certificate['first_uncovered_lag_local_window_shortfall']} | "
+                f"{certificate['first_uncovered_lag_repair_window']} | "
+                f"{certificate['first_uncovered_lag_repair_window_reaches']} | "
+                f"{certificate['first_uncovered_lag_repair_window_covers_context']} | "
+                f"{certificate['first_gap_repair_window_is_final_positive_lag']} | "
+                f"{certificate['first_gap_repair_threshold_matches_final_lag']} | "
+                f"{certificate['local_window_complete_coverage_threshold']} | "
+                f"{certificate['local_window_complete_coverage_shortfall']} | "
+                f"{certificate['local_window_reaches_complete_coverage_threshold']} | "
+                f"{certificate['local_window_threshold_certifies_complete']} | "
+                f"{certificate['local_window_complete_threshold_is_exact_local_minimum']} | "
+                f"{certificate['first_gap_repair_window_reaches_complete_threshold']} |"
+            ),
+            "",
+            "| Coil residues no collision | Local/coil disjoint | Lag candidates no collision | Predecessor injective | Query candidates no collision | Query dedup loss | Query loss zero iff no-collision | Query loss positive | Query loss positive iff collision | Query unique+loss=raw | Query count <= unique lag count | Query count = unique lag count | Query shortfall iff gap under candidate-range+injective | Query shortfall iff gap under no-wrap | Query shortfall iff gap under no-zero | Query shortfall iff gap under period threshold |",
+            "| --- | --- | --- | --- | --- | ---: | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |",
             (
                 f"| {certificate['theorem_side_coil_residues_no_collision']} | "
                 f"{certificate['theorem_side_local_coil_disjoint']} | "
@@ -781,6 +991,9 @@ def markdown_results(payload: dict[str, Any]) -> str:
                 f"{certificate['theorem_side_query_candidates_no_collision']} | "
                 f"{certificate['theorem_side_query_candidate_dedup_loss']} | "
                 f"{certificate['query_dedup_loss_zero_matches_no_collision']} | "
+                f"{certificate['theorem_side_query_candidate_dedup_loss_positive']} | "
+                f"{certificate['query_dedup_loss_positive_matches_collision']} | "
+                f"{certificate['query_dedup_loss_accounting_matches_raw']} | "
                 f"{certificate['theorem_side_query_count_le_unique_lag_count']} | "
                 f"{certificate['theorem_side_query_count_matches_unique_lag_count']} | "
                 f"{certificate['unique_query_count_shortfall_matches_gap_witness_under_candidate_range_and_injective']} | "
@@ -838,8 +1051,8 @@ def markdown_results(payload: dict[str, Any]) -> str:
             "",
             "Complete sparse-family fixture:",
             "",
-            "| Context | Local window | Path length | Strides | Coverage complete | Uncovered lags | First gap | First gap is head | No first gap iff complete | First gap is semantic miss | Count witness | Covered shortfall | Shortfall witness | Raw budget | Raw shortfall certifies incomplete | Unique lag candidates | Lag dedup loss | Lag loss zero iff no-collision | Candidate range | No-wrap sufficient | No-zero sufficient | Singleton period | Singleton period threshold | Singleton threshold matches no-zero | Unique count iff complete | Covered count = unique | Uncovered count formula | Unique lag shortfall certifies incomplete | Unique shortfall iff gap | Unique shortfall iff gap under period threshold | Unique query candidates | Query dedup loss | Query loss zero iff no-collision | Query <= unique lag | Query = unique lag | Query shortfall iff gap | Query no-wrap iff | Query no-zero iff | Query period-threshold iff | Fixture theorem ids |",
-            "| ---: | ---: | ---: | --- | --- | ---: | --- | --- | --- | --- | --- | --- | --- | ---: | --- | ---: | ---: | --- | --- | --- | --- | ---: | --- | --- | --- | --- | --- | --- | --- | --- | ---: | ---: | --- | --- | --- | --- | --- | --- | --- | --- |",
+            "| Context | Local window | Path length | Strides | Coverage complete | Uncovered lags | First gap | First gap is head | No first gap iff complete | First gap is semantic miss | Count witness | Covered shortfall | Shortfall witness | Raw budget | Raw shortfall certifies incomplete | Unique lag candidates | Lag dedup loss | Lag loss zero iff no-collision | Lag loss positive | Lag loss positive iff collision | Lag unique+loss=raw | Candidate range | No-wrap sufficient | No-zero sufficient | Singleton period | Singleton period threshold | Singleton threshold matches no-zero | Unique count iff complete | Covered count = unique | Uncovered count formula | Unique lag shortfall certifies incomplete | Unique shortfall iff gap | Unique shortfall iff gap under period threshold | Unique query candidates | Query dedup loss | Query loss zero iff no-collision | Query loss positive | Query loss positive iff collision | Query unique+loss=raw | Query <= unique lag | Query = unique lag | Query shortfall iff gap | Query no-wrap iff | Query no-zero iff | Query period-threshold iff | Fixture theorem ids |",
+            "| ---: | ---: | ---: | --- | --- | ---: | --- | --- | --- | --- | --- | --- | --- | ---: | --- | ---: | ---: | --- | --- | --- | --- | --- | --- | --- | ---: | --- | --- | --- | --- | --- | --- | --- | --- | ---: | ---: | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |",
             (
                 f"| {complete['sequence_length']} | {complete['local_window']} | "
                 f"{complete['path_length']} | "
@@ -858,6 +1071,9 @@ def markdown_results(payload: dict[str, Any]) -> str:
                 f"{complete['theorem_side_unique_lag_candidate_count']} | "
                 f"{complete['theorem_side_lag_candidate_dedup_loss']} | "
                 f"{complete['lag_dedup_loss_zero_matches_no_collision']} | "
+                f"{complete['theorem_side_lag_candidate_dedup_loss_positive']} | "
+                f"{complete['lag_dedup_loss_positive_matches_collision']} | "
+                f"{complete['lag_dedup_loss_accounting_matches_raw']} | "
                 f"{complete['theorem_side_lag_candidates_positive_in_context']} | "
                 f"{complete['no_wrap_separated_candidate_range_sufficient_condition']} | "
                 f"{complete['no_zero_residue_candidate_range_sufficient_condition']} | "
@@ -873,6 +1089,9 @@ def markdown_results(payload: dict[str, Any]) -> str:
                 f"{complete['theorem_side_unique_query_candidate_count']} | "
                 f"{complete['theorem_side_query_candidate_dedup_loss']} | "
                 f"{complete['query_dedup_loss_zero_matches_no_collision']} | "
+                f"{complete['theorem_side_query_candidate_dedup_loss_positive']} | "
+                f"{complete['query_dedup_loss_positive_matches_collision']} | "
+                f"{complete['query_dedup_loss_accounting_matches_raw']} | "
                 f"{complete['theorem_side_query_count_le_unique_lag_count']} | "
                 f"{complete['theorem_side_query_count_matches_unique_lag_count']} | "
                 f"{complete['unique_query_count_shortfall_matches_gap_witness_under_candidate_range_and_injective']} | "
@@ -890,8 +1109,8 @@ def markdown_results(payload: dict[str, Any]) -> str:
             "",
             "Planner-style declared plans:",
             "",
-            "| Plan | Context | Local window | Path length | Strides | Complete | Coverage | Candidate budget | Budget ratio | Covered+uncovered | Positive lags | Uncovered lags | First gap | First gap is head | No first gap iff complete | First gap is semantic miss | Count witness | Covered shortfall | Shortfall witness | Gap intervals | Raw shortfall certifies incomplete | Candidate range | No-wrap sufficient | No-zero sufficient | Singleton period | Singleton period threshold | Singleton threshold matches no-zero | Unique count iff complete | Covered count = unique | Uncovered count formula | Unique lag shortfall certifies incomplete | Unique shortfall iff gap | Unique shortfall iff gap under period threshold | Lag dedup loss | Lag loss zero iff no-collision | Query dedup loss | Query loss zero iff no-collision | Raw budget survives dedup | Fixture theorem ids |",
-            "| --- | ---: | ---: | ---: | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | --- | --- | --- | --- | --- | --- | --- | ---: | --- | --- | --- | --- | ---: | --- | --- | --- | --- | --- | --- | --- | --- | ---: | --- | ---: | --- | --- | --- |",
+            "| Plan | Context | Local window | Path length | Strides | Complete | Coverage | Candidate budget | Budget ratio | Covered+uncovered | Positive lags | Uncovered lags | First gap | First gap is head | No first gap iff complete | First gap is semantic miss | Count witness | Covered shortfall | Shortfall witness | Gap intervals | Raw shortfall certifies incomplete | Candidate range | No-wrap sufficient | No-zero sufficient | Singleton period | Singleton period threshold | Singleton threshold matches no-zero | Unique count iff complete | Covered count = unique | Uncovered count formula | Unique lag shortfall certifies incomplete | Unique shortfall iff gap | Unique shortfall iff gap under period threshold | Lag dedup loss | Lag collision pairs | Lag pair zero iff no-collision | Lag pair positive iff collision | Lag loss zero iff no-collision | Lag loss positive | Lag loss positive iff collision | Lag unique+loss=raw | Query dedup loss | Query collision pairs | Query pair zero iff no-collision | Query pair positive iff collision | Query loss zero iff no-collision | Query loss positive | Query loss positive iff collision | Query unique+loss=raw | Raw budget survives dedup | Fixture theorem ids |",
+            "| --- | ---: | ---: | ---: | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | --- | --- | --- | --- | --- | --- | --- | ---: | --- | --- | --- | --- | ---: | --- | --- | --- | --- | --- | --- | --- | --- | ---: | ---: | --- | --- | --- | --- | --- | --- | ---: | ---: | --- | --- | --- | --- | --- | --- | --- |",
             *(
                 (
                     f"| {row['plan_id']} | {row['sequence_length']} | "
@@ -926,9 +1145,21 @@ def markdown_results(payload: dict[str, Any]) -> str:
                     f"{row['unique_lag_count_shortfall_matches_gap_witness_under_candidate_range']} | "
                     f"{row['unique_lag_count_shortfall_matches_gap_witness_under_period_threshold']} | "
                     f"{row['theorem_side_lag_candidate_dedup_loss']} | "
+                    f"{row['theorem_side_lag_candidate_collision_pair_count']} | "
+                    f"{row['lag_collision_pair_count_zero_matches_no_collision']} | "
+                    f"{row['lag_collision_pair_count_positive_matches_collision']} | "
                     f"{row['lag_dedup_loss_zero_matches_no_collision']} | "
+                    f"{row['theorem_side_lag_candidate_dedup_loss_positive']} | "
+                    f"{row['lag_dedup_loss_positive_matches_collision']} | "
+                    f"{row['lag_dedup_loss_accounting_matches_raw']} | "
                     f"{row['theorem_side_query_candidate_dedup_loss']} | "
+                    f"{row['theorem_side_query_candidate_collision_pair_count']} | "
+                    f"{row['query_collision_pair_count_zero_matches_no_collision']} | "
+                    f"{row['query_collision_pair_count_positive_matches_collision']} | "
                     f"{row['query_dedup_loss_zero_matches_no_collision']} | "
+                    f"{row['theorem_side_query_candidate_dedup_loss_positive']} | "
+                    f"{row['query_dedup_loss_positive_matches_collision']} | "
+                    f"{row['query_dedup_loss_accounting_matches_raw']} | "
                     f"lag={row['raw_budget_survives_lag_dedup']}, "
                     f"query={row['raw_budget_survives_query_dedup']} | "
                     f"{', '.join(row['fixture_theorem_ids'])} |"

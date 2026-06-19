@@ -28,7 +28,7 @@ In plain terms — and stated at its true altitude — the proved core is **clea
 - **A finite sphere ladder (S0–S7):** suspension cell-counts and the Euler-characteristic rule `χ → 2 − χ`, the real-quaternion algebra spine, bounded Hopf-coordinate facts, and a bounded Cayley–Dickson (octonion) model including explicit non-associativity.
 - **Classical bridges:** Lean-checked *wrappers* around established mathlib results (Erdős–Ginzburg–Ziv, Cauchy–Davenport, Roth, and others), restated in Circle-facing language. These are not new theorems and not progress on open problems — they are labeled as wrappers.
 - **Finite "application" lanes (physics / AI / generative / compute):** these are deliberately modest, honestly named finite models. A "Wilson-loop invariance" theorem here is the fact that a sum of `ZMod n` phases around a closed loop is gauge-independent; an "AI memory-slot" theorem is the fact that an index stays below its bank size and is unchanged by adding a full period. They are correct, useful for keeping the prose honest, and **not** claims about physics or about model quality.
-- **Proof-carrying AI contracts:** the active AI lane now targets checked architecture facts: RoPE position distinguishability, KV-cache ring-buffer safety, sparse-attention coverage and gap witnesses, recurrence schedules, and circulant/block-cyclic mixer laws. The flagship public artifact is the RoPE position-distinguishability certifier, followed by KV-cache ring-buffer and sparse-attention coverage contracts; none is a claim that Circle Calculus improves model quality, context length, speed, or memory.
+- **Proof-carrying AI contracts:** the active AI lane now targets checked architecture facts: RoPE position distinguishability, KV-cache ring-buffer safety with sink-window policy, sparse-attention coverage and gap witnesses, recurrence schedules, and circulant/block-cyclic mixer laws. The flagship public artifact is the RoPE position-distinguishability certifier, followed by KV-cache ring-buffer and sparse-attention coverage contracts; none is a claim that Circle Calculus improves model quality, context length, speed, or memory.
 
 The exhaustive, per-theorem list lives where it belongs — in the manifests (`manifests/theorem_manifest.yaml` and `manifests/dimensions/`, `manifests/applications/`) — and is rendered, with live status, on the Living Book [Theorem Index](https://corbensorenson.github.io/circle-calculus/theorems.html). It is intentionally **not** duplicated here.
 
@@ -43,12 +43,13 @@ This repository does not claim to have rebuilt all of mathematics from circles. 
 3. `dictionary/circle_dictionary.yaml` for fixed vocabulary.
 4. `manifests/theorem_manifest.yaml` for theorem status.
 5. `docs/COMPLETION_ROADMAP.md` and `docs/DIMENSIONAL_LADDER.md` for where it is going.
-6. The Living Book [AI contract ladder](https://corbensorenson.github.io/circle-calculus/chapters/applications/ai_contract_ladder.html) for the guided sequence through proof-carrying RoPE, KV-cache, sparse-attention, recurrence, and mixer contracts.
-7. `docs/ROPE_CERTIFIER_QUICKSTART.md`, `docs/ROPE_CERTIFIER_REVIEW_PACKET.md`, `papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md`, and `scripts/rope_certify.py` for the first externally usable AI contract.
-8. The Living Book [KV-cache ring-buffer lesson](https://corbensorenson.github.io/circle-calculus/chapters/applications/kv_cache_ring_buffer.html), `docs/KV_CACHE_CERTIFIER_QUICKSTART.md`, `scripts/kv_cache_certify.py`, `papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md`, and `sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_kv_cache_ring_buffer.py` for the second standalone AI contract.
-9. The Living Book [sparse-attention coverage lesson](https://corbensorenson.github.io/circle-calculus/chapters/applications/sparse_attention_contract.html), `docs/SPARSE_ATTENTION_CERTIFIER_QUICKSTART.md`, `scripts/stride_family_certify.py`, and `sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_stride_family_sparse_attention.py` for the third standalone AI contract.
-10. `docs/PHASE8_DEPTH_VALIDATION.md` for the current depth-and-validation push: RoPE real-phase theorem work, sparse coverage iffs, collision counting, KV-cache safety, external review, and proof-depth guardrails.
-11. `docs/THESEUS_HIVE_AI_TRANSFER.md` for the optional private-transfer lane; it is not the public proof standard.
+6. The Living Book [AI contract suite](https://corbensorenson.github.io/circle-calculus/chapters/applications/ai_contract_suite.html), `docs/AI_CONTRACT_SUITE.md`, and `docs/CIRCLE_AI_CONTRACTS_INTEGRATION.md` for the compact working entry point to proof-carrying RoPE, KV-cache, sparse-attention certificates, and the generic contract pack other AI/math projects can consume.
+7. The Living Book [AI contract ladder](https://corbensorenson.github.io/circle-calculus/chapters/applications/ai_contract_ladder.html) for the guided sequence through proof-carrying RoPE, KV-cache, sparse-attention, recurrence, and mixer contracts.
+8. `docs/ROPE_CERTIFIER_QUICKSTART.md`, `docs/ROPE_CERTIFIER_REVIEW_PACKET.md`, `papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md`, and `scripts/rope_certify.py` for the first standalone AI contract.
+9. The Living Book [KV-cache ring-buffer lesson](https://corbensorenson.github.io/circle-calculus/chapters/applications/kv_cache_ring_buffer.html), `docs/KV_CACHE_CERTIFIER_QUICKSTART.md`, `scripts/kv_cache_certify.py`, `papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md`, and `sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_kv_cache_ring_buffer.py` for the second standalone AI contract.
+10. The Living Book [sparse-attention coverage lesson](https://corbensorenson.github.io/circle-calculus/chapters/applications/sparse_attention_contract.html), `docs/SPARSE_ATTENTION_CERTIFIER_QUICKSTART.md`, `scripts/stride_family_certify.py`, and `sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_stride_family_sparse_attention.py` for the third standalone AI contract.
+11. `docs/PHASE8_DEPTH_VALIDATION.md` for the current depth-and-validation push: RoPE real-phase theorem work, sparse coverage iffs, collision counting, KV-cache safety, contract hardening, change-aware validation, and proof-depth guardrails.
+12. `docs/THESEUS_HIVE_AI_TRANSFER.md` for the optional private-transfer lane; it is not the public proof standard.
 
 The Living Book's [What "Proved" Means Here](https://corbensorenson.github.io/circle-calculus/what_proved_means.html) page is the one-paragraph contract the whole project lives by.
 
@@ -95,7 +96,7 @@ Run the full verification suite (the first Lean build fetches and compiles mathl
 make check
 ```
 
-Useful targets: `make lean` (build the Lean library), `make test` (Python tests), `make sitecheck` (validate the Living Book), `make site-render` (render the book), and `make living-book-check` (everything, including the rendered artifact). See the `Makefile` for the full list.
+Useful targets: `make targeted-check-list` (preview change-aware checks), `make targeted-check` (run only the checks inferred from changed files), `make targeted-check TARGETED_FILES="path/a path/b"` (force a focused file set), `make lean` (build the Lean library), `make test` (Python tests), `make sitecheck` (validate the Living Book), `make site-render` (render the book), and `make living-book-check` (everything, including the rendered artifact). The targeted runner is documented in `docs/CHANGE_AWARE_VALIDATION.md`; it speeds up local iteration but does not replace `make check` before release-grade commits. See the `Makefile` for the full list.
 
 For the proof-carrying RoPE certifier, run:
 
@@ -114,7 +115,7 @@ The real-phase proof program now reduces finite margin checks to generated gaps,
 For the proof-carrying KV-cache ring-buffer certificate, run:
 
 ```bash
-python scripts/kv_cache_certify.py --cache-size 16 --current 31 --token 20 --batch-tokens 20,24,29,31
+python scripts/kv_cache_certify.py --cache-size 16 --current 31 --token 20 --batch-tokens 20,24,29,31 --sink-size 4
 python sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_kv_cache_ring_buffer.py --format markdown
 ```
 
@@ -129,14 +130,25 @@ python sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_stride_fa
 
 The sparse certificate emits theorem ids, covered lags, theorem-side covered/uncovered-lag lists, a covered-plus-uncovered count partition, covered-count completion, uncovered-count witness, and covered-count shortfall witness criteria, no-collision budget predicates, candidate-count fields, a default hit/gap fixture, a compact complete-coverage fixture, and compact planner-style rows for larger declared sparse layouts. It proves finite candidate-set coverage, hit/gap-list membership and counting, and budget facts only; it is not an attention-quality, long-context, throughput, runtime, memory-use, or model-quality claim.
 
-For the optional Theseus-Hive AI transfer lane, run:
+For the standalone Circle AI contract pack, run:
+
+```bash
+make circle-ai-contracts
+make circle-ai-contracts-check
+make circle-ai-contracts-ready
+python scripts/circle_ai_contract_ready.py --kind sparse_attention_coverage
+```
+
+This writes `site/data/generated/circle_ai_contract_pack.json`, a public-safe generic fixture pack for nine contract families: RoPE position distinguishability, KV-cache ring-buffer freshness, sparse-attention coverage, recurrence schedules, strided fanout, cyclic memory, phase-feature tags, circulant/block-cyclic mixers, and seed-rule regeneration. The pack includes a top-level `contract_readiness_index` plus per-record `consumer_check.ready_for_downstream_fixture_use` and `proof_status` gates for projects that want to consume theorem-linked fields without reading Lean internals. See `docs/CIRCLE_AI_CONTRACTS_INTEGRATION.md` for the schema and downstream-consumer rules.
+
+For the optional Theseus-Hive AI transfer compatibility lane, run:
 
 ```bash
 make theseus-ai-contracts
 make theseus-ai-feedback
 ```
 
-This writes `site/data/generated/theseus_hive_ai_contracts.json`, a public-safe fixture pack for recurrence, fanout, memory, phase-feature, mixer, and seed-rule experiments.
+This writes `site/data/generated/theseus_hive_ai_contracts.json`, a Theseus-compatible view of the six downstream-transfer families currently used by that compatibility lane.
 The feedback target writes `site/data/generated/theseus_hive_ai_feedback_summary.json` from a sanitized Theseus-Hive handoff when present, or an explicit missing-state placeholder otherwise.
 Detailed private-transfer plumbing belongs in `docs/THESEUS_HIVE_AI_TRANSFER.md`. It is optional, aggregate-only, and remains separate from the public proof-carrying contract lane.
 

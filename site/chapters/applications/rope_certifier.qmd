@@ -147,8 +147,15 @@ Read those fields in this order:
 
 1. `exact_discrete_contract` says whether the declared integer-period bank distinguishes every unequal ordered position pair in the inspected context.
 2. `common_collision_gap` is the least all-channel repeated gap implied by the period-bank LCM. If it is `>= context`, no repeated all-channel gap fits inside the inspected range.
-3. `total_bank_collision_pair_count` counts all ordered all-channel colliding pairs for the declared integer-period bank. `AIRA-T0179` proves that the positive-period input policy gives the positive LCM required by these count theorems. `AIRA-T0180` proves the exact pass/fail iff: no unequal all-channel collision in the inspected context exactly when that LCM reaches the context. `AIRA-T0184` proves that this boolean no-collision contract is equivalent to `total_bank_collision_pair_count = 0`. `AIRA-T0174` and `AIRA-T0175` prove the zero boundary: under a positive LCM, this count is zero exactly in the LCM-reaches-context pass case. `AIRA-T0176` proves the nonzero case is equivalent to the existence of an unequal all-channel collision witness.
+3. `total_bank_collision_pair_count` counts all ordered all-channel colliding pairs for the declared integer-period bank. It is theorem-backed count evidence, not a sampled diagnostic.
 4. `theorem_ids` tells you which manifest entries and Lean declarations justify the exact layer. The browser theorem cards below resolve those ids to proof status and source links.
+
+<details class="audit-detail">
+<summary>Detailed exact-discrete proof trail</summary>
+
+`AIRA-T0179` proves that the positive-period input policy gives the positive LCM required by these count theorems. `AIRA-T0180` proves the exact pass/fail iff: no unequal all-channel collision in the inspected context exactly when that LCM reaches the context. `AIRA-T0184` proves that this boolean no-collision contract is equivalent to `total_bank_collision_pair_count = 0`. `AIRA-T0174` and `AIRA-T0175` prove the zero boundary: under a positive LCM, this count is zero exactly in the LCM-reaches-context pass case. `AIRA-T0176` proves the nonzero case is equivalent to the existence of an unequal all-channel collision witness.
+
+</details>
 
 If the exact layer fails, the same fields become a debugging guide:
 
@@ -162,6 +169,18 @@ sample_collision_pairs=(0,96),(1,97),...
 That says the declared bank repeats after gap `96`, and the report lists actual position pairs that collide in every declared discrete channel. It still does not say the real-valued model fails; it says the exact integer-period contract for the declared bank fails.
 
 The real-phase row is separate. It is useful evidence about the floating-point RoPE schedule, but this page only treats it as a theorem-backed result when it points to a named finite-margin certificate or standard channel-0 interval seed.
+
+## Proof Map
+
+The main lesson uses only the proof families needed to read a report. The full audit page keeps the longer theorem-card trail.
+
+| Report layer | What the reader should trust | Primary theorem ids |
+| --- | --- | --- |
+| Exact integer-period bank | All-channel collisions are exactly common LCM gaps, and the pass/fail/count fields are exact for the declared periods. | `AIRA-T0024`, `AIRA-T0179`, `AIRA-T0180`, `AIRA-T0184` |
+| Prefix and subfamily reports | A passing prefix or contained subbank is enough to certify the whole declared integer-period bank. | `AIRA-T0051`, `AIRA-T0052`, `AIRA-T0190`, `AIRA-T0194` |
+| Real-phase reduction | One-channel real phase margin reduces to finite generated gaps and nearest-integer floor/ceiling witnesses. | `AIRA-T0041`, `AIRA-T0054`, `AIRA-T0059`, `AIRA-T0183` |
+| Exact finite-margin certificates | A named weakest-gap certificate can prove or reject a requested margin for rational/discretized ratios. | `AIRA-T0214`, `AIRA-T0215`, `AIRA-T0230`, `AIRA-T0231` |
+| Standard channel-0 frontier | The current proved standard-channel frontier reaches D19; it is conditional and one-channel based. | `AIRA-T0139`, `AIRA-T0173`, `AIRA-T0208`, `AIRA-T0217` |
 
 ## ML-Engineer Quickstart
 
@@ -198,7 +217,30 @@ The committed sidecar results are meant to be read as contract evidence, not as 
 
 The most important distinction is that the first three rows are exact only after the real-valued RoPE schedule has been converted into the declared integer periods used by the certifier. The numerical real-phase scan is reported beside the proof-carrying discrete contract because it is useful engineering evidence, but this page does not call it a proof.
 
-For genuine standard channel 0, the Lean-proved margin currently reaches context `196608` at margin `1/328459`. The exact-rational planner and generated Lean certificate route still prove the sharper 32k and 64k rows at margin `1/104219`; the stronger 128k request at that same margin fails at gap `103993`. The proved `AIRA-T0139` through `AIRA-T0141` bridge says how a generated rational-band list can become a Lean interval certificate without expanding every gap into a separate case; `AIRA-T0142` through `AIRA-T0173` are the generated 32k/64k/128k/160k/192k certificates, bridges, and endpoint brackets built on that route. `AIRA-T0209` gives the generic context-range bracket from one certified horizon plus one obstruction gap, and `AIRA-T0208` specializes it to D19 for every `103993 < context <= 196608`. `AIRA-T0216` and `AIRA-T0217` turn that bracket into the request classifier: margins at or below `1/328459` are proved, margins at or above `1/328458` are rejected, and the open gap between them remains undecided. `AIRA-T0218` and `AIRA-T0219` add the classifier consistency guard: the thresholds are ordered, and the proved/impossible branches cannot overlap. `AIRA-T0220` and `AIRA-T0221` make the remaining status exact: the undecided status is precisely the open interval between the thresholds, and every requested margin falls into proved, impossible, or that open interval. The generated table now proves coverage by checking one contiguous gap chain, checks endpoints on compact uniform rows, and then derives ordinary band coverage and validity by generic Lean bridges.
+For genuine standard channel 0, the Lean-proved margin currently reaches context `196608` at margin `1/328459`. The exact-rational planner and generated Lean certificate route still prove the sharper 32k and 64k rows at margin `1/104219`; the stronger 128k request at that same margin fails at gap `103993`. The important user-facing result is the D19 classifier: at context `131072`, margin `1/328459` is proved, margin `1/328458` is impossible, and the tiny open interval between those thresholds remains deliberately undecided.
+
+<details class="audit-detail">
+<summary>Detailed D19 proof route</summary>
+
+The proved `AIRA-T0139` through `AIRA-T0141` bridge says how a generated rational-band list can become a Lean interval certificate without expanding every gap into a separate case; `AIRA-T0142` through `AIRA-T0173` are the generated 32k/64k/128k/160k/192k certificates, bridges, and endpoint brackets built on that route. `AIRA-T0209` gives the generic context-range bracket from one certified horizon plus one obstruction gap, and `AIRA-T0208` specializes it to D19 for every `103993 < context <= 196608`. `AIRA-T0216` and `AIRA-T0217` turn that bracket into the request classifier: margins at or below `1/328459` are proved, margins at or above `1/328458` are rejected, and the open gap between them remains undecided. `AIRA-T0218` and `AIRA-T0219` add the classifier consistency guard: the thresholds are ordered, and the proved/impossible branches cannot overlap. `AIRA-T0220` and `AIRA-T0221` make the remaining status exact: the undecided status is precisely the open interval between the thresholds, and every requested margin falls into proved, impossible, or that open interval. The generated table now proves coverage by checking one contiguous gap chain, checks endpoints on compact uniform rows, and then derives ordinary band coverage and validity by generic Lean bridges.
+
+</details>
+
+
+The public Circle AI contract pack exports two D19 classifier probes at context `131072`: margin `1/328459` has status `proved`, while margin `1/328458` has status `impossible`. Those fields give downstream tools a theorem-backed frontier check without requiring them to import Lean.
+
+For downstream AI tools, the compact digest also exposes two copy-safe planner records:
+
+```bash
+python scripts/circle_ai_contract_ready.py \
+  --kind rope_position_distinguishability \
+  --digest \
+  --field d19_proved_request_status \
+  --field d19_impossible_request_status \
+  --include-recommendations
+```
+
+`ROPE-AUDIT-EXACT-INTEGER-PHASE-BANK` points a consumer to the declared integer-period phase-bank collision audit. `ROPE-USE-D19-MARGIN-FRONTIER` points a consumer to the D19 standard-channel-0 margin frontier. They are planner/audit records over theorem-backed fields, not claims that a real model gets longer context, lower loss, or full all-channel real-RoPE guarantees.
 
 ::: {.checkpoint-box}
 
@@ -223,7 +265,15 @@ real phase error
 -> floor and ceiling witnesses for each gap
 ```
 
+The useful idea is that the real-valued question becomes a finite nearest-integer certificate: check each positive gap below the context, and for each gap check the floor and ceiling integer turns. That gives Python a finite audit shape and gives Lean exact theorem ids for the reduction.
+
+<details class="audit-detail">
+<summary>Detailed real-phase reduction trail</summary>
+
 `AIRA-T0041` converts one-channel real phase error into the normalized nearest-integer expression `|gap * alpha - turns|`, where `alpha = frequency / fullTurn`. `AIRA-T0054` says the finite-context predicate is equivalent to checking the generated positive gaps in `List.range context`. `AIRA-T0058` proves that for one fixed real value, checking the integer floor and integer ceiling is equivalent to checking every integer. `AIRA-T0059` applies that result to every generated gap, reducing the remaining integer-turn side of the finite-context margin predicate to two witnesses per gap. `AIRA-T0182` packages the two endpoint errors for one gap into a scalar nearest-gap margin, and `AIRA-T0183` proves that a finite-context margin is equivalent to lower-bounding that scalar for every generated positive gap. `AIRA-T0214` adds the exact-weakest-gap report shape: a reported weakest margin is justified by a finite lower-bound proof plus one inspected witness gap that actually attains that margin. `AIRA-T0126` adds the generated-band endpoint bridge: if a whole gap band shares one integer cell and the band endpoints satisfy the lower/upper inequalities, Lean derives interval witnesses for every gap in the band. The generated coverage side is now a separate contiguous-chain certificate, and the endpoint side is checked on compact rows with shared lower/upper bounds, so the Lean proof mirrors the Python audit instead of rebuilding a different expanded-table argument.
+
+</details>
+
 
 That is a real formal improvement, but it is not the final Diophantine theorem. The next mathematical step is to prove, by continued fractions, Diophantine estimates, or an exact finite certificate, that those floor/ceiling inequalities hold for a concrete nonperiodic RoPE turn ratio and margin.
 
@@ -250,10 +300,17 @@ certificate.certified_margin      # 1 / 4099 as a Python float
 certificate.exact_nearest_gap_margin  # "1/4099"
 certificate.exact_nearest_gap         # 1
 certificate.zero_margin_witness       # None
-certificate.theorem_ids           # AIRA-T0056,AIRA-T0059,AIRA-T0182,AIRA-T0183,AIRA-T0214,AIRA-T0060,AIRA-T0177,AIRA-T0186,AIRA-T0061,AIRA-T0185,AIRA-T0215,AIRA-T0222,AIRA-T0223,AIRA-T0187,AIRA-T0196,AIRA-T0062
+certificate.theorem_ids           # includes AIRA-T0061, AIRA-T0185, AIRA-T0215
 ```
 
-`AIRA-T0182` and `AIRA-T0183` justify the exact weakest-gap scalar reported by Python: the scalar is the minimum of the floor and ceiling nearest-integer errors, and lower-bounding that scalar over every generated gap is equivalent to the finite-context margin predicate. `AIRA-T0214` states the reusable exact-weakest-gap contract: the report is correct when the finite lower bound holds and the named gap realizes it. `AIRA-T0060` is the generic proof-carrying certificate interface. `AIRA-T0177` proves that this finite nearest-integer certificate object is equivalent to the abstract finite-context margin predicate. `AIRA-T0186` proves that any strictly positive finite-margin certificate rules out exact zero turn error for every generated positive gap. `AIRA-T0061` is the named `1/4099` context-4096 finite-margin theorem. `AIRA-T0185` proves the preset's exact weakest-gap ingredients: gap `1` realizes margin `1/4099`, and no positive generated gap has smaller scalar nearest-integer margin. `AIRA-T0215` packages those ingredients into the reusable report contract. `AIRA-T0222` and `AIRA-T0223` generalize that exact-gap result to every rational/discretized `1/d` turn ratio in a nontrivial context that stays before the denominator return gap. `AIRA-T0224` through `AIRA-T0226` generalize the report shape further: when a reduced rational turn ratio has a concrete gap whose numerator product is one residue away from an integer number of denominators, Lean proves that witness realizes the exact weakest scalar margin `1/denominator` before the denominator return gap. `AIRA-T0227` proves that the full denominator context always has such a witness for reduced natural-rational turn ratios, so Python no longer has to treat full-period exact-gap existence as an unchecked search fact. `AIRA-T0228` adds the exact full-denominator threshold: in that context, margins at or below `1/denominator` pass and larger advertised margins fail. `AIRA-T0229` adds the request-facing failure witness: above that threshold, Lean proves an explicit positive gap and integer turn whose error is already below the requested margin. `AIRA-T0187` specializes the no-zero theorem to the named preset, matching the public `zero_margin_witness = None` field. `AIRA-T0196` proves that the finite certificate object itself is equivalent to the one-channel no-near-turn contract. `AIRA-T0062` is the named one-channel no-near-turn consequence below that certified margin.
+The public lesson-facing conclusion is simple: this ratio has a certified weakest gap of `1`, an exact weakest margin of `1/4099`, and no zero-margin witness before the denominator return.
+
+<details class="audit-detail">
+<summary>Detailed rational finite-margin theorem trail</summary>
+
+`AIRA-T0182` and `AIRA-T0183` justify the exact weakest-gap scalar reported by Python: the scalar is the minimum of the floor and ceiling nearest-integer errors, and lower-bounding that scalar over every generated gap is equivalent to the finite-context margin predicate. `AIRA-T0214` states the reusable exact-weakest-gap contract: the report is correct when the finite lower bound holds and the named gap realizes it. `AIRA-T0060` is the generic proof-carrying certificate interface. `AIRA-T0177` proves that this finite nearest-integer certificate object is equivalent to the abstract finite-context margin predicate. `AIRA-T0186` proves that any strictly positive finite-margin certificate rules out exact zero turn error for every generated positive gap. `AIRA-T0061` is the named `1/4099` context-4096 finite-margin theorem. `AIRA-T0185` proves the preset's exact weakest-gap ingredients: gap `1` realizes margin `1/4099`, and no positive generated gap has smaller scalar nearest-integer margin. `AIRA-T0215` packages those ingredients into the reusable report contract. `AIRA-T0222` and `AIRA-T0223` generalize that exact-gap result to every rational/discretized `1/d` turn ratio in a nontrivial context that stays before the denominator return gap. `AIRA-T0224` through `AIRA-T0226` generalize the report shape further: when a reduced rational turn ratio has a concrete gap whose numerator product is one residue away from an integer number of denominators, Lean proves that witness realizes the exact weakest scalar margin `1/denominator` before the denominator return gap. `AIRA-T0227` proves that the full denominator context always has such a witness for reduced natural-rational turn ratios, so Python no longer has to treat full-period exact-gap existence as an unchecked search fact. `AIRA-T0228` adds the exact full-denominator threshold: in that context, margins at or below `1/denominator` pass and larger advertised margins fail. `AIRA-T0229` adds the request-facing failure witness: above that threshold, Lean proves an explicit positive gap and integer turn whose error is already below the requested margin. `AIRA-T0230` and `AIRA-T0231` generalize the request threshold to any exact weakest-gap certificate. The Python report summarizes that request branch as `requested_margin_status`: `proved`, `impossible`, `unproved_above_certified_lower_bound`, or `unproved`. `AIRA-T0187` specializes the no-zero theorem to the named preset, matching the public `zero_margin_witness = None` field. `AIRA-T0196` proves that the finite certificate object itself is equivalent to the one-channel no-near-turn contract. `AIRA-T0062` is the named one-channel no-near-turn consequence below that certified margin.
+
+</details>
 
 This is the first end-to-end theorem-backed certificate shape. It does not certify the standard irrational `1 / (2π)` RoPE channel.
 
@@ -309,7 +366,14 @@ The first context-4096 seed lowers the advertised margin and moves to twenty-dec
 
 Those exact rational bands now certify gaps `1` through `196607`, split across generated integer cells `0` through `31290`. D9 first certified the conservative margin `1/131072`; D10 reused the same 20-decimal bounds and cell table to certify the tighter margin `1/105000`; D11 tightened the 4k certificate shape to `1/104219`; D12 reached 8k at the weaker margin `1/104220`; D13 reaches 8k at `1/104219`; D14 reaches 16k at `1/104219`; D15 reaches 32k; D16 reaches 64k; D17 reaches 128k by lowering the advertised margin to `1/328459`; D18 carries that lower margin to 160k; and D19 carries it to 192k.
 
-D19 is the current proved standard-channel frontier. The D19 bridge turns that channel-0 seed into a conditional one-separating-channel bank certificate when standard channel 0 is present. `AIRA-T0173` packages the 192k endpoint bracket, `AIRA-T0209` proves the generic horizon-plus-obstruction bridge, and `AIRA-T0208` specializes that bridge to the range bracket: `1/328459` is proved for every requested context with `103993 < context <= 196608`, while every margin at or above `1/328458` is impossible throughout that range. `AIRA-T0216` and `AIRA-T0217` package the same fact as a request-level classifier: a requested margin below the proved threshold is certified, a requested margin above the obstruction threshold is rejected, and a requested margin strictly between those two thresholds is deliberately reported as undecided. `AIRA-T0218` proves the two rational thresholds are ordered, `AIRA-T0219` proves the proved and impossible request branches are disjoint, `AIRA-T0220` identifies the undecided branch with the exact open interval, and `AIRA-T0221` proves those three margin regions are exhaustive. This is still not a full all-channel margin theorem.
+D19 is the current proved standard-channel frontier. The D19 bridge turns that channel-0 seed into a conditional one-separating-channel bank certificate when standard channel 0 is present: `1/328459` is proved for every requested context with `103993 < context <= 196608`, while every margin at or above `1/328458` is impossible throughout that range. This is still not a full all-channel margin theorem.
+
+<details class="audit-detail">
+<summary>Detailed D19 classifier theorem trail</summary>
+
+`AIRA-T0173` packages the 192k endpoint bracket, `AIRA-T0209` proves the generic horizon-plus-obstruction bridge, and `AIRA-T0208` specializes it to the D19 range bracket. `AIRA-T0216` and `AIRA-T0217` package the same fact as a request-level classifier: a requested margin below the proved threshold is certified, a requested margin above the obstruction threshold is rejected, and a requested margin strictly between those two thresholds is deliberately reported as undecided. `AIRA-T0218` proves the two rational thresholds are ordered, `AIRA-T0219` proves the proved and impossible request branches are disjoint, `AIRA-T0220` identifies the undecided branch with the exact open interval, and `AIRA-T0221` proves those three margin regions are exhaustive.
+
+</details>
 
 Lean also proves sharper negative companions for this seed family. Gap `710` is already within `1/65536`, within `1/104000`, and within `1/104218` of integer turn `113`. That means the D9 `1/131072` margin cannot simply be doubled, the D10 `1/105000` margin cannot simply be raised to `1/104000`, and the D16 `1/104219` margin cannot simply be raised to `1/104218` for any context containing gap `710`. Gap `103993` is already within `1/328458` of integer turn `16551`, so D19 cannot raise its advertised margin to `1/328458`.
 
@@ -321,10 +385,17 @@ from circle_math.applications import certify_standard_channel0_interval_seed
 certificate = certify_standard_channel0_interval_seed()
 certificate.pass_certificate      # True
 certificate.certified_margin      # 1/328459
-certificate.theorem_ids           # AIRA-T0063,AIRA-T0064,AIRA-T0065,...,AIRA-T0173
+certificate.theorem_ids           # includes AIRA-T0063, AIRA-T0173, AIRA-T0208
 ```
 
+The certificate object is the API-level bridge between generated rational bands, Lean declarations, and a downstream planner that only wants a pass/fail or request-status field.
+
+<details class="audit-detail">
+<summary>Detailed standard-channel seed theorem trail</summary>
+
 `AIRA-T0063` proves that one rational interval witness covers every integer turn for one gap. `AIRA-T0064` turns a finite table of those witnesses into a finite-context margin. `AIRA-T0077` and `AIRA-T0078` prove that interval witnesses and certificates survive when the advertised margin is decreased. `AIRA-T0065` through `AIRA-T0138` build the standard channel-0 seed family through context `16384`, including the D12/D13/D14 conditional bank bridges and brackets. `AIRA-T0139` through `AIRA-T0141` package the rational-band list compression and rational-endpoint reflection bridge. `AIRA-T0142` through `AIRA-T0147` are the generated D15 context-32768 seed, one-channel no-near-turn theorem, bank bridges, and margin bracket. `AIRA-T0148` through `AIRA-T0153` are the generated D16 context-65536 seed. `AIRA-T0154` through `AIRA-T0161` are the D17 128k obstruction, interval certificate, one-channel no-near-turn theorem, bank bridges, and margin bracket; `AIRA-T0162` through `AIRA-T0167` are the generated D18 160k interval certificate, one-channel no-near-turn theorem, bank bridges, and margin bracket; `AIRA-T0168` through `AIRA-T0173` are the generated D19 192k interval certificate, one-channel no-near-turn theorem, bank bridges, and endpoint margin bracket; `AIRA-T0209` is the generic context-range bracket bridge; `AIRA-T0208` is the D19 context-range margin bracket; and `AIRA-T0216`/`AIRA-T0217` are the request-level classifier bridge and D19 specialization.
+
+</details>
 
 This is standard RoPE, but it is still channel-0 based. The D19 bridge can rule out an all-bank near-turn event when standard channel 0 is present and the requested context and margin fit inside the D19 seed; it does not prove independent margins for every channel.
 
@@ -479,226 +550,44 @@ The generated sidecar Markdown and JSON have `Band Endpoint Audit` summaries tha
 
 - Exact collision is not guessed by scanning every pair. The theorem reduces it to divisibility of the position gap.
 - If the common exact collision gap is inside the context, the report lists sample colliding position pairs.
-- The guaranteed common-gap count is `context - gap`: every counted start gives an all-channel collision at that gap. The LCM theorem upgrades the positive common-gap-multiple sum into the exact total bank collision count for the declared integer-period model. The positive-period-bank theorem proves the LCM is positive under the certifier's input policy. The exact pass/fail iff says the whole context is collision-free exactly when that LCM reaches the context. The fail-witness theorem proves an explicit unequal collision exists when the positive LCM is below the context, the count-zero theorem proves the positive-multiple total is zero exactly in the pass case, and the count-positive theorem proves the nonzero total is equivalent to an unequal all-channel collision witness.
-- Bounded prefix reports apply the same LCM theorem spine to early channel prefixes, so `first_exact_pass_prefix_length` identifies the first reported prefix whose integer-bank LCM already reaches the inspected context. `AIRA-T0051` proves that appending suffix channels cannot create an unequal full-bank collision after such a prefix already passes. `AIRA-T0190` proves that a certified first passing prefix length is unique, and `AIRA-T0191` turns that first-prefix certificate into a full-bank no-collision bridge.
-- Bounded subfamily reports search small selected subbanks; `AIRA-T0052` proves the same no-collision bridge when any contained subbank's LCM reaches the inspected context. `AIRA-T0193` proves that a certified smallest sufficient subfamily size is unique, and `AIRA-T0194` turns that smallest-subfamily certificate into a full-bank no-collision bridge.
-- For the diagnostic prefix preset `[6, 9, 13, 18]` at context `128`, `AIRA-T0188` proves that the first passing prefix has length `3`, `AIRA-T0192` proves that this satisfies the reusable first-prefix predicate, `AIRA-T0189` proves that singleton subbanks are insufficient while `[13, 18]` is sufficient, and `AIRA-T0195` proves that `[13, 18]` satisfies the reusable smallest-subfamily predicate. `AIRA-T0198` through `AIRA-T0202` add named finite count certificates for the public shared-factor, quantized-boundary, and scaled-period diagnostic rows. `AIRA-T0206` and `AIRA-T0207` add the reusable first-repeat boundary formula behind one-token-past-boundary counts. `AIRA-T0210` adds the quotient bound behind the `common_gap_fitting_multiple_count` and prefix `fitting_collision_multiple_count` fields, `AIRA-T0211` proves the total positive-multiple count equals the finite sum over that fitting range, `AIRA-T0212` proves the doubled triangular closed-form numerator, and `AIRA-T0213` proves the exact divided closed form. These are exact integer-period count theorems, not global optimization theorems for arbitrary real-valued RoPE banks.
-- The per-channel single-period counts are exact for each individual integer period; they are not all-channel bank counts. `AIRA-T0204` proves the threshold condition for one positive period: no unequal in-context collision exists exactly when the context length is at most the period. `AIRA-T0203` proves the zero-count interpretation, and `AIRA-T0205` proves the positive-count interpretation: nonzero means there is an actual unequal in-context collision witness in that one channel. `AIRA-T0206` and `AIRA-T0207` give the first-repeat-only closed form and the count-`1` one-token-past-boundary case; `AIRA-T0210` proves that `(context - 1) / period` is exactly the number of positive period multiples that can contribute, `AIRA-T0211` proves the executable count loop may sum over only those multiples, `AIRA-T0212` proves the doubled triangular closed-form numerator for that loop, and `AIRA-T0213` proves the exact divided closed form.
+- Counts have layers. Common-gap counts, total all-channel bank counts, and per-channel counts answer different questions.
+- Prefix and subfamily reports are shortcuts for engineers: they explain which smaller part of a period bank already certifies the whole declared integer-period bank.
 - If the exact discrete contract passes, the report still does not claim real model quality or long-context success.
 - The real-phase margin scan is useful engineering evidence, but it is not a Lean proof over real-valued trigonometric RoPE.
-- The real-valued formal work has begun with an unwrapped phase-gap formula (`AIRA-T0029`), lower-bound precursor (`AIRA-T0030`), one-turn endpoint-error precursor (`AIRA-T0031`), nonnegative full-turn-multiple precursor (`AIRA-T0032`), signed full-turn-multiple precursor (`AIRA-T0033`), turn-separation predicate (`AIRA-T0037`), no-near-turn consequence (`AIRA-T0038`), finite bank-level no-near-turn bridge (`AIRA-T0039`, `AIRA-T0040`), turn-ratio Diophantine scaling bridge (`AIRA-T0041`), finite-context margin consequence (`AIRA-T0042`), bank finite-context margin consequence (`AIRA-T0043`), finite-context monotonicity (`AIRA-T0044`), bank-level certified-context transfer (`AIRA-T0045`), conservative margin downgrade (`AIRA-T0047`), combined context-plus-margin bank transfer (`AIRA-T0050`), integer-turn-ratio and natural-rational-turn-ratio no-positive-margin guardrails (`AIRA-T0053`, `AIRA-T0055`), a positive reduced-rational finite-context certificate before the denominator gap (`AIRA-T0056`), an exact reduced-rational denominator-boundary iff (`AIRA-T0057`), generated-gap finite-enumeration bridge (`AIRA-T0054`), floor/ceiling nearest-integer witness bridge (`AIRA-T0058`, `AIRA-T0059`), scalar nearest-gap margin bridge (`AIRA-T0182`, `AIRA-T0183`), exact weakest-gap report bridge (`AIRA-T0214`, `AIRA-T0215`), finite certificate equivalence (`AIRA-T0177`), positive-margin no-zero-error bridge (`AIRA-T0186`), negative obstruction equivalence (`AIRA-T0178`), one-channel scaled no-near-turn equivalence (`AIRA-T0181`), certificate-object no-near-turn equivalence (`AIRA-T0196`), finite-certificate bank bridge (`AIRA-T0197`), the named rational/discretized `1/4099` certificate and no-zero witness bridge (`AIRA-T0060` through `AIRA-T0062`, `AIRA-T0185`, `AIRA-T0187`), the reusable `1/d` exact weakest-gap family (`AIRA-T0222`, `AIRA-T0223`), the generic reduced-rational modular-inverse exact-gap report family (`AIRA-T0224` through `AIRA-T0226`), the full-denominator reduced-rational exact-gap existence, exact-threshold, and request-obstruction theorems (`AIRA-T0227` through `AIRA-T0229`), interval-certificate margin monotonicity (`AIRA-T0077`, `AIRA-T0078`), the standard channel-0 seed family through D14 (`AIRA-T0063` through `AIRA-T0138`), the rational-band compression route (`AIRA-T0139` through `AIRA-T0141`), the generated D15/D16 32k/64k certificates and bank bridges (`AIRA-T0142` through `AIRA-T0153`), the generated D17 128k certificate, obstruction, bank bridges, and bracket (`AIRA-T0154` through `AIRA-T0161`), the generated D18 160k certificate, bank bridges, and bracket (`AIRA-T0162` through `AIRA-T0167`), the generated D19 192k certificate, bank bridges, and endpoint bracket (`AIRA-T0168` through `AIRA-T0173`), the generic context-range bracket bridge (`AIRA-T0209`), the D19 context-range bracket (`AIRA-T0208`), the request-level D19 classifier (`AIRA-T0216`, `AIRA-T0217`), its threshold-order/disjoint-branch consistency guards (`AIRA-T0218`, `AIRA-T0219`), and the exact open-gap/exhaustive-status theorems (`AIRA-T0220`, `AIRA-T0221`). The longest proved standard seed is still channel-0 based; it is not a full all-channel bank theorem or a continued-fraction theorem.
+- The current standard-RoPE frontier is useful but narrow: it is channel-0 based, conditional, and not a continued-fraction theorem.
 
-## Theorem Cards
+<details class="audit-detail">
+<summary>Detailed theorem trail for report fields</summary>
 
-<div class="theorem-box" data-theorem-id="AIRA-T0021"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0022"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0023"></div>
+The guaranteed common-gap count is `context - gap`: every counted start gives an all-channel collision at that gap. The LCM theorem upgrades the positive common-gap-multiple sum into the exact total bank collision count for the declared integer-period model. The positive-period-bank theorem proves the LCM is positive under the certifier's input policy. The exact pass/fail iff says the whole context is collision-free exactly when that LCM reaches the context. The fail-witness theorem proves an explicit unequal collision exists when the positive LCM is below the context, the count-zero theorem proves the positive-multiple total is zero exactly in the pass case, and the count-positive theorem proves the nonzero total is equivalent to an unequal all-channel collision witness.
+
+Bounded prefix reports apply the same LCM theorem spine to early channel prefixes, so `first_exact_pass_prefix_length` identifies the first reported prefix whose integer-bank LCM already reaches the inspected context. `AIRA-T0051` proves that appending suffix channels cannot create an unequal full-bank collision after such a prefix already passes. `AIRA-T0190` proves that a certified first passing prefix length is unique, and `AIRA-T0191` turns that first-prefix certificate into a full-bank no-collision bridge.
+
+Bounded subfamily reports search small selected subbanks; `AIRA-T0052` proves the same no-collision bridge when any contained subbank's LCM reaches the inspected context. `AIRA-T0193` proves that a certified smallest sufficient subfamily size is unique, and `AIRA-T0194` turns that smallest-subfamily certificate into a full-bank no-collision bridge.
+
+For the diagnostic prefix preset `[6, 9, 13, 18]` at context `128`, `AIRA-T0188` proves that the first passing prefix has length `3`, `AIRA-T0192` proves that this satisfies the reusable first-prefix predicate, `AIRA-T0189` proves that singleton subbanks are insufficient while `[13, 18]` is sufficient, and `AIRA-T0195` proves that `[13, 18]` satisfies the reusable smallest-subfamily predicate. `AIRA-T0198` through `AIRA-T0202` add named finite count certificates for the public shared-factor, quantized-boundary, and scaled-period diagnostic rows. `AIRA-T0206` and `AIRA-T0207` add the reusable first-repeat boundary formula behind one-token-past-boundary counts. `AIRA-T0210` adds the quotient bound behind the `common_gap_fitting_multiple_count` and prefix `fitting_collision_multiple_count` fields, `AIRA-T0211` proves the total positive-multiple count equals the finite sum over that fitting range, `AIRA-T0212` proves the doubled triangular closed-form numerator, and `AIRA-T0213` proves the exact divided closed form. These are exact integer-period count theorems, not global optimization theorems for arbitrary real-valued RoPE banks.
+
+The per-channel single-period counts are exact for each individual integer period; they are not all-channel bank counts. `AIRA-T0204` proves the threshold condition for one positive period: no unequal in-context collision exists exactly when the context length is at most the period. `AIRA-T0203` proves the zero-count interpretation, and `AIRA-T0205` proves the positive-count interpretation: nonzero means there is an actual unequal in-context collision witness in that one channel. `AIRA-T0206` and `AIRA-T0207` give the first-repeat-only closed form and the count-`1` one-token-past-boundary case; `AIRA-T0210` proves that `(context - 1) / period` is exactly the number of positive period multiples that can contribute, `AIRA-T0211` proves the executable count loop may sum over only those multiples, `AIRA-T0212` proves the doubled triangular closed-form numerator for that loop, and `AIRA-T0213` proves the exact divided closed form.
+
+The real-valued formal work has begun with an unwrapped phase-gap formula (`AIRA-T0029`), lower-bound precursor (`AIRA-T0030`), one-turn endpoint-error precursor (`AIRA-T0031`), nonnegative full-turn-multiple precursor (`AIRA-T0032`), signed full-turn-multiple precursor (`AIRA-T0033`), turn-separation predicate (`AIRA-T0037`), no-near-turn consequence (`AIRA-T0038`), finite bank-level no-near-turn bridge (`AIRA-T0039`, `AIRA-T0040`), turn-ratio Diophantine scaling bridge (`AIRA-T0041`), finite-context margin consequence (`AIRA-T0042`), bank finite-context margin consequence (`AIRA-T0043`), finite-context monotonicity (`AIRA-T0044`), bank-level certified-context transfer (`AIRA-T0045`), conservative margin downgrade (`AIRA-T0047`), combined context-plus-margin bank transfer (`AIRA-T0050`), integer-turn-ratio and natural-rational-turn-ratio no-positive-margin guardrails (`AIRA-T0053`, `AIRA-T0055`), a positive reduced-rational finite-context certificate before the denominator gap (`AIRA-T0056`), an exact reduced-rational denominator-boundary iff (`AIRA-T0057`), generated-gap finite-enumeration bridge (`AIRA-T0054`), floor/ceiling nearest-integer witness bridge (`AIRA-T0058`, `AIRA-T0059`), scalar nearest-gap margin bridge (`AIRA-T0182`, `AIRA-T0183`), exact weakest-gap report bridge (`AIRA-T0214`, `AIRA-T0215`), finite certificate equivalence (`AIRA-T0177`), positive-margin no-zero-error bridge (`AIRA-T0186`), negative obstruction equivalence (`AIRA-T0178`), one-channel scaled no-near-turn equivalence (`AIRA-T0181`), certificate-object no-near-turn equivalence (`AIRA-T0196`), finite-certificate bank bridge (`AIRA-T0197`), the named rational/discretized `1/4099` certificate and no-zero witness bridge (`AIRA-T0060` through `AIRA-T0062`, `AIRA-T0185`, `AIRA-T0187`), the reusable `1/d` exact weakest-gap family (`AIRA-T0222`, `AIRA-T0223`), the generic reduced-rational modular-inverse exact-gap report family (`AIRA-T0224` through `AIRA-T0226`), the full-denominator reduced-rational exact-gap existence, exact-threshold, and request-obstruction theorems (`AIRA-T0227` through `AIRA-T0229`), the generic exact-weakest request-threshold theorems (`AIRA-T0230`, `AIRA-T0231`), interval-certificate margin monotonicity (`AIRA-T0077`, `AIRA-T0078`), the standard channel-0 seed family through D14 (`AIRA-T0063` through `AIRA-T0138`), the rational-band compression route (`AIRA-T0139` through `AIRA-T0141`), the generated D15/D16 32k/64k certificates and bank bridges (`AIRA-T0142` through `AIRA-T0153`), the generated D17 128k certificate, obstruction, bank bridges, and bracket (`AIRA-T0154` through `AIRA-T0161`), the generated D18 160k certificate, bank bridges, and bracket (`AIRA-T0162` through `AIRA-T0167`), the generated D19 192k certificate, bank bridges, and endpoint bracket (`AIRA-T0168` through `AIRA-T0173`), the generic context-range bracket bridge (`AIRA-T0209`), the D19 context-range bracket (`AIRA-T0208`), the request-level D19 classifier (`AIRA-T0216`, `AIRA-T0217`), its threshold-order/disjoint-branch consistency guards (`AIRA-T0218`, `AIRA-T0219`), and the exact open-gap/exhaustive-status theorems (`AIRA-T0220`, `AIRA-T0221`). The longest proved standard seed is still channel-0 based; it is not a full all-channel bank theorem or a continued-fraction theorem.
+
+</details>
+
+## Core Proof Cards
+
+The lesson keeps only the cards needed to follow the proof chain while reading. The full audit trail lives in [RoPE proof audit](rope_certifier_audit.qmd) and the generated [Theorem Index](../../theorems.qmd).
+
 <div class="theorem-box" data-theorem-id="AIRA-T0024"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0025"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0026"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0027"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0028"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0034"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0035"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0036"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0046"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0048"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0049"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0051"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0052"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0190"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0191"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0188"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0192"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0193"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0194"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0189"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0195"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0198"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0199"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0200"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0201"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0202"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0203"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0204"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0205"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0206"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0207"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0210"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0211"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0212"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0213"></div>
 <div class="theorem-box" data-theorem-id="AIRA-T0179"></div>
 <div class="theorem-box" data-theorem-id="AIRA-T0180"></div>
 <div class="theorem-box" data-theorem-id="AIRA-T0184"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0174"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0175"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0176"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0029"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0030"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0031"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0032"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0033"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0037"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0038"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0039"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0040"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0041"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0042"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0043"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0044"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0045"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0047"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0050"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0053"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0054"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0055"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0056"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0057"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0058"></div>
 <div class="theorem-box" data-theorem-id="AIRA-T0059"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0182"></div>
 <div class="theorem-box" data-theorem-id="AIRA-T0183"></div>
 <div class="theorem-box" data-theorem-id="AIRA-T0214"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0126"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0060"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0177"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0186"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0178"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0181"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0196"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0197"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0061"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0185"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0215"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0222"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0223"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0224"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0225"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0226"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0227"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0228"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0229"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0187"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0062"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0063"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0064"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0065"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0066"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0067"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0068"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0069"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0070"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0071"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0072"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0073"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0074"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0075"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0076"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0077"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0078"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0079"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0080"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0081"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0082"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0083"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0084"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0085"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0086"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0087"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0088"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0089"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0090"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0091"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0092"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0093"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0094"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0095"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0096"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0097"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0098"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0099"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0100"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0101"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0102"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0103"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0104"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0105"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0106"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0107"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0108"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0109"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0110"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0111"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0112"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0113"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0114"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0115"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0116"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0117"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0118"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0119"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0120"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0121"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0122"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0123"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0124"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0125"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0127"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0128"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0129"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0130"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0131"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0132"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0133"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0134"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0135"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0136"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0137"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0138"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0139"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0140"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0141"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0142"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0143"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0144"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0145"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0146"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0147"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0148"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0149"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0150"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0151"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0152"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0153"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0154"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0155"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0156"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0157"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0158"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0159"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0160"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0161"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0162"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0163"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0164"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0165"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0166"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0167"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0168"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0169"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0170"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0171"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0172"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0173"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0209"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0230"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0231"></div>
 <div class="theorem-box" data-theorem-id="AIRA-T0208"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0216"></div>
 <div class="theorem-box" data-theorem-id="AIRA-T0217"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0218"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0219"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0220"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0221"></div>
 
 ## Dictionary
 
@@ -729,7 +618,7 @@ The generated sidecar Markdown and JSON have `Band Endpoint Audit` summaries tha
 
 <div class="book-navigation">
 <a href="ai_contract_ladder.qmd">Previous: AI Contract Ladder</a>
-<a href="kv_cache_ring_buffer.qmd">Next: KV-Cache Ring Buffer</a>
+<a href="rope_certifier_audit.qmd">Next: RoPE Proof Audit</a>
 </div>
 
 <script type="module" src="../../widgets/shared/widget_base.js"></script>

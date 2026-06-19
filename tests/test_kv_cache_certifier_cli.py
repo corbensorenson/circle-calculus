@@ -320,3 +320,122 @@ def test_kv_cache_certifier_cli_reports_stale_request_witness() -> None:
     assert "AIM-T0101" in adapter_request["theorem_ids"]
     assert "AIM-T0102" in adapter_request["theorem_ids"]
     assert "AIM-T0103" in adapter_request["theorem_ids"]
+
+
+def test_kv_cache_certifier_cli_reports_sink_window_policy() -> None:
+    result = subprocess.run(
+        [
+            sys.executable,
+            str(SCRIPT),
+            "--cache-size",
+            "16",
+            "--current",
+            "31",
+            "--token",
+            "20",
+            "--batch-tokens",
+            "20,24,29,31",
+            "--sink-size",
+            "4",
+            "--format",
+            "json",
+        ],
+        cwd=ROOT,
+        check=True,
+        text=True,
+        capture_output=True,
+    )
+
+    payload = json.loads(result.stdout)
+    sink_window = payload["sink_window_certificate"]
+    assert sink_window["sink_size"] == 4
+    assert sink_window["cache_size"] == 16
+    assert sink_window["current"] == 31
+    assert sink_window["sink_prefix_length"] == 4
+    assert sink_window["sink_tokens"] == [0, 1, 2, 3]
+    assert sink_window["rolling_tokens"] == list(range(16, 32))
+    assert sink_window["tokens"] == [0, 1, 2, 3, *range(16, 32)]
+    assert sink_window["rolling_slots"] == list(range(16))
+    assert sink_window["token_count"] == 20
+    assert sink_window["token_count_bound"] == 20
+    assert sink_window["token_count_le_sink_plus_cache"] is True
+    assert sink_window["live_window_start"] == 16
+    assert sink_window["live_window_length"] == 16
+    assert sink_window["sink_prefix_fully_seen"] is True
+    assert sink_window["sink_prefix_before_live_window"] is True
+    assert sink_window["sink_prefix_disjoint_from_live_window"] is True
+    assert sink_window["disjoint_exact_token_count"] == 20
+    assert sink_window["token_count_eq_sink_plus_live_window_when_disjoint"] is True
+    assert sink_window["tokens_distinct"] is True
+    assert sink_window["generated_tokens_exact_policy"] is True
+    assert sink_window["rolling_tokens_match_filtered_live_window"] is True
+    assert sink_window["rolling_tokens_retained"] is True
+    assert sink_window["sink_tokens_are_seen_prefix"] is True
+    assert sink_window["sink_tokens_non_future"] is True
+    assert sink_window["sink_tokens_retained_by_policy"] is True
+    assert sink_window["sink_tokens_outside_ordinary_rolling_window"] is True
+    assert "AIM-T0104" in sink_window["theorem_ids"]
+    assert "AIM-T0108" in sink_window["theorem_ids"]
+    assert "AIM-T0110" in sink_window["theorem_ids"]
+    assert "AIM-T0117" in sink_window["theorem_ids"]
+    assert "AIM-T0119" in sink_window["theorem_ids"]
+    assert "AIM-T0136" in sink_window["theorem_ids"]
+    assert "AIM-T0137" in sink_window["theorem_ids"]
+    assert "AIM-T0148" in sink_window["theorem_ids"]
+    assert "AIM-T0105" in sink_window["fixture_theorem_ids"]
+    assert "AIM-T0109" in sink_window["fixture_theorem_ids"]
+    assert "AIM-T0118" in sink_window["fixture_theorem_ids"]
+    assert "AIM-T0149" in sink_window["fixture_theorem_ids"]
+
+
+def test_kv_cache_certifier_cli_text_reports_sink_window_policy() -> None:
+    result = subprocess.run(
+        [
+            sys.executable,
+            str(SCRIPT),
+            "--cache-size",
+            "16",
+            "--current",
+            "31",
+            "--token",
+            "20",
+            "--batch-tokens",
+            "20,24,29,31",
+            "--sink-size",
+            "4",
+        ],
+        cwd=ROOT,
+        check=True,
+        text=True,
+        capture_output=True,
+    )
+
+    assert "sink_window_policy=PINNED_PREFIX_PLUS_ROLLING sink_size=4" in result.stdout
+    assert (
+        "prefix_length=4 cache_size=16 current=31 token_count=20 "
+        "token_count_bound=20 token_count_le_sink_plus_cache=True"
+    ) in result.stdout
+    assert "live_window_start=16 live_window_length=16" in result.stdout
+    assert "sink_prefix_disjoint_from_live_window=True" in result.stdout
+    assert "disjoint_exact_token_count=20" in result.stdout
+    assert "token_count_eq_sink_plus_live_window_when_disjoint=True" in result.stdout
+    assert "sink_tokens=(0, 1, 2, 3)" in result.stdout
+    assert "rolling_tokens=(16, 17, 18, 19, 20, 21, 22, 23" in result.stdout
+    assert "rolling_slots=(0, 1, 2, 3, 4, 5, 6, 7" in result.stdout
+    assert "generated_tokens_exact_policy=True" in result.stdout
+    assert "rolling_tokens_retained=True" in result.stdout
+    assert "sink_tokens_non_future=True" in result.stdout
+    assert "sink_tokens_retained_by_policy=True" in result.stdout
+    assert "sink_tokens_outside_ordinary_rolling_window=True" in result.stdout
+    assert "AIM-T0104" in result.stdout
+    assert "AIM-T0108" in result.stdout
+    assert "AIM-T0110" in result.stdout
+    assert "AIM-T0117" in result.stdout
+    assert "AIM-T0119" in result.stdout
+    assert "AIM-T0136" in result.stdout
+    assert "AIM-T0137" in result.stdout
+    assert "AIM-T0148" in result.stdout
+    assert "AIM-T0105" in result.stdout
+    assert "AIM-T0109" in result.stdout
+    assert "AIM-T0118" in result.stdout
+    assert "AIM-T0149" in result.stdout

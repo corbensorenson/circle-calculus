@@ -120,10 +120,15 @@ def test_generator_comparison_has_positive_and_negative_cases() -> None:
 
     assert compact.exact_regeneration
     assert compact.generator_shorter
+    assert compact.storage_saving > 0
+    assert compact.storage_saving_positive
+    assert compact.storage_saving + compact.generator_length == compact.explicit_length
     assert diagram.exact_regeneration
     assert physics_loop.exact_regeneration
     assert noisy.exact_regeneration
     assert not noisy.generator_shorter
+    assert noisy.storage_saving == 0
+    assert not noisy.storage_saving_positive
 
 
 def test_bounded_generator_search_reports_scope_and_exact_candidates() -> None:

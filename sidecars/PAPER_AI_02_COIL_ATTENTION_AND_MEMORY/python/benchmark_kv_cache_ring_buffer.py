@@ -21,6 +21,7 @@ from circle_math.applications.circle_ai import (
     certify_kv_cache_batch,
     certify_kv_cache_live_window,
     certify_kv_cache_live_window_request,
+    certify_kv_cache_sink_window,
     certify_kv_cache_window,
 )
 
@@ -38,7 +39,14 @@ def parse_tokens(raw: str) -> tuple[int, ...]:
     return tuple(int(part.strip()) for part in raw.split(","))
 
 
-def build_payload(*, cache_size: int, current: int, token: int, batch_tokens: str) -> dict[str, Any]:
+def build_payload(
+    *,
+    cache_size: int,
+    current: int,
+    token: int,
+    batch_tokens: str,
+    sink_size: int,
+) -> dict[str, Any]:
     certificate = certify_kv_cache_window(
         cache_size=cache_size,
         current=current,
@@ -64,6 +72,11 @@ def build_payload(*, cache_size: int, current: int, token: int, batch_tokens: st
         current=current,
         request_id="generated_live_window_read",
     )
+    sink_window = certify_kv_cache_sink_window(
+        sink_size=sink_size,
+        cache_size=cache_size,
+        current=current,
+    )
     return {
         "schema_id": "circle_calculus.kv_cache_ring_buffer_certificate.v0",
         "claim_boundary": CLAIM_BOUNDARY,
@@ -72,6 +85,7 @@ def build_payload(*, cache_size: int, current: int, token: int, batch_tokens: st
         "adapter_request_trace_certificate": asdict(adapter_request),
         "live_window_certificate": asdict(live_window),
         "live_window_request_certificate": asdict(live_window_request),
+        "sink_window_certificate": asdict(sink_window),
     }
 
 
@@ -81,6 +95,7 @@ def text_results(payload: dict[str, Any]) -> str:
     adapter_request = payload["adapter_request_trace_certificate"]
     live_window = payload["live_window_certificate"]
     live_window_request = payload["live_window_request_certificate"]
+    sink_window = payload["sink_window_certificate"]
     lines = [
         (
             "kv_cache_ring_buffer "
@@ -220,6 +235,40 @@ def text_results(payload: dict[str, Any]) -> str:
             f"theorem_ids={','.join(live_window_request['theorem_ids'])}"
         ),
         live_window_request["note"],
+        (
+            "kv_cache_sink_window "
+            "policy=PINNED_PREFIX_PLUS_ROLLING "
+            f"sink_size={sink_window['sink_size']} "
+            f"prefix_length={sink_window['sink_prefix_length']} "
+            f"cache_size={sink_window['cache_size']} "
+            f"current={sink_window['current']} "
+            f"token_count={sink_window['token_count']} "
+            f"token_count_bound={sink_window['token_count_bound']} "
+            "token_count_le_sink_plus_cache="
+            f"{sink_window['token_count_le_sink_plus_cache']} "
+            f"live_window_start={sink_window['live_window_start']} "
+            f"live_window_length={sink_window['live_window_length']} "
+            f"disjoint_exact_token_count={sink_window['disjoint_exact_token_count']} "
+            "token_count_eq_sink_plus_live_window_when_disjoint="
+            f"{sink_window['token_count_eq_sink_plus_live_window_when_disjoint']} "
+            "sink_prefix_disjoint_from_live_window="
+            f"{sink_window['sink_prefix_disjoint_from_live_window']} "
+            f"sink_tokens={sink_window['sink_tokens']} "
+            f"rolling_tokens={sink_window['rolling_tokens']} "
+            f"rolling_slots={sink_window['rolling_slots']} "
+            f"tokens_distinct={sink_window['tokens_distinct']} "
+            "generated_tokens_exact_policy="
+            f"{sink_window['generated_tokens_exact_policy']} "
+            f"rolling_tokens_retained={sink_window['rolling_tokens_retained']} "
+            f"sink_tokens_non_future={sink_window['sink_tokens_non_future']} "
+            "sink_tokens_retained_by_policy="
+            f"{sink_window['sink_tokens_retained_by_policy']} "
+            "sink_tokens_outside_ordinary_rolling_window="
+            f"{sink_window['sink_tokens_outside_ordinary_rolling_window']} "
+            f"fixture_theorem_ids={','.join(sink_window['fixture_theorem_ids'])} "
+            f"theorem_ids={','.join(sink_window['theorem_ids'])}"
+        ),
+        sink_window["note"],
     ]
     return "\n".join(lines) + "\n"
 
@@ -230,6 +279,7 @@ def markdown_results(payload: dict[str, Any]) -> str:
     adapter_request = payload["adapter_request_trace_certificate"]
     live_window = payload["live_window_certificate"]
     live_window_request = payload["live_window_request_certificate"]
+    sink_window = payload["sink_window_certificate"]
     return "\n".join(
         [
             "# KV-Cache Ring-Buffer Certificate Results",
@@ -334,6 +384,30 @@ def markdown_results(payload: dict[str, Any]) -> str:
                 f"{', '.join(live_window_request['theorem_ids'])} |"
             ),
             "",
+            "| Sink size | Prefix length | Cache size | Current | Live start | Live length | Token count | Count bound | Count within bound | Disjoint exact count | Exact count when disjoint | Sink prefix disjoint from live window | Sink tokens | Rolling tokens | Rolling slots | Tokens distinct | Exact policy | Rolling tokens retained | Sink tokens non-future | Sink tokens retained by policy | Sink tokens outside ordinary rolling window | Fixture theorem ids | Theorem ids |",
+            "| ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- | ---: | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |",
+            (
+                f"| {sink_window['sink_size']} | {sink_window['sink_prefix_length']} | "
+                f"{sink_window['cache_size']} | {sink_window['current']} | "
+                f"{sink_window['live_window_start']} | {sink_window['live_window_length']} | "
+                f"{sink_window['token_count']} | {sink_window['token_count_bound']} | "
+                f"{sink_window['token_count_le_sink_plus_cache']} | "
+                f"{sink_window['disjoint_exact_token_count']} | "
+                f"{sink_window['token_count_eq_sink_plus_live_window_when_disjoint']} | "
+                f"{sink_window['sink_prefix_disjoint_from_live_window']} | "
+                f"{', '.join(str(token) for token in sink_window['sink_tokens'])} | "
+                f"{', '.join(str(token) for token in sink_window['rolling_tokens'])} | "
+                f"{', '.join(str(slot) for slot in sink_window['rolling_slots'])} | "
+                f"{sink_window['tokens_distinct']} | "
+                f"{sink_window['generated_tokens_exact_policy']} | "
+                f"{sink_window['rolling_tokens_retained']} | "
+                f"{sink_window['sink_tokens_non_future']} | "
+                f"{sink_window['sink_tokens_retained_by_policy']} | "
+                f"{sink_window['sink_tokens_outside_ordinary_rolling_window']} | "
+                f"{', '.join(sink_window['fixture_theorem_ids'])} | "
+                f"{', '.join(sink_window['theorem_ids'])} |"
+            ),
+            "",
             "Reproduce with:",
             "",
             "```bash",
@@ -355,6 +429,7 @@ def main() -> None:
     parser.add_argument("--current", type=int, default=31)
     parser.add_argument("--token", type=int, default=20)
     parser.add_argument("--batch-tokens", default="20,24,29,31")
+    parser.add_argument("--sink-size", type=int, default=4)
     parser.add_argument(
         "--format",
         choices=("text", "json", "markdown"),
@@ -370,6 +445,7 @@ def main() -> None:
         current=args.current,
         token=args.token,
         batch_tokens=args.batch_tokens,
+        sink_size=args.sink_size,
     )
     json_text = json.dumps(payload, indent=2, sort_keys=True) + "\n"
     markdown_text = markdown_results(payload)

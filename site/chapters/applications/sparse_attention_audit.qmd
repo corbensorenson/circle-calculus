@@ -1,0 +1,169 @@
+---
+title: "Sparse Attention Proof Audit"
+---
+
+This appendix keeps the theorem-card trail for the [Sparse Attention Coverage](sparse_attention_contract.qmd) lesson. The lesson teaches the coverage contract; this page is for auditing the finite proof family.
+
+::: {.warning-box}
+These cards certify finite candidate-set coverage, gap witnesses, count/budget fields, no-zero residue conditions, and dedup-loss facts for declared sparse plans. They do not prove attention quality, long-context model behavior, runtime, memory savings, or model quality.
+:::
+
+## Audit Reading Order
+
+Use this page as an audit trail, not as the first explanation. The main lesson gives the worked example; this appendix resolves the theorem ids.
+
+| Proof Family | What To Check Here |
+| --- | --- |
+| Basic reachability | local-window and stride-step predicates mean the same thing in Lean, Python, and the report fields |
+| Candidate lists | generated lag/query lists have bounded size and expose the raw candidate budget |
+| Covered and uncovered lists | every positive lag is either covered or uncovered, and the two lists account for `n - 1` lags |
+| Shortfalls and counts | raw-budget and deduplicated-count shortfalls are theorem-backed gap evidence under explicit hypotheses |
+| Period thresholds | no-zero-residue and period-threshold checks make the structural assumptions visible |
+| Planner rows | public rows certify collision counts, dedup loss, first-gap repair, first-interval repair, and dense fallback fields |
+
+## Basic Reachability And Gap Predicates
+
+<div class="theorem-box" data-theorem-id="AIT-T0001"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0002"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0003"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0016"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0017"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0020"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0021"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0028"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0033"></div>
+
+## Candidate Lists And Budget Bounds
+
+<div class="theorem-box" data-theorem-id="AIT-T0036"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0039"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0043"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0055"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0063"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0065"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0067"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0076"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0078"></div>
+
+## Covered And Uncovered List Semantics
+
+<div class="theorem-box" data-theorem-id="AIT-T0079"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0080"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0081"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0082"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0083"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0084"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0085"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0086"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0087"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0088"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0089"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0090"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0091"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0092"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0093"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0094"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0095"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0096"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0097"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0098"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0099"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0100"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0101"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0102"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0103"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0104"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0105"></div>
+
+## Query Counts, Shortfalls, And Candidate Range
+
+<div class="theorem-box" data-theorem-id="AIT-T0106"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0107"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0108"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0109"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0110"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0111"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0112"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0113"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0114"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0115"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0116"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0117"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0118"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0119"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0120"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0121"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0122"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0123"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0124"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0125"></div>
+
+## Period Thresholds And Zero-Residue Counts
+
+<div class="theorem-box" data-theorem-id="AIT-T0126"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0127"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0128"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0129"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0130"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0131"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0132"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0133"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0134"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0135"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0136"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0137"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0138"></div>
+
+## Public Planner Rows And Dedup Loss
+
+<div class="theorem-box" data-theorem-id="AIT-T0139"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0140"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0141"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0142"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0143"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0144"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0145"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0146"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0147"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0148"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0149"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0150"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0151"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0152"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0153"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0154"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0155"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0156"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0157"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0158"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0159"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0160"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0161"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0162"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0163"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0164"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0165"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0166"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0167"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0168"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0169"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0170"></div>
+
+## Source Trail
+
+<p data-paper-ref="papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md">Paper source: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md">Coil Attention And Memory</a></p>
+
+<p>Lean source: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/Circle/Applications/CircleTransformer.lean">Circle/Applications/CircleTransformer.lean</a></p>
+
+<p>Python source: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/circle_math/applications/circle_transformer.py">circle_math/applications/circle_transformer.py</a></p>
+
+<p>CLI source: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/scripts/stride_family_certify.py">scripts/stride_family_certify.py</a></p>
+
+<p>Quickstart: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/docs/SPARSE_ATTENTION_CERTIFIER_QUICKSTART.md">Sparse-Attention Certifier Quickstart</a></p>
+
+<div class="book-navigation">
+<a href="sparse_attention_contract.qmd">Back: Sparse Attention Coverage</a>
+<a href="looped_recurrence_contracts.qmd">Next: Looped Recurrence Contracts</a>
+</div>
+
+<script type="module" src="../../widgets/shared/widget_base.js"></script>

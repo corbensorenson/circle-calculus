@@ -22,6 +22,10 @@ These are proof-carrying finite ring-buffer indexing certificates for a declared
 | --- | --- | --- | --- | ---: | --- | --- | --- | --- | --- | --- | --- |
 | generated_live_window_read | 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31 | 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 | True | 16 | True | True | True | True | True | AIM-T0089 | AIM-T0087, AIM-T0088 |
 
+| Sink size | Prefix length | Cache size | Current | Live start | Live length | Token count | Count bound | Count within bound | Disjoint exact count | Exact count when disjoint | Sink prefix disjoint from live window | Sink tokens | Rolling tokens | Rolling slots | Tokens distinct | Exact policy | Rolling tokens retained | Sink tokens non-future | Sink tokens retained by policy | Sink tokens outside ordinary rolling window | Fixture theorem ids | Theorem ids |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- | ---: | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 4 | 4 | 16 | 31 | 16 | 16 | 20 | 20 | True | 20 | True | True | 0, 1, 2, 3 | 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31 | 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 | True | True | True | True | True | True | AIM-T0105, AIM-T0109, AIM-T0118, AIM-T0149 | AIM-T0104, AIM-T0108, AIM-T0110, AIM-T0117, AIM-T0119, AIM-T0136, AIM-T0137, AIM-T0148 |
+
 Reproduce with:
 
 ```bash

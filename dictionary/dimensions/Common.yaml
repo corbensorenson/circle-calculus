@@ -343,6 +343,18 @@ entries:
       - "A retrieval-quality guarantee."
       - "A proof that cyclic memory replaces attention."
       - "A throughput, memory-saving, paging-policy, or deployment-safety guarantee."
+  - id: COMMON-0090
+    name: "KV-cache sink-window policy certificate"
+    kind: interface
+    symbol: "SinkWindow(sink, cache, current)"
+    formal_definition: "`circle_math.applications.circle_ai.certify_kv_cache_sink_window`, `kv_cache_sink_prefix_length`, `kv_cache_sink_window_contains`, `kv_cache_sink_window_tokens`, and `kv_cache_sink_window_tokens_exact` model a finite pinned-prefix plus rolling-window request policy. In Lean, `kvCacheSinkPrefixLength sinkSize current = min sinkSize (current + 1)` keeps only sink-prefix tokens that have actually been seen, `kvCacheSinkWindowContains` retains either that seen prefix or the ordinary `kvCacheWindowContains` rolling window, `kvCacheSinkWindowContains_iff_mem_sinkWindowTokens` proves exact membership in the generated token list, `kvCacheSinkWindowRollingTokens_all_retained` proves the filtered rolling suffix still satisfies the ordinary rolling-window predicate, `kvCacheSinkWindowTokens_nodup` proves every generated sink-window request list is duplicate-free, `kvCacheSinkWindowTokens_length_le_sinkSize_add_cacheSize` proves every generated request length is bounded by `sinkSize + cacheSize`, `kvCacheSinkWindowTokens_length_eq_sinkSize_add_liveWindowLength_of_sinkSize_le_start` proves the exact `sinkSize + liveWindowLength` count when the fully seen sink prefix lies before the rolling live window, and the public `4/16/31` fixture theorems pin the exact token list, duplicate-free status, and `20`-token request size."
+    intuition: "Streaming-style sink retention can be treated as a proof-carrying request-list policy: keep the early seen prefix pinned, append the current rolling live window after filtering out prefix duplicates, preserve ordinary freshness for the rolling suffix, report exactly which tokens the policy retains, and certify that the request has no duplicates and stays within the declared sink-plus-cache budget."
+    dependencies: ["COMMON-0028", "COMMON-0081"]
+    introduced_in: "PAPER_AI_02_COIL_ATTENTION_AND_MEMORY"
+    forbidden_meanings:
+      - "A proof of StreamingLLM or sink-token model quality."
+      - "A proof of paging, serving-stack, kernel, or deployment correctness."
+      - "A throughput, memory-saving, retrieval-quality, or language-model behavior claim."
   - id: COMMON-0030
     name: "Adapter block index"
     kind: operation

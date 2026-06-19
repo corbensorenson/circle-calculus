@@ -1,0 +1,1655 @@
+{
+  "$id": "https://circle-calculus.local/schemas/circle_ai_contract_pack.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "description": "Public, standalone Circle Calculus AI contract pack. The schema checks JSON shape and required consumer fields; Lean/manifests remain the formal proof source.",
+  "properties": {
+    "claim_boundary": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "content_fingerprint_algorithm": {
+      "const": "sha256-json-v1"
+    },
+    "contract_fingerprint_index": {
+      "additionalProperties": {
+        "additionalProperties": false,
+        "properties": {
+          "content_fingerprint": {
+            "pattern": "^[0-9a-f]{64}$",
+            "type": "string"
+          },
+          "content_fingerprint_algorithm": {
+            "const": "sha256-json-v1"
+          },
+          "id": {
+            "pattern": "^CC-AI-CONTRACT-",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "content_fingerprint_algorithm",
+          "content_fingerprint"
+        ],
+        "type": "object"
+      },
+      "type": "object"
+    },
+    "contract_readiness_index": {
+      "additionalProperties": {
+        "additionalProperties": true,
+        "properties": {
+          "all_theorem_ids_proved": {
+            "type": "boolean"
+          },
+          "all_theorem_ids_resolved": {
+            "type": "boolean"
+          },
+          "id": {
+            "pattern": "^CC-AI-CONTRACT-",
+            "type": "string"
+          },
+          "kind": {
+            "enum": [
+              "circulant_block_cyclic_mixer",
+              "cyclic_memory_residue_winding",
+              "kv_cache_ring_buffer",
+              "multicoil_phase_feature",
+              "recurrence_schedule",
+              "rope_position_distinguishability",
+              "seed_rule_exact_regeneration",
+              "sparse_attention_coverage",
+              "strided_candidate_fanout"
+            ],
+            "type": "string"
+          },
+          "planner_recommendation_count": {
+            "minimum": 0,
+            "type": "integer"
+          },
+          "planner_recommendation_ids": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "ready_for_downstream_fixture_use": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "id",
+          "kind",
+          "ready_for_downstream_fixture_use",
+          "all_theorem_ids_resolved",
+          "all_theorem_ids_proved"
+        ],
+        "type": "object"
+      },
+      "type": "object"
+    },
+    "contract_schema": {
+      "additionalProperties": true,
+      "properties": {
+        "consumer_check_keys": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "minimum_field_catalog_by_kind": {
+          "additionalProperties": false,
+          "properties": {
+            "circulant_block_cyclic_mixer": {
+              "additionalProperties": {
+                "additionalProperties": true,
+                "properties": {
+                  "description": {
+                    "minLength": 1,
+                    "type": "string"
+                  },
+                  "proof_role": {
+                    "minLength": 1,
+                    "type": "string"
+                  },
+                  "value_kind": {
+                    "enum": [
+                      "array",
+                      "boolean",
+                      "integer",
+                      "null",
+                      "number",
+                      "object",
+                      "string"
+                    ],
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "description",
+                  "value_kind",
+                  "proof_role"
+                ],
+                "type": "object"
+              },
+              "required": [
+                "period",
+                "input_values",
+                "kernel_values",
+                "circulant_output",
+                "dense_output",
+                "max_abs_dense_delta",
+                "dense_parameters",
+                "circulant_parameters",
+                "circulant_parameter_ratio"
+              ],
+              "type": "object"
+            },
+            "cyclic_memory_residue_winding": {
+              "additionalProperties": {
+                "additionalProperties": true,
+                "properties": {
+                  "description": {
+                    "minLength": 1,
+                    "type": "string"
+                  },
+                  "proof_role": {
+                    "minLength": 1,
+                    "type": "string"
+                  },
+                  "value_kind": {
+                    "enum": [
+                      "array",
+                      "boolean",
+                      "integer",
+                      "null",
+                      "number",
+                      "object",
+                      "string"
+                    ],
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "description",
+                  "value_kind",
+                  "proof_role"
+                ],
+                "type": "object"
+              },
+              "required": [
+                "bank_size",
+                "event_count",
+                "residue_slot",
+                "winding",
+                "same_residue_events",
+                "same_residue_windings",
+                "max_alias_load"
+              ],
+              "type": "object"
+            },
+            "kv_cache_ring_buffer": {
+              "additionalProperties": {
+                "additionalProperties": true,
+                "properties": {
+                  "description": {
+                    "minLength": 1,
+                    "type": "string"
+                  },
+                  "proof_role": {
+                    "minLength": 1,
+                    "type": "string"
+                  },
+                  "value_kind": {
+                    "enum": [
+                      "array",
+                      "boolean",
+                      "integer",
+                      "null",
+                      "number",
+                      "object",
+                      "string"
+                    ],
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "description",
+                  "value_kind",
+                  "proof_role"
+                ],
+                "type": "object"
+              },
+              "required": [
+                "certificate_schema_id",
+                "adapter_request_pass",
+                "stale_requested_count",
+                "pass_iff_stale_count_zero_under_nonfuture_nodup",
+                "stale_probe_requested_tokens",
+                "stale_probe_requested_slots",
+                "stale_probe_pass",
+                "stale_probe_first_stale_token",
+                "stale_probe_first_stale_next_overwrite_token",
+                "stale_probe_stale_requested_count",
+                "stale_probe_stale_member_blocks_pass",
+                "stale_probe_pass_iff_stale_count_zero_under_nonfuture_nodup",
+                "stale_probe_fail_iff_stale_count_positive_under_nonfuture_nodup",
+                "sink_window_exact_policy",
+                "sink_window_tokens_distinct",
+                "sink_window_token_count",
+                "sink_window_token_count_bound",
+                "sink_window_token_count_le_sink_plus_cache",
+                "sink_window_disjoint_exact_token_count",
+                "sink_window_token_count_eq_sink_plus_live_window_when_disjoint",
+                "sink_prefix_disjoint_from_live_window",
+                "sink_rolling_tokens_retained",
+                "sink_tokens_are_seen_prefix",
+                "sink_tokens_non_future",
+                "sink_tokens_retained_by_policy",
+                "sink_tokens_outside_ordinary_rolling_window"
+              ],
+              "type": "object"
+            },
+            "multicoil_phase_feature": {
+              "additionalProperties": {
+                "additionalProperties": true,
+                "properties": {
+                  "description": {
+                    "minLength": 1,
+                    "type": "string"
+                  },
+                  "proof_role": {
+                    "minLength": 1,
+                    "type": "string"
+                  },
+                  "value_kind": {
+                    "enum": [
+                      "array",
+                      "boolean",
+                      "integer",
+                      "null",
+                      "number",
+                      "object",
+                      "string"
+                    ],
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "description",
+                  "value_kind",
+                  "proof_role"
+                ],
+                "type": "object"
+              },
+              "required": [
+                "periods",
+                "position",
+                "phase_tuple",
+                "shifted_position",
+                "shifted_phase_tuple",
+                "joint_repeat_horizon",
+                "relative_period"
+              ],
+              "type": "object"
+            },
+            "recurrence_schedule": {
+              "additionalProperties": {
+                "additionalProperties": true,
+                "properties": {
+                  "description": {
+                    "minLength": 1,
+                    "type": "string"
+                  },
+                  "proof_role": {
+                    "minLength": 1,
+                    "type": "string"
+                  },
+                  "value_kind": {
+                    "enum": [
+                      "array",
+                      "boolean",
+                      "integer",
+                      "null",
+                      "number",
+                      "object",
+                      "string"
+                    ],
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "description",
+                  "value_kind",
+                  "proof_role"
+                ],
+                "type": "object"
+              },
+              "required": [
+                "required_steps",
+                "exit_step",
+                "loop_period",
+                "overthinking_boundary",
+                "active_step_one_is_full_range",
+                "first_step_active_token_count",
+                "first_step_inactive_token_count",
+                "first_step_inactive_count_zero",
+                "work_count_step",
+                "work_step_active_token_count",
+                "work_step_inactive_token_count",
+                "work_step_active_inactive_count_eq_token_count",
+                "post_period_active_empty",
+                "post_period_active_token_count",
+                "post_period_inactive_token_count",
+                "post_period_inactive_count_eq_token_count",
+                "active_token_sets_descend",
+                "active_token_lists_nodup",
+                "active_token_counts_bounded",
+                "active_token_counts_descend",
+                "inactive_token_counts_ascend",
+                "total_work_horizon_steps",
+                "active_token_count_trace",
+                "inactive_token_count_trace",
+                "active_token_count_trace_sum",
+                "inactive_token_count_trace_sum",
+                "active_token_count_trace_sum_matches_total",
+                "inactive_token_count_trace_sum_matches_total",
+                "first_inactive_steps",
+                "first_inactive_steps_match_budget_successor",
+                "total_active_token_work",
+                "total_inactive_token_work",
+                "full_loop_token_work",
+                "scheduled_work_saving",
+                "scheduled_work_saving_accounting",
+                "active_inactive_work_accounting",
+                "scheduled_work_saving_matches_inactive_work",
+                "scheduled_work_saving_positive",
+                "active_work_below_full_loop_work",
+                "scheduled_work_saving_positive_iff_active_work_shortfall",
+                "scheduled_work_saving_zero",
+                "active_work_equals_full_loop_work",
+                "scheduled_work_saving_zero_iff_no_active_work_shortfall",
+                "public_fixture_4_8_2_active_token_count",
+                "public_fixture_4_8_2_inactive_token_count",
+                "public_fixture_4_8_2_accounting_eq_token_count",
+                "public_fixture_4_8_4_total_active_token_work",
+                "public_fixture_4_8_4_total_inactive_token_work",
+                "public_fixture_8_4_full_loop_token_work",
+                "public_fixture_4_8_4_scheduled_work_saving",
+                "public_fixture_4_8_4_work_saving_accounting",
+                "public_fixture_4_8_4_active_inactive_work_accounting",
+                "public_fixture_4_8_4_work_saving_matches_inactive_work",
+                "public_fixture_4_8_4_scheduled_work_saving_positive",
+                "public_fixture_4_8_4_active_work_below_full_loop_work",
+                "public_fixture_4_8_4_positive_saving_iff_active_work_shortfall",
+                "public_fixture_4_8_4_scheduled_work_saving_zero",
+                "public_fixture_4_8_4_active_work_equals_full_loop_work",
+                "public_fixture_4_8_4_zero_saving_iff_no_active_work_shortfall",
+                "default_fixture_5_8_5_total_active_token_work",
+                "default_fixture_5_8_5_total_inactive_token_work",
+                "default_fixture_8_5_full_loop_token_work",
+                "default_fixture_5_8_5_scheduled_work_saving",
+                "default_fixture_5_8_5_work_saving_accounting",
+                "default_fixture_5_8_5_active_inactive_work_accounting",
+                "default_fixture_5_8_5_work_saving_matches_inactive_work",
+                "post_period_extension_horizon_steps",
+                "post_period_extension_total_active_token_work",
+                "post_period_extension_total_inactive_token_work",
+                "post_period_extension_full_loop_token_work",
+                "post_period_extension_scheduled_work_saving",
+                "post_period_extension_active_work_unchanged",
+                "post_period_extension_inactive_work_added_token_count",
+                "post_period_extension_saving_added_token_count",
+                "default_fixture_5_8_6_total_active_token_work",
+                "default_fixture_5_8_6_scheduled_work_saving",
+                "default_fixture_5_8_6_active_work_unchanged",
+                "default_fixture_5_8_6_saving_added_token_count",
+                "post_period_extra_steps",
+                "post_period_multi_extension_horizon_steps",
+                "post_period_multi_extension_total_active_token_work",
+                "post_period_multi_extension_total_inactive_token_work",
+                "post_period_multi_extension_full_loop_token_work",
+                "post_period_multi_extension_scheduled_work_saving",
+                "post_period_multi_extension_active_work_unchanged",
+                "post_period_multi_extension_inactive_work_added_extra_token_count",
+                "post_period_multi_extension_saving_added_extra_token_count",
+                "default_fixture_5_8_8_total_active_token_work",
+                "default_fixture_5_8_8_scheduled_work_saving",
+                "default_fixture_5_8_8_active_work_unchanged",
+                "default_fixture_5_8_8_saving_added_extra_token_count",
+                "periodic_shift_base_token",
+                "periodic_shift_passes",
+                "periodic_shift_amount",
+                "periodic_shifted_token",
+                "periodic_shift_required_steps_invariant",
+                "periodic_shift_recurrence_budget_invariant",
+                "periodic_shift_training_free_budget_invariant",
+                "periodic_shift_exit_step_invariant",
+                "periodic_shift_overthinking_boundary_invariant",
+                "periodic_shift_active_step",
+                "periodic_shift_active_at_step_invariant"
+              ],
+              "type": "object"
+            },
+            "rope_position_distinguishability": {
+              "additionalProperties": {
+                "additionalProperties": true,
+                "properties": {
+                  "description": {
+                    "minLength": 1,
+                    "type": "string"
+                  },
+                  "proof_role": {
+                    "minLength": 1,
+                    "type": "string"
+                  },
+                  "value_kind": {
+                    "enum": [
+                      "array",
+                      "boolean",
+                      "integer",
+                      "null",
+                      "number",
+                      "object",
+                      "string"
+                    ],
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "description",
+                  "value_kind",
+                  "proof_role"
+                ],
+                "type": "object"
+              },
+              "required": [
+                "certificate_schema_id",
+                "exact_discrete_pass",
+                "common_collision_gap",
+                "total_bank_collision_pair_count",
+                "real_phase_margin_pass",
+                "worst_margin_radians",
+                "d19_proved_request_status",
+                "d19_proved_request_theorem_backed_classification",
+                "d19_impossible_request_status",
+                "d19_impossible_request_theorem_backed_classification",
+                "d19_margin_thresholds_ordered",
+                "d19_proved_impossible_branches_disjoint",
+                "d19_margin_status_exhaustive",
+                "proof_layers"
+              ],
+              "type": "object"
+            },
+            "seed_rule_exact_regeneration": {
+              "additionalProperties": {
+                "additionalProperties": true,
+                "properties": {
+                  "description": {
+                    "minLength": 1,
+                    "type": "string"
+                  },
+                  "proof_role": {
+                    "minLength": 1,
+                    "type": "string"
+                  },
+                  "value_kind": {
+                    "enum": [
+                      "array",
+                      "boolean",
+                      "integer",
+                      "null",
+                      "number",
+                      "object",
+                      "string"
+                    ],
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "description",
+                  "value_kind",
+                  "proof_role"
+                ],
+                "type": "object"
+              },
+              "required": [
+                "artifact_id",
+                "fixture_n",
+                "seed",
+                "rules",
+                "generated_object",
+                "regenerated_object",
+                "exact_regeneration",
+                "explicit_length",
+                "generator_length",
+                "storage_saving",
+                "storage_saving_positive",
+                "generator_shorter",
+                "generator_shorter_iff_positive_saving",
+                "storage_saving_add_generator_length_eq_explicit_length",
+                "bounded_search_id",
+                "bounded_search_finite_search_space",
+                "bounded_search_candidate_count",
+                "bounded_search_exact_candidate_count",
+                "bounded_search_exact_candidate_count_le_candidate_count",
+                "bounded_search_has_best_exact",
+                "bounded_search_best_exact_exists_iff_exact_count_positive",
+                "bounded_search_best_exact_implies_candidate_count_positive",
+                "bounded_search_best_exact_artifact_id",
+                "bounded_search_best_exact_candidate_id",
+                "bounded_search_best_exact_regenerates",
+                "bounded_search_has_best_shorter",
+                "bounded_search_best_shorter_artifact_id",
+                "bounded_search_best_shorter_candidate_id",
+                "bounded_search_best_shorter_generator_shorter",
+                "bounded_search_candidates",
+                "bounded_search_candidate_ids_by_generator_length",
+                "bounded_search_exact_candidate_ids_by_generator_length",
+                "bounded_search_shorter_candidate_ids_by_generator_length",
+                "closure_condition"
+              ],
+              "type": "object"
+            },
+            "sparse_attention_coverage": {
+              "additionalProperties": {
+                "additionalProperties": true,
+                "properties": {
+                  "description": {
+                    "minLength": 1,
+                    "type": "string"
+                  },
+                  "proof_role": {
+                    "minLength": 1,
+                    "type": "string"
+                  },
+                  "value_kind": {
+                    "enum": [
+                      "array",
+                      "boolean",
+                      "integer",
+                      "null",
+                      "number",
+                      "object",
+                      "string"
+                    ],
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "description",
+                  "value_kind",
+                  "proof_role"
+                ],
+                "type": "object"
+              },
+              "required": [
+                "certificate_schema_id",
+                "coverage_complete",
+                "covered_lag_count",
+                "uncovered_lag_count",
+                "uncovered_lag_intervals",
+                "first_uncovered_lag",
+                "first_uncovered_interval_start",
+                "first_uncovered_interval_stop",
+                "first_uncovered_interval_length",
+                "local_window_needed_to_cover_first_uncovered_interval",
+                "first_uncovered_interval_additional_local_slots",
+                "first_uncovered_interval_repair_reaches_interval",
+                "first_interval_repair_next_uncovered_lag",
+                "first_interval_repair_still_has_gap",
+                "first_interval_repair_covers_context",
+                "largest_uncovered_interval_start",
+                "largest_uncovered_interval_stop",
+                "largest_uncovered_interval_length",
+                "local_window_needed_to_cover_largest_uncovered_interval",
+                "largest_uncovered_interval_additional_local_slots",
+                "largest_uncovered_interval_repair_reaches_interval",
+                "largest_interval_repair_next_uncovered_lag",
+                "largest_interval_repair_still_has_gap",
+                "largest_interval_repair_covers_context",
+                "largest_uncovered_interval_is_tail",
+                "first_gap_local_window_shortfall",
+                "local_window_needed_to_cover_first_gap",
+                "current_window_below_first_gap",
+                "first_gap_repair_window_reaches",
+                "first_gap_repair_window_covers_context",
+                "first_gap_repair_window_is_final_positive_lag",
+                "first_gap_repair_threshold_matches_final_lag",
+                "local_window_complete_coverage_threshold",
+                "local_window_complete_coverage_shortfall",
+                "local_window_reaches_complete_coverage_threshold",
+                "local_window_threshold_certifies_complete",
+                "local_window_complete_threshold_is_exact_local_minimum",
+                "complete_repair_window",
+                "complete_repair_window_additional_local_slots",
+                "complete_repair_window_covers_context",
+                "complete_repair_window_uses_dense_threshold",
+                "complete_repair_window_minimal_for_declared_stride_family",
+                "complete_repair_window_minimal_witness_lag",
+                "interval_repair_plan",
+                "interval_repair_plan_step_count",
+                "interval_repair_plan_final_window",
+                "interval_repair_plan_covers_context",
+                "interval_repair_plan_strictly_progresses",
+                "first_gap_repair_window_reaches_complete_threshold",
+                "raw_budget_shortfall_certifies_incomplete",
+                "lag_unique_plus_loss_eq_raw",
+                "query_unique_plus_loss_eq_raw",
+                "lag_collision_pair_count",
+                "query_collision_pair_count",
+                "lag_collision_pair_count_zero_iff_no_collision",
+                "lag_collision_pair_count_positive_iff_collision",
+                "lag_collision_pair_count_bounds_dedup_loss",
+                "lag_collision_pair_count_excess_over_dedup_loss",
+                "query_collision_pair_count_zero_iff_no_collision",
+                "query_collision_pair_count_positive_iff_collision",
+                "query_collision_pair_count_bounds_dedup_loss",
+                "query_collision_pair_count_excess_over_dedup_loss"
+              ],
+              "type": "object"
+            },
+            "strided_candidate_fanout": {
+              "additionalProperties": {
+                "additionalProperties": true,
+                "properties": {
+                  "description": {
+                    "minLength": 1,
+                    "type": "string"
+                  },
+                  "proof_role": {
+                    "minLength": 1,
+                    "type": "string"
+                  },
+                  "value_kind": {
+                    "enum": [
+                      "array",
+                      "boolean",
+                      "integer",
+                      "null",
+                      "number",
+                      "object",
+                      "string"
+                    ],
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "description",
+                  "value_kind",
+                  "proof_role"
+                ],
+                "type": "object"
+              },
+              "required": [
+                "context_length",
+                "stride",
+                "candidate_budget",
+                "unique_candidate_count",
+                "effective_candidate_budget",
+                "duplicate_count",
+                "candidate_budget_accounting",
+                "effective_budget_matches_unique_candidates",
+                "candidate_budget_shortfall",
+                "effective_budget_reaches_predicted_reach",
+                "full_coverage",
+                "predicted_reach"
+              ],
+              "type": "object"
+            }
+          },
+          "required": [
+            "circulant_block_cyclic_mixer",
+            "cyclic_memory_residue_winding",
+            "kv_cache_ring_buffer",
+            "multicoil_phase_feature",
+            "recurrence_schedule",
+            "rope_position_distinguishability",
+            "seed_rule_exact_regeneration",
+            "sparse_attention_coverage",
+            "strided_candidate_fanout"
+          ],
+          "type": "object"
+        },
+        "minimum_fields_by_kind": {
+          "additionalProperties": false,
+          "properties": {
+            "circulant_block_cyclic_mixer": {
+              "contains": {
+                "const": "period"
+              },
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            "cyclic_memory_residue_winding": {
+              "contains": {
+                "const": "bank_size"
+              },
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            "kv_cache_ring_buffer": {
+              "contains": {
+                "const": "certificate_schema_id"
+              },
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            "multicoil_phase_feature": {
+              "contains": {
+                "const": "periods"
+              },
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            "recurrence_schedule": {
+              "contains": {
+                "const": "required_steps"
+              },
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            "rope_position_distinguishability": {
+              "contains": {
+                "const": "certificate_schema_id"
+              },
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            "seed_rule_exact_regeneration": {
+              "contains": {
+                "const": "artifact_id"
+              },
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            "sparse_attention_coverage": {
+              "contains": {
+                "const": "certificate_schema_id"
+              },
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            "strided_candidate_fanout": {
+              "contains": {
+                "const": "context_length"
+              },
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            }
+          },
+          "required": [
+            "circulant_block_cyclic_mixer",
+            "cyclic_memory_residue_winding",
+            "kv_cache_ring_buffer",
+            "multicoil_phase_feature",
+            "recurrence_schedule",
+            "rope_position_distinguishability",
+            "seed_rule_exact_regeneration",
+            "sparse_attention_coverage",
+            "strided_candidate_fanout"
+          ],
+          "type": "object"
+        },
+        "planner_recommendation_keys": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "required_contract_keys": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "required_contract_keys",
+        "minimum_fields_by_kind",
+        "minimum_field_catalog_by_kind",
+        "consumer_check_keys"
+      ],
+      "type": "object"
+    },
+    "contracts": {
+      "items": {
+        "additionalProperties": true,
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "kind": {
+                  "const": "circulant_block_cyclic_mixer"
+                }
+              },
+              "required": [
+                "kind"
+              ]
+            },
+            "then": {
+              "properties": {
+                "fields": {
+                  "required": [
+                    "period",
+                    "input_values",
+                    "kernel_values",
+                    "circulant_output",
+                    "dense_output",
+                    "max_abs_dense_delta",
+                    "dense_parameters",
+                    "circulant_parameters",
+                    "circulant_parameter_ratio"
+                  ],
+                  "type": "object"
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "kind": {
+                  "const": "cyclic_memory_residue_winding"
+                }
+              },
+              "required": [
+                "kind"
+              ]
+            },
+            "then": {
+              "properties": {
+                "fields": {
+                  "required": [
+                    "bank_size",
+                    "event_count",
+                    "residue_slot",
+                    "winding",
+                    "same_residue_events",
+                    "same_residue_windings",
+                    "max_alias_load"
+                  ],
+                  "type": "object"
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "kind": {
+                  "const": "kv_cache_ring_buffer"
+                }
+              },
+              "required": [
+                "kind"
+              ]
+            },
+            "then": {
+              "properties": {
+                "fields": {
+                  "required": [
+                    "certificate_schema_id",
+                    "adapter_request_pass",
+                    "stale_requested_count",
+                    "pass_iff_stale_count_zero_under_nonfuture_nodup",
+                    "stale_probe_requested_tokens",
+                    "stale_probe_requested_slots",
+                    "stale_probe_pass",
+                    "stale_probe_first_stale_token",
+                    "stale_probe_first_stale_next_overwrite_token",
+                    "stale_probe_stale_requested_count",
+                    "stale_probe_stale_member_blocks_pass",
+                    "stale_probe_pass_iff_stale_count_zero_under_nonfuture_nodup",
+                    "stale_probe_fail_iff_stale_count_positive_under_nonfuture_nodup",
+                    "sink_window_exact_policy",
+                    "sink_window_tokens_distinct",
+                    "sink_window_token_count",
+                    "sink_window_token_count_bound",
+                    "sink_window_token_count_le_sink_plus_cache",
+                    "sink_window_disjoint_exact_token_count",
+                    "sink_window_token_count_eq_sink_plus_live_window_when_disjoint",
+                    "sink_prefix_disjoint_from_live_window",
+                    "sink_rolling_tokens_retained",
+                    "sink_tokens_are_seen_prefix",
+                    "sink_tokens_non_future",
+                    "sink_tokens_retained_by_policy",
+                    "sink_tokens_outside_ordinary_rolling_window"
+                  ],
+                  "type": "object"
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "kind": {
+                  "const": "multicoil_phase_feature"
+                }
+              },
+              "required": [
+                "kind"
+              ]
+            },
+            "then": {
+              "properties": {
+                "fields": {
+                  "required": [
+                    "periods",
+                    "position",
+                    "phase_tuple",
+                    "shifted_position",
+                    "shifted_phase_tuple",
+                    "joint_repeat_horizon",
+                    "relative_period"
+                  ],
+                  "type": "object"
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "kind": {
+                  "const": "recurrence_schedule"
+                }
+              },
+              "required": [
+                "kind"
+              ]
+            },
+            "then": {
+              "properties": {
+                "fields": {
+                  "required": [
+                    "required_steps",
+                    "exit_step",
+                    "loop_period",
+                    "overthinking_boundary",
+                    "active_step_one_is_full_range",
+                    "first_step_active_token_count",
+                    "first_step_inactive_token_count",
+                    "first_step_inactive_count_zero",
+                    "work_count_step",
+                    "work_step_active_token_count",
+                    "work_step_inactive_token_count",
+                    "work_step_active_inactive_count_eq_token_count",
+                    "post_period_active_empty",
+                    "post_period_active_token_count",
+                    "post_period_inactive_token_count",
+                    "post_period_inactive_count_eq_token_count",
+                    "active_token_sets_descend",
+                    "active_token_lists_nodup",
+                    "active_token_counts_bounded",
+                    "active_token_counts_descend",
+                    "inactive_token_counts_ascend",
+                    "total_work_horizon_steps",
+                    "active_token_count_trace",
+                    "inactive_token_count_trace",
+                    "active_token_count_trace_sum",
+                    "inactive_token_count_trace_sum",
+                    "active_token_count_trace_sum_matches_total",
+                    "inactive_token_count_trace_sum_matches_total",
+                    "first_inactive_steps",
+                    "first_inactive_steps_match_budget_successor",
+                    "total_active_token_work",
+                    "total_inactive_token_work",
+                    "full_loop_token_work",
+                    "scheduled_work_saving",
+                    "scheduled_work_saving_accounting",
+                    "active_inactive_work_accounting",
+                    "scheduled_work_saving_matches_inactive_work",
+                    "scheduled_work_saving_positive",
+                    "active_work_below_full_loop_work",
+                    "scheduled_work_saving_positive_iff_active_work_shortfall",
+                    "scheduled_work_saving_zero",
+                    "active_work_equals_full_loop_work",
+                    "scheduled_work_saving_zero_iff_no_active_work_shortfall",
+                    "public_fixture_4_8_2_active_token_count",
+                    "public_fixture_4_8_2_inactive_token_count",
+                    "public_fixture_4_8_2_accounting_eq_token_count",
+                    "public_fixture_4_8_4_total_active_token_work",
+                    "public_fixture_4_8_4_total_inactive_token_work",
+                    "public_fixture_8_4_full_loop_token_work",
+                    "public_fixture_4_8_4_scheduled_work_saving",
+                    "public_fixture_4_8_4_work_saving_accounting",
+                    "public_fixture_4_8_4_active_inactive_work_accounting",
+                    "public_fixture_4_8_4_work_saving_matches_inactive_work",
+                    "public_fixture_4_8_4_scheduled_work_saving_positive",
+                    "public_fixture_4_8_4_active_work_below_full_loop_work",
+                    "public_fixture_4_8_4_positive_saving_iff_active_work_shortfall",
+                    "public_fixture_4_8_4_scheduled_work_saving_zero",
+                    "public_fixture_4_8_4_active_work_equals_full_loop_work",
+                    "public_fixture_4_8_4_zero_saving_iff_no_active_work_shortfall",
+                    "default_fixture_5_8_5_total_active_token_work",
+                    "default_fixture_5_8_5_total_inactive_token_work",
+                    "default_fixture_8_5_full_loop_token_work",
+                    "default_fixture_5_8_5_scheduled_work_saving",
+                    "default_fixture_5_8_5_work_saving_accounting",
+                    "default_fixture_5_8_5_active_inactive_work_accounting",
+                    "default_fixture_5_8_5_work_saving_matches_inactive_work",
+                    "post_period_extension_horizon_steps",
+                    "post_period_extension_total_active_token_work",
+                    "post_period_extension_total_inactive_token_work",
+                    "post_period_extension_full_loop_token_work",
+                    "post_period_extension_scheduled_work_saving",
+                    "post_period_extension_active_work_unchanged",
+                    "post_period_extension_inactive_work_added_token_count",
+                    "post_period_extension_saving_added_token_count",
+                    "default_fixture_5_8_6_total_active_token_work",
+                    "default_fixture_5_8_6_scheduled_work_saving",
+                    "default_fixture_5_8_6_active_work_unchanged",
+                    "default_fixture_5_8_6_saving_added_token_count",
+                    "post_period_extra_steps",
+                    "post_period_multi_extension_horizon_steps",
+                    "post_period_multi_extension_total_active_token_work",
+                    "post_period_multi_extension_total_inactive_token_work",
+                    "post_period_multi_extension_full_loop_token_work",
+                    "post_period_multi_extension_scheduled_work_saving",
+                    "post_period_multi_extension_active_work_unchanged",
+                    "post_period_multi_extension_inactive_work_added_extra_token_count",
+                    "post_period_multi_extension_saving_added_extra_token_count",
+                    "default_fixture_5_8_8_total_active_token_work",
+                    "default_fixture_5_8_8_scheduled_work_saving",
+                    "default_fixture_5_8_8_active_work_unchanged",
+                    "default_fixture_5_8_8_saving_added_extra_token_count",
+                    "periodic_shift_base_token",
+                    "periodic_shift_passes",
+                    "periodic_shift_amount",
+                    "periodic_shifted_token",
+                    "periodic_shift_required_steps_invariant",
+                    "periodic_shift_recurrence_budget_invariant",
+                    "periodic_shift_training_free_budget_invariant",
+                    "periodic_shift_exit_step_invariant",
+                    "periodic_shift_overthinking_boundary_invariant",
+                    "periodic_shift_active_step",
+                    "periodic_shift_active_at_step_invariant"
+                  ],
+                  "type": "object"
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "kind": {
+                  "const": "rope_position_distinguishability"
+                }
+              },
+              "required": [
+                "kind"
+              ]
+            },
+            "then": {
+              "properties": {
+                "fields": {
+                  "required": [
+                    "certificate_schema_id",
+                    "exact_discrete_pass",
+                    "common_collision_gap",
+                    "total_bank_collision_pair_count",
+                    "real_phase_margin_pass",
+                    "worst_margin_radians",
+                    "d19_proved_request_status",
+                    "d19_proved_request_theorem_backed_classification",
+                    "d19_impossible_request_status",
+                    "d19_impossible_request_theorem_backed_classification",
+                    "d19_margin_thresholds_ordered",
+                    "d19_proved_impossible_branches_disjoint",
+                    "d19_margin_status_exhaustive",
+                    "proof_layers"
+                  ],
+                  "type": "object"
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "kind": {
+                  "const": "seed_rule_exact_regeneration"
+                }
+              },
+              "required": [
+                "kind"
+              ]
+            },
+            "then": {
+              "properties": {
+                "fields": {
+                  "required": [
+                    "artifact_id",
+                    "fixture_n",
+                    "seed",
+                    "rules",
+                    "generated_object",
+                    "regenerated_object",
+                    "exact_regeneration",
+                    "explicit_length",
+                    "generator_length",
+                    "storage_saving",
+                    "storage_saving_positive",
+                    "generator_shorter",
+                    "generator_shorter_iff_positive_saving",
+                    "storage_saving_add_generator_length_eq_explicit_length",
+                    "bounded_search_id",
+                    "bounded_search_finite_search_space",
+                    "bounded_search_candidate_count",
+                    "bounded_search_exact_candidate_count",
+                    "bounded_search_exact_candidate_count_le_candidate_count",
+                    "bounded_search_has_best_exact",
+                    "bounded_search_best_exact_exists_iff_exact_count_positive",
+                    "bounded_search_best_exact_implies_candidate_count_positive",
+                    "bounded_search_best_exact_artifact_id",
+                    "bounded_search_best_exact_candidate_id",
+                    "bounded_search_best_exact_regenerates",
+                    "bounded_search_has_best_shorter",
+                    "bounded_search_best_shorter_artifact_id",
+                    "bounded_search_best_shorter_candidate_id",
+                    "bounded_search_best_shorter_generator_shorter",
+                    "bounded_search_candidates",
+                    "bounded_search_candidate_ids_by_generator_length",
+                    "bounded_search_exact_candidate_ids_by_generator_length",
+                    "bounded_search_shorter_candidate_ids_by_generator_length",
+                    "closure_condition"
+                  ],
+                  "type": "object"
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "kind": {
+                  "const": "sparse_attention_coverage"
+                }
+              },
+              "required": [
+                "kind"
+              ]
+            },
+            "then": {
+              "properties": {
+                "fields": {
+                  "required": [
+                    "certificate_schema_id",
+                    "coverage_complete",
+                    "covered_lag_count",
+                    "uncovered_lag_count",
+                    "uncovered_lag_intervals",
+                    "first_uncovered_lag",
+                    "first_uncovered_interval_start",
+                    "first_uncovered_interval_stop",
+                    "first_uncovered_interval_length",
+                    "local_window_needed_to_cover_first_uncovered_interval",
+                    "first_uncovered_interval_additional_local_slots",
+                    "first_uncovered_interval_repair_reaches_interval",
+                    "first_interval_repair_next_uncovered_lag",
+                    "first_interval_repair_still_has_gap",
+                    "first_interval_repair_covers_context",
+                    "largest_uncovered_interval_start",
+                    "largest_uncovered_interval_stop",
+                    "largest_uncovered_interval_length",
+                    "local_window_needed_to_cover_largest_uncovered_interval",
+                    "largest_uncovered_interval_additional_local_slots",
+                    "largest_uncovered_interval_repair_reaches_interval",
+                    "largest_interval_repair_next_uncovered_lag",
+                    "largest_interval_repair_still_has_gap",
+                    "largest_interval_repair_covers_context",
+                    "largest_uncovered_interval_is_tail",
+                    "first_gap_local_window_shortfall",
+                    "local_window_needed_to_cover_first_gap",
+                    "current_window_below_first_gap",
+                    "first_gap_repair_window_reaches",
+                    "first_gap_repair_window_covers_context",
+                    "first_gap_repair_window_is_final_positive_lag",
+                    "first_gap_repair_threshold_matches_final_lag",
+                    "local_window_complete_coverage_threshold",
+                    "local_window_complete_coverage_shortfall",
+                    "local_window_reaches_complete_coverage_threshold",
+                    "local_window_threshold_certifies_complete",
+                    "local_window_complete_threshold_is_exact_local_minimum",
+                    "complete_repair_window",
+                    "complete_repair_window_additional_local_slots",
+                    "complete_repair_window_covers_context",
+                    "complete_repair_window_uses_dense_threshold",
+                    "complete_repair_window_minimal_for_declared_stride_family",
+                    "complete_repair_window_minimal_witness_lag",
+                    "interval_repair_plan",
+                    "interval_repair_plan_step_count",
+                    "interval_repair_plan_final_window",
+                    "interval_repair_plan_covers_context",
+                    "interval_repair_plan_strictly_progresses",
+                    "first_gap_repair_window_reaches_complete_threshold",
+                    "raw_budget_shortfall_certifies_incomplete",
+                    "lag_unique_plus_loss_eq_raw",
+                    "query_unique_plus_loss_eq_raw",
+                    "lag_collision_pair_count",
+                    "query_collision_pair_count",
+                    "lag_collision_pair_count_zero_iff_no_collision",
+                    "lag_collision_pair_count_positive_iff_collision",
+                    "lag_collision_pair_count_bounds_dedup_loss",
+                    "lag_collision_pair_count_excess_over_dedup_loss",
+                    "query_collision_pair_count_zero_iff_no_collision",
+                    "query_collision_pair_count_positive_iff_collision",
+                    "query_collision_pair_count_bounds_dedup_loss",
+                    "query_collision_pair_count_excess_over_dedup_loss"
+                  ],
+                  "type": "object"
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "kind": {
+                  "const": "strided_candidate_fanout"
+                }
+              },
+              "required": [
+                "kind"
+              ]
+            },
+            "then": {
+              "properties": {
+                "fields": {
+                  "required": [
+                    "context_length",
+                    "stride",
+                    "candidate_budget",
+                    "unique_candidate_count",
+                    "effective_candidate_budget",
+                    "duplicate_count",
+                    "candidate_budget_accounting",
+                    "effective_budget_matches_unique_candidates",
+                    "candidate_budget_shortfall",
+                    "effective_budget_reaches_predicted_reach",
+                    "full_coverage",
+                    "predicted_reach"
+                  ],
+                  "type": "object"
+                }
+              }
+            }
+          }
+        ],
+        "properties": {
+          "consumer_check": {
+            "additionalProperties": true,
+            "properties": {
+              "minimum_fields": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              "missing_minimum_fields": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              "ready_for_downstream_fixture_use": {
+                "type": "boolean"
+              },
+              "required_fields_present": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "minimum_fields",
+              "missing_minimum_fields",
+              "required_fields_present",
+              "ready_for_downstream_fixture_use"
+            ],
+            "type": "object"
+          },
+          "content_fingerprint": {
+            "pattern": "^[0-9a-f]{64}$",
+            "type": "string"
+          },
+          "content_fingerprint_algorithm": {
+            "const": "sha256-json-v1"
+          },
+          "contract_passed": {
+            "type": "boolean"
+          },
+          "dictionary_ids": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "entrypoints": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "fields": {
+            "type": "object"
+          },
+          "id": {
+            "pattern": "^CC-AI-CONTRACT-",
+            "type": "string"
+          },
+          "integration_use": {
+            "type": "string"
+          },
+          "kind": {
+            "enum": [
+              "circulant_block_cyclic_mixer",
+              "cyclic_memory_residue_winding",
+              "kv_cache_ring_buffer",
+              "multicoil_phase_feature",
+              "recurrence_schedule",
+              "rope_position_distinguishability",
+              "seed_rule_exact_regeneration",
+              "sparse_attention_coverage",
+              "strided_candidate_fanout"
+            ],
+            "type": "string"
+          },
+          "living_book_pages": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "not_claimed": {
+            "type": "string"
+          },
+          "ordinary_baselines": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              }
+            ]
+          },
+          "planner_recommendations": {
+            "items": {
+              "additionalProperties": true,
+              "properties": {
+                "action_kind": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "coverage_scope": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "evidence_fields": {
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array"
+                },
+                "id": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "not_claimed": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "status": {
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "theorem_ids": {
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array"
+                }
+              },
+              "required": [
+                "id",
+                "action_kind",
+                "status",
+                "coverage_scope",
+                "evidence_fields",
+                "theorem_ids",
+                "not_claimed"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          },
+          "proof_status": {
+            "additionalProperties": true,
+            "properties": {
+              "all_theorem_ids_proved": {
+                "type": "boolean"
+              },
+              "all_theorem_ids_resolved": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "all_theorem_ids_resolved",
+              "all_theorem_ids_proved"
+            ],
+            "type": "object"
+          },
+          "quickstart_docs": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "status": {
+            "type": "string"
+          },
+          "theorem_ids": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "validation_commands": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "id",
+          "kind",
+          "status",
+          "content_fingerprint_algorithm",
+          "content_fingerprint",
+          "theorem_ids",
+          "dictionary_ids",
+          "fields",
+          "proof_status",
+          "contract_passed",
+          "integration_use",
+          "ordinary_baselines",
+          "not_claimed",
+          "quickstart_docs",
+          "living_book_pages",
+          "entrypoints",
+          "validation_commands"
+        ],
+        "type": "object"
+      },
+      "minItems": 1,
+      "type": "array"
+    },
+    "downstream_compatibility": {
+      "type": "object"
+    },
+    "pack_content_fingerprint": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "planner_recommendation_index": {
+      "additionalProperties": {
+        "additionalProperties": true,
+        "properties": {
+          "action_kind": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "contract_id": {
+            "pattern": "^CC-AI-CONTRACT-",
+            "type": "string"
+          },
+          "coverage_scope": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "evidence_fields": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "id": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "kind": {
+            "enum": [
+              "circulant_block_cyclic_mixer",
+              "cyclic_memory_residue_winding",
+              "kv_cache_ring_buffer",
+              "multicoil_phase_feature",
+              "recurrence_schedule",
+              "rope_position_distinguishability",
+              "seed_rule_exact_regeneration",
+              "sparse_attention_coverage",
+              "strided_candidate_fanout"
+            ],
+            "type": "string"
+          },
+          "living_book_pages": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "not_claimed": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "quickstart_docs": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "ready_for_downstream_fixture_use": {
+            "type": "boolean"
+          },
+          "source_paper": {
+            "type": "string"
+          },
+          "status": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "theorem_ids": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "validation_commands": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "id",
+          "kind",
+          "contract_id",
+          "ready_for_downstream_fixture_use",
+          "action_kind",
+          "status",
+          "coverage_scope",
+          "evidence_fields",
+          "theorem_ids",
+          "validation_commands",
+          "not_claimed"
+        ],
+        "type": "object"
+      },
+      "type": "object"
+    },
+    "proof_indexes": {
+      "type": "object"
+    },
+    "schema_id": {
+      "const": "circle_calculus.ai_contract_pack.v0"
+    },
+    "source_docs": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "status": {
+      "type": "string"
+    },
+    "validation_commands": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    }
+  },
+  "required": [
+    "schema_id",
+    "status",
+    "claim_boundary",
+    "content_fingerprint_algorithm",
+    "pack_content_fingerprint",
+    "proof_indexes",
+    "contract_schema",
+    "validation_commands",
+    "source_docs",
+    "downstream_compatibility",
+    "contract_readiness_index",
+    "planner_recommendation_index",
+    "contract_fingerprint_index",
+    "contracts"
+  ],
+  "title": "Circle AI Contract Pack",
+  "type": "object"
+}

@@ -175,6 +175,206 @@ theorems:
     status: lean_proved
     lean_name: Circle.Applications.not_kvCacheAdapterRequestTracePass_iff_staleMemberCount_pos_of_nonFuture_nodup
     dictionary_dependencies: ["COMMON-0028", "COMMON-0081"]
+  - id: AIM-T0104
+    status: lean_proved
+    lean_name: Circle.Applications.kvCacheSinkWindowContains_iff_mem_sinkWindowTokens
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0081", "COMMON-0090"]
+  - id: AIM-T0105
+    status: lean_proved
+    lean_name: Circle.Applications.kvCacheSinkWindowTokens_default_4_16_31
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0081", "COMMON-0090"]
+  - id: AIM-T0108
+    status: lean_proved
+    lean_name: Circle.Applications.kvCacheSinkWindowRollingTokens_all_retained
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0081", "COMMON-0090"]
+  - id: AIM-T0109
+    status: lean_proved
+    lean_name: Circle.Applications.kvCacheSinkWindowTokens_default_4_16_31_nodup
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0081", "COMMON-0090"]
+  - id: AIM-T0110
+    status: lean_proved
+    lean_name: Circle.Applications.kvCacheSinkWindowTokens_nodup
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0081", "COMMON-0090"]
+  - id: AIM-T0117
+    status: lean_proved
+    lean_name: Circle.Applications.kvCacheSinkWindowTokens_length_le_sinkSize_add_cacheSize
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0081", "COMMON-0090"]
+  - id: AIM-T0118
+    status: lean_proved
+    lean_name: Circle.Applications.kvCacheSinkWindowTokens_default_4_16_31_length
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0081", "COMMON-0090"]
+  - id: AIM-T0119
+    status: lean_proved
+    lean_name: Circle.Applications.kvCacheSinkWindowTokens_length_eq_sinkSize_add_liveWindowLength_of_sinkSize_le_start
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0081", "COMMON-0090"]
+  - id: AIM-T0136
+    status: lean_proved
+    lean_name: Circle.Applications.kvCacheSinkWindowPrefixTokens_le_current
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0081", "COMMON-0090"]
+  - id: AIM-T0137
+    status: lean_proved
+    lean_name: Circle.Applications.kvCacheSinkWindowPrefixTokens_policy_retained
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0081", "COMMON-0090"]
+  - id: AIM-T0148
+    status: lean_proved
+    lean_name: Circle.Applications.kvCacheSinkWindowPrefixTokens_not_rolling_retained_of_sinkSize_le_start
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0081", "COMMON-0090"]
+  - id: AIM-T0149
+    status: lean_proved
+    lean_name: Circle.Applications.kvCacheSinkWindowPrefixTokens_default_4_16_31_not_rolling_retained
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0081", "COMMON-0090"]
+  - id: AIM-T0106
+    status: lean_proved
+    lean_name: Circle.Applications.activeTokensAtStep_mem_iff
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0059"]
+  - id: AIM-T0107
+    status: lean_proved
+    lean_name: Circle.Applications.activeTokensAtStep_default_4_8_2
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0059"]
+  - id: AIM-T0120
+    status: lean_proved
+    lean_name: Circle.Applications.activeTokenCountAtStep_le_tokenCount
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0059"]
+  - id: AIM-T0128
+    status: lean_proved
+    lean_name: Circle.Applications.activeTokenCountAtStep_late_le_early_of_step_le
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0059"]
+  - id: AIM-T0121
+    status: lean_proved
+    lean_name: Circle.Applications.activeTokenCountAtStep_one_eq_tokenCount
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0059"]
+  - id: AIM-T0122
+    status: lean_proved
+    lean_name: Circle.Applications.activeTokenCountAtStep_eq_zero_of_loopPeriod_lt_step
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0059"]
+  - id: AIM-T0123
+    status: lean_proved
+    lean_name: Circle.Applications.activeTokenCountAtStep_add_inactiveTokenCountAtStep_eq_tokenCount
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0059"]
+  - id: AIM-T0129
+    status: lean_proved
+    lean_name: Circle.Applications.inactiveTokenCountAtStep_early_le_late_of_step_le
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0059"]
+  - id: AIM-T0124
+    status: lean_proved
+    lean_name: Circle.Applications.inactiveTokenCountAtStep_one_eq_zero
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0059"]
+  - id: AIM-T0125
+    status: lean_proved
+    lean_name: Circle.Applications.inactiveTokenCountAtStep_eq_tokenCount_of_loopPeriod_lt_step
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0059"]
+  - id: AIM-T0126
+    status: lean_proved
+    lean_name: Circle.Applications.activeTokenCountAtStep_default_4_8_2
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0059"]
+  - id: AIM-T0127
+    status: lean_proved
+    lean_name: Circle.Applications.inactiveTokenCountAtStep_default_4_8_2
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0059"]
+  - id: AIM-T0130
+    status: lean_proved
+    lean_name: Circle.Applications.totalActiveTokenWork_le_fullLoopTokenWork
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0059"]
+  - id: AIM-T0131
+    status: lean_proved
+    lean_name: Circle.Applications.scheduledWorkSaving_add_totalActiveTokenWork_eq_fullLoopTokenWork
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0059"]
+  - id: AIM-T0144
+    status: lean_proved
+    lean_name: Circle.Applications.totalActiveTokenWork_add_totalInactiveTokenWork_eq_fullLoopTokenWork
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0059"]
+  - id: AIM-T0145
+    status: lean_proved
+    lean_name: Circle.Applications.scheduledWorkSaving_eq_totalInactiveTokenWork
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0059", "COMMON-0068"]
+  - id: AIM-T0132
+    status: lean_proved
+    lean_name: Circle.Applications.totalActiveTokenWork_default_4_8_4
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0059"]
+  - id: AIM-T0133
+    status: lean_proved
+    lean_name: Circle.Applications.fullLoopTokenWork_default_8_4
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0059"]
+  - id: AIM-T0134
+    status: lean_proved
+    lean_name: Circle.Applications.scheduledWorkSaving_default_4_8_4
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0059"]
+  - id: AIM-T0146
+    status: lean_proved
+    lean_name: Circle.Applications.totalInactiveTokenWork_default_4_8_4
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0059"]
+  - id: AIM-T0135
+    status: lean_proved
+    lean_name: Circle.Applications.scheduledWorkSaving_default_4_8_4_accounting
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0059"]
+  - id: AIM-T0138
+    status: lean_proved
+    lean_name: Circle.Applications.scheduledWorkSaving_pos_iff_totalActiveTokenWork_lt_fullLoopTokenWork
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0059", "COMMON-0068"]
+  - id: AIM-T0139
+    status: lean_proved
+    lean_name: Circle.Applications.scheduledWorkSaving_eq_zero_iff_totalActiveTokenWork_eq_fullLoopTokenWork
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0059", "COMMON-0068"]
+  - id: AIM-T0140
+    status: lean_proved
+    lean_name: Circle.Applications.totalActiveTokenWork_default_5_8_5
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0059"]
+  - id: AIM-T0141
+    status: lean_proved
+    lean_name: Circle.Applications.fullLoopTokenWork_default_8_5
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0059"]
+  - id: AIM-T0142
+    status: lean_proved
+    lean_name: Circle.Applications.scheduledWorkSaving_default_5_8_5
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0059"]
+  - id: AIM-T0147
+    status: lean_proved
+    lean_name: Circle.Applications.totalInactiveTokenWork_default_5_8_5
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0059"]
+  - id: AIM-T0143
+    status: lean_proved
+    lean_name: Circle.Applications.scheduledWorkSaving_default_5_8_5_accounting
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0059"]
+  - id: AIM-T0150
+    status: lean_proved
+    lean_name: Circle.Applications.totalActiveTokenWork_succ_eq_self_of_loopPeriod_lt_succ
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0059", "COMMON-0068"]
+  - id: AIM-T0151
+    status: lean_proved
+    lean_name: Circle.Applications.totalInactiveTokenWork_succ_eq_add_tokenCount_of_loopPeriod_lt_succ
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0059", "COMMON-0068"]
+  - id: AIM-T0152
+    status: lean_proved
+    lean_name: Circle.Applications.scheduledWorkSaving_succ_eq_add_tokenCount_of_loopPeriod_lt_succ
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0059", "COMMON-0068"]
+  - id: AIM-T0153
+    status: lean_proved
+    lean_name: Circle.Applications.totalActiveTokenWork_default_5_8_6_eq_default_5_8_5
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0059"]
+  - id: AIM-T0154
+    status: lean_proved
+    lean_name: Circle.Applications.scheduledWorkSaving_default_5_8_6_add_step
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0059"]
+  - id: AIM-T0155
+    status: lean_proved
+    lean_name: Circle.Applications.totalActiveTokenWork_add_extra_eq_self_of_loopPeriod_le_steps
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0059", "COMMON-0068"]
+  - id: AIM-T0156
+    status: lean_proved
+    lean_name: Circle.Applications.totalInactiveTokenWork_add_extra_eq_add_mul_tokenCount_of_loopPeriod_le_steps
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0059", "COMMON-0068"]
+  - id: AIM-T0157
+    status: lean_proved
+    lean_name: Circle.Applications.scheduledWorkSaving_add_extra_eq_add_mul_tokenCount_of_loopPeriod_le_steps
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0059", "COMMON-0068"]
+  - id: AIM-T0158
+    status: lean_proved
+    lean_name: Circle.Applications.totalActiveTokenWork_default_5_8_8_eq_default_5_8_5
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0059"]
+  - id: AIM-T0159
+    status: lean_proved
+    lean_name: Circle.Applications.scheduledWorkSaving_default_5_8_8_add_extra
+    dictionary_dependencies: ["COMMON-0052", "COMMON-0053", "COMMON-0059"]
   - id: AIM-T0006
     status: lean_proved
     lean_name: Circle.Applications.loopRequiredSteps_pos
@@ -590,6 +790,14 @@ theorems:
   - id: AIRA-T0229
     status: lean_proved
     lean_name: Circle.Applications.ropeTurnRatioNatRatio_full_denominator_obstruction_of_one_over_den_lt_margin
+    dictionary_dependencies: ["COMMON-0076", "COMMON-0077", "COMMON-0080", "COMMON-0082", "COMMON-0087", "COMMON-0088"]
+  - id: AIRA-T0230
+    status: lean_proved
+    lean_name: Circle.Applications.ropeTurnRatioExactWeakestGapMargin_request_iff
+    dictionary_dependencies: ["COMMON-0076", "COMMON-0077", "COMMON-0080", "COMMON-0082", "COMMON-0087", "COMMON-0088"]
+  - id: AIRA-T0231
+    status: lean_proved
+    lean_name: Circle.Applications.not_ropeTurnRatioFiniteMargin_of_exactWeakestGapMargin_lt_request
     dictionary_dependencies: ["COMMON-0076", "COMMON-0077", "COMMON-0080", "COMMON-0082", "COMMON-0087", "COMMON-0088"]
 next_targets:
   - >-

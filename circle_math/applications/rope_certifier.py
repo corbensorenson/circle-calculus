@@ -205,6 +205,8 @@ ROPE_REAL_PHASE_PRECURSOR_THEOREMS: tuple[str, ...] = (
     "AIRA-T0227",
     "AIRA-T0228",
     "AIRA-T0229",
+    "AIRA-T0230",
+    "AIRA-T0231",
     "AIRA-T0126",
     "AIRA-T0139",
     "AIRA-T0140",
@@ -259,6 +261,8 @@ ROPE_REAL_PHASE_PRECURSOR_LEAN_DECLARATIONS: tuple[str, ...] = (
     "Circle.Applications.ropeTurnRatioNatRatio_exists_exactWeakestGapMargin_report_of_coprime",
     "Circle.Applications.ropeTurnRatioFiniteMargin_natRatio_full_denominator_iff_margin_le_one_over_den",
     "Circle.Applications.ropeTurnRatioNatRatio_full_denominator_obstruction_of_one_over_den_lt_margin",
+    "Circle.Applications.ropeTurnRatioExactWeakestGapMargin_request_iff",
+    "Circle.Applications.not_ropeTurnRatioFiniteMargin_of_exactWeakestGapMargin_lt_request",
     "Circle.Applications.ropeTurnRatioIntervalWitness_of_band_bounds",
     "Circle.Applications.ropeTurnRatioIntervalWitness_of_rationalIntervalBand",
     "Circle.Applications.ropeTurnRatioIntervalCertificate_of_rationalIntervalBands",
@@ -301,6 +305,16 @@ ROPE_NAT_RATIO_COPRIME_FULL_DENOMINATOR_EXACT_MARGIN_LEAN_DECLARATIONS: tuple[st
     "Circle.Applications.ropeTurnRatioNatRatio_full_denominator_obstruction_of_one_over_den_lt_margin",
 )
 
+ROPE_EXACT_WEAKEST_REQUEST_THRESHOLD_THEOREMS: tuple[str, ...] = (
+    "AIRA-T0230",
+    "AIRA-T0231",
+)
+
+ROPE_EXACT_WEAKEST_REQUEST_THRESHOLD_LEAN_DECLARATIONS: tuple[str, ...] = (
+    "Circle.Applications.ropeTurnRatioExactWeakestGapMargin_request_iff",
+    "Circle.Applications.not_ropeTurnRatioFiniteMargin_of_exactWeakestGapMargin_lt_request",
+)
+
 ROPE_RATIONAL_PRESET_4099_THEOREMS: tuple[str, ...] = (
     "AIRA-T0056",
     "AIRA-T0059",
@@ -314,6 +328,7 @@ ROPE_RATIONAL_PRESET_4099_THEOREMS: tuple[str, ...] = (
     "AIRA-T0185",
     "AIRA-T0215",
     *ROPE_ONE_OVER_NAT_EXACT_MARGIN_THEOREMS,
+    *ROPE_EXACT_WEAKEST_REQUEST_THRESHOLD_THEOREMS,
     "AIRA-T0187",
     "AIRA-T0196",
     "AIRA-T0062",
@@ -332,6 +347,7 @@ ROPE_RATIONAL_PRESET_4099_LEAN_DECLARATIONS: tuple[str, ...] = (
     "Circle.Applications.ropeRationalPreset4099_exactWeakestGapMargin",
     "Circle.Applications.ropeRationalPreset4099_exactWeakestGapMargin_report",
     *ROPE_ONE_OVER_NAT_EXACT_MARGIN_LEAN_DECLARATIONS,
+    *ROPE_EXACT_WEAKEST_REQUEST_THRESHOLD_LEAN_DECLARATIONS,
     "Circle.Applications.ropeRationalPreset4099_noZeroTurnRatioError",
     "Circle.Applications.ropeTurnRatioFiniteMarginCertificate_iff_no_nearTurn_below_scaled_margin",
     "Circle.Applications.not_ropeRationalPreset4099_nearTurn",
@@ -793,6 +809,7 @@ class TurnRatioFiniteMarginCertificate:
     exact_threshold_witness_gap: int | None
     exact_threshold_witness_turns: int | None
     requested_margin_pass: bool | None
+    requested_margin_status: str | None
     requested_margin_failure_reason: str | None
     pass_certificate: bool
     zero_margin_witness: tuple[int, int] | None
@@ -1918,6 +1935,26 @@ def certify_rational_turn_ratio_finite_margin(
     exact_threshold_margin: Fraction | None = (
         Fraction(1, denominator) if full_denominator_exact_threshold else None
     )
+    modular_inverse_exact_margin = (
+        exact_nearest_gap is not None
+        and exact_nearest_gap_margin == Fraction(1, denominator)
+        and turn_ratio_nat_ratio_modular_inverse_margin_witness(
+            numerator=numerator,
+            denominator=denominator,
+            gap=exact_nearest_gap,
+        )
+        is not None
+    )
+    one_over_nat_exact_margin = numerator == 1 and 1 < context_length <= denominator
+    exact_request_threshold_supported = (
+        pass_certificate
+        and exact_nearest_gap_margin is not None
+        and (
+            full_denominator_exact_threshold
+            or modular_inverse_exact_margin
+            or one_over_nat_exact_margin
+        )
+    )
     exact_threshold_witness_gap: int | None = None
     exact_threshold_witness_turns: int | None = None
     if full_denominator_exact_threshold:
@@ -1931,22 +1968,34 @@ def certify_rational_turn_ratio_finite_margin(
             if threshold_witness is not None:
                 exact_threshold_witness_turns = threshold_witness[0]
     requested_margin_pass: bool | None = None
+    requested_margin_status: str | None = None
     requested_margin_failure_reason: str | None = None
     if requested_margin is not None:
-        if full_denominator_exact_threshold and exact_threshold_margin is not None:
-            requested_margin_pass = requested_margin <= exact_threshold_margin
+        if exact_request_threshold_supported and exact_nearest_gap_margin is not None:
+            requested_margin_pass = requested_margin <= exact_nearest_gap_margin
+            requested_margin_status = "proved" if requested_margin_pass else "impossible"
             if not requested_margin_pass:
                 requested_margin_failure_reason = (
                     "requested_margin_exceeds_exact_full_denominator_threshold"
+                    if full_denominator_exact_threshold
+                    else "requested_margin_exceeds_exact_weakest_gap_threshold"
                 )
         elif pass_certificate:
             requested_margin_pass = requested_margin <= Fraction(1, denominator)
+            requested_margin_status = (
+                "proved" if requested_margin_pass else "unproved_above_certified_lower_bound"
+            )
             if not requested_margin_pass:
                 requested_margin_failure_reason = (
                     "requested_margin_exceeds_certified_rational_margin"
                 )
+        elif zero_margin_witness is not None and 0 < requested_margin:
+            requested_margin_pass = False
+            requested_margin_status = "impossible"
+            requested_margin_failure_reason = "positive_requested_margin_hits_exact_zero_gap"
         else:
             requested_margin_pass = False
+            requested_margin_status = "unproved"
             requested_margin_failure_reason = "no_positive_rational_margin_certificate"
     certificate_name = (
         name
@@ -1996,6 +2045,12 @@ def certify_rational_turn_ratio_finite_margin(
             lean_declarations = (
                 lean_declarations
                 + ROPE_NAT_RATIO_COPRIME_FULL_DENOMINATOR_EXACT_MARGIN_LEAN_DECLARATIONS
+            )
+        if exact_nearest_gap_margin is not None:
+            theorem_ids = theorem_ids + ROPE_EXACT_WEAKEST_REQUEST_THRESHOLD_THEOREMS
+            lean_declarations = (
+                lean_declarations
+                + ROPE_EXACT_WEAKEST_REQUEST_THRESHOLD_LEAN_DECLARATIONS
             )
     else:
         theorem_ids = ("AIRA-T0055", "AIRA-T0057", "AIRA-T0182", "AIRA-T0183")
@@ -2049,6 +2104,7 @@ def certify_rational_turn_ratio_finite_margin(
         exact_threshold_witness_gap=exact_threshold_witness_gap,
         exact_threshold_witness_turns=exact_threshold_witness_turns,
         requested_margin_pass=requested_margin_pass,
+        requested_margin_status=requested_margin_status,
         requested_margin_failure_reason=requested_margin_failure_reason,
         pass_certificate=pass_certificate,
         zero_margin_witness=zero_margin_witness,

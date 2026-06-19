@@ -280,6 +280,32 @@ def hybridFamilyUniqueQueryCandidateCount
     (n query window pathLength : Nat) (strides : List Nat) : Nat :=
   (hybridFamilyQueryCandidateList n query window pathLength strides).dedup.length
 
+/-- Count unordered equal-value pairs in a raw candidate list.
+
+The recursion counts, for each head entry, how many later entries have the same
+value. This is a multiplicity-sensitive alias diagnostic: three occurrences of
+one candidate contribute three pair collisions, while deduplication loss would
+only report two lost raw entries. -/
+def rawCandidateCollisionPairCount : List Nat → Nat
+  | [] => 0
+  | x :: xs => xs.count x + rawCandidateCollisionPairCount xs
+
+/-- Raw candidate entries lost to deduplication. -/
+def rawCandidateDedupLoss (candidates : List Nat) : Nat :=
+  candidates.length - candidates.dedup.length
+
+/-- Pair-collision count for theorem-side sparse lag candidates. -/
+def hybridFamilyLagCandidateCollisionPairCount
+    (n window pathLength : Nat) (strides : List Nat) : Nat :=
+  rawCandidateCollisionPairCount
+    (hybridFamilyLagCandidateList n window pathLength strides)
+
+/-- Pair-collision count for query-indexed sparse predecessor candidates. -/
+def hybridFamilyQueryCandidateCollisionPairCount
+    (n query window pathLength : Nat) (strides : List Nat) : Nat :=
+  rawCandidateCollisionPairCount
+    (hybridFamilyQueryCandidateList n query window pathLength strides)
+
 /-- No-collision predicate for the theorem-side lag-candidate list. -/
 def hybridFamilyLagCandidatesNoCollision
     (n window pathLength : Nat) (strides : List Nat) : Prop :=
@@ -289,6 +315,109 @@ def hybridFamilyLagCandidatesNoCollision
 def hybridFamilyQueryCandidatesNoCollision
     (n query window pathLength : Nat) (strides : List Nat) : Prop :=
   (hybridFamilyQueryCandidateList n query window pathLength strides).Nodup
+
+/-- A raw candidate list has zero equal-value pairs exactly when it is
+duplicate-free.
+
+This is the generic bridge behind the sparse-attention pair-collision report:
+the multiplicity-sensitive pair count is a diagnostic field, but its zero
+boundary is exactly the ordinary no-collision predicate. -/
+theorem rawCandidateCollisionPairCount_eq_zero_iff_nodup
+    (candidates : List Nat) :
+    rawCandidateCollisionPairCount candidates = 0 ↔ candidates.Nodup := by
+  induction candidates with
+  | nil =>
+      simp [rawCandidateCollisionPairCount]
+  | cons candidate rest ih =>
+      simp [rawCandidateCollisionPairCount, ih, List.count_eq_zero]
+
+/-- A raw candidate list has positive equal-value pair count exactly when it
+contains a duplicate. -/
+theorem rawCandidateCollisionPairCount_pos_iff_not_nodup
+    (candidates : List Nat) :
+    0 < rawCandidateCollisionPairCount candidates ↔ ¬ candidates.Nodup := by
+  rw [Nat.pos_iff_ne_zero]
+  exact not_congr (rawCandidateCollisionPairCount_eq_zero_iff_nodup candidates)
+
+/-- Equal-value pair collisions are at least as severe as ordinary
+deduplication loss.
+
+For each repeated candidate group, deduplication loses `multiplicity - 1`
+entries, while the pair-collision count contributes one unordered pair for
+every equal-value pair. This theorem makes the pair-count field a conservative
+severity metric rather than only another Boolean collision witness. -/
+theorem rawCandidateDedupLoss_le_collisionPairCount
+    (candidates : List Nat) :
+    rawCandidateDedupLoss candidates ≤ rawCandidateCollisionPairCount candidates := by
+  induction candidates with
+  | nil =>
+      simp [rawCandidateDedupLoss, rawCandidateCollisionPairCount]
+  | cons candidate rest ih =>
+      unfold rawCandidateDedupLoss at ih ⊢
+      by_cases hmem : candidate ∈ rest
+      · have hdedup : (candidate :: rest).dedup = rest.dedup :=
+          List.dedup_cons_of_mem hmem
+        have hcount_pos : 1 ≤ rest.count candidate := by
+          have hcount_ne : rest.count candidate ≠ 0 := by
+            intro hzero
+            exact ((List.count_eq_zero).1 hzero) hmem
+          exact Nat.succ_le_of_lt (Nat.pos_of_ne_zero hcount_ne)
+        have hdedup_le : rest.dedup.length ≤ rest.length :=
+          List.Sublist.length_le (List.dedup_sublist rest)
+        rw [hdedup]
+        simp [rawCandidateCollisionPairCount]
+        omega
+      · have hcount_zero : rest.count candidate = 0 :=
+          (List.count_eq_zero).2 hmem
+        have hdedup : (candidate :: rest).dedup = candidate :: rest.dedup :=
+          List.dedup_cons_of_notMem hmem
+        rw [hdedup]
+        simp [rawCandidateCollisionPairCount, hcount_zero]
+        omega
+
+/-- Lag-side pair-collision count is zero exactly when the generated lag
+candidate list has no duplicate residues. -/
+theorem hybridFamilyLagCandidateCollisionPairCount_eq_zero_iff_noCollision
+    {n window pathLength : Nat} {strides : List Nat} :
+    hybridFamilyLagCandidateCollisionPairCount n window pathLength strides = 0 ↔
+      hybridFamilyLagCandidatesNoCollision n window pathLength strides := by
+  unfold hybridFamilyLagCandidateCollisionPairCount
+    hybridFamilyLagCandidatesNoCollision
+  exact rawCandidateCollisionPairCount_eq_zero_iff_nodup
+    (hybridFamilyLagCandidateList n window pathLength strides)
+
+/-- Query-side pair-collision count is zero exactly when the generated
+predecessor-candidate list has no duplicate addresses. -/
+theorem hybridFamilyQueryCandidateCollisionPairCount_eq_zero_iff_noCollision
+    {n query window pathLength : Nat} {strides : List Nat} :
+    hybridFamilyQueryCandidateCollisionPairCount n query window pathLength strides = 0 ↔
+      hybridFamilyQueryCandidatesNoCollision n query window pathLength strides := by
+  unfold hybridFamilyQueryCandidateCollisionPairCount
+    hybridFamilyQueryCandidatesNoCollision
+  exact rawCandidateCollisionPairCount_eq_zero_iff_nodup
+    (hybridFamilyQueryCandidateList n query window pathLength strides)
+
+/-- Lag-side pair-collision count is positive exactly when the generated lag
+candidate list contains a duplicate residue. -/
+theorem hybridFamilyLagCandidateCollisionPairCount_pos_iff_collision
+    {n window pathLength : Nat} {strides : List Nat} :
+    0 < hybridFamilyLagCandidateCollisionPairCount n window pathLength strides ↔
+      ¬ hybridFamilyLagCandidatesNoCollision n window pathLength strides := by
+  unfold hybridFamilyLagCandidateCollisionPairCount
+    hybridFamilyLagCandidatesNoCollision
+  exact rawCandidateCollisionPairCount_pos_iff_not_nodup
+    (hybridFamilyLagCandidateList n window pathLength strides)
+
+/-- Query-side pair-collision count is positive exactly when the generated
+predecessor-candidate list contains a duplicate address. -/
+theorem hybridFamilyQueryCandidateCollisionPairCount_pos_iff_collision
+    {n query window pathLength : Nat} {strides : List Nat} :
+    0 < hybridFamilyQueryCandidateCollisionPairCount n query window pathLength strides ↔
+      ¬ hybridFamilyQueryCandidatesNoCollision n query window pathLength strides := by
+  unfold hybridFamilyQueryCandidateCollisionPairCount
+    hybridFamilyQueryCandidatesNoCollision
+  exact rawCandidateCollisionPairCount_pos_iff_not_nodup
+    (hybridFamilyQueryCandidateList n query window pathLength strides)
 
 /-- No-collision predicate for the stride-family residue block alone. -/
 def coilStrideFamilyLagResiduesNoCollision
@@ -1611,6 +1740,87 @@ theorem hybridFamilyFirstUncoveredLag_eq_some_gap
     ⟨tail, hlist⟩
   exact (mem_hybridFamilyUncoveredLagList_iff).1 (by rw [hlist]; simp)
 
+/-- A reported first uncovered lag is necessarily beyond the current local
+window.
+
+This turns the first-gap certificate into a planner-facing local-window repair
+hint: if the first uncovered lag is `lag`, the current local window is strictly
+too small to reach it locally. -/
+theorem hybridFamilyFirstUncoveredLag_eq_some_window_lt
+    {n window pathLength lag : Nat} {strides : List Nat}
+    (hfirst :
+      hybridFamilyFirstUncoveredLag n window pathLength strides = some lag) :
+    window < lag := by
+  have hgap := hybridFamilyFirstUncoveredLag_eq_some_gap hfirst
+  have hmiss :
+      ¬ hybridFamilyLagReach n window pathLength lag strides := hgap.2.2
+  have hnotlocal : ¬ localLagReach window lag :=
+    (hybridFamilyLagGap_iff_not_local_and_not_family).1 hmiss |>.1
+  exact (not_localLagReach_iff_window_lt_of_pos hgap.1).1 hnotlocal
+
+/-- Raising the local window to the reported first uncovered lag makes that
+specific lag reachable locally.
+
+This does not claim the repaired sparse-attention plan is complete; it certifies
+only the minimal local-window repair for the first named gap. -/
+theorem hybridFamilyFirstUncoveredLag_eq_some_repair_window_reaches
+    {n window pathLength lag : Nat} {strides : List Nat}
+    (hfirst :
+      hybridFamilyFirstUncoveredLag n window pathLength strides = some lag) :
+    hybridFamilyLagReach n lag pathLength lag strides := by
+  have hgap := hybridFamilyFirstUncoveredLag_eq_some_gap hfirst
+  exact Or.inl (localLagReach_of_le hgap.1 le_rfl)
+
+/-- Raising the local window to an uncovered interval's endpoint reaches every
+lag in that interval locally.
+
+This is the generic proof behind a first-interval repair field: if the report
+names an uncovered interval `[start, stop]`, then the proposed local repair
+window `stop` reaches every lag in that interval. It does not claim that all
+later gaps are covered. -/
+theorem hybridFamilyIntervalRepairWindow_reaches_interval
+    {n pathLength start stop : Nat} {strides : List Nat} (hstart : 1 ≤ start) :
+    ∀ lag ∈ List.range' start (stop + 1 - start),
+      hybridFamilyLagReach n stop pathLength lag strides := by
+  intro lag hmem
+  rw [List.mem_range'] at hmem
+  rcases hmem with ⟨offset, hoffset, rfl⟩
+  exact Or.inl ⟨by omega, by omega⟩
+
+/-- A first-gap repair reaches the dense-local complete-coverage threshold
+exactly when the first reported gap is the final positive in-context lag.
+
+This is the reusable planner interpretation behind the report field that
+distinguishes "repair the first miss" from "raise the local window all the way
+to the dense-local threshold." -/
+theorem hybridFamilyFirstUncoveredLag_eq_some_repair_window_reaches_threshold_iff_last_lag
+    {n window pathLength lag : Nat} {strides : List Nat}
+    (hfirst :
+      hybridFamilyFirstUncoveredLag n window pathLength strides = some lag) :
+    n - 1 ≤ lag ↔ lag = n - 1 := by
+  have hgap := hybridFamilyFirstUncoveredLag_eq_some_gap hfirst
+  have hlag_le : lag ≤ n - 1 := Nat.le_sub_one_of_lt hgap.2.1
+  constructor
+  · intro hthreshold
+    exact Nat.le_antisymm hlag_le hthreshold
+  · intro hlast
+    rw [hlast]
+
+/-- If the first reported gap is the final positive in-context lag, then using
+that gap as the repaired local-window width certifies complete context coverage.
+
+The converse is deliberately not claimed: a smaller first-gap repair could
+become complete because of stride-family coverage beyond the repaired local
+window. -/
+theorem hybridFamilyFirstUncoveredLag_eq_some_last_lag_repair_coversContext
+    {n window pathLength lag : Nat} {strides : List Nat}
+    (_hfirst :
+      hybridFamilyFirstUncoveredLag n window pathLength strides = some lag)
+    (hlast : lag = n - 1) :
+    hybridFamilyCoversContext n lag pathLength strides := by
+  apply hybridFamilyCoversContext_of_localWindow_ge_context_sub_one
+  rw [hlast]
+
 /-- Complete sparse-attention coverage is equivalent to zero uncovered lags. -/
 theorem hybridFamilyCoversContext_iff_uncoveredLagList_length_eq_zero
     {n window pathLength : Nat} {strides : List Nat} :
@@ -2566,6 +2776,33 @@ theorem hybridFamilyLagCandidateDedupLoss_eq_zero_iff_noCollision
     rw [hraw]
     simp
 
+/-- Lag-side deduplication loss is positive exactly when the raw lag-candidate
+list contains a duplicate residue.
+
+This is the planner-facing failure predicate for the lag-side budget-survival
+contract: a positive loss is not merely a numeric warning; it is exactly the
+negation of the duplicate-free candidate condition. -/
+theorem hybridFamilyLagCandidateDedupLoss_pos_iff_collision
+    {n window pathLength : Nat} {strides : List Nat} :
+    0 < hybridFamilyLagCandidateDedupLoss n window pathLength strides ↔
+      ¬ hybridFamilyLagCandidatesNoCollision n window pathLength strides := by
+  rw [Nat.pos_iff_ne_zero]
+  exact not_congr hybridFamilyLagCandidateDedupLoss_eq_zero_iff_noCollision
+
+/-- Lag-side deduplication loss is an exact accounting field.
+
+The raw local+stride-family candidate budget decomposes as exact unique lag
+candidates plus the reported deduplication loss. -/
+theorem hybridFamilyUniqueLagCandidateCount_add_dedupLoss_eq_raw
+    {n window pathLength : Nat} {strides : List Nat} :
+    hybridFamilyUniqueLagCandidateCount n window pathLength strides +
+        hybridFamilyLagCandidateDedupLoss n window pathLength strides =
+      hybridFamilyRawCandidateBudget window pathLength strides := by
+  unfold hybridFamilyLagCandidateDedupLoss
+  have hle :=
+    hybridFamilyUniqueLagCandidateCount_le_raw n window pathLength strides
+  omega
+
 /-- Exact query-side deduplication loss for a local-window plus stride-family
 sparse-attention plan at one query index.
 
@@ -2599,6 +2836,86 @@ theorem hybridFamilyQueryCandidateDedupLoss_eq_zero_iff_noCollision
       (hybridFamilyUniqueQueryCandidateCount_eq_raw_iff_noCollision).2 hnoCollision
     rw [hraw]
     simp
+
+/-- Query-side deduplication loss is positive exactly when the raw predecessor
+candidate list contains a duplicate address at that query index.
+
+This is the query-indexed budget-collapse predicate consumed by the executable
+sparse-attention certificate. -/
+theorem hybridFamilyQueryCandidateDedupLoss_pos_iff_collision
+    {n query window pathLength : Nat} {strides : List Nat} :
+    0 < hybridFamilyQueryCandidateDedupLoss n query window pathLength strides ↔
+      ¬ hybridFamilyQueryCandidatesNoCollision n query window pathLength strides := by
+  rw [Nat.pos_iff_ne_zero]
+  exact not_congr hybridFamilyQueryCandidateDedupLoss_eq_zero_iff_noCollision
+
+/-- Query-side deduplication loss is an exact accounting field.
+
+The raw local+stride-family candidate budget decomposes as exact unique
+query-indexed predecessor candidates plus the reported deduplication loss. -/
+theorem hybridFamilyUniqueQueryCandidateCount_add_dedupLoss_eq_raw
+    {n query window pathLength : Nat} {strides : List Nat} :
+    hybridFamilyUniqueQueryCandidateCount n query window pathLength strides +
+        hybridFamilyQueryCandidateDedupLoss n query window pathLength strides =
+      hybridFamilyRawCandidateBudget window pathLength strides := by
+  unfold hybridFamilyQueryCandidateDedupLoss
+  have hle :=
+    hybridFamilyUniqueQueryCandidateCount_le_raw n query window pathLength strides
+  omega
+
+/-- Lag-side pair-collision count bounds lag-side deduplication loss.
+
+This theorem connects the multiplicity-sensitive pair-count report field to
+the simpler raw-budget loss field: every candidate lost under deduplication is
+accounted for by at least one equal-value pair collision. -/
+theorem hybridFamilyLagCandidateDedupLoss_le_collisionPairCount
+    {n window pathLength : Nat} {strides : List Nat} :
+    hybridFamilyLagCandidateDedupLoss n window pathLength strides ≤
+      hybridFamilyLagCandidateCollisionPairCount n window pathLength strides := by
+  unfold hybridFamilyLagCandidateDedupLoss
+    hybridFamilyUniqueLagCandidateCount hybridFamilyLagCandidateCollisionPairCount
+  rw [← hybridFamilyLagCandidateList_length n window pathLength strides]
+  exact rawCandidateDedupLoss_le_collisionPairCount
+    (hybridFamilyLagCandidateList n window pathLength strides)
+
+/-- Query-side pair-collision count bounds query-side deduplication loss. -/
+theorem hybridFamilyQueryCandidateDedupLoss_le_collisionPairCount
+    {n query window pathLength : Nat} {strides : List Nat} :
+    hybridFamilyQueryCandidateDedupLoss n query window pathLength strides ≤
+      hybridFamilyQueryCandidateCollisionPairCount n query window pathLength strides := by
+  unfold hybridFamilyQueryCandidateDedupLoss
+    hybridFamilyUniqueQueryCandidateCount hybridFamilyQueryCandidateCollisionPairCount
+  rw [← hybridFamilyQueryCandidateList_length n query window pathLength strides]
+  exact rawCandidateDedupLoss_le_collisionPairCount
+    (hybridFamilyQueryCandidateList n query window pathLength strides)
+
+/-- The default public sparse fixture has no lag-side pair collisions.
+
+For `C_120`, local window `4`, path length `3`, and strides `[7,13]`, the raw
+lag-candidate list is duplicate-free, so the multiplicity-sensitive pair count
+is zero. -/
+theorem hybridFamilyLagCandidateCollisionPairCount_default_120_4_3_7_13 :
+    hybridFamilyLagCandidateCollisionPairCount 120 4 3 [7, 13] = 0 := by
+  native_decide
+
+/-- The default public sparse fixture has no query-side pair collisions. -/
+theorem hybridFamilyQueryCandidateCollisionPairCount_default_120_0_4_3_7_13 :
+    hybridFamilyQueryCandidateCollisionPairCount 120 0 4 3 [7, 13] = 0 := by
+  native_decide
+
+/-- The public `C_16` alias probe has six lag-side pair collisions.
+
+This fixture separates multiplicity-sensitive pair collisions from simple
+deduplication loss: the raw list loses four entries after deduplication, but
+repeated residues contribute six equal-value pairs. -/
+theorem hybridFamilyLagCandidateCollisionPairCount_aliasProbe_16_2_4_4_8 :
+    hybridFamilyLagCandidateCollisionPairCount 16 2 4 [4, 8] = 6 := by
+  native_decide
+
+/-- The public `C_16` alias probe has six query-side pair collisions. -/
+theorem hybridFamilyQueryCandidateCollisionPairCount_aliasProbe_16_0_2_4_4_8 :
+    hybridFamilyQueryCandidateCollisionPairCount 16 0 2 4 [4, 8] = 6 := by
+  native_decide
 
 /-- Ordered no-wrap separation plus predecessor injectivity makes the exact
 query-candidate count equal the raw sparse-attention budget. -/
@@ -2695,6 +3012,97 @@ theorem not_hybridFamilyCoversContext_default_120_4_3_7_13 :
   intro hcover
   exact hybridFamilyLagGap_default_120_4_3_7_13_lag5
     (hcover 5 (by omega) (by omega))
+
+/-- After repairing the default sparse plan's first gap by raising the local
+window to `5`, lag `6` is still a concrete uncovered positive in-context
+witness. -/
+theorem hybridFamilyLagGap_firstRepair_default_120_5_3_7_13_lag6 :
+    ¬ hybridFamilyLagReach 120 5 3 6 [7, 13] := by
+  apply hybridFamilyLagGap_of_above_window_and_forall_stride_step_ne
+  · omega
+  · intro stride hmem step hpos hstep
+    simp at hmem
+    rcases hmem with hstride | hstride <;> subst stride
+    · have hstep_cases : step = 1 ∨ step = 2 ∨ step = 3 := by omega
+      rcases hstep_cases with rfl | rfl | rfl <;> omega
+    · have hstep_cases : step = 1 ∨ step = 2 ∨ step = 3 := by omega
+      rcases hstep_cases with rfl | rfl | rfl <;> omega
+
+/-- The default sparse plan's first-gap local-window repair reaches lag `5`,
+but it still does not certify complete context coverage. -/
+theorem not_hybridFamilyCoversContext_firstGapRepair_default_120_5_3_7_13 :
+    ¬ hybridFamilyCoversContext 120 5 3 [7, 13] := by
+  intro hcover
+  exact hybridFamilyLagGap_firstRepair_default_120_5_3_7_13_lag6
+    (hcover 6 (by omega) (by omega))
+
+/-- After repairing the default sparse plan's first uncovered interval by
+raising the local window to `6`, lag `8` is still a concrete uncovered positive
+in-context witness. -/
+theorem hybridFamilyLagGap_firstIntervalRepair_default_120_6_3_7_13_lag8 :
+    ¬ hybridFamilyLagReach 120 6 3 8 [7, 13] := by
+  apply hybridFamilyLagGap_of_above_window_and_forall_stride_step_ne
+  · omega
+  · intro stride hmem step hpos hstep
+    simp at hmem
+    rcases hmem with hstride | hstride <;> subst stride
+    · have hstep_cases : step = 1 ∨ step = 2 ∨ step = 3 := by omega
+      rcases hstep_cases with rfl | rfl | rfl <;> omega
+    · have hstep_cases : step = 1 ∨ step = 2 ∨ step = 3 := by omega
+      rcases hstep_cases with rfl | rfl | rfl <;> omega
+
+/-- Repairing only the default sparse plan's first uncovered interval does not
+certify complete context coverage. -/
+theorem not_hybridFamilyCoversContext_firstIntervalRepair_default_120_6_3_7_13 :
+    ¬ hybridFamilyCoversContext 120 6 3 [7, 13] := by
+  intro hcover
+  exact hybridFamilyLagGap_firstIntervalRepair_default_120_6_3_7_13_lag8
+    (hcover 8 (by omega) (by omega))
+
+/-- For the default sparse family, lag `119` remains a concrete gap for every
+local window strictly below `119`.
+
+This is the proof-side reason the dense-local repair window reported by the
+certificate is not merely a conservative fallback for this fixture: the final
+positive lag is not generated by the finite stride family. -/
+theorem hybridFamilyLagGap_default_120_window_lt_119_3_7_13_lag119
+    {window : Nat} (hwindow : window < 119) :
+    ¬ hybridFamilyLagReach 120 window 3 119 [7, 13] := by
+  apply hybridFamilyLagGap_of_above_window_and_forall_stride_step_ne
+  · exact hwindow
+  · intro stride hmem step hpos hstep
+    simp at hmem
+    rcases hmem with hstride | hstride <;> subst stride
+    · have hstep_cases : step = 1 ∨ step = 2 ∨ step = 3 := by omega
+      rcases hstep_cases with rfl | rfl | rfl <;> omega
+    · have hstep_cases : step = 1 ∨ step = 2 ∨ step = 3 := by omega
+      rcases hstep_cases with rfl | rfl | rfl <;> omega
+
+/-- For the default sparse family, no local window below `119` certifies
+complete context coverage. -/
+theorem not_hybridFamilyCoversContext_default_120_window_lt_119_3_7_13
+    {window : Nat} (hwindow : window < 119) :
+    ¬ hybridFamilyCoversContext 120 window 3 [7, 13] := by
+  intro hcover
+  exact hybridFamilyLagGap_default_120_window_lt_119_3_7_13_lag119 hwindow
+    (hcover 119 (by omega) (by omega))
+
+/-- Exact default sparse-family local-window threshold.
+
+For the default `C_120`, path length `3`, strides `[7,13]` fixture, complete
+positive-lag coverage holds exactly when the local window is at least `119`.
+Thus the reported complete repair window is minimal for this declared finite
+plan, not only sufficient by dense-local coverage. -/
+theorem hybridFamilyCoversContext_default_120_iff_119_le_window_3_7_13
+    {window : Nat} :
+    hybridFamilyCoversContext 120 window 3 [7, 13] ↔ 119 ≤ window := by
+  constructor
+  · intro hcover
+    by_contra hnot
+    exact not_hybridFamilyCoversContext_default_120_window_lt_119_3_7_13
+      (Nat.lt_of_not_ge hnot) hcover
+  · intro hwindow
+    exact hybridFamilyCoversContext_of_localWindow_ge_context_sub_one hwindow
 
 /-- The default sparse-attention plan's finite uncovered-lag list contains the
 same concrete gap witness, lag `5`. -/

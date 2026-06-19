@@ -128,6 +128,7 @@ Application chapters are case studies, not hype pages. They reuse S1 language: a
 - [Data Analysis](chapters/applications/data_analysis.qmd): periodic coordinates and benchmark guardrails.
 - [Compute](chapters/applications/compute.qmd): cyclic addresses, stride layouts, and schedules.
 - [AI](chapters/applications/ai.qmd): the overview for proof-carrying AI contracts and exploratory fixtures.
+- [AI Contract Suite](chapters/applications/ai_contract_suite.qmd): the compact working entry point for RoPE, KV-cache, and sparse-attention certifiers.
 - [AI Contract Ladder](chapters/applications/ai_contract_ladder.qmd): the guided contract sequence from RoPE phase banks to KV-cache freshness, sparse-attention coverage, and circulant mixers.
 - [RoPE Certifier](chapters/applications/rope_certifier.qmd): exact phase-bank distinguishability plus bounded real-phase proof seeds.
 - [KV-Cache Ring Buffer](chapters/applications/kv_cache_ring_buffer.qmd): finite slot, freshness, and live-window certificates.
@@ -136,6 +137,8 @@ Application chapters are case studies, not hype pages. They reuse S1 language: a
 - [Physics](chapters/applications/physics.qmd): finite gauge links, path holonomy, and Wilson-loop certificates.
 - [Generative Structures](chapters/applications/generative.qmd): seed-rule provenance and exact regeneration fixtures.
 - [Rendering](chapters/applications/rendering.qmd): direction bins and visual-compute scaffolds.
+
+Use the application proof-audit appendices only when you are checking source status: [Application Proof Audit](chapters/applications/application_proof_audit.qmd), [AI Contract Ladder Proof Audit](chapters/applications/ai_contract_ladder_audit.qmd), [RoPE Proof Audit](chapters/applications/rope_certifier_audit.qmd), [KV-Cache Proof Audit](chapters/applications/kv_cache_ring_buffer_audit.qmd), [Sparse Attention Proof Audit](chapters/applications/sparse_attention_audit.qmd), [Looped Recurrence Proof Audit](chapters/applications/looped_recurrence_audit.qmd), and [Generative Structures Proof Audit](chapters/applications/generative_audit.qmd).
 
 You are ready to trust an application claim only when you can say whether it is a Lean theorem, a deterministic fixture, a benchmark target, or a research hypothesis.
 

@@ -55,6 +55,13 @@ The contract asks finite questions that can be checked before any model-quality 
 
 This is the right altitude for the current project. The proof layer can certify the finite bookkeeping. Benchmark fixtures can compare routing assumptions. Real model usefulness remains separate evidence.
 
+Run the public recurrence certifier:
+
+```bash
+python scripts/recurrence_schedule_certify.py
+python scripts/recurrence_schedule_certify.py --format json
+```
+
 ## 1. Recurrence Budget Timeline
 
 The first contract turns a sample or token index into a required loop count. In the current finite fixture, the required count is:
@@ -68,10 +75,12 @@ That gives a positive budget, an upper bound by the loop period, and closure aft
 <div class="widget-panel" data-widget="loop_recurrence_budget" data-theorem-id="AIM-T0018" data-dictionary-ids="COMMON-0052 COMMON-0053 COMMON-0054 COMMON-0059 COMMON-0067"></div>
 
 <div class="theorem-box" data-theorem-id="AIM-T0018"></div>
-<div class="theorem-box" data-theorem-id="AIM-T0019"></div>
 <div class="theorem-box" data-theorem-id="AIM-T0020"></div>
 <div class="theorem-box" data-theorem-id="AIM-T0026"></div>
 <div class="theorem-box" data-theorem-id="AIM-T0027"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0028"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0029"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0030"></div>
 
 ## 2. Exit Certificate
 
@@ -92,11 +101,8 @@ The useful failure mode is visible too: a fixed budget can be insufficient, whic
 The score trace has its own formal contract. A step is active exactly when it lies between the required loop depth and the overthinking boundary. The first active trace step is the required loop depth, and a budgeted exit exists exactly when that first active step is inside `maxLoops`. The no-exit control is theorem-backed too: no exit is available exactly when every step inside the max-loop budget is outside the active score band.
 
 <div class="theorem-box" data-theorem-id="AIM-T0031"></div>
-<div class="theorem-box" data-theorem-id="AIM-T0032"></div>
 <div class="theorem-box" data-theorem-id="AIM-T0033"></div>
 <div class="theorem-box" data-theorem-id="AIM-T0034"></div>
-<div class="theorem-box" data-theorem-id="AIM-T0084"></div>
-<div class="theorem-box" data-theorem-id="AIM-T0085"></div>
 <div class="theorem-box" data-theorem-id="AIM-T0090"></div>
 
 ## 3. Token-Level Recurrence
@@ -111,14 +117,59 @@ token
   -> coarse/fine resolution label
 ```
 
-The widget exposes active-token counts, resolution labels, selected middle-block bookkeeping, and fixed, wrong-budget, over-loop, and nonperiodic controls.
+The widget exposes active-token counts, resolution labels, selected middle-block bookkeeping, and fixed, wrong-budget, over-loop, and nonperiodic controls. `AIM-T0111` and `AIM-T0112` turn the schedule endpoints into list-level facts: step one activates the full token range, while any step beyond the loop period activates no tokens. `AIM-T0113` and `AIM-T0114` add the monotone-work contract: later active-token sets are subsets of earlier ones. `AIM-T0115` and `AIM-T0116` certify that the generated schedule has no duplicate token entries and never exceeds the declared token count.
+
+The exported contract pack now also reports exact work-count fields. `AIM-T0120` through `AIM-T0125`, plus `AIM-T0128` and `AIM-T0129`, prove the active-token count is bounded, active work is nonincreasing, inactive work is nondecreasing, the first step has zero inactive tokens, the overrun step has zero active tokens, and active plus inactive tokens equals the declared token count. `AIM-T0126` and `AIM-T0127` pin the public `loop_period=4`, `token_count=8`, `step=2` fixture to active count `6` and inactive count `2`.
+
+The same pack exposes a planner-facing whole-period shift witness: in the default fixture, base token `7` shifted by `3 * 5` loop-period slots lands at token `22`, while required steps, recurrence budget, training-free wrapper budget, exit step, guardrail boundary, and active-at-step status remain unchanged. `AIM-T0026` through `AIM-T0030`, `AIM-T0033`, `AIM-T0034`, and `AIM-T0036` are the Lean-backed schedule facts behind those fields. This is an index-reuse contract; it does not say that a real looped transformer will reason better.
+
+The v0.2 work-budget extension sums those per-step active-token counts over a finite horizon. `AIM-T0130` proves that scheduled active-token work is bounded by the fixed-depth schedule that processes every token at every step. `AIM-T0131` proves the saved-work accounting identity. `AIM-T0144` proves that active token-work plus inactive token-work exactly recovers the full fixed-depth budget, and `AIM-T0145` proves that scheduled work saving is exactly total inactive token-work. `AIM-T0138` proves the planner-facing positive-saving iff: scheduled work saving is positive exactly when scheduled active-token work is strictly below full fixed-depth token-work. `AIM-T0139` proves the complementary zero-saving iff: scheduled work saving is zero exactly when scheduled active-token work matches the full fixed-depth budget. `AIM-T0132` through `AIM-T0135`, plus `AIM-T0146`, pin the public `loop_period=4`, `token_count=8`, `steps=4` fixture to `20` active token-steps, `32` fixed-depth token-steps, and `12` inactive/saved token-steps. `AIM-T0140` through `AIM-T0143`, plus `AIM-T0147`, pin the default exported recurrence contract fixture, `loop_period=5`, `token_count=8`, `steps=5`, to `21` active token-steps, `40` fixed-depth token-steps, and `19` inactive/saved token-steps with exact accounting. The public contract now exposes the stop schedule behind those totals: active-count trace `[8,6,4,2,1]`, inactive-count trace `[0,2,4,6,7]`, and a per-token `first_inactive_steps` table where each token stops at `active_budget + 1`. This is the scheduler-facing object a downstream project can consume before implementing recurrence reuse. `AIM-T0150` through `AIM-T0154` add the one-step post-period boundary: moving the default horizon from `5` to `6` adds no active-token work and raises scheduled-work saving from `19` to `27`. `AIM-T0155` through `AIM-T0159` generalize that boundary to any declared number of extra steps after the loop period: active work stays fixed and inactive/saved work increases by `extra_steps * token_count`; the default `horizon=8` fixture raises scheduled-work saving from `19` to `43`. These are planner fields, not runtime measurements.
+
+The generic AI contract pack now exposes those planner fields as two recommendation records. `RECURRENCE-USE-ACTIVE-TOKEN-WORK-SCHEDULE` packages the theorem-backed active-token work schedule, while `RECURRENCE-REUSE-WHOLE-PERIOD-SHIFT` packages the whole-period index-reuse witness. A downstream project can read them with `python scripts/circle_ai_contract_ready.py --kind recurrence_schedule --digest --field scheduled_work_saving --field post_period_multi_extension_scheduled_work_saving --include-recommendations`. They are finite schedule/index fixtures, not claims about runtime, memory savings, adaptive halting, or reasoning quality.
 
 <div class="widget-panel" data-widget="token_level_recurrence" data-theorem-id="AIM-T0035" data-dictionary-ids="COMMON-0052 COMMON-0053 COMMON-0059 COMMON-0068 COMMON-0069"></div>
 
 <div class="theorem-box" data-theorem-id="AIM-T0035"></div>
 <div class="theorem-box" data-theorem-id="AIM-T0036"></div>
-<div class="theorem-box" data-theorem-id="AIM-T0037"></div>
-<div class="theorem-box" data-theorem-id="AIM-T0038"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0106"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0111"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0112"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0113"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0114"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0115"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0116"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0120"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0128"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0123"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0129"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0126"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0127"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0130"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0131"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0144"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0145"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0132"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0133"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0134"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0146"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0135"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0138"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0139"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0140"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0141"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0142"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0147"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0143"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0150"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0151"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0152"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0153"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0154"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0155"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0156"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0157"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0158"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0159"></div>
 
 ## 4. Training-Free Wrapper
 
@@ -159,17 +210,7 @@ The theorem cards for middle-block recurrence certify route bounds and closure f
 <div class="widget-panel" data-widget="learned_multi_resolution_recurrence" data-dictionary-ids="COMMON-0052 COMMON-0053 COMMON-0059 COMMON-0069 COMMON-0070"></div>
 
 <div class="theorem-box" data-theorem-id="AIM-T0039"></div>
-<div class="theorem-box" data-theorem-id="AIM-T0040"></div>
-<div class="theorem-box" data-theorem-id="AIM-T0041"></div>
-<div class="theorem-box" data-theorem-id="AIM-T0042"></div>
-<div class="theorem-box" data-theorem-id="AIM-T0043"></div>
-<div class="theorem-box" data-theorem-id="AIM-T0044"></div>
-<div class="theorem-box" data-theorem-id="AIM-T0045"></div>
-<div class="theorem-box" data-theorem-id="AIM-T0046"></div>
-<div class="theorem-box" data-theorem-id="AIM-T0047"></div>
 <div class="theorem-box" data-theorem-id="AIM-T0048"></div>
-<div class="theorem-box" data-theorem-id="AIM-T0056"></div>
-<div class="theorem-box" data-theorem-id="AIM-T0057"></div>
 <div class="theorem-box" data-theorem-id="AIM-T0058"></div>
 
 ## 7. Tiny Recurrent-State Prototype
@@ -187,18 +228,15 @@ sample
 The formal facts here are state-index facts: bounded state, sample-zero behavior, phase recovery when read at the certified budget, and closure after whole periods. They are not evidence that a recursive transformer learns better representations.
 
 <div class="theorem-box" data-theorem-id="AIM-T0049"></div>
-<div class="theorem-box" data-theorem-id="AIM-T0050"></div>
-<div class="theorem-box" data-theorem-id="AIM-T0051"></div>
-<div class="theorem-box" data-theorem-id="AIM-T0052"></div>
-<div class="theorem-box" data-theorem-id="AIM-T0053"></div>
-<div class="theorem-box" data-theorem-id="AIM-T0054"></div>
 <div class="theorem-box" data-theorem-id="AIM-T0055"></div>
+
+The full theorem-card trail for loop budgets, exits, token active sets, middle-block routes, and recurrent-state closure lives in the [Looped Recurrence Proof Audit](looped_recurrence_audit.qmd).
 
 ## What To Notice
 
 - The loop phase is a finite address, not a model-quality guarantee.
 - Exit certificates expose no-exit and over-budget controls instead of hiding them.
-- Token-level recurrence needs active-set accounting, not just an average loop count.
+- Token-level recurrence has active-set accounting: the generated token list is checked against the active-at-step predicate, not just an average loop count.
 - Learned phase tables are useful only with wrong-period, fixed-budget, shifted-budget, and over-loop controls.
 - Middle-block and multi-resolution routes are finite routing contracts until real model baselines exist.
 - The next deep target should be stronger contract statements: iffs, coverage boundaries, or counterexample witnesses for recurrence schedules, not more names for the same bookkeeping.

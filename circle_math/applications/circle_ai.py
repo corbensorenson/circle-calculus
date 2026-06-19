@@ -19,6 +19,11 @@ def _require_positive(value: int, name: str) -> None:
         raise ValueError(f"{name} must be positive")
 
 
+def _require_nonnegative(value: int, name: str) -> None:
+    if value < 0:
+        raise ValueError(f"{name} must be nonnegative")
+
+
 def phase_channel(period: int, position: int) -> int:
     """Return the phase-channel index ``position mod period``."""
     _require_positive(period, "period")
@@ -66,6 +71,64 @@ def kv_cache_live_window_tokens(cache_size: int, current: int) -> tuple[int, ...
     start = kv_cache_live_window_start(cache_size, current)
     length = kv_cache_live_window_length(cache_size, current)
     return tuple(range(start, start + length))
+
+
+def kv_cache_sink_prefix_length(sink_size: int, current: int) -> int:
+    """Return the seen prefix length pinned by a sink-token policy."""
+    _require_nonnegative(sink_size, "sink_size")
+    _require_nonnegative(current, "current")
+    return min(sink_size, current + 1)
+
+
+def kv_cache_sink_window_contains(
+    sink_size: int,
+    cache_size: int,
+    current: int,
+    token: int,
+) -> bool:
+    """Return whether ``token`` is retained by sink-prefix plus rolling window."""
+    _require_nonnegative(sink_size, "sink_size")
+    _require_positive(cache_size, "cache_size")
+    _require_nonnegative(current, "current")
+    _require_nonnegative(token, "token")
+    return token < kv_cache_sink_prefix_length(
+        sink_size,
+        current,
+    ) or kv_cache_window_contains(cache_size, current, token)
+
+
+def kv_cache_sink_window_tokens(
+    sink_size: int,
+    cache_size: int,
+    current: int,
+) -> tuple[int, ...]:
+    """Return pinned seen-prefix tokens followed by rolling-window tokens."""
+    prefix_length = kv_cache_sink_prefix_length(sink_size, current)
+    rolling_tokens = tuple(
+        token
+        for token in kv_cache_live_window_tokens(cache_size, current)
+        if prefix_length <= token
+    )
+    return tuple(range(prefix_length)) + rolling_tokens
+
+
+def kv_cache_sink_window_tokens_exact(
+    sink_size: int,
+    cache_size: int,
+    current: int,
+) -> bool:
+    """Return whether generated sink-window tokens match policy membership."""
+    _require_nonnegative(sink_size, "sink_size")
+    _require_positive(cache_size, "cache_size")
+    _require_nonnegative(current, "current")
+    tokens = kv_cache_sink_window_tokens(sink_size, cache_size, current)
+    token_set = set(tokens)
+    search_limit = max(current, sink_size) + cache_size + 1
+    return all(
+        (token in token_set)
+        == kv_cache_sink_window_contains(sink_size, cache_size, current, token)
+        for token in range(search_limit + 1)
+    )
 
 
 def _is_ordered_subsequence(needle: Sequence[int], haystack: Sequence[int]) -> bool:
@@ -987,6 +1050,64 @@ class KVCacheLiveWindowRequestCertificate:
 
 
 @dataclass(frozen=True)
+class KVCacheSinkWindowCertificate:
+    sink_size: int
+    cache_size: int
+    current: int
+    sink_prefix_length: int
+    sink_tokens: tuple[int, ...]
+    rolling_tokens: tuple[int, ...]
+    tokens: tuple[int, ...]
+    rolling_slots: tuple[int, ...]
+    token_count: int
+    token_count_bound: int
+    token_count_le_sink_plus_cache: bool
+    live_window_start: int
+    live_window_length: int
+    sink_prefix_fully_seen: bool
+    sink_prefix_before_live_window: bool
+    sink_prefix_disjoint_from_live_window: bool
+    disjoint_exact_token_count: int
+    token_count_eq_sink_plus_live_window_when_disjoint: bool
+    tokens_distinct: bool
+    generated_tokens_exact_policy: bool
+    rolling_tokens_match_filtered_live_window: bool
+    rolling_tokens_retained: bool
+    sink_tokens_are_seen_prefix: bool
+    sink_tokens_non_future: bool
+    sink_tokens_retained_by_policy: bool
+    sink_tokens_outside_ordinary_rolling_window: bool
+    fixture_theorem_ids: tuple[str, ...] = ()
+    theorem_ids: tuple[str, ...] = (
+        "AIM-T0104",
+        "AIM-T0108",
+        "AIM-T0110",
+        "AIM-T0117",
+        "AIM-T0119",
+        "AIM-T0136",
+        "AIM-T0137",
+        "AIM-T0148",
+    )
+    lean_declarations: tuple[str, ...] = (
+        "Circle.Applications.kvCacheSinkWindowContains_iff_mem_sinkWindowTokens",
+        "Circle.Applications.kvCacheSinkWindowRollingTokens_all_retained",
+        "Circle.Applications.kvCacheSinkWindowTokens_nodup",
+        "Circle.Applications.kvCacheSinkWindowTokens_length_le_sinkSize_add_cacheSize",
+        "Circle.Applications.kvCacheSinkWindowTokens_length_eq_sinkSize_add_liveWindowLength_of_sinkSize_le_start",
+        "Circle.Applications.kvCacheSinkWindowPrefixTokens_le_current",
+        "Circle.Applications.kvCacheSinkWindowPrefixTokens_policy_retained",
+        "Circle.Applications.kvCacheSinkWindowPrefixTokens_not_rolling_retained_of_sinkSize_le_start",
+    )
+    note: str = (
+        "Pinned sink-prefix plus rolling-window policy certificate only; this "
+        "proves finite request-list membership for seen sink tokens plus the "
+        "ordinary rolling live window. It is not a StreamingLLM quality result, "
+        "serving-stack proof, paging policy proof, throughput result, memory-saving "
+        "result, retrieval-quality result, or model-quality claim."
+    )
+
+
+@dataclass(frozen=True)
 class CoilRetrievalBenchmarkResult:
     sequence_length: int
     query_count: int
@@ -1118,10 +1239,53 @@ class StrideFamilyCoverageCertificate:
     covered_lag_count: int
     uncovered_lag_count: int
     uncovered_count_positive: bool
+    first_uncovered_lag_interval_start: Optional[int]
+    first_uncovered_lag_interval_stop: Optional[int]
+    first_uncovered_lag_interval_length: Optional[int]
+    first_uncovered_lag_interval_repair_window: Optional[int]
+    first_uncovered_lag_interval_additional_local_slots: Optional[int]
+    first_uncovered_interval_repair_reaches_interval: Optional[bool]
+    first_interval_repair_next_uncovered_lag: Optional[int]
+    first_interval_repair_covers_context: Optional[bool]
+    first_interval_repair_still_has_gap: Optional[bool]
+    largest_uncovered_interval_start: Optional[int]
+    largest_uncovered_interval_stop: Optional[int]
+    largest_uncovered_interval_length: Optional[int]
+    largest_uncovered_interval_repair_window: Optional[int]
+    largest_uncovered_interval_additional_local_slots: Optional[int]
+    largest_uncovered_interval_repair_reaches_interval: Optional[bool]
+    largest_interval_repair_next_uncovered_lag: Optional[int]
+    largest_interval_repair_covers_context: Optional[bool]
+    largest_interval_repair_still_has_gap: Optional[bool]
+    largest_uncovered_interval_is_tail: Optional[bool]
     first_uncovered_lag: Optional[int]
     first_uncovered_lag_matches_uncovered_list_head: bool
     no_first_uncovered_lag_matches_coverage_complete: bool
     first_uncovered_lag_gap_witness: bool
+    first_uncovered_lag_local_window_shortfall: Optional[int]
+    first_uncovered_lag_repair_window: Optional[int]
+    first_uncovered_lag_exceeds_local_window: bool
+    first_uncovered_lag_repair_window_reaches: bool
+    first_uncovered_lag_repair_window_covers_context: Optional[bool]
+    first_gap_repair_window_is_final_positive_lag: Optional[bool]
+    first_gap_repair_threshold_matches_final_lag: Optional[bool]
+    local_window_complete_coverage_threshold: int
+    local_window_complete_coverage_shortfall: int
+    local_window_reaches_complete_coverage_threshold: bool
+    local_window_threshold_certifies_complete: bool
+    local_window_complete_threshold_is_exact_local_minimum: bool
+    complete_repair_window: int
+    complete_repair_window_additional_local_slots: int
+    complete_repair_window_covers_context: bool
+    complete_repair_window_uses_dense_threshold: bool
+    complete_repair_window_minimal_for_declared_stride_family: bool
+    complete_repair_window_minimal_witness_lag: Optional[int]
+    interval_repair_plan: tuple[tuple[int, int, int, int, int], ...]
+    interval_repair_plan_step_count: int
+    interval_repair_plan_final_window: int
+    interval_repair_plan_covers_context: bool
+    interval_repair_plan_strictly_progresses: bool
+    first_gap_repair_window_reaches_complete_threshold: Optional[bool]
     uncovered_count_positive_matches_gap_witness: bool
     positive_lag_count: int
     covered_uncovered_count_sum: int
@@ -1137,7 +1301,15 @@ class StrideFamilyCoverageCertificate:
     theorem_side_lag_candidates: tuple[int, ...]
     theorem_side_unique_lag_candidate_count: int
     theorem_side_lag_candidate_dedup_loss: int
+    theorem_side_lag_candidate_collision_pair_count: int
+    lag_collision_pair_count_zero_matches_no_collision: bool
+    lag_collision_pair_count_positive_matches_collision: bool
+    lag_collision_pair_count_bounds_dedup_loss: bool
+    lag_collision_pair_count_excess_over_dedup_loss: int
+    theorem_side_lag_candidate_dedup_loss_positive: bool
+    lag_dedup_loss_positive_matches_collision: bool
     lag_dedup_loss_zero_matches_no_collision: bool
+    lag_dedup_loss_accounting_matches_raw: bool
     theorem_side_lag_candidates_positive_in_context: bool
     no_wrap_separated_candidate_range_sufficient_condition: bool
     no_zero_residue_candidate_range_sufficient_condition: bool
@@ -1174,7 +1346,15 @@ class StrideFamilyCoverageCertificate:
     theorem_side_query_candidates: tuple[int, ...]
     theorem_side_unique_query_candidate_count: int
     theorem_side_query_candidate_dedup_loss: int
+    theorem_side_query_candidate_collision_pair_count: int
+    query_collision_pair_count_zero_matches_no_collision: bool
+    query_collision_pair_count_positive_matches_collision: bool
+    query_collision_pair_count_bounds_dedup_loss: bool
+    query_collision_pair_count_excess_over_dedup_loss: int
+    theorem_side_query_candidate_dedup_loss_positive: bool
+    query_dedup_loss_positive_matches_collision: bool
     query_dedup_loss_zero_matches_no_collision: bool
+    query_dedup_loss_accounting_matches_raw: bool
     theorem_side_query_count_le_unique_lag_count: bool
     theorem_side_query_count_matches_unique_lag_count: bool
     theorem_side_predecessor_injective_on_lag_candidates: bool
@@ -1305,6 +1485,21 @@ class StrideFamilyCoverageCertificate:
         "AIT-T0138",
         "AIT-T0145",
         "AIT-T0146",
+        "AIT-T0147",
+        "AIT-T0148",
+        "AIT-T0149",
+        "AIT-T0150",
+        "AIT-T0155",
+        "AIT-T0156",
+        "AIT-T0157",
+        "AIT-T0158",
+        "AIT-T0159",
+        "AIT-T0160",
+        "AIT-T0161",
+        "AIT-T0162",
+        "AIT-T0171",
+        "AIT-T0164",
+        "AIT-T0165",
     )
     note: str = (
         "Finite lag-coverage certificate only; uncovered_lags are gap certificates "
@@ -2531,6 +2726,82 @@ def certify_kv_cache_live_window_request(
     )
 
 
+def certify_kv_cache_sink_window(
+    *,
+    sink_size: int,
+    cache_size: int,
+    current: int,
+) -> KVCacheSinkWindowCertificate:
+    """Emit a pinned sink-prefix plus rolling-window policy certificate."""
+    _require_nonnegative(sink_size, "sink_size")
+    _require_positive(cache_size, "cache_size")
+    _require_nonnegative(current, "current")
+    prefix_length = kv_cache_sink_prefix_length(sink_size, current)
+    sink_tokens = tuple(range(prefix_length))
+    live_window_tokens = kv_cache_live_window_tokens(cache_size, current)
+    rolling_tokens = tuple(token for token in live_window_tokens if prefix_length <= token)
+    tokens = sink_tokens + rolling_tokens
+    rolling_slots = tuple(kv_cache_slot(cache_size, token) for token in rolling_tokens)
+    live_window_start = kv_cache_live_window_start(cache_size, current)
+    live_window_length = kv_cache_live_window_length(cache_size, current)
+    token_count_bound = sink_size + cache_size
+    sink_prefix_fully_seen = sink_size <= current + 1
+    sink_prefix_before_live_window = sink_size <= live_window_start
+    disjoint_condition = sink_prefix_fully_seen and sink_prefix_before_live_window
+    disjoint_exact_token_count = sink_size + live_window_length
+    fixture_theorem_ids = (
+        ("AIM-T0105", "AIM-T0109", "AIM-T0118", "AIM-T0149")
+        if sink_size == 4 and cache_size == 16 and current == 31
+        else ()
+    )
+    return KVCacheSinkWindowCertificate(
+        sink_size=sink_size,
+        cache_size=cache_size,
+        current=current,
+        sink_prefix_length=prefix_length,
+        sink_tokens=sink_tokens,
+        rolling_tokens=rolling_tokens,
+        tokens=tokens,
+        rolling_slots=rolling_slots,
+        token_count=len(tokens),
+        token_count_bound=token_count_bound,
+        token_count_le_sink_plus_cache=len(tokens) <= token_count_bound,
+        live_window_start=live_window_start,
+        live_window_length=live_window_length,
+        sink_prefix_fully_seen=sink_prefix_fully_seen,
+        sink_prefix_before_live_window=sink_prefix_before_live_window,
+        sink_prefix_disjoint_from_live_window=disjoint_condition,
+        disjoint_exact_token_count=disjoint_exact_token_count,
+        token_count_eq_sink_plus_live_window_when_disjoint=(
+            not disjoint_condition or len(tokens) == disjoint_exact_token_count
+        ),
+        tokens_distinct=len(set(tokens)) == len(tokens),
+        generated_tokens_exact_policy=kv_cache_sink_window_tokens_exact(
+            sink_size,
+            cache_size,
+            current,
+        ),
+        rolling_tokens_match_filtered_live_window=rolling_tokens
+        == tuple(token for token in live_window_tokens if prefix_length <= token),
+        rolling_tokens_retained=all(
+            kv_cache_window_contains(cache_size, current, token)
+            for token in rolling_tokens
+        ),
+        sink_tokens_are_seen_prefix=sink_tokens
+        == tuple(range(kv_cache_sink_prefix_length(sink_size, current))),
+        sink_tokens_non_future=all(token <= current for token in sink_tokens),
+        sink_tokens_retained_by_policy=all(
+            kv_cache_sink_window_contains(sink_size, cache_size, current, token)
+            for token in sink_tokens
+        ),
+        sink_tokens_outside_ordinary_rolling_window=all(
+            not kv_cache_window_contains(cache_size, current, token)
+            for token in sink_tokens
+        ),
+        fixture_theorem_ids=fixture_theorem_ids,
+    )
+
+
 def run_memory_slot_benchmark(
     *,
     bank_size: int = 8,
@@ -2844,6 +3115,33 @@ def stride_family_lag_candidate_dedup_loss(
     )
 
 
+def candidate_collision_pair_count(candidates: Sequence[int]) -> int:
+    """Count unordered equal-value pairs in a raw candidate sequence."""
+    counts: dict[int, int] = {}
+    total = 0
+    for candidate in candidates:
+        total += counts.get(candidate, 0)
+        counts[candidate] = counts.get(candidate, 0) + 1
+    return total
+
+
+def stride_family_lag_candidate_collision_pair_count(
+    sequence_length: int,
+    strides: Sequence[int],
+    path_length: int,
+    local_window: int,
+) -> int:
+    """Return the pair-collision count for theorem-side lag candidates."""
+    return candidate_collision_pair_count(
+        stride_family_lag_candidate_list(
+            sequence_length,
+            strides,
+            path_length,
+            local_window,
+        )
+    )
+
+
 def stride_family_lag_candidates_no_collision(
     sequence_length: int,
     strides: Sequence[int],
@@ -3104,6 +3402,25 @@ def stride_family_query_candidate_dedup_loss(
     )
 
 
+def stride_family_query_candidate_collision_pair_count(
+    sequence_length: int,
+    query_index: int,
+    strides: Sequence[int],
+    path_length: int,
+    local_window: int,
+) -> int:
+    """Return the pair-collision count for theorem-side query candidates."""
+    return candidate_collision_pair_count(
+        stride_family_query_candidate_list(
+            sequence_length,
+            query_index,
+            strides,
+            path_length,
+            local_window,
+        )
+    )
+
+
 def stride_family_query_candidates_no_collision(
     sequence_length: int,
     query_index: int,
@@ -3194,7 +3511,22 @@ def stride_family_fixture_theorem_ids(
         and path_length == 3
         and normalized_strides == (7, 13)
     ):
-        return ("AIT-T0084", "AIT-T0085", "AIT-T0091", "AIT-T0102", "AIT-T0104")
+        return (
+            "AIT-T0084",
+            "AIT-T0085",
+            "AIT-T0091",
+            "AIT-T0102",
+            "AIT-T0104",
+            "AIT-T0151",
+            "AIT-T0152",
+            "AIT-T0171",
+            "AIT-T0163",
+            "AIT-T0166",
+            "AIT-T0167",
+            "AIT-T0168",
+            "AIT-T0169",
+            "AIT-T0170",
+        )
     if (
         sequence_length == 9
         and local_window == 2
@@ -3216,7 +3548,77 @@ def stride_family_fixture_theorem_ids(
         and normalized_strides == (127, 509, 1021, 2039)
     ):
         return ("AIT-T0141", "AIT-T0142", "AIT-T0144")
+    if (
+        sequence_length == 16
+        and local_window == 2
+        and path_length == 4
+        and normalized_strides == (4, 8)
+    ):
+        return ("AIT-T0153", "AIT-T0154")
     return ()
+
+
+def stride_family_interval_repair_plan(
+    sequence_length: int,
+    strides: Sequence[int],
+    path_length: int,
+    local_window: int,
+) -> tuple[tuple[int, int, int, int, int], ...]:
+    """Return deterministic local-window repairs for successive gap intervals.
+
+    Each row is ``(start, stop, proposed_window, additional_slots,
+    remaining_gap_count_after_repair)``. This is a correctness remediation
+    trace only: it repairs the current first uncovered interval by raising the
+    local window to that interval's inclusive stop. It is not an efficiency or
+    model-quality recommendation.
+    """
+    _require_positive(sequence_length, "sequence_length")
+    _require_positive(path_length, "path_length")
+    _require_positive(local_window, "local_window")
+    normalized_strides = normalize_stride_family(strides)
+    current_window = local_window
+    rows: list[tuple[int, int, int, int, int]] = []
+    while True:
+        covered = stride_family_covered_lags(
+            sequence_length,
+            normalized_strides,
+            path_length,
+            current_window,
+        )
+        covered_set = set(covered)
+        uncovered = tuple(
+            lag for lag in range(1, sequence_length) if lag not in covered_set
+        )
+        if not uncovered:
+            break
+        first_interval = consecutive_integer_intervals(uncovered)[0]
+        next_window = first_interval[1]
+        additional_slots = max(0, next_window - current_window)
+        repaired_covered = stride_family_covered_lags(
+            sequence_length,
+            normalized_strides,
+            path_length,
+            next_window,
+        )
+        repaired_covered_set = set(repaired_covered)
+        remaining_gap_count = sum(
+            1
+            for lag in range(1, sequence_length)
+            if lag not in repaired_covered_set
+        )
+        rows.append(
+            (
+                first_interval[0],
+                first_interval[1],
+                next_window,
+                additional_slots,
+                remaining_gap_count,
+            )
+        )
+        if next_window <= current_window:
+            break
+        current_window = next_window
+    return tuple(rows)
 
 
 def certify_stride_family_coverage(
@@ -3265,6 +3667,18 @@ def certify_stride_family_coverage(
     unique_query_candidate_count = len(set(theorem_side_query_candidates))
     lag_candidate_dedup_loss = raw_candidate_budget - unique_lag_candidate_count
     query_candidate_dedup_loss = raw_candidate_budget - unique_query_candidate_count
+    lag_candidate_collision_pair_count = candidate_collision_pair_count(
+        theorem_side_lag_candidates
+    )
+    query_candidate_collision_pair_count = candidate_collision_pair_count(
+        theorem_side_query_candidates
+    )
+    lag_collision_pair_count_excess_over_dedup_loss = (
+        lag_candidate_collision_pair_count - lag_candidate_dedup_loss
+    )
+    query_collision_pair_count_excess_over_dedup_loss = (
+        query_candidate_collision_pair_count - query_candidate_dedup_loss
+    )
     lag_candidates_no_collision = (
         len(set(theorem_side_lag_candidates)) == len(theorem_side_lag_candidates)
     )
@@ -3432,9 +3846,229 @@ def certify_stride_family_coverage(
             no_zero_period_threshold_matches_condition
         )
     uncovered_intervals = consecutive_integer_intervals(uncovered)
+    first_uncovered_interval = uncovered_intervals[0] if uncovered_intervals else None
+    first_uncovered_interval_start = (
+        None if first_uncovered_interval is None else first_uncovered_interval[0]
+    )
+    first_uncovered_interval_stop = (
+        None if first_uncovered_interval is None else first_uncovered_interval[1]
+    )
+    first_uncovered_interval_length = (
+        None
+        if first_uncovered_interval is None
+        else first_uncovered_interval[1] - first_uncovered_interval[0] + 1
+    )
+    first_uncovered_interval_repair_window = first_uncovered_interval_stop
+    first_uncovered_interval_additional_local_slots = (
+        None
+        if first_uncovered_interval_stop is None
+        else max(0, first_uncovered_interval_stop - local_window)
+    )
+    first_uncovered_interval_repair_reaches_interval: Optional[bool] = None
+    if (
+        first_uncovered_interval_start is not None
+        and first_uncovered_interval_stop is not None
+        and first_uncovered_interval_repair_window is not None
+    ):
+        first_uncovered_interval_repair_reaches_interval = all(
+            lag <= first_uncovered_interval_repair_window
+            for lag in range(
+                first_uncovered_interval_start,
+                first_uncovered_interval_stop + 1,
+            )
+        )
+    first_interval_repair_next_uncovered_lag: Optional[int] = None
+    first_interval_repair_covers_context: Optional[bool] = None
+    first_interval_repair_still_has_gap: Optional[bool] = None
+    if first_uncovered_interval_repair_window is not None:
+        interval_repair_covered = stride_family_covered_lags(
+            sequence_length,
+            normalized_strides,
+            path_length,
+            first_uncovered_interval_repair_window,
+        )
+        interval_repair_covered_set = set(interval_repair_covered)
+        interval_repair_uncovered = tuple(
+            lag
+            for lag in range(1, sequence_length)
+            if lag not in interval_repair_covered_set
+        )
+        first_interval_repair_next_uncovered_lag = (
+            interval_repair_uncovered[0] if interval_repair_uncovered else None
+        )
+        first_interval_repair_covers_context = (
+            len(interval_repair_uncovered) == 0
+        )
+        first_interval_repair_still_has_gap = (
+            first_interval_repair_next_uncovered_lag is not None
+        )
+    largest_uncovered_interval = (
+        max(
+            uncovered_intervals,
+            key=lambda interval: interval[1] - interval[0] + 1,
+        )
+        if uncovered_intervals
+        else None
+    )
+    largest_uncovered_interval_start = (
+        None if largest_uncovered_interval is None else largest_uncovered_interval[0]
+    )
+    largest_uncovered_interval_stop = (
+        None if largest_uncovered_interval is None else largest_uncovered_interval[1]
+    )
+    largest_uncovered_interval_length = (
+        None
+        if largest_uncovered_interval is None
+        else largest_uncovered_interval[1] - largest_uncovered_interval[0] + 1
+    )
+    largest_uncovered_interval_repair_window = largest_uncovered_interval_stop
+    largest_uncovered_interval_additional_local_slots = (
+        None
+        if largest_uncovered_interval_stop is None
+        else max(0, largest_uncovered_interval_stop - local_window)
+    )
+    largest_uncovered_interval_repair_reaches_interval: Optional[bool] = None
+    largest_interval_repair_next_uncovered_lag: Optional[int] = None
+    largest_interval_repair_covers_context: Optional[bool] = None
+    largest_interval_repair_still_has_gap: Optional[bool] = None
+    largest_uncovered_interval_is_tail: Optional[bool] = None
+    if (
+        largest_uncovered_interval_start is not None
+        and largest_uncovered_interval_stop is not None
+        and largest_uncovered_interval_repair_window is not None
+    ):
+        largest_uncovered_interval_repair_reaches_interval = all(
+            lag <= largest_uncovered_interval_repair_window
+            for lag in range(
+                largest_uncovered_interval_start,
+                largest_uncovered_interval_stop + 1,
+            )
+        )
+        largest_interval_repair_covered = stride_family_covered_lags(
+            sequence_length,
+            normalized_strides,
+            path_length,
+            largest_uncovered_interval_repair_window,
+        )
+        largest_interval_repair_covered_set = set(largest_interval_repair_covered)
+        largest_interval_repair_uncovered = tuple(
+            lag
+            for lag in range(1, sequence_length)
+            if lag not in largest_interval_repair_covered_set
+        )
+        largest_interval_repair_next_uncovered_lag = (
+            largest_interval_repair_uncovered[0]
+            if largest_interval_repair_uncovered
+            else None
+        )
+        largest_interval_repair_covers_context = (
+            len(largest_interval_repair_uncovered) == 0
+        )
+        largest_interval_repair_still_has_gap = (
+            largest_interval_repair_next_uncovered_lag is not None
+        )
+        largest_uncovered_interval_is_tail = (
+            largest_uncovered_interval_stop == max(0, sequence_length - 1)
+        )
     first_uncovered_lag = uncovered[0] if uncovered else None
     coverage_complete = len(uncovered) == 0
     gap_witness_exists = len(uncovered) > 0
+    local_window_complete_threshold = positive_lag_count
+    local_window_complete_shortfall = max(0, local_window_complete_threshold - local_window)
+    local_window_reaches_complete_threshold = (
+        local_window_complete_threshold <= local_window
+    )
+    local_window_complete_threshold_is_exact_local_minimum = (
+        local_window_complete_threshold == max(0, sequence_length - 1)
+    )
+    complete_repair_window = local_window_complete_threshold
+    complete_repair_window_additional_local_slots = local_window_complete_shortfall
+    complete_repair_window_covers_context = True
+    complete_repair_window_uses_dense_threshold = (
+        complete_repair_window == local_window_complete_threshold
+    )
+    complete_repair_previous_window = (
+        None if complete_repair_window <= 1 else complete_repair_window - 1
+    )
+    complete_repair_previous_uncovered: tuple[int, ...] = ()
+    if complete_repair_previous_window is not None:
+        previous_covered = stride_family_covered_lags(
+            sequence_length,
+            normalized_strides,
+            path_length,
+            complete_repair_previous_window,
+        )
+        previous_covered_set = set(previous_covered)
+        complete_repair_previous_uncovered = tuple(
+            lag
+            for lag in range(1, sequence_length)
+            if lag not in previous_covered_set
+        )
+    complete_repair_window_minimal_witness_lag = (
+        complete_repair_previous_uncovered[0]
+        if complete_repair_previous_uncovered
+        else None
+    )
+    complete_repair_window_minimal_for_declared_stride_family = (
+        complete_repair_window_covers_context
+        and (
+            complete_repair_previous_window is None
+            or complete_repair_window_minimal_witness_lag is not None
+        )
+    )
+    interval_repair_plan = stride_family_interval_repair_plan(
+        sequence_length,
+        normalized_strides,
+        path_length,
+        local_window,
+    )
+    interval_repair_plan_step_count = len(interval_repair_plan)
+    interval_repair_plan_final_window = (
+        local_window if not interval_repair_plan else interval_repair_plan[-1][2]
+    )
+    interval_repair_plan_covers_context = (
+        interval_repair_plan_final_window >= local_window_complete_threshold
+    )
+    interval_repair_plan_strictly_progresses = all(
+        row[3] > 0 for row in interval_repair_plan
+    )
+    first_gap_local_window_shortfall = (
+        None
+        if first_uncovered_lag is None
+        else max(0, first_uncovered_lag - local_window)
+    )
+    first_gap_repair_window = first_uncovered_lag
+    first_gap_exceeds_local_window = (
+        first_uncovered_lag is None or local_window < first_uncovered_lag
+    )
+    first_gap_repair_window_reaches = True
+    first_gap_repair_window_covers_context: Optional[bool] = None
+    first_gap_repair_window_is_final_positive_lag: Optional[bool] = None
+    first_gap_repair_threshold_matches_final_lag: Optional[bool] = None
+    if first_uncovered_lag is not None:
+        repaired_covered = stride_family_covered_lags(
+            sequence_length,
+            normalized_strides,
+            path_length,
+            first_uncovered_lag,
+        )
+        first_gap_repair_window_reaches = first_uncovered_lag in repaired_covered
+        first_gap_repair_window_covers_context = (
+            len(repaired_covered) == positive_lag_count
+        )
+        first_gap_repair_window_is_final_positive_lag = (
+            first_uncovered_lag == local_window_complete_threshold
+        )
+    first_gap_repair_window_reaches_complete_threshold = (
+        None
+        if first_gap_repair_window is None
+        else local_window_complete_threshold <= first_gap_repair_window
+    )
+    if first_gap_repair_window is not None:
+        first_gap_repair_threshold_matches_final_lag = (
+            first_gap_repair_window_reaches_complete_threshold
+            == first_gap_repair_window_is_final_positive_lag
+        )
     predecessor_injective_on_lag_candidates = (
         stride_family_predecessor_injective_on_lag_candidates(
             sequence_length,
@@ -3464,6 +4098,45 @@ def certify_stride_family_coverage(
         covered_lag_count=len(covered),
         uncovered_lag_count=len(uncovered),
         uncovered_count_positive=len(uncovered) > 0,
+        first_uncovered_lag_interval_start=first_uncovered_interval_start,
+        first_uncovered_lag_interval_stop=first_uncovered_interval_stop,
+        first_uncovered_lag_interval_length=first_uncovered_interval_length,
+        first_uncovered_lag_interval_repair_window=(
+            first_uncovered_interval_repair_window
+        ),
+        first_uncovered_lag_interval_additional_local_slots=(
+            first_uncovered_interval_additional_local_slots
+        ),
+        first_uncovered_interval_repair_reaches_interval=(
+            first_uncovered_interval_repair_reaches_interval
+        ),
+        first_interval_repair_next_uncovered_lag=(
+            first_interval_repair_next_uncovered_lag
+        ),
+        first_interval_repair_covers_context=first_interval_repair_covers_context,
+        first_interval_repair_still_has_gap=first_interval_repair_still_has_gap,
+        largest_uncovered_interval_start=largest_uncovered_interval_start,
+        largest_uncovered_interval_stop=largest_uncovered_interval_stop,
+        largest_uncovered_interval_length=largest_uncovered_interval_length,
+        largest_uncovered_interval_repair_window=(
+            largest_uncovered_interval_repair_window
+        ),
+        largest_uncovered_interval_additional_local_slots=(
+            largest_uncovered_interval_additional_local_slots
+        ),
+        largest_uncovered_interval_repair_reaches_interval=(
+            largest_uncovered_interval_repair_reaches_interval
+        ),
+        largest_interval_repair_next_uncovered_lag=(
+            largest_interval_repair_next_uncovered_lag
+        ),
+        largest_interval_repair_covers_context=(
+            largest_interval_repair_covers_context
+        ),
+        largest_interval_repair_still_has_gap=(
+            largest_interval_repair_still_has_gap
+        ),
+        largest_uncovered_interval_is_tail=largest_uncovered_interval_is_tail,
         first_uncovered_lag=first_uncovered_lag,
         first_uncovered_lag_matches_uncovered_list_head=(
             (first_uncovered_lag is None and not uncovered)
@@ -3479,6 +4152,60 @@ def certify_stride_family_coverage(
                 and first_uncovered_lag in uncovered
                 and first_uncovered_lag not in covered_set
             )
+        ),
+        first_uncovered_lag_local_window_shortfall=(
+            first_gap_local_window_shortfall
+        ),
+        first_uncovered_lag_repair_window=first_gap_repair_window,
+        first_uncovered_lag_exceeds_local_window=(
+            first_gap_exceeds_local_window
+        ),
+        first_uncovered_lag_repair_window_reaches=(
+            first_gap_repair_window_reaches
+        ),
+        first_uncovered_lag_repair_window_covers_context=(
+            first_gap_repair_window_covers_context
+        ),
+        first_gap_repair_window_is_final_positive_lag=(
+            first_gap_repair_window_is_final_positive_lag
+        ),
+        first_gap_repair_threshold_matches_final_lag=(
+            first_gap_repair_threshold_matches_final_lag
+        ),
+        local_window_complete_coverage_threshold=local_window_complete_threshold,
+        local_window_complete_coverage_shortfall=local_window_complete_shortfall,
+        local_window_reaches_complete_coverage_threshold=(
+            local_window_reaches_complete_threshold
+        ),
+        local_window_threshold_certifies_complete=(
+            local_window_reaches_complete_threshold and coverage_complete
+        ),
+        local_window_complete_threshold_is_exact_local_minimum=(
+            local_window_complete_threshold_is_exact_local_minimum
+        ),
+        complete_repair_window=complete_repair_window,
+        complete_repair_window_additional_local_slots=(
+            complete_repair_window_additional_local_slots
+        ),
+        complete_repair_window_covers_context=complete_repair_window_covers_context,
+        complete_repair_window_uses_dense_threshold=(
+            complete_repair_window_uses_dense_threshold
+        ),
+        complete_repair_window_minimal_for_declared_stride_family=(
+            complete_repair_window_minimal_for_declared_stride_family
+        ),
+        complete_repair_window_minimal_witness_lag=(
+            complete_repair_window_minimal_witness_lag
+        ),
+        interval_repair_plan=interval_repair_plan,
+        interval_repair_plan_step_count=interval_repair_plan_step_count,
+        interval_repair_plan_final_window=interval_repair_plan_final_window,
+        interval_repair_plan_covers_context=interval_repair_plan_covers_context,
+        interval_repair_plan_strictly_progresses=(
+            interval_repair_plan_strictly_progresses
+        ),
+        first_gap_repair_window_reaches_complete_threshold=(
+            first_gap_repair_window_reaches_complete_threshold
         ),
         uncovered_count_positive_matches_gap_witness=(
             (len(uncovered) > 0) == (first_uncovered_lag is not None)
@@ -3508,8 +4235,33 @@ def certify_stride_family_coverage(
         theorem_side_lag_candidates=theorem_side_lag_candidates,
         theorem_side_unique_lag_candidate_count=unique_lag_candidate_count,
         theorem_side_lag_candidate_dedup_loss=lag_candidate_dedup_loss,
+        theorem_side_lag_candidate_collision_pair_count=(
+            lag_candidate_collision_pair_count
+        ),
+        lag_collision_pair_count_zero_matches_no_collision=(
+            (lag_candidate_collision_pair_count == 0) == lag_candidates_no_collision
+        ),
+        lag_collision_pair_count_positive_matches_collision=(
+            (lag_candidate_collision_pair_count > 0) == (not lag_candidates_no_collision)
+        ),
+        lag_collision_pair_count_bounds_dedup_loss=(
+            lag_candidate_dedup_loss <= lag_candidate_collision_pair_count
+        ),
+        lag_collision_pair_count_excess_over_dedup_loss=(
+            lag_collision_pair_count_excess_over_dedup_loss
+        ),
+        theorem_side_lag_candidate_dedup_loss_positive=(
+            lag_candidate_dedup_loss > 0
+        ),
+        lag_dedup_loss_positive_matches_collision=(
+            (lag_candidate_dedup_loss > 0) == (not lag_candidates_no_collision)
+        ),
         lag_dedup_loss_zero_matches_no_collision=(
             (lag_candidate_dedup_loss == 0) == lag_candidates_no_collision
+        ),
+        lag_dedup_loss_accounting_matches_raw=(
+            unique_lag_candidate_count + lag_candidate_dedup_loss
+            == raw_candidate_budget
         ),
         theorem_side_lag_candidates_positive_in_context=lag_candidates_positive_in_context,
         no_wrap_separated_candidate_range_sufficient_condition=(
@@ -3617,8 +4369,33 @@ def certify_stride_family_coverage(
         theorem_side_query_candidates=theorem_side_query_candidates,
         theorem_side_unique_query_candidate_count=unique_query_candidate_count,
         theorem_side_query_candidate_dedup_loss=query_candidate_dedup_loss,
+        theorem_side_query_candidate_collision_pair_count=(
+            query_candidate_collision_pair_count
+        ),
+        query_collision_pair_count_zero_matches_no_collision=(
+            (query_candidate_collision_pair_count == 0) == query_candidates_no_collision
+        ),
+        query_collision_pair_count_positive_matches_collision=(
+            (query_candidate_collision_pair_count > 0) == (not query_candidates_no_collision)
+        ),
+        query_collision_pair_count_bounds_dedup_loss=(
+            query_candidate_dedup_loss <= query_candidate_collision_pair_count
+        ),
+        query_collision_pair_count_excess_over_dedup_loss=(
+            query_collision_pair_count_excess_over_dedup_loss
+        ),
+        theorem_side_query_candidate_dedup_loss_positive=(
+            query_candidate_dedup_loss > 0
+        ),
+        query_dedup_loss_positive_matches_collision=(
+            (query_candidate_dedup_loss > 0) == (not query_candidates_no_collision)
+        ),
         query_dedup_loss_zero_matches_no_collision=(
             (query_candidate_dedup_loss == 0) == query_candidates_no_collision
+        ),
+        query_dedup_loss_accounting_matches_raw=(
+            unique_query_candidate_count + query_candidate_dedup_loss
+            == raw_candidate_budget
         ),
         theorem_side_query_count_le_unique_lag_count=(
             unique_query_candidate_count <= unique_lag_candidate_count
@@ -4786,6 +5563,180 @@ def active_token_counts_by_budget(token_budgets: Sequence[int], max_budget: int)
     for budget in budgets:
         _require_positive(budget, "token budget")
     return tuple(sum(1 for budget in budgets if budget >= step) for step in range(1, max_budget + 1))
+
+
+def active_token_count_trace(loop_period: int, token_count: int, max_step: int) -> tuple[int, ...]:
+    """Return active-token counts for every loop step in a finite horizon."""
+    _require_positive(max_step, "max_step")
+    return tuple(
+        active_token_count_at_step(loop_period, token_count, step)
+        for step in range(1, max_step + 1)
+    )
+
+
+def inactive_token_count_trace(loop_period: int, token_count: int, max_step: int) -> tuple[int, ...]:
+    """Return inactive-token counts for every loop step in a finite horizon."""
+    _require_positive(max_step, "max_step")
+    return tuple(
+        inactive_token_count_at_step(loop_period, token_count, step)
+        for step in range(1, max_step + 1)
+    )
+
+
+def token_first_inactive_step(loop_period: int, token_index: int) -> int:
+    """Return the first loop step where a token no longer needs recurrence work."""
+    _require_nonnegative(token_index, "token_index")
+    return token_recurrence_budget(loop_period, token_index) + 1
+
+
+def active_tokens_at_step(loop_period: int, token_count: int, step: int) -> tuple[int, ...]:
+    """Generate the exact token indices active at one loop step."""
+    _require_positive(loop_period, "loop_period")
+    _require_nonnegative(token_count, "token_count")
+    _require_positive(step, "step")
+    return tuple(
+        token
+        for token in range(token_count)
+        if token_active_at_step(loop_period, token, step)
+    )
+
+
+def active_token_count_at_step(loop_period: int, token_count: int, step: int) -> int:
+    """Return the number of generated tokens still active at one loop step."""
+    return len(active_tokens_at_step(loop_period, token_count, step))
+
+
+def inactive_token_count_at_step(loop_period: int, token_count: int, step: int) -> int:
+    """Return the number of declared tokens inactive at one loop step."""
+    _require_nonnegative(token_count, "token_count")
+    active_count = active_token_count_at_step(loop_period, token_count, step)
+    return token_count - active_count
+
+
+def active_inactive_token_count_accounting(loop_period: int, token_count: int, step: int) -> bool:
+    """Check that active plus inactive token counts account for the declared count."""
+    _require_nonnegative(token_count, "token_count")
+    return (
+        active_token_count_at_step(loop_period, token_count, step)
+        + inactive_token_count_at_step(loop_period, token_count, step)
+        == token_count
+    )
+
+
+def active_token_counts_descending_by_step(loop_period: int, token_count: int, max_step: int) -> bool:
+    """Check that numeric active work never increases as loop steps advance."""
+    _require_positive(loop_period, "loop_period")
+    _require_nonnegative(token_count, "token_count")
+    _require_positive(max_step, "max_step")
+    previous = active_token_count_at_step(loop_period, token_count, 1)
+    for step in range(2, max_step + 1):
+        current = active_token_count_at_step(loop_period, token_count, step)
+        if current > previous:
+            return False
+        previous = current
+    return True
+
+
+def inactive_token_counts_ascending_by_step(loop_period: int, token_count: int, max_step: int) -> bool:
+    """Check that numeric halted/inactive work never decreases as loop steps advance."""
+    _require_positive(loop_period, "loop_period")
+    _require_nonnegative(token_count, "token_count")
+    _require_positive(max_step, "max_step")
+    previous = inactive_token_count_at_step(loop_period, token_count, 1)
+    for step in range(2, max_step + 1):
+        current = inactive_token_count_at_step(loop_period, token_count, step)
+        if current < previous:
+            return False
+        previous = current
+    return True
+
+
+def active_tokens_at_step_exact(loop_period: int, token_count: int, step: int) -> bool:
+    """Check the generated active-token list against the membership predicate."""
+    _require_positive(loop_period, "loop_period")
+    _require_nonnegative(token_count, "token_count")
+    _require_positive(step, "step")
+    tokens = active_tokens_at_step(loop_period, token_count, step)
+    token_set = set(tokens)
+    probe_limit = token_count + loop_period + step + 1
+    return all(
+        (token in token_set)
+        == (token < token_count and token_active_at_step(loop_period, token, step))
+        for token in range(probe_limit)
+    )
+
+
+def active_tokens_descending_by_step(loop_period: int, token_count: int, max_step: int) -> bool:
+    """Check that later active-token sets are subsets of earlier active-token sets."""
+    _require_positive(loop_period, "loop_period")
+    _require_nonnegative(token_count, "token_count")
+    _require_positive(max_step, "max_step")
+    previous = set(active_tokens_at_step(loop_period, token_count, 1))
+    for step in range(2, max_step + 1):
+        current = set(active_tokens_at_step(loop_period, token_count, step))
+        if not current <= previous:
+            return False
+        previous = current
+    return True
+
+
+def active_tokens_nodup_by_step(loop_period: int, token_count: int, max_step: int) -> bool:
+    """Check that every generated active-token list has no duplicate token indices."""
+    _require_positive(loop_period, "loop_period")
+    _require_nonnegative(token_count, "token_count")
+    _require_positive(max_step, "max_step")
+    for step in range(1, max_step + 1):
+        tokens = active_tokens_at_step(loop_period, token_count, step)
+        if len(tokens) != len(set(tokens)):
+            return False
+    return True
+
+
+def active_token_counts_bounded_by_token_count(loop_period: int, token_count: int, max_step: int) -> bool:
+    """Check that each generated active-token list is bounded by the declared token count."""
+    _require_positive(loop_period, "loop_period")
+    _require_nonnegative(token_count, "token_count")
+    _require_positive(max_step, "max_step")
+    return all(
+        len(active_tokens_at_step(loop_period, token_count, step)) <= token_count
+        for step in range(1, max_step + 1)
+    )
+
+
+def total_active_token_work(loop_period: int, token_count: int, max_step: int) -> int:
+    """Return total active token-steps across a finite recurrence horizon."""
+    _require_positive(loop_period, "loop_period")
+    _require_nonnegative(token_count, "token_count")
+    _require_nonnegative(max_step, "max_step")
+    return sum(
+        active_token_count_at_step(loop_period, token_count, step)
+        for step in range(1, max_step + 1)
+    )
+
+
+def total_inactive_token_work(loop_period: int, token_count: int, max_step: int) -> int:
+    """Return total inactive token-steps across a finite recurrence horizon."""
+    _require_positive(loop_period, "loop_period")
+    _require_nonnegative(token_count, "token_count")
+    _require_nonnegative(max_step, "max_step")
+    return sum(
+        inactive_token_count_at_step(loop_period, token_count, step)
+        for step in range(1, max_step + 1)
+    )
+
+
+def full_loop_token_work(token_count: int, max_step: int) -> int:
+    """Return the fixed-depth work budget that processes every token every step."""
+    _require_nonnegative(token_count, "token_count")
+    _require_nonnegative(max_step, "max_step")
+    return token_count * max_step
+
+
+def scheduled_work_saving(loop_period: int, token_count: int, max_step: int) -> int:
+    """Return fixed-depth token work minus scheduled active-token work."""
+    full_work = full_loop_token_work(token_count, max_step)
+    scheduled_work = total_active_token_work(loop_period, token_count, max_step)
+    return full_work - scheduled_work
 
 
 def loop_block_indices(block_count: int, selected_loop_block: Optional[Sequence[int]] = None) -> tuple[int, ...]:

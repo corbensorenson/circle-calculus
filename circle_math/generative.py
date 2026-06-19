@@ -40,6 +40,8 @@ class GeneratorComparison:
     exact_regeneration: bool
     explicit_length: int
     generator_length: int
+    storage_saving: int
+    storage_saving_positive: bool
     generator_shorter: bool
     note: str = "Description-length fixture only; not universal compression."
 
@@ -327,12 +329,17 @@ def compare_generator_to_explicit(record: SeedRuleProvenance) -> GeneratorCompar
     regenerated = regenerate(record)
     explicit = {"artifact_id": record.artifact_id, "generated_object": record.generated_object}
     generator = _record_description(record)
+    explicit_length = _json_length(explicit)
+    generator_length = _json_length(generator)
+    storage_saving = max(0, explicit_length - generator_length)
     return GeneratorComparison(
         artifact_id=record.artifact_id,
         exact_regeneration=regenerated == record.generated_object,
-        explicit_length=_json_length(explicit),
-        generator_length=_json_length(generator),
-        generator_shorter=_json_length(generator) < _json_length(explicit),
+        explicit_length=explicit_length,
+        generator_length=generator_length,
+        storage_saving=storage_saving,
+        storage_saving_positive=storage_saving > 0,
+        generator_shorter=generator_length < explicit_length,
     )
 
 

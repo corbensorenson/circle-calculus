@@ -84,6 +84,17 @@ def test_export_site_data_writes_required_indexes() -> None:
     assert generator_by_id["proof_glyph"]["generatedObject"]["theorem_id"] == "CC-T0005"
     assert "GEN-T0004" in generator_by_id["proof_glyph"]["theoremIds"]
 
+    circle_contracts = json.loads((generated / "circle_ai_contract_pack.json").read_text())
+    assert circle_contracts["schema_id"] == "circle_calculus.ai_contract_pack.v0"
+    circle_contract_kinds = {item["kind"] for item in circle_contracts["contracts"]}
+    assert "rope_position_distinguishability" in circle_contract_kinds
+    assert "kv_cache_ring_buffer" in circle_contract_kinds
+    assert "sparse_attention_coverage" in circle_contract_kinds
+    assert "recurrence_schedule" in circle_contract_kinds
+    assert "seed_rule_exact_regeneration" in circle_contract_kinds
+    assert len(circle_contracts["contracts"]) == 9
+    assert all(item["id"].startswith("CC-AI-CONTRACT-") for item in circle_contracts["contracts"])
+
     theseus_contracts = json.loads((generated / "theseus_hive_ai_contracts.json").read_text())
     assert theseus_contracts["schema_id"] == "circle_calculus.theseus_hive_ai_contracts.v0"
     contract_kinds = {item["kind"] for item in theseus_contracts["contracts"]}

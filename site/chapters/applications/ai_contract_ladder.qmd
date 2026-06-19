@@ -37,7 +37,7 @@ The browser widgets, Python CLIs, benchmarks, and fixtures on this page are exec
 | ---: | --- | --- | --- | --- |
 | 1 | RoPE phase-bank certifier | residues modulo declared periods | exact discrete position collision and distinguishability | proof-carrying phase contracts |
 | 2 | Real-phase RoPE seed | turn ratio below a finite context | theorem-backed one-channel finite margin examples | numerical diagnostics need proof-backed bounds |
-| 3 | KV-cache ring buffer | token slots modulo cache size | slot collision, retained-window membership, trace-fresh batch slot distinctness, live-window duplicate freedom | freshness is residue plus time boundary |
+| 3 | KV-cache ring buffer | token slots modulo cache size | slot collision, retained-window membership, trace-fresh batch slot distinctness, live-window duplicate freedom, sink-window request membership | freshness is residue plus time boundary plus explicit request policy |
 | 4 | Sparse attention | local windows plus stride-family lag candidates | covered lags, gap witnesses, hit/gap list iffs, budget caps, no-duplicate candidate survival | sparse plans need hit and gap certificates, not just examples |
 | 5 | Looped recurrence | loop phase and finite recurrence budgets | budget closure, exit certificates, active-token boundaries, route bounds | recursive-transformer ideas need schedule contracts before quality claims |
 | 6 | Circulant mixers | cyclic shift on token indices | shift equivariance, convolution laws, linearity | structure can be guaranteed before benchmarking |
@@ -47,7 +47,7 @@ The browser widgets, Python CLIs, benchmarks, and fixtures on this page are exec
 Read and run the contracts in this order:
 
 1. **RoPE certifier:** start with a position-distinguishability contract, where pass/fail is easiest to see.
-2. **KV-cache ring buffer:** add the time boundary that distinguishes a live residue from a stale same-slot token.
+2. **KV-cache ring buffer:** add the time boundary that distinguishes a live residue from a stale same-slot token, then add the sink-window policy that pins only the seen prefix before the rolling window.
 3. **Sparse-attention coverage:** inspect a plan that intentionally has both covered lags and theorem-backed gap witnesses.
 
 After those three, the later recurrence and mixer lessons should read as variations on the same pattern: identify the finite circular object, name the repeated action, expose a failure mode, and keep empirical model claims separate.
@@ -60,7 +60,6 @@ This is the cleanest contract because it gives both pass and fail evidence: a co
 
 <div class="theorem-box" data-theorem-id="AIRA-T0021"></div>
 <div class="theorem-box" data-theorem-id="AIRA-T0024"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0026"></div>
 
 ::: {.warning-box}
 This is exact for the declared integer-period phase-bank model. It is not a claim that real-valued RoPE channels have exact integer periods.
@@ -78,78 +77,16 @@ context    = 196608
 margin     = 1 / 328459
 ```
 
-The conditional bank bridge says that if a finite real-phase bank contains that channel and the inspected context and margin are within a seed, then the all-channel near-turn condition is ruled out under the stated tolerance scaling. The concrete D12, D13, D14, D15, D16, D17, D18, and D19 bridges package the common bank shape where standard channel 0 is first and additional frequencies follow. The theorem trail also proves useful negative companions: gap `710` blocks the doubled D9 margin `1/65536`, the nearby D10 margin `1/104000`, and every advertised margin at or above `1/104218`; gap `103993` blocks every advertised margin at or above `1/328458` once that gap is in scope. The bracket theorems package the useful engineering reading: the sharp `1/104219` margin reaches 64k, and the lower `1/328459` margin reaches 192k. `AIRA-T0139` through `AIRA-T0141` are the proved compression and endpoint-reflection bridge used by the generated D15/D16/D17/D18/D19 certificates.
+The conditional bank bridge says that if a finite real-phase bank contains that channel and the inspected context and margin are within a seed, then the all-channel near-turn condition is ruled out under the stated tolerance scaling. The bracket theorems package the useful engineering reading: the sharp `1/104219` margin reaches 64k, and the lower `1/328459` margin reaches 192k.
 
-<div class="theorem-box" data-theorem-id="AIRA-T0061"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0101"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0102"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0103"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0104"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0105"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0108"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0109"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0110"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0111"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0114"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0115"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0116"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0117"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0118"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0119"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0120"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0121"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0122"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0123"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0124"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0125"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0126"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0127"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0128"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0129"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0130"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0131"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0132"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0133"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0134"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0135"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0136"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0137"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0138"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0139"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0140"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0141"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0142"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0143"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0144"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0145"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0146"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0147"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0148"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0149"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0150"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0151"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0152"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0153"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0154"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0155"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0156"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0157"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0158"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0159"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0160"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0161"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0162"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0163"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0164"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0165"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0166"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0167"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0168"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0169"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0170"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0171"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0172"></div>
-<div class="theorem-box" data-theorem-id="AIRA-T0173"></div>
+Representative proof cards:
+
+<div class="theorem-box" data-theorem-id="AIRA-T0059"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0214"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0208"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0217"></div>
+
+<p>Full theorem audit: <a href="ai_contract_ladder_audit.qmd">AI Contract Ladder Proof Audit</a> and <a href="rope_certifier_audit.qmd">RoPE Proof Audit</a>.</p>
 
 ::: {.warning-box}
 This is not a full real-RoPE bank theorem. It is a theorem-backed channel-0 seed plus a one-separating-channel conditional bank transfer. The remaining hard work is broader channel-wise certification or sharper Diophantine machinery.
@@ -168,23 +105,11 @@ token <= current and current < token + cache_size
 The generated live-window theorem then upgrades a Python-style list of live tokens into a theorem-backed object: membership in the list is equivalent to retention, the whole live window maps to duplicate-free slots, and a full live window has one in-range emitted entry per declared cache slot. The count and coverage iffs say the generated slot list reaches the full `cache_size` contract exactly when the live window is full. The read/write guard says that a retained token has no later same-slot writer before the current read point, the stale-witness theorem gives `token + cache_size` as the concrete later same-slot write for stale non-future tokens, the stale-trace iff says staleness is exactly the existence of a later same-slot writer up to current, the trace iff says those two sides exactly characterize freshness, and the batch trace theorem lifts the same check to a declared read batch. The request-level failure theorem now says a stale requested member blocks the modeled adapter pass bit; under non-future duplicate-free request assumptions, passing is exactly stale requested-member count zero and failing is exactly positive stale requested-member count.
 
 <div class="theorem-box" data-theorem-id="AIM-T0069"></div>
-<div class="theorem-box" data-theorem-id="AIM-T0070"></div>
-<div class="theorem-box" data-theorem-id="AIM-T0073"></div>
 <div class="theorem-box" data-theorem-id="AIM-T0074"></div>
-<div class="theorem-box" data-theorem-id="AIM-T0075"></div>
 <div class="theorem-box" data-theorem-id="AIM-T0097"></div>
-<div class="theorem-box" data-theorem-id="AIM-T0098"></div>
-<div class="theorem-box" data-theorem-id="AIM-T0099"></div>
-<div class="theorem-box" data-theorem-id="AIM-T0100"></div>
-<div class="theorem-box" data-theorem-id="AIM-T0101"></div>
 <div class="theorem-box" data-theorem-id="AIM-T0102"></div>
-<div class="theorem-box" data-theorem-id="AIM-T0103"></div>
-<div class="theorem-box" data-theorem-id="AIM-T0076"></div>
-<div class="theorem-box" data-theorem-id="AIM-T0077"></div>
-<div class="theorem-box" data-theorem-id="AIM-T0078"></div>
-<div class="theorem-box" data-theorem-id="AIM-T0079"></div>
-<div class="theorem-box" data-theorem-id="AIM-T0080"></div>
-<div class="theorem-box" data-theorem-id="AIM-T0081"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0104"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0108"></div>
 
 ## 4. Sparse-Attention Coverage
 
@@ -196,27 +121,11 @@ The sparse contract now has both sides of the story: the default `C_120` fixture
 
 [Open the guided sparse-attention coverage lesson](sparse_attention_contract.qmd).
 
-<div class="theorem-box" data-theorem-id="AIT-T0002"></div>
 <div class="theorem-box" data-theorem-id="AIT-T0020"></div>
 <div class="theorem-box" data-theorem-id="AIT-T0078"></div>
-<div class="theorem-box" data-theorem-id="AIT-T0079"></div>
-<div class="theorem-box" data-theorem-id="AIT-T0080"></div>
-<div class="theorem-box" data-theorem-id="AIT-T0081"></div>
-<div class="theorem-box" data-theorem-id="AIT-T0083"></div>
-<div class="theorem-box" data-theorem-id="AIT-T0084"></div>
-<div class="theorem-box" data-theorem-id="AIT-T0085"></div>
-<div class="theorem-box" data-theorem-id="AIT-T0086"></div>
-<div class="theorem-box" data-theorem-id="AIT-T0087"></div>
-<div class="theorem-box" data-theorem-id="AIT-T0088"></div>
-<div class="theorem-box" data-theorem-id="AIT-T0089"></div>
-<div class="theorem-box" data-theorem-id="AIT-T0090"></div>
-<div class="theorem-box" data-theorem-id="AIT-T0091"></div>
-<div class="theorem-box" data-theorem-id="AIT-T0092"></div>
-<div class="theorem-box" data-theorem-id="AIT-T0093"></div>
 <div class="theorem-box" data-theorem-id="AIT-T0094"></div>
 <div class="theorem-box" data-theorem-id="AIT-T0095"></div>
-<div class="theorem-box" data-theorem-id="AIT-T0096"></div>
-<div class="theorem-box" data-theorem-id="AIT-T0097"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0111"></div>
 
 ## 5. Looped Recurrence
 
@@ -226,17 +135,22 @@ Looped and recursive transformer proposals are easy to overstate because "more c
 
 <div class="theorem-box" data-theorem-id="AIM-T0018"></div>
 <div class="theorem-box" data-theorem-id="AIM-T0033"></div>
-<div class="theorem-box" data-theorem-id="AIM-T0035"></div>
-<div class="theorem-box" data-theorem-id="AIM-T0039"></div>
-<div class="theorem-box" data-theorem-id="AIM-T0049"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0106"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0107"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0111"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0112"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0113"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0114"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0115"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0116"></div>
 
 ## 6. Circulant Mixers
 
 A circulant mixer is not a proof that a model will perform well. It is a structure with a guarantee: cyclic shifts commute with the mixer, and the convolution laws are fixed before training. That makes it a good negative-control example for the whole AI lane: the proof can certify equivariance, while benchmarks decide whether that bias fits the data.
 
 <div class="theorem-box" data-theorem-id="AIT-T0006"></div>
-<div class="theorem-box" data-theorem-id="AIT-T0007"></div>
-<div class="theorem-box" data-theorem-id="AIT-T0008"></div>
+
+<p>Full theorem-card trail for this ladder: <a href="ai_contract_ladder_audit.qmd">AI Contract Ladder Proof Audit</a>.</p>
 
 ## How To Use This Ladder
 

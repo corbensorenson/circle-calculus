@@ -431,6 +431,61 @@ theorem boundedGeneratorSearch_bestExact_some_candidateCount_pos
     (boundedGeneratorSearch_bestExact_some_exactCandidateCount_pos search hbest)
     (boundedGeneratorSearch_exactCandidateCount_le_candidateCount search)
 
+structure GeneratorStorageComparison where
+  explicitLength : Nat
+  generatorLength : Nat
+
+def generatorStorageComparison
+    (explicitLength generatorLength : Nat) : GeneratorStorageComparison :=
+  { explicitLength := explicitLength, generatorLength := generatorLength }
+
+def GeneratorStorageComparison.generatorShorter
+    (comparison : GeneratorStorageComparison) : Prop :=
+  comparison.generatorLength < comparison.explicitLength
+
+def GeneratorStorageComparison.storageSaving
+    (comparison : GeneratorStorageComparison) : Nat :=
+  comparison.explicitLength - comparison.generatorLength
+
+theorem generatorStorageComparison_shorter_iff_positive_saving
+    (comparison : GeneratorStorageComparison) :
+    comparison.generatorShorter ↔ 0 < comparison.storageSaving := by
+  cases comparison
+  simp [GeneratorStorageComparison.generatorShorter,
+    GeneratorStorageComparison.storageSaving]
+
+theorem generatorStorageComparison_storageSaving_add_generatorLength
+    {comparison : GeneratorStorageComparison}
+    (hshorter : comparison.generatorShorter) :
+    comparison.storageSaving + comparison.generatorLength =
+      comparison.explicitLength := by
+  cases comparison with
+  | mk explicitLength generatorLength =>
+      simp [GeneratorStorageComparison.generatorShorter,
+        GeneratorStorageComparison.storageSaving] at hshorter ⊢
+      exact Nat.sub_add_cancel (Nat.le_of_lt hshorter)
+
+def finiteCircle128StorageComparison : GeneratorStorageComparison :=
+  generatorStorageComparison 454 383
+
+theorem finiteCircle128StorageComparison_generatorShorter :
+    finiteCircle128StorageComparison.generatorShorter := by
+  unfold finiteCircle128StorageComparison generatorStorageComparison
+    GeneratorStorageComparison.generatorShorter
+  native_decide
+
+theorem finiteCircle128StorageComparison_storageSaving :
+    finiteCircle128StorageComparison.storageSaving = 71 := by
+  unfold finiteCircle128StorageComparison generatorStorageComparison
+    GeneratorStorageComparison.storageSaving
+  native_decide
+
+theorem finiteCircle128StorageComparison_positive_saving :
+    0 < finiteCircle128StorageComparison.storageSaving := by
+  exact (generatorStorageComparison_shorter_iff_positive_saving
+    finiteCircle128StorageComparison).mp
+      finiteCircle128StorageComparison_generatorShorter
+
 theorem singletonExactGeneratorSearch_bestExact_mem_exactCandidates
     (value : α) :
     (generatorComparison value value) ∈

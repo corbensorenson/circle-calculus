@@ -395,7 +395,7 @@ def export_widget_index() -> dict:
         {
             "id": "token_level_recurrence",
             "path": "site/widgets/ai/token_level_recurrence.js",
-            "theorem_ids": ["AIM-T0006", "AIM-T0007", "AIM-T0008", "AIM-T0009", "AIM-T0018", "AIM-T0022", "AIM-T0026", "AIM-T0027", "AIM-T0057"],
+            "theorem_ids": ["AIM-T0006", "AIM-T0007", "AIM-T0008", "AIM-T0009", "AIM-T0018", "AIM-T0022", "AIM-T0026", "AIM-T0027", "AIM-T0057", "AIM-T0106", "AIM-T0107"],
             "dictionary_ids": [
                 "COMMON-0052",
                 "COMMON-0053",
@@ -403,7 +403,7 @@ def export_widget_index() -> dict:
                 "COMMON-0068",
                 "COMMON-0069",
             ],
-            "python_reference": "circle_math.applications.circle_ai.token_recurrence_budgets; circle_math.applications.circle_ai.active_token_counts_by_budget; circle_math.applications.circle_ai.recurrence_resolution_levels; circle_math.applications.circle_ai.run_token_level_recurrence_benchmark",
+            "python_reference": "circle_math.applications.circle_ai.token_recurrence_budgets; circle_math.applications.circle_ai.active_token_counts_by_budget; circle_math.applications.circle_ai.active_tokens_at_step; circle_math.applications.circle_ai.recurrence_resolution_levels; circle_math.applications.circle_ai.run_token_level_recurrence_benchmark",
         },
         {
             "id": "learned_token_recurrence",
@@ -3145,6 +3145,7 @@ def export_glyph_index(theorem_manifest: dict, dictionary: dict) -> dict:
 
 
 def export_all() -> None:
+    from circle_math.applications.circle_ai_contracts import build_contract_pack as build_circle_ai_contract_pack
     from circle_math.applications.theseus_hive_contracts import build_contract_pack
 
     theorem_manifest = export_theorems()
@@ -3172,6 +3173,7 @@ def export_all() -> None:
     write_json(GENERATED / "capability_showcase.json", export_capability_showcase())
     write_json(GENERATED / "glyph_index.json", glyph_index)
     write_json(GENERATED / "generator_index.json", export_generator_index())
+    write_json(GENERATED / "circle_ai_contract_pack.json", build_circle_ai_contract_pack())
     write_json(GENERATED / "theseus_hive_ai_contracts.json", build_contract_pack())
 
 

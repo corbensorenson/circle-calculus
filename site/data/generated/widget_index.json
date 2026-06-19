@@ -280,7 +280,7 @@
       ],
       "id": "token_level_recurrence",
       "path": "site/widgets/ai/token_level_recurrence.js",
-      "python_reference": "circle_math.applications.circle_ai.token_recurrence_budgets; circle_math.applications.circle_ai.active_token_counts_by_budget; circle_math.applications.circle_ai.recurrence_resolution_levels; circle_math.applications.circle_ai.run_token_level_recurrence_benchmark",
+      "python_reference": "circle_math.applications.circle_ai.token_recurrence_budgets; circle_math.applications.circle_ai.active_token_counts_by_budget; circle_math.applications.circle_ai.active_tokens_at_step; circle_math.applications.circle_ai.recurrence_resolution_levels; circle_math.applications.circle_ai.run_token_level_recurrence_benchmark",
       "theorem_ids": [
         "AIM-T0006",
         "AIM-T0007",
@@ -290,7 +290,9 @@
         "AIM-T0022",
         "AIM-T0026",
         "AIM-T0027",
-        "AIM-T0057"
+        "AIM-T0057",
+        "AIM-T0106",
+        "AIM-T0107"
       ]
     },
     {

@@ -107,6 +107,15 @@ def suggest_review_category(path: Path, decl_name: str) -> str:
         return "metadata_projection"
     if "Certifier.lean" in path_text or "Certificate" in decl_name or "certificate" in decl_name:
         return "application_contract_bridge"
+    if (
+        "/Applications/CircleAI.lean" in path_text
+        and decl_name
+        in {
+            "totalActiveTokenWork_succ_eq_self_of_loopPeriod_lt_succ",
+            "totalInactiveTokenWork_succ_eq_add_tokenCount_of_loopPeriod_lt_succ",
+        }
+    ):
+        return "application_contract_bridge"
     if "/Physics/" in path_text:
         return "finite_physics_contract"
     if "/Generative/" in path_text:

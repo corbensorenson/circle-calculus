@@ -63,6 +63,16 @@ python scripts/stride_family_certify.py --context 120 --strides 7,13 --path-leng
 
 The short non-Lean entrypoint is [Sparse-Attention Certifier Quickstart](https://github.com/corbensorenson/circle-calculus/blob/main/docs/SPARSE_ATTENTION_CERTIFIER_QUICKSTART.md). It covers installation assumptions, CLI output fields, theorem ids, and claim boundaries.
 
+For the smaller single-stride candidate-fanout contract:
+
+```bash
+python scripts/strided_candidate_fanout_certify.py
+python scripts/strided_candidate_fanout_certify.py --format json
+python scripts/circle_ai_contract_ready.py --kind strided_candidate_fanout --digest --field full_coverage --field effective_candidate_budget --field duplicate_count --include-recommendations
+```
+
+That report focuses on gcd reach, orbit size, candidate path, duplicate collapse, effective candidate budget, and full-coverage status for one stride. The digest adds `FANOUT-USE-FULL-COVERAGE-STRIDE-CYCLE` and `FANOUT-AUDIT-DUPLICATE-COLLAPSED-BUDGET` as copy-safe planner records. It is useful for auditing fanout wiring and planner budgets, not for proving search quality.
+
 For the sidecar benchmark and committed fixture:
 
 ```bash
@@ -118,15 +128,41 @@ The default sidecar is intentionally incomplete so the gap certificates are visi
 | Gap-count formula | `109 = 119 - 10` | under the same hypothesis, uncovered count is exactly positive lag count minus unique lag-candidate count |
 | Unique shortfall iff gap | `10 < 119` exactly when a semantic gap exists | under the same hypothesis, duplicate-aware count shortfall is equivalent to a concrete uncovered positive lag |
 | No-collision predicates | all true in the default fixture | the raw candidate budget survives deduplication for this plan |
-| Dedup-loss fields | lag loss `0`, query loss `0` | `AIT-T0145` and `AIT-T0146` prove zero loss exactly matches duplicate-free raw candidates |
+| Dedup-loss accounting fields | lag/query loss `0` or positive, plus unique+loss=raw accounting | `AIT-T0145` through `AIT-T0150` prove zero loss exactly matches duplicate-free raw candidates, positive loss exactly matches duplicate collision, and unique candidates plus loss equals raw budget |
+| Collision-pair counts | default lag/query pair counts `0`; alias probe lag/query pair counts `6`; zero/positive boundary checks true; pair counts bound dedup loss | `AIT-T0151` through `AIT-T0154` certify multiplicity-sensitive equal-candidate pair counts for public fixtures, `AIT-T0155` through `AIT-T0158` prove the reusable zero/positive pair-count iff endpoints, and `AIT-T0159`/`AIT-T0160` prove pair counts are at least the corresponding dedup-loss fields |
 | Uncovered-list theorem | lag `5` appears in a finite uncovered-lag list of length `109` | the sidecar's gap list is linked to semantic reachability, not only to Python filtering |
 | Count witness | uncovered count is positive and first gap is `5` | a positive uncovered count is backed by a concrete semantic gap witness and by first-gap presence |
+| First uncovered interval | `5..6`; length `2`; repair window `6`; additional local slots `2` | the first consecutive gap run gives a planner the smallest local-window repair that covers the whole first missed run, not the whole context |
+| First-interval repair boundary | raising the local window to the interval end reaches the target interval; after raising the default row's local window to `6`, next uncovered lag is `8`; complete coverage is still false | `AIT-T0171` proves the generic target-interval reachability fact, `AIT-T0166` proves the next concrete gap, and `AIT-T0167` proves the first-interval repair is not a complete-coverage certificate |
+| Largest uncovered interval | `40..119`; length `80`; repair window `119`; additional local slots `115`; reaches the target interval and clears the default fixture | this is a generated planner diagnostic from the certificate's finite gap intervals; because the largest gap is the tail, repairing it matches the dense-local fallback in this fixture |
+| First-gap local repair | local-window shortfall `1`; needed local window `5`; repair reaches lag `5`; repair is not the final positive lag and does not cover the context | `AIT-T0161` proves the first gap is beyond the current local window, `AIT-T0162` proves using that lag as the local-window width reaches that specific lag, `AIT-T0164` proves the dense-threshold condition is exactly the final-lag condition, `AIT-T0165` proves that final-lag repair would certify coverage, and `AIT-T0163` proves the default first-gap repair is not a complete-coverage repair |
+| Complete local repair | window `119`; additional local slots `115`; covers context; uses the exact local-only dense threshold; minimal for the declared default stride family with witness lag `119` | `AIT-T0023` identifies `context - 1` as the exact local-only threshold, `AIT-T0034` says reaching it certifies complete local+stride-family coverage, and `AIT-T0168` through `AIT-T0170` prove that no smaller local window covers the default `C_120`, path `3`, strides `[7,13]` row |
+| Interval repair path | `6` steps; final local window `119`; covers context; strict progress | the generated certificate repeatedly repairs the current first uncovered interval: `5..6`, `8..12`, `15..20`, `22..25`, `27..38`, then `40..119`; this is a deterministic remediation trace over the reported gaps, not a search over all sparse layouts |
+| Planner recommendations | `SPARSE-LOCAL-FIRST-INTERVAL-REPAIR`, `SPARSE-REPAIR-LARGEST-GAP-INTERVAL`, `SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK`, and `SPARSE-INTERVAL-REPAIR-PATH` | the generated contract pack exposes copy-safe action records for consumers; one covers the first missed interval only, one highlights the largest missed interval, one is the dense-local correctness fallback, and one records the successive interval-repair path |
 | Shortfall witness | covered count is below `119` and first gap is `5` | a covered-count failure is backed by a concrete semantic gap witness |
 | Count partition | `10 + 109 = 119 = 120 - 1` | the covered and uncovered lists account for every positive in-context lag |
 
+### Proof Map
+
+Read the proof layer in four chunks:
+
+| Chunk | What It Certifies | Main Theorem Range |
+| --- | --- | --- |
+| Partition | covered and uncovered finite lists exactly partition the positive lags | `AIT-T0081` through `AIT-T0105` |
+| Budget | raw candidates, deduplicated candidates, and query candidates have explicit count bounds | `AIT-T0106` through `AIT-T0125` |
+| Structure | no-zero and period-threshold checks turn plan-shape assumptions into count/gap guarantees | `AIT-T0126` through `AIT-T0138` |
+| Planner fields | public rows, collision counts, first-gap repairs, and dense fallback are theorem-backed report fields | `AIT-T0139` through `AIT-T0171` |
+
+The lesson uses this map so readers can understand the certificate before auditing every card. The full theorem-card trail is in [Sparse Attention Proof Audit](sparse_attention_audit.qmd).
+
+<details class="audit-detail">
+<summary>Detailed theorem trail for the current sparse-attention certificate</summary>
+
 The key upgrade is the finite covered/uncovered lag pair. `AIT-T0090` says membership in the covered list is exactly a positive in-context semantic hit. `AIT-T0081` says membership in the uncovered list is exactly a positive in-context semantic miss. `AIT-T0092` proves those two lists are disjoint, `AIT-T0093` proves every positive in-context lag appears in one of them, and `AIT-T0094` proves the two list lengths add to `n - 1`. The interval summary is a Python/widget readability layer over that proved partition; `AIT-T0104` and `AIT-T0105` certify the exact interval summaries for the two public fixtures. `AIT-T0082` and `AIT-T0083` say complete coverage is exactly an empty uncovered list, equivalently zero uncovered lags. `AIT-T0095` says complete coverage is exactly the covered-list count reaching `n - 1`, `AIT-T0096` says a positive uncovered count is exactly the existence of a concrete uncovered positive lag, and `AIT-T0097` says a covered-count shortfall is exactly the existence of such a lag. `AIT-T0098` through `AIT-T0101` make the `first_uncovered_lag` report field theorem-backed: absent first gap means the uncovered list is empty, complete coverage is equivalent to no first gap, a reported first gap is the head of the theorem-side uncovered list, and that reported lag is a semantic miss. `AIT-T0103` proves the count/presence bridge: the uncovered count is positive exactly when the first-gap option is populated. `AIT-T0084` proves that the default fixture's lag `5` is one of those listed misses, `AIT-T0085` proves the default uncovered list has exactly `109` entries, `AIT-T0091` proves the default covered list has exactly `10` entries, `AIT-T0102` proves the default first uncovered lag is exactly `5`, `AIT-T0104` proves the default uncovered intervals are exactly `5..6`, `8..12`, `15..20`, `22..25`, `27..38`, `40..119`, and `AIT-T0105` proves the complete fixture's interval list is empty. `AIT-T0106` and `AIT-T0107` separately certify the budget side: in any nonempty context, the exact deduplicated query-candidate count cannot exceed the context and therefore cannot exceed the reported `min(context, raw_budget)` cap. `AIT-T0108` adds the image-cardinality guardrail behind `query_count_le_unique_lag_count`: converting lag candidates into query-indexed predecessor addresses can merge candidates, but it cannot create more distinct candidates than the lag-side source had. `AIT-T0109` adds the equality endpoint: if predecessor indexing is injective on the generated lag candidates, then the query-side unique count exactly matches the lag-side unique count. `AIT-T0110` adds the planner-facing raw-budget impossibility guard: complete coverage requires raw sparse generator budget at least `n - 1`, so a raw-budget shortfall is already enough to certify that gaps remain. `AIT-T0111` adds the deduplicated counterpart: complete coverage requires the theorem-side unique lag-candidate count to reach at least `n - 1`, so duplicate collapse can rule out complete coverage even when raw generator count alone looks adequate. `AIT-T0112` adds the iff endpoint for the clean candidate-range case: if every generated lag candidate is positive and in context, complete coverage is exactly unique lag-candidate count `n - 1`. `AIT-T0113` and `AIT-T0114` turn that into exact report arithmetic: covered count equals unique lag-candidate count, and uncovered count equals `n - 1` minus that unique count. `AIT-T0120` adds the failure-side iff: under the same candidate-range hypothesis, a unique-lag shortfall is equivalent to the existence of a concrete uncovered positive lag. `AIT-T0115` and `AIT-T0116` remove one layer of manual audit for ordered no-wrap separated families: `window < context` plus that structural stride condition proves the candidate-range hypothesis and packages the same unique-count iff under checkable plan conditions; `AIT-T0121` packages the shortfall/gap iff there too. `AIT-T0117` through `AIT-T0119` add the broader no-zero-residue structural discharge: wrapping and overlap are allowed, as long as no admitted stride-step residue is zero; `AIT-T0122` packages the same shortfall/gap iff for that broader structural check. `AIT-T0123` moves the failure-side endpoint to query-indexed predecessor addresses when candidate range and predecessor injectivity both hold. `AIT-T0124` and `AIT-T0125` package that query-side shortfall/gap iff under no-wrap and no-zero structural checks, so the executable report can say when exact query-candidate shortfall is a real uncovered-lag witness. `AIT-T0126` and `AIT-T0127` add the singleton design rule: in a one-stride plan, generated zero residues occur exactly at multiples of the finite coil period, so the no-zero structural condition is equivalent to stopping the path budget before that period. `AIT-T0128` extends the same rule to finite stride families: every admitted stride period must exceed the shared path budget.
 
-`AIT-T0129` and `AIT-T0130` package the period-threshold check as lag-side and query-side shortfall/gap equivalence fields. In report terms: once `window < context` and every admitted stride period exceeds `path_length`, a unique-count shortfall is not only a warning; it is equivalent to a concrete uncovered positive lag. `AIT-T0131` covers the opposite side of that threshold: when an admitted period is at most the path budget, the report can name a stride, period, step, and zero residue as a concrete invalid-candidate witness. `AIT-T0132` and `AIT-T0133` make the negative status exact too: the no-zero structural check fails exactly when that witness exists, equivalently when a period-threshold violation exists in a nonzero context. `AIT-T0134` and `AIT-T0135` strengthen the report's witness meaning: in a nonzero context, the finite coil period is positive and is the first positive generated step that returns to zero residue for that stride. `AIT-T0136` turns the same period fact into an exact alias-count field: among admitted positive steps, the number that return to zero residue is `path_length / period`. `AIT-T0137` and `AIT-T0138` lift that to the finite-family report: total alias count is the sum of the per-stride quotient counts, and in a nonzero context total count zero is exactly the no-zero structural condition. `AIT-T0139` and `AIT-T0140` make the public `4096` no-wrap planner row row-specific: exactly `44` covered positive lags and exactly `4051` uncovered positive lags. `AIT-T0141` and `AIT-T0142` do the same for the public `8192` coprime planner row using the broader no-zero route: exactly `96` covered positive lags and exactly `8095` uncovered positive lags. `AIT-T0143` and `AIT-T0144` move the exact-count guarantee to the query side: every query index in those rows has exactly `44` or `96` deduplicated predecessor candidates. `AIT-T0145` and `AIT-T0146` add exact dedup-loss semantics: lag-side and query-side loss is zero if and only if the corresponding raw candidate list is duplicate-free.
+`AIT-T0129` and `AIT-T0130` package the period-threshold check as lag-side and query-side shortfall/gap equivalence fields. In report terms: once `window < context` and every admitted stride period exceeds `path_length`, a unique-count shortfall is not only a warning; it is equivalent to a concrete uncovered positive lag. `AIT-T0131` covers the opposite side of that threshold: when an admitted period is at most the path budget, the report can name a stride, period, step, and zero residue as a concrete invalid-candidate witness. `AIT-T0132` and `AIT-T0133` make the negative status exact too: the no-zero structural check fails exactly when that witness exists, equivalently when a period-threshold violation exists in a nonzero context. `AIT-T0134` and `AIT-T0135` strengthen the report's witness meaning: in a nonzero context, the finite coil period is positive and is the first positive generated step that returns to zero residue for that stride. `AIT-T0136` turns the same period fact into an exact alias-count field: among admitted positive steps, the number that return to zero residue is `path_length / period`. `AIT-T0137` and `AIT-T0138` lift that to the finite-family report: total alias count is the sum of the per-stride quotient counts, and in a nonzero context total count zero is exactly the no-zero structural condition. `AIT-T0139` and `AIT-T0140` make the public `4096` no-wrap planner row row-specific: exactly `44` covered positive lags and exactly `4051` uncovered positive lags. `AIT-T0141` and `AIT-T0142` do the same for the public `8192` coprime planner row using the broader no-zero route: exactly `96` covered positive lags and exactly `8095` uncovered positive lags. `AIT-T0143` and `AIT-T0144` move the exact-count guarantee to the query side: every query index in those rows has exactly `44` or `96` deduplicated predecessor candidates. `AIT-T0145` through `AIT-T0150` add exact dedup-loss semantics: lag-side and query-side loss is zero if and only if the corresponding raw candidate list is duplicate-free, positive loss is exactly the duplicate-collision case, and unique candidates plus loss equals the raw candidate budget. `AIT-T0151` through `AIT-T0154` add the first fixture pair-collision counts: zero lag/query pair collisions for the default `C_120` plan and six lag/query pair collisions for the compact `C_16` alias probe. `AIT-T0155` through `AIT-T0158` make those pair-count fields reusable by proving that zero pair-collision count is exactly no-collision and positive pair-collision count is exactly duplicate collision on both lag and query sides. `AIT-T0159` and `AIT-T0160` add the severity bridge: lag/query pair-collision counts are always at least the corresponding dedup-loss counts, so `pair_count - dedup_loss` measures repeated multiplicity beyond a single lost candidate per duplicate value. `AIT-T0161` and `AIT-T0162` add the first-gap repair bridge: a reported first gap is outside the current local window, and raising the local window to that lag reaches that lag. `AIT-T0164` and `AIT-T0165` make the dense-threshold interpretation reusable: a first-gap repair reaches the dense-local threshold exactly when the first gap is the final positive lag, and that final-lag repair certifies complete coverage. `AIT-T0163` pins the default first-gap repair boundary: raising the local window to `5` still leaves lag `6` uncovered, so first-gap repair is not full coverage. `AIT-T0171` proves the generic first-interval repair target: raising the local window to the reported interval endpoint reaches every lag in that interval. `AIT-T0166` and `AIT-T0167` pin the remaining-boundary facts for the default first-interval repair: raising the local window to `6` covers the target interval `5..6`, but lag `8` remains uncovered and complete context coverage is still false. `AIT-T0023` and `AIT-T0034` supply the adjacent dense-local repair fields, and `AIT-T0168` through `AIT-T0170` sharpen the default-row fallback: for `context = 120`, path length `3`, and strides `[7,13]`, complete coverage is equivalent to local window at least `119`, with lag `119` witnessing failure below that threshold. This gives a planner certified local-window repairs for the first miss and first missed interval while preserving an exact minimal full-coverage fallback; it is not a performance recommendation.
+
+</details>
 
 The sidecar also includes a checked passing fixture:
 
@@ -146,13 +182,13 @@ The sidecar also includes a checked passing fixture:
 
 The committed sidecar also includes compact rows for declared sparse layouts larger than the toy fixtures:
 
-| Plan | Context | Local window | Path length | Strides | Candidate budget | Coverage | Uncovered lags | Lag loss | Query loss | Raw budget survives dedup |
-| --- | ---: | ---: | ---: | --- | ---: | ---: | ---: | ---: | ---: | --- |
-| `alias_collision_probe_16` | `16` | `2` | `4` | `4, 8` | `6` | `0.333` | `10` | `4` | `4` | no |
-| `long_context_no_wrap_probe_4096` | `4096` | `32` | `4` | `33, 160, 800` | `44` | `0.011` | `4051` | `0` | `0` | lag and query |
-| `long_context_coprime_probe_8192` | `8192` | `64` | `8` | `127, 509, 1021, 2039` | `96` | `0.012` | `8095` | `0` | `0` | lag and query |
+| Plan | Context | Local window | Path length | Strides | Candidate budget | Coverage | Uncovered lags | Lag loss | Query loss | Lag pair collisions | Query pair collisions | Raw budget survives dedup |
+| --- | ---: | ---: | ---: | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- |
+| `alias_collision_probe_16` | `16` | `2` | `4` | `4, 8` | `6` | `0.333` | `10` | `4` | `4` | `6` | `6` | no |
+| `long_context_no_wrap_probe_4096` | `4096` | `32` | `4` | `33, 160, 800` | `44` | `0.011` | `4051` | `0` | `0` | `0` | `0` | lag and query |
+| `long_context_coprime_probe_8192` | `8192` | `64` | `8` | `127, 509, 1021, 2039` | `96` | `0.012` | `8095` | `0` | `0` | `0` | `0` | lag and query |
 
-These rows are declared inputs passed through the same finite coverage and budget certifier. The `C_16` alias-collision row demonstrates duplicate collapse: raw budget is `10`, but four lag/query candidates disappear under deduplication, so raw budget does not survive. `AIT-T0145` and `AIT-T0146` prove the zero boundary for those loss fields. The `4096` row has row-specific Lean count facts (`AIT-T0139` and `AIT-T0140`) for its covered and uncovered positive-lag counts, plus `AIT-T0143` for exact query-candidate count at every query index. The `8192` row has matching row-specific Lean count facts (`AIT-T0141` and `AIT-T0142`), plus `AIT-T0144` for exact query-candidate count at every query index. Their main lesson is that exact raw-budget preservation and broad coverage are different questions: both large rows preserve the raw candidate budget after deduplication, but both leave most lags uncovered. The JSON result stores a `reproduce_command` for each row; running that command emits the full covered/uncovered-lag certificate.
+These rows are declared inputs passed through the same finite coverage and budget certifier. The `C_16` alias-collision row demonstrates duplicate collapse: raw budget is `10`, but positive lag/query dedup loss shows candidates disappear under deduplication, so raw budget does not survive. Its collision-pair count is `6` on both lag and query sides because repeated candidates contribute one unordered pair for every equal-value pair, not only one lost deduplicated entry; the excess over dedup loss is `2`. `AIT-T0145` through `AIT-T0167` prove the zero boundary, positive collision boundary, exact unique-plus-loss-equals-raw accounting, public fixture pair-collision counts, reusable pair-count zero/positive iff endpoints, pair-count-bounds-dedup-loss severity inequalities, and first-gap/first-interval local-window repair boundary fields for those reports. The `4096` row has row-specific Lean count facts (`AIT-T0139` and `AIT-T0140`) for its covered and uncovered positive-lag counts, plus `AIT-T0143` for exact query-candidate count at every query index. The `8192` row has matching row-specific Lean count facts (`AIT-T0141` and `AIT-T0142`), plus `AIT-T0144` for exact query-candidate count at every query index. Their main lesson is that exact raw-budget preservation and broad coverage are different questions: both large rows preserve the raw candidate budget after deduplication, but both leave most lags uncovered. The JSON result stores a `reproduce_command` for each row; running that command emits the full covered/uncovered-lag certificate.
 
 That is the proof-carrying contract shape: a sparse plan should show what it covers, what it misses, and which budget assumptions justify the count. The structured-family score in the sidecar is a fixture diagnostic, not a learned attention-quality result.
 
@@ -173,102 +209,40 @@ That is the proof-carrying contract shape: a sparse plan should show what it cov
 - A stride family can cover selected long lags cheaply, but arbitrary lags remain gaps unless the plan certifies otherwise.
 - Complete coverage is equivalent to the absence of positive uncovered-lag witnesses.
 - Consecutive uncovered-lag intervals are a compact way to inspect where the gaps are.
+- The interval repair path turns those gap intervals into a finite remediation trace, but it is not a claim of efficient or optimal sparse attention.
 - Candidate budget has both raw and deduplicated forms; no-collision hypotheses tell when the raw count survives exactly.
 - The sparse contract certifies candidate-set coverage and budget arithmetic, not learned attention quality.
 
-## Theorem Cards
+## Representative Theorem Cards
 
-<details class="proof-shelf">
-<summary>Open theorem-card shelf for the sparse-attention coverage contract</summary>
+These are the theorem cards most readers should audit first. The full theorem-card trail lives in the [Sparse Attention Proof Audit](sparse_attention_audit.qmd).
 
-<div class="theorem-box" data-theorem-id="AIT-T0001"></div>
-<div class="theorem-box" data-theorem-id="AIT-T0002"></div>
-<div class="theorem-box" data-theorem-id="AIT-T0003"></div>
-<div class="theorem-box" data-theorem-id="AIT-T0016"></div>
-<div class="theorem-box" data-theorem-id="AIT-T0017"></div>
 <div class="theorem-box" data-theorem-id="AIT-T0020"></div>
-<div class="theorem-box" data-theorem-id="AIT-T0021"></div>
-<div class="theorem-box" data-theorem-id="AIT-T0028"></div>
-<div class="theorem-box" data-theorem-id="AIT-T0033"></div>
-<div class="theorem-box" data-theorem-id="AIT-T0036"></div>
-<div class="theorem-box" data-theorem-id="AIT-T0039"></div>
-<div class="theorem-box" data-theorem-id="AIT-T0043"></div>
-<div class="theorem-box" data-theorem-id="AIT-T0055"></div>
-<div class="theorem-box" data-theorem-id="AIT-T0063"></div>
-<div class="theorem-box" data-theorem-id="AIT-T0065"></div>
-<div class="theorem-box" data-theorem-id="AIT-T0067"></div>
-<div class="theorem-box" data-theorem-id="AIT-T0076"></div>
 <div class="theorem-box" data-theorem-id="AIT-T0078"></div>
-<div class="theorem-box" data-theorem-id="AIT-T0079"></div>
-<div class="theorem-box" data-theorem-id="AIT-T0080"></div>
-<div class="theorem-box" data-theorem-id="AIT-T0081"></div>
-<div class="theorem-box" data-theorem-id="AIT-T0082"></div>
-<div class="theorem-box" data-theorem-id="AIT-T0083"></div>
-<div class="theorem-box" data-theorem-id="AIT-T0084"></div>
-<div class="theorem-box" data-theorem-id="AIT-T0085"></div>
-<div class="theorem-box" data-theorem-id="AIT-T0086"></div>
-<div class="theorem-box" data-theorem-id="AIT-T0087"></div>
-<div class="theorem-box" data-theorem-id="AIT-T0088"></div>
-<div class="theorem-box" data-theorem-id="AIT-T0089"></div>
 <div class="theorem-box" data-theorem-id="AIT-T0090"></div>
-<div class="theorem-box" data-theorem-id="AIT-T0091"></div>
-<div class="theorem-box" data-theorem-id="AIT-T0092"></div>
-<div class="theorem-box" data-theorem-id="AIT-T0093"></div>
 <div class="theorem-box" data-theorem-id="AIT-T0094"></div>
 <div class="theorem-box" data-theorem-id="AIT-T0095"></div>
-<div class="theorem-box" data-theorem-id="AIT-T0096"></div>
-<div class="theorem-box" data-theorem-id="AIT-T0097"></div>
-<div class="theorem-box" data-theorem-id="AIT-T0098"></div>
-<div class="theorem-box" data-theorem-id="AIT-T0099"></div>
-<div class="theorem-box" data-theorem-id="AIT-T0100"></div>
-<div class="theorem-box" data-theorem-id="AIT-T0101"></div>
-<div class="theorem-box" data-theorem-id="AIT-T0102"></div>
-<div class="theorem-box" data-theorem-id="AIT-T0103"></div>
-<div class="theorem-box" data-theorem-id="AIT-T0104"></div>
-<div class="theorem-box" data-theorem-id="AIT-T0105"></div>
-<div class="theorem-box" data-theorem-id="AIT-T0106"></div>
-<div class="theorem-box" data-theorem-id="AIT-T0107"></div>
-<div class="theorem-box" data-theorem-id="AIT-T0108"></div>
-<div class="theorem-box" data-theorem-id="AIT-T0109"></div>
 <div class="theorem-box" data-theorem-id="AIT-T0110"></div>
 <div class="theorem-box" data-theorem-id="AIT-T0111"></div>
-<div class="theorem-box" data-theorem-id="AIT-T0112"></div>
-<div class="theorem-box" data-theorem-id="AIT-T0113"></div>
-<div class="theorem-box" data-theorem-id="AIT-T0114"></div>
-<div class="theorem-box" data-theorem-id="AIT-T0115"></div>
-<div class="theorem-box" data-theorem-id="AIT-T0116"></div>
-<div class="theorem-box" data-theorem-id="AIT-T0117"></div>
-<div class="theorem-box" data-theorem-id="AIT-T0118"></div>
-<div class="theorem-box" data-theorem-id="AIT-T0119"></div>
-<div class="theorem-box" data-theorem-id="AIT-T0120"></div>
-<div class="theorem-box" data-theorem-id="AIT-T0121"></div>
-<div class="theorem-box" data-theorem-id="AIT-T0122"></div>
-<div class="theorem-box" data-theorem-id="AIT-T0123"></div>
-<div class="theorem-box" data-theorem-id="AIT-T0124"></div>
-<div class="theorem-box" data-theorem-id="AIT-T0125"></div>
-<div class="theorem-box" data-theorem-id="AIT-T0126"></div>
-<div class="theorem-box" data-theorem-id="AIT-T0127"></div>
-<div class="theorem-box" data-theorem-id="AIT-T0128"></div>
-<div class="theorem-box" data-theorem-id="AIT-T0129"></div>
-<div class="theorem-box" data-theorem-id="AIT-T0130"></div>
-<div class="theorem-box" data-theorem-id="AIT-T0131"></div>
-<div class="theorem-box" data-theorem-id="AIT-T0132"></div>
-<div class="theorem-box" data-theorem-id="AIT-T0133"></div>
-<div class="theorem-box" data-theorem-id="AIT-T0134"></div>
-<div class="theorem-box" data-theorem-id="AIT-T0135"></div>
-<div class="theorem-box" data-theorem-id="AIT-T0136"></div>
-<div class="theorem-box" data-theorem-id="AIT-T0137"></div>
-<div class="theorem-box" data-theorem-id="AIT-T0138"></div>
-<div class="theorem-box" data-theorem-id="AIT-T0139"></div>
-<div class="theorem-box" data-theorem-id="AIT-T0140"></div>
-<div class="theorem-box" data-theorem-id="AIT-T0141"></div>
-<div class="theorem-box" data-theorem-id="AIT-T0142"></div>
-<div class="theorem-box" data-theorem-id="AIT-T0143"></div>
-<div class="theorem-box" data-theorem-id="AIT-T0144"></div>
 <div class="theorem-box" data-theorem-id="AIT-T0145"></div>
-<div class="theorem-box" data-theorem-id="AIT-T0146"></div>
-
-</details>
+<div class="theorem-box" data-theorem-id="AIT-T0147"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0149"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0150"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0151"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0153"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0155"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0157"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0159"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0023"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0034"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0161"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0162"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0163"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0164"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0165"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0171"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0166"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0167"></div>
 
 ## Dictionary
 

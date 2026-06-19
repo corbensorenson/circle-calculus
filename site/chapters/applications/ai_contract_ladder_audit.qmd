@@ -1,0 +1,192 @@
+---
+title: "AI Contract Ladder Proof Audit"
+---
+
+This appendix keeps the theorem-card trail for the [AI Contract Ladder](ai_contract_ladder.qmd). The ladder page teaches the contract pattern; this page is for auditing the proof families.
+
+::: {.warning-box}
+Theorem cards summarize generated manifest data. The cards are not proof artifacts; the manifest entries and compiled Lean declarations remain the source of proof status.
+:::
+
+## How To Audit The Ladder
+
+Use the same sequence as the lesson:
+
+1. RoPE exact phase-bank contract.
+2. RoPE real-phase finite-margin seeds.
+3. KV-cache ring-buffer freshness and sink-window policy.
+4. Sparse-attention coverage and gap witnesses.
+5. Looped recurrence schedules.
+6. Circulant mixer laws.
+
+Each group below lists the theorem cards that were intentionally moved out of the guided lesson.
+
+## Exact RoPE Phase Banks
+
+<div class="theorem-box" data-theorem-id="AIRA-T0021"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0024"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0026"></div>
+
+## Real-Phase RoPE Seeds
+
+The full RoPE audit page contains the focused current proof families. These cards are the extended historical trail from the ladder.
+
+<p>Focused RoPE audit: <a href="rope_certifier_audit.qmd">RoPE Proof Audit</a></p>
+
+<div class="theorem-box" data-theorem-id="AIRA-T0061"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0101"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0102"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0103"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0104"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0105"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0108"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0109"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0110"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0111"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0114"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0115"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0116"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0117"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0118"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0119"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0120"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0121"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0122"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0123"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0124"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0125"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0126"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0127"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0128"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0129"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0130"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0131"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0132"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0133"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0134"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0135"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0136"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0137"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0138"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0139"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0140"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0141"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0142"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0143"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0144"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0145"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0146"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0147"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0148"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0149"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0150"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0151"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0152"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0153"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0154"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0155"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0156"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0157"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0158"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0159"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0160"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0161"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0162"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0163"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0164"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0165"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0166"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0167"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0168"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0169"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0170"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0171"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0172"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0173"></div>
+
+## KV-Cache Ring Buffer
+
+<div class="theorem-box" data-theorem-id="AIM-T0069"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0070"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0073"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0074"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0075"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0097"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0098"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0099"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0100"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0101"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0102"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0103"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0104"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0105"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0108"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0109"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0110"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0076"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0077"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0078"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0079"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0080"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0081"></div>
+
+## Sparse-Attention Coverage
+
+<div class="theorem-box" data-theorem-id="AIT-T0002"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0020"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0078"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0079"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0080"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0081"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0083"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0084"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0085"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0086"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0087"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0088"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0089"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0090"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0091"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0092"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0093"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0094"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0095"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0096"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0097"></div>
+
+## Looped Recurrence
+
+<div class="theorem-box" data-theorem-id="AIM-T0018"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0033"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0035"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0106"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0107"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0111"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0112"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0113"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0114"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0115"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0116"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0039"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0049"></div>
+
+## Circulant Mixers
+
+<div class="theorem-box" data-theorem-id="AIT-T0006"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0007"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0008"></div>
+
+## Source Trail
+
+<p data-paper-ref="papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md">RoPE paper: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md">Proof-Carrying RoPE Position Distinguishability</a></p>
+
+<p data-paper-ref="papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md">Attention and memory paper: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md">Coil Attention And Memory</a></p>
+
+<p data-paper-ref="papers/applications/PAPER_AI_01_CIRCLE_AI_ARCHITECTURES.md">Architecture paper: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/papers/applications/PAPER_AI_01_CIRCLE_AI_ARCHITECTURES.md">Circle AI Architectures</a></p>
+
+<div class="book-navigation">
+<a href="ai_contract_ladder.qmd">Back: AI Contract Ladder</a>
+<a href="rope_certifier.qmd">Next: RoPE Certifier</a>
+</div>
+
+<script type="module" src="../../widgets/shared/widget_base.js"></script>
