@@ -116,6 +116,14 @@ fn active_sieving_base_primes(base: &[u64], limit: u64, presieved_through: u64) 
     &base[start..end]
 }
 
+fn split_base_primes_by_dense_step(
+    active_base: &[u64],
+    dense_step_limit: usize,
+) -> (&[u64], &[u64]) {
+    let split = active_base.partition_point(|&q| q <= dense_step_limit as u64);
+    active_base.split_at(split)
+}
+
 fn base_primes_odd_bytes(limit: u64) -> Result<Vec<u64>, RangeError> {
     if limit < 2 {
         return Ok(Vec::new());
@@ -1754,17 +1762,20 @@ fn mark_single_segment_base_multiples_after(
         }
     } else {
         let dense_step_limit = flags.len() / HYBRID_DENSE_STEP_DIVISOR;
-        for &q in active_base {
-            let mut index = first_odd_multiple_index_at_or_after(q, odd_low)?;
+        let (dense_base, sparse_base) =
+            split_base_primes_by_dense_step(active_base, dense_step_limit);
+        for &q in dense_base {
+            let index = first_odd_multiple_index_at_or_after(q, odd_low)?;
             let step = usize::try_from(q).map_err(|_| RangeError::SegmentTooLarge)?;
-            if step <= dense_step_limit {
-                mark_dense_odd_byte_multiples(flags, index, step);
-            } else {
-                while index < flags.len() {
-                    flags[index] = 0;
-                    index += step;
-                }
-            }
+            mark_dense_odd_byte_multiples(flags, index, step);
+        }
+
+        let len = flags.len();
+        let ptr = flags.as_mut_ptr();
+        for &q in sparse_base {
+            let index = first_odd_multiple_index_at_or_after(q, odd_low)?;
+            let step = usize::try_from(q).map_err(|_| RangeError::SegmentTooLarge)?;
+            mark_odd_byte_multiples_checked_unroll(ptr, len, index, step);
         }
     }
     Ok(())
@@ -1977,15 +1988,22 @@ fn first_odd_multiple_index_at_or_after(q: u64, odd_low: u64) -> Result<usize, R
     debug_assert_eq!(q % 2, 1);
     debug_assert_eq!(odd_low % 2, 1);
     let q_squared = q * q;
-    let start = if q_squared >= odd_low {
-        q_squared
+    let delta = if q_squared >= odd_low {
+        q_squared - odd_low
     } else {
         let remainder = odd_low % q;
-        let delta = if remainder == 0 { 0 } else { q - remainder };
-        let odd_delta = if delta % 2 == 0 { delta } else { delta + q };
-        odd_low.saturating_add(odd_delta)
+        if remainder == 0 {
+            0
+        } else {
+            let delta = q - remainder;
+            if delta & 1 == 0 {
+                delta
+            } else {
+                delta + q
+            }
+        }
     };
-    usize::try_from((start - odd_low) / 2).map_err(|_| RangeError::SegmentTooLarge)
+    usize::try_from(delta / 2).map_err(|_| RangeError::SegmentTooLarge)
 }
 
 fn ceil_multiple_saturating(n: u64, divisor: u64) -> u64 {
@@ -2573,6 +2591,24 @@ mod tests {
         assert_eq!(active_sieving_base_primes(&base, 29, 29), &[]);
         assert_eq!(active_sieving_base_primes(&base, 101, 97), &[]);
         assert_eq!(active_sieving_base_primes(&base, 1, 0), &[]);
+    }
+
+    #[test]
+    fn base_prime_dense_step_split_tracks_sorted_boundary() {
+        let active_base = [17, 19, 23, 29, 31];
+
+        assert_eq!(
+            split_base_primes_by_dense_step(&active_base, 16),
+            (&[][..], &[17, 19, 23, 29, 31][..])
+        );
+        assert_eq!(
+            split_base_primes_by_dense_step(&active_base, 23),
+            (&[17, 19, 23][..], &[29, 31][..])
+        );
+        assert_eq!(
+            split_base_primes_by_dense_step(&active_base, 31),
+            (&[17, 19, 23, 29, 31][..], &[][..])
+        );
     }
 
     #[test]

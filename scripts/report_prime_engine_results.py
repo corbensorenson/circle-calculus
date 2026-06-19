@@ -45,6 +45,12 @@ DEFAULT_EXTERNAL_HIGH_OFFSET_QUICK = (
 DEFAULT_EXTERNAL_HIGH_OFFSET_QUICK_METADATA = (
     RESULTS_DIR / "prime_engine_high_offset_quick_latest.json"
 )
+DEFAULT_EXTERNAL_HIGH_OFFSET_TIGHT = (
+    RESULTS_DIR / "prime_engine_high_offset_tight_latest.csv"
+)
+DEFAULT_EXTERNAL_HIGH_OFFSET_TIGHT_METADATA = (
+    RESULTS_DIR / "prime_engine_high_offset_tight_latest.json"
+)
 DEFAULT_EXTERNAL_HIGH_OFFSET_CONFIRMATION = (
     RESULTS_DIR / "prime_engine_high_offset_confirmation_latest.json"
 )
@@ -165,6 +171,16 @@ def main() -> int:
         default=DEFAULT_EXTERNAL_HIGH_OFFSET_QUICK_METADATA,
     )
     parser.add_argument(
+        "--external-high-offset-tight",
+        type=Path,
+        default=DEFAULT_EXTERNAL_HIGH_OFFSET_TIGHT,
+    )
+    parser.add_argument(
+        "--external-high-offset-tight-metadata",
+        type=Path,
+        default=DEFAULT_EXTERNAL_HIGH_OFFSET_TIGHT_METADATA,
+    )
+    parser.add_argument(
         "--external-high-offset-confirmation",
         type=Path,
         default=DEFAULT_EXTERNAL_HIGH_OFFSET_CONFIRMATION,
@@ -200,6 +216,8 @@ def main() -> int:
         external_mode_confirmation_path=args.external_mode_confirmation,
         external_high_offset_quick_path=args.external_high_offset_quick,
         external_high_offset_quick_metadata_path=args.external_high_offset_quick_metadata,
+        external_high_offset_tight_path=args.external_high_offset_tight,
+        external_high_offset_tight_metadata_path=args.external_high_offset_tight_metadata,
         external_high_offset_confirmation_path=args.external_high_offset_confirmation,
         tuning_path=args.tuning,
         default_calibration_path=args.default_calibration,
@@ -236,6 +254,8 @@ def build_report(
     external_mode_confirmation_path: Path | None = None,
     external_high_offset_quick_path: Path | None = None,
     external_high_offset_quick_metadata_path: Path | None = None,
+    external_high_offset_tight_path: Path | None = None,
+    external_high_offset_tight_metadata_path: Path | None = None,
     external_high_offset_confirmation_path: Path | None = None,
     default_calibration_path: Path | None = None,
     generated_at_utc: str,
@@ -277,6 +297,13 @@ def build_report(
     )
     external_high_offset_quick_sample_rows = read_sample_rows_from_metadata(
         external_high_offset_quick_metadata
+    )
+    external_high_offset_tight_rows = read_csv_optional(external_high_offset_tight_path)
+    external_high_offset_tight_metadata = read_json_optional(
+        external_high_offset_tight_metadata_path
+    )
+    external_high_offset_tight_sample_rows = read_sample_rows_from_metadata(
+        external_high_offset_tight_metadata
     )
     external_high_offset_confirmation = read_json_optional(
         external_high_offset_confirmation_path
@@ -351,6 +378,16 @@ def build_report(
                 if external_high_offset_quick_metadata_path is not None
                 else None
             ),
+            "external_high_offset_tight": (
+                str(external_high_offset_tight_path)
+                if external_high_offset_tight_path is not None
+                else None
+            ),
+            "external_high_offset_tight_metadata": (
+                str(external_high_offset_tight_metadata_path)
+                if external_high_offset_tight_metadata_path is not None
+                else None
+            ),
             "external_high_offset_confirmation": (
                 str(external_high_offset_confirmation_path)
                 if external_high_offset_confirmation_path is not None
@@ -396,6 +433,11 @@ def build_report(
             external_high_offset_quick_rows,
             external_high_offset_quick_metadata,
             external_high_offset_quick_sample_rows,
+        ),
+        "external_high_offset_tight": summarize_external_segment_sweep(
+            external_high_offset_tight_rows,
+            external_high_offset_tight_metadata,
+            external_high_offset_tight_sample_rows,
         ),
         "external_high_offset_confirmation": summarize_external_mode_confirmation(
             external_high_offset_confirmation
@@ -466,6 +508,16 @@ def summarize_benchmark(rows: list[dict[str, str]]) -> dict[str, Any]:
         experimental_counts,
         fastest_by_workload,
     )
+    cold_process_counts = [
+        benchmark_timing_summary(row)
+        for row in timing_rows
+        if row.get("name") in COLD_PROCESS_ROWS
+    ]
+    high_offset_rows = [
+        benchmark_timing_summary(row)
+        for row in timing_rows
+        if "high_offset" in row.get("name", "")
+    ]
 
     return {
         "timing_row_count": len(timing_rows),
@@ -484,16 +536,12 @@ def summarize_benchmark(rows: list[dict[str, str]]) -> dict[str, Any]:
             for row in timing_rows
             if row.get("name") in NEXT_PRIME_SEARCH_ROWS
         ],
-        "cold_process_counts": [
-            benchmark_timing_summary(row)
-            for row in timing_rows
-            if row.get("name") in COLD_PROCESS_ROWS
-        ],
-        "high_offset_rows": [
-            benchmark_timing_summary(row)
-            for row in timing_rows
-            if "high_offset" in row.get("name", "")
-        ],
+        "cold_process_counts": cold_process_counts,
+        "high_offset_rows": high_offset_rows,
+        "high_offset_cold_hot_overhead": summarize_high_offset_cold_hot_overhead(
+            high_offset_rows,
+            cold_process_counts,
+        ),
         "fastest_primary_counts": [
             fastest_by_workload[key] for key in sorted(fastest_by_workload)
         ],
@@ -502,6 +550,50 @@ def summarize_benchmark(rows: list[dict[str, str]]) -> dict[str, Any]:
         ),
         "experimental_counts": experimental_summaries,
     }
+
+
+def summarize_high_offset_cold_hot_overhead(
+    high_offset_rows: list[dict[str, Any]],
+    cold_process_counts: list[dict[str, Any]],
+) -> list[dict[str, Any]]:
+    rows_by_name = {
+        row["name"]: row
+        for row in [*high_offset_rows, *cold_process_counts]
+        if row.get("scope") == "high_offset"
+    }
+    hot = rows_by_name.get("parallel_high_offset_default_range_count_8t")
+    cold_cli = rows_by_name.get("cold_cli_parallel_high_offset_default_range_count_8t")
+    cold_process = rows_by_name.get("cold_process_parallel_high_offset_segmented_range_count_8t")
+    if hot is None or (cold_cli is None and cold_process is None):
+        return []
+
+    hot_ms = float(hot["best_ms"])
+    summary = {
+        "workload": hot["workload"],
+        "result": hot["result"],
+        "hot_name": hot["name"],
+        "hot_segment_size": hot["segment_size"],
+        "hot_best_ms": hot_ms,
+        "cold_cli_name": cold_cli["name"] if cold_cli else None,
+        "cold_cli_segment_size": cold_cli["segment_size"] if cold_cli else None,
+        "cold_cli_best_ms": float(cold_cli["best_ms"]) if cold_cli else None,
+        "cold_cli_over_hot": (
+            float(cold_cli["best_ms"]) / hot_ms if cold_cli and hot_ms > 0 else None
+        ),
+        "cold_cli_extra_ms": (
+            float(cold_cli["best_ms"]) - hot_ms if cold_cli is not None else None
+        ),
+        "cold_process_name": cold_process["name"] if cold_process else None,
+        "cold_process_segment_size": cold_process["segment_size"] if cold_process else None,
+        "cold_process_best_ms": float(cold_process["best_ms"]) if cold_process else None,
+        "cold_process_over_hot": (
+            float(cold_process["best_ms"]) / hot_ms if cold_process and hot_ms > 0 else None
+        ),
+        "cold_process_extra_ms": (
+            float(cold_process["best_ms"]) - hot_ms if cold_process is not None else None
+        ),
+    }
+    return [summary]
 
 
 def is_primary_count_row(name: str) -> bool:
@@ -1202,6 +1294,14 @@ def parse_optional_float(raw: str | None, fallback: float | None) -> float | Non
     return float(raw)
 
 
+def format_optional_ms(value: float | None) -> str:
+    return "n/a" if value is None else f"{value:.3f}"
+
+
+def format_optional_ratio(value: float | None) -> str:
+    return "n/a" if value is None else f"{value:.2f}x"
+
+
 def summarize_tuning(
     summary: dict[str, Any] | None,
     default_calibration: dict[str, Any] | None = None,
@@ -1449,6 +1549,15 @@ def render_markdown(report: dict[str, Any]) -> str:
             title="High-Offset Quick Scorecard",
             missing_message="No high-offset quick scorecard artifact was available.",
             spread_label="High-offset quick candidate spread:",
+            include_circle_row=True,
+        )
+    )
+    lines.extend(
+        render_external_segment_sweep_markdown(
+            report["external_high_offset_tight"],
+            title="High-Offset Tight Scorecard",
+            missing_message="No high-offset tight scorecard artifact was available.",
+            spread_label="High-offset tight candidate spread:",
             include_circle_row=True,
         )
     )
@@ -2055,6 +2164,25 @@ def render_benchmark_markdown(summary: dict[str, Any]) -> list[str]:
             lines.append(
                 f"| {row['workload']} | `{row['name']}` | {row['segment_size']} | "
                 f"{row['best_ms']:.3f} | {row['result']} |"
+            )
+        lines.append("")
+    if summary["high_offset_cold_hot_overhead"]:
+        lines.extend(
+            [
+                "High-offset cold/hot overhead:",
+                "",
+                "| Workload | Hot Row | Hot ms | Cold CLI ms | CLI / Hot | CLI Extra ms | Cold Process ms | Process / Hot |",
+                "| ---: | --- | ---: | ---: | ---: | ---: | ---: | ---: |",
+            ]
+        )
+        for row in summary["high_offset_cold_hot_overhead"]:
+            lines.append(
+                f"| {row['workload']} | `{row['hot_name']}` | "
+                f"{row['hot_best_ms']:.3f} | {format_optional_ms(row['cold_cli_best_ms'])} | "
+                f"{format_optional_ratio(row['cold_cli_over_hot'])} | "
+                f"{format_optional_ms(row['cold_cli_extra_ms'])} | "
+                f"{format_optional_ms(row['cold_process_best_ms'])} | "
+                f"{format_optional_ratio(row['cold_process_over_hot'])} |"
             )
         lines.append("")
     if summary["materialized_generation"]:

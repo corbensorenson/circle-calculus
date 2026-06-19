@@ -641,6 +641,12 @@ Use this target first when editing high-offset marker internals or defaults; it
 is short enough for interactive iteration and still compares against both
 current controls.
 
+`prime-engine-high-offset-tight` is the follow-up scorecard when the broad
+quick run keeps pointing at the same neighborhood. It narrows the sweep to
+`1376256,1441792,1507328,4194304`, keeps the same three count modes, and runs
+17 interleaved rounds. Use it to decide whether an apparent `primesieve` win is
+worth a confirmation run without paying for the broader candidate grid.
+
 `prime-engine-high-offset-confirm` repeats the focused quick candidate set and
 writes:
 
