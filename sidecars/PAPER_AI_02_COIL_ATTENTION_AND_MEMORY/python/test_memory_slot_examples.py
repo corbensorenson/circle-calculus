@@ -1467,6 +1467,7 @@ def test_stride_family_sparse_attention_benchmark_has_budget_and_negative_contro
         "AIT-T0161",
         "AIT-T0162",
         "AIT-T0171",
+        "AIT-T0172",
         "AIT-T0164",
         "AIT-T0165",
     )

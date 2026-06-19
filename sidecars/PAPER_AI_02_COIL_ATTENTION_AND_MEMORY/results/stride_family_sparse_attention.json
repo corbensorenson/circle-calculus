@@ -85,6 +85,54 @@
         "AIT-T0170"
       ],
       "full_attention_budget": 120,
+      "interval_repair_plan": [
+        [
+          5,
+          6,
+          6,
+          2,
+          107
+        ],
+        [
+          8,
+          12,
+          12,
+          6,
+          102
+        ],
+        [
+          15,
+          20,
+          20,
+          8,
+          96
+        ],
+        [
+          22,
+          25,
+          25,
+          5,
+          92
+        ],
+        [
+          27,
+          38,
+          38,
+          13,
+          80
+        ],
+        [
+          40,
+          119,
+          119,
+          81,
+          0
+        ]
+      ],
+      "interval_repair_plan_covers_context": true,
+      "interval_repair_plan_final_window": 119,
+      "interval_repair_plan_step_count": 6,
+      "interval_repair_plan_strictly_progresses": true,
       "lag_collision_pair_count_bounds_dedup_loss": true,
       "lag_collision_pair_count_excess_over_dedup_loss": 0,
       "lag_collision_pair_count_positive_matches_collision": true,
@@ -92,6 +140,16 @@
       "lag_dedup_loss_accounting_matches_raw": true,
       "lag_dedup_loss_positive_matches_collision": true,
       "lag_dedup_loss_zero_matches_no_collision": true,
+      "largest_interval_repair_covers_context": true,
+      "largest_interval_repair_next_uncovered_lag": null,
+      "largest_interval_repair_still_has_gap": false,
+      "largest_uncovered_interval_additional_local_slots": 115,
+      "largest_uncovered_interval_is_tail": true,
+      "largest_uncovered_interval_length": 80,
+      "largest_uncovered_interval_repair_reaches_interval": true,
+      "largest_uncovered_interval_repair_window": 119,
+      "largest_uncovered_interval_start": 40,
+      "largest_uncovered_interval_stop": 119,
       "local_window": 4,
       "local_window_complete_coverage_shortfall": 115,
       "local_window_complete_coverage_threshold": 119,
@@ -273,6 +331,7 @@
         "AIT-T0161",
         "AIT-T0162",
         "AIT-T0171",
+        "AIT-T0172",
         "AIT-T0164",
         "AIT-T0165"
       ],
@@ -565,6 +624,11 @@
       "AIT-T0105"
     ],
     "full_attention_budget": 9,
+    "interval_repair_plan": [],
+    "interval_repair_plan_covers_context": false,
+    "interval_repair_plan_final_window": 2,
+    "interval_repair_plan_step_count": 0,
+    "interval_repair_plan_strictly_progresses": true,
     "lag_collision_pair_count_bounds_dedup_loss": true,
     "lag_collision_pair_count_excess_over_dedup_loss": 0,
     "lag_collision_pair_count_positive_matches_collision": true,
@@ -572,6 +636,16 @@
     "lag_dedup_loss_accounting_matches_raw": true,
     "lag_dedup_loss_positive_matches_collision": true,
     "lag_dedup_loss_zero_matches_no_collision": true,
+    "largest_interval_repair_covers_context": null,
+    "largest_interval_repair_next_uncovered_lag": null,
+    "largest_interval_repair_still_has_gap": null,
+    "largest_uncovered_interval_additional_local_slots": null,
+    "largest_uncovered_interval_is_tail": null,
+    "largest_uncovered_interval_length": null,
+    "largest_uncovered_interval_repair_reaches_interval": null,
+    "largest_uncovered_interval_repair_window": null,
+    "largest_uncovered_interval_start": null,
+    "largest_uncovered_interval_stop": null,
     "local_window": 2,
     "local_window_complete_coverage_shortfall": 6,
     "local_window_complete_coverage_threshold": 8,
@@ -757,6 +831,7 @@
       "AIT-T0161",
       "AIT-T0162",
       "AIT-T0171",
+      "AIT-T0172",
       "AIT-T0164",
       "AIT-T0165"
     ],
