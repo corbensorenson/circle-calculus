@@ -36,6 +36,7 @@ make prime-engine-external-controls-parallel
 make prime-engine-external-controls-compare
 make prime-engine-external-mode-sweep
 make prime-engine-external-mode-confirm
+make prime-engine-high-offset-hot-cold
 make prime-engine-external-throughput
 make prime-engine-external-segment-sweep
 make prime-engine-calibrate-defaults
@@ -221,14 +222,20 @@ Current CPU findings:
   only for the narrow very-high-offset default, where command-level comparisons
   favor the smaller table over the larger 19-prime pre-sieve.
 - A middle-sized pre-sieve through 17 is available as `presieve17`. It avoids
-  marking multiples of 17 while staying much smaller than the 19-prime table,
-  but the latest high-offset external comparison did not beat the promoted
-  `presieve13` default, so it remains an experimental sweep mode.
+  marking multiples of 17 while staying much smaller than the 19-prime table.
+  The latest high-offset tight scorecard found it slightly ahead of the
+  promoted `presieve13` lane, but the confirmation gate has not yet proved the
+  win stable enough to auto-promote the default.
 - Carrying per-prime cursor state across segments is a measured win because it
   removes repeated per-prime ceil-division setup.
 - Single-segment count chunks skip cursor-vector allocation and mark directly
   from the base-prime table. This is mainly for command-level parallel chunks
   and high-offset slices whose effective worker chunk fits inside one segment.
+- Single-segment first-multiple setup returns the odd-byte index directly
+  instead of materializing the starting multiple and subtracting the segment
+  low back out. This preserves the same divisibility target while reducing
+  arithmetic in the high-offset path that touches tens of thousands of base
+  primes per worker.
 - The high-offset odd-byte marker now switches to sparse writes at
   `flags.len() / 4` instead of the older `/8` cutoff. Focused external-control
   sweeps kept correctness fixed and closed part of the remaining median
@@ -261,6 +268,12 @@ Current CPU findings:
 - Adaptive segment sizing is a measured win for high-offset interval searches:
   around `10^12`, large segments reduce repeated cursor scans over tens of
   thousands of base primes.
+- `make prime-engine-high-offset-hot-cold` is the short feedback target for
+  separating algorithmic speed from command startup. It runs only the Rust
+  high-offset and cold-process benchmark sections, writes
+  `prime_engine_high_offset_hot_cold_latest.csv`, and the report uses that
+  artifact for the high-offset cold/hot overhead table when present. Use it
+  after small hot-path changes before spending time on broader external sweeps.
 - The scalar `u64` primality lane uses the 7-base deterministic Miller-Rabin
   set instead of the first 12 prime bases. That is both the stronger documented
   `u64` coverage and a measured speedup for random candidate batches.
@@ -640,6 +653,19 @@ sidecars/PRIME_ENGINE/results/prime_engine_high_offset_quick_samples_latest.csv
 Use this target first when editing high-offset marker internals or defaults; it
 is short enough for interactive iteration and still compares against both
 current controls.
+
+`prime-engine-high-offset-hot-cold` is the shorter diagnostic target for code
+changes that should affect the Rust engine before they affect command-vs-command
+scorecards. It runs only the in-process high-offset rows plus the cold process
+and CLI rows, writing:
+
+```text
+sidecars/PRIME_ENGINE/results/prime_engine_high_offset_hot_cold_latest.csv
+```
+
+The report prefers this artifact for the high-offset cold/hot overhead table
+when it exists, so a quick run can show whether a change improved the engine or
+only moved process-startup noise.
 
 `prime-engine-high-offset-tight` is the follow-up scorecard when the broad
 quick run keeps pointing at the same neighborhood. It narrows the sweep to

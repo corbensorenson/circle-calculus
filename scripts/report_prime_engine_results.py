@@ -54,6 +54,9 @@ DEFAULT_EXTERNAL_HIGH_OFFSET_TIGHT_METADATA = (
 DEFAULT_EXTERNAL_HIGH_OFFSET_CONFIRMATION = (
     RESULTS_DIR / "prime_engine_high_offset_confirmation_latest.json"
 )
+DEFAULT_HIGH_OFFSET_HOT_COLD_BENCHMARK = (
+    RESULTS_DIR / "prime_engine_high_offset_hot_cold_latest.csv"
+)
 DEFAULT_TUNING = RESULTS_DIR / "prime_engine_tuning_latest.json"
 DEFAULT_DEFAULT_CALIBRATION = RESULTS_DIR / "prime_engine_default_calibration_latest.json"
 DEFAULT_OUTPUT_MD = RESULTS_DIR / "prime_engine_report_latest.md"
@@ -185,6 +188,11 @@ def main() -> int:
         type=Path,
         default=DEFAULT_EXTERNAL_HIGH_OFFSET_CONFIRMATION,
     )
+    parser.add_argument(
+        "--high-offset-hot-cold-benchmark",
+        type=Path,
+        default=DEFAULT_HIGH_OFFSET_HOT_COLD_BENCHMARK,
+    )
     parser.add_argument("--tuning", type=Path, default=DEFAULT_TUNING)
     parser.add_argument(
         "--default-calibration",
@@ -219,6 +227,7 @@ def main() -> int:
         external_high_offset_tight_path=args.external_high_offset_tight,
         external_high_offset_tight_metadata_path=args.external_high_offset_tight_metadata,
         external_high_offset_confirmation_path=args.external_high_offset_confirmation,
+        high_offset_hot_cold_benchmark_path=args.high_offset_hot_cold_benchmark,
         tuning_path=args.tuning,
         default_calibration_path=args.default_calibration,
         generated_at_utc=datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
@@ -257,6 +266,7 @@ def build_report(
     external_high_offset_tight_path: Path | None = None,
     external_high_offset_tight_metadata_path: Path | None = None,
     external_high_offset_confirmation_path: Path | None = None,
+    high_offset_hot_cold_benchmark_path: Path | None = None,
     default_calibration_path: Path | None = None,
     generated_at_utc: str,
 ) -> dict[str, Any]:
@@ -307,6 +317,9 @@ def build_report(
     )
     external_high_offset_confirmation = read_json_optional(
         external_high_offset_confirmation_path
+    )
+    high_offset_hot_cold_benchmark_rows = read_csv_optional(
+        high_offset_hot_cold_benchmark_path
     )
     tuning_summary = read_json_if_present(tuning_path, missing_inputs)
     default_calibration = read_json_optional(default_calibration_path)
@@ -393,13 +406,21 @@ def build_report(
                 if external_high_offset_confirmation_path is not None
                 else None
             ),
+            "high_offset_hot_cold_benchmark": (
+                str(high_offset_hot_cold_benchmark_path)
+                if high_offset_hot_cold_benchmark_path is not None
+                else None
+            ),
             "tuning": str(tuning_path),
             "default_calibration": (
                 str(default_calibration_path) if default_calibration_path is not None else None
             ),
         },
         "missing_inputs": missing_inputs,
-        "benchmark": summarize_benchmark(benchmark_rows),
+        "benchmark": summarize_benchmark(
+            benchmark_rows,
+            high_offset_hot_cold_benchmark_rows,
+        ),
         "external_correctness": summarize_external_correctness(external_correctness),
         "external": summarize_external(
             external_rows,
@@ -487,8 +508,16 @@ def read_sample_rows_from_metadata(metadata: dict[str, Any] | None) -> list[dict
     return list(csv.DictReader(path.read_text().splitlines()))
 
 
-def summarize_benchmark(rows: list[dict[str, str]]) -> dict[str, Any]:
+def summarize_benchmark(
+    rows: list[dict[str, str]],
+    high_offset_hot_cold_rows: list[dict[str, str]] | None = None,
+) -> dict[str, Any]:
     timing_rows = [row for row in rows if row.get("kind") == "timing"]
+    high_offset_hot_cold_timing_rows = [
+        row
+        for row in high_offset_hot_cold_rows or []
+        if row.get("kind") == "timing"
+    ]
     primary_counts = [row for row in timing_rows if is_primary_count_row(row.get("name", ""))]
     experimental_counts = [
         row
@@ -518,6 +547,25 @@ def summarize_benchmark(rows: list[dict[str, str]]) -> dict[str, Any]:
         for row in timing_rows
         if "high_offset" in row.get("name", "")
     ]
+    high_offset_hot_cold_summaries = [
+        benchmark_timing_summary(row)
+        for row in high_offset_hot_cold_timing_rows
+        if "high_offset" in row.get("name", "")
+        and row.get("name") not in COLD_PROCESS_ROWS
+    ]
+    high_offset_hot_cold_cold_counts = [
+        benchmark_timing_summary(row)
+        for row in high_offset_hot_cold_timing_rows
+        if row.get("name") in COLD_PROCESS_ROWS
+    ]
+    if high_offset_hot_cold_summaries or high_offset_hot_cold_cold_counts:
+        high_offset_overhead_source = "high_offset_hot_cold"
+        high_offset_overhead_rows = high_offset_hot_cold_summaries
+        high_offset_overhead_cold_counts = high_offset_hot_cold_cold_counts
+    else:
+        high_offset_overhead_source = "benchmark"
+        high_offset_overhead_rows = high_offset_rows
+        high_offset_overhead_cold_counts = cold_process_counts
 
     return {
         "timing_row_count": len(timing_rows),
@@ -538,9 +586,12 @@ def summarize_benchmark(rows: list[dict[str, str]]) -> dict[str, Any]:
         ],
         "cold_process_counts": cold_process_counts,
         "high_offset_rows": high_offset_rows,
+        "high_offset_hot_cold_rows": high_offset_hot_cold_summaries,
+        "high_offset_hot_cold_cold_counts": high_offset_hot_cold_cold_counts,
+        "high_offset_cold_hot_overhead_source": high_offset_overhead_source,
         "high_offset_cold_hot_overhead": summarize_high_offset_cold_hot_overhead(
-            high_offset_rows,
-            cold_process_counts,
+            high_offset_overhead_rows,
+            high_offset_overhead_cold_counts,
         ),
         "fastest_primary_counts": [
             fastest_by_workload[key] for key in sorted(fastest_by_workload)
@@ -2166,10 +2217,29 @@ def render_benchmark_markdown(summary: dict[str, Any]) -> list[str]:
                 f"{row['best_ms']:.3f} | {row['result']} |"
             )
         lines.append("")
-    if summary["high_offset_cold_hot_overhead"]:
+    if summary["high_offset_hot_cold_rows"] or summary["high_offset_hot_cold_cold_counts"]:
         lines.extend(
             [
-                "High-offset cold/hot overhead:",
+                "High-offset hot/cold rows:",
+                "",
+                "| Workload | Row | Segment | Best ms | Count |",
+                "| ---: | --- | ---: | ---: | ---: |",
+            ]
+        )
+        for row in [
+            *summary["high_offset_hot_cold_rows"],
+            *summary["high_offset_hot_cold_cold_counts"],
+        ]:
+            lines.append(
+                f"| {row['workload']} | `{row['name']}` | {row['segment_size']} | "
+                f"{row['best_ms']:.3f} | {row['result']} |"
+            )
+        lines.append("")
+    if summary["high_offset_cold_hot_overhead"]:
+        source_label = summary.get("high_offset_cold_hot_overhead_source", "benchmark")
+        lines.extend(
+            [
+                f"High-offset cold/hot overhead (source: `{source_label}`):",
                 "",
                 "| Workload | Hot Row | Hot ms | Cold CLI ms | CLI / Hot | CLI Extra ms | Cold Process ms | Process / Hot |",
                 "| ---: | --- | ---: | ---: | ---: | ---: | ---: | ---: |",

@@ -436,6 +436,19 @@ def test_prime_engine_report_summarizes_artifacts(tmp_path: Path) -> None:
         )
         + "\n"
     )
+    high_offset_hot_cold = tmp_path / "high-offset-hot-cold.csv"
+    high_offset_hot_cold.write_text(
+        "\n".join(
+            [
+                "kind,name,workload,segment_size,result,rounds,best_ms,rate_per_second,baseline,best_speedup",
+                "timing,parallel_high_offset_default_range_count_8t,10000000,1376256,361726,7,2.200,4545454545,,",
+                "timing,parallel_high_offset_presieve17_range_count_8t,10000000,1376256,361726,7,2.050,4878048780,,",
+                "timing,cold_cli_parallel_high_offset_default_range_count_8t,10000000,1376256,361726,7,4.400,2272727273,,",
+                "timing,cold_process_parallel_high_offset_segmented_range_count_8t,10000000,1376256,361726,7,4.100,2439024390,,",
+            ]
+        )
+        + "\n"
+    )
     tuning = tmp_path / "tuning.json"
     tuning.write_text(
         json.dumps(
@@ -590,6 +603,7 @@ def test_prime_engine_report_summarizes_artifacts(tmp_path: Path) -> None:
         external_high_offset_quick_metadata_path=external_high_offset_quick_metadata,
         external_high_offset_tight_path=external_high_offset_tight,
         external_high_offset_tight_metadata_path=external_high_offset_tight_metadata,
+        high_offset_hot_cold_benchmark_path=high_offset_hot_cold,
         tuning_path=tuning,
         default_calibration_path=calibration,
         generated_at_utc="2026-01-01T00:00:00Z",
@@ -697,13 +711,19 @@ def test_prime_engine_report_summarizes_artifacts(tmp_path: Path) -> None:
     assert cold_process[0]["best_ms"] == 2.9
     assert any(row["name"] == "cold_process_parallel_segmented_range_count_8t" for row in cold_process)
     assert any(row["scope"] == "high_offset" for row in cold_process)
+    hot_cold = report["benchmark"]["high_offset_hot_cold_rows"]
+    assert hot_cold[0]["name"] == "parallel_high_offset_default_range_count_8t"
+    assert hot_cold[0]["best_ms"] == 2.2
+    assert report["benchmark"]["high_offset_cold_hot_overhead_source"] == (
+        "high_offset_hot_cold"
+    )
     overhead = report["benchmark"]["high_offset_cold_hot_overhead"][0]
-    assert overhead["hot_best_ms"] == 3.4
-    assert overhead["cold_cli_best_ms"] == 5.7
-    assert overhead["cold_cli_over_hot"] == pytest.approx(5.7 / 3.4)
-    assert overhead["cold_cli_extra_ms"] == pytest.approx(2.3)
-    assert overhead["cold_process_best_ms"] == 6.0
-    assert overhead["cold_process_over_hot"] == pytest.approx(6.0 / 3.4)
+    assert overhead["hot_best_ms"] == 2.2
+    assert overhead["cold_cli_best_ms"] == 4.4
+    assert overhead["cold_cli_over_hot"] == pytest.approx(2.0)
+    assert overhead["cold_cli_extra_ms"] == pytest.approx(2.2)
+    assert overhead["cold_process_best_ms"] == 4.1
+    assert overhead["cold_process_over_hot"] == pytest.approx(4.1 / 2.2)
     spread = report["benchmark"]["primary_candidate_spread"]
     ten_m_candidates = [
         group for group in spread if group["scope"] == "prefix" and group["workload"] == 10000000
@@ -758,8 +778,10 @@ def test_prime_engine_report_summarizes_artifacts(tmp_path: Path) -> None:
     assert "`parallel_high_offset_default_range_count_8t`" in markdown
     assert "Cold process count rows" in markdown
     assert "High-offset benchmark rows" in markdown
+    assert "High-offset hot/cold rows" in markdown
     assert "High-offset cold/hot overhead" in markdown
-    assert "| 10000000 | `parallel_high_offset_default_range_count_8t` | 3.400 | 5.700 | 1.68x | 2.300 | 6.000 | 1.76x |" in markdown
+    assert "High-offset cold/hot overhead (source: `high_offset_hot_cold`)" in markdown
+    assert "| 10000000 | `parallel_high_offset_default_range_count_8t` | 2.200 | 4.400 | 2.00x | 2.200 | 4.100 | 1.86x |" in markdown
     assert (
         "| 10000000 | `parallel_high_offset_default_range_count_8t` | "
         "3145728 | 3.400 | 361726 |"

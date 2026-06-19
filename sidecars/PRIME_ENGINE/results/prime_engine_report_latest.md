@@ -1,6 +1,6 @@
 # Prime Engine Report
 
-Generated: `2026-06-19T23:24:15Z`
+Generated: `2026-06-19T23:32:16Z`
 
 ## External Correctness
 
@@ -313,11 +313,41 @@ High-offset benchmark rows:
 | 10000000 | `cold_process_parallel_high_offset_segmented_range_count_8t` | 4194304 | 4.225 | 361726 |
 | 10000000 | `cold_cli_parallel_high_offset_default_range_count_8t` | 4194304 | 4.351 | 361726 |
 
-High-offset cold/hot overhead:
+High-offset hot/cold rows:
+
+| Workload | Row | Segment | Best ms | Count |
+| ---: | --- | ---: | ---: | ---: |
+| 10000000 | `high_offset_segmented_range_count` | 4194304 | 6.781 | 361726 |
+| 10000000 | `parallel_high_offset_segmented_range_count_8t` | 1310720 | 1.776 | 361726 |
+| 10000000 | `parallel_high_offset_default_range_count_8t` | 1310720 | 1.747 | 361726 |
+| 10000000 | `parallel_high_offset_balanced_segmented_range_count_8t` | 1310720 | 1.700 | 361726 |
+| 10000000 | `high_offset_presieve13_range_count` | 1310720 | 6.016 | 361726 |
+| 10000000 | `parallel_high_offset_presieve13_range_count_8t` | 1310720 | 1.687 | 361726 |
+| 10000000 | `high_offset_presieve17_range_count` | 1310720 | 5.965 | 361726 |
+| 10000000 | `parallel_high_offset_presieve17_range_count_8t` | 1310720 | 1.693 | 361726 |
+| 10000000 | `high_offset_bitpacked_range_count` | 1310720 | 7.249 | 361726 |
+| 10000000 | `high_offset_tracked_byte_range_count` | 1310720 | 16.524 | 361726 |
+| 10000000 | `high_offset_wheel30_range_count` | 1310720 | 46.532 | 361726 |
+| 10000000 | `high_offset_wheel30_mark_range_count` | 1310720 | 7.037 | 361726 |
+| 10000000 | `parallel_high_offset_wheel30_mark_range_count_8t` | 1310720 | 3.031 | 361726 |
+| 10000000 | `high_offset_hybrid_wheel30_mark_range_count` | 1310720 | 7.893 | 361726 |
+| 10000000 | `parallel_high_offset_hybrid_wheel30_mark_range_count_8t` | 1310720 | 3.160 | 361726 |
+| 100000 | `high_offset_u64_scalar_fallback_range_count` | 64 | 42.583 | 2139 |
+| 100000 | `high_offset_u64_scalar_naive_control_count` | 0 | 45.096 | 2139 |
+| 1000000 | `cold_process_segmented_range_count` | 262144 | 2.018 | 78498 |
+| 10000000 | `cold_process_segmented_range_count` | 262144 | 3.543 | 664579 |
+| 10000000 | `cold_process_parallel_segmented_range_count_8t` | 65536 | 2.370 | 664579 |
+| 10000000 | `cold_cli_parallel_default_range_count_8t` | 65536 | 1.723 | 664579 |
+| 100000000 | `cold_process_parallel_segmented_range_count_8t` | 196608 | 6.434 | 5761455 |
+| 100000000 | `cold_cli_parallel_default_range_count_8t` | 196608 | 2.096 | 5761455 |
+| 10000000 | `cold_process_parallel_high_offset_segmented_range_count_8t` | 1310720 | 4.773 | 361726 |
+| 10000000 | `cold_cli_parallel_high_offset_default_range_count_8t` | 1310720 | 4.839 | 361726 |
+
+High-offset cold/hot overhead (source: `high_offset_hot_cold`):
 
 | Workload | Hot Row | Hot ms | Cold CLI ms | CLI / Hot | CLI Extra ms | Cold Process ms | Process / Hot |
 | ---: | --- | ---: | ---: | ---: | ---: | ---: | ---: |
-| 10000000 | `parallel_high_offset_default_range_count_8t` | 2.204 | 4.351 | 1.97x | 2.147 | 4.225 | 1.92x |
+| 10000000 | `parallel_high_offset_default_range_count_8t` | 1.747 | 4.839 | 2.77x | 3.092 | 4.773 | 2.73x |
 
 Materialized generation rows:
 
