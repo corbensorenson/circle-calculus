@@ -52,6 +52,16 @@ That second line is what makes the contract useful. A sparse plan should report 
 The widget, CLI, benchmarks, and fixtures are executable references and not proofs. This page does not claim attention quality, speed, memory savings, or real-data usefulness; theorem cards and Lean declarations remain the proof source of truth.
 :::
 
+## What This Proves, And What It Does Not
+
+| Layer | Status | Reader Takeaway |
+| --- | --- | --- |
+| Finite lag coverage | Lean-proved for the declared local window and stride family | Covered and uncovered positive lags are theorem-linked finite sets, not sampled diagnostics. |
+| Gap witnesses and intervals | Lean-proved where theorem ids are cited | A reported first gap or uncovered interval is tied to semantic noncoverage in the finite plan. |
+| Candidate budget and dedup loss | Lean-proved for the reported finite candidates | Raw budget, unique lag/query counts, duplicate loss, and collision-pair counts are exact arithmetic for the declared generator. |
+| Repair recommendations | Theorem-backed finite repairs, not optimality claims | First-interval and dense-local fallback actions certify specific coverage effects; they do not prove the best sparse layout. |
+| Neural attention quality | Not proved here | The contract does not prove better loss, speed, memory scaling, retrieval quality, or long-context performance. |
+
 ## Python CLI
 
 Run the finite coverage certifier from the repository root:
@@ -59,6 +69,7 @@ Run the finite coverage certifier from the repository root:
 ```bash
 python scripts/stride_family_certify.py --context 120 --strides 7,13 --path-length 3 --local-window 4
 python scripts/stride_family_certify.py --context 120 --strides 7,13 --path-length 3 --local-window 4 --format json
+python scripts/circle_ai_contract_ready.py --kind sparse_attention_coverage --digest --field first_uncovered_lag --field first_uncovered_interval_start --field complete_repair_window --include-recommendations
 ```
 
 The short non-Lean entrypoint is [Sparse-Attention Certifier Quickstart](https://github.com/corbensorenson/circle-calculus/blob/main/docs/SPARSE_ATTENTION_CERTIFIER_QUICKSTART.md). It covers installation assumptions, CLI output fields, theorem ids, and claim boundaries.
