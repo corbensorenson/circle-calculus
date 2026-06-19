@@ -125,15 +125,19 @@ def test_circle_prime_command_default_mode_omits_count_mode_flag() -> None:
 
 
 def test_circle_count_mode_parser_and_names() -> None:
-    assert parse_circle_count_modes("default,segmented,dynamic,hybrid-wheel30-mark,segmented") == [
+    assert parse_circle_count_modes(
+        "default,segmented,dynamic,prefix-pi,hybrid-wheel30-mark,segmented"
+    ) == [
         "default",
         "segmented",
         "dynamic",
+        "prefix-pi",
         "hybrid-wheel30-mark",
     ]
     assert circle_measurement_name("default", 1) == "circle_prime_default_count"
     assert circle_measurement_name("segmented", 1) == "circle_prime_segmented_count"
     assert circle_measurement_name("dynamic", 8) == "circle_prime_parallel_dynamic_count_8t"
+    assert circle_measurement_name("prefix-pi", 1) == "circle_prime_prefix_pi_count"
     assert (
         circle_measurement_name("default", 8)
         == "circle_prime_parallel_default_count_8t"

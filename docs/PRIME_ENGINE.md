@@ -567,7 +567,7 @@ For direct exploratory runs, `scripts/benchmark_prime_external_controls.py`
 also accepts `--circle-count-modes`. The script default remains `segmented` for
 backward-compatible direct runs; pass `default` to omit `--count-mode` and
 measure the current adaptive CLI default. Opt-in values `balanced`, `dynamic`,
-`presieve13`, `wheel30-mark`, and `hybrid-wheel30-mark` expose the current
+`prefix-pi`, `presieve13`, `wheel30-mark`, and `hybrid-wheel30-mark` expose the current
 experimental counters as separate Circle rows against the same
 `primesieve`/`primecount` command-level controls:
 
@@ -580,7 +580,7 @@ python scripts/benchmark_prime_external_controls.py \
   --require-tool primecount \
   --circle-threads 4 \
   --external-threads 4 \
-  --circle-count-modes default,segmented,dynamic,hybrid-wheel30-mark,wheel30-mark,balanced,presieve13
+  --circle-count-modes default,segmented,dynamic,prefix-pi,hybrid-wheel30-mark,wheel30-mark,balanced,presieve13
 ```
 
 `prime-engine-external-mode-sweep` records the durable version of that
@@ -593,10 +593,33 @@ sidecars/PRIME_ENGINE/results/prime_engine_external_mode_sweep_samples_latest.cs
 ```
 
 It keeps the adaptive Circle segment default fixed and sweeps the available
-count implementations: `segmented`, `balanced`, `dynamic`, `presieve13`,
-`wheel30-mark`, and `hybrid-wheel30-mark`. Use it to decide which implementation family
+count implementations: `segmented`, `balanced`, `dynamic`, `prefix-pi`,
+`presieve13`, `wheel30-mark`, and `hybrid-wheel30-mark`. Use it to decide which implementation family
 deserves deeper work. Keep `prime-engine-external-segment-sweep` as the
 default-change gate for current segmented CLI defaults.
+
+`prefix-pi` is a Lehmer-style exact prefix counter exposed as a Circle count
+mode. It is promoted for true prefix-count buckets such as `[0, 1M)`,
+`[0, 10M)`, and `[0, 100M)`, where short external-control runs showed the
+adaptive default beating both `primesieve` and `primecount`. It is deliberately
+not the high-offset default: high-offset intervals such as
+`[1e12, 1e12 + 1e7)` stay on the segmented-sieve family, currently the
+`dynamic` count mode with a tuned high-offset segment size.
+
+`prime-engine-high-offset-compare` is the short-run target for the remaining
+`primesieve` gap. It isolates `[1e12, 1e12 + 1e7)`, sweeps the current
+high-offset segment-size neighborhood across `default`, `segmented`,
+`dynamic`, and `balanced`, and writes:
+
+```text
+sidecars/PRIME_ENGINE/results/prime_engine_high_offset_compare_latest.csv
+sidecars/PRIME_ENGINE/results/prime_engine_high_offset_compare_latest.json
+sidecars/PRIME_ENGINE/results/prime_engine_high_offset_compare_samples_latest.csv
+```
+
+Use this target before changing high-offset defaults or marker internals; it is
+fast enough for interactive iteration and keeps `prime-engine-overnight` as a
+regression workflow rather than the default way to learn whether a change helped.
 
 `prime-engine-external-mode-confirm` runs repeated interleaved external
 count-mode sweeps and writes:
@@ -834,7 +857,7 @@ python scripts/tune_prime_engine.py \
   --ranges 0:1000000,0:10000000,1000000000:1010000000,100000000000:100010000000,1000000000000:1000010000000 \
   --segment-sizes 4096,8192,16384,32768,65536,131072,196608,262144,524288,1048576,2097152,3145728,4194304 \
   --thread-counts 1,2,3,4,8 \
-  --count-modes segmented,balanced,dynamic,wheel30-mark,hybrid-wheel30-mark
+  --count-modes segmented,balanced,dynamic,prefix-pi,wheel30-mark,hybrid-wheel30-mark
 ```
 
 The tuner validates that every mode/segment/thread candidate returns the same

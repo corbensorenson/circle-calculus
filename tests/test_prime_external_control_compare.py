@@ -149,6 +149,43 @@ def test_count_mode_change_is_reported_without_default_failure() -> None:
     assert ",segmented,balanced,yes," in rendered
 
 
+def test_adaptive_default_rows_compare_across_effective_thread_changes() -> None:
+    baseline_row = speedup_row(
+        name="circle_prime_parallel_default_count_8t",
+        threads=8,
+        requested_threads=8,
+        count_mode="dynamic",
+    )
+    candidate_row = speedup_row(
+        name="circle_prime_default_count",
+        threads=1,
+        requested_threads=8,
+        count_mode="prefix-pi",
+        best_speedup=1.200,
+        median_speedup=1.300,
+    )
+
+    comparisons = compare_speedup_rows(
+        baseline_rows={baseline_row.key: baseline_row},
+        candidate_rows={candidate_row.key: candidate_row},
+        baselines={"external_primesieve_count"},
+    )
+
+    assert len(comparisons) == 1
+    assert comparisons[0].key == (
+        "circle_prime_default_count",
+        0,
+        10_000_000,
+        0,
+        8,
+        8,
+        "external_primesieve_count",
+    )
+    assert comparisons[0].baseline_count_mode == "dynamic"
+    assert comparisons[0].candidate_count_mode == "prefix-pi"
+    assert comparisons[0].median_speedup_ratio == 1.300 / 0.950
+
+
 def test_count_mode_change_can_be_a_strict_failure() -> None:
     comparisons = [
         ExternalComparison(
@@ -172,7 +209,7 @@ def test_count_mode_change_can_be_a_strict_failure() -> None:
     )
 
     assert failures == [
-        "circle_prime_parallel_default_count_8t range=[0,10000000) "
+        "circle_prime_default_count range=[0,10000000) "
         "segment=0 threads=8 requested_threads=8 "
         "baseline=external_primesieve_count count_mode changed: "
         "baseline=segmented, candidate=balanced"
@@ -232,7 +269,7 @@ def test_default_segment_size_change_can_be_a_strict_failure() -> None:
     )
 
     assert failures == [
-        "circle_prime_parallel_default_count_8t range=[0,10000000) "
+        "circle_prime_default_count range=[0,10000000) "
         "segment=0 threads=8 requested_threads=8 "
         "baseline=external_primesieve_count segment_size changed: "
         "baseline=196608, candidate=131072"

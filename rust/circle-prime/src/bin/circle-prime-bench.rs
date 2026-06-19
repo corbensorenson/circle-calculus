@@ -10,11 +10,11 @@ use circle_prime::{
     next_prime_u64, prime_count_in_range, prime_count_in_range_bitpacked,
     prime_count_in_range_hybrid_wheel30_marks, prime_count_in_range_hybrid_wheel30_marks_parallel,
     prime_count_in_range_parallel, prime_count_in_range_parallel_balanced,
-    prime_count_in_range_parallel_dynamic, prime_count_in_range_presieve13,
-    prime_count_in_range_tracked_bytes, prime_count_in_range_wheel30,
-    prime_count_in_range_wheel30_marks, prime_count_in_range_wheel30_marks_parallel,
-    primes_in_range, recommended_count_mode, recommended_count_segment_size,
-    recommended_segment_size,
+    prime_count_in_range_parallel_dynamic, prime_count_in_range_prefix_pi,
+    prime_count_in_range_presieve13, prime_count_in_range_tracked_bytes,
+    prime_count_in_range_wheel30, prime_count_in_range_wheel30_marks,
+    prime_count_in_range_wheel30_marks_parallel, primes_in_range, recommended_count_mode,
+    recommended_count_segment_size, recommended_segment_size,
 };
 
 const HIGH_OFFSET_LOW: u64 = 1_000_000_000_000;
@@ -50,6 +50,7 @@ enum CountMode {
     Segmented,
     Balanced,
     Dynamic,
+    PrefixPi,
     Presieve13,
     Wheel30Marks,
     HybridWheel30Marks,
@@ -61,18 +62,19 @@ impl CountMode {
             "segmented" => Ok(Self::Segmented),
             "balanced" => Ok(Self::Balanced),
             "dynamic" => Ok(Self::Dynamic),
+            "prefix-pi" | "pi" => Ok(Self::PrefixPi),
             "presieve13" => Ok(Self::Presieve13),
             "wheel30-mark" | "wheel30-marks" => Ok(Self::Wheel30Marks),
             "hybrid-wheel30-mark" | "hybrid-wheel30-marks" => Ok(Self::HybridWheel30Marks),
             _ => Err(format!(
-                "unknown compiled count-mode default {raw:?}; expected segmented, balanced, dynamic, presieve13, wheel30-mark, or hybrid-wheel30-mark"
+                "unknown compiled count-mode default {raw:?}; expected segmented, balanced, dynamic, prefix-pi, presieve13, wheel30-mark, or hybrid-wheel30-mark"
             )),
         }
     }
 
     fn effective_threads(self, general_effective_threads: usize) -> usize {
         match self {
-            Self::Presieve13 => 1,
+            Self::PrefixPi | Self::Presieve13 => 1,
             _ => general_effective_threads,
         }
     }
@@ -1001,6 +1003,7 @@ fn count_range_with_mode(
                 prime_count_in_range_parallel_dynamic(low, high, segment_size, worker_threads)
             }
         }
+        CountMode::PrefixPi => prime_count_in_range_prefix_pi(low, high),
         CountMode::Presieve13 => prime_count_in_range_presieve13(low, high, segment_size),
         CountMode::Wheel30Marks => {
             if worker_threads == 1 {

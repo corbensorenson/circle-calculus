@@ -7,7 +7,7 @@ TARGETED_ARGS :=
 CIRCLE_PRIME_THREADS ?= 8
 EXTERNAL_PRIME_THREADS ?= $(CIRCLE_PRIME_THREADS)
 CIRCLE_PRIME_SEGMENT_SIZES ?= 0,32768,65536,98304,131072,196608,262144,524288,1048576,2097152,3145728,4194304
-CIRCLE_PRIME_TUNE_COUNT_MODES ?= segmented,balanced,dynamic,wheel30-mark,hybrid-wheel30-mark
+CIRCLE_PRIME_TUNE_COUNT_MODES ?= segmented,balanced,dynamic,prefix-pi,wheel30-mark,hybrid-wheel30-mark
 CIRCLE_PRIME_BENCH_ONLY ?= scalar,next
 CIRCLE_PRIME_BENCH_NAMES ?= scalar_u64_batch,next_prime_search
 CIRCLE_PRIME_BENCH_ROUNDS ?= 7
@@ -22,6 +22,13 @@ CIRCLE_PRIME_EXTERNAL_COMPARE_BASELINE ?= sidecars/PRIME_ENGINE/results/prime_en
 CIRCLE_PRIME_EXTERNAL_COMPARE_CANDIDATE ?= sidecars/PRIME_ENGINE/results/prime_engine_external_controls_candidate_latest.csv
 CIRCLE_PRIME_EXTERNAL_COMPARE_SAMPLES ?= sidecars/PRIME_ENGINE/results/prime_engine_external_controls_candidate_samples_latest.csv
 CIRCLE_PRIME_EXTERNAL_COMPARE_METADATA ?= sidecars/PRIME_ENGINE/results/prime_engine_external_controls_candidate_latest.json
+CIRCLE_PRIME_HIGH_OFFSET_COMPARE_RANGES ?= 1000000000000:1000010000000
+CIRCLE_PRIME_HIGH_OFFSET_COMPARE_ROUNDS ?= 25
+CIRCLE_PRIME_HIGH_OFFSET_COMPARE_SEGMENT_SIZES ?= 786432,1048576,1310720,1572864,1835008,2097152,2621440,3145728
+CIRCLE_PRIME_HIGH_OFFSET_COMPARE_COUNT_MODES ?= default,segmented,dynamic,balanced
+CIRCLE_PRIME_HIGH_OFFSET_COMPARE_OUTPUT ?= sidecars/PRIME_ENGINE/results/prime_engine_high_offset_compare_latest.csv
+CIRCLE_PRIME_HIGH_OFFSET_COMPARE_SAMPLES ?= sidecars/PRIME_ENGINE/results/prime_engine_high_offset_compare_samples_latest.csv
+CIRCLE_PRIME_HIGH_OFFSET_COMPARE_METADATA ?= sidecars/PRIME_ENGINE/results/prime_engine_high_offset_compare_latest.json
 CIRCLE_PRIME_EXTERNAL_MODE_CONFIRM_RUNS ?= 3
 CIRCLE_PRIME_EXTERNAL_MODE_CONFIRM_MIN ?= 2
 CIRCLE_PRIME_EXTERNAL_MODE_CONFIRM_FAIL ?=
@@ -201,6 +208,9 @@ prime-engine-external-controls-compare:
 	python scripts/benchmark_prime_external_controls.py --ranges $(CIRCLE_PRIME_EXTERNAL_COMPARE_RANGES) --rounds $(CIRCLE_PRIME_EXTERNAL_COMPARE_ROUNDS) --interleaved --require-tool primesieve --require-tool primecount --circle-threads $(CIRCLE_PRIME_THREADS) --external-threads $(EXTERNAL_PRIME_THREADS) --circle-count-modes default --output $(CIRCLE_PRIME_EXTERNAL_COMPARE_CANDIDATE) --sample-output $(CIRCLE_PRIME_EXTERNAL_COMPARE_SAMPLES) --metadata-output $(CIRCLE_PRIME_EXTERNAL_COMPARE_METADATA)
 	python scripts/compare_prime_external_controls.py $(CIRCLE_PRIME_EXTERNAL_COMPARE_CANDIDATE) $(CIRCLE_PRIME_EXTERNAL_COMPARE_ARGS)
 
+prime-engine-high-offset-compare:
+	python scripts/benchmark_prime_external_controls.py --ranges $(CIRCLE_PRIME_HIGH_OFFSET_COMPARE_RANGES) --rounds $(CIRCLE_PRIME_HIGH_OFFSET_COMPARE_ROUNDS) --interleaved --require-tool primesieve --require-tool primecount --circle-threads $(CIRCLE_PRIME_THREADS) --external-threads $(EXTERNAL_PRIME_THREADS) --segment-sizes $(CIRCLE_PRIME_HIGH_OFFSET_COMPARE_SEGMENT_SIZES) --circle-count-modes $(CIRCLE_PRIME_HIGH_OFFSET_COMPARE_COUNT_MODES) --output $(CIRCLE_PRIME_HIGH_OFFSET_COMPARE_OUTPUT) --sample-output $(CIRCLE_PRIME_HIGH_OFFSET_COMPARE_SAMPLES) --metadata-output $(CIRCLE_PRIME_HIGH_OFFSET_COMPARE_METADATA)
+
 prime-engine-external-next:
 	python scripts/benchmark_prime_external_next.py --starts $(CIRCLE_PRIME_EXTERNAL_NEXT_STARTS) --rounds $(CIRCLE_PRIME_EXTERNAL_NEXT_ROUNDS) --batch-size $(CIRCLE_PRIME_EXTERNAL_NEXT_BATCH_SIZE) --external-threads $(EXTERNAL_PRIME_THREADS) --require-tool primesieve --output sidecars/PRIME_ENGINE/results/prime_engine_external_next_latest.csv --sample-output sidecars/PRIME_ENGINE/results/prime_engine_external_next_samples_latest.csv --metadata-output sidecars/PRIME_ENGINE/results/prime_engine_external_next_latest.json
 
@@ -215,7 +225,7 @@ prime-engine-external-segment-sweep:
 	python scripts/benchmark_prime_external_controls.py --rounds 5 --interleaved --require-tool primesieve --require-tool primecount --circle-threads $(CIRCLE_PRIME_THREADS) --external-threads $(EXTERNAL_PRIME_THREADS) --segment-sizes $(CIRCLE_PRIME_SEGMENT_SIZES) --output sidecars/PRIME_ENGINE/results/prime_engine_external_segment_sweep_latest.csv --sample-output sidecars/PRIME_ENGINE/results/prime_engine_external_segment_sweep_samples_latest.csv --metadata-output sidecars/PRIME_ENGINE/results/prime_engine_external_segment_sweep_latest.json
 
 prime-engine-external-mode-sweep:
-	python scripts/benchmark_prime_external_controls.py --rounds 5 --interleaved --require-tool primesieve --require-tool primecount --circle-threads $(CIRCLE_PRIME_THREADS) --external-threads $(EXTERNAL_PRIME_THREADS) --circle-count-modes segmented,balanced,dynamic,presieve13,wheel30-mark,hybrid-wheel30-mark --output sidecars/PRIME_ENGINE/results/prime_engine_external_mode_sweep_latest.csv --sample-output sidecars/PRIME_ENGINE/results/prime_engine_external_mode_sweep_samples_latest.csv --metadata-output sidecars/PRIME_ENGINE/results/prime_engine_external_mode_sweep_latest.json
+	python scripts/benchmark_prime_external_controls.py --rounds 5 --interleaved --require-tool primesieve --require-tool primecount --circle-threads $(CIRCLE_PRIME_THREADS) --external-threads $(EXTERNAL_PRIME_THREADS) --circle-count-modes segmented,balanced,dynamic,prefix-pi,presieve13,wheel30-mark,hybrid-wheel30-mark --output sidecars/PRIME_ENGINE/results/prime_engine_external_mode_sweep_latest.csv --sample-output sidecars/PRIME_ENGINE/results/prime_engine_external_mode_sweep_samples_latest.csv --metadata-output sidecars/PRIME_ENGINE/results/prime_engine_external_mode_sweep_latest.json
 
 prime-engine-external-mode-confirm:
 	python scripts/confirm_prime_external_modes.py $(CIRCLE_PRIME_EXTERNAL_MODE_CONFIRM_ARGS)

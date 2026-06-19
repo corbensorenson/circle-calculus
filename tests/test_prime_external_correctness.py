@@ -10,6 +10,7 @@ def test_parse_count_modes_all_expands_current_modes() -> None:
         "segmented",
         "balanced",
         "dynamic",
+        "prefix-pi",
         "presieve13",
         "wheel30-mark",
         "hybrid-wheel30-mark",
@@ -80,6 +81,50 @@ def test_run_checks_deduplicates_resolved_circle_variants(monkeypatch) -> None:
     assert {check["count_mode"] for check in checks} == {"segmented", "balanced"}
     assert all(check["passes"] for check in checks)
     assert all(check["segment_size"] == 64 for check in checks)
+
+
+def test_run_checks_deduplicates_prefix_pi_before_subprocess(monkeypatch) -> None:
+    monkeypatch.setattr(
+        correctness,
+        "external_range_counts",
+        lambda **_: {"primesieve": 168, "primecount": 168},
+    )
+    calls = []
+
+    def fake_circle_count(
+        binary: Path,
+        low: int,
+        high: int,
+        segment_size: int,
+        threads: int,
+        count_mode: str,
+    ) -> dict[str, int | str]:
+        del binary, low, high, threads
+        calls.append((segment_size, count_mode))
+        return {
+            "count": 168,
+            "count_mode": "prefix-pi",
+            "segment_size": segment_size or 262_144,
+            "threads": 1,
+            "requested_threads": 8,
+        }
+
+    monkeypatch.setattr(correctness, "circle_count", fake_circle_count)
+
+    checks = correctness.run_checks(
+        circle_prime=Path("circle-prime"),
+        primesieve="/opt/bin/primesieve",
+        primecount="/opt/bin/primecount",
+        ranges=[(0, 1000)],
+        segment_sizes=[0, 64, 262_144],
+        circle_count_modes=["prefix-pi"],
+        circle_threads=8,
+        external_threads=8,
+    )
+
+    assert calls == [(0, "prefix-pi")]
+    assert len(checks) == 1
+    assert checks[0]["passes"] is True
 
 
 def test_run_enumeration_checks_compares_exact_prime_lists(monkeypatch) -> None:

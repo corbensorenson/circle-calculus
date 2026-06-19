@@ -6,10 +6,10 @@ use circle_prime::{
     prime_count_in_range, prime_count_in_range_hybrid_wheel30_marks,
     prime_count_in_range_hybrid_wheel30_marks_parallel, prime_count_in_range_parallel,
     prime_count_in_range_parallel_balanced, prime_count_in_range_parallel_dynamic,
-    prime_count_in_range_presieve13, prime_count_in_range_wheel30_marks,
-    prime_count_in_range_wheel30_marks_parallel, prime_horizon_proof_contract_json,
-    primes_in_range, recommended_count_mode, recommended_count_segment_size,
-    recommended_segment_size,
+    prime_count_in_range_prefix_pi, prime_count_in_range_presieve13,
+    prime_count_in_range_wheel30_marks, prime_count_in_range_wheel30_marks_parallel,
+    prime_horizon_proof_contract_json, primes_in_range, recommended_count_mode,
+    recommended_count_segment_size, recommended_segment_size,
 };
 
 const MAX_INSPECT_N: u128 = 100_000;
@@ -19,6 +19,7 @@ enum CountMode {
     Segmented,
     Balanced,
     Dynamic,
+    PrefixPi,
     Presieve13,
     Wheel30Marks,
     HybridWheel30Marks,
@@ -30,11 +31,12 @@ impl CountMode {
             "segmented" => Ok(Self::Segmented),
             "balanced" => Ok(Self::Balanced),
             "dynamic" => Ok(Self::Dynamic),
+            "prefix-pi" | "pi" => Ok(Self::PrefixPi),
             "presieve13" => Ok(Self::Presieve13),
             "wheel30-mark" | "wheel30-marks" => Ok(Self::Wheel30Marks),
             "hybrid-wheel30-mark" | "hybrid-wheel30-marks" => Ok(Self::HybridWheel30Marks),
             _ => Err(format!(
-                "unknown --count-mode {raw:?}; expected segmented, balanced, dynamic, presieve13, wheel30-mark, or hybrid-wheel30-mark"
+                "unknown --count-mode {raw:?}; expected segmented, balanced, dynamic, prefix-pi, presieve13, wheel30-mark, or hybrid-wheel30-mark"
             )),
         }
     }
@@ -44,6 +46,7 @@ impl CountMode {
             Self::Segmented => "segmented",
             Self::Balanced => "balanced",
             Self::Dynamic => "dynamic",
+            Self::PrefixPi => "prefix-pi",
             Self::Presieve13 => "presieve13",
             Self::Wheel30Marks => "wheel30-mark",
             Self::HybridWheel30Marks => "hybrid-wheel30-mark",
@@ -52,7 +55,7 @@ impl CountMode {
 
     fn effective_threads(self, general_effective_threads: usize) -> usize {
         match self {
-            Self::Presieve13 => 1,
+            Self::PrefixPi | Self::Presieve13 => 1,
             _ => general_effective_threads,
         }
     }
@@ -394,6 +397,7 @@ fn count_range_with_mode(
                 prime_count_in_range_parallel_dynamic(low, high, segment_size, worker_threads)
             }
         }
+        CountMode::PrefixPi => prime_count_in_range_prefix_pi(low, high),
         CountMode::Presieve13 => prime_count_in_range_presieve13(low, high, segment_size),
         CountMode::Wheel30Marks => {
             if worker_threads == 1 {
@@ -455,7 +459,7 @@ fn usage() -> String {
         "  circle-prime recommend LOW HIGH [--count] [--json] [--threads N]",
         "  circle-prime range LOW HIGH [--count] [--json] [--segment-size N] [--threads N] [--count-mode MODE]",
         "",
-        "count modes: segmented, balanced, dynamic, presieve13, wheel30-mark, hybrid-wheel30-mark",
+        "count modes: segmented, balanced, dynamic, prefix-pi, presieve13, wheel30-mark, hybrid-wheel30-mark",
     ]
     .join("\n")
 }

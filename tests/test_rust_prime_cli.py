@@ -77,7 +77,7 @@ def effective_threads_for_mode(
     requested_threads: int,
     count_mode: str,
 ) -> int:
-    if count_mode == "presieve13":
+    if count_mode in {"prefix-pi", "presieve13"}:
         return 1
     return effective_threads(span, segment_size, requested_threads)
 
@@ -180,13 +180,25 @@ def test_rust_prime_cli_counts_reference_range_in_parallel(circle_prime_bin: Pat
     )
     payload = json.loads(output)
     assert payload["count"] == 78498
-    assert payload["threads"] == 4
+    assert payload["threads"] == effective_threads_for_mode(
+        1_000_000,
+        DEFAULTS["parallel_tiny_prefix_segment_size"],
+        4,
+        DEFAULTS["parallel_tiny_prefix_count_mode"],
+    )
     assert_prime_horizon_proof_contract(payload)
 
 
 @pytest.mark.parametrize(
     "count_mode",
-    ["balanced", "dynamic", "presieve13", "wheel30-mark", "hybrid-wheel30-mark"],
+    [
+        "balanced",
+        "dynamic",
+        "prefix-pi",
+        "presieve13",
+        "wheel30-mark",
+        "hybrid-wheel30-mark",
+    ],
 )
 def test_rust_prime_cli_count_modes_match_reference(
     circle_prime_bin: Path,
@@ -207,7 +219,7 @@ def test_rust_prime_cli_count_modes_match_reference(
     payload = json.loads(output)
     assert payload["count"] == 78498
     assert payload["count_mode"] == count_mode
-    assert payload["threads"] == (1 if count_mode == "presieve13" else 4)
+    assert payload["threads"] == (1 if count_mode in {"prefix-pi", "presieve13"} else 4)
 
 
 def test_rust_prime_cli_rejects_count_mode_without_count(circle_prime_bin: Path) -> None:

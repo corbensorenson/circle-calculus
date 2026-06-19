@@ -743,6 +743,8 @@ def external_speedup_summary(
 
 
 def count_mode_from_circle_name(name: str) -> str:
+    if "prefix_pi" in name:
+        return "prefix-pi"
     if "hybrid_wheel30_mark" in name:
         return "hybrid-wheel30-mark"
     if "wheel30_mark" in name:

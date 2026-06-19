@@ -143,10 +143,10 @@ fn json_u64(document: &str, key: &str) -> u64 {
 fn json_count_mode(document: &str, key: &str) -> String {
     let value = json_string(document, key);
     match value.as_str() {
-        "segmented" | "balanced" | "dynamic" | "presieve13" | "wheel30-mark"
+        "segmented" | "balanced" | "dynamic" | "prefix-pi" | "presieve13" | "wheel30-mark"
         | "hybrid-wheel30-mark" => value,
         _ => panic!(
-            "{key} must be one of segmented, balanced, dynamic, presieve13, wheel30-mark, hybrid-wheel30-mark"
+            "{key} must be one of segmented, balanced, dynamic, prefix-pi, presieve13, wheel30-mark, hybrid-wheel30-mark"
         ),
     }
 }

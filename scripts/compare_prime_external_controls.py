@@ -34,18 +34,26 @@ class ExternalSpeedupRow:
     @property
     def key(self) -> tuple[str, int, int, int, int, int, str]:
         return (
-            self.name,
+            self.comparison_name,
             self.low,
             self.high,
             self.comparison_segment_size,
-            self.threads,
+            self.comparison_threads,
             self.requested_threads,
             self.baseline,
         )
 
     @property
+    def comparison_name(self) -> str:
+        return "circle_prime_default_count" if is_adaptive_default_row(self.name) else self.name
+
+    @property
     def comparison_segment_size(self) -> int:
         return 0 if is_adaptive_default_row(self.name) else self.segment_size
+
+    @property
+    def comparison_threads(self) -> int:
+        return self.requested_threads if is_adaptive_default_row(self.name) else self.threads
 
 
 @dataclass(frozen=True)

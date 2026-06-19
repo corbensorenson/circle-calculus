@@ -231,7 +231,7 @@ def main() -> int:
 def parse_count_modes_argument(raw: str) -> list[str]:
     if raw.strip() == "all":
         return parse_circle_count_modes(
-            "segmented,balanced,dynamic,presieve13,wheel30-mark,hybrid-wheel30-mark"
+            "segmented,balanced,dynamic,prefix-pi,presieve13,wheel30-mark,hybrid-wheel30-mark"
         )
     return parse_circle_count_modes(raw)
 
@@ -281,6 +281,14 @@ def run_checks(
         seen_variants: set[tuple[str, int, int]] = set()
         for segment_size in segment_sizes:
             for count_mode in circle_count_modes:
+                requested_variant_key = requested_circle_variant_key(
+                    count_mode,
+                    segment_size,
+                    circle_threads,
+                )
+                if requested_variant_key in seen_variants:
+                    continue
+                seen_variants.add(requested_variant_key)
                 circle = circle_count(
                     circle_prime,
                     low,
@@ -317,6 +325,16 @@ def run_checks(
                     }
                 )
     return checks
+
+
+def requested_circle_variant_key(
+    count_mode: str,
+    segment_size: int,
+    threads: int,
+) -> tuple[str, int, int]:
+    if count_mode in {"prefix-pi", "pi"}:
+        return ("prefix-pi", 0, 1)
+    return (count_mode, segment_size, threads)
 
 
 def external_range_counts(

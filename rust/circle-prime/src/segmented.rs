@@ -1,3 +1,4 @@
+use std::collections::HashMap;
 use std::convert::TryFrom;
 use std::ptr;
 use std::sync::atomic::{AtomicU64, Ordering};
@@ -29,6 +30,8 @@ const DENSE_MARKING_BASE_LIMIT: u64 = 300_000;
 const HYBRID_DENSE_STEP_DIVISOR: usize = 8;
 const DYNAMIC_PARALLEL_MAX_SEGMENTS_PER_BATCH: u64 = 64;
 const DYNAMIC_PARALLEL_TARGET_BATCHES_PER_WORKER: u64 = 4;
+const PRIME_PI_PHI_SMALL_PRIME_COUNT: usize = 6;
+const PRIME_PI_PHI_SMALL_MODULUS: u64 = 30_030;
 pub const DEFAULT_SEGMENT_SIZE: u64 = 1 << 18;
 include!(concat!(env!("OUT_DIR"), "/prime_engine_defaults.rs"));
 include!(concat!(env!("OUT_DIR"), "/base_primes_upto_1100000_u32.rs"));
@@ -157,6 +160,132 @@ fn base_primes_bitset(limit: u64) -> Result<Vec<u64>, RangeError> {
         .collect())
 }
 
+struct PrimePiCounter {
+    primes: Vec<u64>,
+    pi_memo: HashMap<u64, u64>,
+    phi_memo: HashMap<(u64, usize), u64>,
+}
+
+impl PrimePiCounter {
+    fn new(primes: Vec<u64>) -> Self {
+        Self {
+            primes,
+            pi_memo: HashMap::new(),
+            phi_memo: HashMap::new(),
+        }
+    }
+
+    fn pi(&mut self, n: u64) -> u64 {
+        if n < 2 {
+            return 0;
+        }
+        if n <= STATIC_BASE_PRIME_LIMIT {
+            return static_base_prime_pi(n);
+        }
+        if let Some(&count) = self.pi_memo.get(&n) {
+            return count;
+        }
+
+        let a = self.pi(n.isqrt().isqrt()) as usize;
+        let b = self.pi(n.isqrt()) as usize;
+        let c = self.pi(integer_cuberoot(n)) as usize;
+        let a_u64 = a as u64;
+        let b_u64 = b as u64;
+        let mut count = self.phi(n, a) + ((b_u64 + a_u64 - 2) * (b_u64 - a_u64 + 1)) / 2;
+
+        for i in a..b {
+            let w = n / self.primes[i];
+            count -= self.pi(w);
+            if i < c {
+                let limit = self.pi(w.isqrt()) as usize;
+                for j in i..limit {
+                    count -= self.pi(w / self.primes[j]) - j as u64;
+                }
+            }
+        }
+
+        self.pi_memo.insert(n, count);
+        count
+    }
+
+    fn phi(&mut self, x: u64, a: usize) -> u64 {
+        if a == 0 {
+            return x;
+        }
+        if a == PRIME_PI_PHI_SMALL_PRIME_COUNT {
+            return prime_pi_phi_small(x);
+        }
+        if a < PRIME_PI_PHI_SMALL_PRIME_COUNT {
+            return self.phi(x, a - 1) - self.phi(x / self.primes[a - 1], a - 1);
+        }
+        if let Some(&count) = self.phi_memo.get(&(x, a)) {
+            return count;
+        }
+
+        let mut count = prime_pi_phi_small(x);
+        for i in PRIME_PI_PHI_SMALL_PRIME_COUNT..a {
+            let prime = self.primes[i];
+            if prime > x {
+                break;
+            }
+            count -= self.phi(x / prime, i);
+        }
+
+        self.phi_memo.insert((x, a), count);
+        count
+    }
+}
+
+fn static_base_prime_pi(n: u64) -> u64 {
+    STATIC_BASE_PRIMES_U32.partition_point(|&prime| u64::from(prime) <= n) as u64
+}
+
+fn prime_pi_phi_small(x: u64) -> u64 {
+    let prefix = prime_pi_phi_small_prefix();
+    let full_periods = x / PRIME_PI_PHI_SMALL_MODULUS;
+    let remainder = (x % PRIME_PI_PHI_SMALL_MODULUS) as usize;
+    let period_count = u64::from(prefix[PRIME_PI_PHI_SMALL_MODULUS as usize]);
+    full_periods * period_count + u64::from(prefix[remainder])
+}
+
+fn prime_pi_phi_small_prefix() -> &'static [u16] {
+    static PREFIX: OnceLock<Vec<u16>> = OnceLock::new();
+    PREFIX.get_or_init(|| {
+        let mut prefix = Vec::with_capacity(PRIME_PI_PHI_SMALL_MODULUS as usize + 1);
+        let mut count = 0u16;
+        prefix.push(count);
+        for value in 1..=PRIME_PI_PHI_SMALL_MODULUS {
+            if [2, 3, 5, 7, 11, 13].iter().all(|&prime| value % prime != 0) {
+                count += 1;
+            }
+            prefix.push(count);
+        }
+        prefix
+    })
+}
+
+fn integer_cuberoot(n: u64) -> u64 {
+    let mut low = 0u64;
+    let mut high = 1u64;
+    while cube_leq(high, n) {
+        high = high.saturating_mul(2);
+    }
+    while low + 1 < high {
+        let mid = low + (high - low) / 2;
+        if cube_leq(mid, n) {
+            low = mid;
+        } else {
+            high = mid;
+        }
+    }
+    low
+}
+
+fn cube_leq(value: u64, limit: u64) -> bool {
+    let value = value as u128;
+    value * value * value <= limit as u128
+}
+
 pub fn for_each_prime_in_range<F>(
     mut low: u64,
     high: u64,
@@ -193,6 +322,28 @@ where
 
 pub fn prime_count_in_range(low: u64, high: u64, segment_size: u64) -> Result<usize, RangeError> {
     prime_count_in_range_odd_bytes(low, high, segment_size)
+}
+
+pub fn prime_pi_u64(n: u64) -> Result<usize, RangeError> {
+    if n < 2 {
+        return Ok(0);
+    }
+
+    let base = base_primes(n.isqrt())?;
+    let mut counter = PrimePiCounter::new(base);
+    usize::try_from(counter.pi(n)).map_err(|_| RangeError::BaseLimitTooLarge)
+}
+
+pub fn prime_count_in_range_prefix_pi(low: u64, high: u64) -> Result<usize, RangeError> {
+    if high <= low {
+        return Ok(0);
+    }
+
+    let base = base_primes((high - 1).isqrt())?;
+    let mut counter = PrimePiCounter::new(base);
+    let high_count = counter.pi(high - 1);
+    let low_count = if low == 0 { 0 } else { counter.pi(low - 1) };
+    usize::try_from(high_count - low_count).map_err(|_| RangeError::BaseLimitTooLarge)
 }
 
 pub fn prime_count_in_range_bitpacked(
@@ -626,20 +777,24 @@ pub fn recommended_count_segment_size(low: u64, high: u64, requested_threads: us
 }
 
 pub fn recommended_count_mode(low: u64, high: u64, requested_threads: usize) -> &'static str {
-    if requested_threads <= 1 || high <= low {
+    if high <= low {
         return "segmented";
     }
 
     let span = high - low;
     let base_limit = (high - 1).isqrt();
-    if base_limit >= 1_000_000 && span <= 16_000_000 {
-        PARALLEL_VERY_HIGH_OFFSET_COUNT_MODE
-    } else if base_limit < 300_000 && span <= 2_000_000 {
+    if low == 0 && base_limit < 300_000 && span <= 2_000_000 {
         PARALLEL_TINY_PREFIX_COUNT_MODE
-    } else if base_limit < 300_000 && span <= 16_000_000 {
+    } else if low == 0 && base_limit < 300_000 && span <= 16_000_000 {
         PARALLEL_SMALL_PREFIX_COUNT_MODE
-    } else if base_limit < 300_000 && span <= 128_000_000 {
+    } else if low == 0 && base_limit < 300_000 && span <= 128_000_000 {
         PARALLEL_MEDIUM_PREFIX_COUNT_MODE
+    } else if requested_threads <= 1 {
+        "segmented"
+    } else if base_limit >= 1_000_000 && span <= 16_000_000 {
+        PARALLEL_VERY_HIGH_OFFSET_COUNT_MODE
+    } else if base_limit < 300_000 && span <= 128_000_000 {
+        "dynamic"
     } else {
         "segmented"
     }
@@ -2630,6 +2785,42 @@ mod tests {
     }
 
     #[test]
+    fn prime_pi_matches_known_reference_counts() {
+        for (n, expected) in [
+            (0, 0),
+            (1, 0),
+            (2, 1),
+            (10, 4),
+            (100, 25),
+            (1_000, 168),
+            (1_000_000, 78_498),
+            (10_000_000, 664_579),
+            (100_000_000, 5_761_455),
+            (1_000_000_000, 50_847_534),
+        ] {
+            assert_eq!(prime_pi_u64(n).unwrap(), expected, "pi({n})");
+        }
+    }
+
+    #[test]
+    fn prefix_pi_range_count_matches_segmented_count() {
+        for (low, high) in [
+            (0, 1_000),
+            (0, 1_000_000),
+            (10_000, 1_000_000),
+            (1_000_000_000, 1_001_000_000),
+        ] {
+            let expected =
+                prime_count_in_range(low, high, recommended_segment_size(low, high)).unwrap();
+            assert_eq!(
+                prime_count_in_range_prefix_pi(low, high).unwrap(),
+                expected,
+                "range=[{low},{high})"
+            );
+        }
+    }
+
+    #[test]
     fn high_u64_tiny_ranges_match_scalar_fallback() {
         let low = u64::MAX - 1_000;
         let high = u64::MAX;
@@ -2746,7 +2937,10 @@ mod tests {
 
     #[test]
     fn recommended_count_mode_uses_structured_parallel_defaults() {
-        assert_eq!(recommended_count_mode(0, 10_000_000, 1), "segmented");
+        assert_eq!(
+            recommended_count_mode(0, 10_000_000, 1),
+            PARALLEL_SMALL_PREFIX_COUNT_MODE
+        );
         assert_eq!(
             recommended_count_mode(0, 1_000_000, 8),
             PARALLEL_TINY_PREFIX_COUNT_MODE
@@ -2763,6 +2957,7 @@ mod tests {
             recommended_count_mode(1_000_000_000_000, 1_000_010_000_000, 8),
             PARALLEL_VERY_HIGH_OFFSET_COUNT_MODE
         );
+        assert_eq!(recommended_count_mode(1_000_000, 2_000_000, 8), "dynamic");
     }
 
     #[test]

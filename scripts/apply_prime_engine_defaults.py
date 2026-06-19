@@ -17,6 +17,7 @@ VALID_COUNT_MODES = {
     "segmented",
     "balanced",
     "dynamic",
+    "prefix-pi",
     "presieve13",
     "wheel30-mark",
     "hybrid-wheel30-mark",
