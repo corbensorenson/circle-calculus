@@ -24,6 +24,7 @@ cargo run -p circle-prime -- test 18446744073709551557 --json
 cargo run -p circle-prime -- next 1000000000000 --json
 cargo run -p circle-prime -- range 0 1000000 --count
 cargo run -p circle-prime -- range 0 100000000 --count --threads 8
+printf '1000000000000 1000010000000\n' | cargo run -p circle-prime -- count-server --threads 8
 cargo run --release -p circle-prime --bin circle-prime-bench -- --rounds 3
 cargo run --release -p circle-prime --bin circle-prime-tune -- --rounds 3
 make prime-engine-check
@@ -272,7 +273,9 @@ Current CPU findings:
   separating algorithmic speed from command startup. It runs only the Rust
   high-offset and cold-process benchmark sections, writes
   `prime_engine_high_offset_hot_cold_latest.csv`, and the report uses that
-  artifact for the high-offset cold/hot overhead table when present. Use it
+  artifact for the high-offset cold/hot overhead table when present. The same
+  artifact now includes a persistent `count-server` CLI row, which keeps the
+  Circle binary loaded and times repeated stdin/stdout count requests. Use it
   after small hot-path changes before spending time on broader external sweeps.
 - The scalar `u64` primality lane uses the 7-base deterministic Miller-Rabin
   set instead of the first 12 prime bases. That is both the stronger documented
@@ -656,8 +659,8 @@ current controls.
 
 `prime-engine-high-offset-hot-cold` is the shorter diagnostic target for code
 changes that should affect the Rust engine before they affect command-vs-command
-scorecards. It runs only the in-process high-offset rows plus the cold process
-and CLI rows, writing:
+scorecards. It runs only the in-process high-offset rows plus persistent
+`count-server`, cold process, and cold CLI rows, writing:
 
 ```text
 sidecars/PRIME_ENGINE/results/prime_engine_high_offset_hot_cold_latest.csv
@@ -665,7 +668,9 @@ sidecars/PRIME_ENGINE/results/prime_engine_high_offset_hot_cold_latest.csv
 
 The report prefers this artifact for the high-offset cold/hot overhead table
 when it exists, so a quick run can show whether a change improved the engine or
-only moved process-startup noise.
+only moved process-startup noise. Treat the persistent server row as a
+hot-process application lane; the command-vs-command control remains the
+external `primesieve`/`primecount` scorecard.
 
 `prime-engine-high-offset-tight` is the follow-up scorecard when the broad
 quick run keeps pointing at the same neighborhood. It narrows the sweep to

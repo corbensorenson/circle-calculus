@@ -1,7 +1,9 @@
 use std::collections::BTreeSet;
 use std::env;
+use std::io::{BufRead, BufReader, Write};
 use std::process;
 use std::process::Command;
+use std::process::Stdio;
 use std::time::Instant;
 
 use circle_prime::{
@@ -950,6 +952,14 @@ fn bench_cold_process_counts(rounds: usize) -> Vec<BenchRow> {
             )
         },
     ));
+    rows.push(measure_count_server_prime_count(
+        "hot_cli_count_server_parallel_high_offset_default_range_count_8t",
+        HIGH_OFFSET_LOW,
+        HIGH_OFFSET_HIGH,
+        high_offset_segment_size,
+        8,
+        rounds,
+    ));
 
     rows
 }
@@ -1174,6 +1184,79 @@ fn cold_cli_prime_count(low: u64, high: u64, segment_size: u64, threads: usize) 
         .trim()
         .parse::<u64>()
         .expect("cold CLI benchmark worker did not emit a count")
+}
+
+fn measure_count_server_prime_count(
+    name: &'static str,
+    low: u64,
+    high: u64,
+    segment_size: u64,
+    threads: usize,
+    rounds: usize,
+) -> BenchRow {
+    let executable = circle_prime_cli_executable();
+    let mut child = Command::new(&executable)
+        .arg("count-server")
+        .arg("--segment-size")
+        .arg(segment_size.to_string())
+        .arg("--threads")
+        .arg(threads.to_string())
+        .stdin(Stdio::piped())
+        .stdout(Stdio::piped())
+        .spawn()
+        .expect("failed to spawn hot CLI count server");
+    let mut stdin = child
+        .stdin
+        .take()
+        .expect("hot CLI count server stdin unavailable");
+    let stdout = child
+        .stdout
+        .take()
+        .expect("hot CLI count server stdout unavailable");
+    let mut stdout = BufReader::new(stdout);
+    let request = format!("{low} {high}\n");
+    let mut best_seconds = f64::INFINITY;
+    let mut result = 0u64;
+    let mut response = String::new();
+
+    for _ in 0..rounds {
+        response.clear();
+        let start = Instant::now();
+        stdin
+            .write_all(request.as_bytes())
+            .expect("failed to write hot CLI count-server request");
+        stdin
+            .flush()
+            .expect("failed to flush hot CLI count-server request");
+        let bytes_read = stdout
+            .read_line(&mut response)
+            .expect("failed to read hot CLI count-server response");
+        assert!(bytes_read > 0, "hot CLI count server closed stdout");
+        let elapsed = start.elapsed().as_secs_f64();
+        best_seconds = best_seconds.min(elapsed);
+        result = response
+            .trim()
+            .parse::<u64>()
+            .expect("hot CLI count server did not emit a count");
+    }
+
+    drop(stdin);
+    let status = child
+        .wait()
+        .expect("failed to wait for hot CLI count server");
+    assert!(
+        status.success(),
+        "hot CLI count server failed with status {status}"
+    );
+
+    BenchRow {
+        name,
+        workload: high - low,
+        segment_size,
+        result,
+        rounds,
+        best_seconds,
+    }
 }
 
 fn circle_prime_cli_executable() -> std::path::PathBuf {

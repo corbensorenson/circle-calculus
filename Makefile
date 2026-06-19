@@ -243,6 +243,7 @@ prime-engine-high-offset-tight:
 
 prime-engine-high-offset-hot-cold:
 	mkdir -p sidecars/PRIME_ENGINE/results
+	cargo build --release -p circle-prime --bin circle-prime
 	cargo run --release -p circle-prime --bin circle-prime-bench -- --rounds $(CIRCLE_PRIME_HIGH_OFFSET_HOT_COLD_ROUNDS) --only high-offset,cold > $(CIRCLE_PRIME_HIGH_OFFSET_HOT_COLD_OUTPUT)
 
 prime-engine-high-offset-confirm:

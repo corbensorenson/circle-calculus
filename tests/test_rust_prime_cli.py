@@ -177,6 +177,29 @@ def test_rust_prime_cli_counts_reference_range(circle_prime_bin: Path) -> None:
     assert run_circle_prime(circle_prime_bin, "range", "0", "1000", "--count").strip() == "168"
 
 
+def test_rust_prime_cli_count_server_handles_repeated_requests(
+    circle_prime_bin: Path,
+) -> None:
+    completed = subprocess.run(
+        [
+            str(circle_prime_bin),
+            "count-server",
+            "--segment-size",
+            "65536",
+            "--threads",
+            "4",
+            "--count-mode",
+            "presieve13",
+        ],
+        cwd=ROOT,
+        input="0 1000\n0 100000\n",
+        text=True,
+        capture_output=True,
+        check=True,
+    )
+    assert completed.stdout.splitlines() == ["168", "9592"]
+
+
 def test_rust_prime_cli_counts_reference_range_in_parallel(circle_prime_bin: Path) -> None:
     output = run_circle_prime(
         circle_prime_bin,

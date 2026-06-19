@@ -613,9 +613,12 @@ def summarize_high_offset_cold_hot_overhead(
         if row.get("scope") == "high_offset"
     }
     hot = rows_by_name.get("parallel_high_offset_default_range_count_8t")
+    hot_server = rows_by_name.get(
+        "hot_cli_count_server_parallel_high_offset_default_range_count_8t"
+    )
     cold_cli = rows_by_name.get("cold_cli_parallel_high_offset_default_range_count_8t")
     cold_process = rows_by_name.get("cold_process_parallel_high_offset_segmented_range_count_8t")
-    if hot is None or (cold_cli is None and cold_process is None):
+    if hot is None or (hot_server is None and cold_cli is None and cold_process is None):
         return []
 
     hot_ms = float(hot["best_ms"])
@@ -625,6 +628,17 @@ def summarize_high_offset_cold_hot_overhead(
         "hot_name": hot["name"],
         "hot_segment_size": hot["segment_size"],
         "hot_best_ms": hot_ms,
+        "hot_server_name": hot_server["name"] if hot_server else None,
+        "hot_server_segment_size": hot_server["segment_size"] if hot_server else None,
+        "hot_server_best_ms": float(hot_server["best_ms"]) if hot_server else None,
+        "hot_server_over_hot": (
+            float(hot_server["best_ms"]) / hot_ms if hot_server and hot_ms > 0 else None
+        ),
+        "hot_server_over_cold_cli": (
+            float(hot_server["best_ms"]) / float(cold_cli["best_ms"])
+            if hot_server and cold_cli and float(cold_cli["best_ms"]) > 0
+            else None
+        ),
         "cold_cli_name": cold_cli["name"] if cold_cli else None,
         "cold_cli_segment_size": cold_cli["segment_size"] if cold_cli else None,
         "cold_cli_best_ms": float(cold_cli["best_ms"]) if cold_cli else None,
@@ -2241,14 +2255,18 @@ def render_benchmark_markdown(summary: dict[str, Any]) -> list[str]:
             [
                 f"High-offset cold/hot overhead (source: `{source_label}`):",
                 "",
-                "| Workload | Hot Row | Hot ms | Cold CLI ms | CLI / Hot | CLI Extra ms | Cold Process ms | Process / Hot |",
-                "| ---: | --- | ---: | ---: | ---: | ---: | ---: | ---: |",
+                "| Workload | Hot Row | Hot ms | Count Server ms | Server / Hot | Server / Cold CLI | Cold CLI ms | CLI / Hot | CLI Extra ms | Cold Process ms | Process / Hot |",
+                "| ---: | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |",
             ]
         )
         for row in summary["high_offset_cold_hot_overhead"]:
             lines.append(
                 f"| {row['workload']} | `{row['hot_name']}` | "
-                f"{row['hot_best_ms']:.3f} | {format_optional_ms(row['cold_cli_best_ms'])} | "
+                f"{row['hot_best_ms']:.3f} | "
+                f"{format_optional_ms(row['hot_server_best_ms'])} | "
+                f"{format_optional_ratio(row['hot_server_over_hot'])} | "
+                f"{format_optional_ratio(row['hot_server_over_cold_cli'])} | "
+                f"{format_optional_ms(row['cold_cli_best_ms'])} | "
                 f"{format_optional_ratio(row['cold_cli_over_hot'])} | "
                 f"{format_optional_ms(row['cold_cli_extra_ms'])} | "
                 f"{format_optional_ms(row['cold_process_best_ms'])} | "

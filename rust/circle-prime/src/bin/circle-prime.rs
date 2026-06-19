@@ -1,4 +1,5 @@
 use std::env;
+use std::io::{self, BufRead, Write};
 use std::process;
 
 use circle_prime::{
@@ -83,6 +84,7 @@ fn run(args: Vec<String>) -> Result<(), String> {
         "test" => test_command(&args[1..]),
         "next" => next_command(&args[1..]),
         "range" => range_command(&args[1..]),
+        "count-server" => count_server_command(&args[1..]),
         "recommend" => recommend_command(&args[1..]),
         "help" | "--help" | "-h" => {
             println!("{}", usage());
@@ -375,6 +377,114 @@ fn range_command(args: &[String]) -> Result<(), String> {
     Ok(())
 }
 
+fn count_server_command(args: &[String]) -> Result<(), String> {
+    let default_segment_size = optional_value(args, "--segment-size")
+        .map(|value| {
+            value
+                .parse::<u64>()
+                .map_err(|_| "--segment-size must fit in u64".to_string())
+        })
+        .transpose()?;
+    let default_threads = optional_value(args, "--threads")
+        .map(|value| {
+            value
+                .parse::<usize>()
+                .map_err(|_| "--threads must fit in usize".to_string())
+        })
+        .transpose()?
+        .unwrap_or(1);
+    if default_threads == 0 {
+        return Err("--threads must be greater than zero".to_string());
+    }
+    let default_count_mode = optional_value(args, "--count-mode")
+        .map(CountMode::parse)
+        .transpose()?;
+
+    let stdin = io::stdin();
+    let mut stdout = io::BufWriter::new(io::stdout().lock());
+    for line in stdin.lock().lines() {
+        let line = line.map_err(|err| format!("failed to read request: {err}"))?;
+        let request = line.trim();
+        if request.is_empty() {
+            continue;
+        }
+        if request == "quit" || request == "exit" {
+            break;
+        }
+        let count = count_server_request(
+            request,
+            default_segment_size,
+            default_threads,
+            default_count_mode,
+        )?;
+        writeln!(stdout, "{count}").map_err(|err| format!("failed to write response: {err}"))?;
+        stdout
+            .flush()
+            .map_err(|err| format!("failed to flush response: {err}"))?;
+    }
+    Ok(())
+}
+
+fn count_server_request(
+    request: &str,
+    default_segment_size: Option<u64>,
+    default_threads: usize,
+    default_count_mode: Option<CountMode>,
+) -> Result<usize, String> {
+    let fields = request.split_whitespace().collect::<Vec<_>>();
+    if fields.len() < 2 || fields.len() > 5 {
+        return Err(
+            "count-server request must be LOW HIGH [SEGMENT_SIZE] [THREADS] [COUNT_MODE]"
+                .to_string(),
+        );
+    }
+    let low = fields[0]
+        .parse::<u64>()
+        .map_err(|_| "LOW must fit in u64".to_string())?;
+    let high = fields[1]
+        .parse::<u64>()
+        .map_err(|_| "HIGH must fit in u64".to_string())?;
+    let requested_threads = fields
+        .get(3)
+        .map(|value| {
+            value
+                .parse::<usize>()
+                .map_err(|_| "THREADS must fit in usize".to_string())
+        })
+        .transpose()?
+        .unwrap_or(default_threads);
+    if requested_threads == 0 {
+        return Err("THREADS must be greater than zero".to_string());
+    }
+    let segment_size = fields
+        .get(2)
+        .map(|value| {
+            value
+                .parse::<u64>()
+                .map_err(|_| "SEGMENT_SIZE must fit in u64".to_string())
+        })
+        .transpose()?
+        .or(default_segment_size)
+        .unwrap_or_else(|| recommended_count_segment_size(low, high, requested_threads));
+    let count_mode = fields
+        .get(4)
+        .map(|value| CountMode::parse(value))
+        .transpose()?
+        .or(default_count_mode)
+        .unwrap_or_else(|| {
+            CountMode::parse(recommended_count_mode(low, high, requested_threads))
+                .expect("compiled count-mode default must be valid")
+        });
+    let worker_threads = count_mode.effective_threads(effective_parallel_thread_count(
+        low,
+        high,
+        segment_size,
+        requested_threads,
+    ));
+    count_range_with_mode(low, high, segment_size, worker_threads, count_mode)
+        .map_err(|err| format!("range sieve failed: {err:?}"))
+}
+
 fn count_range_with_mode(
     low: u64,
     high: u64,
@@ -478,8 +588,31 @@ fn usage() -> String {
         "  circle-prime next N [--json]",
         "  circle-prime recommend LOW HIGH [--count] [--json] [--threads N]",
         "  circle-prime range LOW HIGH [--count] [--json] [--segment-size N] [--threads N] [--count-mode MODE]",
+        "  circle-prime count-server [--segment-size N] [--threads N] [--count-mode MODE]",
         "",
+        "count-server reads LOW HIGH [SEGMENT_SIZE] [THREADS] [COUNT_MODE] lines from stdin and writes one count per line.",
         "count modes: segmented, balanced, dynamic, prefix-pi, presieve13, presieve17, wheel30-mark, hybrid-wheel30-mark",
     ]
     .join("\n")
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn count_server_request_counts_reference_range() {
+        assert_eq!(
+            count_server_request("0 1000", None, 1, Some(CountMode::Segmented)).unwrap(),
+            168
+        );
+    }
+
+    #[test]
+    fn count_server_request_accepts_per_line_overrides() {
+        assert_eq!(
+            count_server_request("0 100000 65536 4 presieve13", None, 1, None).unwrap(),
+            9592
+        );
+    }
 }
