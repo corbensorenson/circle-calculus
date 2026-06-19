@@ -71,6 +71,28 @@ Use this page as the guided entrance to the contract lane, then open the focused
 
 Each focused lesson follows the same reading shape: concept, finite circular object, worked example, theorem ids, executable certificate, and exact non-claims. Use the audit pages only when you want the full theorem-card trail.
 
+## First 10 Minutes
+
+Start with the contract pack before reading individual theorem trails:
+
+```bash
+make circle-ai-contracts-ready
+python scripts/circle_ai_contract_ready.py --list-kinds
+python scripts/circle_ai_contract_ready.py --kind rope_position_distinguishability
+python scripts/circle_ai_contract_ready.py --kind sparse_attention_coverage --digest --field first_uncovered_lag --include-recommendations
+```
+
+Read the output in this order:
+
+| Field | Meaning | Stop If |
+| --- | --- | --- |
+| `ready=True` | the selected contract has its required fields and proof-status metadata | `ready=False` |
+| `proof_proved=True` | every theorem id used by the contract resolves to a proved manifest entry | `unproved > 0` |
+| `missing_fields=0` | the downstream evidence fields are present in the generated pack | `missing_fields > 0` |
+| `planner_recommendations` | copy-safe finite audit or repair actions attached to theorem ids | a recommendation lacks theorem ids or non-claims |
+
+Then open one focused lesson. For example, read the [RoPE certifier](rope_certifier.qmd) page to see how the finite phase-bank idea turns into a theorem-backed JSON receipt, or read the [sparse-attention coverage](sparse_attention_contract.qmd) page to see how covered lags, uncovered intervals, and repair windows are separated.
+
 The suite-level machine-readable artifact is the generic Circle pack:
 
 ```bash
@@ -99,6 +121,9 @@ contract.proof_status.all_theorem_ids_proved
 If either readiness field is false, the consumer should reject the fixture before adding private metrics or benchmark rows. The readiness index is the quick path for external tools; the fingerprint index is the stable audit-log surface; the full contract record is the detailed evidence trail.
 
 `make circle-ai-contracts-check` validates the generated JSON artifact itself: schema id, required contract keys, minimum fields, theorem ids, proof-status metadata, dictionary ids, source paths, quickstart docs, Living Book pages, and Python entrypoint paths.
+
+<details>
+<summary>Audit CLI And Consumer Adapter Details</summary>
 
 For a single contract kind, the consumer CLI performs the pack validation first, then exits `0` only when the requested kind is ready:
 
@@ -479,6 +504,8 @@ fingerprints, unready proof status, and missing planner actions without scraping
 prose logs.
 It is an artifact-consumption gate, not a model-quality or deployment-safety
 proof.
+
+</details>
 
 ## Suite Table
 
