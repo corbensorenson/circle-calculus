@@ -1,0 +1,90 @@
+---
+title: "Cyclic Memory Residue Winding"
+---
+
+A cyclic memory slot is a residue. A memory event also has a winding number:
+how many full turns through the memory bank have happened before this event.
+
+::: {.lesson-goal}
+
+## Goal
+
+Use residue plus winding to explain aliasing in a finite memory bank without
+pretending the residue alone proves freshness.
+
+:::
+
+## Concept
+
+The circular object is the memory bank `C_bank_size`. Event `t` writes to
+slot `t mod bank_size`, while `t div bank_size` records the winding. Two events
+can share a slot and still be different writes because their windings differ.
+
+```text
+event index = winding * bank_size + residue slot
+```
+
+That is the whole point of the contract: keep alias provenance explicit.
+
+## Example
+
+The public fixture uses `bank_size = 8`, `event_index = 23`, and
+`event_count = 32`. The event sits in residue slot `7` with winding `2`.
+The same residue class inside the trace is:
+
+```text
+events:   7, 15, 23, 31
+windings: 0,  1,  2,  3
+```
+
+```bash
+python scripts/cyclic_memory_certify.py --format json
+python scripts/circle_ai_contract_ready.py --kind cyclic_memory_residue_winding --digest --field same_residue_events --field same_residue_windings --field max_alias_load
+```
+
+## Theorem Trail
+
+<div class="theorem-box" data-theorem-id="AIM-T0001"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0002"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0004"></div>
+<div class="theorem-box" data-theorem-id="AIM-T0005"></div>
+
+## Certificate Reading
+
+The useful fields are:
+
+- `residue_slot`: the finite memory address.
+- `winding`: the full-turn count for the selected event.
+- `same_residue_events`: every event in the trace that aliases the same slot.
+- `same_residue_windings`: the corresponding provenance layer for those aliases.
+- `max_alias_load`: the largest finite alias class size in the declared trace.
+
+Planner recommendations:
+
+- `MEMORY-ATTACH-WINDING-ALIAS-PROVENANCE` says a downstream system should preserve winding when slots alias.
+- `MEMORY-AUDIT-FINITE-ALIAS-LOAD` says the finite trace should expose the maximum observed alias load rather than hiding it behind a slot id.
+
+::: {.warning-box}
+This is a finite alias-provenance contract. It does not prove cache freshness,
+retrieval quality, long-term memory quality, or safety of any production memory
+system. Python fixtures are executable references, not proof artifacts and not
+performance claims.
+:::
+
+## Dictionary
+
+<div class="dictionary-box" data-dictionary-id="COMMON-0028"></div>
+<div class="dictionary-box" data-dictionary-id="COMMON-0081"></div>
+
+## Source Trail
+
+<p data-paper-ref="papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md">Attention and memory paper: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md">Coil Attention And Memory</a></p>
+
+<p>Quickstart: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/docs/CYCLIC_MEMORY_CERTIFIER_QUICKSTART.md">Cyclic Memory Certifier</a></p>
+
+<div class="book-navigation">
+<a href="strided_candidate_fanout.qmd">Previous: Strided Candidate Fanout</a>
+<a href="multicoil_phase_feature.qmd">Next: Multicoil Phase Features</a>
+</div>
+
+<script type="module" src="../../widgets/shared/widget_base.js"></script>

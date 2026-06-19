@@ -13,6 +13,51 @@ python scripts/recurrence_schedule_certify.py --shift-passes 4 --json-out /tmp/r
 python scripts/circle_ai_contract_ready.py --kind recurrence_schedule --digest --field scheduled_work_saving --field post_period_multi_extension_scheduled_work_saving --include-recommendations
 ```
 
+For a strict downstream receipt over both recurrence planner actions:
+
+```bash
+python scripts/circle_ai_contract_ready.py \
+  --kind recurrence_schedule \
+  --receipt \
+  --format json \
+  --field periodic_shift_required_steps_invariant \
+  --field periodic_shift_active_at_step_invariant \
+  --field total_active_token_work \
+  --field scheduled_work_saving \
+  --field scheduled_work_saving_accounting \
+  --field active_inactive_work_accounting \
+  --field scheduled_work_saving_positive \
+  --field post_period_multi_extension_scheduled_work_saving \
+  --require-theorem AIM-T0026 \
+  --require-theorem AIM-T0130 \
+  --require-theorem AIM-T0159 \
+  --require-recommendation RECURRENCE-USE-ACTIVE-TOKEN-WORK-SCHEDULE \
+  --require-recommendation RECURRENCE-REUSE-WHOLE-PERIOD-SHIFT \
+  --require-recommendation-evidence-field RECURRENCE-USE-ACTIVE-TOKEN-WORK-SCHEDULE=total_active_token_work \
+  --require-recommendation-evidence-field RECURRENCE-USE-ACTIVE-TOKEN-WORK-SCHEDULE=scheduled_work_saving \
+  --require-recommendation-evidence-field RECURRENCE-USE-ACTIVE-TOKEN-WORK-SCHEDULE=post_period_multi_extension_scheduled_work_saving \
+  --require-recommendation-evidence-field RECURRENCE-REUSE-WHOLE-PERIOD-SHIFT=periodic_shift_required_steps_invariant \
+  --require-recommendation-evidence-field RECURRENCE-REUSE-WHOLE-PERIOD-SHIFT=periodic_shift_active_at_step_invariant \
+  --require-recommendation-theorem RECURRENCE-USE-ACTIVE-TOKEN-WORK-SCHEDULE=AIM-T0130 \
+  --require-recommendation-theorem RECURRENCE-USE-ACTIVE-TOKEN-WORK-SCHEDULE=AIM-T0159 \
+  --require-recommendation-theorem RECURRENCE-REUSE-WHOLE-PERIOD-SHIFT=AIM-T0026 \
+  --require-recommendation-action-parameter RECURRENCE-USE-ACTIVE-TOKEN-WORK-SCHEDULE=loop_period \
+  --require-recommendation-action-parameter RECURRENCE-USE-ACTIVE-TOKEN-WORK-SCHEDULE=scheduled_work_saving \
+  --require-recommendation-action-parameter RECURRENCE-REUSE-WHOLE-PERIOD-SHIFT=base_token \
+  --require-recommendation-action-parameter-path RECURRENCE-USE-ACTIVE-TOKEN-WORK-SCHEDULE=loop_period \
+  --require-recommendation-action-parameter-path RECURRENCE-USE-ACTIVE-TOKEN-WORK-SCHEDULE=token_count \
+  --require-recommendation-action-parameter-path RECURRENCE-USE-ACTIVE-TOKEN-WORK-SCHEDULE=horizon_steps \
+  --require-recommendation-action-parameter-path RECURRENCE-USE-ACTIVE-TOKEN-WORK-SCHEDULE=scheduled_work_saving \
+  --require-recommendation-action-parameter-path RECURRENCE-USE-ACTIVE-TOKEN-WORK-SCHEDULE=post_period_multi_extension_scheduled_work_saving \
+  --require-recommendation-action-parameter-path RECURRENCE-REUSE-WHOLE-PERIOD-SHIFT=base_token \
+  --require-recommendation-action-parameter-path RECURRENCE-REUSE-WHOLE-PERIOD-SHIFT=shifted_token \
+  --require-recommendation-action-parameter-path RECURRENCE-REUSE-WHOLE-PERIOD-SHIFT=shift_amount
+```
+
+That receipt pins the finite active-token work schedule and whole-period
+index-reuse witness. It is not a runtime, memory, adaptive-halting,
+reasoning-quality, or model-quality proof.
+
 Default fixture:
 
 ```text

@@ -294,6 +294,21 @@ def rawCandidateCollisionPairCount : List Nat → Nat
 def rawCandidateDedupLoss (candidates : List Nat) : Nat :=
   candidates.length - candidates.dedup.length
 
+/-- Exact accounting for raw candidate deduplication.
+
+Every finite raw candidate list decomposes into the deduplicated unique count
+plus the entries lost under deduplication. This generic theorem backs simple
+fanout budget reports that do not need the full sparse-attention hybrid
+candidate model. -/
+theorem rawCandidateDedupLength_add_rawCandidateDedupLoss_eq_length
+    (candidates : List Nat) :
+    candidates.dedup.length + rawCandidateDedupLoss candidates =
+      candidates.length := by
+  unfold rawCandidateDedupLoss
+  have hdedup_le : candidates.dedup.length ≤ candidates.length :=
+    List.Sublist.length_le (List.dedup_sublist candidates)
+  omega
+
 /-- Pair-collision count for theorem-side sparse lag candidates. -/
 def hybridFamilyLagCandidateCollisionPairCount
     (n window pathLength : Nat) (strides : List Nat) : Nat :=
@@ -1008,6 +1023,29 @@ theorem hybridFamilyCoversContext_of_localWindow_ge_context_sub_one
     hybridFamilyCoversContext n window pathLength strides := by
   intro lag hpos hcontext
   exact hybridFamilyLagReach_of_localWindow_ge_context_sub_one hpos hcontext hwindow
+
+/-- If the declared stride family cannot reach the final positive lag, complete
+coverage is equivalent to the local window reaching the dense-local threshold.
+
+This is the reusable minimality bridge behind sparse-attention repair reports:
+`context - 1` is always sufficient by the local window, and when the stride
+family misses that final lag, every smaller local window leaves that lag
+uncovered. -/
+theorem hybridFamilyCoversContext_iff_context_sub_one_le_window_of_not_final_lag_family_reach
+    {n window pathLength : Nat} {strides : List Nat}
+    (hn : 1 < n)
+    (hfamily : ¬ coilStrideFamilyLagReach n pathLength (n - 1) strides) :
+    hybridFamilyCoversContext n window pathLength strides ↔ n - 1 ≤ window := by
+  constructor
+  · intro hcover
+    by_contra hnot
+    have hwindow : window < n - 1 := Nat.lt_of_not_ge hnot
+    have hreach := hcover (n - 1) (by omega) (by omega)
+    rcases hreach with hlocal | hstride
+    · exact (not_le_of_gt hwindow) hlocal.2
+    · exact hfamily hstride
+  · intro hwindow
+    exact hybridFamilyCoversContext_of_localWindow_ge_context_sub_one hwindow
 
 /-- Increasing both sparse-attention budgets preserves complete context
 coverage for a local-window plus stride-family plan. -/

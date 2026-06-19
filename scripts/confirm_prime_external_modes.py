@@ -1,0 +1,405 @@
+from __future__ import annotations
+
+import argparse
+import csv
+import json
+import subprocess
+import sys
+from collections import Counter
+from dataclasses import asdict, dataclass
+from datetime import datetime, timezone
+from pathlib import Path
+from typing import Any
+
+
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from scripts.calibrate_prime_engine_defaults import (  # noqa: E402
+    DEFAULT_BASELINE_PRIORITY,
+    RESULTS_DIR,
+    read_sample_rows_from_metadata,
+    select_external_recommendations,
+)
+
+
+DEFAULT_OUTPUT_JSON = RESULTS_DIR / "prime_engine_external_mode_confirmation_latest.json"
+DEFAULT_OUTPUT_MD = RESULTS_DIR / "prime_engine_external_mode_confirmation_latest.md"
+DEFAULT_RANGES = "0:10000000,0:100000000,1000000000000:1000010000000"
+DEFAULT_COUNT_MODES = (
+    "segmented,balanced,dynamic,presieve13,wheel30-mark,hybrid-wheel30-mark"
+)
+
+
+@dataclass(frozen=True)
+class ConfirmedWinner:
+    low: int
+    high: int
+    baseline: str
+    count_mode: str
+    segment_size: int
+    threads: int
+    requested_threads: int
+    confirmation_count: int
+    observed_count: int
+    stable_observed_count: int
+    status: str
+    median_ms_values: list[float]
+    source_labels: list[str]
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(
+        description=(
+            "Confirm Circle prime-engine external count-mode recommendations "
+            "across repeated mode sweeps."
+        )
+    )
+    parser.add_argument(
+        "--input",
+        action="append",
+        type=Path,
+        default=[],
+        help=(
+            "Existing external mode-sweep CSV to include. Repeat for multiple "
+            "runs. The metadata path defaults to the same stem with .json."
+        ),
+    )
+    parser.add_argument(
+        "--metadata-input",
+        action="append",
+        type=Path,
+        default=[],
+        help="Metadata JSON for the corresponding --input. Repeat in the same order.",
+    )
+    parser.add_argument(
+        "--runs",
+        type=int,
+        default=0,
+        help="Run this many fresh external mode sweeps before confirmation.",
+    )
+    parser.add_argument("--rounds", type=int, default=5)
+    parser.add_argument("--ranges", default=DEFAULT_RANGES)
+    parser.add_argument("--circle-threads", type=int, default=8)
+    parser.add_argument("--external-threads", type=int, default=8)
+    parser.add_argument("--circle-count-modes", default=DEFAULT_COUNT_MODES)
+    parser.add_argument(
+        "--segment-sizes",
+        default="0",
+        help=(
+            "Comma-separated Circle segment sizes to sweep in each fresh run. "
+            "Use 0 to include the CLI adaptive default."
+        ),
+    )
+    parser.add_argument(
+        "--require-tool",
+        choices=("primesieve", "primecount"),
+        action="append",
+        default=["primesieve", "primecount"],
+    )
+    parser.add_argument("--output-dir", type=Path, default=RESULTS_DIR)
+    parser.add_argument(
+        "--run-prefix",
+        help="Prefix for fresh sweep artifacts. Defaults to a UTC timestamp.",
+    )
+    parser.add_argument(
+        "--baseline-priority",
+        default=DEFAULT_BASELINE_PRIORITY,
+        help="Comma-separated external baselines to trust, in order.",
+    )
+    parser.add_argument(
+        "--min-confirmations",
+        type=int,
+        default=2,
+        help="Minimum matching stable wins required to mark a range confirmed.",
+    )
+    parser.add_argument(
+        "--allow-unstable",
+        action="store_true",
+        help="Count winners with noisy or missing sample stability as confirmations.",
+    )
+    parser.add_argument("--output-json", type=Path, default=DEFAULT_OUTPUT_JSON)
+    parser.add_argument("--output-md", type=Path, default=DEFAULT_OUTPUT_MD)
+    parser.add_argument(
+        "--fail-on-unconfirmed",
+        action="store_true",
+        help="Exit nonzero if any observed range lacks a confirmed winner.",
+    )
+    args = parser.parse_args()
+
+    if args.runs < 0:
+        parser.error("--runs must be nonnegative")
+    if args.rounds <= 0:
+        parser.error("--rounds must be positive")
+    if args.circle_threads <= 0:
+        parser.error("--circle-threads must be positive")
+    if args.external_threads < 0:
+        parser.error("--external-threads must be nonnegative")
+    if args.min_confirmations <= 0:
+        parser.error("--min-confirmations must be positive")
+    if args.metadata_input and len(args.metadata_input) != len(args.input):
+        parser.error("--metadata-input must be repeated once per --input")
+
+    inputs = list(args.input)
+    metadata_inputs = (
+        list(args.metadata_input)
+        if args.metadata_input
+        else [infer_metadata_path(path) for path in inputs]
+    )
+    if args.runs:
+        fresh_inputs, fresh_metadata = run_fresh_sweeps(args)
+        inputs.extend(fresh_inputs)
+        metadata_inputs.extend(fresh_metadata)
+    if not inputs:
+        parser.error("provide --input or --runs")
+
+    baseline_priority = split_csv(args.baseline_priority)
+    if not baseline_priority:
+        parser.error("--baseline-priority must include at least one value")
+
+    grouped = read_recommendations_by_source(
+        inputs=inputs,
+        metadata_inputs=metadata_inputs,
+        baseline_priority=baseline_priority,
+    )
+    confirmation = build_confirmation(
+        grouped,
+        baseline_priority=baseline_priority,
+        min_confirmations=args.min_confirmations,
+        require_stable_samples=not args.allow_unstable,
+        generated_at_utc=datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+        inputs=[str(path) for path in inputs],
+    )
+    args.output_json.parent.mkdir(parents=True, exist_ok=True)
+    args.output_json.write_text(json.dumps(confirmation, indent=2, sort_keys=True) + "\n")
+    args.output_md.parent.mkdir(parents=True, exist_ok=True)
+    args.output_md.write_text(render_markdown(confirmation))
+    print(f"wrote external mode confirmation JSON: {args.output_json}")
+    print(f"wrote external mode confirmation report: {args.output_md}")
+
+    if args.fail_on_unconfirmed and confirmation["unconfirmed_count"] > 0:
+        return 1
+    return 0
+
+
+def run_fresh_sweeps(args: argparse.Namespace) -> tuple[list[Path], list[Path]]:
+    args.output_dir.mkdir(parents=True, exist_ok=True)
+    stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
+    prefix = args.run_prefix or f"prime_engine_external_mode_confirm_{stamp}"
+    csv_paths: list[Path] = []
+    metadata_paths: list[Path] = []
+    for index in range(args.runs):
+        run_label = f"{prefix}_{index + 1:02d}"
+        csv_path = args.output_dir / f"{run_label}.csv"
+        sample_path = args.output_dir / f"{run_label}_samples.csv"
+        metadata_path = args.output_dir / f"{run_label}.json"
+        command = fresh_sweep_command(args, csv_path, sample_path, metadata_path)
+        print("+ " + " ".join(command))
+        subprocess.run(command, cwd=ROOT, check=True)
+        csv_paths.append(csv_path)
+        metadata_paths.append(metadata_path)
+    return csv_paths, metadata_paths
+
+
+def fresh_sweep_command(
+    args: argparse.Namespace,
+    csv_path: Path,
+    sample_path: Path,
+    metadata_path: Path,
+) -> list[str]:
+    command = [
+        sys.executable,
+        str(ROOT / "scripts" / "benchmark_prime_external_controls.py"),
+        "--ranges",
+        args.ranges,
+        "--rounds",
+        str(args.rounds),
+        "--interleaved",
+        "--circle-threads",
+        str(args.circle_threads),
+        "--external-threads",
+        str(args.external_threads),
+        "--circle-count-modes",
+        args.circle_count_modes,
+        "--segment-sizes",
+        args.segment_sizes,
+        "--output",
+        str(csv_path),
+        "--sample-output",
+        str(sample_path),
+        "--metadata-output",
+        str(metadata_path),
+    ]
+    for tool in sorted(set(args.require_tool)):
+        command.extend(["--require-tool", tool])
+    return command
+
+
+def read_recommendations_by_source(
+    *,
+    inputs: list[Path],
+    metadata_inputs: list[Path],
+    baseline_priority: list[str],
+) -> list[dict[str, Any]]:
+    recommendations: list[dict[str, Any]] = []
+    for csv_path, metadata_path in zip(inputs, metadata_inputs):
+        rows = read_csv(csv_path)
+        metadata = read_json_optional(metadata_path)
+        sample_rows = read_sample_rows_from_metadata(metadata)
+        for row in select_external_recommendations(
+            [(csv_path.stem, rows, sample_rows)],
+            baseline_priority,
+        ):
+            row["source_path"] = str(csv_path)
+            recommendations.append(row)
+    return recommendations
+
+
+def build_confirmation(
+    recommendations: list[dict[str, Any]],
+    *,
+    baseline_priority: list[str],
+    min_confirmations: int,
+    require_stable_samples: bool,
+    generated_at_utc: str,
+    inputs: list[str],
+) -> dict[str, Any]:
+    grouped: dict[tuple[int, int, str], list[dict[str, Any]]] = {}
+    for row in recommendations:
+        grouped.setdefault((int(row["low"]), int(row["high"]), str(row["baseline"])), []).append(row)
+
+    winners = []
+    for key, rows in sorted(grouped.items()):
+        winners.append(
+            asdict(
+                confirm_group(
+                    key,
+                    rows,
+                    min_confirmations=min_confirmations,
+                    require_stable_samples=require_stable_samples,
+                )
+            )
+        )
+    confirmed_count = sum(1 for row in winners if row["status"] == "confirmed")
+    return {
+        "generated_at_utc": generated_at_utc,
+        "inputs": inputs,
+        "baseline_priority": baseline_priority,
+        "min_confirmations": min_confirmations,
+        "require_stable_samples": require_stable_samples,
+        "observed_group_count": len(winners),
+        "confirmed_count": confirmed_count,
+        "unconfirmed_count": len(winners) - confirmed_count,
+        "winners": winners,
+    }
+
+
+def confirm_group(
+    key: tuple[int, int, str],
+    rows: list[dict[str, Any]],
+    *,
+    min_confirmations: int,
+    require_stable_samples: bool,
+) -> ConfirmedWinner:
+    low, high, baseline = key
+    eligible = [
+        row
+        for row in rows
+        if (not require_stable_samples) or row.get("sample_stability") == "stable"
+    ]
+    counter = Counter(winner_key(row) for row in eligible)
+    if counter:
+        selected_key, confirmation_count = counter.most_common(1)[0]
+    else:
+        selected_key = winner_key(min(rows, key=lambda row: float(row["median_ms"])))
+        confirmation_count = 0
+
+    selected_rows = [row for row in rows if winner_key(row) == selected_key]
+    mode, segment_size, threads, requested_threads = selected_key
+    stable_observed = sum(1 for row in rows if row.get("sample_stability") == "stable")
+    status = "confirmed" if confirmation_count >= min_confirmations else "unconfirmed"
+    return ConfirmedWinner(
+        low=low,
+        high=high,
+        baseline=baseline,
+        count_mode=mode,
+        segment_size=segment_size,
+        threads=threads,
+        requested_threads=requested_threads,
+        confirmation_count=confirmation_count,
+        observed_count=len(rows),
+        stable_observed_count=stable_observed,
+        status=status,
+        median_ms_values=[float(row["median_ms"]) for row in selected_rows],
+        source_labels=[str(row.get("source_path") or row.get("source")) for row in selected_rows],
+    )
+
+
+def winner_key(row: dict[str, Any]) -> tuple[str, int, int, int]:
+    return (
+        str(row.get("count_mode", "segmented")),
+        int(row["segment_size"]),
+        int(row["threads"]),
+        int(row["requested_threads"]),
+    )
+
+
+def render_markdown(confirmation: dict[str, Any]) -> str:
+    lines = [
+        "# Prime Engine External Mode Confirmation",
+        "",
+        f"Generated: `{confirmation['generated_at_utc']}`",
+        f"Minimum confirmations: `{confirmation['min_confirmations']}`",
+        f"Require stable samples: `{confirmation['require_stable_samples']}`",
+        "",
+        f"- observed groups: `{confirmation['observed_group_count']}`",
+        f"- confirmed: `{confirmation['confirmed_count']}`",
+        f"- unconfirmed: `{confirmation['unconfirmed_count']}`",
+        "",
+    ]
+    if confirmation["winners"]:
+        lines.extend(
+            [
+                "| Range | Baseline | Mode | Segment | Threads | Confirmations | Stable Runs | Median ms Values | Status |",
+                "| --- | --- | --- | ---: | ---: | ---: | ---: | --- | --- |",
+            ]
+        )
+        for row in confirmation["winners"]:
+            medians = ", ".join(f"{value:.3f}" for value in row["median_ms_values"])
+            lines.append(
+                f"| [{row['low']}, {row['high']}) | `{row['baseline']}` | "
+                f"`{row['count_mode']}` | {row['segment_size']} | "
+                f"{row['threads']}/{row['requested_threads']} | "
+                f"{row['confirmation_count']}/{confirmation['min_confirmations']} | "
+                f"{row['stable_observed_count']}/{row['observed_count']} | "
+                f"{medians} | `{row['status']}` |"
+            )
+        lines.append("")
+    return "\n".join(lines).rstrip() + "\n"
+
+
+def infer_metadata_path(csv_path: Path) -> Path:
+    return csv_path.with_suffix(".json")
+
+
+def read_csv(path: Path) -> list[dict[str, str]]:
+    return list(csv.DictReader(path.read_text().splitlines()))
+
+
+def read_json_optional(path: Path) -> dict[str, Any] | None:
+    if not path.exists():
+        return None
+    return json.loads(path.read_text())
+
+
+def split_csv(raw: str) -> list[str]:
+    return [item.strip() for item in raw.split(",") if item.strip()]
+
+
+if __name__ == "__main__":
+    try:
+        raise SystemExit(main())
+    except Exception as exc:
+        print(f"external mode confirmation failed: {exc}", file=sys.stderr)
+        raise SystemExit(1)

@@ -40,6 +40,10 @@ The claim is *not* that circular language automatically improves every domain. I
 - [KV-cache proof audit](kv_cache_ring_buffer_audit.qmd) — theorem-card appendix for slot, window, trace, stale-request, live-window, and sink-window claims.
 - [Sparse attention coverage](sparse_attention_contract.qmd) — proof-carrying finite coverage, gap-witness, and candidate-budget certificates for local-window plus stride-family sparse plans.
 - [Sparse attention proof audit](sparse_attention_audit.qmd) — theorem-card appendix for coverage, gap, count, candidate-range, period-threshold, and dedup-loss facts.
+- [Strided candidate fanout](strided_candidate_fanout.qmd) — finite stride-orbit traversal and duplicate-collapsed candidate-budget certificates.
+- [Cyclic memory residue winding](cyclic_memory_residue_winding.qmd) — finite alias-provenance certificates that keep residue and winding together.
+- [Multicoil phase features](multicoil_phase_feature.qmd) — joint-repeat and relative-shift certificates for finite phase-bank features.
+- [Circulant and block-cyclic mixers](circulant_block_cyclic_mixer.qmd) — structured-mixer parity and parameter-accounting certificates.
 - [Looped recurrence contracts](looped_recurrence_contracts.qmd) — guided finite recurrence-budget, exit-certificate, token-route, middle-block, and multi-resolution schedule contracts.
 - [Looped recurrence proof audit](looped_recurrence_audit.qmd) — theorem-card appendix for loop budgets, exits, active-token boundaries, routes, and recurrent-state closure.
 - [Physics](physics.qmd) — finite gauge links, path holonomy, Wilson-loop certificates, plaquettes.

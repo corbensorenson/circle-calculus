@@ -4,6 +4,100 @@
   "additionalProperties": true,
   "description": "Public, standalone Circle Calculus AI contract pack. The schema checks JSON shape and required consumer fields; Lean/manifests remain the formal proof source.",
   "properties": {
+    "acceptance_policy": {
+      "additionalProperties": false,
+      "properties": {
+        "checker": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "default_policy_path": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "fingerprint_refresh_command": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "pinned_requirement_keys": {
+          "items": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "minItems": 1,
+          "type": "array",
+          "uniqueItems": true
+        },
+        "policy_schema_path": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "receipt_schema_id": {
+          "const": "circle_calculus.ai_contract_acceptance_receipt.v0"
+        },
+        "receipt_schema_path": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "rejection_report_schema_id": {
+          "const": "circle_calculus.downstream_ci_rejection_report.v0"
+        },
+        "rejection_report_schema_path": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "report_schema_id": {
+          "const": "circle_calculus.ai_contract_acceptance_policy_report.v0"
+        },
+        "report_schema_path": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "rule": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "schema_id": {
+          "const": "circle_calculus.ai_contract_acceptance_policy.v0"
+        },
+        "standalone_checker": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "standalone_schema_checker": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "validation_commands": {
+          "items": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "minItems": 1,
+          "type": "array",
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "schema_id",
+        "report_schema_id",
+        "receipt_schema_id",
+        "rejection_report_schema_id",
+        "policy_schema_path",
+        "report_schema_path",
+        "receipt_schema_path",
+        "rejection_report_schema_path",
+        "default_policy_path",
+        "checker",
+        "standalone_checker",
+        "standalone_schema_checker",
+        "validation_commands",
+        "fingerprint_refresh_command",
+        "pinned_requirement_keys",
+        "rule"
+      ],
+      "type": "object"
+    },
     "claim_boundary": {
       "minLength": 1,
       "type": "string"
@@ -70,9 +164,11 @@
           },
           "planner_recommendation_ids": {
             "items": {
+              "minLength": 1,
               "type": "string"
             },
-            "type": "array"
+            "type": "array",
+            "uniqueItems": true
           },
           "ready_for_downstream_fixture_use": {
             "type": "boolean"
@@ -94,9 +190,11 @@
       "properties": {
         "consumer_check_keys": {
           "items": {
+            "minLength": 1,
             "type": "string"
           },
-          "type": "array"
+          "type": "array",
+          "uniqueItems": true
         },
         "minimum_field_catalog_by_kind": {
           "additionalProperties": false,
@@ -471,13 +569,23 @@
                 "total_bank_collision_pair_count",
                 "real_phase_margin_pass",
                 "worst_margin_radians",
+                "d19_context_range_min_exclusive",
+                "d19_context_range_max_inclusive",
                 "d19_proved_request_status",
                 "d19_proved_request_theorem_backed_classification",
                 "d19_impossible_request_status",
                 "d19_impossible_request_theorem_backed_classification",
+                "d19_undecided_request_status",
+                "d19_undecided_margin_open_gap",
+                "d19_undecided_margin_interval_width",
+                "d19_undecided_request_relation",
                 "d19_margin_thresholds_ordered",
                 "d19_proved_impossible_branches_disjoint",
                 "d19_margin_status_exhaustive",
+                "d19_in_range_semantic_trichotomy",
+                "d19_proved_first_channel_bank_transfer",
+                "d19_proved_first_channel_bank_shape",
+                "d19_proved_first_channel_bank_tolerance_rule",
                 "proof_layers"
               ],
               "type": "object"
@@ -812,15 +920,19 @@
         },
         "planner_recommendation_keys": {
           "items": {
+            "minLength": 1,
             "type": "string"
           },
-          "type": "array"
+          "type": "array",
+          "uniqueItems": true
         },
         "required_contract_keys": {
           "items": {
+            "minLength": 1,
             "type": "string"
           },
-          "type": "array"
+          "type": "array",
+          "uniqueItems": true
         }
       },
       "required": [
@@ -1112,13 +1224,23 @@
                     "total_bank_collision_pair_count",
                     "real_phase_margin_pass",
                     "worst_margin_radians",
+                    "d19_context_range_min_exclusive",
+                    "d19_context_range_max_inclusive",
                     "d19_proved_request_status",
                     "d19_proved_request_theorem_backed_classification",
                     "d19_impossible_request_status",
                     "d19_impossible_request_theorem_backed_classification",
+                    "d19_undecided_request_status",
+                    "d19_undecided_margin_open_gap",
+                    "d19_undecided_margin_interval_width",
+                    "d19_undecided_request_relation",
                     "d19_margin_thresholds_ordered",
                     "d19_proved_impossible_branches_disjoint",
                     "d19_margin_status_exhaustive",
+                    "d19_in_range_semantic_trichotomy",
+                    "d19_proved_first_channel_bank_transfer",
+                    "d19_proved_first_channel_bank_shape",
+                    "d19_proved_first_channel_bank_tolerance_rule",
                     "proof_layers"
                   ],
                   "type": "object"
@@ -1304,15 +1426,19 @@
             "properties": {
               "minimum_fields": {
                 "items": {
+                  "minLength": 1,
                   "type": "string"
                 },
-                "type": "array"
+                "type": "array",
+                "uniqueItems": true
               },
               "missing_minimum_fields": {
                 "items": {
+                  "minLength": 1,
                   "type": "string"
                 },
-                "type": "array"
+                "type": "array",
+                "uniqueItems": true
               },
               "ready_for_downstream_fixture_use": {
                 "type": "boolean"
@@ -1341,15 +1467,21 @@
           },
           "dictionary_ids": {
             "items": {
+              "minLength": 1,
               "type": "string"
             },
-            "type": "array"
+            "minItems": 1,
+            "type": "array",
+            "uniqueItems": true
           },
           "entrypoints": {
             "items": {
+              "minLength": 1,
               "type": "string"
             },
-            "type": "array"
+            "minItems": 1,
+            "type": "array",
+            "uniqueItems": true
           },
           "fields": {
             "type": "object"
@@ -1377,9 +1509,12 @@
           },
           "living_book_pages": {
             "items": {
+              "minLength": 1,
               "type": "string"
             },
-            "type": "array"
+            "minItems": 1,
+            "type": "array",
+            "uniqueItems": true
           },
           "not_claimed": {
             "type": "string"
@@ -1391,9 +1526,11 @@
               },
               {
                 "items": {
+                  "minLength": 1,
                   "type": "string"
                 },
-                "type": "array"
+                "type": "array",
+                "uniqueItems": true
               }
             ]
           },
@@ -1411,9 +1548,12 @@
                 },
                 "evidence_fields": {
                   "items": {
+                    "minLength": 1,
                     "type": "string"
                   },
-                  "type": "array"
+                  "minItems": 1,
+                  "type": "array",
+                  "uniqueItems": true
                 },
                 "id": {
                   "minLength": 1,
@@ -1429,9 +1569,12 @@
                 },
                 "theorem_ids": {
                   "items": {
+                    "minLength": 1,
                     "type": "string"
                   },
-                  "type": "array"
+                  "minItems": 1,
+                  "type": "array",
+                  "uniqueItems": true
                 }
               },
               "required": [
@@ -1465,24 +1608,37 @@
           },
           "quickstart_docs": {
             "items": {
+              "minLength": 1,
               "type": "string"
             },
-            "type": "array"
+            "minItems": 1,
+            "type": "array",
+            "uniqueItems": true
+          },
+          "source_paper": {
+            "minLength": 1,
+            "type": "string"
           },
           "status": {
             "type": "string"
           },
           "theorem_ids": {
             "items": {
+              "minLength": 1,
               "type": "string"
             },
-            "type": "array"
+            "minItems": 1,
+            "type": "array",
+            "uniqueItems": true
           },
           "validation_commands": {
             "items": {
+              "minLength": 1,
               "type": "string"
             },
-            "type": "array"
+            "minItems": 1,
+            "type": "array",
+            "uniqueItems": true
           }
         },
         "required": [
@@ -1499,6 +1655,7 @@
           "integration_use",
           "ordinary_baselines",
           "not_claimed",
+          "source_paper",
           "quickstart_docs",
           "living_book_pages",
           "entrypoints",
@@ -1534,9 +1691,12 @@
           },
           "evidence_fields": {
             "items": {
+              "minLength": 1,
               "type": "string"
             },
-            "type": "array"
+            "minItems": 1,
+            "type": "array",
+            "uniqueItems": true
           },
           "id": {
             "minLength": 1,
@@ -1558,9 +1718,12 @@
           },
           "living_book_pages": {
             "items": {
+              "minLength": 1,
               "type": "string"
             },
-            "type": "array"
+            "minItems": 1,
+            "type": "array",
+            "uniqueItems": true
           },
           "not_claimed": {
             "minLength": 1,
@@ -1568,14 +1731,18 @@
           },
           "quickstart_docs": {
             "items": {
+              "minLength": 1,
               "type": "string"
             },
-            "type": "array"
+            "minItems": 1,
+            "type": "array",
+            "uniqueItems": true
           },
           "ready_for_downstream_fixture_use": {
             "type": "boolean"
           },
           "source_paper": {
+            "minLength": 1,
             "type": "string"
           },
           "status": {
@@ -1584,15 +1751,21 @@
           },
           "theorem_ids": {
             "items": {
+              "minLength": 1,
               "type": "string"
             },
-            "type": "array"
+            "minItems": 1,
+            "type": "array",
+            "uniqueItems": true
           },
           "validation_commands": {
             "items": {
+              "minLength": 1,
               "type": "string"
             },
-            "type": "array"
+            "minItems": 1,
+            "type": "array",
+            "uniqueItems": true
           }
         },
         "required": [
@@ -1605,7 +1778,10 @@
           "coverage_scope",
           "evidence_fields",
           "theorem_ids",
+          "quickstart_docs",
+          "living_book_pages",
           "validation_commands",
+          "source_paper",
           "not_claimed"
         ],
         "type": "object"
@@ -1620,18 +1796,24 @@
     },
     "source_docs": {
       "items": {
+        "minLength": 1,
         "type": "string"
       },
-      "type": "array"
+      "minItems": 1,
+      "type": "array",
+      "uniqueItems": true
     },
     "status": {
       "type": "string"
     },
     "validation_commands": {
       "items": {
+        "minLength": 1,
         "type": "string"
       },
-      "type": "array"
+      "minItems": 1,
+      "type": "array",
+      "uniqueItems": true
     }
   },
   "required": [
@@ -1641,6 +1823,7 @@
     "content_fingerprint_algorithm",
     "pack_content_fingerprint",
     "proof_indexes",
+    "acceptance_policy",
     "contract_schema",
     "validation_commands",
     "source_docs",

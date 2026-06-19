@@ -1520,6 +1520,36 @@
           "status": "proved"
         },
         {
+          "id": "CC-T0073",
+          "lean_name": "Circle.primitiveHorizonContained_iff_dvd",
+          "name": "Primitive horizon containment iff divisibility",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0074",
+          "lean_name": "Circle.primeHorizon_iff_no_smaller_contained",
+          "name": "Prime horizon iff no smaller contained horizon",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0075",
+          "lean_name": "Circle.primeHorizon_iff_no_sqrt_contained",
+          "name": "Prime horizon iff no square-root contained horizon",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0076",
+          "lean_name": "Circle.primeHorizon_of_no_sqrt_contained",
+          "name": "Prime horizon from no square-root contained horizon",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0077",
+          "lean_name": "Circle.not_primeHorizon_has_sqrt_contained",
+          "name": "Non-prime horizon has square-root contained horizon",
+          "status": "proved"
+        },
+        {
           "id": "GEN-T0002",
           "lean_name": "Circle.Generative.coilOrbitGenerator_regenerates_orbit",
           "name": "Circle.Generative.coilOrbitGenerator_regenerates_orbit",
@@ -1867,6 +1897,12 @@
           "status": "proved"
         },
         {
+          "id": "CC-T0073",
+          "lean_name": "Circle.primitiveHorizonContained_iff_dvd",
+          "name": "Primitive horizon containment iff divisibility",
+          "status": "proved"
+        },
+        {
           "id": "GEN-T0006",
           "lean_name": "Circle.Generative.orbitDecompositionGenerator_generatedOrbits_length",
           "name": "Circle.Generative.orbitDecompositionGenerator_generatedOrbits_length",
@@ -2007,6 +2043,30 @@
           "id": "CC-T0054",
           "lean_name": "Circle.fullCoil_iff_coprime",
           "name": "Full coil iff coprime",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0074",
+          "lean_name": "Circle.primeHorizon_iff_no_smaller_contained",
+          "name": "Prime horizon iff no smaller contained horizon",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0075",
+          "lean_name": "Circle.primeHorizon_iff_no_sqrt_contained",
+          "name": "Prime horizon iff no square-root contained horizon",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0076",
+          "lean_name": "Circle.primeHorizon_of_no_sqrt_contained",
+          "name": "Prime horizon from no square-root contained horizon",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0077",
+          "lean_name": "Circle.not_primeHorizon_has_sqrt_contained",
+          "name": "Non-prime horizon has square-root contained horizon",
           "status": "proved"
         }
       ],
@@ -5747,6 +5807,12 @@
           "lean_name": "Circle.Applications.hybridFamilyIntervalRepairWindow_reaches_interval",
           "name": "Circle.Applications.hybridFamilyIntervalRepairWindow_reaches_interval",
           "status": "proved"
+        },
+        {
+          "id": "AIT-T0172",
+          "lean_name": "Circle.Applications.hybridFamilyCoversContext_iff_context_sub_one_le_window_of_not_final_lag_family_reach",
+          "name": "Circle.Applications.hybridFamilyCoversContext_iff_context_sub_one_le_window_of_not_final_lag_family_reach",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -6748,6 +6814,12 @@
           "id": "AIT-T0171",
           "lean_name": "Circle.Applications.hybridFamilyIntervalRepairWindow_reaches_interval",
           "name": "Circle.Applications.hybridFamilyIntervalRepairWindow_reaches_interval",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0172",
+          "lean_name": "Circle.Applications.hybridFamilyCoversContext_iff_context_sub_one_le_window_of_not_final_lag_family_reach",
+          "name": "Circle.Applications.hybridFamilyCoversContext_iff_context_sub_one_le_window_of_not_final_lag_family_reach",
           "status": "proved"
         }
       ],
@@ -8619,6 +8691,18 @@
           "id": "AIT-T0171",
           "lean_name": "Circle.Applications.hybridFamilyIntervalRepairWindow_reaches_interval",
           "name": "Circle.Applications.hybridFamilyIntervalRepairWindow_reaches_interval",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0172",
+          "lean_name": "Circle.Applications.hybridFamilyCoversContext_iff_context_sub_one_le_window_of_not_final_lag_family_reach",
+          "name": "Circle.Applications.hybridFamilyCoversContext_iff_context_sub_one_le_window_of_not_final_lag_family_reach",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0173",
+          "lean_name": "Circle.Applications.rawCandidateDedupLength_add_rawCandidateDedupLoss_eq_length",
+          "name": "Circle.Applications.rawCandidateDedupLength_add_rawCandidateDedupLoss_eq_length",
           "status": "proved"
         }
       ],
@@ -14565,6 +14649,18 @@
           "lean_name": "Circle.Applications.hybridFamilyIntervalRepairWindow_reaches_interval",
           "name": "Circle.Applications.hybridFamilyIntervalRepairWindow_reaches_interval",
           "status": "proved"
+        },
+        {
+          "id": "AIT-T0172",
+          "lean_name": "Circle.Applications.hybridFamilyCoversContext_iff_context_sub_one_le_window_of_not_final_lag_family_reach",
+          "name": "Circle.Applications.hybridFamilyCoversContext_iff_context_sub_one_le_window_of_not_final_lag_family_reach",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0173",
+          "lean_name": "Circle.Applications.rawCandidateDedupLength_add_rawCandidateDedupLoss_eq_length",
+          "name": "Circle.Applications.rawCandidateDedupLength_add_rawCandidateDedupLoss_eq_length",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -15869,6 +15965,24 @@
           "lean_name": "Circle.Applications.not_ropeTurnRatioFiniteMargin_of_exactWeakestGapMargin_lt_request",
           "name": "Circle.Applications.not_ropeTurnRatioFiniteMargin_of_exactWeakestGapMargin_lt_request",
           "status": "proved"
+        },
+        {
+          "id": "AIRA-T0232",
+          "lean_name": "Circle.Applications.ropeStandardChannel0D19_request_margin_open_gap_width",
+          "name": "Circle.Applications.ropeStandardChannel0D19_request_margin_open_gap_width",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0233",
+          "lean_name": "Circle.Applications.ropeStandardChannel0D19_contextRange_request_margin_semantic_trichotomy",
+          "name": "Circle.Applications.ropeStandardChannel0D19_contextRange_request_margin_semantic_trichotomy",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0234",
+          "lean_name": "Circle.Applications.ropeStandardChannel0D19_proved_request_firstChannel_bank_noNearTurn",
+          "name": "Circle.Applications.ropeStandardChannel0D19_proved_request_firstChannel_bank_noNearTurn",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -17159,6 +17273,24 @@
           "lean_name": "Circle.Applications.not_ropeTurnRatioFiniteMargin_of_exactWeakestGapMargin_lt_request",
           "name": "Circle.Applications.not_ropeTurnRatioFiniteMargin_of_exactWeakestGapMargin_lt_request",
           "status": "proved"
+        },
+        {
+          "id": "AIRA-T0232",
+          "lean_name": "Circle.Applications.ropeStandardChannel0D19_request_margin_open_gap_width",
+          "name": "Circle.Applications.ropeStandardChannel0D19_request_margin_open_gap_width",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0233",
+          "lean_name": "Circle.Applications.ropeStandardChannel0D19_contextRange_request_margin_semantic_trichotomy",
+          "name": "Circle.Applications.ropeStandardChannel0D19_contextRange_request_margin_semantic_trichotomy",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0234",
+          "lean_name": "Circle.Applications.ropeStandardChannel0D19_proved_request_firstChannel_bank_noNearTurn",
+          "name": "Circle.Applications.ropeStandardChannel0D19_proved_request_firstChannel_bank_noNearTurn",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -18357,6 +18489,18 @@
           "lean_name": "Circle.Applications.hybridFamilyIntervalRepairWindow_reaches_interval",
           "name": "Circle.Applications.hybridFamilyIntervalRepairWindow_reaches_interval",
           "status": "proved"
+        },
+        {
+          "id": "AIT-T0172",
+          "lean_name": "Circle.Applications.hybridFamilyCoversContext_iff_context_sub_one_le_window_of_not_final_lag_family_reach",
+          "name": "Circle.Applications.hybridFamilyCoversContext_iff_context_sub_one_le_window_of_not_final_lag_family_reach",
+          "status": "proved"
+        },
+        {
+          "id": "AIT-T0173",
+          "lean_name": "Circle.Applications.rawCandidateDedupLength_add_rawCandidateDedupLoss_eq_length",
+          "name": "Circle.Applications.rawCandidateDedupLength_add_rawCandidateDedupLoss_eq_length",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -19383,6 +19527,24 @@
           "id": "AIRA-T0231",
           "lean_name": "Circle.Applications.not_ropeTurnRatioFiniteMargin_of_exactWeakestGapMargin_lt_request",
           "name": "Circle.Applications.not_ropeTurnRatioFiniteMargin_of_exactWeakestGapMargin_lt_request",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0232",
+          "lean_name": "Circle.Applications.ropeStandardChannel0D19_request_margin_open_gap_width",
+          "name": "Circle.Applications.ropeStandardChannel0D19_request_margin_open_gap_width",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0233",
+          "lean_name": "Circle.Applications.ropeStandardChannel0D19_contextRange_request_margin_semantic_trichotomy",
+          "name": "Circle.Applications.ropeStandardChannel0D19_contextRange_request_margin_semantic_trichotomy",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0234",
+          "lean_name": "Circle.Applications.ropeStandardChannel0D19_proved_request_firstChannel_bank_noNearTurn",
+          "name": "Circle.Applications.ropeStandardChannel0D19_proved_request_firstChannel_bank_noNearTurn",
           "status": "proved"
         }
       ],
@@ -20754,6 +20916,24 @@
           "id": "AIRA-T0231",
           "lean_name": "Circle.Applications.not_ropeTurnRatioFiniteMargin_of_exactWeakestGapMargin_lt_request",
           "name": "Circle.Applications.not_ropeTurnRatioFiniteMargin_of_exactWeakestGapMargin_lt_request",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0232",
+          "lean_name": "Circle.Applications.ropeStandardChannel0D19_request_margin_open_gap_width",
+          "name": "Circle.Applications.ropeStandardChannel0D19_request_margin_open_gap_width",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0233",
+          "lean_name": "Circle.Applications.ropeStandardChannel0D19_contextRange_request_margin_semantic_trichotomy",
+          "name": "Circle.Applications.ropeStandardChannel0D19_contextRange_request_margin_semantic_trichotomy",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0234",
+          "lean_name": "Circle.Applications.ropeStandardChannel0D19_proved_request_firstChannel_bank_noNearTurn",
+          "name": "Circle.Applications.ropeStandardChannel0D19_proved_request_firstChannel_bank_noNearTurn",
           "status": "proved"
         }
       ],
@@ -22151,6 +22331,24 @@
           "lean_name": "Circle.Applications.not_ropeTurnRatioFiniteMargin_of_exactWeakestGapMargin_lt_request",
           "name": "Circle.Applications.not_ropeTurnRatioFiniteMargin_of_exactWeakestGapMargin_lt_request",
           "status": "proved"
+        },
+        {
+          "id": "AIRA-T0232",
+          "lean_name": "Circle.Applications.ropeStandardChannel0D19_request_margin_open_gap_width",
+          "name": "Circle.Applications.ropeStandardChannel0D19_request_margin_open_gap_width",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0233",
+          "lean_name": "Circle.Applications.ropeStandardChannel0D19_contextRange_request_margin_semantic_trichotomy",
+          "name": "Circle.Applications.ropeStandardChannel0D19_contextRange_request_margin_semantic_trichotomy",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0234",
+          "lean_name": "Circle.Applications.ropeStandardChannel0D19_proved_request_firstChannel_bank_noNearTurn",
+          "name": "Circle.Applications.ropeStandardChannel0D19_proved_request_firstChannel_bank_noNearTurn",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -23134,6 +23332,24 @@
           "lean_name": "Circle.Applications.not_ropeTurnRatioFiniteMargin_of_exactWeakestGapMargin_lt_request",
           "name": "Circle.Applications.not_ropeTurnRatioFiniteMargin_of_exactWeakestGapMargin_lt_request",
           "status": "proved"
+        },
+        {
+          "id": "AIRA-T0232",
+          "lean_name": "Circle.Applications.ropeStandardChannel0D19_request_margin_open_gap_width",
+          "name": "Circle.Applications.ropeStandardChannel0D19_request_margin_open_gap_width",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0233",
+          "lean_name": "Circle.Applications.ropeStandardChannel0D19_contextRange_request_margin_semantic_trichotomy",
+          "name": "Circle.Applications.ropeStandardChannel0D19_contextRange_request_margin_semantic_trichotomy",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0234",
+          "lean_name": "Circle.Applications.ropeStandardChannel0D19_proved_request_firstChannel_bank_noNearTurn",
+          "name": "Circle.Applications.ropeStandardChannel0D19_proved_request_firstChannel_bank_noNearTurn",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -23914,6 +24130,24 @@
           "id": "AIRA-T0221",
           "lean_name": "Circle.Applications.ropeStandardChannel0D19_request_margin_trichotomy",
           "name": "Circle.Applications.ropeStandardChannel0D19_request_margin_trichotomy",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0232",
+          "lean_name": "Circle.Applications.ropeStandardChannel0D19_request_margin_open_gap_width",
+          "name": "Circle.Applications.ropeStandardChannel0D19_request_margin_open_gap_width",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0233",
+          "lean_name": "Circle.Applications.ropeStandardChannel0D19_contextRange_request_margin_semantic_trichotomy",
+          "name": "Circle.Applications.ropeStandardChannel0D19_contextRange_request_margin_semantic_trichotomy",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0234",
+          "lean_name": "Circle.Applications.ropeStandardChannel0D19_proved_request_firstChannel_bank_noNearTurn",
+          "name": "Circle.Applications.ropeStandardChannel0D19_proved_request_firstChannel_bank_noNearTurn",
           "status": "proved"
         }
       ],

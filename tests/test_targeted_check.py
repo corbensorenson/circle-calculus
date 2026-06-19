@@ -4,6 +4,7 @@ import json
 import subprocess
 import sys
 
+from scripts.check_circle_ai_contract_docs import STRICT_RECEIPT_TOKENS_BY_KIND
 from scripts.targeted_check import plan_for_files, plan_payload
 
 
@@ -29,6 +30,26 @@ def assert_kind_contract_checks(commands: list[tuple[str, ...]], kind: str) -> N
     assert not contains_command(commands, "make", "circle-ai-contracts-ready")
 
 
+def strict_receipt_command(commands: list[tuple[str, ...]], kind: str) -> str | None:
+    for command in commands:
+        joined = " ".join(command)
+        if (
+            "scripts/circle_ai_contract_ready.py" in joined
+            and f"--kind {kind}" in joined
+            and "--receipt" in joined
+        ):
+            return joined
+    return None
+
+
+def assert_strict_receipt_check(commands: list[tuple[str, ...]], kind: str) -> None:
+    joined = strict_receipt_command(commands, kind)
+    assert joined is not None
+    assert "--format json" in joined
+    for token in STRICT_RECEIPT_TOKENS_BY_KIND[kind]:
+        assert token in joined
+
+
 def test_plan_payload_is_machine_readable() -> None:
     files = ["scripts/targeted_check.py"]
     checks = plan_for_files(files)
@@ -42,6 +63,12 @@ def test_plan_payload_is_machine_readable() -> None:
     assert payload["release_gate_commands"] == ["make check", "make living-book-check"]
     assert payload["ai_contract_validation_scope"] == "all_contracts"
     assert "sparse_attention_coverage" in payload["impacted_ai_contract_kinds"]
+    assert {
+        "kv_cache_ring_buffer",
+        "recurrence_schedule",
+        "rope_position_distinguishability",
+        "sparse_attention_coverage",
+    }.issubset(set(payload["strict_receipt_kinds"]))
     assert isinstance(payload["checks"], list)
     assert payload["checks"]
     first_check = payload["checks"][0]
@@ -70,6 +97,7 @@ def test_targeted_check_cli_emits_json_plan() -> None:
     assert payload["validation_scope"] == "targeted_edit_loop"
     assert payload["release_gate_required"] is True
     assert payload["ai_contract_validation_scope"] == "all_contracts"
+    assert "rope_position_distinguishability" in payload["strict_receipt_kinds"]
     assert any(
         "tests/test_targeted_check.py" in " ".join(check["command"])
         for check in payload["checks"]
@@ -126,6 +154,10 @@ def test_targeted_check_text_plan_labels_release_gate() -> None:
         "targeted-check AI contract validation scope: all_contracts"
         in result.stdout
     )
+    assert (
+        "targeted-check strict receipt kinds: "
+        in result.stdout
+    )
 
 
 def test_plan_payload_reports_kind_specific_ai_contract_scope() -> None:
@@ -135,6 +167,7 @@ def test_plan_payload_reports_kind_specific_ai_contract_scope() -> None:
 
     assert payload["ai_contract_validation_scope"] == "kind_specific"
     assert payload["impacted_ai_contract_kinds"] == ["seed_rule_exact_regeneration"]
+    assert payload["strict_receipt_kinds"] == []
 
 
 def test_plan_payload_reports_no_ai_contract_scope_for_core_math() -> None:
@@ -144,6 +177,7 @@ def test_plan_payload_reports_no_ai_contract_scope_for_core_math() -> None:
 
     assert payload["ai_contract_validation_scope"] == "none"
     assert payload["impacted_ai_contract_kinds"] == []
+    assert payload["strict_receipt_kinds"] == []
 
 
 def test_rope_python_change_runs_rope_tests_without_full_suite() -> None:
@@ -162,6 +196,66 @@ def test_application_lean_change_runs_local_lean_and_guardrails() -> None:
     assert contains_command(commands, "scripts/check_manifest_lean_names.py")
     assert contains_command(commands, "scripts/check_application_guardrails.py")
     assert contains_command(commands, "scripts/check_proof_depth_audit.py", "--fail-on-review-required")
+    assert_kind_contract_checks(commands, "rope_position_distinguishability")
+
+
+def test_rope_frontier_lean_change_runs_rope_contract_checks() -> None:
+    commands = commands_for(["Circle/Applications/RoPEFrontier.lean"])
+
+    assert ("lake", "build", "Circle.Applications.RoPEFrontier") in commands
+    assert contains_command(commands, "scripts/check_application_guardrails.py")
+    assert_kind_contract_checks(commands, "rope_position_distinguishability")
+    assert contains_command(
+        commands,
+        "scripts/circle_ai_contract_ready.py",
+        "--digest",
+        "d19_proved_first_channel_bank_transfer",
+        "d19_proved_first_channel_bank_shape",
+        "d19_proved_first_channel_bank_tolerance_rule",
+    )
+    assert not contains_command(commands, "make", "circle-ai-contracts-ready")
+
+
+def test_transformer_lean_change_runs_sparse_contract_checks() -> None:
+    commands = commands_for(["Circle/Applications/CircleTransformer.lean"])
+
+    assert ("lake", "build", "Circle.Applications.CircleTransformer") in commands
+    assert contains_command(commands, "scripts/check_application_guardrails.py")
+    assert_kind_contract_checks(commands, "sparse_attention_coverage")
+    assert contains_command(
+        commands,
+        "scripts/circle_ai_contract_ready.py",
+        "--digest",
+        "complete_repair_window",
+        "complete_repair_window_minimal_for_declared_stride_family",
+        "complete_repair_window_minimal_witness_lag",
+    )
+    assert not contains_command(commands, "make", "circle-ai-contracts-ready")
+
+
+def test_flagship_kind_specific_changes_run_strict_receipt_checks() -> None:
+    path_kinds = {
+        "docs/ROPE_CERTIFIER_QUICKSTART.md": "rope_position_distinguishability",
+        "docs/KV_CACHE_CERTIFIER_QUICKSTART.md": "kv_cache_ring_buffer",
+        "site/chapters/applications/sparse_attention_contract.qmd": (
+            "sparse_attention_coverage"
+        ),
+        "scripts/recurrence_schedule_certify.py": "recurrence_schedule",
+    }
+
+    for path, kind in path_kinds.items():
+        commands = commands_for([path])
+
+        assert_kind_contract_checks(commands, kind)
+        assert_strict_receipt_check(commands, kind)
+        assert not contains_command(commands, "make", "circle-ai-contracts-ready")
+
+
+def test_secondary_kind_specific_changes_do_not_run_flagship_receipts() -> None:
+    commands = commands_for(["scripts/seed_rule_certify.py"])
+
+    assert_kind_contract_checks(commands, "seed_rule_exact_regeneration")
+    assert strict_receipt_command(commands, "seed_rule_exact_regeneration") is None
 
 
 def test_site_widget_change_runs_widget_checks() -> None:
@@ -217,6 +311,21 @@ def test_generic_contract_pack_change_runs_pack_tests() -> None:
 
     assert contains_command(commands, "pytest", "tests/test_circle_ai_contract_pack.py")
     assert contains_command(commands, "pytest", "tests/test_circle_ai_contract_consumer.py")
+    assert contains_command(
+        commands,
+        "pytest",
+        "tests/test_circle_ai_contract_acceptance_policy.py",
+    )
+    assert contains_command(
+        commands,
+        "pytest",
+        "tests/test_example_consume_circle_ai_contract_pack.py",
+    )
+    assert contains_command(
+        commands,
+        "pytest",
+        "tests/test_downstream_ci_accept_circle_ai_contracts.py",
+    )
     assert contains_command(commands, "make", "circle-ai-contracts-ready")
     assert not contains_command(commands, "pytest", "tests/test_stride_family_certifier_cli.py")
     assert ("make", "check") not in commands
@@ -228,7 +337,46 @@ def test_generic_contract_exporter_change_runs_pack_tests_not_sparse_tests() -> 
     assert contains_command(commands, "make", "circle-ai-contracts-ready")
     assert contains_command(commands, "pytest", "tests/test_circle_ai_contract_pack.py")
     assert contains_command(commands, "pytest", "tests/test_circle_ai_contract_consumer.py")
+    assert contains_command(
+        commands,
+        "pytest",
+        "tests/test_circle_ai_contract_acceptance_policy.py",
+    )
+    assert contains_command(
+        commands,
+        "pytest",
+        "tests/test_example_consume_circle_ai_contract_pack.py",
+    )
+    assert contains_command(
+        commands,
+        "pytest",
+        "tests/test_downstream_ci_accept_circle_ai_contracts.py",
+    )
+
+
+def test_standalone_downstream_ci_example_change_runs_standalone_tests() -> None:
+    commands = commands_for(["examples/downstream_ci_accept_circle_ai_contracts.py"])
+
+    assert contains_command(commands, "make", "circle-ai-contracts-ready")
+    assert contains_command(commands, "pytest", "tests/test_circle_ai_contract_pack.py")
+    assert contains_command(
+        commands,
+        "pytest",
+        "tests/test_downstream_ci_accept_circle_ai_contracts.py",
+    )
     assert not contains_command(commands, "pytest", "tests/test_stride_family_certifier_cli.py")
+
+
+def test_standalone_downstream_schema_checker_change_runs_standalone_tests() -> None:
+    commands = commands_for(["scripts/check_downstream_ci_acceptance_example.py"])
+
+    assert contains_command(commands, "make", "circle-ai-contracts-ready")
+    assert contains_command(commands, "pytest", "tests/test_circle_ai_contract_pack.py")
+    assert contains_command(
+        commands,
+        "pytest",
+        "tests/test_downstream_ci_accept_circle_ai_contracts.py",
+    )
 
 
 def test_recurrence_certifier_change_runs_recurrence_and_pack_tests() -> None:
@@ -316,6 +464,29 @@ def test_contract_quickstart_doc_change_runs_kind_check_not_all_contracts() -> N
     assert not contains_command(commands, "make", "circle-ai-contracts-ready")
 
 
+def test_kv_quickstart_doc_change_digest_includes_sink_policy_fields() -> None:
+    commands = commands_for(["docs/KV_CACHE_CERTIFIER_QUICKSTART.md"])
+
+    assert_kind_contract_checks(commands, "kv_cache_ring_buffer")
+    assert contains_command(
+        commands,
+        "scripts/circle_ai_contract_ready.py",
+        "--digest",
+        "sink_tokens_retained_by_policy",
+        "sink_window_exact_policy",
+        "sink_tokens_outside_ordinary_rolling_window",
+    )
+    assert not contains_command(commands, "make", "circle-ai-contracts-ready")
+
+
+def test_rope_review_packet_change_runs_rope_check_not_all_contracts() -> None:
+    commands = commands_for(["docs/ROPE_CERTIFIER_REVIEW_PACKET.md"])
+
+    assert_kind_contract_checks(commands, "rope_position_distinguishability")
+    assert contains_command(commands, "scripts/site/check_site_static_source_links.py")
+    assert not contains_command(commands, "make", "circle-ai-contracts-ready")
+
+
 def test_ai_contract_living_book_change_runs_contract_docs_check() -> None:
     commands = commands_for(["site/chapters/applications/ai_contract_pack_audit.qmd"])
 
@@ -335,6 +506,19 @@ def test_ai_contract_suite_lesson_change_runs_contract_pack_checks() -> None:
     assert not contains_command(commands, "scripts/check_circle_ai_contract_docs.py")
 
 
+def test_ai_contract_ladder_pages_run_broad_contract_checks() -> None:
+    for path in (
+        "site/chapters/applications/ai_contract_ladder.qmd",
+        "site/chapters/applications/ai_contract_ladder_audit.qmd",
+    ):
+        commands = commands_for([path])
+
+        assert contains_command(commands, "scripts/site/check_site_manifest_links.py")
+        assert contains_command(commands, "make", "circle-ai-contracts-ready")
+        assert contains_command(commands, "pytest", "tests/test_circle_ai_contract_pack.py")
+        assert contains_command(commands, "pytest", "tests/test_circle_ai_contract_consumer.py")
+
+
 def test_flagship_contract_lesson_change_runs_contract_pack_checks() -> None:
     commands = commands_for(["site/chapters/applications/sparse_attention_contract.qmd"])
 
@@ -344,12 +528,64 @@ def test_flagship_contract_lesson_change_runs_contract_pack_checks() -> None:
     assert not contains_command(commands, "pytest", "tests/test_circle_ai_contract_consumer.py")
 
 
+def test_secondary_contract_lesson_changes_run_kind_specific_checks() -> None:
+    page_kinds = {
+        "site/chapters/applications/strided_candidate_fanout.qmd": (
+            "strided_candidate_fanout"
+        ),
+        "site/chapters/applications/cyclic_memory_residue_winding.qmd": (
+            "cyclic_memory_residue_winding"
+        ),
+        "site/chapters/applications/multicoil_phase_feature.qmd": (
+            "multicoil_phase_feature"
+        ),
+        "site/chapters/applications/circulant_block_cyclic_mixer.qmd": (
+            "circulant_block_cyclic_mixer"
+        ),
+    }
+
+    for page, kind in page_kinds.items():
+        commands = commands_for([page])
+
+        assert contains_command(commands, "scripts/site/check_site_manifest_links.py")
+        assert_kind_contract_checks(commands, kind)
+        assert not contains_command(commands, "pytest", "tests/test_circle_ai_contract_pack.py")
+        assert not contains_command(commands, "pytest", "tests/test_circle_ai_contract_consumer.py")
+
+
 def test_contract_consumer_adapter_change_runs_consumer_tests() -> None:
     commands = commands_for(["circle_math/applications/circle_ai_contract_consumer.py"])
 
     assert contains_command(commands, "make", "circle-ai-contracts-ready")
     assert contains_command(commands, "pytest", "tests/test_circle_ai_contract_pack.py")
     assert contains_command(commands, "pytest", "tests/test_circle_ai_contract_consumer.py")
+    assert contains_command(
+        commands,
+        "pytest",
+        "tests/test_circle_ai_contract_acceptance_policy.py",
+    )
+    assert contains_command(
+        commands,
+        "pytest",
+        "tests/test_example_consume_circle_ai_contract_pack.py",
+    )
+
+
+def test_contract_acceptance_policy_change_runs_policy_gate_tests() -> None:
+    commands = commands_for(["examples/circle_ai_contract_acceptance_policy.json"])
+
+    assert contains_command(commands, "make", "circle-ai-contracts-ready")
+    assert contains_command(commands, "pytest", "tests/test_circle_ai_contract_pack.py")
+    assert contains_command(
+        commands,
+        "pytest",
+        "tests/test_circle_ai_contract_acceptance_policy.py",
+    )
+    assert contains_command(
+        commands,
+        "pytest",
+        "tests/test_example_consume_circle_ai_contract_pack.py",
+    )
 
 
 def test_theseus_compatibility_source_change_runs_public_and_compatibility_checks() -> None:
@@ -447,6 +683,22 @@ def test_contract_pack_schema_json_change_runs_pack_validator() -> None:
     assert contains_command(commands, "scripts/site/check_site_manifest_links.py")
     assert contains_command(commands, "make", "circle-ai-contracts-ready")
     assert contains_command(commands, "pytest", "tests/test_circle_ai_contract_pack.py")
+
+
+def test_acceptance_policy_schema_json_change_runs_pack_validator() -> None:
+    paths = [
+        "site/data/generated/circle_ai_contract_acceptance_policy.schema.json",
+        "site/data/generated/circle_ai_contract_acceptance_policy_report.schema.json",
+        "site/data/generated/circle_ai_contract_acceptance_receipt.schema.json",
+        "site/data/generated/circle_ai_downstream_rejection_report.schema.json",
+    ]
+
+    for path in paths:
+        commands = commands_for([path])
+
+        assert contains_command(commands, "scripts/site/check_site_manifest_links.py")
+        assert contains_command(commands, "make", "circle-ai-contracts-ready")
+        assert contains_command(commands, "pytest", "tests/test_circle_ai_contract_pack.py")
 
 
 def test_theseus_contract_json_change_runs_compatibility_validator() -> None:

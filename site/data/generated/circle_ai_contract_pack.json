@@ -1,34 +1,77 @@
 {
+  "acceptance_policy": {
+    "checker": "scripts/check_circle_ai_contract_acceptance_policy.py",
+    "default_policy_path": "examples/circle_ai_contract_acceptance_policy.json",
+    "fingerprint_refresh_command": "python scripts/circle_ai_contract_ready.py --print-refreshed-policy",
+    "pinned_requirement_keys": [
+      "required_fields",
+      "required_theorem_ids",
+      "required_recommendation_ids",
+      "required_recommendation_evidence_fields",
+      "required_recommendation_theorem_ids",
+      "required_recommendation_action_parameters",
+      "required_recommendation_action_parameter_paths",
+      "expected_pack_fingerprint",
+      "expected_contract_fingerprint"
+    ],
+    "policy_schema_path": "site/data/generated/circle_ai_contract_acceptance_policy.schema.json",
+    "receipt_schema_id": "circle_calculus.ai_contract_acceptance_receipt.v0",
+    "receipt_schema_path": "site/data/generated/circle_ai_contract_acceptance_receipt.schema.json",
+    "rejection_report_schema_id": "circle_calculus.downstream_ci_rejection_report.v0",
+    "rejection_report_schema_path": "site/data/generated/circle_ai_downstream_rejection_report.schema.json",
+    "report_schema_id": "circle_calculus.ai_contract_acceptance_policy_report.v0",
+    "report_schema_path": "site/data/generated/circle_ai_contract_acceptance_policy_report.schema.json",
+    "rule": "Use the acceptance policy when a downstream project wants a locked receipt. Refreshing fingerprints must preserve required fields, theorem ids, recommendation ids, recommendation evidence fields, recommendation theorem ids, recommendation action-parameter pins, and recommendation action-parameter path pins.",
+    "schema_id": "circle_calculus.ai_contract_acceptance_policy.v0",
+    "standalone_checker": "examples/downstream_ci_accept_circle_ai_contracts.py",
+    "standalone_schema_checker": "scripts/check_downstream_ci_acceptance_example.py",
+    "validation_commands": [
+      "python scripts/check_circle_ai_contract_acceptance_policy.py",
+      "python scripts/check_circle_ai_contract_acceptance_policy.py --format json",
+      "python scripts/circle_ai_contract_ready.py --print-refreshed-policy",
+      "python scripts/circle_ai_contract_ready.py --acceptance-policy-report",
+      "python scripts/circle_ai_contract_ready.py --acceptance-policy-report --format json",
+      "python scripts/check_downstream_ci_acceptance_example.py --summary",
+      "python examples/downstream_ci_accept_circle_ai_contracts.py --format json",
+      "python examples/downstream_ci_accept_circle_ai_contracts.py --format text",
+      "python examples/downstream_ci_accept_circle_ai_contracts.py --format json --planner-recommendation ROPE-AUDIT-EXACT-INTEGER-PHASE-BANK --include-values",
+      "python examples/downstream_ci_accept_circle_ai_contracts.py --format json --planner-recommendation SPARSE-LOCAL-FIRST-INTERVAL-REPAIR --include-values",
+      "python examples/downstream_ci_accept_circle_ai_contracts.py --format json --planner-recommendation SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK --include-values",
+      "python examples/downstream_ci_accept_circle_ai_contracts.py --format json --planner-recommendation KV-USE-SINK-ROLLING-WINDOW-REQUEST --include-values",
+      "python examples/downstream_ci_accept_circle_ai_contracts.py --format json --planner-recommendation RECURRENCE-USE-ACTIVE-TOKEN-WORK-SCHEDULE --include-values",
+      "python examples/downstream_ci_accept_circle_ai_contracts.py --format json --planner-recommendation ROPE-USE-D19-MARGIN-FRONTIER --include-values"
+    ]
+  },
   "claim_boundary": "These contracts expose finite cyclic structure for external AI/math tools. They do not prove model quality, reasoning ability, context length, speed, memory scaling, deployment safety, transfer, or ASI.",
   "content_fingerprint_algorithm": "sha256-json-v1",
   "contract_fingerprint_index": {
     "circulant_block_cyclic_mixer": {
-      "content_fingerprint": "0106776ae5f4064f760a6e0553b7e3611b3c7f72ca4c28d783fdb25a16d1799f",
+      "content_fingerprint": "b3e3e0cf420d9e8e79a28a55ef8322f9a214c8d5a957dd8b06e5e5373c684ea5",
       "content_fingerprint_algorithm": "sha256-json-v1",
       "id": "CC-AI-CONTRACT-MIXER-001"
     },
     "cyclic_memory_residue_winding": {
-      "content_fingerprint": "2a9d06d685fafe82b81b974f713c4608a3e7d244de925a469b19d05414afd32b",
+      "content_fingerprint": "a25d841aff585b59519919cad25d89a3f76cd8ddb11fb1549d593f7f2f09c62a",
       "content_fingerprint_algorithm": "sha256-json-v1",
       "id": "CC-AI-CONTRACT-MEMORY-001"
     },
     "kv_cache_ring_buffer": {
-      "content_fingerprint": "6d5a96b27536881bcc0db893ce46318dbdac0b09d1d810d192c9a7395424f103",
+      "content_fingerprint": "89d20fb1753aba81590cbdb4e409b5b55577cc81d00c3318a9f23c293120a33c",
       "content_fingerprint_algorithm": "sha256-json-v1",
       "id": "CC-AI-CONTRACT-KV-001"
     },
     "multicoil_phase_feature": {
-      "content_fingerprint": "299077a049f48dbd0747a942daf3104166acddddc72d467166da36228565e4cd",
+      "content_fingerprint": "4b562beab64ec863903e4267f50c90049f0d3fa612f6c1bb2f06ad07e821ffd7",
       "content_fingerprint_algorithm": "sha256-json-v1",
       "id": "CC-AI-CONTRACT-PHASE-FEATURE-001"
     },
     "recurrence_schedule": {
-      "content_fingerprint": "6c1c9ab8b903e6faffd3aaefc768522382fff641e5e19d2bb5cce63ee0a9790e",
+      "content_fingerprint": "59e0234bb0ffcb4b63fa83ce5e5ce226216b9a28073183624178cf03ea2f6f52",
       "content_fingerprint_algorithm": "sha256-json-v1",
       "id": "CC-AI-CONTRACT-RECURRENCE-001"
     },
     "rope_position_distinguishability": {
-      "content_fingerprint": "fdfe6c68cecaf6001d48fd14fcc9ab52412cdce8d348f34f66162af494260cb7",
+      "content_fingerprint": "95ee619c481eaeb2248da3193327587d846db4ae9b240d80efd2821344ed4bf0",
       "content_fingerprint_algorithm": "sha256-json-v1",
       "id": "CC-AI-CONTRACT-ROPE-001"
     },
@@ -38,12 +81,12 @@
       "id": "CC-AI-CONTRACT-SEED-RULE-001"
     },
     "sparse_attention_coverage": {
-      "content_fingerprint": "3f7a37ff99db14650d5547e266920ee195988cb7d5ea8d8014c989a1d893ed88",
+      "content_fingerprint": "d28f3828ae2780bac707ba07af533b8bc71c3be5d1057213dc5e8293a1e2ed4a",
       "content_fingerprint_algorithm": "sha256-json-v1",
       "id": "CC-AI-CONTRACT-SPARSE-001"
     },
     "strided_candidate_fanout": {
-      "content_fingerprint": "5cddcaf12474a8f9b6992a26cd5ee666be7cac1458d4f58d7530c099c644b6b5",
+      "content_fingerprint": "d4c878563747da9c9f1f55cd689f04e2a0a8e31ce9429a138341ec4e27ee3799",
       "content_fingerprint_algorithm": "sha256-json-v1",
       "id": "CC-AI-CONTRACT-FANOUT-001"
     }
@@ -57,7 +100,7 @@
       "id": "CC-AI-CONTRACT-MIXER-001",
       "kind": "circulant_block_cyclic_mixer",
       "living_book_pages": [
-        "site/chapters/applications/ai.qmd"
+        "site/chapters/applications/circulant_block_cyclic_mixer.qmd"
       ],
       "missing_minimum_field_count": 0,
       "missing_minimum_fields": [],
@@ -86,7 +129,7 @@
       "id": "CC-AI-CONTRACT-MEMORY-001",
       "kind": "cyclic_memory_residue_winding",
       "living_book_pages": [
-        "site/chapters/applications/ai.qmd"
+        "site/chapters/applications/cyclic_memory_residue_winding.qmd"
       ],
       "missing_minimum_field_count": 0,
       "missing_minimum_fields": [],
@@ -144,7 +187,7 @@
       "id": "CC-AI-CONTRACT-PHASE-FEATURE-001",
       "kind": "multicoil_phase_feature",
       "living_book_pages": [
-        "site/chapters/applications/ai.qmd"
+        "site/chapters/applications/multicoil_phase_feature.qmd"
       ],
       "missing_minimum_field_count": 0,
       "missing_minimum_fields": [],
@@ -217,7 +260,7 @@
       ],
       "ready_for_downstream_fixture_use": true,
       "required_fields_present": true,
-      "theorem_count": 49,
+      "theorem_count": 54,
       "unproved_theorem_count": 0,
       "unproved_theorem_ids": [],
       "unresolved_theorem_count": 0,
@@ -277,7 +320,7 @@
       ],
       "ready_for_downstream_fixture_use": true,
       "required_fields_present": true,
-      "theorem_count": 140,
+      "theorem_count": 141,
       "unproved_theorem_count": 0,
       "unproved_theorem_ids": [],
       "unresolved_theorem_count": 0,
@@ -291,7 +334,7 @@
       "id": "CC-AI-CONTRACT-FANOUT-001",
       "kind": "strided_candidate_fanout",
       "living_book_pages": [
-        "site/chapters/applications/sparse_attention_contract.qmd"
+        "site/chapters/applications/strided_candidate_fanout.qmd"
       ],
       "missing_minimum_field_count": 0,
       "missing_minimum_fields": [],
@@ -307,7 +350,7 @@
       ],
       "ready_for_downstream_fixture_use": true,
       "required_fields_present": true,
-      "theorem_count": 3,
+      "theorem_count": 4,
       "unproved_theorem_count": 0,
       "unproved_theorem_ids": [],
       "unresolved_theorem_count": 0,
@@ -1103,6 +1146,16 @@
           "proof_role": "finite_quantity_or_bound",
           "value_kind": "null"
         },
+        "d19_context_range_max_inclusive": {
+          "description": "Inclusive upper bound for the theorem-backed D19 standard-channel-0 request-classifier context range.",
+          "proof_role": "fixture_parameter_or_observation",
+          "value_kind": "integer"
+        },
+        "d19_context_range_min_exclusive": {
+          "description": "Strict lower bound for the theorem-backed D19 standard-channel-0 request-classifier context range.",
+          "proof_role": "fixture_parameter_or_observation",
+          "value_kind": "integer"
+        },
         "d19_impossible_request_status": {
           "description": "Required `rope_position_distinguishability` evidence field for `d19 impossible request status`. Read it with the contract's theorem ids, proof_status block, and non-claim boundary.",
           "proof_role": "theorem_backed_check",
@@ -1113,6 +1166,11 @@
           "proof_role": "theorem_backed_check",
           "value_kind": "boolean"
         },
+        "d19_in_range_semantic_trichotomy": {
+          "description": "Boolean Lean-backed guard that, inside the D19 context range, the requested margin is in exactly one semantic classifier branch: proved, impossible, or the deliberate undecided open gap.",
+          "proof_role": "fixture_parameter_or_observation",
+          "value_kind": "boolean"
+        },
         "d19_margin_status_exhaustive": {
           "description": "Required `rope_position_distinguishability` evidence field for `d19 margin status exhaustive`. Read it with the contract's theorem ids, proof_status block, and non-claim boundary.",
           "proof_role": "finite_quantity_or_bound",
@@ -1120,6 +1178,21 @@
         },
         "d19_margin_thresholds_ordered": {
           "description": "Required `rope_position_distinguishability` evidence field for `d19 margin thresholds ordered`. Read it with the contract's theorem ids, proof_status block, and non-claim boundary.",
+          "proof_role": "theorem_backed_check",
+          "value_kind": "boolean"
+        },
+        "d19_proved_first_channel_bank_shape": {
+          "description": "Required `rope_position_distinguishability` evidence field for `d19 proved first channel bank shape`. Read it with the contract's theorem ids, proof_status block, and non-claim boundary.",
+          "proof_role": "theorem_backed_check",
+          "value_kind": "string"
+        },
+        "d19_proved_first_channel_bank_tolerance_rule": {
+          "description": "Tolerance premise for applying the D19 first-channel finite-bank no-near-turn theorem.",
+          "proof_role": "theorem_backed_check",
+          "value_kind": "string"
+        },
+        "d19_proved_first_channel_bank_transfer": {
+          "description": "Boolean check that the proved D19 standard-channel request branch also transfers to a conditional first-channel finite-bank no-near-turn certificate.",
           "proof_role": "theorem_backed_check",
           "value_kind": "boolean"
         },
@@ -1137,6 +1210,26 @@
           "description": "Required `rope_position_distinguishability` evidence field for `d19 proved request theorem backed classification`. Read it with the contract's theorem ids, proof_status block, and non-claim boundary.",
           "proof_role": "theorem_backed_check",
           "value_kind": "boolean"
+        },
+        "d19_undecided_margin_interval_width": {
+          "description": "Exact rational width of the D19 open interval between the proved margin threshold and the impossible margin floor.",
+          "proof_role": "finite_quantity_or_bound",
+          "value_kind": "string"
+        },
+        "d19_undecided_margin_open_gap": {
+          "description": "Boolean Lean-backed guard that the undecided D19 request margin lies strictly between the proved threshold and the impossible threshold.",
+          "proof_role": "theorem_backed_check",
+          "value_kind": "boolean"
+        },
+        "d19_undecided_request_relation": {
+          "description": "Stable request-relation label for the D19 undecided probe; it records that the requested margin is strictly between the two theorem-backed thresholds.",
+          "proof_role": "fixture_parameter_or_observation",
+          "value_kind": "string"
+        },
+        "d19_undecided_request_status": {
+          "description": "Request status for a D19 standard-channel-0 margin deliberately chosen inside the theorem-backed open interval between the proved and impossible thresholds.",
+          "proof_role": "fixture_parameter_or_observation",
+          "value_kind": "string"
         },
         "exact_discrete_pass": {
           "description": "Required `rope_position_distinguishability` evidence field for `exact discrete pass`. Read it with the contract's theorem ids, proof_status block, and non-claim boundary.",
@@ -1880,13 +1973,23 @@
         "total_bank_collision_pair_count",
         "real_phase_margin_pass",
         "worst_margin_radians",
+        "d19_context_range_min_exclusive",
+        "d19_context_range_max_inclusive",
         "d19_proved_request_status",
         "d19_proved_request_theorem_backed_classification",
         "d19_impossible_request_status",
         "d19_impossible_request_theorem_backed_classification",
+        "d19_undecided_request_status",
+        "d19_undecided_margin_open_gap",
+        "d19_undecided_margin_interval_width",
+        "d19_undecided_request_relation",
         "d19_margin_thresholds_ordered",
         "d19_proved_impossible_branches_disjoint",
         "d19_margin_status_exhaustive",
+        "d19_in_range_semantic_trichotomy",
+        "d19_proved_first_channel_bank_transfer",
+        "d19_proved_first_channel_bank_shape",
+        "d19_proved_first_channel_bank_tolerance_rule",
         "proof_layers"
       ],
       "seed_rule_exact_regeneration": [
@@ -2027,6 +2130,7 @@
       "integration_use",
       "ordinary_baselines",
       "not_claimed",
+      "source_paper",
       "quickstart_docs",
       "living_book_pages",
       "entrypoints",
@@ -2046,13 +2150,23 @@
           "total_bank_collision_pair_count",
           "real_phase_margin_pass",
           "worst_margin_radians",
+          "d19_context_range_min_exclusive",
+          "d19_context_range_max_inclusive",
           "d19_proved_request_status",
           "d19_proved_request_theorem_backed_classification",
           "d19_impossible_request_status",
           "d19_impossible_request_theorem_backed_classification",
+          "d19_undecided_request_status",
+          "d19_undecided_margin_open_gap",
+          "d19_undecided_margin_interval_width",
+          "d19_undecided_request_relation",
           "d19_margin_thresholds_ordered",
           "d19_proved_impossible_branches_disjoint",
           "d19_margin_status_exhaustive",
+          "d19_in_range_semantic_trichotomy",
+          "d19_proved_first_channel_bank_transfer",
+          "d19_proved_first_channel_bank_shape",
+          "d19_proved_first_channel_bank_tolerance_rule",
           "proof_layers"
         ],
         "missing_minimum_fields": [],
@@ -2062,7 +2176,7 @@
         "unproved_theorem_ids": [],
         "unresolved_theorem_ids": []
       },
-      "content_fingerprint": "fdfe6c68cecaf6001d48fd14fcc9ab52412cdce8d348f34f66162af494260cb7",
+      "content_fingerprint": "95ee619c481eaeb2248da3193327587d846db4ae9b240d80efd2821344ed4bf0",
       "content_fingerprint_algorithm": "sha256-json-v1",
       "contract_passed": true,
       "dictionary_ids": [
@@ -2083,17 +2197,32 @@
         "d19_impossible_margin_floor": "1/328458",
         "d19_impossible_request_margin": "1/328458",
         "d19_impossible_request_margin_applies": true,
+        "d19_impossible_request_relation": "at_or_above_impossible_floor",
         "d19_impossible_request_status": "impossible",
         "d19_impossible_request_theorem_backed_classification": true,
+        "d19_in_range_semantic_trichotomy": true,
         "d19_margin_status_exhaustive": true,
         "d19_margin_thresholds_ordered": true,
+        "d19_proved_first_channel_bank_shape": "standard_channel0_first",
+        "d19_proved_first_channel_bank_tolerance_rule": "Lean conclusion applies when tolerance < fullTurn * requestedMargin.",
+        "d19_proved_first_channel_bank_transfer": true,
         "d19_proved_impossible_branches_disjoint": true,
         "d19_proved_margin": "1/328459",
         "d19_proved_request_margin": "1/328459",
         "d19_proved_request_margin_applies": true,
+        "d19_proved_request_relation": "at_or_below_proved_threshold",
         "d19_proved_request_status": "proved",
         "d19_proved_request_theorem_backed_classification": true,
         "d19_request_context": 131072,
+        "d19_undecided_margin_interval_lower_exclusive": "1/328459",
+        "d19_undecided_margin_interval_upper_exclusive": "1/328458",
+        "d19_undecided_margin_interval_width": "1/107884986222",
+        "d19_undecided_margin_open_gap": true,
+        "d19_undecided_request_failure_reason": "requested_margin_between_proved_and_impossible_thresholds",
+        "d19_undecided_request_margin": "2/656917",
+        "d19_undecided_request_relation": "strictly_between_thresholds",
+        "d19_undecided_request_status": "undecided_margin_gap",
+        "d19_undecided_request_theorem_backed_classification": false,
         "discretization": "round",
         "exact_discrete_pass": true,
         "head_dim": 128,
@@ -2167,8 +2296,56 @@
         },
         {
           "action_kind": "use_d19_theorem_backed_margin_frontier",
+          "applicable_context_range": {
+            "max_inclusive": 196608,
+            "min_exclusive": 103993
+          },
+          "classifier_regions": [
+            {
+              "condition": "requested_margin <= 1/328459",
+              "meaning": "Inside 103993 < context <= 196608, the requested one-channel standard RoPE margin is certified. The proved branch also transfers to a conditional first-channel finite-bank no-near-turn guarantee.",
+              "region": "proved",
+              "request_status": "proved",
+              "theorem_backed_classification": true,
+              "theorem_backed_region": true,
+              "theorem_ids": [
+                "AIRA-T0216",
+                "AIRA-T0217",
+                "AIRA-T0233"
+              ]
+            },
+            {
+              "condition": "1/328459 < requested_margin < 1/328458",
+              "meaning": "Lean identifies this as the open interval between the proved and impossible branches; the current contract deliberately does not certify or reject that margin.",
+              "region": "undecided_margin_gap",
+              "request_status": "undecided_margin_gap",
+              "theorem_backed_classification": false,
+              "theorem_backed_region": true,
+              "theorem_ids": [
+                "AIRA-T0220",
+                "AIRA-T0221",
+                "AIRA-T0232",
+                "AIRA-T0233"
+              ]
+            },
+            {
+              "condition": "1/328458 <= requested_margin",
+              "meaning": "Inside 103993 < context <= 196608, gap 103993 obstructs any advertised margin at or above 1/328458.",
+              "region": "impossible",
+              "request_status": "impossible",
+              "theorem_backed_classification": true,
+              "theorem_backed_region": true,
+              "theorem_ids": [
+                "AIRA-T0217",
+                "AIRA-T0219",
+                "AIRA-T0233"
+              ]
+            }
+          ],
           "coverage_scope": "standard_channel0_d19_context_range_fixture",
           "evidence_fields": [
+            "d19_context_range_min_exclusive",
+            "d19_context_range_max_inclusive",
             "d19_request_context",
             "d19_proved_margin",
             "d19_impossible_margin_floor",
@@ -2176,28 +2353,59 @@
             "d19_proved_request_theorem_backed_classification",
             "d19_impossible_request_status",
             "d19_impossible_request_theorem_backed_classification",
+            "d19_undecided_request_margin",
+            "d19_undecided_request_status",
+            "d19_undecided_margin_open_gap",
+            "d19_undecided_margin_interval_width",
+            "d19_undecided_request_relation",
             "d19_margin_thresholds_ordered",
             "d19_proved_impossible_branches_disjoint",
-            "d19_margin_status_exhaustive"
+            "d19_margin_status_exhaustive",
+            "d19_in_range_semantic_trichotomy",
+            "d19_proved_first_channel_bank_transfer",
+            "d19_proved_first_channel_bank_shape",
+            "d19_proved_first_channel_bank_tolerance_rule"
           ],
           "id": "ROPE-USE-D19-MARGIN-FRONTIER",
           "impossible_margin_floor": "1/328458",
           "impossible_status": "impossible",
-          "not_claimed": "This recommendation exposes the D19 standard-channel-0 margin frontier for request gating. It is not a proof for every RoPE channel, not a Diophantine theorem for arbitrary RoPE frequencies, and not a model-quality or context-length extension claim.",
+          "not_claimed": "This recommendation exposes the D19 standard-channel-0 margin frontier for request gating and a conditional first-channel finite-bank transfer for the proved branch. It does not transfer the impossible branch to a whole-bank collision claim, is not a Diophantine theorem for arbitrary RoPE frequencies, and is not a model-quality or context-length extension claim.",
+          "proved_branch_bank_transfer": {
+            "applies": true,
+            "bank_shape": "standard_channel0_first",
+            "theorem_ids": [
+              "AIRA-T0171",
+              "AIRA-T0172",
+              "AIRA-T0234"
+            ],
+            "tolerance_rule": "Lean conclusion applies when tolerance < fullTurn * requestedMargin."
+          },
           "proved_margin": "1/328459",
           "proved_status": "proved",
           "request_context": 131072,
           "status": "theorem_backed_standard_channel0_request_classifier",
           "theorem_ids": [
+            "AIRA-T0171",
+            "AIRA-T0172",
             "AIRA-T0216",
             "AIRA-T0217",
             "AIRA-T0218",
             "AIRA-T0219",
             "AIRA-T0220",
             "AIRA-T0221",
+            "AIRA-T0232",
+            "AIRA-T0233",
+            "AIRA-T0234",
             "AIRA-T0230",
             "AIRA-T0231"
-          ]
+          ],
+          "undecided_interval": {
+            "lower_exclusive": "1/328459",
+            "upper_exclusive": "1/328458",
+            "width": "1/107884986222"
+          },
+          "undecided_margin": "2/656917",
+          "undecided_status": "undecided_margin_gap"
         }
       ],
       "proof_status": {
@@ -2208,7 +2416,7 @@
           "proved"
         ],
         "source": "manifests/**/*.yaml",
-        "theorem_count": 49,
+        "theorem_count": 54,
         "theorems": [
           {
             "id": "AIRA-T0021",
@@ -2470,6 +2678,41 @@
             "status": "lean_proved"
           },
           {
+            "id": "AIRA-T0233",
+            "lean_name": "Circle.Applications.ropeStandardChannel0D19_contextRange_request_margin_semantic_trichotomy",
+            "proved": true,
+            "resolved": true,
+            "status": "lean_proved"
+          },
+          {
+            "id": "AIRA-T0232",
+            "lean_name": "Circle.Applications.ropeStandardChannel0D19_request_margin_open_gap_width",
+            "proved": true,
+            "resolved": true,
+            "status": "lean_proved"
+          },
+          {
+            "id": "AIRA-T0171",
+            "lean_name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D19Seed",
+            "proved": true,
+            "resolved": true,
+            "status": "lean_proved"
+          },
+          {
+            "id": "AIRA-T0172",
+            "lean_name": "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D19Seed_cons",
+            "proved": true,
+            "resolved": true,
+            "status": "lean_proved"
+          },
+          {
+            "id": "AIRA-T0234",
+            "lean_name": "Circle.Applications.ropeStandardChannel0D19_proved_request_firstChannel_bank_noNearTurn",
+            "proved": true,
+            "resolved": true,
+            "status": "lean_proved"
+          },
+          {
             "id": "AIRA-T0214",
             "lean_name": "Circle.Applications.ropeTurnRatioExactWeakestGapMargin_iff_finiteMargin_and_realized",
             "proved": true,
@@ -2600,6 +2843,11 @@
         "AIRA-T0219",
         "AIRA-T0220",
         "AIRA-T0221",
+        "AIRA-T0233",
+        "AIRA-T0232",
+        "AIRA-T0171",
+        "AIRA-T0172",
+        "AIRA-T0234",
         "AIRA-T0214",
         "AIRA-T0215",
         "AIRA-T0222",
@@ -2616,6 +2864,7 @@
       "validation_commands": [
         "python scripts/rope_certify.py --preset llama_style_10000_4k --format json",
         "python scripts/circle_ai_contract_ready.py --kind rope_position_distinguishability",
+        "python scripts/circle_ai_contract_ready.py --kind rope_position_distinguishability --receipt --format json --field d19_proved_request_status --field d19_impossible_request_status --field d19_undecided_request_status --field d19_proved_first_channel_bank_transfer --field d19_proved_first_channel_bank_shape --field d19_proved_first_channel_bank_tolerance_rule --require-theorem AIRA-T0171 --require-theorem AIRA-T0172 --require-theorem AIRA-T0234 --require-recommendation ROPE-USE-D19-MARGIN-FRONTIER --require-recommendation-evidence-field ROPE-USE-D19-MARGIN-FRONTIER=d19_proved_first_channel_bank_transfer --require-recommendation-theorem ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0234 --require-recommendation-action-parameter ROPE-USE-D19-MARGIN-FRONTIER=proved_branch_bank_transfer --require-recommendation-action-parameter-path ROPE-USE-D19-MARGIN-FRONTIER=proved_branch_bank_transfer.applies --require-recommendation-action-parameter-path ROPE-USE-D19-MARGIN-FRONTIER=proved_branch_bank_transfer.theorem_ids",
         "python -m pytest tests/test_rope_certifier.py -q"
       ]
     },
@@ -2659,7 +2908,7 @@
         "unproved_theorem_ids": [],
         "unresolved_theorem_ids": []
       },
-      "content_fingerprint": "6d5a96b27536881bcc0db893ce46318dbdac0b09d1d810d192c9a7395424f103",
+      "content_fingerprint": "89d20fb1753aba81590cbdb4e409b5b55577cc81d00c3318a9f23c293120a33c",
       "content_fingerprint_algorithm": "sha256-json-v1",
       "contract_passed": true,
       "dictionary_ids": [
@@ -3150,6 +3399,7 @@
       "validation_commands": [
         "python scripts/kv_cache_certify.py --cache-size 16 --current 31 --token 20 --batch-tokens 20,24,29,31 --sink-size 4 --format json",
         "python scripts/circle_ai_contract_ready.py --kind kv_cache_ring_buffer",
+        "python scripts/circle_ai_contract_ready.py --kind kv_cache_ring_buffer --receipt --format json --field stale_probe_first_stale_token --field sink_tokens_retained_by_policy --field sink_window_exact_policy --field sink_window_tokens_distinct --field sink_prefix_disjoint_from_live_window --field sink_tokens_outside_ordinary_rolling_window --require-theorem AIM-T0103 --require-theorem AIM-T0104 --require-theorem AIM-T0149 --require-recommendation KV-DROP-STALE-REQUEST-TOKEN --require-recommendation KV-USE-SINK-ROLLING-WINDOW-REQUEST --require-recommendation-evidence-field KV-DROP-STALE-REQUEST-TOKEN=stale_probe_first_stale_token --require-recommendation-evidence-field KV-USE-SINK-ROLLING-WINDOW-REQUEST=sink_tokens_retained_by_policy --require-recommendation-evidence-field KV-USE-SINK-ROLLING-WINDOW-REQUEST=sink_tokens_outside_ordinary_rolling_window --require-recommendation-theorem KV-DROP-STALE-REQUEST-TOKEN=AIM-T0103 --require-recommendation-theorem KV-USE-SINK-ROLLING-WINDOW-REQUEST=AIM-T0149 --require-recommendation-action-parameter KV-DROP-STALE-REQUEST-TOKEN=target_token --require-recommendation-action-parameter KV-USE-SINK-ROLLING-WINDOW-REQUEST=sink_size --require-recommendation-action-parameter-path KV-DROP-STALE-REQUEST-TOKEN=target_token --require-recommendation-action-parameter-path KV-USE-SINK-ROLLING-WINDOW-REQUEST=sink_size --require-recommendation-action-parameter-path KV-USE-SINK-ROLLING-WINDOW-REQUEST=request_token_count --require-recommendation-action-parameter-path KV-USE-SINK-ROLLING-WINDOW-REQUEST=request_token_count_bound --require-recommendation-action-parameter-path KV-USE-SINK-ROLLING-WINDOW-REQUEST=cache_size --require-recommendation-action-parameter-path KV-USE-SINK-ROLLING-WINDOW-REQUEST=current",
         "python -m pytest tests/test_kv_cache_certifier_cli.py -q"
       ]
     },
@@ -3229,7 +3479,7 @@
         "unproved_theorem_ids": [],
         "unresolved_theorem_ids": []
       },
-      "content_fingerprint": "3f7a37ff99db14650d5547e266920ee195988cb7d5ea8d8014c989a1d893ed88",
+      "content_fingerprint": "d28f3828ae2780bac707ba07af533b8bc71c3be5d1057213dc5e8293a1e2ed4a",
       "content_fingerprint_algorithm": "sha256-json-v1",
       "contract_passed": true,
       "dictionary_ids": [
@@ -3490,6 +3740,7 @@
           "theorem_ids": [
             "AIT-T0023",
             "AIT-T0034",
+            "AIT-T0172",
             "AIT-T0168",
             "AIT-T0169",
             "AIT-T0170"
@@ -3528,7 +3779,7 @@
           "proved"
         ],
         "source": "manifests/**/*.yaml",
-        "theorem_count": 140,
+        "theorem_count": 141,
         "theorems": [
           {
             "id": "AIT-T0016",
@@ -4434,6 +4685,13 @@
             "status": "lean_proved"
           },
           {
+            "id": "AIT-T0172",
+            "lean_name": "Circle.Applications.hybridFamilyCoversContext_iff_context_sub_one_le_window_of_not_final_lag_family_reach",
+            "proved": true,
+            "resolved": true,
+            "status": "lean_proved"
+          },
+          {
             "id": "AIT-T0164",
             "lean_name": "Circle.Applications.hybridFamilyFirstUncoveredLag_eq_some_repair_window_reaches_threshold_iff_last_lag",
             "proved": true,
@@ -4649,6 +4907,7 @@
         "AIT-T0161",
         "AIT-T0162",
         "AIT-T0171",
+        "AIT-T0172",
         "AIT-T0164",
         "AIT-T0165",
         "AIT-T0091",
@@ -4664,6 +4923,7 @@
       "validation_commands": [
         "python scripts/stride_family_certify.py --context 120 --strides 7,13 --path-length 3 --local-window 4 --format json",
         "python scripts/circle_ai_contract_ready.py --kind sparse_attention_coverage",
+        "python scripts/circle_ai_contract_ready.py --kind sparse_attention_coverage --receipt --format json --field first_uncovered_lag --field first_uncovered_interval_start --field complete_repair_window --field complete_repair_window_covers_context --field complete_repair_window_minimal_for_declared_stride_family --field complete_repair_window_minimal_witness_lag --require-theorem AIT-T0104 --require-theorem AIT-T0172 --require-recommendation SPARSE-LOCAL-FIRST-INTERVAL-REPAIR --require-recommendation SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK --require-recommendation-evidence-field SPARSE-LOCAL-FIRST-INTERVAL-REPAIR=first_uncovered_interval_start --require-recommendation-evidence-field SPARSE-LOCAL-FIRST-INTERVAL-REPAIR=first_uncovered_interval_stop --require-recommendation-evidence-field SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=complete_repair_window --require-recommendation-evidence-field SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=complete_repair_window_covers_context --require-recommendation-evidence-field SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=complete_repair_window_uses_dense_threshold --require-recommendation-evidence-field SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=local_window_complete_threshold_is_exact_local_minimum --require-recommendation-evidence-field SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=complete_repair_window_minimal_for_declared_stride_family --require-recommendation-evidence-field SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=complete_repair_window_minimal_witness_lag --require-recommendation-theorem SPARSE-LOCAL-FIRST-INTERVAL-REPAIR=AIT-T0104 --require-recommendation-theorem SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=AIT-T0023 --require-recommendation-theorem SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=AIT-T0034 --require-recommendation-theorem SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=AIT-T0172 --require-recommendation-theorem SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=AIT-T0168 --require-recommendation-theorem SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=AIT-T0169 --require-recommendation-theorem SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=AIT-T0170 --require-recommendation-action-parameter SPARSE-LOCAL-FIRST-INTERVAL-REPAIR=proposed_local_window --require-recommendation-action-parameter SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=proposed_local_window --require-recommendation-action-parameter SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=additional_local_slots --require-recommendation-action-parameter-path SPARSE-LOCAL-FIRST-INTERVAL-REPAIR=proposed_local_window --require-recommendation-action-parameter-path SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=proposed_local_window --require-recommendation-action-parameter-path SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=additional_local_slots",
         "python -m pytest tests/test_stride_family_certifier_cli.py tests/test_circle_transformer.py -q"
       ]
     },
@@ -4785,7 +5045,7 @@
         "unproved_theorem_ids": [],
         "unresolved_theorem_ids": []
       },
-      "content_fingerprint": "6c1c9ab8b903e6faffd3aaefc768522382fff641e5e19d2bb5cce63ee0a9790e",
+      "content_fingerprint": "59e0234bb0ffcb4b63fa83ce5e5ce226216b9a28073183624178cf03ea2f6f52",
       "content_fingerprint_algorithm": "sha256-json-v1",
       "contract_passed": true,
       "dictionary_ids": [
@@ -5778,6 +6038,7 @@
       "validation_commands": [
         "python scripts/recurrence_schedule_certify.py --format json",
         "python scripts/circle_ai_contract_ready.py --kind recurrence_schedule",
+        "python scripts/circle_ai_contract_ready.py --kind recurrence_schedule --receipt --format json --field periodic_shift_required_steps_invariant --field periodic_shift_active_at_step_invariant --field total_active_token_work --field scheduled_work_saving --field scheduled_work_saving_accounting --field active_inactive_work_accounting --field scheduled_work_saving_positive --field post_period_multi_extension_scheduled_work_saving --require-theorem AIM-T0026 --require-theorem AIM-T0130 --require-theorem AIM-T0159 --require-recommendation RECURRENCE-USE-ACTIVE-TOKEN-WORK-SCHEDULE --require-recommendation RECURRENCE-REUSE-WHOLE-PERIOD-SHIFT --require-recommendation-evidence-field RECURRENCE-USE-ACTIVE-TOKEN-WORK-SCHEDULE=total_active_token_work --require-recommendation-evidence-field RECURRENCE-USE-ACTIVE-TOKEN-WORK-SCHEDULE=scheduled_work_saving --require-recommendation-evidence-field RECURRENCE-USE-ACTIVE-TOKEN-WORK-SCHEDULE=post_period_multi_extension_scheduled_work_saving --require-recommendation-evidence-field RECURRENCE-REUSE-WHOLE-PERIOD-SHIFT=periodic_shift_required_steps_invariant --require-recommendation-evidence-field RECURRENCE-REUSE-WHOLE-PERIOD-SHIFT=periodic_shift_active_at_step_invariant --require-recommendation-theorem RECURRENCE-USE-ACTIVE-TOKEN-WORK-SCHEDULE=AIM-T0130 --require-recommendation-theorem RECURRENCE-USE-ACTIVE-TOKEN-WORK-SCHEDULE=AIM-T0159 --require-recommendation-theorem RECURRENCE-REUSE-WHOLE-PERIOD-SHIFT=AIM-T0026 --require-recommendation-action-parameter RECURRENCE-USE-ACTIVE-TOKEN-WORK-SCHEDULE=loop_period --require-recommendation-action-parameter RECURRENCE-USE-ACTIVE-TOKEN-WORK-SCHEDULE=scheduled_work_saving --require-recommendation-action-parameter RECURRENCE-REUSE-WHOLE-PERIOD-SHIFT=base_token --require-recommendation-action-parameter-path RECURRENCE-USE-ACTIVE-TOKEN-WORK-SCHEDULE=loop_period --require-recommendation-action-parameter-path RECURRENCE-USE-ACTIVE-TOKEN-WORK-SCHEDULE=token_count --require-recommendation-action-parameter-path RECURRENCE-USE-ACTIVE-TOKEN-WORK-SCHEDULE=horizon_steps --require-recommendation-action-parameter-path RECURRENCE-USE-ACTIVE-TOKEN-WORK-SCHEDULE=scheduled_work_saving --require-recommendation-action-parameter-path RECURRENCE-USE-ACTIVE-TOKEN-WORK-SCHEDULE=post_period_multi_extension_scheduled_work_saving --require-recommendation-action-parameter-path RECURRENCE-REUSE-WHOLE-PERIOD-SHIFT=base_token --require-recommendation-action-parameter-path RECURRENCE-REUSE-WHOLE-PERIOD-SHIFT=shifted_token --require-recommendation-action-parameter-path RECURRENCE-REUSE-WHOLE-PERIOD-SHIFT=shift_amount",
         "python -m pytest tests/test_recurrence_schedule_certifier_cli.py -q"
       ]
     },
@@ -5809,7 +6070,7 @@
         "unproved_theorem_ids": [],
         "unresolved_theorem_ids": []
       },
-      "content_fingerprint": "5cddcaf12474a8f9b6992a26cd5ee666be7cac1458d4f58d7530c099c644b6b5",
+      "content_fingerprint": "d4c878563747da9c9f1f55cd689f04e2a0a8e31ce9429a138341ec4e27ee3799",
       "content_fingerprint_algorithm": "sha256-json-v1",
       "contract_passed": true,
       "dictionary_ids": [
@@ -5875,7 +6136,7 @@
       "integration_use": "Sparse candidate fanout auditing: finite reachability, coverage, duplicate-collapse, and gap diagnostics.",
       "kind": "strided_candidate_fanout",
       "living_book_pages": [
-        "site/chapters/applications/sparse_attention_contract.qmd"
+        "site/chapters/applications/strided_candidate_fanout.qmd"
       ],
       "not_claimed": "These contracts expose finite cyclic structure for external AI/math tools. They do not prove model quality, reasoning ability, context length, speed, memory scaling, deployment safety, transfer, or ASI.",
       "ordinary_baselines": [
@@ -5933,7 +6194,8 @@
           "status": "computed_from_finite_candidate_path_fixture_fields",
           "theorem_ids": [
             "AIT-T0001",
-            "AIT-T0002"
+            "AIT-T0002",
+            "AIT-T0173"
           ],
           "unique_candidate_count": 12
         }
@@ -5946,7 +6208,7 @@
           "proved"
         ],
         "source": "manifests/**/*.yaml",
-        "theorem_count": 3,
+        "theorem_count": 4,
         "theorems": [
           {
             "id": "AIT-T0001",
@@ -5968,6 +6230,13 @@
             "proved": true,
             "resolved": true,
             "status": "lean_proved"
+          },
+          {
+            "id": "AIT-T0173",
+            "lean_name": "Circle.Applications.rawCandidateDedupLength_add_rawCandidateDedupLoss_eq_length",
+            "proved": true,
+            "resolved": true,
+            "status": "lean_proved"
           }
         ],
         "unproved_theorem_ids": [],
@@ -5983,7 +6252,8 @@
       "theorem_ids": [
         "AIT-T0001",
         "AIT-T0002",
-        "AIT-T0003"
+        "AIT-T0003",
+        "AIT-T0173"
       ],
       "validation_commands": [
         "python scripts/strided_candidate_fanout_certify.py --format json",
@@ -6014,7 +6284,7 @@
         "unproved_theorem_ids": [],
         "unresolved_theorem_ids": []
       },
-      "content_fingerprint": "2a9d06d685fafe82b81b974f713c4608a3e7d244de925a469b19d05414afd32b",
+      "content_fingerprint": "a25d841aff585b59519919cad25d89a3f76cd8ddb11fb1549d593f7f2f09c62a",
       "content_fingerprint_algorithm": "sha256-json-v1",
       "contract_passed": true,
       "dictionary_ids": [
@@ -6066,7 +6336,7 @@
       "integration_use": "Cyclic memory auditing: slot aliases, winding/provenance separation, and residue-class load diagnostics.",
       "kind": "cyclic_memory_residue_winding",
       "living_book_pages": [
-        "site/chapters/applications/ai.qmd"
+        "site/chapters/applications/cyclic_memory_residue_winding.qmd"
       ],
       "not_claimed": "These contracts expose finite cyclic structure for external AI/math tools. They do not prove model quality, reasoning ability, context length, speed, memory scaling, deployment safety, transfer, or ASI.",
       "ordinary_baselines": [
@@ -6216,7 +6486,7 @@
         "unproved_theorem_ids": [],
         "unresolved_theorem_ids": []
       },
-      "content_fingerprint": "299077a049f48dbd0747a942daf3104166acddddc72d467166da36228565e4cd",
+      "content_fingerprint": "4b562beab64ec863903e4267f50c90049f0d3fa612f6c1bb2f06ad07e821ffd7",
       "content_fingerprint_algorithm": "sha256-json-v1",
       "contract_passed": true,
       "dictionary_ids": [
@@ -6262,7 +6532,7 @@
       "integration_use": "Phase-feature auditing: multi-period position tags and relative-phase features with explicit repeat horizons.",
       "kind": "multicoil_phase_feature",
       "living_book_pages": [
-        "site/chapters/applications/ai.qmd"
+        "site/chapters/applications/multicoil_phase_feature.qmd"
       ],
       "not_claimed": "These contracts expose finite cyclic structure for external AI/math tools. They do not prove model quality, reasoning ability, context length, speed, memory scaling, deployment safety, transfer, or ASI.",
       "ordinary_baselines": [
@@ -6424,7 +6694,7 @@
         "unproved_theorem_ids": [],
         "unresolved_theorem_ids": []
       },
-      "content_fingerprint": "0106776ae5f4064f760a6e0553b7e3611b3c7f72ca4c28d783fdb25a16d1799f",
+      "content_fingerprint": "b3e3e0cf420d9e8e79a28a55ef8322f9a214c8d5a957dd8b06e5e5373c684ea5",
       "content_fingerprint_algorithm": "sha256-json-v1",
       "contract_passed": true,
       "dictionary_ids": [
@@ -6511,7 +6781,7 @@
       "integration_use": "Structured mixer/accounting checks: circulant equality fixtures, block-cyclic parameter counts, and dense-baseline comparison fields.",
       "kind": "circulant_block_cyclic_mixer",
       "living_book_pages": [
-        "site/chapters/applications/ai.qmd"
+        "site/chapters/applications/circulant_block_cyclic_mixer.qmd"
       ],
       "not_claimed": "These contracts expose finite cyclic structure for external AI/math tools. They do not prove model quality, reasoning ability, context length, speed, memory scaling, deployment safety, transfer, or ASI.",
       "ordinary_baselines": [
@@ -7504,7 +7774,7 @@
       "schema_id": "circle_calculus.theseus_hive_ai_contracts.v0"
     }
   },
-  "pack_content_fingerprint": "c90c4b45159ca5965dd36402dd4fa3c3bb90722deb2d7dd2448147c69323b272",
+  "pack_content_fingerprint": "a5df4781904e20264aad58761feb352f572abe9fb7fdba9f19c14623e8c45641",
   "planner_recommendation_index": {
     "FANOUT-AUDIT-DUPLICATE-COLLAPSED-BUDGET": {
       "action_kind": "audit_duplicate_collapsed_candidate_budget",
@@ -7524,7 +7794,7 @@
       "id": "FANOUT-AUDIT-DUPLICATE-COLLAPSED-BUDGET",
       "kind": "strided_candidate_fanout",
       "living_book_pages": [
-        "site/chapters/applications/sparse_attention_contract.qmd"
+        "site/chapters/applications/strided_candidate_fanout.qmd"
       ],
       "not_claimed": "This recommendation exposes finite duplicate-collapse accounting for the declared candidate path only. It is not a ranking, recall, retrieval-quality, throughput, or model-quality theorem.",
       "quickstart_docs": [
@@ -7537,7 +7807,8 @@
       "status": "computed_from_finite_candidate_path_fixture_fields",
       "theorem_ids": [
         "AIT-T0001",
-        "AIT-T0002"
+        "AIT-T0002",
+        "AIT-T0173"
       ],
       "validation_commands": [
         "python scripts/strided_candidate_fanout_certify.py --format json",
@@ -7560,7 +7831,7 @@
       "id": "FANOUT-USE-FULL-COVERAGE-STRIDE-CYCLE",
       "kind": "strided_candidate_fanout",
       "living_book_pages": [
-        "site/chapters/applications/sparse_attention_contract.qmd"
+        "site/chapters/applications/strided_candidate_fanout.qmd"
       ],
       "not_claimed": "This recommendation identifies a finite stride cycle that covers the declared candidate context. It is not a search, retrieval, routing-quality, runtime, or model-quality proof.",
       "quickstart_docs": [
@@ -7613,6 +7884,7 @@
       "validation_commands": [
         "python scripts/kv_cache_certify.py --cache-size 16 --current 31 --token 20 --batch-tokens 20,24,29,31 --sink-size 4 --format json",
         "python scripts/circle_ai_contract_ready.py --kind kv_cache_ring_buffer",
+        "python scripts/circle_ai_contract_ready.py --kind kv_cache_ring_buffer --receipt --format json --field stale_probe_first_stale_token --field sink_tokens_retained_by_policy --field sink_window_exact_policy --field sink_window_tokens_distinct --field sink_prefix_disjoint_from_live_window --field sink_tokens_outside_ordinary_rolling_window --require-theorem AIM-T0103 --require-theorem AIM-T0104 --require-theorem AIM-T0149 --require-recommendation KV-DROP-STALE-REQUEST-TOKEN --require-recommendation KV-USE-SINK-ROLLING-WINDOW-REQUEST --require-recommendation-evidence-field KV-DROP-STALE-REQUEST-TOKEN=stale_probe_first_stale_token --require-recommendation-evidence-field KV-USE-SINK-ROLLING-WINDOW-REQUEST=sink_tokens_retained_by_policy --require-recommendation-evidence-field KV-USE-SINK-ROLLING-WINDOW-REQUEST=sink_tokens_outside_ordinary_rolling_window --require-recommendation-theorem KV-DROP-STALE-REQUEST-TOKEN=AIM-T0103 --require-recommendation-theorem KV-USE-SINK-ROLLING-WINDOW-REQUEST=AIM-T0149 --require-recommendation-action-parameter KV-DROP-STALE-REQUEST-TOKEN=target_token --require-recommendation-action-parameter KV-USE-SINK-ROLLING-WINDOW-REQUEST=sink_size --require-recommendation-action-parameter-path KV-DROP-STALE-REQUEST-TOKEN=target_token --require-recommendation-action-parameter-path KV-USE-SINK-ROLLING-WINDOW-REQUEST=sink_size --require-recommendation-action-parameter-path KV-USE-SINK-ROLLING-WINDOW-REQUEST=request_token_count --require-recommendation-action-parameter-path KV-USE-SINK-ROLLING-WINDOW-REQUEST=request_token_count_bound --require-recommendation-action-parameter-path KV-USE-SINK-ROLLING-WINDOW-REQUEST=cache_size --require-recommendation-action-parameter-path KV-USE-SINK-ROLLING-WINDOW-REQUEST=current",
         "python -m pytest tests/test_kv_cache_certifier_cli.py -q"
       ]
     },
@@ -7658,6 +7930,7 @@
       "validation_commands": [
         "python scripts/kv_cache_certify.py --cache-size 16 --current 31 --token 20 --batch-tokens 20,24,29,31 --sink-size 4 --format json",
         "python scripts/circle_ai_contract_ready.py --kind kv_cache_ring_buffer",
+        "python scripts/circle_ai_contract_ready.py --kind kv_cache_ring_buffer --receipt --format json --field stale_probe_first_stale_token --field sink_tokens_retained_by_policy --field sink_window_exact_policy --field sink_window_tokens_distinct --field sink_prefix_disjoint_from_live_window --field sink_tokens_outside_ordinary_rolling_window --require-theorem AIM-T0103 --require-theorem AIM-T0104 --require-theorem AIM-T0149 --require-recommendation KV-DROP-STALE-REQUEST-TOKEN --require-recommendation KV-USE-SINK-ROLLING-WINDOW-REQUEST --require-recommendation-evidence-field KV-DROP-STALE-REQUEST-TOKEN=stale_probe_first_stale_token --require-recommendation-evidence-field KV-USE-SINK-ROLLING-WINDOW-REQUEST=sink_tokens_retained_by_policy --require-recommendation-evidence-field KV-USE-SINK-ROLLING-WINDOW-REQUEST=sink_tokens_outside_ordinary_rolling_window --require-recommendation-theorem KV-DROP-STALE-REQUEST-TOKEN=AIM-T0103 --require-recommendation-theorem KV-USE-SINK-ROLLING-WINDOW-REQUEST=AIM-T0149 --require-recommendation-action-parameter KV-DROP-STALE-REQUEST-TOKEN=target_token --require-recommendation-action-parameter KV-USE-SINK-ROLLING-WINDOW-REQUEST=sink_size --require-recommendation-action-parameter-path KV-DROP-STALE-REQUEST-TOKEN=target_token --require-recommendation-action-parameter-path KV-USE-SINK-ROLLING-WINDOW-REQUEST=sink_size --require-recommendation-action-parameter-path KV-USE-SINK-ROLLING-WINDOW-REQUEST=request_token_count --require-recommendation-action-parameter-path KV-USE-SINK-ROLLING-WINDOW-REQUEST=request_token_count_bound --require-recommendation-action-parameter-path KV-USE-SINK-ROLLING-WINDOW-REQUEST=cache_size --require-recommendation-action-parameter-path KV-USE-SINK-ROLLING-WINDOW-REQUEST=current",
         "python -m pytest tests/test_kv_cache_certifier_cli.py -q"
       ]
     },
@@ -7677,7 +7950,7 @@
       "id": "MEMORY-ATTACH-WINDING-ALIAS-PROVENANCE",
       "kind": "cyclic_memory_residue_winding",
       "living_book_pages": [
-        "site/chapters/applications/ai.qmd"
+        "site/chapters/applications/cyclic_memory_residue_winding.qmd"
       ],
       "not_claimed": "This recommendation exposes winding/provenance fields for events that share a finite cyclic memory slot. It is not a retrieval-quality, memory-scaling, cache-policy, semantic identity, deployment, or model-quality proof.",
       "quickstart_docs": [
@@ -7711,7 +7984,7 @@
       "id": "MEMORY-AUDIT-FINITE-ALIAS-LOAD",
       "kind": "cyclic_memory_residue_winding",
       "living_book_pages": [
-        "site/chapters/applications/ai.qmd"
+        "site/chapters/applications/cyclic_memory_residue_winding.qmd"
       ],
       "not_claimed": "This recommendation reports finite slot-load pressure for the declared trace only. It is not a throughput, memory capacity, retrieval-quality, allocation-policy, or model-quality theorem.",
       "quickstart_docs": [
@@ -7747,7 +8020,7 @@
       "id": "MIXER-AUDIT-BLOCK-CYCLIC-PARAMETER-BUDGET",
       "kind": "circulant_block_cyclic_mixer",
       "living_book_pages": [
-        "site/chapters/applications/ai.qmd"
+        "site/chapters/applications/circulant_block_cyclic_mixer.qmd"
       ],
       "not_claimed": "This recommendation exposes finite block-cyclic adapter parameter accounting for the declared fixture. It is not a LoRA replacement theorem, memory-scaling proof, hardware-efficiency proof, or model-quality claim.",
       "quickstart_docs": [
@@ -7786,7 +8059,7 @@
       "id": "MIXER-AUDIT-CIRCULANT-DENSE-PARITY",
       "kind": "circulant_block_cyclic_mixer",
       "living_book_pages": [
-        "site/chapters/applications/ai.qmd"
+        "site/chapters/applications/circulant_block_cyclic_mixer.qmd"
       ],
       "not_claimed": "This recommendation audits exact dense-reference parity for one deterministic circulant fixture. It is not a speed, memory, hardware-efficiency, training-stability, or model-quality proof.",
       "quickstart_docs": [
@@ -7822,7 +8095,7 @@
       "id": "PHASE-AUDIT-RELATIVE-SHIFT-INVARIANT",
       "kind": "multicoil_phase_feature",
       "living_book_pages": [
-        "site/chapters/applications/ai.qmd"
+        "site/chapters/applications/multicoil_phase_feature.qmd"
       ],
       "not_claimed": "This recommendation audits one finite query/key relative phase fixture under a common shift. It is not an attention quality, retrieval, equivariant-model, or model-quality theorem.",
       "quickstart_docs": [
@@ -7857,7 +8130,7 @@
       "id": "PHASE-USE-JOINT-REPEAT-HORIZON",
       "kind": "multicoil_phase_feature",
       "living_book_pages": [
-        "site/chapters/applications/ai.qmd"
+        "site/chapters/applications/multicoil_phase_feature.qmd"
       ],
       "not_claimed": "This recommendation exposes finite phase tags and a joint repeat horizon for the declared period bank. It is not a learned-embedding, extrapolation, training-stability, context-length, or model-quality proof.",
       "quickstart_docs": [
@@ -7921,6 +8194,7 @@
       "validation_commands": [
         "python scripts/recurrence_schedule_certify.py --format json",
         "python scripts/circle_ai_contract_ready.py --kind recurrence_schedule",
+        "python scripts/circle_ai_contract_ready.py --kind recurrence_schedule --receipt --format json --field periodic_shift_required_steps_invariant --field periodic_shift_active_at_step_invariant --field total_active_token_work --field scheduled_work_saving --field scheduled_work_saving_accounting --field active_inactive_work_accounting --field scheduled_work_saving_positive --field post_period_multi_extension_scheduled_work_saving --require-theorem AIM-T0026 --require-theorem AIM-T0130 --require-theorem AIM-T0159 --require-recommendation RECURRENCE-USE-ACTIVE-TOKEN-WORK-SCHEDULE --require-recommendation RECURRENCE-REUSE-WHOLE-PERIOD-SHIFT --require-recommendation-evidence-field RECURRENCE-USE-ACTIVE-TOKEN-WORK-SCHEDULE=total_active_token_work --require-recommendation-evidence-field RECURRENCE-USE-ACTIVE-TOKEN-WORK-SCHEDULE=scheduled_work_saving --require-recommendation-evidence-field RECURRENCE-USE-ACTIVE-TOKEN-WORK-SCHEDULE=post_period_multi_extension_scheduled_work_saving --require-recommendation-evidence-field RECURRENCE-REUSE-WHOLE-PERIOD-SHIFT=periodic_shift_required_steps_invariant --require-recommendation-evidence-field RECURRENCE-REUSE-WHOLE-PERIOD-SHIFT=periodic_shift_active_at_step_invariant --require-recommendation-theorem RECURRENCE-USE-ACTIVE-TOKEN-WORK-SCHEDULE=AIM-T0130 --require-recommendation-theorem RECURRENCE-USE-ACTIVE-TOKEN-WORK-SCHEDULE=AIM-T0159 --require-recommendation-theorem RECURRENCE-REUSE-WHOLE-PERIOD-SHIFT=AIM-T0026 --require-recommendation-action-parameter RECURRENCE-USE-ACTIVE-TOKEN-WORK-SCHEDULE=loop_period --require-recommendation-action-parameter RECURRENCE-USE-ACTIVE-TOKEN-WORK-SCHEDULE=scheduled_work_saving --require-recommendation-action-parameter RECURRENCE-REUSE-WHOLE-PERIOD-SHIFT=base_token --require-recommendation-action-parameter-path RECURRENCE-USE-ACTIVE-TOKEN-WORK-SCHEDULE=loop_period --require-recommendation-action-parameter-path RECURRENCE-USE-ACTIVE-TOKEN-WORK-SCHEDULE=token_count --require-recommendation-action-parameter-path RECURRENCE-USE-ACTIVE-TOKEN-WORK-SCHEDULE=horizon_steps --require-recommendation-action-parameter-path RECURRENCE-USE-ACTIVE-TOKEN-WORK-SCHEDULE=scheduled_work_saving --require-recommendation-action-parameter-path RECURRENCE-USE-ACTIVE-TOKEN-WORK-SCHEDULE=post_period_multi_extension_scheduled_work_saving --require-recommendation-action-parameter-path RECURRENCE-REUSE-WHOLE-PERIOD-SHIFT=base_token --require-recommendation-action-parameter-path RECURRENCE-REUSE-WHOLE-PERIOD-SHIFT=shifted_token --require-recommendation-action-parameter-path RECURRENCE-REUSE-WHOLE-PERIOD-SHIFT=shift_amount",
         "python -m pytest tests/test_recurrence_schedule_certifier_cli.py -q"
       ]
     },
@@ -8004,6 +8278,7 @@
       "validation_commands": [
         "python scripts/recurrence_schedule_certify.py --format json",
         "python scripts/circle_ai_contract_ready.py --kind recurrence_schedule",
+        "python scripts/circle_ai_contract_ready.py --kind recurrence_schedule --receipt --format json --field periodic_shift_required_steps_invariant --field periodic_shift_active_at_step_invariant --field total_active_token_work --field scheduled_work_saving --field scheduled_work_saving_accounting --field active_inactive_work_accounting --field scheduled_work_saving_positive --field post_period_multi_extension_scheduled_work_saving --require-theorem AIM-T0026 --require-theorem AIM-T0130 --require-theorem AIM-T0159 --require-recommendation RECURRENCE-USE-ACTIVE-TOKEN-WORK-SCHEDULE --require-recommendation RECURRENCE-REUSE-WHOLE-PERIOD-SHIFT --require-recommendation-evidence-field RECURRENCE-USE-ACTIVE-TOKEN-WORK-SCHEDULE=total_active_token_work --require-recommendation-evidence-field RECURRENCE-USE-ACTIVE-TOKEN-WORK-SCHEDULE=scheduled_work_saving --require-recommendation-evidence-field RECURRENCE-USE-ACTIVE-TOKEN-WORK-SCHEDULE=post_period_multi_extension_scheduled_work_saving --require-recommendation-evidence-field RECURRENCE-REUSE-WHOLE-PERIOD-SHIFT=periodic_shift_required_steps_invariant --require-recommendation-evidence-field RECURRENCE-REUSE-WHOLE-PERIOD-SHIFT=periodic_shift_active_at_step_invariant --require-recommendation-theorem RECURRENCE-USE-ACTIVE-TOKEN-WORK-SCHEDULE=AIM-T0130 --require-recommendation-theorem RECURRENCE-USE-ACTIVE-TOKEN-WORK-SCHEDULE=AIM-T0159 --require-recommendation-theorem RECURRENCE-REUSE-WHOLE-PERIOD-SHIFT=AIM-T0026 --require-recommendation-action-parameter RECURRENCE-USE-ACTIVE-TOKEN-WORK-SCHEDULE=loop_period --require-recommendation-action-parameter RECURRENCE-USE-ACTIVE-TOKEN-WORK-SCHEDULE=scheduled_work_saving --require-recommendation-action-parameter RECURRENCE-REUSE-WHOLE-PERIOD-SHIFT=base_token --require-recommendation-action-parameter-path RECURRENCE-USE-ACTIVE-TOKEN-WORK-SCHEDULE=loop_period --require-recommendation-action-parameter-path RECURRENCE-USE-ACTIVE-TOKEN-WORK-SCHEDULE=token_count --require-recommendation-action-parameter-path RECURRENCE-USE-ACTIVE-TOKEN-WORK-SCHEDULE=horizon_steps --require-recommendation-action-parameter-path RECURRENCE-USE-ACTIVE-TOKEN-WORK-SCHEDULE=scheduled_work_saving --require-recommendation-action-parameter-path RECURRENCE-USE-ACTIVE-TOKEN-WORK-SCHEDULE=post_period_multi_extension_scheduled_work_saving --require-recommendation-action-parameter-path RECURRENCE-REUSE-WHOLE-PERIOD-SHIFT=base_token --require-recommendation-action-parameter-path RECURRENCE-REUSE-WHOLE-PERIOD-SHIFT=shifted_token --require-recommendation-action-parameter-path RECURRENCE-REUSE-WHOLE-PERIOD-SHIFT=shift_amount",
         "python -m pytest tests/test_recurrence_schedule_certifier_cli.py -q"
       ]
     },
@@ -8041,6 +8316,7 @@
       "validation_commands": [
         "python scripts/rope_certify.py --preset llama_style_10000_4k --format json",
         "python scripts/circle_ai_contract_ready.py --kind rope_position_distinguishability",
+        "python scripts/circle_ai_contract_ready.py --kind rope_position_distinguishability --receipt --format json --field d19_proved_request_status --field d19_impossible_request_status --field d19_undecided_request_status --field d19_proved_first_channel_bank_transfer --field d19_proved_first_channel_bank_shape --field d19_proved_first_channel_bank_tolerance_rule --require-theorem AIRA-T0171 --require-theorem AIRA-T0172 --require-theorem AIRA-T0234 --require-recommendation ROPE-USE-D19-MARGIN-FRONTIER --require-recommendation-evidence-field ROPE-USE-D19-MARGIN-FRONTIER=d19_proved_first_channel_bank_transfer --require-recommendation-theorem ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0234 --require-recommendation-action-parameter ROPE-USE-D19-MARGIN-FRONTIER=proved_branch_bank_transfer --require-recommendation-action-parameter-path ROPE-USE-D19-MARGIN-FRONTIER=proved_branch_bank_transfer.applies --require-recommendation-action-parameter-path ROPE-USE-D19-MARGIN-FRONTIER=proved_branch_bank_transfer.theorem_ids",
         "python -m pytest tests/test_rope_certifier.py -q"
       ]
     },
@@ -8049,6 +8325,8 @@
       "contract_id": "CC-AI-CONTRACT-ROPE-001",
       "coverage_scope": "standard_channel0_d19_context_range_fixture",
       "evidence_fields": [
+        "d19_context_range_min_exclusive",
+        "d19_context_range_max_inclusive",
         "d19_request_context",
         "d19_proved_margin",
         "d19_impossible_margin_floor",
@@ -8056,9 +8334,18 @@
         "d19_proved_request_theorem_backed_classification",
         "d19_impossible_request_status",
         "d19_impossible_request_theorem_backed_classification",
+        "d19_undecided_request_margin",
+        "d19_undecided_request_status",
+        "d19_undecided_margin_open_gap",
+        "d19_undecided_margin_interval_width",
+        "d19_undecided_request_relation",
         "d19_margin_thresholds_ordered",
         "d19_proved_impossible_branches_disjoint",
-        "d19_margin_status_exhaustive"
+        "d19_margin_status_exhaustive",
+        "d19_in_range_semantic_trichotomy",
+        "d19_proved_first_channel_bank_transfer",
+        "d19_proved_first_channel_bank_shape",
+        "d19_proved_first_channel_bank_tolerance_rule"
       ],
       "id": "ROPE-USE-D19-MARGIN-FRONTIER",
       "kind": "rope_position_distinguishability",
@@ -8066,7 +8353,7 @@
         "site/chapters/applications/rope_certifier.qmd",
         "site/chapters/applications/rope_certifier_audit.qmd"
       ],
-      "not_claimed": "This recommendation exposes the D19 standard-channel-0 margin frontier for request gating. It is not a proof for every RoPE channel, not a Diophantine theorem for arbitrary RoPE frequencies, and not a model-quality or context-length extension claim.",
+      "not_claimed": "This recommendation exposes the D19 standard-channel-0 margin frontier for request gating and a conditional first-channel finite-bank transfer for the proved branch. It does not transfer the impossible branch to a whole-bank collision claim, is not a Diophantine theorem for arbitrary RoPE frequencies, and is not a model-quality or context-length extension claim.",
       "quickstart_docs": [
         "docs/ROPE_CERTIFIER_QUICKSTART.md"
       ],
@@ -8074,18 +8361,24 @@
       "source_paper": "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md",
       "status": "theorem_backed_standard_channel0_request_classifier",
       "theorem_ids": [
+        "AIRA-T0171",
+        "AIRA-T0172",
         "AIRA-T0216",
         "AIRA-T0217",
         "AIRA-T0218",
         "AIRA-T0219",
         "AIRA-T0220",
         "AIRA-T0221",
+        "AIRA-T0232",
+        "AIRA-T0233",
+        "AIRA-T0234",
         "AIRA-T0230",
         "AIRA-T0231"
       ],
       "validation_commands": [
         "python scripts/rope_certify.py --preset llama_style_10000_4k --format json",
         "python scripts/circle_ai_contract_ready.py --kind rope_position_distinguishability",
+        "python scripts/circle_ai_contract_ready.py --kind rope_position_distinguishability --receipt --format json --field d19_proved_request_status --field d19_impossible_request_status --field d19_undecided_request_status --field d19_proved_first_channel_bank_transfer --field d19_proved_first_channel_bank_shape --field d19_proved_first_channel_bank_tolerance_rule --require-theorem AIRA-T0171 --require-theorem AIRA-T0172 --require-theorem AIRA-T0234 --require-recommendation ROPE-USE-D19-MARGIN-FRONTIER --require-recommendation-evidence-field ROPE-USE-D19-MARGIN-FRONTIER=d19_proved_first_channel_bank_transfer --require-recommendation-theorem ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0234 --require-recommendation-action-parameter ROPE-USE-D19-MARGIN-FRONTIER=proved_branch_bank_transfer --require-recommendation-action-parameter-path ROPE-USE-D19-MARGIN-FRONTIER=proved_branch_bank_transfer.applies --require-recommendation-action-parameter-path ROPE-USE-D19-MARGIN-FRONTIER=proved_branch_bank_transfer.theorem_ids",
         "python -m pytest tests/test_rope_certifier.py -q"
       ]
     },
@@ -8218,6 +8511,7 @@
       "theorem_ids": [
         "AIT-T0023",
         "AIT-T0034",
+        "AIT-T0172",
         "AIT-T0168",
         "AIT-T0169",
         "AIT-T0170"
@@ -8225,6 +8519,7 @@
       "validation_commands": [
         "python scripts/stride_family_certify.py --context 120 --strides 7,13 --path-length 3 --local-window 4 --format json",
         "python scripts/circle_ai_contract_ready.py --kind sparse_attention_coverage",
+        "python scripts/circle_ai_contract_ready.py --kind sparse_attention_coverage --receipt --format json --field first_uncovered_lag --field first_uncovered_interval_start --field complete_repair_window --field complete_repair_window_covers_context --field complete_repair_window_minimal_for_declared_stride_family --field complete_repair_window_minimal_witness_lag --require-theorem AIT-T0104 --require-theorem AIT-T0172 --require-recommendation SPARSE-LOCAL-FIRST-INTERVAL-REPAIR --require-recommendation SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK --require-recommendation-evidence-field SPARSE-LOCAL-FIRST-INTERVAL-REPAIR=first_uncovered_interval_start --require-recommendation-evidence-field SPARSE-LOCAL-FIRST-INTERVAL-REPAIR=first_uncovered_interval_stop --require-recommendation-evidence-field SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=complete_repair_window --require-recommendation-evidence-field SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=complete_repair_window_covers_context --require-recommendation-evidence-field SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=complete_repair_window_uses_dense_threshold --require-recommendation-evidence-field SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=local_window_complete_threshold_is_exact_local_minimum --require-recommendation-evidence-field SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=complete_repair_window_minimal_for_declared_stride_family --require-recommendation-evidence-field SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=complete_repair_window_minimal_witness_lag --require-recommendation-theorem SPARSE-LOCAL-FIRST-INTERVAL-REPAIR=AIT-T0104 --require-recommendation-theorem SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=AIT-T0023 --require-recommendation-theorem SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=AIT-T0034 --require-recommendation-theorem SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=AIT-T0172 --require-recommendation-theorem SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=AIT-T0168 --require-recommendation-theorem SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=AIT-T0169 --require-recommendation-theorem SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=AIT-T0170 --require-recommendation-action-parameter SPARSE-LOCAL-FIRST-INTERVAL-REPAIR=proposed_local_window --require-recommendation-action-parameter SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=proposed_local_window --require-recommendation-action-parameter SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=additional_local_slots --require-recommendation-action-parameter-path SPARSE-LOCAL-FIRST-INTERVAL-REPAIR=proposed_local_window --require-recommendation-action-parameter-path SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=proposed_local_window --require-recommendation-action-parameter-path SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=additional_local_slots",
         "python -m pytest tests/test_stride_family_certifier_cli.py tests/test_circle_transformer.py -q"
       ]
     },
@@ -8261,6 +8556,7 @@
       "validation_commands": [
         "python scripts/stride_family_certify.py --context 120 --strides 7,13 --path-length 3 --local-window 4 --format json",
         "python scripts/circle_ai_contract_ready.py --kind sparse_attention_coverage",
+        "python scripts/circle_ai_contract_ready.py --kind sparse_attention_coverage --receipt --format json --field first_uncovered_lag --field first_uncovered_interval_start --field complete_repair_window --field complete_repair_window_covers_context --field complete_repair_window_minimal_for_declared_stride_family --field complete_repair_window_minimal_witness_lag --require-theorem AIT-T0104 --require-theorem AIT-T0172 --require-recommendation SPARSE-LOCAL-FIRST-INTERVAL-REPAIR --require-recommendation SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK --require-recommendation-evidence-field SPARSE-LOCAL-FIRST-INTERVAL-REPAIR=first_uncovered_interval_start --require-recommendation-evidence-field SPARSE-LOCAL-FIRST-INTERVAL-REPAIR=first_uncovered_interval_stop --require-recommendation-evidence-field SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=complete_repair_window --require-recommendation-evidence-field SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=complete_repair_window_covers_context --require-recommendation-evidence-field SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=complete_repair_window_uses_dense_threshold --require-recommendation-evidence-field SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=local_window_complete_threshold_is_exact_local_minimum --require-recommendation-evidence-field SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=complete_repair_window_minimal_for_declared_stride_family --require-recommendation-evidence-field SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=complete_repair_window_minimal_witness_lag --require-recommendation-theorem SPARSE-LOCAL-FIRST-INTERVAL-REPAIR=AIT-T0104 --require-recommendation-theorem SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=AIT-T0023 --require-recommendation-theorem SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=AIT-T0034 --require-recommendation-theorem SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=AIT-T0172 --require-recommendation-theorem SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=AIT-T0168 --require-recommendation-theorem SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=AIT-T0169 --require-recommendation-theorem SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=AIT-T0170 --require-recommendation-action-parameter SPARSE-LOCAL-FIRST-INTERVAL-REPAIR=proposed_local_window --require-recommendation-action-parameter SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=proposed_local_window --require-recommendation-action-parameter SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=additional_local_slots --require-recommendation-action-parameter-path SPARSE-LOCAL-FIRST-INTERVAL-REPAIR=proposed_local_window --require-recommendation-action-parameter-path SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=proposed_local_window --require-recommendation-action-parameter-path SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=additional_local_slots",
         "python -m pytest tests/test_stride_family_certifier_cli.py tests/test_circle_transformer.py -q"
       ]
     },
@@ -8301,6 +8597,7 @@
       "validation_commands": [
         "python scripts/stride_family_certify.py --context 120 --strides 7,13 --path-length 3 --local-window 4 --format json",
         "python scripts/circle_ai_contract_ready.py --kind sparse_attention_coverage",
+        "python scripts/circle_ai_contract_ready.py --kind sparse_attention_coverage --receipt --format json --field first_uncovered_lag --field first_uncovered_interval_start --field complete_repair_window --field complete_repair_window_covers_context --field complete_repair_window_minimal_for_declared_stride_family --field complete_repair_window_minimal_witness_lag --require-theorem AIT-T0104 --require-theorem AIT-T0172 --require-recommendation SPARSE-LOCAL-FIRST-INTERVAL-REPAIR --require-recommendation SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK --require-recommendation-evidence-field SPARSE-LOCAL-FIRST-INTERVAL-REPAIR=first_uncovered_interval_start --require-recommendation-evidence-field SPARSE-LOCAL-FIRST-INTERVAL-REPAIR=first_uncovered_interval_stop --require-recommendation-evidence-field SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=complete_repair_window --require-recommendation-evidence-field SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=complete_repair_window_covers_context --require-recommendation-evidence-field SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=complete_repair_window_uses_dense_threshold --require-recommendation-evidence-field SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=local_window_complete_threshold_is_exact_local_minimum --require-recommendation-evidence-field SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=complete_repair_window_minimal_for_declared_stride_family --require-recommendation-evidence-field SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=complete_repair_window_minimal_witness_lag --require-recommendation-theorem SPARSE-LOCAL-FIRST-INTERVAL-REPAIR=AIT-T0104 --require-recommendation-theorem SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=AIT-T0023 --require-recommendation-theorem SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=AIT-T0034 --require-recommendation-theorem SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=AIT-T0172 --require-recommendation-theorem SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=AIT-T0168 --require-recommendation-theorem SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=AIT-T0169 --require-recommendation-theorem SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=AIT-T0170 --require-recommendation-action-parameter SPARSE-LOCAL-FIRST-INTERVAL-REPAIR=proposed_local_window --require-recommendation-action-parameter SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=proposed_local_window --require-recommendation-action-parameter SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=additional_local_slots --require-recommendation-action-parameter-path SPARSE-LOCAL-FIRST-INTERVAL-REPAIR=proposed_local_window --require-recommendation-action-parameter-path SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=proposed_local_window --require-recommendation-action-parameter-path SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=additional_local_slots",
         "python -m pytest tests/test_stride_family_certifier_cli.py tests/test_circle_transformer.py -q"
       ]
     },
@@ -8342,6 +8639,7 @@
       "validation_commands": [
         "python scripts/stride_family_certify.py --context 120 --strides 7,13 --path-length 3 --local-window 4 --format json",
         "python scripts/circle_ai_contract_ready.py --kind sparse_attention_coverage",
+        "python scripts/circle_ai_contract_ready.py --kind sparse_attention_coverage --receipt --format json --field first_uncovered_lag --field first_uncovered_interval_start --field complete_repair_window --field complete_repair_window_covers_context --field complete_repair_window_minimal_for_declared_stride_family --field complete_repair_window_minimal_witness_lag --require-theorem AIT-T0104 --require-theorem AIT-T0172 --require-recommendation SPARSE-LOCAL-FIRST-INTERVAL-REPAIR --require-recommendation SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK --require-recommendation-evidence-field SPARSE-LOCAL-FIRST-INTERVAL-REPAIR=first_uncovered_interval_start --require-recommendation-evidence-field SPARSE-LOCAL-FIRST-INTERVAL-REPAIR=first_uncovered_interval_stop --require-recommendation-evidence-field SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=complete_repair_window --require-recommendation-evidence-field SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=complete_repair_window_covers_context --require-recommendation-evidence-field SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=complete_repair_window_uses_dense_threshold --require-recommendation-evidence-field SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=local_window_complete_threshold_is_exact_local_minimum --require-recommendation-evidence-field SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=complete_repair_window_minimal_for_declared_stride_family --require-recommendation-evidence-field SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=complete_repair_window_minimal_witness_lag --require-recommendation-theorem SPARSE-LOCAL-FIRST-INTERVAL-REPAIR=AIT-T0104 --require-recommendation-theorem SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=AIT-T0023 --require-recommendation-theorem SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=AIT-T0034 --require-recommendation-theorem SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=AIT-T0172 --require-recommendation-theorem SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=AIT-T0168 --require-recommendation-theorem SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=AIT-T0169 --require-recommendation-theorem SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=AIT-T0170 --require-recommendation-action-parameter SPARSE-LOCAL-FIRST-INTERVAL-REPAIR=proposed_local_window --require-recommendation-action-parameter SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=proposed_local_window --require-recommendation-action-parameter SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=additional_local_slots --require-recommendation-action-parameter-path SPARSE-LOCAL-FIRST-INTERVAL-REPAIR=proposed_local_window --require-recommendation-action-parameter-path SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=proposed_local_window --require-recommendation-action-parameter-path SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=additional_local_slots",
         "python -m pytest tests/test_stride_family_certifier_cli.py tests/test_circle_transformer.py -q"
       ]
     }
@@ -8367,15 +8665,37 @@
     "python scripts/check_circle_ai_contract_pack.py",
     "python scripts/example_validate_circle_ai_contract_pack_schema.py --summary",
     "make circle-ai-contracts-ready",
+    "python scripts/check_circle_ai_contract_acceptance_policy.py",
+    "python scripts/check_circle_ai_contract_acceptance_policy.py --format json",
+    "python scripts/circle_ai_contract_ready.py --print-refreshed-policy",
+    "python scripts/circle_ai_contract_ready.py --acceptance-policy-report",
+    "python scripts/circle_ai_contract_ready.py --acceptance-policy-report --format json",
+    "python scripts/check_downstream_ci_acceptance_example.py --summary",
+    "python examples/downstream_ci_accept_circle_ai_contracts.py --format json",
+    "python examples/downstream_ci_accept_circle_ai_contracts.py --format text",
+    "python examples/downstream_ci_accept_circle_ai_contracts.py --format json --planner-recommendation ROPE-AUDIT-EXACT-INTEGER-PHASE-BANK --include-values",
+    "python examples/downstream_ci_accept_circle_ai_contracts.py --format json --planner-recommendation SPARSE-LOCAL-FIRST-INTERVAL-REPAIR --include-values",
+    "python examples/downstream_ci_accept_circle_ai_contracts.py --format json --planner-recommendation SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK --include-values",
+    "python examples/downstream_ci_accept_circle_ai_contracts.py --format json --planner-recommendation KV-USE-SINK-ROLLING-WINDOW-REQUEST --include-values",
+    "python examples/downstream_ci_accept_circle_ai_contracts.py --format json --planner-recommendation RECURRENCE-USE-ACTIVE-TOKEN-WORK-SCHEDULE --include-values",
+    "python examples/downstream_ci_accept_circle_ai_contracts.py --format json --planner-recommendation ROPE-USE-D19-MARGIN-FRONTIER --include-values",
+    "python scripts/circle_ai_contract_ready.py --acceptance-policy",
+    "python scripts/circle_ai_contract_ready.py --acceptance-policy --format json",
     "python scripts/circle_ai_contract_ready.py --list-recommendations",
     "python scripts/circle_ai_contract_ready.py --fingerprints",
     "python scripts/circle_ai_contract_ready.py --action-plan",
+    "python scripts/circle_ai_contract_ready.py --action-plan --recommendation ROPE-USE-D19-MARGIN-FRONTIER --include-values --format json",
+    "python scripts/example_consume_circle_ai_contract_pack.py --planner --planner-kind rope_position_distinguishability --planner-recommendation ROPE-USE-D19-MARGIN-FRONTIER --planner-include-values",
     "python scripts/circle_ai_contract_ready.py --kind seed_rule_exact_regeneration --action-plan --include-values --format json",
-    "python scripts/circle_ai_contract_ready.py --kind rope_position_distinguishability --digest --format json --field d19_proved_request_status --field d19_impossible_request_status --include-field-metadata --include-recommendations",
+    "python scripts/circle_ai_contract_ready.py --kind rope_position_distinguishability --digest --format json --field d19_proved_request_status --field d19_impossible_request_status --field d19_undecided_request_status --field d19_proved_first_channel_bank_transfer --field d19_proved_first_channel_bank_shape --field d19_proved_first_channel_bank_tolerance_rule --include-field-metadata --include-recommendations",
+    "python scripts/circle_ai_contract_ready.py --kind rope_position_distinguishability --receipt --format json --field d19_proved_request_status --field d19_impossible_request_status --field d19_undecided_request_status --field d19_proved_first_channel_bank_transfer --field d19_proved_first_channel_bank_shape --field d19_proved_first_channel_bank_tolerance_rule --require-theorem AIRA-T0171 --require-theorem AIRA-T0172 --require-theorem AIRA-T0234 --require-recommendation ROPE-USE-D19-MARGIN-FRONTIER --require-recommendation-evidence-field ROPE-USE-D19-MARGIN-FRONTIER=d19_proved_first_channel_bank_transfer --require-recommendation-theorem ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0234 --require-recommendation-action-parameter ROPE-USE-D19-MARGIN-FRONTIER=proved_branch_bank_transfer --require-recommendation-action-parameter-path ROPE-USE-D19-MARGIN-FRONTIER=proved_branch_bank_transfer.applies --require-recommendation-action-parameter-path ROPE-USE-D19-MARGIN-FRONTIER=proved_branch_bank_transfer.theorem_ids",
     "python scripts/circle_ai_contract_ready.py --kind sparse_attention_coverage",
     "python scripts/circle_ai_contract_ready.py --kind kv_cache_ring_buffer --digest --field stale_probe_first_stale_token --include-recommendations",
+    "python scripts/circle_ai_contract_ready.py --kind kv_cache_ring_buffer --receipt --format json --field stale_probe_first_stale_token --field sink_tokens_retained_by_policy --field sink_window_exact_policy --field sink_window_tokens_distinct --field sink_prefix_disjoint_from_live_window --field sink_tokens_outside_ordinary_rolling_window --require-theorem AIM-T0103 --require-theorem AIM-T0104 --require-theorem AIM-T0149 --require-recommendation KV-DROP-STALE-REQUEST-TOKEN --require-recommendation KV-USE-SINK-ROLLING-WINDOW-REQUEST --require-recommendation-evidence-field KV-DROP-STALE-REQUEST-TOKEN=stale_probe_first_stale_token --require-recommendation-evidence-field KV-USE-SINK-ROLLING-WINDOW-REQUEST=sink_tokens_retained_by_policy --require-recommendation-evidence-field KV-USE-SINK-ROLLING-WINDOW-REQUEST=sink_tokens_outside_ordinary_rolling_window --require-recommendation-theorem KV-DROP-STALE-REQUEST-TOKEN=AIM-T0103 --require-recommendation-theorem KV-USE-SINK-ROLLING-WINDOW-REQUEST=AIM-T0149 --require-recommendation-action-parameter KV-DROP-STALE-REQUEST-TOKEN=target_token --require-recommendation-action-parameter KV-USE-SINK-ROLLING-WINDOW-REQUEST=sink_size --require-recommendation-action-parameter-path KV-DROP-STALE-REQUEST-TOKEN=target_token --require-recommendation-action-parameter-path KV-USE-SINK-ROLLING-WINDOW-REQUEST=sink_size --require-recommendation-action-parameter-path KV-USE-SINK-ROLLING-WINDOW-REQUEST=request_token_count --require-recommendation-action-parameter-path KV-USE-SINK-ROLLING-WINDOW-REQUEST=request_token_count_bound --require-recommendation-action-parameter-path KV-USE-SINK-ROLLING-WINDOW-REQUEST=cache_size --require-recommendation-action-parameter-path KV-USE-SINK-ROLLING-WINDOW-REQUEST=current",
     "python scripts/circle_ai_contract_ready.py --kind sparse_attention_coverage --digest --field first_uncovered_lag --include-recommendations",
+    "python scripts/circle_ai_contract_ready.py --kind sparse_attention_coverage --receipt --format json --field first_uncovered_lag --field first_uncovered_interval_start --field complete_repair_window --field complete_repair_window_covers_context --field complete_repair_window_minimal_for_declared_stride_family --field complete_repair_window_minimal_witness_lag --require-theorem AIT-T0104 --require-theorem AIT-T0172 --require-recommendation SPARSE-LOCAL-FIRST-INTERVAL-REPAIR --require-recommendation SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK --require-recommendation-evidence-field SPARSE-LOCAL-FIRST-INTERVAL-REPAIR=first_uncovered_interval_start --require-recommendation-evidence-field SPARSE-LOCAL-FIRST-INTERVAL-REPAIR=first_uncovered_interval_stop --require-recommendation-evidence-field SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=complete_repair_window --require-recommendation-evidence-field SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=complete_repair_window_covers_context --require-recommendation-evidence-field SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=complete_repair_window_uses_dense_threshold --require-recommendation-evidence-field SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=local_window_complete_threshold_is_exact_local_minimum --require-recommendation-evidence-field SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=complete_repair_window_minimal_for_declared_stride_family --require-recommendation-evidence-field SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=complete_repair_window_minimal_witness_lag --require-recommendation-theorem SPARSE-LOCAL-FIRST-INTERVAL-REPAIR=AIT-T0104 --require-recommendation-theorem SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=AIT-T0023 --require-recommendation-theorem SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=AIT-T0034 --require-recommendation-theorem SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=AIT-T0172 --require-recommendation-theorem SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=AIT-T0168 --require-recommendation-theorem SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=AIT-T0169 --require-recommendation-theorem SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=AIT-T0170 --require-recommendation-action-parameter SPARSE-LOCAL-FIRST-INTERVAL-REPAIR=proposed_local_window --require-recommendation-action-parameter SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=proposed_local_window --require-recommendation-action-parameter SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=additional_local_slots --require-recommendation-action-parameter-path SPARSE-LOCAL-FIRST-INTERVAL-REPAIR=proposed_local_window --require-recommendation-action-parameter-path SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=proposed_local_window --require-recommendation-action-parameter-path SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=additional_local_slots",
     "python scripts/circle_ai_contract_ready.py --kind recurrence_schedule --digest --field scheduled_work_saving --field post_period_multi_extension_scheduled_work_saving --include-recommendations",
+    "python scripts/circle_ai_contract_ready.py --kind recurrence_schedule --receipt --format json --field periodic_shift_required_steps_invariant --field periodic_shift_active_at_step_invariant --field total_active_token_work --field scheduled_work_saving --field scheduled_work_saving_accounting --field active_inactive_work_accounting --field scheduled_work_saving_positive --field post_period_multi_extension_scheduled_work_saving --require-theorem AIM-T0026 --require-theorem AIM-T0130 --require-theorem AIM-T0159 --require-recommendation RECURRENCE-USE-ACTIVE-TOKEN-WORK-SCHEDULE --require-recommendation RECURRENCE-REUSE-WHOLE-PERIOD-SHIFT --require-recommendation-evidence-field RECURRENCE-USE-ACTIVE-TOKEN-WORK-SCHEDULE=total_active_token_work --require-recommendation-evidence-field RECURRENCE-USE-ACTIVE-TOKEN-WORK-SCHEDULE=scheduled_work_saving --require-recommendation-evidence-field RECURRENCE-USE-ACTIVE-TOKEN-WORK-SCHEDULE=post_period_multi_extension_scheduled_work_saving --require-recommendation-evidence-field RECURRENCE-REUSE-WHOLE-PERIOD-SHIFT=periodic_shift_required_steps_invariant --require-recommendation-evidence-field RECURRENCE-REUSE-WHOLE-PERIOD-SHIFT=periodic_shift_active_at_step_invariant --require-recommendation-theorem RECURRENCE-USE-ACTIVE-TOKEN-WORK-SCHEDULE=AIM-T0130 --require-recommendation-theorem RECURRENCE-USE-ACTIVE-TOKEN-WORK-SCHEDULE=AIM-T0159 --require-recommendation-theorem RECURRENCE-REUSE-WHOLE-PERIOD-SHIFT=AIM-T0026 --require-recommendation-action-parameter RECURRENCE-USE-ACTIVE-TOKEN-WORK-SCHEDULE=loop_period --require-recommendation-action-parameter RECURRENCE-USE-ACTIVE-TOKEN-WORK-SCHEDULE=scheduled_work_saving --require-recommendation-action-parameter RECURRENCE-REUSE-WHOLE-PERIOD-SHIFT=base_token --require-recommendation-action-parameter-path RECURRENCE-USE-ACTIVE-TOKEN-WORK-SCHEDULE=loop_period --require-recommendation-action-parameter-path RECURRENCE-USE-ACTIVE-TOKEN-WORK-SCHEDULE=token_count --require-recommendation-action-parameter-path RECURRENCE-USE-ACTIVE-TOKEN-WORK-SCHEDULE=horizon_steps --require-recommendation-action-parameter-path RECURRENCE-USE-ACTIVE-TOKEN-WORK-SCHEDULE=scheduled_work_saving --require-recommendation-action-parameter-path RECURRENCE-USE-ACTIVE-TOKEN-WORK-SCHEDULE=post_period_multi_extension_scheduled_work_saving --require-recommendation-action-parameter-path RECURRENCE-REUSE-WHOLE-PERIOD-SHIFT=base_token --require-recommendation-action-parameter-path RECURRENCE-REUSE-WHOLE-PERIOD-SHIFT=shifted_token --require-recommendation-action-parameter-path RECURRENCE-REUSE-WHOLE-PERIOD-SHIFT=shift_amount",
     "python scripts/circle_ai_contract_ready.py --kind cyclic_memory_residue_winding --digest --field max_alias_load --include-recommendations",
     "python scripts/circle_ai_contract_ready.py --kind strided_candidate_fanout --digest --field full_coverage --field effective_candidate_budget --field duplicate_count --include-recommendations",
     "python scripts/circle_ai_contract_ready.py --kind multicoil_phase_feature --digest --field joint_repeat_horizon --field relative_phase --include-recommendations",

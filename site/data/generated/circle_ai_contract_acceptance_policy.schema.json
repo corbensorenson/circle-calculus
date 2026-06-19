@@ -1,0 +1,138 @@
+{
+  "$id": "https://circle-calculus.local/schemas/circle_ai_contract_acceptance_policy.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "description": "Shape schema for downstream lockfiles that pin Circle AI contract pack fingerprints, contract fingerprints, evidence fields, theorem ids, and planner recommendation requirements. The policy checker remains responsible for validating the pinned values against the generated pack.",
+  "properties": {
+    "contracts": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "expected_contract_fingerprint": {
+            "pattern": "^[0-9a-f]{64}$",
+            "type": "string"
+          },
+          "kind": {
+            "enum": [
+              "circulant_block_cyclic_mixer",
+              "cyclic_memory_residue_winding",
+              "kv_cache_ring_buffer",
+              "multicoil_phase_feature",
+              "recurrence_schedule",
+              "rope_position_distinguishability",
+              "seed_rule_exact_regeneration",
+              "sparse_attention_coverage",
+              "strided_candidate_fanout"
+            ],
+            "type": "string"
+          },
+          "required_fields": {
+            "items": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "minItems": 1,
+            "type": "array",
+            "uniqueItems": true
+          },
+          "required_recommendation_action_parameter_paths": {
+            "additionalProperties": {
+              "items": {
+                "minLength": 1,
+                "type": "string"
+              },
+              "minItems": 1,
+              "type": "array",
+              "uniqueItems": true
+            },
+            "type": "object"
+          },
+          "required_recommendation_action_parameters": {
+            "additionalProperties": {
+              "items": {
+                "minLength": 1,
+                "type": "string"
+              },
+              "minItems": 1,
+              "type": "array",
+              "uniqueItems": true
+            },
+            "type": "object"
+          },
+          "required_recommendation_evidence_fields": {
+            "additionalProperties": {
+              "items": {
+                "minLength": 1,
+                "type": "string"
+              },
+              "minItems": 1,
+              "type": "array",
+              "uniqueItems": true
+            },
+            "type": "object"
+          },
+          "required_recommendation_ids": {
+            "items": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "minItems": 1,
+            "type": "array",
+            "uniqueItems": true
+          },
+          "required_recommendation_theorem_ids": {
+            "additionalProperties": {
+              "items": {
+                "minLength": 1,
+                "type": "string"
+              },
+              "minItems": 1,
+              "type": "array",
+              "uniqueItems": true
+            },
+            "type": "object"
+          },
+          "required_theorem_ids": {
+            "items": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "minItems": 1,
+            "type": "array",
+            "uniqueItems": true
+          }
+        },
+        "required": [
+          "kind",
+          "expected_contract_fingerprint"
+        ],
+        "type": "object"
+      },
+      "minItems": 1,
+      "type": "array"
+    },
+    "expected_pack_fingerprint": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "policy_id": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "policy_name": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "schema_id": {
+      "const": "circle_calculus.ai_contract_acceptance_policy.v0"
+    }
+  },
+  "required": [
+    "schema_id",
+    "policy_id",
+    "expected_pack_fingerprint",
+    "contracts"
+  ],
+  "title": "Circle AI Contract Acceptance Policy",
+  "type": "object"
+}

@@ -6485,6 +6485,54 @@ theorems:
         - tests/test_rope_certifier.py::test_standard_channel0_d19_range_request_bracket_reports_undecided_gap
         - tests/test_rope_certifier.py::test_standard_channel0_d19_range_request_bracket_reports_outside_range
     blocker: ""
+  - id: AIRA-T0232
+    status: lean_proved
+    lean_name: Circle.Applications.ropeStandardChannel0D19_request_margin_open_gap_width
+    informal_statement: "The standard channel-0 D19 request classifier's undecided open margin interval has exact rational width 1/107884986222."
+    formal_statement: "((1 : Real) / 328458) - Circle.Applications.ropeStandardChannel0D19SeedMargin = ((1 : Real) / 107884986222)"
+    dictionary_dependencies: ["COMMON-0076", "COMMON-0077", "COMMON-0080", "COMMON-0082", "COMMON-0087", "COMMON-0088", "COMMON-0089"]
+    paper_refs: ["papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_rope_certifier.py::test_standard_channel0_d19_range_request_bracket_classifies_proved_request
+        - tests/test_rope_certifier.py::test_standard_channel0_d19_range_request_bracket_reports_undecided_gap
+        - tests/test_circle_ai_contract_pack.py::test_generic_contract_pack_is_standalone_with_compatibility_aliases
+    blocker: ""
+  - id: AIRA-T0233
+    status: lean_proved
+    lean_name: Circle.Applications.ropeStandardChannel0D19_contextRange_request_margin_semantic_trichotomy
+    informal_statement: "Inside the standard channel-0 D19 context range, every requested margin is in exactly one semantic classifier region: proved with a finite-margin proof, impossible with a finite-margin refutation, or the deliberately undecided open gap."
+    formal_statement: "forall {context : Nat} {requestedMargin : Real}, 103993 < context -> context <= Circle.Applications.ropeStandardChannel0D19SeedContext -> ((requestedMargin <= Circle.Applications.ropeStandardChannel0D19SeedMargin and Circle.Applications.ropeTurnRatioFiniteMargin Circle.Applications.ropeStandardChannel0TurnRatio requestedMargin context and not (((1 : Real) / 328458) <= requestedMargin) and not (Circle.Applications.ropeStandardChannel0D19SeedMargin < requestedMargin and requestedMargin < ((1 : Real) / 328458))) or ((((1 : Real) / 328458) <= requestedMargin and not (Circle.Applications.ropeTurnRatioFiniteMargin Circle.Applications.ropeStandardChannel0TurnRatio requestedMargin context) and not (requestedMargin <= Circle.Applications.ropeStandardChannel0D19SeedMargin) and not (Circle.Applications.ropeStandardChannel0D19SeedMargin < requestedMargin and requestedMargin < ((1 : Real) / 328458))) or ((Circle.Applications.ropeStandardChannel0D19SeedMargin < requestedMargin and requestedMargin < ((1 : Real) / 328458)) and not (requestedMargin <= Circle.Applications.ropeStandardChannel0D19SeedMargin) and not (((1 : Real) / 328458) <= requestedMargin))))"
+    dictionary_dependencies: ["COMMON-0076", "COMMON-0077", "COMMON-0080", "COMMON-0082", "COMMON-0087", "COMMON-0088", "COMMON-0089"]
+    paper_refs: ["papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_rope_certifier.py::test_standard_channel0_d19_range_request_bracket_classifies_proved_request
+        - tests/test_rope_certifier.py::test_standard_channel0_d19_range_request_bracket_classifies_impossible_request
+        - tests/test_rope_certifier.py::test_standard_channel0_d19_range_request_bracket_reports_undecided_gap
+    blocker: ""
+  - id: AIRA-T0234
+    status: lean_proved
+    lean_name: Circle.Applications.ropeStandardChannel0D19_proved_request_firstChannel_bank_noNearTurn
+    informal_statement: "The D19 proved request branch transfers to a conditional first-channel finite-bank no-near-turn guarantee when standard RoPE channel 0 is the bank's first channel."
+    formal_statement: "forall {extraFrequencies : List Real} {fullTurn requestedMargin tolerance : Real} {requestedContext left right : Nat}, requestedContext <= Circle.Applications.ropeStandardChannel0D19SeedContext -> requestedMargin <= Circle.Applications.ropeStandardChannel0D19SeedMargin -> left < right -> right < requestedContext -> 0 < fullTurn -> tolerance < fullTurn * requestedMargin -> not (Circle.Applications.ropeRealPhaseBankNearTurn (Circle.Applications.ropeStandardChannel0TurnRatio * fullTurn :: extraFrequencies) fullTurn tolerance left right)"
+    dictionary_dependencies: ["COMMON-0076", "COMMON-0077", "COMMON-0080", "COMMON-0082", "COMMON-0087", "COMMON-0088", "COMMON-0089"]
+    paper_refs: ["papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_rope_certifier.py::test_standard_channel0_d19_bank_request_certificate_marks_covered_request
+        - tests/test_circle_ai_contract_pack.py::test_generic_contract_pack_is_standalone_with_compatibility_aliases
+        - tests/test_circle_ai_contract_consumer.py::test_consumer_exposes_rope_planner_recommendations
+    blocker: ""
   - id: AIT-T0001
     status: lean_proved
     lean_name: Circle.Applications.attentionReach_eq_div_gcd
@@ -8898,6 +8946,38 @@ theorems:
         - tests/test_stride_family_certifier_cli.py::test_stride_family_certifier_cli_text_and_json
         - tests/test_stride_family_certifier_cli.py::test_stride_family_certifier_cli_first_gap_repair_fields
         - tests/test_circle_ai_contract_consumer.py::test_consumer_digest_exposes_sparse_first_gap_repair_fields
+    blocker: ""
+  - id: AIT-T0172
+    status: lean_proved
+    lean_name: Circle.Applications.hybridFamilyCoversContext_iff_context_sub_one_le_window_of_not_final_lag_family_reach
+    informal_statement: "If the declared stride family cannot reach the final positive lag, complete sparse-attention coverage is equivalent to the local window reaching context minus one."
+    formal_statement: "forall {n window pathLength : Nat} {strides : List Nat}, 1 < n -> not (Circle.Applications.coilStrideFamilyLagReach n pathLength (n - 1) strides) -> (Circle.Applications.hybridFamilyCoversContext n window pathLength strides iff n - 1 <= window)"
+    dictionary_dependencies: ["COMMON-0028", "COMMON-0029", "COMMON-0047", "COMMON-0075", "COMMON-0079"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common", "S1"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_stride_family_certifier_cli.py::test_stride_family_certifier_cli_text_and_json
+        - tests/test_stride_family_certifier_cli.py::test_stride_family_certifier_cli_first_gap_repair_fields
+        - tests/test_circle_ai_contract_consumer.py::test_consumer_digest_exposes_sparse_first_gap_repair_fields
+    blocker: ""
+  - id: AIT-T0173
+    status: lean_proved
+    lean_name: Circle.Applications.rawCandidateDedupLength_add_rawCandidateDedupLoss_eq_length
+    informal_statement: "For any finite raw candidate list, the deduplicated unique count plus deduplication loss equals the raw candidate count."
+    formal_statement: "forall candidates : List Nat, candidates.dedup.length + Circle.Applications.rawCandidateDedupLoss candidates = candidates.length"
+    dictionary_dependencies: ["COMMON-0047", "COMMON-0075", "COMMON-0079"]
+    paper_refs: ["papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md#theorem-spine"]
+    imports_allowed: ["Common", "S1"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_strided_candidate_fanout_certifier_cli.py::test_strided_candidate_fanout_certifier_cli_text_and_json
+        - tests/test_circle_ai_contract_pack.py::test_generic_contract_pack_is_standalone_with_compatibility_aliases
+        - tests/test_circle_ai_contract_consumer.py::test_consumer_exposes_strided_fanout_planner_recommendations
     blocker: ""
   - id: AIT-T0004
     status: lean_proved

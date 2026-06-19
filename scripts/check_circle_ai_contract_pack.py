@@ -16,6 +16,16 @@ import yaml
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_PACK = ROOT / "site" / "data" / "generated" / "circle_ai_contract_pack.json"
 EXPECTED_SCHEMA_ID = "circle_calculus.ai_contract_pack.v0"
+EXPECTED_ACCEPTANCE_POLICY_SCHEMA_ID = "circle_calculus.ai_contract_acceptance_policy.v0"
+EXPECTED_ACCEPTANCE_POLICY_REPORT_SCHEMA_ID = (
+    "circle_calculus.ai_contract_acceptance_policy_report.v0"
+)
+EXPECTED_ACCEPTANCE_RECEIPT_SCHEMA_ID = (
+    "circle_calculus.ai_contract_acceptance_receipt.v0"
+)
+EXPECTED_DOWNSTREAM_REJECTION_REPORT_SCHEMA_ID = (
+    "circle_calculus.downstream_ci_rejection_report.v0"
+)
 EXPECTED_FINGERPRINT_ALGORITHM = "sha256-json-v1"
 FINGERPRINT_KEYS = {
     "content_fingerprint",
@@ -24,6 +34,21 @@ FINGERPRINT_KEYS = {
 }
 PROVED_STATUSES = {"lean_proved", "proved"}
 MAKE_TARGET_RE = re.compile(r"^([A-Za-z0-9_.-]+):(?:\s|$)")
+EXPECTED_LIVING_BOOK_PAGE_BY_KIND = {
+    "rope_position_distinguishability": "site/chapters/applications/rope_certifier.qmd",
+    "kv_cache_ring_buffer": "site/chapters/applications/kv_cache_ring_buffer.qmd",
+    "sparse_attention_coverage": "site/chapters/applications/sparse_attention_contract.qmd",
+    "recurrence_schedule": "site/chapters/applications/looped_recurrence_contracts.qmd",
+    "strided_candidate_fanout": "site/chapters/applications/strided_candidate_fanout.qmd",
+    "cyclic_memory_residue_winding": (
+        "site/chapters/applications/cyclic_memory_residue_winding.qmd"
+    ),
+    "multicoil_phase_feature": "site/chapters/applications/multicoil_phase_feature.qmd",
+    "circulant_block_cyclic_mixer": (
+        "site/chapters/applications/circulant_block_cyclic_mixer.qmd"
+    ),
+    "seed_rule_exact_regeneration": "site/chapters/applications/generative.qmd",
+}
 
 
 def _walk_ids(value: object) -> set[str]:
@@ -402,6 +427,188 @@ def validate_pack(pack: dict[str, Any]) -> list[str]:
             if not isinstance(ref, str) or not _path_exists(ref):
                 failures.append(f"proof_indexes.{key} is missing: {ref}")
 
+    acceptance_policy = pack.get("acceptance_policy")
+    if not isinstance(acceptance_policy, dict) or not acceptance_policy:
+        failures.append("acceptance_policy must be a non-empty object")
+        acceptance_policy = {}
+    else:
+        if acceptance_policy.get("schema_id") != EXPECTED_ACCEPTANCE_POLICY_SCHEMA_ID:
+            failures.append(
+                "acceptance_policy.schema_id must be "
+                f"{EXPECTED_ACCEPTANCE_POLICY_SCHEMA_ID!r}"
+            )
+        if (
+            acceptance_policy.get("report_schema_id")
+            != EXPECTED_ACCEPTANCE_POLICY_REPORT_SCHEMA_ID
+        ):
+            failures.append(
+                "acceptance_policy.report_schema_id must be "
+                f"{EXPECTED_ACCEPTANCE_POLICY_REPORT_SCHEMA_ID!r}"
+            )
+        if (
+            acceptance_policy.get("receipt_schema_id")
+            != EXPECTED_ACCEPTANCE_RECEIPT_SCHEMA_ID
+        ):
+            failures.append(
+                "acceptance_policy.receipt_schema_id must be "
+                f"{EXPECTED_ACCEPTANCE_RECEIPT_SCHEMA_ID!r}"
+            )
+        if (
+            acceptance_policy.get("rejection_report_schema_id")
+            != EXPECTED_DOWNSTREAM_REJECTION_REPORT_SCHEMA_ID
+        ):
+            failures.append(
+                "acceptance_policy.rejection_report_schema_id must be "
+                f"{EXPECTED_DOWNSTREAM_REJECTION_REPORT_SCHEMA_ID!r}"
+            )
+        for key in (
+            "policy_schema_path",
+            "report_schema_path",
+            "receipt_schema_path",
+            "rejection_report_schema_path",
+            "default_policy_path",
+            "checker",
+            "standalone_checker",
+            "standalone_schema_checker",
+        ):
+            ref = acceptance_policy.get(key)
+            if not isinstance(ref, str) or not ref.strip():
+                failures.append(f"acceptance_policy.{key} must be a non-empty path")
+            elif not _path_exists(ref):
+                failures.append(f"acceptance_policy.{key} is missing: {ref}")
+        pinned_keys = acceptance_policy.get("pinned_requirement_keys")
+        required_pinned_keys = {
+            "required_fields",
+            "required_theorem_ids",
+            "required_recommendation_ids",
+            "required_recommendation_evidence_fields",
+            "required_recommendation_theorem_ids",
+            "required_recommendation_action_parameters",
+            "required_recommendation_action_parameter_paths",
+            "expected_pack_fingerprint",
+            "expected_contract_fingerprint",
+        }
+        if not isinstance(pinned_keys, list) or not pinned_keys:
+            failures.append(
+                "acceptance_policy.pinned_requirement_keys must be a non-empty list"
+            )
+        elif not required_pinned_keys <= set(pinned_keys):
+            failures.append(
+                "acceptance_policy.pinned_requirement_keys missing required keys "
+                f"{sorted(required_pinned_keys - set(pinned_keys))}"
+            )
+        rule = acceptance_policy.get("rule")
+        if not isinstance(rule, str) or "preserve" not in rule.lower():
+            failures.append("acceptance_policy.rule must state preservation behavior")
+        policy_commands = acceptance_policy.get("validation_commands")
+        if not isinstance(policy_commands, list) or not policy_commands:
+            failures.append(
+                "acceptance_policy.validation_commands must be a non-empty list"
+            )
+            policy_commands = []
+        for command in policy_commands:
+            _check_command_reference(
+                command,
+                failures,
+                context="acceptance_policy.validation_commands",
+                make_targets=make_targets,
+                fields_by_kind=fields_by_kind,
+            )
+        refresh_command = acceptance_policy.get("fingerprint_refresh_command")
+        _check_command_reference(
+            refresh_command,
+            failures,
+            context="acceptance_policy.fingerprint_refresh_command",
+            make_targets=make_targets,
+            fields_by_kind=fields_by_kind,
+        )
+        policy_schema_path = acceptance_policy.get("policy_schema_path")
+        report_schema_path = acceptance_policy.get("report_schema_path")
+        receipt_schema_path = acceptance_policy.get("receipt_schema_path")
+        rejection_report_schema_path = acceptance_policy.get(
+            "rejection_report_schema_path"
+        )
+        default_policy_path = acceptance_policy.get("default_policy_path")
+        if isinstance(policy_schema_path, str) and isinstance(default_policy_path, str):
+            try:
+                policy_schema = json.loads((ROOT / policy_schema_path).read_text())
+                default_policy = json.loads((ROOT / default_policy_path).read_text())
+                jsonschema.Draft202012Validator.check_schema(policy_schema)
+                jsonschema.validate(default_policy, policy_schema)
+            except jsonschema.ValidationError as exc:
+                failures.append(
+                    "acceptance_policy.default_policy_path does not match "
+                    f"policy_schema_path: {exc.message}"
+                )
+            except jsonschema.SchemaError as exc:
+                failures.append(
+                    f"acceptance_policy.policy_schema_path is invalid: {exc.message}"
+                )
+            except (OSError, json.JSONDecodeError) as exc:
+                failures.append(
+                    "acceptance_policy policy schema validation failed: "
+                    f"{exc}"
+                )
+        if (
+            isinstance(report_schema_path, str)
+            and isinstance(receipt_schema_path, str)
+            and isinstance(default_policy_path, str)
+        ):
+            try:
+                from circle_math.applications.circle_ai_contract_consumer import (
+                    contract_acceptance_policy_report,
+                )
+
+                report_schema = json.loads((ROOT / report_schema_path).read_text())
+                receipt_schema = json.loads((ROOT / receipt_schema_path).read_text())
+                default_policy = json.loads((ROOT / default_policy_path).read_text())
+                report = contract_acceptance_policy_report(pack, default_policy)
+                jsonschema.Draft202012Validator.check_schema(report_schema)
+                jsonschema.Draft202012Validator.check_schema(receipt_schema)
+                jsonschema.validate(report, report_schema)
+                for receipt in report.get("receipts", []):
+                    jsonschema.validate(receipt, receipt_schema)
+            except jsonschema.ValidationError as exc:
+                failures.append(
+                    "acceptance_policy report or receipt does not match "
+                    f"generated schema: {exc.message}"
+                )
+            except jsonschema.SchemaError as exc:
+                failures.append(
+                    "acceptance_policy report or receipt schema is invalid: "
+                    f"{exc.message}"
+                )
+            except (OSError, json.JSONDecodeError, ValueError) as exc:
+                failures.append(
+                    "acceptance_policy report or receipt schema validation "
+                    f"failed: {exc}"
+                )
+        if isinstance(rejection_report_schema_path, str):
+            try:
+                rejection_report_schema = json.loads(
+                    (ROOT / rejection_report_schema_path).read_text()
+                )
+                jsonschema.Draft202012Validator.check_schema(
+                    rejection_report_schema
+                )
+                if rejection_report_schema.get("properties", {}).get(
+                    "schema_id", {}
+                ).get("const") != EXPECTED_DOWNSTREAM_REJECTION_REPORT_SCHEMA_ID:
+                    failures.append(
+                        "acceptance_policy.rejection_report_schema_path has "
+                        "unexpected schema_id const"
+                    )
+            except jsonschema.SchemaError as exc:
+                failures.append(
+                    "acceptance_policy rejection report schema is invalid: "
+                    f"{exc.message}"
+                )
+            except (OSError, json.JSONDecodeError) as exc:
+                failures.append(
+                    "acceptance_policy rejection report schema validation "
+                    f"failed: {exc}"
+                )
+
     manifest_entries = _yaml_entry_index(ROOT / "manifests")
     manifest_ids = set(manifest_entries)
     known_dictionary_ids = _yaml_ids(ROOT / "dictionary")
@@ -422,6 +629,12 @@ def validate_pack(pack: dict[str, Any]) -> list[str]:
             make_targets=make_targets,
             fields_by_kind=fields_by_kind,
         )
+    for command in acceptance_policy.get("validation_commands", []):
+        if command not in validation_commands:
+            failures.append(
+                "pack.validation_commands must include acceptance policy command: "
+                f"{command}"
+            )
 
     contracts = pack.get("contracts")
     if not isinstance(contracts, list) or not contracts:
@@ -442,6 +655,7 @@ def validate_pack(pack: dict[str, Any]) -> list[str]:
         fingerprint_index = {}
 
     expected_recommendation_index: dict[str, dict[str, Any]] = {}
+    seen_recommendation_ids: dict[str, str] = {}
     expected_fingerprint_index: dict[str, dict[str, str]] = {}
     for contract in contracts:
         if not isinstance(contract, dict):
@@ -610,7 +824,23 @@ def validate_pack(pack: dict[str, Any]) -> list[str]:
                     "not_claimed boundary is missing or weak"
                 )
             recommendation_id = recommendation.get("id")
-            if isinstance(recommendation_id, str):
+            if not isinstance(recommendation_id, str) or not recommendation_id:
+                failures.append(
+                    f"{contract_id}: planner_recommendations[{index}].id "
+                    "must be a non-empty string"
+                )
+            else:
+                previous_contract_id = seen_recommendation_ids.get(
+                    recommendation_id
+                )
+                if previous_contract_id is not None:
+                    failures.append(
+                        f"{contract_id}: duplicate planner recommendation id "
+                        f"{recommendation_id} already used by "
+                        f"{previous_contract_id}"
+                    )
+                else:
+                    seen_recommendation_ids[recommendation_id] = contract_id
                 expected_recommendation_index[recommendation_id] = {
                     "id": recommendation_id,
                     "kind": kind,
@@ -707,6 +937,13 @@ def validate_pack(pack: dict[str, Any]) -> list[str]:
             for ref in refs:
                 if not _path_exists(ref):
                     failures.append(f"{contract_id}: {path_key} entry is missing: {ref}")
+        expected_page = EXPECTED_LIVING_BOOK_PAGE_BY_KIND.get(kind)
+        living_book_pages = contract.get("living_book_pages", [])
+        if expected_page is not None and expected_page not in living_book_pages:
+            failures.append(
+                f"{contract_id}: living_book_pages must include focused lesson "
+                f"{expected_page}"
+            )
         for command in contract.get("entrypoints", []):
             _check_entrypoint(command, failures)
         contract_validation_commands = contract.get("validation_commands", [])

@@ -184,6 +184,8 @@ def test_recurrence_contract_records_exit_and_token_budgets() -> None:
 def test_fanout_memory_phase_and_mixer_contracts_have_controls() -> None:
     contracts = {item["kind"]: item for item in build_contract_pack()["contracts"]}
 
+    fanout_contract = contracts["strided_candidate_fanout"]
+    assert "AIT-T0173" in fanout_contract["theorem_ids"]
     fanout = contracts["strided_candidate_fanout"]["fields"]
     assert fanout["gcd"] == 1
     assert fanout["full_coverage"] is True

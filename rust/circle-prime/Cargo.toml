@@ -1,0 +1,18 @@
+[package]
+name = "circle-prime"
+version = "0.1.0"
+edition = "2021"
+description = "Rust prime-search engine for Circle Calculus horizon/coil arithmetic."
+license = "MIT"
+default-run = "circle-prime"
+
+[lib]
+name = "circle_prime"
+path = "src/lib.rs"
+
+[dependencies]
+primal = "0.3.3"
+
+[[bin]]
+name = "circle-prime"
+path = "src/bin/circle-prime.rs"

@@ -123,7 +123,7 @@ circle_calculus.stride_family_sparse_attention_certificate.v0
 - `complete_repair_window_additional_local_slots`: the additional local-window slots needed to reach that full fallback from the current plan.
 - `complete_repair_window_covers_context`: true when the complete repair window is theorem-backed as covering every positive lag.
 - `complete_repair_window_uses_dense_threshold`: true when the complete repair window is exactly the dense-local threshold. This is a correctness/boundary field, not a recommendation that dense local attention is a good architecture.
-- `complete_repair_window_minimal_for_declared_stride_family`: true when the reported complete repair window is also minimal for the declared finite stride-family fixture, not only sufficient by dense-local coverage.
+- `complete_repair_window_minimal_for_declared_stride_family`: true when the reported complete repair window is also minimal for the declared finite stride-family fixture, not only sufficient by dense-local coverage. `AIT-T0172` gives the reusable condition: if the declared stride family cannot reach the final positive lag, complete coverage is equivalent to reaching the dense-local threshold.
 - `complete_repair_window_minimal_witness_lag`: a concrete lag witnessing failure at the previous local-window width. In the default row this is lag `119`.
 - `interval_repair_plan`: deterministic repair rows of the form `[target_interval_start, target_interval_stop, proposed_local_window, additional_local_slots, remaining_gap_count_after_repair]`. The default row closes the six successive gap intervals and ends at window `119`.
 - `interval_repair_plan_step_count`: number of successive first-interval repair rows.
@@ -257,6 +257,7 @@ The raw-budget iff endpoints are:
 - `AIT-T0168`: for the default `C_120` row, lag `119` remains a concrete gap for every local window below `119`.
 - `AIT-T0169`: therefore no local window below `119` certifies complete context coverage for the default row.
 - `AIT-T0170`: for the default row, complete context coverage is equivalent to the local window being at least `119`.
+- `AIT-T0172`: in any context with at least two positions, if the declared stride family cannot reach the final positive lag, complete coverage is equivalent to the local window being at least `context - 1`.
 
 The finite-list endpoints are:
 

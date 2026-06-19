@@ -8,7 +8,7 @@ This lesson is the working front door for the Circle Calculus AI contracts. The 
 
 ## Goal
 
-Use the four v0.2 flagship contracts as a guided suite: RoPE position distinguishability, KV-cache ring-buffer freshness plus sink-window policy, sparse-attention coverage, and looped recurrence schedule accounting. For each one, identify the circular address space, run or export the certificate, read the theorem ids, and state what the certificate does not prove.
+Use the four v0.3 flagship contracts as a guided suite: RoPE position distinguishability, KV-cache ring-buffer freshness plus sink-window policy, sparse-attention coverage, and looped recurrence schedule accounting. For each one, identify the circular address space, run or export the certificate, read the theorem ids, and state what the certificate does not prove.
 
 :::
 
@@ -109,11 +109,53 @@ python scripts/circle_ai_contract_ready.py --kind sparse_attention_coverage --fo
 python scripts/circle_ai_contract_ready.py --list-kinds
 python scripts/circle_ai_contract_ready.py --list-recommendations
 python scripts/circle_ai_contract_ready.py --fingerprints
+python scripts/circle_ai_contract_ready.py --acceptance-policy
+python scripts/circle_ai_contract_ready.py --acceptance-policy --format json
 python scripts/circle_ai_contract_ready.py --action-plan
+python scripts/circle_ai_contract_ready.py --action-plan --recommendation ROPE-USE-D19-MARGIN-FRONTIER --format json
 python scripts/circle_ai_contract_ready.py --kind seed_rule_exact_regeneration --action-plan --include-values --format json
-python scripts/circle_ai_contract_ready.py --kind rope_position_distinguishability --digest --format json --field d19_proved_request_status --field d19_impossible_request_status --include-recommendations
+python scripts/circle_ai_contract_ready.py --kind rope_position_distinguishability --digest --format json --field d19_proved_request_status --field d19_impossible_request_status --field d19_undecided_request_status --field d19_proved_first_channel_bank_transfer --field d19_proved_first_channel_bank_shape --field d19_proved_first_channel_bank_tolerance_rule --include-recommendations
+python scripts/circle_ai_contract_ready.py --kind rope_position_distinguishability --receipt --format json --field d19_proved_request_status --field d19_impossible_request_status --field d19_undecided_request_status --field d19_proved_first_channel_bank_transfer --field d19_proved_first_channel_bank_shape --field d19_proved_first_channel_bank_tolerance_rule --require-theorem AIRA-T0171 --require-theorem AIRA-T0172 --require-theorem AIRA-T0234 --require-recommendation ROPE-USE-D19-MARGIN-FRONTIER --require-recommendation-evidence-field ROPE-USE-D19-MARGIN-FRONTIER=d19_proved_first_channel_bank_transfer --require-recommendation-theorem ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0234 --require-recommendation-action-parameter ROPE-USE-D19-MARGIN-FRONTIER=proved_branch_bank_transfer --require-recommendation-action-parameter-path ROPE-USE-D19-MARGIN-FRONTIER=proved_branch_bank_transfer.applies --require-recommendation-action-parameter-path ROPE-USE-D19-MARGIN-FRONTIER=proved_branch_bank_transfer.theorem_ids
 python scripts/circle_ai_contract_ready.py --kind kv_cache_ring_buffer --digest --field stale_probe_first_stale_token --include-recommendations
 python scripts/circle_ai_contract_ready.py --kind sparse_attention_coverage --digest --field first_uncovered_lag --include-recommendations
+python scripts/circle_ai_contract_ready.py \
+  --kind sparse_attention_coverage \
+  --receipt \
+  --format json \
+  --field first_uncovered_lag \
+  --field first_uncovered_interval_start \
+  --field complete_repair_window \
+  --field complete_repair_window_covers_context \
+  --field complete_repair_window_minimal_for_declared_stride_family \
+  --field complete_repair_window_minimal_witness_lag \
+  --require-theorem AIT-T0104 \
+  --require-theorem AIT-T0172 \
+  --require-recommendation SPARSE-LOCAL-FIRST-INTERVAL-REPAIR \
+  --require-recommendation SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK \
+  --require-recommendation-evidence-field SPARSE-LOCAL-FIRST-INTERVAL-REPAIR=first_uncovered_interval_start \
+  --require-recommendation-evidence-field SPARSE-LOCAL-FIRST-INTERVAL-REPAIR=first_uncovered_interval_stop \
+  --require-recommendation-evidence-field SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=complete_repair_window \
+  --require-recommendation-evidence-field SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=complete_repair_window_covers_context \
+  --require-recommendation-evidence-field SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=complete_repair_window_uses_dense_threshold \
+  --require-recommendation-evidence-field SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=local_window_complete_threshold_is_exact_local_minimum \
+  --require-recommendation-evidence-field SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=complete_repair_window_minimal_for_declared_stride_family \
+  --require-recommendation-evidence-field SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=complete_repair_window_minimal_witness_lag \
+  --require-recommendation-theorem SPARSE-LOCAL-FIRST-INTERVAL-REPAIR=AIT-T0104 \
+  --require-recommendation-theorem SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=AIT-T0023 \
+  --require-recommendation-theorem SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=AIT-T0034 \
+  --require-recommendation-theorem SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=AIT-T0172 \
+  --require-recommendation-theorem SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=AIT-T0168 \
+  --require-recommendation-theorem SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=AIT-T0169 \
+  --require-recommendation-theorem SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=AIT-T0170 \
+  --require-recommendation-action-parameter SPARSE-LOCAL-FIRST-INTERVAL-REPAIR=proposed_local_window \
+  --require-recommendation-action-parameter SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=proposed_local_window \
+  --require-recommendation-action-parameter SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=additional_local_slots \
+  --require-recommendation-action-parameter-path SPARSE-LOCAL-FIRST-INTERVAL-REPAIR=proposed_local_window \
+  --require-recommendation-action-parameter-path SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=proposed_local_window \
+  --require-recommendation-action-parameter-path SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=additional_local_slots
+python scripts/check_circle_ai_contract_acceptance_policy.py --format json
+python scripts/circle_ai_contract_ready.py --print-refreshed-policy
+python scripts/circle_ai_contract_ready.py --acceptance-policy-report --format json
 python scripts/circle_ai_contract_ready.py --kind strided_candidate_fanout --digest --field full_coverage --field effective_candidate_budget --field duplicate_count --include-recommendations
 python scripts/circle_ai_contract_ready.py --kind cyclic_memory_residue_winding --digest --field max_alias_load --include-recommendations
 python scripts/circle_ai_contract_ready.py --kind multicoil_phase_feature --digest --field joint_repeat_horizon --field relative_phase --include-recommendations
@@ -145,24 +187,101 @@ For Python projects, the same gate is available as an importable adapter:
 
 ```python
 from circle_math.applications.circle_ai_contract_consumer import (
+    contract_acceptance_receipt,
+    contract_acceptance_policy_report,
     contract_digest,
     contract_recommendations,
+    contract_fingerprint_summary,
     load_contract_pack,
     planner_action_plan,
+    require_fingerprint_expectations,
     require_ready_contract,
 )
 
 pack = load_contract_pack("site/data/generated/circle_ai_contract_pack.json")
+fingerprints = contract_fingerprint_summary(pack)
+require_fingerprint_expectations(
+    pack,
+    expected_pack_fingerprint=fingerprints["pack_content_fingerprint"],
+    expected_contract_fingerprints={
+        "kv_cache_ring_buffer": fingerprints["contract_fingerprint_index"][
+            "kv_cache_ring_buffer"
+        ]["content_fingerprint"],
+    },
+)
 contract = require_ready_contract(pack, "kv_cache_ring_buffer")
 digest = contract_digest(pack, "kv_cache_ring_buffer")
 
 assert digest["ready_for_downstream_fixture_use"] is True
 assert digest["missing_requested_fields"] == []
 assert digest["evidence_fields"]["stale_requested_count"] == 0
+receipt = contract_acceptance_receipt(
+    pack,
+    "kv_cache_ring_buffer",
+    required_fields=("adapter_request_pass", "stale_requested_count"),
+    required_theorem_ids=("AIM-T0103",),
+    required_recommendation_ids=("KV-DROP-STALE-REQUEST-TOKEN",),
+    required_recommendation_evidence_fields={
+        "KV-DROP-STALE-REQUEST-TOKEN": (
+            "stale_probe_first_stale_token",
+            "stale_probe_stale_requested_count",
+        ),
+    },
+    required_recommendation_theorem_ids={
+        "KV-DROP-STALE-REQUEST-TOKEN": ("AIM-T0103",),
+    },
+    required_recommendation_action_parameters={
+        "KV-DROP-STALE-REQUEST-TOKEN": (
+            "target_token",
+            "next_same_slot_overwrite_token",
+        ),
+    },
+    required_recommendation_action_parameter_paths={
+        "KV-DROP-STALE-REQUEST-TOKEN": ("target_token",),
+    },
+)
+assert receipt["accepted"] is True
 assert contract_recommendations(pack, "sparse_attention_coverage")
+policy_report = contract_acceptance_policy_report(
+    pack,
+    {
+        "schema_id": "circle_calculus.ai_contract_acceptance_policy.v0",
+        "policy_id": "kv_policy",
+        "expected_pack_fingerprint": fingerprints["pack_content_fingerprint"],
+        "contracts": [
+            {
+                "kind": "kv_cache_ring_buffer",
+                "expected_contract_fingerprint": fingerprints[
+                    "contract_fingerprint_index"
+                ]["kv_cache_ring_buffer"]["content_fingerprint"],
+                "required_fields": [
+                    "stale_probe_first_stale_token",
+                    "sink_tokens_retained_by_policy",
+                ],
+                "required_recommendation_ids": [
+                    "KV-DROP-STALE-REQUEST-TOKEN",
+                ],
+                "required_recommendation_evidence_fields": {
+                    "KV-DROP-STALE-REQUEST-TOKEN": [
+                        "stale_probe_first_stale_token",
+                        "stale_probe_stale_requested_count",
+                    ],
+                },
+            },
+        ],
+    },
+)
+assert policy_report["accepted"] is True
 planner = planner_action_plan(pack, ["sparse_attention_coverage"], include_values=True)
 assert planner["action_plan"][0]["action_parameters"]["proposed_local_window"] == 6
 assert planner["action_plan"][0]["validation_commands"]
+single_action = planner_action_plan(
+    pack,
+    ["sparse_attention_coverage"],
+    recommendation_ids=["SPARSE-LOCAL-FIRST-INTERVAL-REPAIR"],
+    include_values=True,
+)
+assert single_action["planner_recommendation_count"] == 1
 print(contract["id"], digest["theorem_ids"])
 ```
 
@@ -180,11 +299,49 @@ turns planner recommendations into a theorem-linked action list, and
 `--include-values` resolves evidence fields into concrete certificate values.
 For the seed-rule fixture, this exposes the exact-regeneration recipe and the
 bounded shorter-candidate selection with stable candidate ids.
+Use `--recommendation RECOMMENDATION_ID` when a downstream planner needs one
+named action; missing recommendation ids fail instead of being silently ignored.
 
 The `--digest` form is the smallest copy-safe surface for another AI project:
 it emits the contract id, theorem ids, selected evidence fields, source trails,
 and the non-claim boundary without asking that project to know Circle's
 manifests or Lean file layout.
+The first-party `--receipt` form is stricter: it rejects the selected contract
+if a requested evidence field, required theorem id, required planner
+recommendation id, required recommendation evidence field, or required
+recommendation theorem id is missing. Use
+`--require-recommendation-action-parameter RECOMMENDATION_ID=parameter_key`
+when a direct receipt must pin a value-mode planner payload key; policy gates
+can enforce the same action-parameter pins. Use
+`--require-recommendation-action-parameter-path
+RECOMMENDATION_ID=classifier_regions[region=proved].theorem_ids` when the
+consumer depends on a nested path inside a structured planner payload.
+Successful receipts emit the pack fingerprint, contract fingerprint, theorem
+ids, source trails, validation commands, and non-claim boundary.
+The multi-contract policy gate is stricter again: it reads
+`examples/circle_ai_contract_acceptance_policy.json`, pins the pack fingerprint
+and selected contract fingerprints, requires the action evidence and theorem
+trails used by downstream recommendations, then emits one report containing
+strict receipts for the four flagship contracts. Before it prints success, the
+checker validates that report and every receipt against the generated report and
+receipt schema sidecars named by the pack. The same receipt bundle can be
+emitted through the main CLI with
+`python scripts/circle_ai_contract_ready.py --acceptance-policy-report --format json`.
+The generated pack advertises this route directly under `acceptance_policy`:
+that block names the default policy path, checker scripts, report schema id
+`circle_calculus.ai_contract_acceptance_policy_report.v0`, receipt schema id
+`circle_calculus.ai_contract_acceptance_receipt.v0`, rejection report schema id
+`circle_calculus.downstream_ci_rejection_report.v0`, policy schema path
+`site/data/generated/circle_ai_contract_acceptance_policy.schema.json`, report
+schema path `site/data/generated/circle_ai_contract_acceptance_policy_report.schema.json`,
+receipt schema path `site/data/generated/circle_ai_contract_acceptance_receipt.schema.json`,
+rejection report schema path `site/data/generated/circle_ai_downstream_rejection_report.schema.json`,
+fingerprint refresh command, and the pinned requirement keys a downstream project
+should preserve when locking a receipt.
+Use `python scripts/circle_ai_contract_ready.py --print-refreshed-policy` only when the requirements are intentionally
+unchanged and the generated pack fingerprints need to be refreshed; it preserves
+field pins, theorem pins, recommendation pins, action-parameter pins, and nested
+action-parameter path pins.
 When `--include-recommendations` is passed, the digest also includes optional
 copy-safe repair/audit actions such as the sparse first-interval repair target
 and largest-gap repair target and dense-local fallback, the KV stale-token/sink-window actions, or the
@@ -200,23 +357,76 @@ finite-search shorter-candidate selection.
 For a copyable downstream-consumer pattern, run:
 
 ```bash
-python scripts/example_consume_circle_ai_contract_pack.py --kind rope_position_distinguishability --field d19_proved_request_status --field d19_impossible_request_status --include-recommendations
-python scripts/example_consume_circle_ai_contract_pack.py --kind sparse_attention_coverage --field first_uncovered_lag --include-recommendations
+python scripts/example_consume_circle_ai_contract_pack.py --kind rope_position_distinguishability --field d19_proved_request_status --field d19_impossible_request_status --field d19_undecided_request_status --field d19_proved_first_channel_bank_transfer --field d19_proved_first_channel_bank_shape --field d19_proved_first_channel_bank_tolerance_rule --include-recommendations
+python scripts/example_consume_circle_ai_contract_pack.py --kind rope_position_distinguishability --receipt --field d19_proved_request_status --field d19_impossible_request_status --field d19_undecided_request_status --field d19_proved_first_channel_bank_transfer --field d19_proved_first_channel_bank_shape --field d19_proved_first_channel_bank_tolerance_rule --require-theorem AIRA-T0171 --require-theorem AIRA-T0172 --require-theorem AIRA-T0234 --require-recommendation ROPE-USE-D19-MARGIN-FRONTIER --require-recommendation-evidence-field ROPE-USE-D19-MARGIN-FRONTIER=d19_proved_first_channel_bank_transfer --require-recommendation-theorem ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0234 --require-recommendation-action-parameter ROPE-USE-D19-MARGIN-FRONTIER=proved_branch_bank_transfer --require-recommendation-action-parameter-path ROPE-USE-D19-MARGIN-FRONTIER=proved_branch_bank_transfer.applies --require-recommendation-action-parameter-path ROPE-USE-D19-MARGIN-FRONTIER=proved_branch_bank_transfer.theorem_ids
+python scripts/example_consume_circle_ai_contract_pack.py --fingerprints
+python scripts/example_consume_circle_ai_contract_pack.py --kind kv_cache_ring_buffer --readiness
+python scripts/example_consume_circle_ai_contract_pack.py --all-readiness
+python scripts/example_consume_circle_ai_contract_pack.py --kind sparse_attention_coverage --field first_uncovered_lag --include-recommendations --expect-pack-fingerprint <pack_sha256> --expect-contract-fingerprint sparse_attention_coverage=<contract_sha256>
+python scripts/example_consume_circle_ai_contract_pack.py \
+  --kind sparse_attention_coverage \
+  --receipt \
+  --field first_uncovered_lag \
+  --field first_uncovered_interval_start \
+  --field complete_repair_window \
+  --field complete_repair_window_covers_context \
+  --field complete_repair_window_minimal_for_declared_stride_family \
+  --field complete_repair_window_minimal_witness_lag \
+  --require-theorem AIT-T0104 \
+  --require-theorem AIT-T0172 \
+  --require-recommendation SPARSE-LOCAL-FIRST-INTERVAL-REPAIR \
+  --require-recommendation SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK \
+  --require-recommendation-evidence-field SPARSE-LOCAL-FIRST-INTERVAL-REPAIR=first_uncovered_interval_start \
+  --require-recommendation-evidence-field SPARSE-LOCAL-FIRST-INTERVAL-REPAIR=first_uncovered_interval_stop \
+  --require-recommendation-evidence-field SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=complete_repair_window \
+  --require-recommendation-evidence-field SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=complete_repair_window_covers_context \
+  --require-recommendation-evidence-field SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=complete_repair_window_uses_dense_threshold \
+  --require-recommendation-evidence-field SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=local_window_complete_threshold_is_exact_local_minimum \
+  --require-recommendation-evidence-field SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=complete_repair_window_minimal_for_declared_stride_family \
+  --require-recommendation-evidence-field SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=complete_repair_window_minimal_witness_lag \
+  --require-recommendation-theorem SPARSE-LOCAL-FIRST-INTERVAL-REPAIR=AIT-T0104 \
+  --require-recommendation-theorem SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=AIT-T0023 \
+  --require-recommendation-theorem SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=AIT-T0034 \
+  --require-recommendation-theorem SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=AIT-T0172 \
+  --require-recommendation-theorem SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=AIT-T0168 \
+  --require-recommendation-theorem SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=AIT-T0169 \
+  --require-recommendation-theorem SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=AIT-T0170 \
+  --require-recommendation-action-parameter SPARSE-LOCAL-FIRST-INTERVAL-REPAIR=proposed_local_window \
+  --require-recommendation-action-parameter SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=proposed_local_window \
+  --require-recommendation-action-parameter SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=additional_local_slots \
+  --require-recommendation-action-parameter-path SPARSE-LOCAL-FIRST-INTERVAL-REPAIR=proposed_local_window \
+  --require-recommendation-action-parameter-path SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=proposed_local_window \
+  --require-recommendation-action-parameter-path SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=additional_local_slots \
+  --expect-pack-fingerprint <pack_sha256> \
+  --expect-contract-fingerprint sparse_attention_coverage=<contract_sha256>
 python scripts/example_consume_circle_ai_contract_pack.py --kind strided_candidate_fanout --field full_coverage --field effective_candidate_budget --field duplicate_count --include-recommendations
 python scripts/example_consume_circle_ai_contract_pack.py --kind cyclic_memory_residue_winding --field max_alias_load --include-recommendations
 python scripts/example_consume_circle_ai_contract_pack.py --kind multicoil_phase_feature --field joint_repeat_horizon --field relative_phase --include-recommendations
 python scripts/example_consume_circle_ai_contract_pack.py --kind circulant_block_cyclic_mixer --field max_abs_dense_delta --field block_to_dense_ratio --include-recommendations
 python scripts/example_consume_circle_ai_contract_pack.py --kind recurrence_schedule --field scheduled_work_saving --include-recommendations
+python scripts/example_consume_circle_ai_contract_pack.py --kind recurrence_schedule --receipt --field periodic_shift_required_steps_invariant --field periodic_shift_active_at_step_invariant --field total_active_token_work --field scheduled_work_saving --field scheduled_work_saving_accounting --field active_inactive_work_accounting --field scheduled_work_saving_positive --field post_period_multi_extension_scheduled_work_saving --require-theorem AIM-T0026 --require-theorem AIM-T0130 --require-theorem AIM-T0159 --require-recommendation RECURRENCE-USE-ACTIVE-TOKEN-WORK-SCHEDULE --require-recommendation RECURRENCE-REUSE-WHOLE-PERIOD-SHIFT --require-recommendation-evidence-field RECURRENCE-USE-ACTIVE-TOKEN-WORK-SCHEDULE=total_active_token_work --require-recommendation-evidence-field RECURRENCE-USE-ACTIVE-TOKEN-WORK-SCHEDULE=scheduled_work_saving --require-recommendation-evidence-field RECURRENCE-USE-ACTIVE-TOKEN-WORK-SCHEDULE=post_period_multi_extension_scheduled_work_saving --require-recommendation-evidence-field RECURRENCE-REUSE-WHOLE-PERIOD-SHIFT=periodic_shift_required_steps_invariant --require-recommendation-evidence-field RECURRENCE-REUSE-WHOLE-PERIOD-SHIFT=periodic_shift_active_at_step_invariant --require-recommendation-theorem RECURRENCE-USE-ACTIVE-TOKEN-WORK-SCHEDULE=AIM-T0130 --require-recommendation-theorem RECURRENCE-USE-ACTIVE-TOKEN-WORK-SCHEDULE=AIM-T0159 --require-recommendation-theorem RECURRENCE-REUSE-WHOLE-PERIOD-SHIFT=AIM-T0026 --require-recommendation-action-parameter RECURRENCE-USE-ACTIVE-TOKEN-WORK-SCHEDULE=loop_period --require-recommendation-action-parameter RECURRENCE-USE-ACTIVE-TOKEN-WORK-SCHEDULE=scheduled_work_saving --require-recommendation-action-parameter RECURRENCE-REUSE-WHOLE-PERIOD-SHIFT=base_token --require-recommendation-action-parameter-path RECURRENCE-USE-ACTIVE-TOKEN-WORK-SCHEDULE=loop_period --require-recommendation-action-parameter-path RECURRENCE-USE-ACTIVE-TOKEN-WORK-SCHEDULE=token_count --require-recommendation-action-parameter-path RECURRENCE-USE-ACTIVE-TOKEN-WORK-SCHEDULE=horizon_steps --require-recommendation-action-parameter-path RECURRENCE-USE-ACTIVE-TOKEN-WORK-SCHEDULE=scheduled_work_saving --require-recommendation-action-parameter-path RECURRENCE-USE-ACTIVE-TOKEN-WORK-SCHEDULE=post_period_multi_extension_scheduled_work_saving --require-recommendation-action-parameter-path RECURRENCE-REUSE-WHOLE-PERIOD-SHIFT=base_token --require-recommendation-action-parameter-path RECURRENCE-REUSE-WHOLE-PERIOD-SHIFT=shifted_token --require-recommendation-action-parameter-path RECURRENCE-REUSE-WHOLE-PERIOD-SHIFT=shift_amount
 python scripts/example_consume_circle_ai_contract_pack.py --kind seed_rule_exact_regeneration --field storage_saving --include-recommendations
 python scripts/example_consume_circle_ai_contract_pack.py --planner --planner-kind sparse_attention_coverage --planner-kind rope_position_distinguishability
 python scripts/example_consume_circle_ai_contract_pack.py --planner --planner-kind sparse_attention_coverage --planner-include-values
+python scripts/example_consume_circle_ai_contract_pack.py --planner --planner-recommendation SPARSE-LOCAL-FIRST-INTERVAL-REPAIR --planner-include-values
 ```
 
 The `--planner` form reads the generated recommendation index and emits a
 copy-safe action plan. Each action keeps theorem ids, source links, evidence
 field names, and non-claims attached, so a downstream project can choose which
 finite audit or repair target to try without treating the record as model-quality
-or performance evidence.
+or performance evidence. The example consumer also has `--readiness`,
+`--all-readiness`, and `--fingerprints` modes and accepts
+`--expect-pack-fingerprint` and `--expect-contract-fingerprint kind=<sha256>`,
+matching the readiness CLI, so a project can check one contract or the whole
+pack, discover and pin the exact audited public pack, and consume only a narrow
+digest.
+Use `--receipt` when the downstream job should reject the artifact if a selected
+evidence field, theorem id, required planner recommendation, required
+recommendation evidence field, or required recommendation theorem id is missing.
+It emits a compact acceptance receipt with the pack fingerprint, contract
+fingerprint, theorem ids, source trails, validation commands, and non-claim
+boundary.
 Add `--planner-include-values` when a downstream planner needs the resolved
 field values and action parameters too. For the sparse first-interval repair,
 that includes the proposed local window `6`, the next uncovered lag `8`, and the
@@ -225,6 +435,50 @@ For the sparse largest-gap action, it includes target interval `40..119`,
 proposed local window `119`, and the explicit `not_claimed` boundary saying the
 record is a finite audit action, not an optimal sparse-layout or performance
 claim.
+
+For a downstream project that does not want to import Circle's Python package,
+use the standard-library-only CI example:
+
+```bash
+python examples/downstream_ci_accept_circle_ai_contracts.py --format json
+python examples/downstream_ci_accept_circle_ai_contracts.py --format json --include-values
+python examples/downstream_ci_accept_circle_ai_contracts.py --format json --planner-recommendation SPARSE-LOCAL-FIRST-INTERVAL-REPAIR --include-values
+python examples/downstream_ci_accept_circle_ai_contracts.py --format json --planner-recommendation ROPE-USE-D19-MARGIN-FRONTIER --include-values
+python scripts/check_downstream_ci_acceptance_example.py --summary
+```
+
+That example validates the pinned policy in
+`examples/circle_ai_contract_acceptance_policy.json` against the raw generated
+pack. It checks every required contract fingerprint, proof/readiness flag,
+evidence field, theorem id, required planner recommendation, required
+recommendation evidence field, required recommendation theorem id, and required
+recommendation action-parameter key or nested action-parameter path. It also
+validates every emitted selected action against the source recommendation
+record, so action-plan drift fails even when the drifting recommendation was not
+explicitly pinned by policy. The default JSON keeps evidence field names only.
+It uses the generated acceptance report and receipt schema ids and keeps
+`accepted_contracts` as a consumer-friendly alias for the canonical `receipts`
+array.
+The repository-side checker runs the portable script in the default, value,
+sparse-selected, and RoPE-selected modes, then validates the emitted report and
+receipts against the generated schema sidecars. It also runs a rejection case
+and checks that `--format json` emits a
+`circle_calculus.downstream_ci_rejection_report.v0` object on stderr against
+the generated rejection-report schema sidecar.
+The `--include-values` form adds resolved values,
+`missing_evidence_fields`, and source `action_parameters`, such as the RoPE D19
+request context `131072`, the RoPE D19 `classifier_regions` table, or the
+sparse first-interval repair window `6`.
+The `--planner-recommendation` selector keeps vendored CI focused on one named
+planner action and fails if that action is not selected by the accepted pinned
+policy.
+In JSON mode, failed runs keep `accepted=false`, exact `failures`, pinned pack
+and policy paths, requested planner recommendation ids, and an explicit
+non-claim boundary, so downstream automation can distinguish stale
+fingerprints, unready proof status, and missing planner actions without scraping
+prose logs.
+It is an artifact-consumption gate, not a model-quality or deployment-safety
+proof.
 
 ## Suite Table
 

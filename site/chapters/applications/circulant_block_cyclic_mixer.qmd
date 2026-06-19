@@ -1,0 +1,97 @@
+---
+title: "Circulant And Block-Cyclic Mixers"
+---
+
+A circulant mixer is a structured linear map whose rows are cyclic shifts of a
+kernel. The useful claim is structural: it commutes with cyclic shifts and has
+a fixed parameter budget before any learning happens.
+
+::: {.lesson-goal}
+
+## Goal
+
+Read circulant and block-cyclic mixer certificates as structure and accounting
+contracts, not as performance claims.
+
+:::
+
+## Concept
+
+The circular object is the channel or token index modulo a period. A circulant
+kernel reuses the same parameters around the circle, so cyclic shifts in the
+input correspond to cyclic shifts in the output. A block-cyclic adapter applies
+the same idea at a block level and exposes a declared parameter budget.
+
+```text
+period -> kernel -> circulant output
+       -> dense reference parity
+       -> parameter accounting
+```
+
+## Example
+
+The public fixture uses period `8`. The certifier compares the structured
+circulant output with its dense reference and reports:
+
+```text
+max_abs_dense_delta = 0
+circulant_parameters = 8
+dense_parameters = 64
+block_cyclic_parameters = 128
+block_to_dense_ratio = 0.0625
+```
+
+```bash
+python scripts/circulant_block_cyclic_mixer_certify.py --format json
+python scripts/circle_ai_contract_ready.py --kind circulant_block_cyclic_mixer --digest --field max_abs_dense_delta --field block_to_dense_ratio --include-recommendations
+```
+
+## Theorem Trail
+
+<div class="theorem-box" data-theorem-id="AIT-T0006"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0007"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0008"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0009"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0001"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0002"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0004"></div>
+
+## Certificate Reading
+
+The useful fields are:
+
+- `max_abs_dense_delta`: parity between the structured and dense reference on the fixture.
+- `circulant_parameters`: parameter count for the circulant kernel.
+- `dense_parameters`: parameter count for the dense reference matrix.
+- `block_cyclic_parameters`: parameter count for the declared block-cyclic adapter.
+- `block_to_dense_ratio`: the finite accounting ratio for the fixture.
+
+Planner recommendations:
+
+- `MIXER-AUDIT-CIRCULANT-DENSE-PARITY` says downstream code should keep a dense-reference parity check for the structured mixer fixture.
+- `MIXER-AUDIT-BLOCK-CYCLIC-PARAMETER-BUDGET` says a downstream planner should read the explicit parameter budget rather than infer savings from the word "cyclic."
+
+::: {.warning-box}
+This contract proves finite structural parity and accounting facts. It does not
+prove training speed, inference speed, accuracy, memory savings at deployment,
+or that cyclic mixing is the right inductive bias for a task. Python fixtures are
+executable references, not proof artifacts and not performance claims.
+:::
+
+## Dictionary
+
+<div class="dictionary-box" data-dictionary-id="COMMON-0028"></div>
+<div class="dictionary-box" data-dictionary-id="COMMON-0079"></div>
+
+## Source Trail
+
+<p data-paper-ref="papers/applications/PAPER_AI_01_CIRCLE_AI_ARCHITECTURES.md">Architecture paper: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/papers/applications/PAPER_AI_01_CIRCLE_AI_ARCHITECTURES.md">Circle AI Architectures</a></p>
+
+<p>Quickstart: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/docs/CIRCULANT_BLOCK_CYCLIC_MIXER_CERTIFIER_QUICKSTART.md">Circulant And Block-Cyclic Mixer Certifier</a></p>
+
+<div class="book-navigation">
+<a href="multicoil_phase_feature.qmd">Previous: Multicoil Phase Features</a>
+<a href="looped_recurrence_contracts.qmd">Next: Looped Recurrence Contracts</a>
+</div>
+
+<script type="module" src="../../widgets/shared/widget_base.js"></script>

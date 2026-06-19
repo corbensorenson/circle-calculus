@@ -444,7 +444,8 @@
       "theorem_ids": [
         "AIT-T0001",
         "AIT-T0002",
-        "AIT-T0003"
+        "AIT-T0003",
+        "AIT-T0173"
       ],
       "theseus_hive_use": "Private candidate fanout and STS branch-coverage diagnostics."
     },

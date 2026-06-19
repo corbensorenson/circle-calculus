@@ -25,6 +25,7 @@ from .circle_ai import (
 from .rope_certifier import (
     ROPE_CERTIFIER_PRESETS,
     certify_rope_positions,
+    certify_standard_channel0_d19_bank_request,
     certify_standard_channel0_d19_range_request_margin_bracket,
 )
 from .theseus_hive_contracts import build_contract_pack as build_theseus_compat_pack
@@ -44,6 +45,26 @@ FINGERPRINT_KEYS = {
     "pack_content_fingerprint",
     "contract_fingerprint_index",
 }
+ACCEPTANCE_POLICY_SCHEMA_ID = "circle_calculus.ai_contract_acceptance_policy.v0"
+ACCEPTANCE_POLICY_REPORT_SCHEMA_ID = (
+    "circle_calculus.ai_contract_acceptance_policy_report.v0"
+)
+ACCEPTANCE_RECEIPT_SCHEMA_ID = "circle_calculus.ai_contract_acceptance_receipt.v0"
+DOWNSTREAM_REJECTION_REPORT_SCHEMA_ID = (
+    "circle_calculus.downstream_ci_rejection_report.v0"
+)
+ACCEPTANCE_POLICY_SCHEMA_PATH = (
+    "site/data/generated/circle_ai_contract_acceptance_policy.schema.json"
+)
+ACCEPTANCE_POLICY_REPORT_SCHEMA_PATH = (
+    "site/data/generated/circle_ai_contract_acceptance_policy_report.schema.json"
+)
+ACCEPTANCE_RECEIPT_SCHEMA_PATH = (
+    "site/data/generated/circle_ai_contract_acceptance_receipt.schema.json"
+)
+DOWNSTREAM_REJECTION_REPORT_SCHEMA_PATH = (
+    "site/data/generated/circle_ai_downstream_rejection_report.schema.json"
+)
 
 CLAIM_BOUNDARY = (
     "These contracts expose finite cyclic structure for external AI/math tools. "
@@ -133,6 +154,32 @@ CONTRACT_ARTIFACTS = {
         "validation_commands": [
             "python scripts/rope_certify.py --preset llama_style_10000_4k --format json",
             "python scripts/circle_ai_contract_ready.py --kind rope_position_distinguishability",
+            (
+                "python scripts/circle_ai_contract_ready.py --kind "
+                "rope_position_distinguishability --receipt --format json "
+                "--field d19_proved_request_status "
+                "--field d19_impossible_request_status "
+                "--field d19_undecided_request_status "
+                "--field d19_proved_first_channel_bank_transfer "
+                "--field d19_proved_first_channel_bank_shape "
+                "--field d19_proved_first_channel_bank_tolerance_rule "
+                "--require-theorem AIRA-T0171 --require-theorem AIRA-T0172 "
+                "--require-theorem AIRA-T0234 "
+                "--require-recommendation ROPE-USE-D19-MARGIN-FRONTIER "
+                "--require-recommendation-evidence-field "
+                "ROPE-USE-D19-MARGIN-FRONTIER="
+                "d19_proved_first_channel_bank_transfer "
+                "--require-recommendation-theorem "
+                "ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0234 "
+                "--require-recommendation-action-parameter "
+                "ROPE-USE-D19-MARGIN-FRONTIER=proved_branch_bank_transfer "
+                "--require-recommendation-action-parameter-path "
+                "ROPE-USE-D19-MARGIN-FRONTIER="
+                "proved_branch_bank_transfer.applies "
+                "--require-recommendation-action-parameter-path "
+                "ROPE-USE-D19-MARGIN-FRONTIER="
+                "proved_branch_bank_transfer.theorem_ids"
+            ),
             "python -m pytest tests/test_rope_certifier.py -q",
         ],
     },
@@ -150,6 +197,48 @@ CONTRACT_ARTIFACTS = {
         "validation_commands": [
             "python scripts/kv_cache_certify.py --cache-size 16 --current 31 --token 20 --batch-tokens 20,24,29,31 --sink-size 4 --format json",
             "python scripts/circle_ai_contract_ready.py --kind kv_cache_ring_buffer",
+            (
+                "python scripts/circle_ai_contract_ready.py --kind "
+                "kv_cache_ring_buffer --receipt --format json "
+                "--field stale_probe_first_stale_token "
+                "--field sink_tokens_retained_by_policy "
+                "--field sink_window_exact_policy "
+                "--field sink_window_tokens_distinct "
+                "--field sink_prefix_disjoint_from_live_window "
+                "--field sink_tokens_outside_ordinary_rolling_window "
+                "--require-theorem AIM-T0103 --require-theorem AIM-T0104 "
+                "--require-theorem AIM-T0149 "
+                "--require-recommendation KV-DROP-STALE-REQUEST-TOKEN "
+                "--require-recommendation KV-USE-SINK-ROLLING-WINDOW-REQUEST "
+                "--require-recommendation-evidence-field "
+                "KV-DROP-STALE-REQUEST-TOKEN=stale_probe_first_stale_token "
+                "--require-recommendation-evidence-field "
+                "KV-USE-SINK-ROLLING-WINDOW-REQUEST="
+                "sink_tokens_retained_by_policy "
+                "--require-recommendation-evidence-field "
+                "KV-USE-SINK-ROLLING-WINDOW-REQUEST="
+                "sink_tokens_outside_ordinary_rolling_window "
+                "--require-recommendation-theorem "
+                "KV-DROP-STALE-REQUEST-TOKEN=AIM-T0103 "
+                "--require-recommendation-theorem "
+                "KV-USE-SINK-ROLLING-WINDOW-REQUEST=AIM-T0149 "
+                "--require-recommendation-action-parameter "
+                "KV-DROP-STALE-REQUEST-TOKEN=target_token "
+                "--require-recommendation-action-parameter "
+                "KV-USE-SINK-ROLLING-WINDOW-REQUEST=sink_size "
+                "--require-recommendation-action-parameter-path "
+                "KV-DROP-STALE-REQUEST-TOKEN=target_token "
+                "--require-recommendation-action-parameter-path "
+                "KV-USE-SINK-ROLLING-WINDOW-REQUEST=sink_size "
+                "--require-recommendation-action-parameter-path "
+                "KV-USE-SINK-ROLLING-WINDOW-REQUEST=request_token_count "
+                "--require-recommendation-action-parameter-path "
+                "KV-USE-SINK-ROLLING-WINDOW-REQUEST=request_token_count_bound "
+                "--require-recommendation-action-parameter-path "
+                "KV-USE-SINK-ROLLING-WINDOW-REQUEST=cache_size "
+                "--require-recommendation-action-parameter-path "
+                "KV-USE-SINK-ROLLING-WINDOW-REQUEST=current"
+            ),
             "python -m pytest tests/test_kv_cache_certifier_cli.py -q",
         ],
     },
@@ -167,6 +256,66 @@ CONTRACT_ARTIFACTS = {
         "validation_commands": [
             "python scripts/stride_family_certify.py --context 120 --strides 7,13 --path-length 3 --local-window 4 --format json",
             "python scripts/circle_ai_contract_ready.py --kind sparse_attention_coverage",
+            (
+                "python scripts/circle_ai_contract_ready.py --kind "
+                "sparse_attention_coverage --receipt --format json "
+                "--field first_uncovered_lag "
+                "--field first_uncovered_interval_start "
+                "--field complete_repair_window "
+                "--field complete_repair_window_covers_context "
+                "--field complete_repair_window_minimal_for_declared_stride_family "
+                "--field complete_repair_window_minimal_witness_lag "
+                "--require-theorem AIT-T0104 --require-theorem AIT-T0172 "
+                "--require-recommendation SPARSE-LOCAL-FIRST-INTERVAL-REPAIR "
+                "--require-recommendation SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK "
+                "--require-recommendation-evidence-field "
+                "SPARSE-LOCAL-FIRST-INTERVAL-REPAIR=first_uncovered_interval_start "
+                "--require-recommendation-evidence-field "
+                "SPARSE-LOCAL-FIRST-INTERVAL-REPAIR=first_uncovered_interval_stop "
+                "--require-recommendation-evidence-field "
+                "SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=complete_repair_window "
+                "--require-recommendation-evidence-field "
+                "SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK="
+                "complete_repair_window_covers_context "
+                "--require-recommendation-evidence-field "
+                "SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK="
+                "complete_repair_window_uses_dense_threshold "
+                "--require-recommendation-evidence-field "
+                "SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK="
+                "local_window_complete_threshold_is_exact_local_minimum "
+                "--require-recommendation-evidence-field "
+                "SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK="
+                "complete_repair_window_minimal_for_declared_stride_family "
+                "--require-recommendation-evidence-field "
+                "SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK="
+                "complete_repair_window_minimal_witness_lag "
+                "--require-recommendation-theorem "
+                "SPARSE-LOCAL-FIRST-INTERVAL-REPAIR=AIT-T0104 "
+                "--require-recommendation-theorem "
+                "SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=AIT-T0023 "
+                "--require-recommendation-theorem "
+                "SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=AIT-T0034 "
+                "--require-recommendation-theorem "
+                "SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=AIT-T0172 "
+                "--require-recommendation-theorem "
+                "SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=AIT-T0168 "
+                "--require-recommendation-theorem "
+                "SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=AIT-T0169 "
+                "--require-recommendation-theorem "
+                "SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=AIT-T0170 "
+                "--require-recommendation-action-parameter "
+                "SPARSE-LOCAL-FIRST-INTERVAL-REPAIR=proposed_local_window "
+                "--require-recommendation-action-parameter "
+                "SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=proposed_local_window "
+                "--require-recommendation-action-parameter "
+                "SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=additional_local_slots "
+                "--require-recommendation-action-parameter-path "
+                "SPARSE-LOCAL-FIRST-INTERVAL-REPAIR=proposed_local_window "
+                "--require-recommendation-action-parameter-path "
+                "SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=proposed_local_window "
+                "--require-recommendation-action-parameter-path "
+                "SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=additional_local_slots"
+            ),
             "python -m pytest tests/test_stride_family_certifier_cli.py tests/test_circle_transformer.py -q",
         ],
     },
@@ -184,6 +333,70 @@ CONTRACT_ARTIFACTS = {
         "validation_commands": [
             "python scripts/recurrence_schedule_certify.py --format json",
             "python scripts/circle_ai_contract_ready.py --kind recurrence_schedule",
+            (
+                "python scripts/circle_ai_contract_ready.py --kind "
+                "recurrence_schedule --receipt --format json "
+                "--field periodic_shift_required_steps_invariant "
+                "--field periodic_shift_active_at_step_invariant "
+                "--field total_active_token_work "
+                "--field scheduled_work_saving "
+                "--field scheduled_work_saving_accounting "
+                "--field active_inactive_work_accounting "
+                "--field scheduled_work_saving_positive "
+                "--field post_period_multi_extension_scheduled_work_saving "
+                "--require-theorem AIM-T0026 --require-theorem AIM-T0130 "
+                "--require-theorem AIM-T0159 "
+                "--require-recommendation "
+                "RECURRENCE-USE-ACTIVE-TOKEN-WORK-SCHEDULE "
+                "--require-recommendation "
+                "RECURRENCE-REUSE-WHOLE-PERIOD-SHIFT "
+                "--require-recommendation-evidence-field "
+                "RECURRENCE-USE-ACTIVE-TOKEN-WORK-SCHEDULE="
+                "total_active_token_work "
+                "--require-recommendation-evidence-field "
+                "RECURRENCE-USE-ACTIVE-TOKEN-WORK-SCHEDULE="
+                "scheduled_work_saving "
+                "--require-recommendation-evidence-field "
+                "RECURRENCE-USE-ACTIVE-TOKEN-WORK-SCHEDULE="
+                "post_period_multi_extension_scheduled_work_saving "
+                "--require-recommendation-evidence-field "
+                "RECURRENCE-REUSE-WHOLE-PERIOD-SHIFT="
+                "periodic_shift_required_steps_invariant "
+                "--require-recommendation-evidence-field "
+                "RECURRENCE-REUSE-WHOLE-PERIOD-SHIFT="
+                "periodic_shift_active_at_step_invariant "
+                "--require-recommendation-theorem "
+                "RECURRENCE-USE-ACTIVE-TOKEN-WORK-SCHEDULE=AIM-T0130 "
+                "--require-recommendation-theorem "
+                "RECURRENCE-USE-ACTIVE-TOKEN-WORK-SCHEDULE=AIM-T0159 "
+                "--require-recommendation-theorem "
+                "RECURRENCE-REUSE-WHOLE-PERIOD-SHIFT=AIM-T0026 "
+                "--require-recommendation-action-parameter "
+                "RECURRENCE-USE-ACTIVE-TOKEN-WORK-SCHEDULE=loop_period "
+                "--require-recommendation-action-parameter "
+                "RECURRENCE-USE-ACTIVE-TOKEN-WORK-SCHEDULE="
+                "scheduled_work_saving "
+                "--require-recommendation-action-parameter "
+                "RECURRENCE-REUSE-WHOLE-PERIOD-SHIFT=base_token "
+                "--require-recommendation-action-parameter-path "
+                "RECURRENCE-USE-ACTIVE-TOKEN-WORK-SCHEDULE=loop_period "
+                "--require-recommendation-action-parameter-path "
+                "RECURRENCE-USE-ACTIVE-TOKEN-WORK-SCHEDULE=token_count "
+                "--require-recommendation-action-parameter-path "
+                "RECURRENCE-USE-ACTIVE-TOKEN-WORK-SCHEDULE=horizon_steps "
+                "--require-recommendation-action-parameter-path "
+                "RECURRENCE-USE-ACTIVE-TOKEN-WORK-SCHEDULE="
+                "scheduled_work_saving "
+                "--require-recommendation-action-parameter-path "
+                "RECURRENCE-USE-ACTIVE-TOKEN-WORK-SCHEDULE="
+                "post_period_multi_extension_scheduled_work_saving "
+                "--require-recommendation-action-parameter-path "
+                "RECURRENCE-REUSE-WHOLE-PERIOD-SHIFT=base_token "
+                "--require-recommendation-action-parameter-path "
+                "RECURRENCE-REUSE-WHOLE-PERIOD-SHIFT=shifted_token "
+                "--require-recommendation-action-parameter-path "
+                "RECURRENCE-REUSE-WHOLE-PERIOD-SHIFT=shift_amount"
+            ),
             "python -m pytest tests/test_recurrence_schedule_certifier_cli.py -q",
         ],
     },
@@ -193,7 +406,9 @@ CONTRACT_ARTIFACTS = {
             "docs/SPARSE_ATTENTION_CERTIFIER_QUICKSTART.md",
             "docs/AI_CONTRACT_SUITE.md",
         ],
-        "living_book_pages": ["site/chapters/applications/sparse_attention_contract.qmd"],
+        "living_book_pages": [
+            "site/chapters/applications/strided_candidate_fanout.qmd"
+        ],
         "entrypoints": [
             "python scripts/strided_candidate_fanout_certify.py",
             "python scripts/strided_candidate_fanout_certify.py --format json",
@@ -210,7 +425,9 @@ CONTRACT_ARTIFACTS = {
             "docs/CYCLIC_MEMORY_CERTIFIER_QUICKSTART.md",
             "docs/AI_CONTRACT_SUITE.md",
         ],
-        "living_book_pages": ["site/chapters/applications/ai.qmd"],
+        "living_book_pages": [
+            "site/chapters/applications/cyclic_memory_residue_winding.qmd"
+        ],
         "entrypoints": [
             "python scripts/cyclic_memory_certify.py",
             "python scripts/cyclic_memory_certify.py --format json",
@@ -227,7 +444,9 @@ CONTRACT_ARTIFACTS = {
             "docs/MULTICOIL_PHASE_FEATURE_CERTIFIER_QUICKSTART.md",
             "docs/AI_CONTRACT_SUITE.md",
         ],
-        "living_book_pages": ["site/chapters/applications/ai.qmd"],
+        "living_book_pages": [
+            "site/chapters/applications/multicoil_phase_feature.qmd"
+        ],
         "entrypoints": [
             "python scripts/multicoil_phase_feature_certify.py",
             "python scripts/multicoil_phase_feature_certify.py --format json",
@@ -244,7 +463,9 @@ CONTRACT_ARTIFACTS = {
             "docs/CIRCULANT_BLOCK_CYCLIC_MIXER_CERTIFIER_QUICKSTART.md",
             "docs/AI_CONTRACT_SUITE.md",
         ],
-        "living_book_pages": ["site/chapters/applications/ai.qmd"],
+        "living_book_pages": [
+            "site/chapters/applications/circulant_block_cyclic_mixer.qmd"
+        ],
         "entrypoints": [
             "python scripts/circulant_block_cyclic_mixer_certify.py",
             "python scripts/circulant_block_cyclic_mixer_certify.py --format json",
@@ -289,6 +510,7 @@ CONTRACT_REQUIRED_KEYS = (
     "integration_use",
     "ordinary_baselines",
     "not_claimed",
+    "source_paper",
     "quickstart_docs",
     "living_book_pages",
     "entrypoints",
@@ -313,13 +535,23 @@ MINIMUM_FIELDS_BY_KIND = {
         "total_bank_collision_pair_count",
         "real_phase_margin_pass",
         "worst_margin_radians",
+        "d19_context_range_min_exclusive",
+        "d19_context_range_max_inclusive",
         "d19_proved_request_status",
         "d19_proved_request_theorem_backed_classification",
         "d19_impossible_request_status",
         "d19_impossible_request_theorem_backed_classification",
+        "d19_undecided_request_status",
+        "d19_undecided_margin_open_gap",
+        "d19_undecided_margin_interval_width",
+        "d19_undecided_request_relation",
         "d19_margin_thresholds_ordered",
         "d19_proved_impossible_branches_disjoint",
         "d19_margin_status_exhaustive",
+        "d19_in_range_semantic_trichotomy",
+        "d19_proved_first_channel_bank_transfer",
+        "d19_proved_first_channel_bank_shape",
+        "d19_proved_first_channel_bank_tolerance_rule",
         "proof_layers",
     ),
     "kv_cache_ring_buffer": (
@@ -604,9 +836,62 @@ PACK_VALIDATION_COMMANDS = [
     "python scripts/check_circle_ai_contract_pack.py",
     "python scripts/example_validate_circle_ai_contract_pack_schema.py --summary",
     "make circle-ai-contracts-ready",
+    "python scripts/check_circle_ai_contract_acceptance_policy.py",
+    "python scripts/check_circle_ai_contract_acceptance_policy.py --format json",
+    "python scripts/circle_ai_contract_ready.py --print-refreshed-policy",
+    "python scripts/circle_ai_contract_ready.py --acceptance-policy-report",
+    (
+        "python scripts/circle_ai_contract_ready.py "
+        "--acceptance-policy-report --format json"
+    ),
+    "python scripts/check_downstream_ci_acceptance_example.py --summary",
+    "python examples/downstream_ci_accept_circle_ai_contracts.py --format json",
+    "python examples/downstream_ci_accept_circle_ai_contracts.py --format text",
+    (
+        "python examples/downstream_ci_accept_circle_ai_contracts.py "
+        "--format json --planner-recommendation "
+        "ROPE-AUDIT-EXACT-INTEGER-PHASE-BANK --include-values"
+    ),
+    (
+        "python examples/downstream_ci_accept_circle_ai_contracts.py "
+        "--format json --planner-recommendation "
+        "SPARSE-LOCAL-FIRST-INTERVAL-REPAIR --include-values"
+    ),
+    (
+        "python examples/downstream_ci_accept_circle_ai_contracts.py "
+        "--format json --planner-recommendation "
+        "SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK --include-values"
+    ),
+    (
+        "python examples/downstream_ci_accept_circle_ai_contracts.py "
+        "--format json --planner-recommendation "
+        "KV-USE-SINK-ROLLING-WINDOW-REQUEST --include-values"
+    ),
+    (
+        "python examples/downstream_ci_accept_circle_ai_contracts.py "
+        "--format json --planner-recommendation "
+        "RECURRENCE-USE-ACTIVE-TOKEN-WORK-SCHEDULE --include-values"
+    ),
+    (
+        "python examples/downstream_ci_accept_circle_ai_contracts.py "
+        "--format json --planner-recommendation "
+        "ROPE-USE-D19-MARGIN-FRONTIER --include-values"
+    ),
+    "python scripts/circle_ai_contract_ready.py --acceptance-policy",
+    "python scripts/circle_ai_contract_ready.py --acceptance-policy --format json",
     "python scripts/circle_ai_contract_ready.py --list-recommendations",
     "python scripts/circle_ai_contract_ready.py --fingerprints",
     "python scripts/circle_ai_contract_ready.py --action-plan",
+    (
+        "python scripts/circle_ai_contract_ready.py --action-plan "
+        "--recommendation ROPE-USE-D19-MARGIN-FRONTIER --include-values --format json"
+    ),
+    (
+        "python scripts/example_consume_circle_ai_contract_pack.py "
+        "--planner --planner-kind rope_position_distinguishability "
+        "--planner-recommendation ROPE-USE-D19-MARGIN-FRONTIER "
+        "--planner-include-values"
+    ),
     (
         "python scripts/circle_ai_contract_ready.py --kind seed_rule_exact_regeneration "
         "--action-plan --include-values --format json"
@@ -614,8 +899,35 @@ PACK_VALIDATION_COMMANDS = [
     (
         "python scripts/circle_ai_contract_ready.py --kind rope_position_distinguishability "
         "--digest --format json --field d19_proved_request_status "
-        "--field d19_impossible_request_status --include-field-metadata "
-        "--include-recommendations"
+        "--field d19_impossible_request_status "
+        "--field d19_undecided_request_status "
+        "--field d19_proved_first_channel_bank_transfer "
+        "--field d19_proved_first_channel_bank_shape "
+        "--field d19_proved_first_channel_bank_tolerance_rule "
+        "--include-field-metadata --include-recommendations"
+    ),
+    (
+        "python scripts/circle_ai_contract_ready.py --kind "
+        "rope_position_distinguishability --receipt --format json "
+        "--field d19_proved_request_status "
+        "--field d19_impossible_request_status "
+        "--field d19_undecided_request_status "
+        "--field d19_proved_first_channel_bank_transfer "
+        "--field d19_proved_first_channel_bank_shape "
+        "--field d19_proved_first_channel_bank_tolerance_rule "
+        "--require-theorem AIRA-T0171 --require-theorem AIRA-T0172 "
+        "--require-theorem AIRA-T0234 "
+        "--require-recommendation ROPE-USE-D19-MARGIN-FRONTIER "
+        "--require-recommendation-evidence-field "
+        "ROPE-USE-D19-MARGIN-FRONTIER=d19_proved_first_channel_bank_transfer "
+        "--require-recommendation-theorem "
+        "ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0234 "
+        "--require-recommendation-action-parameter "
+        "ROPE-USE-D19-MARGIN-FRONTIER=proved_branch_bank_transfer "
+        "--require-recommendation-action-parameter-path "
+        "ROPE-USE-D19-MARGIN-FRONTIER=proved_branch_bank_transfer.applies "
+        "--require-recommendation-action-parameter-path "
+        "ROPE-USE-D19-MARGIN-FRONTIER=proved_branch_bank_transfer.theorem_ids"
     ),
     "python scripts/circle_ai_contract_ready.py --kind sparse_attention_coverage",
     (
@@ -623,14 +935,170 @@ PACK_VALIDATION_COMMANDS = [
         "--digest --field stale_probe_first_stale_token --include-recommendations"
     ),
     (
+        "python scripts/circle_ai_contract_ready.py --kind "
+        "kv_cache_ring_buffer --receipt --format json "
+        "--field stale_probe_first_stale_token "
+        "--field sink_tokens_retained_by_policy "
+        "--field sink_window_exact_policy "
+        "--field sink_window_tokens_distinct "
+        "--field sink_prefix_disjoint_from_live_window "
+        "--field sink_tokens_outside_ordinary_rolling_window "
+        "--require-theorem AIM-T0103 --require-theorem AIM-T0104 "
+        "--require-theorem AIM-T0149 "
+        "--require-recommendation KV-DROP-STALE-REQUEST-TOKEN "
+        "--require-recommendation KV-USE-SINK-ROLLING-WINDOW-REQUEST "
+        "--require-recommendation-evidence-field "
+        "KV-DROP-STALE-REQUEST-TOKEN=stale_probe_first_stale_token "
+        "--require-recommendation-evidence-field "
+        "KV-USE-SINK-ROLLING-WINDOW-REQUEST=sink_tokens_retained_by_policy "
+        "--require-recommendation-evidence-field "
+        "KV-USE-SINK-ROLLING-WINDOW-REQUEST="
+        "sink_tokens_outside_ordinary_rolling_window "
+        "--require-recommendation-theorem "
+        "KV-DROP-STALE-REQUEST-TOKEN=AIM-T0103 "
+        "--require-recommendation-theorem "
+        "KV-USE-SINK-ROLLING-WINDOW-REQUEST=AIM-T0149 "
+        "--require-recommendation-action-parameter "
+        "KV-DROP-STALE-REQUEST-TOKEN=target_token "
+        "--require-recommendation-action-parameter "
+        "KV-USE-SINK-ROLLING-WINDOW-REQUEST=sink_size "
+        "--require-recommendation-action-parameter-path "
+        "KV-DROP-STALE-REQUEST-TOKEN=target_token "
+        "--require-recommendation-action-parameter-path "
+        "KV-USE-SINK-ROLLING-WINDOW-REQUEST=sink_size "
+        "--require-recommendation-action-parameter-path "
+        "KV-USE-SINK-ROLLING-WINDOW-REQUEST=request_token_count "
+        "--require-recommendation-action-parameter-path "
+        "KV-USE-SINK-ROLLING-WINDOW-REQUEST=request_token_count_bound "
+        "--require-recommendation-action-parameter-path "
+        "KV-USE-SINK-ROLLING-WINDOW-REQUEST=cache_size "
+        "--require-recommendation-action-parameter-path "
+        "KV-USE-SINK-ROLLING-WINDOW-REQUEST=current"
+    ),
+    (
         "python scripts/circle_ai_contract_ready.py --kind sparse_attention_coverage "
         "--digest --field first_uncovered_lag --include-recommendations"
+    ),
+    (
+        "python scripts/circle_ai_contract_ready.py --kind "
+        "sparse_attention_coverage --receipt --format json "
+        "--field first_uncovered_lag "
+        "--field first_uncovered_interval_start "
+        "--field complete_repair_window "
+        "--field complete_repair_window_covers_context "
+        "--field complete_repair_window_minimal_for_declared_stride_family "
+        "--field complete_repair_window_minimal_witness_lag "
+        "--require-theorem AIT-T0104 --require-theorem AIT-T0172 "
+        "--require-recommendation SPARSE-LOCAL-FIRST-INTERVAL-REPAIR "
+        "--require-recommendation SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK "
+        "--require-recommendation-evidence-field "
+        "SPARSE-LOCAL-FIRST-INTERVAL-REPAIR=first_uncovered_interval_start "
+        "--require-recommendation-evidence-field "
+        "SPARSE-LOCAL-FIRST-INTERVAL-REPAIR=first_uncovered_interval_stop "
+        "--require-recommendation-evidence-field "
+        "SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=complete_repair_window "
+        "--require-recommendation-evidence-field "
+        "SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=complete_repair_window_covers_context "
+        "--require-recommendation-evidence-field "
+        "SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=complete_repair_window_uses_dense_threshold "
+        "--require-recommendation-evidence-field "
+        "SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK="
+        "local_window_complete_threshold_is_exact_local_minimum "
+        "--require-recommendation-evidence-field "
+        "SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK="
+        "complete_repair_window_minimal_for_declared_stride_family "
+        "--require-recommendation-evidence-field "
+        "SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=complete_repair_window_minimal_witness_lag "
+        "--require-recommendation-theorem "
+        "SPARSE-LOCAL-FIRST-INTERVAL-REPAIR=AIT-T0104 "
+        "--require-recommendation-theorem "
+        "SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=AIT-T0023 "
+        "--require-recommendation-theorem "
+        "SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=AIT-T0034 "
+        "--require-recommendation-theorem "
+        "SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=AIT-T0172 "
+        "--require-recommendation-theorem "
+        "SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=AIT-T0168 "
+        "--require-recommendation-theorem "
+        "SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=AIT-T0169 "
+        "--require-recommendation-theorem "
+        "SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=AIT-T0170 "
+        "--require-recommendation-action-parameter "
+        "SPARSE-LOCAL-FIRST-INTERVAL-REPAIR=proposed_local_window "
+        "--require-recommendation-action-parameter "
+        "SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=proposed_local_window "
+        "--require-recommendation-action-parameter "
+        "SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=additional_local_slots "
+        "--require-recommendation-action-parameter-path "
+        "SPARSE-LOCAL-FIRST-INTERVAL-REPAIR=proposed_local_window "
+        "--require-recommendation-action-parameter-path "
+        "SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=proposed_local_window "
+        "--require-recommendation-action-parameter-path "
+        "SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK=additional_local_slots"
     ),
     (
         "python scripts/circle_ai_contract_ready.py --kind recurrence_schedule "
         "--digest --field scheduled_work_saving "
         "--field post_period_multi_extension_scheduled_work_saving "
         "--include-recommendations"
+    ),
+    (
+        "python scripts/circle_ai_contract_ready.py --kind "
+        "recurrence_schedule --receipt --format json "
+        "--field periodic_shift_required_steps_invariant "
+        "--field periodic_shift_active_at_step_invariant "
+        "--field total_active_token_work "
+        "--field scheduled_work_saving "
+        "--field scheduled_work_saving_accounting "
+        "--field active_inactive_work_accounting "
+        "--field scheduled_work_saving_positive "
+        "--field post_period_multi_extension_scheduled_work_saving "
+        "--require-theorem AIM-T0026 --require-theorem AIM-T0130 "
+        "--require-theorem AIM-T0159 "
+        "--require-recommendation RECURRENCE-USE-ACTIVE-TOKEN-WORK-SCHEDULE "
+        "--require-recommendation RECURRENCE-REUSE-WHOLE-PERIOD-SHIFT "
+        "--require-recommendation-evidence-field "
+        "RECURRENCE-USE-ACTIVE-TOKEN-WORK-SCHEDULE=total_active_token_work "
+        "--require-recommendation-evidence-field "
+        "RECURRENCE-USE-ACTIVE-TOKEN-WORK-SCHEDULE=scheduled_work_saving "
+        "--require-recommendation-evidence-field "
+        "RECURRENCE-USE-ACTIVE-TOKEN-WORK-SCHEDULE="
+        "post_period_multi_extension_scheduled_work_saving "
+        "--require-recommendation-evidence-field "
+        "RECURRENCE-REUSE-WHOLE-PERIOD-SHIFT="
+        "periodic_shift_required_steps_invariant "
+        "--require-recommendation-evidence-field "
+        "RECURRENCE-REUSE-WHOLE-PERIOD-SHIFT="
+        "periodic_shift_active_at_step_invariant "
+        "--require-recommendation-theorem "
+        "RECURRENCE-USE-ACTIVE-TOKEN-WORK-SCHEDULE=AIM-T0130 "
+        "--require-recommendation-theorem "
+        "RECURRENCE-USE-ACTIVE-TOKEN-WORK-SCHEDULE=AIM-T0159 "
+        "--require-recommendation-theorem "
+        "RECURRENCE-REUSE-WHOLE-PERIOD-SHIFT=AIM-T0026 "
+        "--require-recommendation-action-parameter "
+        "RECURRENCE-USE-ACTIVE-TOKEN-WORK-SCHEDULE=loop_period "
+        "--require-recommendation-action-parameter "
+        "RECURRENCE-USE-ACTIVE-TOKEN-WORK-SCHEDULE=scheduled_work_saving "
+        "--require-recommendation-action-parameter "
+        "RECURRENCE-REUSE-WHOLE-PERIOD-SHIFT=base_token "
+        "--require-recommendation-action-parameter-path "
+        "RECURRENCE-USE-ACTIVE-TOKEN-WORK-SCHEDULE=loop_period "
+        "--require-recommendation-action-parameter-path "
+        "RECURRENCE-USE-ACTIVE-TOKEN-WORK-SCHEDULE=token_count "
+        "--require-recommendation-action-parameter-path "
+        "RECURRENCE-USE-ACTIVE-TOKEN-WORK-SCHEDULE=horizon_steps "
+        "--require-recommendation-action-parameter-path "
+        "RECURRENCE-USE-ACTIVE-TOKEN-WORK-SCHEDULE=scheduled_work_saving "
+        "--require-recommendation-action-parameter-path "
+        "RECURRENCE-USE-ACTIVE-TOKEN-WORK-SCHEDULE="
+        "post_period_multi_extension_scheduled_work_saving "
+        "--require-recommendation-action-parameter-path "
+        "RECURRENCE-REUSE-WHOLE-PERIOD-SHIFT=base_token "
+        "--require-recommendation-action-parameter-path "
+        "RECURRENCE-REUSE-WHOLE-PERIOD-SHIFT=shifted_token "
+        "--require-recommendation-action-parameter-path "
+        "RECURRENCE-REUSE-WHOLE-PERIOD-SHIFT=shift_amount"
     ),
     (
         "python scripts/circle_ai_contract_ready.py --kind cyclic_memory_residue_winding "
@@ -729,6 +1197,87 @@ def _proof_index_fields() -> dict[str, str]:
         "theorem_index": "site/data/generated/theorem_manifest.json",
         "dictionary_index": "site/data/generated/dictionary.json",
         "formal_source": "Lean declarations named by each theorem manifest entry",
+    }
+
+
+def _acceptance_policy_fields() -> dict[str, Any]:
+    return {
+        "schema_id": ACCEPTANCE_POLICY_SCHEMA_ID,
+        "report_schema_id": ACCEPTANCE_POLICY_REPORT_SCHEMA_ID,
+        "receipt_schema_id": ACCEPTANCE_RECEIPT_SCHEMA_ID,
+        "rejection_report_schema_id": DOWNSTREAM_REJECTION_REPORT_SCHEMA_ID,
+        "policy_schema_path": ACCEPTANCE_POLICY_SCHEMA_PATH,
+        "report_schema_path": ACCEPTANCE_POLICY_REPORT_SCHEMA_PATH,
+        "receipt_schema_path": ACCEPTANCE_RECEIPT_SCHEMA_PATH,
+        "rejection_report_schema_path": DOWNSTREAM_REJECTION_REPORT_SCHEMA_PATH,
+        "default_policy_path": "examples/circle_ai_contract_acceptance_policy.json",
+        "checker": "scripts/check_circle_ai_contract_acceptance_policy.py",
+        "standalone_checker": "examples/downstream_ci_accept_circle_ai_contracts.py",
+        "standalone_schema_checker": "scripts/check_downstream_ci_acceptance_example.py",
+        "validation_commands": [
+            "python scripts/check_circle_ai_contract_acceptance_policy.py",
+            "python scripts/check_circle_ai_contract_acceptance_policy.py --format json",
+            "python scripts/circle_ai_contract_ready.py --print-refreshed-policy",
+            "python scripts/circle_ai_contract_ready.py --acceptance-policy-report",
+            (
+                "python scripts/circle_ai_contract_ready.py "
+                "--acceptance-policy-report --format json"
+            ),
+            "python scripts/check_downstream_ci_acceptance_example.py --summary",
+            "python examples/downstream_ci_accept_circle_ai_contracts.py --format json",
+            "python examples/downstream_ci_accept_circle_ai_contracts.py --format text",
+            (
+                "python examples/downstream_ci_accept_circle_ai_contracts.py "
+                "--format json --planner-recommendation "
+                "ROPE-AUDIT-EXACT-INTEGER-PHASE-BANK --include-values"
+            ),
+            (
+                "python examples/downstream_ci_accept_circle_ai_contracts.py "
+                "--format json --planner-recommendation "
+                "SPARSE-LOCAL-FIRST-INTERVAL-REPAIR --include-values"
+            ),
+            (
+                "python examples/downstream_ci_accept_circle_ai_contracts.py "
+                "--format json --planner-recommendation "
+                "SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK --include-values"
+            ),
+            (
+                "python examples/downstream_ci_accept_circle_ai_contracts.py "
+                "--format json --planner-recommendation "
+                "KV-USE-SINK-ROLLING-WINDOW-REQUEST --include-values"
+            ),
+            (
+                "python examples/downstream_ci_accept_circle_ai_contracts.py "
+                "--format json --planner-recommendation "
+                "RECURRENCE-USE-ACTIVE-TOKEN-WORK-SCHEDULE --include-values"
+            ),
+            (
+                "python examples/downstream_ci_accept_circle_ai_contracts.py "
+                "--format json --planner-recommendation "
+                "ROPE-USE-D19-MARGIN-FRONTIER --include-values"
+            ),
+        ],
+        "fingerprint_refresh_command": (
+            "python scripts/circle_ai_contract_ready.py --print-refreshed-policy"
+        ),
+        "pinned_requirement_keys": [
+            "required_fields",
+            "required_theorem_ids",
+            "required_recommendation_ids",
+            "required_recommendation_evidence_fields",
+            "required_recommendation_theorem_ids",
+            "required_recommendation_action_parameters",
+            "required_recommendation_action_parameter_paths",
+            "expected_pack_fingerprint",
+            "expected_contract_fingerprint",
+        ],
+        "rule": (
+            "Use the acceptance policy when a downstream project wants a locked "
+            "receipt. Refreshing fingerprints must preserve required fields, "
+            "theorem ids, recommendation ids, recommendation evidence fields, "
+            "recommendation theorem ids, recommendation action-parameter pins, "
+            "and recommendation action-parameter path pins."
+        ),
     }
 
 
@@ -934,6 +1483,15 @@ FIELD_DESCRIPTION_OVERRIDES = {
         "Total number of colliding position pairs counted across the exact "
         "discrete RoPE period bank."
     ),
+    "d19_proved_first_channel_bank_transfer": (
+        "Boolean check that the proved D19 standard-channel request branch "
+        "also transfers to a conditional first-channel finite-bank no-near-turn "
+        "certificate."
+    ),
+    "d19_proved_first_channel_bank_tolerance_rule": (
+        "Tolerance premise for applying the D19 first-channel finite-bank "
+        "no-near-turn theorem."
+    ),
     "first_uncovered_interval_start": (
         "Start of the first consecutive uncovered positive-lag interval in the "
         "sparse-attention coverage certificate."
@@ -999,6 +1557,37 @@ FIELD_DESCRIPTION_OVERRIDES = {
     "worst_margin_radians": (
         "Smallest observed real-phase separation margin, measured in radians, "
         "for the reported RoPE fixture."
+    ),
+    "d19_undecided_request_status": (
+        "Request status for a D19 standard-channel-0 margin deliberately chosen "
+        "inside the theorem-backed open interval between the proved and "
+        "impossible thresholds."
+    ),
+    "d19_context_range_min_exclusive": (
+        "Strict lower bound for the theorem-backed D19 standard-channel-0 "
+        "request-classifier context range."
+    ),
+    "d19_context_range_max_inclusive": (
+        "Inclusive upper bound for the theorem-backed D19 standard-channel-0 "
+        "request-classifier context range."
+    ),
+    "d19_undecided_margin_open_gap": (
+        "Boolean Lean-backed guard that the undecided D19 request margin lies "
+        "strictly between the proved threshold and the impossible threshold."
+    ),
+    "d19_undecided_margin_interval_width": (
+        "Exact rational width of the D19 open interval between the proved "
+        "margin threshold and the impossible margin floor."
+    ),
+    "d19_undecided_request_relation": (
+        "Stable request-relation label for the D19 undecided probe; it records "
+        "that the requested margin is strictly between the two theorem-backed "
+        "thresholds."
+    ),
+    "d19_in_range_semantic_trichotomy": (
+        "Boolean Lean-backed guard that, inside the D19 context range, the "
+        "requested margin is in exactly one semantic classifier branch: proved, "
+        "impossible, or the deliberate undecided open gap."
     ),
     "stale_probe_first_stale_token": (
         "First requested token identified as stale by the KV-cache stale-read "
@@ -1120,6 +1709,7 @@ def _field_proof_role(field: str) -> str:
         or "certifies" in field
         or "proved" in field
         or "impossible" in field
+        or "open_gap" in field
         or "threshold" in field
         or "minimal" in field
         or field.startswith("exact_")
@@ -1172,8 +1762,15 @@ def _minimum_field_catalog(
 def _string_array_schema() -> dict[str, Any]:
     return {
         "type": "array",
-        "items": {"type": "string"},
+        "items": {"type": "string", "minLength": 1},
+        "uniqueItems": True,
     }
+
+
+def _nonempty_string_array_schema() -> dict[str, Any]:
+    schema = _string_array_schema()
+    schema["minItems"] = 1
+    return schema
 
 
 def _string_or_string_array_schema() -> dict[str, Any]:
@@ -1244,6 +1841,7 @@ def build_contract_pack_json_schema() -> dict[str, Any]:
             "content_fingerprint_algorithm",
             "pack_content_fingerprint",
             "proof_indexes",
+            "acceptance_policy",
             "contract_schema",
             "validation_commands",
             "source_docs",
@@ -1263,8 +1861,61 @@ def build_contract_pack_json_schema() -> dict[str, Any]:
                 "pattern": "^[0-9a-f]{64}$",
             },
             "proof_indexes": {"type": "object"},
-            "validation_commands": _string_array_schema(),
-            "source_docs": _string_array_schema(),
+            "acceptance_policy": {
+                "type": "object",
+                "required": [
+                    "schema_id",
+                    "report_schema_id",
+                    "receipt_schema_id",
+                    "rejection_report_schema_id",
+                    "policy_schema_path",
+                    "report_schema_path",
+                    "receipt_schema_path",
+                    "rejection_report_schema_path",
+                    "default_policy_path",
+                    "checker",
+                    "standalone_checker",
+                    "standalone_schema_checker",
+                    "validation_commands",
+                    "fingerprint_refresh_command",
+                    "pinned_requirement_keys",
+                    "rule",
+                ],
+                "properties": {
+                    "schema_id": {"const": ACCEPTANCE_POLICY_SCHEMA_ID},
+                    "report_schema_id": {
+                        "const": ACCEPTANCE_POLICY_REPORT_SCHEMA_ID
+                    },
+                    "receipt_schema_id": {"const": ACCEPTANCE_RECEIPT_SCHEMA_ID},
+                    "rejection_report_schema_id": {
+                        "const": DOWNSTREAM_REJECTION_REPORT_SCHEMA_ID
+                    },
+                    "policy_schema_path": {"type": "string", "minLength": 1},
+                    "report_schema_path": {"type": "string", "minLength": 1},
+                    "receipt_schema_path": {"type": "string", "minLength": 1},
+                    "rejection_report_schema_path": {
+                        "type": "string",
+                        "minLength": 1,
+                    },
+                    "default_policy_path": {"type": "string", "minLength": 1},
+                    "checker": {"type": "string", "minLength": 1},
+                    "standalone_checker": {"type": "string", "minLength": 1},
+                    "standalone_schema_checker": {
+                        "type": "string",
+                        "minLength": 1,
+                    },
+                    "validation_commands": _nonempty_string_array_schema(),
+                    "fingerprint_refresh_command": {
+                        "type": "string",
+                        "minLength": 1,
+                    },
+                    "pinned_requirement_keys": _nonempty_string_array_schema(),
+                    "rule": {"type": "string", "minLength": 1},
+                },
+                "additionalProperties": False,
+            },
+            "validation_commands": _nonempty_string_array_schema(),
+            "source_docs": _nonempty_string_array_schema(),
             "downstream_compatibility": {"type": "object"},
             "contract_readiness_index": {
                 "type": "object",
@@ -1306,7 +1957,10 @@ def build_contract_pack_json_schema() -> dict[str, Any]:
                         "coverage_scope",
                         "evidence_fields",
                         "theorem_ids",
+                        "quickstart_docs",
+                        "living_book_pages",
                         "validation_commands",
+                        "source_paper",
                         "not_claimed",
                     ],
                     "properties": {
@@ -1320,12 +1974,12 @@ def build_contract_pack_json_schema() -> dict[str, Any]:
                         "action_kind": {"type": "string", "minLength": 1},
                         "status": {"type": "string", "minLength": 1},
                         "coverage_scope": {"type": "string", "minLength": 1},
-                        "evidence_fields": _string_array_schema(),
-                        "theorem_ids": _string_array_schema(),
-                        "quickstart_docs": _string_array_schema(),
-                        "living_book_pages": _string_array_schema(),
-                        "validation_commands": _string_array_schema(),
-                        "source_paper": {"type": "string"},
+                        "evidence_fields": _nonempty_string_array_schema(),
+                        "theorem_ids": _nonempty_string_array_schema(),
+                        "quickstart_docs": _nonempty_string_array_schema(),
+                        "living_book_pages": _nonempty_string_array_schema(),
+                        "validation_commands": _nonempty_string_array_schema(),
+                        "source_paper": {"type": "string", "minLength": 1},
                         "not_claimed": {"type": "string", "minLength": 1},
                     },
                     "additionalProperties": True,
@@ -1411,8 +2065,8 @@ def build_contract_pack_json_schema() -> dict[str, Any]:
                             "type": "string",
                             "pattern": "^[0-9a-f]{64}$",
                         },
-                        "theorem_ids": _string_array_schema(),
-                        "dictionary_ids": _string_array_schema(),
+                        "theorem_ids": _nonempty_string_array_schema(),
+                        "dictionary_ids": _nonempty_string_array_schema(),
                         "fields": {"type": "object"},
                         "proof_status": {
                             "type": "object",
@@ -1430,10 +2084,11 @@ def build_contract_pack_json_schema() -> dict[str, Any]:
                         "integration_use": {"type": "string"},
                         "ordinary_baselines": _string_or_string_array_schema(),
                         "not_claimed": {"type": "string"},
-                        "quickstart_docs": _string_array_schema(),
-                        "living_book_pages": _string_array_schema(),
-                        "entrypoints": _string_array_schema(),
-                        "validation_commands": _string_array_schema(),
+                        "source_paper": {"type": "string", "minLength": 1},
+                        "quickstart_docs": _nonempty_string_array_schema(),
+                        "living_book_pages": _nonempty_string_array_schema(),
+                        "entrypoints": _nonempty_string_array_schema(),
+                        "validation_commands": _nonempty_string_array_schema(),
                         "consumer_check": {
                             "type": "object",
                             "required": [
@@ -1462,8 +2117,8 @@ def build_contract_pack_json_schema() -> dict[str, Any]:
                                     "action_kind": {"type": "string", "minLength": 1},
                                     "status": {"type": "string", "minLength": 1},
                                     "coverage_scope": {"type": "string", "minLength": 1},
-                                    "evidence_fields": _string_array_schema(),
-                                    "theorem_ids": _string_array_schema(),
+                                    "evidence_fields": _nonempty_string_array_schema(),
+                                    "theorem_ids": _nonempty_string_array_schema(),
                                     "not_claimed": {"type": "string", "minLength": 1},
                                 },
                                 "additionalProperties": True,
@@ -1474,6 +2129,293 @@ def build_contract_pack_json_schema() -> dict[str, Any]:
                     "additionalProperties": True,
                 },
             },
+        },
+        "additionalProperties": True,
+    }
+
+
+def build_acceptance_policy_json_schema() -> dict[str, Any]:
+    kind_enum = sorted(MINIMUM_FIELDS_BY_KIND)
+    requirement_map_schema = {
+        "type": "object",
+        "additionalProperties": _nonempty_string_array_schema(),
+    }
+    return {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "$id": (
+            "https://circle-calculus.local/schemas/"
+            "circle_ai_contract_acceptance_policy.schema.json"
+        ),
+        "title": "Circle AI Contract Acceptance Policy",
+        "description": (
+            "Shape schema for downstream lockfiles that pin Circle AI contract "
+            "pack fingerprints, contract fingerprints, evidence fields, theorem "
+            "ids, and planner recommendation requirements. The policy checker "
+            "remains responsible for validating the pinned values against the "
+            "generated pack."
+        ),
+        "type": "object",
+        "required": [
+            "schema_id",
+            "policy_id",
+            "expected_pack_fingerprint",
+            "contracts",
+        ],
+        "properties": {
+            "schema_id": {"const": ACCEPTANCE_POLICY_SCHEMA_ID},
+            "policy_id": {"type": "string", "minLength": 1},
+            "policy_name": {"type": "string", "minLength": 1},
+            "expected_pack_fingerprint": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$",
+            },
+            "contracts": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                    "type": "object",
+                    "required": [
+                        "kind",
+                        "expected_contract_fingerprint",
+                    ],
+                    "properties": {
+                        "kind": {"type": "string", "enum": kind_enum},
+                        "expected_contract_fingerprint": {
+                            "type": "string",
+                            "pattern": "^[0-9a-f]{64}$",
+                        },
+                        "required_fields": _nonempty_string_array_schema(),
+                        "required_theorem_ids": _nonempty_string_array_schema(),
+                        "required_recommendation_ids": (
+                            _nonempty_string_array_schema()
+                        ),
+                        "required_recommendation_evidence_fields": (
+                            requirement_map_schema
+                        ),
+                        "required_recommendation_theorem_ids": (
+                            requirement_map_schema
+                        ),
+                        "required_recommendation_action_parameters": (
+                            requirement_map_schema
+                        ),
+                        "required_recommendation_action_parameter_paths": (
+                            requirement_map_schema
+                        ),
+                    },
+                    "additionalProperties": False,
+                },
+            },
+        },
+        "additionalProperties": False,
+    }
+
+
+def _sha256_schema() -> dict[str, Any]:
+    return {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+
+
+def _requirement_map_schema() -> dict[str, Any]:
+    return {
+        "type": "object",
+        "additionalProperties": _string_array_schema(),
+    }
+
+
+def _planner_recommendation_schema() -> dict[str, Any]:
+    return {
+        "type": "object",
+        "required": list(PLANNER_RECOMMENDATION_KEYS),
+        "properties": {
+            "id": {"type": "string", "minLength": 1},
+            "action_kind": {"type": "string", "minLength": 1},
+            "status": {"type": "string", "minLength": 1},
+            "coverage_scope": {"type": "string", "minLength": 1},
+            "evidence_fields": _nonempty_string_array_schema(),
+            "theorem_ids": _nonempty_string_array_schema(),
+            "not_claimed": {"type": "string", "minLength": 1},
+        },
+        "additionalProperties": True,
+    }
+
+
+def _acceptance_receipt_object_schema() -> dict[str, Any]:
+    kind_enum = sorted(MINIMUM_FIELDS_BY_KIND)
+    return {
+        "type": "object",
+        "required": [
+            "schema_id",
+            "receipt_schema",
+            "accepted",
+            "kind",
+            "contract_id",
+            "content_fingerprint_algorithm",
+            "pack_content_fingerprint",
+            "contract_content_fingerprint",
+            "required_fields",
+            "required_theorem_ids",
+            "evidence_fields",
+            "required_recommendation_ids",
+            "required_recommendation_evidence_fields",
+            "required_recommendation_theorem_ids",
+            "required_recommendation_action_parameters",
+            "required_recommendation_action_parameter_paths",
+            "planner_recommendations",
+            "theorem_ids",
+            "dictionary_ids",
+            "quickstart_docs",
+            "living_book_pages",
+            "validation_commands",
+            "source_paper",
+            "not_claimed",
+        ],
+        "properties": {
+            "schema_id": {"const": SCHEMA_ID},
+            "receipt_schema": {"const": ACCEPTANCE_RECEIPT_SCHEMA_ID},
+            "accepted": {"const": True},
+            "kind": {"type": "string", "enum": kind_enum},
+            "contract_id": {"type": "string", "pattern": "^CC-AI-CONTRACT-"},
+            "content_fingerprint_algorithm": {"const": FINGERPRINT_ALGORITHM},
+            "pack_content_fingerprint": _sha256_schema(),
+            "contract_content_fingerprint": _sha256_schema(),
+            "required_fields": _string_array_schema(),
+            "required_theorem_ids": _string_array_schema(),
+            "evidence_fields": {"type": "object"},
+            "required_recommendation_ids": _string_array_schema(),
+            "required_recommendation_evidence_fields": _requirement_map_schema(),
+            "required_recommendation_theorem_ids": _requirement_map_schema(),
+            "required_recommendation_action_parameters": _requirement_map_schema(),
+            "required_recommendation_action_parameter_paths": _requirement_map_schema(),
+            "planner_recommendations": {
+                "type": "array",
+                "items": _planner_recommendation_schema(),
+            },
+            "theorem_ids": _nonempty_string_array_schema(),
+            "dictionary_ids": _nonempty_string_array_schema(),
+            "quickstart_docs": _nonempty_string_array_schema(),
+            "living_book_pages": _nonempty_string_array_schema(),
+            "validation_commands": _nonempty_string_array_schema(),
+            "source_paper": {"type": "string", "minLength": 1},
+            "not_claimed": {"type": "string", "minLength": 1},
+        },
+        "additionalProperties": True,
+    }
+
+
+def build_acceptance_receipt_json_schema() -> dict[str, Any]:
+    """Return a JSON Schema for strict downstream acceptance receipts."""
+
+    schema = _acceptance_receipt_object_schema()
+    schema.update({
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "$id": (
+            "https://circle-calculus.local/schemas/"
+            "circle_ai_contract_acceptance_receipt.schema.json"
+        ),
+        "title": "Circle AI Contract Acceptance Receipt",
+        "description": (
+            "Shape schema for strict downstream receipts emitted after a "
+            "Circle AI contract satisfies pinned evidence, theorem, "
+            "recommendation, and planner-payload requirements. The receipt "
+            "schema validates the consumer artifact shape; Lean and manifest "
+            "checks remain the formal proof source."
+        ),
+    })
+    return schema
+
+
+def build_acceptance_policy_report_json_schema() -> dict[str, Any]:
+    """Return a JSON Schema for multi-contract acceptance-policy reports."""
+
+    return {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "$id": (
+            "https://circle-calculus.local/schemas/"
+            "circle_ai_contract_acceptance_policy_report.schema.json"
+        ),
+        "title": "Circle AI Contract Acceptance Policy Report",
+        "description": (
+            "Shape schema for reports emitted after a pinned Circle AI "
+            "acceptance policy validates selected contract receipts."
+        ),
+        "type": "object",
+        "required": [
+            "schema_id",
+            "acceptance_policy_report_schema",
+            "policy_schema",
+            "accepted",
+            "content_fingerprint_algorithm",
+            "pack_content_fingerprint",
+            "expected_pack_fingerprint",
+            "contract_count",
+            "receipt_count",
+            "receipts",
+            "not_claimed",
+        ],
+        "properties": {
+            "schema_id": {"const": SCHEMA_ID},
+            "acceptance_policy_report_schema": {
+                "const": ACCEPTANCE_POLICY_REPORT_SCHEMA_ID
+            },
+            "policy_schema": {"const": ACCEPTANCE_POLICY_SCHEMA_ID},
+            "policy_id": {"type": ["string", "null"]},
+            "policy_name": {"type": ["string", "null"]},
+            "accepted": {"const": True},
+            "content_fingerprint_algorithm": {"const": FINGERPRINT_ALGORITHM},
+            "pack_content_fingerprint": _sha256_schema(),
+            "expected_pack_fingerprint": {"type": ["string", "null"]},
+            "contract_count": {"type": "integer", "minimum": 0},
+            "receipt_count": {"type": "integer", "minimum": 0},
+            "receipts": {
+                "type": "array",
+                "items": _acceptance_receipt_object_schema(),
+            },
+            "not_claimed": {"type": "string", "minLength": 1},
+        },
+        "additionalProperties": True,
+    }
+
+
+def build_downstream_rejection_report_json_schema() -> dict[str, Any]:
+    """Return a JSON Schema for standalone downstream CI rejection reports."""
+
+    return {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "$id": (
+            "https://circle-calculus.local/schemas/"
+            "circle_ai_downstream_rejection_report.schema.json"
+        ),
+        "title": "Circle AI Downstream CI Rejection Report",
+        "description": (
+            "Shape schema for machine-readable rejection reports emitted by the "
+            "standard-library-only downstream CI example when a pinned Circle AI "
+            "contract pack or acceptance policy is rejected."
+        ),
+        "type": "object",
+        "required": [
+            "schema_id",
+            "example_schema_id",
+            "accepted",
+            "error",
+            "failure_count",
+            "failures",
+            "pack_path",
+            "policy_path",
+            "planner_requested_recommendation_ids",
+            "not_claimed",
+        ],
+        "properties": {
+            "schema_id": {"const": DOWNSTREAM_REJECTION_REPORT_SCHEMA_ID},
+            "example_schema_id": {
+                "const": "circle_calculus.downstream_ci_acceptance_example.v0"
+            },
+            "accepted": {"const": False},
+            "error": {"type": "string", "minLength": 1},
+            "failure_count": {"type": "integer", "minimum": 1},
+            "failures": _nonempty_string_array_schema(),
+            "pack_path": {"type": "string", "minLength": 1},
+            "policy_path": {"type": "string", "minLength": 1},
+            "planner_requested_recommendation_ids": _string_array_schema(),
+            "not_claimed": {"type": "string", "minLength": 1},
         },
         "additionalProperties": True,
     }
@@ -1549,7 +2491,88 @@ def _generic_planner_recommendations(
                 "impossible_margin_floor": fields["d19_impossible_margin_floor"],
                 "proved_status": fields["d19_proved_request_status"],
                 "impossible_status": fields["d19_impossible_request_status"],
+                "undecided_margin": fields["d19_undecided_request_margin"],
+                "undecided_status": fields["d19_undecided_request_status"],
+                "undecided_interval": {
+                    "lower_exclusive": fields[
+                        "d19_undecided_margin_interval_lower_exclusive"
+                    ],
+                    "upper_exclusive": fields[
+                        "d19_undecided_margin_interval_upper_exclusive"
+                    ],
+                    "width": fields["d19_undecided_margin_interval_width"],
+                },
+                "applicable_context_range": {
+                    "min_exclusive": fields["d19_context_range_min_exclusive"],
+                    "max_inclusive": fields["d19_context_range_max_inclusive"],
+                },
+                "proved_branch_bank_transfer": {
+                    "applies": fields["d19_proved_first_channel_bank_transfer"],
+                    "bank_shape": fields["d19_proved_first_channel_bank_shape"],
+                    "tolerance_rule": fields[
+                        "d19_proved_first_channel_bank_tolerance_rule"
+                    ],
+                    "theorem_ids": ["AIRA-T0171", "AIRA-T0172", "AIRA-T0234"],
+                },
+                "classifier_regions": [
+                    {
+                        "region": "proved",
+                        "condition": "requested_margin <= 1/328459",
+                        "request_status": fields["d19_proved_request_status"],
+                        "theorem_backed_classification": fields[
+                            "d19_proved_request_theorem_backed_classification"
+                        ],
+                        "theorem_backed_region": True,
+                        "theorem_ids": ["AIRA-T0216", "AIRA-T0217", "AIRA-T0233"],
+                        "meaning": (
+                            "Inside 103993 < context <= 196608, the requested "
+                            "one-channel standard RoPE margin is certified. "
+                            "The proved branch also transfers to a conditional "
+                            "first-channel finite-bank no-near-turn guarantee."
+                        ),
+                    },
+                    {
+                        "region": "undecided_margin_gap",
+                        "condition": "1/328459 < requested_margin < 1/328458",
+                        "request_status": fields["d19_undecided_request_status"],
+                        "theorem_backed_classification": fields[
+                            "d19_undecided_request_theorem_backed_classification"
+                        ],
+                        "theorem_backed_region": fields[
+                            "d19_undecided_margin_open_gap"
+                        ],
+                        "theorem_ids": [
+                            "AIRA-T0220",
+                            "AIRA-T0221",
+                            "AIRA-T0232",
+                            "AIRA-T0233",
+                        ],
+                        "meaning": (
+                            "Lean identifies this as the open interval between "
+                            "the proved and impossible branches; the current "
+                            "contract deliberately does not certify or reject "
+                            "that margin."
+                        ),
+                    },
+                    {
+                        "region": "impossible",
+                        "condition": "1/328458 <= requested_margin",
+                        "request_status": fields["d19_impossible_request_status"],
+                        "theorem_backed_classification": fields[
+                            "d19_impossible_request_theorem_backed_classification"
+                        ],
+                        "theorem_backed_region": True,
+                        "theorem_ids": ["AIRA-T0217", "AIRA-T0219", "AIRA-T0233"],
+                        "meaning": (
+                            "Inside 103993 < context <= 196608, gap 103993 "
+                            "obstructs any advertised margin at or above "
+                            "1/328458."
+                        ),
+                    },
+                ],
                 "evidence_fields": [
+                    "d19_context_range_min_exclusive",
+                    "d19_context_range_max_inclusive",
                     "d19_request_context",
                     "d19_proved_margin",
                     "d19_impossible_margin_floor",
@@ -1557,26 +2580,42 @@ def _generic_planner_recommendations(
                     "d19_proved_request_theorem_backed_classification",
                     "d19_impossible_request_status",
                     "d19_impossible_request_theorem_backed_classification",
+                    "d19_undecided_request_margin",
+                    "d19_undecided_request_status",
+                    "d19_undecided_margin_open_gap",
+                    "d19_undecided_margin_interval_width",
+                    "d19_undecided_request_relation",
                     "d19_margin_thresholds_ordered",
                     "d19_proved_impossible_branches_disjoint",
                     "d19_margin_status_exhaustive",
+                    "d19_in_range_semantic_trichotomy",
+                    "d19_proved_first_channel_bank_transfer",
+                    "d19_proved_first_channel_bank_shape",
+                    "d19_proved_first_channel_bank_tolerance_rule",
                 ],
                 "theorem_ids": [
+                    "AIRA-T0171",
+                    "AIRA-T0172",
                     "AIRA-T0216",
                     "AIRA-T0217",
                     "AIRA-T0218",
                     "AIRA-T0219",
                     "AIRA-T0220",
                     "AIRA-T0221",
+                    "AIRA-T0232",
+                    "AIRA-T0233",
+                    "AIRA-T0234",
                     "AIRA-T0230",
                     "AIRA-T0231",
                 ],
                 "not_claimed": (
                     "This recommendation exposes the D19 standard-channel-0 "
-                    "margin frontier for request gating. It is not a proof for "
-                    "every RoPE channel, not a Diophantine theorem for arbitrary "
-                    "RoPE frequencies, and not a model-quality or context-length "
-                    "extension claim."
+                    "margin frontier for request gating and a conditional "
+                    "first-channel finite-bank transfer for the proved branch. "
+                    "It does not transfer the impossible branch to a whole-bank "
+                    "collision claim, is not a Diophantine theorem for arbitrary "
+                    "RoPE frequencies, and is not a model-quality or "
+                    "context-length extension claim."
                 ),
             },
         ]
@@ -1835,6 +2874,7 @@ def _generic_planner_recommendations(
                 "theorem_ids": [
                     "AIT-T0001",
                     "AIT-T0002",
+                    "AIT-T0173",
                 ],
                 "not_claimed": (
                     "This recommendation exposes finite duplicate-collapse "
@@ -2090,6 +3130,15 @@ def _rope_position_contract() -> dict[str, Any]:
         requested_context=131072,
         requested_margin=Fraction(1, 328458),
     )
+    undecided_request = certify_standard_channel0_d19_range_request_margin_bracket(
+        requested_context=131072,
+        requested_margin=Fraction(2, 656917),
+    )
+    first_channel_bank = certify_standard_channel0_d19_bank_request(
+        requested_context=131072,
+        requested_margin=Fraction(1, 328459),
+        first_channel_shape=True,
+    )
     config = certificate.config
     fields = {
         "certificate_schema_id": certificate.schema_id,
@@ -2129,14 +3178,55 @@ def _rope_position_contract() -> dict[str, Any]:
         "d19_impossible_request_margin_applies": (
             impossible_request.impossible_margin_applies
         ),
+        "d19_undecided_request_margin": undecided_request.requested_margin,
+        "d19_undecided_request_status": undecided_request.request_status,
+        "d19_undecided_request_theorem_backed_classification": (
+            undecided_request.theorem_backed_classification
+        ),
+        "d19_undecided_margin_open_gap": (
+            undecided_request.undecided_margin_open_gap
+        ),
+        "d19_undecided_margin_interval_lower_exclusive": (
+            undecided_request.undecided_margin_interval_lower_exclusive
+        ),
+        "d19_undecided_margin_interval_upper_exclusive": (
+            undecided_request.undecided_margin_interval_upper_exclusive
+        ),
+        "d19_undecided_margin_interval_width": (
+            undecided_request.undecided_margin_interval_width
+        ),
+        "d19_proved_request_relation": proved_request.requested_margin_relation,
+        "d19_impossible_request_relation": (
+            impossible_request.requested_margin_relation
+        ),
+        "d19_undecided_request_relation": (
+            undecided_request.requested_margin_relation
+        ),
+        "d19_undecided_request_failure_reason": (
+            undecided_request.failure_reason
+        ),
         "d19_margin_thresholds_ordered": proved_request.margin_thresholds_ordered,
         "d19_proved_impossible_branches_disjoint": (
             proved_request.proved_impossible_branches_disjoint
             and impossible_request.proved_impossible_branches_disjoint
+            and undecided_request.proved_impossible_branches_disjoint
         ),
         "d19_margin_status_exhaustive": (
             proved_request.margin_status_exhaustive
             and impossible_request.margin_status_exhaustive
+            and undecided_request.margin_status_exhaustive
+        ),
+        "d19_in_range_semantic_trichotomy": (
+            proved_request.in_range_semantic_trichotomy
+            and impossible_request.in_range_semantic_trichotomy
+            and undecided_request.in_range_semantic_trichotomy
+        ),
+        "d19_proved_first_channel_bank_transfer": (
+            first_channel_bank.pass_certificate
+        ),
+        "d19_proved_first_channel_bank_shape": first_channel_bank.bank_shape,
+        "d19_proved_first_channel_bank_tolerance_rule": (
+            first_channel_bank.tolerance_rule
         ),
         "proof_layers": [
             {
@@ -2160,6 +3250,8 @@ def _rope_position_contract() -> dict[str, Any]:
             _unique(
                 certificate.theorem_ids
                 + proved_request.theorem_ids
+                + undecided_request.theorem_ids
+                + first_channel_bank.theorem_ids
                 + ROPE_EXACT_RATIONAL_THRESHOLD_THEOREMS
             )
         ),
@@ -2172,11 +3264,17 @@ def _rope_position_contract() -> dict[str, Any]:
             and proved_request.theorem_backed_classification
             and impossible_request.request_status == "impossible"
             and impossible_request.theorem_backed_classification
+            and undecided_request.request_status == "undecided_margin_gap"
+            and not undecided_request.theorem_backed_classification
+            and undecided_request.undecided_margin_open_gap
             and proved_request.margin_thresholds_ordered
             and proved_request.proved_impossible_branches_disjoint
             and impossible_request.proved_impossible_branches_disjoint
+            and undecided_request.proved_impossible_branches_disjoint
             and proved_request.margin_status_exhaustive
             and impossible_request.margin_status_exhaustive
+            and undecided_request.margin_status_exhaustive
+            and first_channel_bank.pass_certificate
         ),
         "integration_use": GENERIC_USES["rope_position_distinguishability"],
         "ordinary_baselines": [
@@ -2725,6 +3823,7 @@ def _sparse_attention_contract() -> dict[str, Any]:
             "theorem_ids": [
                 "AIT-T0023",
                 "AIT-T0034",
+                "AIT-T0172",
                 "AIT-T0168",
                 "AIT-T0169",
                 "AIT-T0170",
@@ -2952,6 +4051,7 @@ def build_contract_pack() -> dict[str, Any]:
         "claim_boundary": CLAIM_BOUNDARY,
         "content_fingerprint_algorithm": FINGERPRINT_ALGORITHM,
         "proof_indexes": _proof_index_fields(),
+        "acceptance_policy": _acceptance_policy_fields(),
         "contract_schema": {
             "required_contract_keys": list(CONTRACT_REQUIRED_KEYS),
             "minimum_fields_by_kind": {

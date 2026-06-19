@@ -1,0 +1,92 @@
+---
+title: "Multicoil Phase Features"
+---
+
+A single periodic feature is one circle. A tuple of periodic features is a
+finite product of circles, and the joint repeat horizon is the least common
+multiple of their periods.
+
+::: {.lesson-goal}
+
+## Goal
+
+Learn how Circle Calculus packages multi-period phase tags as explicit
+finite features with theorem-backed repeat and relative-shift checks.
+
+:::
+
+## Concept
+
+For periods `(p1, p2, ..., pk)`, a position becomes a phase tuple:
+
+```text
+position -> (position mod p1, position mod p2, ..., position mod pk)
+```
+
+The tuple repeats after the joint horizon. For two positions, a relative phase
+can stay invariant under a common shift even when absolute positions change.
+
+## Example
+
+The public fixture uses periods `(5, 7)` and position `37`:
+
+```text
+phase tuple = (2, 2)
+joint repeat horizon = 35
+```
+
+Shifting by `35` returns the same tuple. The relative phase between a query and
+key is also preserved when both are shifted by the same amount.
+
+```bash
+python scripts/multicoil_phase_feature_certify.py --format json
+python scripts/circle_ai_contract_ready.py --kind multicoil_phase_feature --digest --field joint_repeat_horizon --field relative_phase --include-recommendations
+```
+
+## Theorem Trail
+
+<div class="theorem-box" data-theorem-id="AIA-T0001"></div>
+<div class="theorem-box" data-theorem-id="AIA-T0002"></div>
+<div class="theorem-box" data-theorem-id="AIA-T0004"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0004"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0005"></div>
+
+## Certificate Reading
+
+The useful fields are:
+
+- `periods`: the declared finite phase bank.
+- `phase_tuple`: the phase tag for the selected position.
+- `joint_repeat_horizon`: the repeat horizon for the full tuple.
+- `relative_phase`: the query-key phase difference in the declared period.
+- `shifted_relative_phase`: the same value after a common shift.
+
+Planner recommendations:
+
+- `PHASE-USE-JOINT-REPEAT-HORIZON` says a downstream system can use the joint horizon as an explicit repeat boundary.
+- `PHASE-AUDIT-RELATIVE-SHIFT-INVARIANT` says query-key features should preserve relative phase under common shifts when that invariance is expected.
+
+::: {.warning-box}
+This contract proves finite phase-feature bookkeeping and invariance facts. It
+does not prove that these features improve a model, choose the right periods,
+or discover periodic structure in real data. Python fixtures are executable
+references, not proof artifacts and not performance claims.
+:::
+
+## Dictionary
+
+<div class="dictionary-box" data-dictionary-id="COMMON-0076"></div>
+<div class="dictionary-box" data-dictionary-id="COMMON-0077"></div>
+
+## Source Trail
+
+<p data-paper-ref="papers/applications/PAPER_AI_01_CIRCLE_AI_ARCHITECTURES.md">Architecture paper: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/papers/applications/PAPER_AI_01_CIRCLE_AI_ARCHITECTURES.md">Circle AI Architectures</a></p>
+
+<p>Quickstart: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/docs/MULTICOIL_PHASE_FEATURE_CERTIFIER_QUICKSTART.md">Multicoil Phase Feature Certifier</a></p>
+
+<div class="book-navigation">
+<a href="cyclic_memory_residue_winding.qmd">Previous: Cyclic Memory Residue Winding</a>
+<a href="circulant_block_cyclic_mixer.qmd">Next: Circulant And Block-Cyclic Mixers</a>
+</div>
+
+<script type="module" src="../../widgets/shared/widget_base.js"></script>

@@ -383,6 +383,7 @@ def test_stride_family_certifier_cli_first_gap_repair_fields() -> None:
     assert "AIT-T0162" in payload["theorem_ids"]
     assert "AIT-T0164" in payload["theorem_ids"]
     assert "AIT-T0165" in payload["theorem_ids"]
+    assert "AIT-T0172" in payload["theorem_ids"]
     assert "AIT-T0168" in payload["fixture_theorem_ids"]
     assert "AIT-T0169" in payload["fixture_theorem_ids"]
     assert "AIT-T0170" in payload["fixture_theorem_ids"]

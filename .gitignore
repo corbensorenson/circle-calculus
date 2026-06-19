@@ -3,6 +3,9 @@
 lake-packages/
 build/
 dist/
+target/
+sidecars/PRIME_ENGINE/results/*.csv
+sidecars/PRIME_ENGINE/results/*.json
 *.egg-info/
 __pycache__/
 .pytest_cache/

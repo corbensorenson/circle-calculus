@@ -24,7 +24,7 @@ The default text report should include:
 ```text
 strided_candidate_fanout_contract=READY context_length=12 start_index=0 stride=5 gcd=1 predicted_reach=12 full_coverage=True
 orbit=nodes=(0, 5, 10, 3, 8, 1, 6, 11, 4, 9, 2, 7) orbit_unique=True predicted_reach_matches_orbit_length=True theorems=AIT-T0001,AIT-T0002,AIT-T0003
-candidate_path=nodes=(7, 2, 9, 4, 11, 6, 1, 8, 3, 10, 5, 0) candidate_budget=12 unique_candidate_count=12 effective_candidate_budget=12 duplicate_count=0 path_unique=True candidate_budget_accounting=True candidate_budget_shortfall=0 effective_budget_reaches_predicted_reach=True
+candidate_path=nodes=(7, 2, 9, 4, 11, 6, 1, 8, 3, 10, 5, 0) candidate_budget=12 unique_candidate_count=12 effective_candidate_budget=12 duplicate_count=0 path_unique=True candidate_budget_accounting=True candidate_budget_shortfall=0 effective_budget_reaches_predicted_reach=True budget_theorems=AIT-T0173
 consumer_check=ready=True required_fields_present=True all_theorem_ids_proved=True missing_fields=0
 ```
 
@@ -73,6 +73,7 @@ The theorem cluster is:
 | `AIT-T0001` | Fixed stride lives in a finite cyclic context. |
 | `AIT-T0002` | GCD controls orbit reach. |
 | `AIT-T0003` | Coprime stride corresponds to full finite coverage. |
+| `AIT-T0173` | Any finite raw candidate list decomposes into deduplicated unique count plus deduplication loss. |
 
 The generated contract pack stores the same certificate under
 `strided_candidate_fanout`:

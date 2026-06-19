@@ -137,4 +137,101 @@ theorem ropeStandardChannel0D19_request_margin_trichotomy
         ((ropeStandardChannel0D19_request_margin_open_gap_iff_unclassified).1
           ⟨hproved, himpossible⟩))
 
+/-- Inside the D19 context range, the request classifier has exactly one
+semantic branch.
+
+Margins in the proved branch come with a finite-margin proof; margins in the
+impossible branch come with a finite-margin refutation; margins in the open gap
+are explicitly the undecided region and are disjoint from the two theorem-backed
+branches. -/
+theorem ropeStandardChannel0D19_contextRange_request_margin_semantic_trichotomy
+    {context : Nat} {requestedMargin : ℝ}
+    (hcontext_min : 103993 < context)
+    (hcontext_max : context ≤ ropeStandardChannel0D19SeedContext) :
+    (requestedMargin ≤ ropeStandardChannel0D19SeedMargin ∧
+      ropeTurnRatioFiniteMargin ropeStandardChannel0TurnRatio
+        requestedMargin context ∧
+      ¬ (1 : ℝ) / 328458 ≤ requestedMargin ∧
+      ¬ (ropeStandardChannel0D19SeedMargin < requestedMargin ∧
+        requestedMargin < (1 : ℝ) / 328458)) ∨
+      ((1 : ℝ) / 328458 ≤ requestedMargin ∧
+        ¬ ropeTurnRatioFiniteMargin ropeStandardChannel0TurnRatio
+          requestedMargin context ∧
+        ¬ requestedMargin ≤ ropeStandardChannel0D19SeedMargin ∧
+        ¬ (ropeStandardChannel0D19SeedMargin < requestedMargin ∧
+          requestedMargin < (1 : ℝ) / 328458)) ∨
+      ((ropeStandardChannel0D19SeedMargin < requestedMargin ∧
+        requestedMargin < (1 : ℝ) / 328458) ∧
+        ¬ requestedMargin ≤ ropeStandardChannel0D19SeedMargin ∧
+        ¬ (1 : ℝ) / 328458 ≤ requestedMargin) := by
+  have hbracket :=
+    ropeStandardChannel0D19_contextRange_request_margin_bracket
+      (context := context) (requestedMargin := requestedMargin)
+      hcontext_min hcontext_max
+  rcases
+      ropeStandardChannel0D19_request_margin_trichotomy requestedMargin with
+    hproved | himpossible_or_gap
+  · have hfinite := hbracket.1 hproved
+    have hnot_impossible : ¬ (1 : ℝ) / 328458 ≤ requestedMargin := by
+      intro himpossible
+      exact
+        ropeStandardChannel0D19_request_margin_branches_disjoint
+          ⟨hproved, himpossible⟩
+    have hnot_gap :
+        ¬ (ropeStandardChannel0D19SeedMargin < requestedMargin ∧
+          requestedMargin < (1 : ℝ) / 328458) := by
+      intro hgap
+      exact (not_le_of_gt hgap.1) hproved
+    exact Or.inl ⟨hproved, hfinite, hnot_impossible, hnot_gap⟩
+  · rcases himpossible_or_gap with himpossible | hgap
+    · have hnot_finite := hbracket.2 himpossible
+      have hnot_proved : ¬ requestedMargin ≤ ropeStandardChannel0D19SeedMargin := by
+        intro hproved
+        exact
+          ropeStandardChannel0D19_request_margin_branches_disjoint
+            ⟨hproved, himpossible⟩
+      have hnot_gap :
+          ¬ (ropeStandardChannel0D19SeedMargin < requestedMargin ∧
+            requestedMargin < (1 : ℝ) / 328458) := by
+        intro hgap
+        exact (not_le_of_gt hgap.2) himpossible
+      exact Or.inr (Or.inl ⟨himpossible, hnot_finite, hnot_proved, hnot_gap⟩)
+    · have hnot_proved :
+          ¬ requestedMargin ≤ ropeStandardChannel0D19SeedMargin :=
+        not_le_of_gt hgap.1
+      have hnot_impossible : ¬ (1 : ℝ) / 328458 ≤ requestedMargin :=
+        not_le_of_gt hgap.2
+      exact Or.inr (Or.inr ⟨hgap, hnot_proved, hnot_impossible⟩)
+
+/-- The D19 proved request branch transfers to a first-channel finite bank.
+
+If a real-phase bank has standard channel 0 as its first channel, then every
+request at or below the D19 proved margin and inside the D19 certified horizon
+inherits a no-near-turn bank conclusion. This is the useful proved-branch bank
+contract. It intentionally has no impossible-branch converse: a one-channel
+obstruction does not prove that a whole bank has an all-channel collision. -/
+theorem ropeStandardChannel0D19_proved_request_firstChannel_bank_noNearTurn
+    {extraFrequencies : List ℝ} {fullTurn requestedMargin tolerance : ℝ}
+    {requestedContext left right : Nat}
+    (hcontext : requestedContext ≤ ropeStandardChannel0D19SeedContext)
+    (hmargin_le : requestedMargin ≤ ropeStandardChannel0D19SeedMargin)
+    (hleft : left < right) (hright : right < requestedContext)
+    (hfull_pos : 0 < fullTurn)
+    (htolerance : tolerance < fullTurn * requestedMargin) :
+    ¬ ropeRealPhaseBankNearTurn
+      ((ropeStandardChannel0TurnRatio * fullTurn) :: extraFrequencies)
+      fullTurn tolerance left right :=
+  not_ropeRealPhaseBankNearTurn_of_standardChannel0D19Seed_cons
+    hcontext hmargin_le hleft hright hfull_pos htolerance
+
+/-- The D19 classifier's undecided open margin interval has the exact rational
+width reported by the public Python certificate.
+
+This theorem ties the report field `undecided_margin_interval_width` to the
+Lean frontier rather than leaving it as a Python-only arithmetic value. -/
+theorem ropeStandardChannel0D19_request_margin_open_gap_width :
+    (1 : ℝ) / 328458 - ropeStandardChannel0D19SeedMargin =
+      (1 : ℝ) / 107884986222 := by
+  norm_num [ropeStandardChannel0D19SeedMargin]
+
 end Circle.Applications

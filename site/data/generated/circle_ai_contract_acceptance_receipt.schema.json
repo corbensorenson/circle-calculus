@@ -1,0 +1,254 @@
+{
+  "$id": "https://circle-calculus.local/schemas/circle_ai_contract_acceptance_receipt.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "description": "Shape schema for strict downstream receipts emitted after a Circle AI contract satisfies pinned evidence, theorem, recommendation, and planner-payload requirements. The receipt schema validates the consumer artifact shape; Lean and manifest checks remain the formal proof source.",
+  "properties": {
+    "accepted": {
+      "const": true
+    },
+    "content_fingerprint_algorithm": {
+      "const": "sha256-json-v1"
+    },
+    "contract_content_fingerprint": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "contract_id": {
+      "pattern": "^CC-AI-CONTRACT-",
+      "type": "string"
+    },
+    "dictionary_ids": {
+      "items": {
+        "minLength": 1,
+        "type": "string"
+      },
+      "minItems": 1,
+      "type": "array",
+      "uniqueItems": true
+    },
+    "evidence_fields": {
+      "type": "object"
+    },
+    "kind": {
+      "enum": [
+        "circulant_block_cyclic_mixer",
+        "cyclic_memory_residue_winding",
+        "kv_cache_ring_buffer",
+        "multicoil_phase_feature",
+        "recurrence_schedule",
+        "rope_position_distinguishability",
+        "seed_rule_exact_regeneration",
+        "sparse_attention_coverage",
+        "strided_candidate_fanout"
+      ],
+      "type": "string"
+    },
+    "living_book_pages": {
+      "items": {
+        "minLength": 1,
+        "type": "string"
+      },
+      "minItems": 1,
+      "type": "array",
+      "uniqueItems": true
+    },
+    "not_claimed": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "pack_content_fingerprint": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "planner_recommendations": {
+      "items": {
+        "additionalProperties": true,
+        "properties": {
+          "action_kind": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "coverage_scope": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "evidence_fields": {
+            "items": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "minItems": 1,
+            "type": "array",
+            "uniqueItems": true
+          },
+          "id": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "not_claimed": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "status": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "theorem_ids": {
+            "items": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "minItems": 1,
+            "type": "array",
+            "uniqueItems": true
+          }
+        },
+        "required": [
+          "id",
+          "action_kind",
+          "status",
+          "coverage_scope",
+          "evidence_fields",
+          "theorem_ids",
+          "not_claimed"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "quickstart_docs": {
+      "items": {
+        "minLength": 1,
+        "type": "string"
+      },
+      "minItems": 1,
+      "type": "array",
+      "uniqueItems": true
+    },
+    "receipt_schema": {
+      "const": "circle_calculus.ai_contract_acceptance_receipt.v0"
+    },
+    "required_fields": {
+      "items": {
+        "minLength": 1,
+        "type": "string"
+      },
+      "type": "array",
+      "uniqueItems": true
+    },
+    "required_recommendation_action_parameter_paths": {
+      "additionalProperties": {
+        "items": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "type": "array",
+        "uniqueItems": true
+      },
+      "type": "object"
+    },
+    "required_recommendation_action_parameters": {
+      "additionalProperties": {
+        "items": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "type": "array",
+        "uniqueItems": true
+      },
+      "type": "object"
+    },
+    "required_recommendation_evidence_fields": {
+      "additionalProperties": {
+        "items": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "type": "array",
+        "uniqueItems": true
+      },
+      "type": "object"
+    },
+    "required_recommendation_ids": {
+      "items": {
+        "minLength": 1,
+        "type": "string"
+      },
+      "type": "array",
+      "uniqueItems": true
+    },
+    "required_recommendation_theorem_ids": {
+      "additionalProperties": {
+        "items": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "type": "array",
+        "uniqueItems": true
+      },
+      "type": "object"
+    },
+    "required_theorem_ids": {
+      "items": {
+        "minLength": 1,
+        "type": "string"
+      },
+      "type": "array",
+      "uniqueItems": true
+    },
+    "schema_id": {
+      "const": "circle_calculus.ai_contract_pack.v0"
+    },
+    "source_paper": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "theorem_ids": {
+      "items": {
+        "minLength": 1,
+        "type": "string"
+      },
+      "minItems": 1,
+      "type": "array",
+      "uniqueItems": true
+    },
+    "validation_commands": {
+      "items": {
+        "minLength": 1,
+        "type": "string"
+      },
+      "minItems": 1,
+      "type": "array",
+      "uniqueItems": true
+    }
+  },
+  "required": [
+    "schema_id",
+    "receipt_schema",
+    "accepted",
+    "kind",
+    "contract_id",
+    "content_fingerprint_algorithm",
+    "pack_content_fingerprint",
+    "contract_content_fingerprint",
+    "required_fields",
+    "required_theorem_ids",
+    "evidence_fields",
+    "required_recommendation_ids",
+    "required_recommendation_evidence_fields",
+    "required_recommendation_theorem_ids",
+    "required_recommendation_action_parameters",
+    "required_recommendation_action_parameter_paths",
+    "planner_recommendations",
+    "theorem_ids",
+    "dictionary_ids",
+    "quickstart_docs",
+    "living_book_pages",
+    "validation_commands",
+    "source_paper",
+    "not_claimed"
+  ],
+  "title": "Circle AI Contract Acceptance Receipt",
+  "type": "object"
+}

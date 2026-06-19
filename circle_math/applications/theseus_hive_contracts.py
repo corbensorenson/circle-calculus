@@ -697,7 +697,7 @@ def fanout_contract(
         "kind": "strided_candidate_fanout",
         "status": "fixture",
         "source_paper": "papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md",
-        "theorem_ids": ["AIT-T0001", "AIT-T0002", "AIT-T0003"],
+        "theorem_ids": ["AIT-T0001", "AIT-T0002", "AIT-T0003", "AIT-T0173"],
         "dictionary_ids": ["COMMON-0047", "COMMON-0028"],
         "fields": {
             "context_length": context_length,

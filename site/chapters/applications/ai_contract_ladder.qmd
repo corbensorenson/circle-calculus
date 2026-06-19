@@ -50,7 +50,31 @@ Read and run the contracts in this order:
 2. **KV-cache ring buffer:** add the time boundary that distinguishes a live residue from a stale same-slot token, then add the sink-window policy that pins only the seen prefix before the rolling window.
 3. **Sparse-attention coverage:** inspect a plan that intentionally has both covered lags and theorem-backed gap witnesses.
 
-After those three, the later recurrence and mixer lessons should read as variations on the same pattern: identify the finite circular object, name the repeated action, expose a failure mode, and keep empirical model claims separate.
+After those three, the cyclic-memory, multicoil phase-feature, recurrence, and
+mixer lessons should read as variations on the same pattern: identify the
+finite circular object, name the repeated action, expose a failure mode, and
+keep empirical model claims separate.
+
+## Run The Ladder
+
+The fastest way to understand the lane is to run one certificate from each
+major family, then inspect the generated theorem ids and non-claims:
+
+```bash
+python scripts/rope_certify.py --preset llama_style_10000_4k
+python scripts/kv_cache_certify.py --cache-size 16 --current 31 --token 20 --batch-tokens 20,24,29,31 --sink-size 4
+python scripts/stride_family_certify.py --context 120 --strides 7,13 --path-length 3 --local-window 4
+python scripts/recurrence_schedule_certify.py
+python scripts/circulant_block_cyclic_mixer_certify.py
+python scripts/circle_ai_contract_ready.py --action-plan --format json
+```
+
+Guided lessons:
+[RoPE certifier](rope_certifier.qmd),
+[KV-cache ring buffer](kv_cache_ring_buffer.qmd),
+[sparse-attention coverage](sparse_attention_contract.qmd),
+[looped recurrence contracts](looped_recurrence_contracts.qmd), and
+[circulant/block-cyclic mixers](circulant_block_cyclic_mixer.qmd).
 
 ## 1. Exact RoPE Phase Banks
 
@@ -120,6 +144,8 @@ This is why the sparse lane now emphasizes iffs and gap certificates. A sparse p
 The sparse contract now has both sides of the story: the default `C_120` fixture reports `109` uncovered positive lags, while the compact `C_9` fixture with local window `2`, path length `2`, and strides `(3,4,7)` has an empty uncovered-lag list and preserves the raw lag/query candidate budget. The current partition theorem says the finite covered and uncovered lists account for all `n - 1` positive lags, the covered-count theorem says complete coverage is exactly the case where the covered list itself has length `n - 1`, the uncovered-count witness theorem says a positive uncovered count is exactly the existence of an actual uncovered positive lag, and the covered-count shortfall theorem says falling below `n - 1` is exactly the same gap-witness condition.
 
 [Open the guided sparse-attention coverage lesson](sparse_attention_contract.qmd).
+For the narrower candidate-budget slice, continue with the
+[strided candidate fanout lesson](strided_candidate_fanout.qmd).
 
 <div class="theorem-box" data-theorem-id="AIT-T0020"></div>
 <div class="theorem-box" data-theorem-id="AIT-T0078"></div>
@@ -147,6 +173,8 @@ Looped and recursive transformer proposals are easy to overstate because "more c
 ## 6. Circulant Mixers
 
 A circulant mixer is not a proof that a model will perform well. It is a structure with a guarantee: cyclic shifts commute with the mixer, and the convolution laws are fixed before training. That makes it a good negative-control example for the whole AI lane: the proof can certify equivariance, while benchmarks decide whether that bias fits the data.
+
+[Open the focused circulant and block-cyclic mixer lesson](circulant_block_cyclic_mixer.qmd).
 
 <div class="theorem-box" data-theorem-id="AIT-T0006"></div>
 

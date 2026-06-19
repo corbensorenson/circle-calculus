@@ -125,7 +125,48 @@ The same pack exposes a planner-facing whole-period shift witness: in the defaul
 
 The v0.2 work-budget extension sums those per-step active-token counts over a finite horizon. `AIM-T0130` proves that scheduled active-token work is bounded by the fixed-depth schedule that processes every token at every step. `AIM-T0131` proves the saved-work accounting identity. `AIM-T0144` proves that active token-work plus inactive token-work exactly recovers the full fixed-depth budget, and `AIM-T0145` proves that scheduled work saving is exactly total inactive token-work. `AIM-T0138` proves the planner-facing positive-saving iff: scheduled work saving is positive exactly when scheduled active-token work is strictly below full fixed-depth token-work. `AIM-T0139` proves the complementary zero-saving iff: scheduled work saving is zero exactly when scheduled active-token work matches the full fixed-depth budget. `AIM-T0132` through `AIM-T0135`, plus `AIM-T0146`, pin the public `loop_period=4`, `token_count=8`, `steps=4` fixture to `20` active token-steps, `32` fixed-depth token-steps, and `12` inactive/saved token-steps. `AIM-T0140` through `AIM-T0143`, plus `AIM-T0147`, pin the default exported recurrence contract fixture, `loop_period=5`, `token_count=8`, `steps=5`, to `21` active token-steps, `40` fixed-depth token-steps, and `19` inactive/saved token-steps with exact accounting. The public contract now exposes the stop schedule behind those totals: active-count trace `[8,6,4,2,1]`, inactive-count trace `[0,2,4,6,7]`, and a per-token `first_inactive_steps` table where each token stops at `active_budget + 1`. This is the scheduler-facing object a downstream project can consume before implementing recurrence reuse. `AIM-T0150` through `AIM-T0154` add the one-step post-period boundary: moving the default horizon from `5` to `6` adds no active-token work and raises scheduled-work saving from `19` to `27`. `AIM-T0155` through `AIM-T0159` generalize that boundary to any declared number of extra steps after the loop period: active work stays fixed and inactive/saved work increases by `extra_steps * token_count`; the default `horizon=8` fixture raises scheduled-work saving from `19` to `43`. These are planner fields, not runtime measurements.
 
-The generic AI contract pack now exposes those planner fields as two recommendation records. `RECURRENCE-USE-ACTIVE-TOKEN-WORK-SCHEDULE` packages the theorem-backed active-token work schedule, while `RECURRENCE-REUSE-WHOLE-PERIOD-SHIFT` packages the whole-period index-reuse witness. A downstream project can read them with `python scripts/circle_ai_contract_ready.py --kind recurrence_schedule --digest --field scheduled_work_saving --field post_period_multi_extension_scheduled_work_saving --include-recommendations`. They are finite schedule/index fixtures, not claims about runtime, memory savings, adaptive halting, or reasoning quality.
+The generic AI contract pack now exposes those planner fields as two recommendation records. `RECURRENCE-USE-ACTIVE-TOKEN-WORK-SCHEDULE` packages the theorem-backed active-token work schedule, while `RECURRENCE-REUSE-WHOLE-PERIOD-SHIFT` packages the whole-period index-reuse witness. A downstream project can read them with `python scripts/circle_ai_contract_ready.py --kind recurrence_schedule --digest --field scheduled_work_saving --field post_period_multi_extension_scheduled_work_saving --include-recommendations`. The flagship acceptance policy pins both records, so consumers preserve the work-accounting fixture and the periodic index-reuse fixture together. They are finite schedule/index fixtures, not claims about runtime, memory savings, adaptive halting, or reasoning quality.
+
+For CI-style downstream use, require the strict receipt:
+
+```bash
+python scripts/circle_ai_contract_ready.py \
+  --kind recurrence_schedule \
+  --receipt \
+  --format json \
+  --field periodic_shift_required_steps_invariant \
+  --field periodic_shift_active_at_step_invariant \
+  --field total_active_token_work \
+  --field scheduled_work_saving \
+  --field scheduled_work_saving_accounting \
+  --field active_inactive_work_accounting \
+  --field scheduled_work_saving_positive \
+  --field post_period_multi_extension_scheduled_work_saving \
+  --require-theorem AIM-T0026 \
+  --require-theorem AIM-T0130 \
+  --require-theorem AIM-T0159 \
+  --require-recommendation RECURRENCE-USE-ACTIVE-TOKEN-WORK-SCHEDULE \
+  --require-recommendation RECURRENCE-REUSE-WHOLE-PERIOD-SHIFT \
+  --require-recommendation-evidence-field RECURRENCE-USE-ACTIVE-TOKEN-WORK-SCHEDULE=total_active_token_work \
+  --require-recommendation-evidence-field RECURRENCE-USE-ACTIVE-TOKEN-WORK-SCHEDULE=scheduled_work_saving \
+  --require-recommendation-evidence-field RECURRENCE-USE-ACTIVE-TOKEN-WORK-SCHEDULE=post_period_multi_extension_scheduled_work_saving \
+  --require-recommendation-evidence-field RECURRENCE-REUSE-WHOLE-PERIOD-SHIFT=periodic_shift_required_steps_invariant \
+  --require-recommendation-evidence-field RECURRENCE-REUSE-WHOLE-PERIOD-SHIFT=periodic_shift_active_at_step_invariant \
+  --require-recommendation-theorem RECURRENCE-USE-ACTIVE-TOKEN-WORK-SCHEDULE=AIM-T0130 \
+  --require-recommendation-theorem RECURRENCE-USE-ACTIVE-TOKEN-WORK-SCHEDULE=AIM-T0159 \
+  --require-recommendation-theorem RECURRENCE-REUSE-WHOLE-PERIOD-SHIFT=AIM-T0026 \
+  --require-recommendation-action-parameter RECURRENCE-USE-ACTIVE-TOKEN-WORK-SCHEDULE=loop_period \
+  --require-recommendation-action-parameter RECURRENCE-USE-ACTIVE-TOKEN-WORK-SCHEDULE=scheduled_work_saving \
+  --require-recommendation-action-parameter RECURRENCE-REUSE-WHOLE-PERIOD-SHIFT=base_token \
+  --require-recommendation-action-parameter-path RECURRENCE-USE-ACTIVE-TOKEN-WORK-SCHEDULE=loop_period \
+  --require-recommendation-action-parameter-path RECURRENCE-USE-ACTIVE-TOKEN-WORK-SCHEDULE=token_count \
+  --require-recommendation-action-parameter-path RECURRENCE-USE-ACTIVE-TOKEN-WORK-SCHEDULE=horizon_steps \
+  --require-recommendation-action-parameter-path RECURRENCE-USE-ACTIVE-TOKEN-WORK-SCHEDULE=scheduled_work_saving \
+  --require-recommendation-action-parameter-path RECURRENCE-USE-ACTIVE-TOKEN-WORK-SCHEDULE=post_period_multi_extension_scheduled_work_saving \
+  --require-recommendation-action-parameter-path RECURRENCE-REUSE-WHOLE-PERIOD-SHIFT=base_token \
+  --require-recommendation-action-parameter-path RECURRENCE-REUSE-WHOLE-PERIOD-SHIFT=shifted_token \
+  --require-recommendation-action-parameter-path RECURRENCE-REUSE-WHOLE-PERIOD-SHIFT=shift_amount
+```
 
 <div class="widget-panel" data-widget="token_level_recurrence" data-theorem-id="AIM-T0035" data-dictionary-ids="COMMON-0052 COMMON-0053 COMMON-0059 COMMON-0068 COMMON-0069"></div>
 

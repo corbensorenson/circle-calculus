@@ -1,0 +1,68 @@
+{
+  "$id": "https://circle-calculus.local/schemas/circle_ai_downstream_rejection_report.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "description": "Shape schema for machine-readable rejection reports emitted by the standard-library-only downstream CI example when a pinned Circle AI contract pack or acceptance policy is rejected.",
+  "properties": {
+    "accepted": {
+      "const": false
+    },
+    "error": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "example_schema_id": {
+      "const": "circle_calculus.downstream_ci_acceptance_example.v0"
+    },
+    "failure_count": {
+      "minimum": 1,
+      "type": "integer"
+    },
+    "failures": {
+      "items": {
+        "minLength": 1,
+        "type": "string"
+      },
+      "minItems": 1,
+      "type": "array",
+      "uniqueItems": true
+    },
+    "not_claimed": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "pack_path": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "planner_requested_recommendation_ids": {
+      "items": {
+        "minLength": 1,
+        "type": "string"
+      },
+      "type": "array",
+      "uniqueItems": true
+    },
+    "policy_path": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "schema_id": {
+      "const": "circle_calculus.downstream_ci_rejection_report.v0"
+    }
+  },
+  "required": [
+    "schema_id",
+    "example_schema_id",
+    "accepted",
+    "error",
+    "failure_count",
+    "failures",
+    "pack_path",
+    "policy_path",
+    "planner_requested_recommendation_ids",
+    "not_claimed"
+  ],
+  "title": "Circle AI Downstream CI Rejection Report",
+  "type": "object"
+}

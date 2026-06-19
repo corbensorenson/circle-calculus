@@ -183,6 +183,45 @@ The default sidecar result has three layers:
 | Full-window coverage | `full_coverage_contract = true` | once the live window is full, the generated slot list has `cache_size` in-range duplicate-free entries |
 | Exact live-window request | request `generated_live_window_read` over tokens `16..31` | the modeled request is exactly the generated retained window and passes the adapter request-trace contract |
 
+The flagship acceptance policy pins both KV planner actions. A downstream
+consumer must keep `KV-DROP-STALE-REQUEST-TOKEN` for the failing stale-token
+probe and `KV-USE-SINK-ROLLING-WINDOW-REQUEST` for the sink-prefix plus rolling
+window request fixture, including the theorem-linked sink-retention fields.
+This is a finite request-shape contract, not a serving-stack proof.
+
+The same pin can be checked directly:
+
+```bash
+python scripts/circle_ai_contract_ready.py \
+  --kind kv_cache_ring_buffer \
+  --receipt \
+  --format json \
+  --field stale_probe_first_stale_token \
+  --field sink_tokens_retained_by_policy \
+  --field sink_window_exact_policy \
+  --field sink_window_tokens_distinct \
+  --field sink_prefix_disjoint_from_live_window \
+  --field sink_tokens_outside_ordinary_rolling_window \
+  --require-theorem AIM-T0103 \
+  --require-theorem AIM-T0104 \
+  --require-theorem AIM-T0149 \
+  --require-recommendation KV-DROP-STALE-REQUEST-TOKEN \
+  --require-recommendation KV-USE-SINK-ROLLING-WINDOW-REQUEST \
+  --require-recommendation-evidence-field KV-DROP-STALE-REQUEST-TOKEN=stale_probe_first_stale_token \
+  --require-recommendation-evidence-field KV-USE-SINK-ROLLING-WINDOW-REQUEST=sink_tokens_retained_by_policy \
+  --require-recommendation-evidence-field KV-USE-SINK-ROLLING-WINDOW-REQUEST=sink_tokens_outside_ordinary_rolling_window \
+  --require-recommendation-theorem KV-DROP-STALE-REQUEST-TOKEN=AIM-T0103 \
+  --require-recommendation-theorem KV-USE-SINK-ROLLING-WINDOW-REQUEST=AIM-T0149 \
+  --require-recommendation-action-parameter KV-DROP-STALE-REQUEST-TOKEN=target_token \
+  --require-recommendation-action-parameter KV-USE-SINK-ROLLING-WINDOW-REQUEST=sink_size \
+  --require-recommendation-action-parameter-path KV-DROP-STALE-REQUEST-TOKEN=target_token \
+  --require-recommendation-action-parameter-path KV-USE-SINK-ROLLING-WINDOW-REQUEST=sink_size \
+  --require-recommendation-action-parameter-path KV-USE-SINK-ROLLING-WINDOW-REQUEST=request_token_count \
+  --require-recommendation-action-parameter-path KV-USE-SINK-ROLLING-WINDOW-REQUEST=request_token_count_bound \
+  --require-recommendation-action-parameter-path KV-USE-SINK-ROLLING-WINDOW-REQUEST=cache_size \
+  --require-recommendation-action-parameter-path KV-USE-SINK-ROLLING-WINDOW-REQUEST=current
+```
+
 The important point is that freshness is not only a residue fact. Slot `4` repeats every `16` tokens; the theorem-backed contract combines the residue with the overwrite boundary `current < token + cache_size`.
 
 ::: {.checkpoint-box}

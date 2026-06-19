@@ -83,6 +83,43 @@ python scripts/kv_cache_certify.py \
 - `slot_range_covered`: true when the generated live-window slot list contains every declared cache slot.
 - `full_coverage_contract_matches_full_window`: true when the full generated live-window coverage contract is equivalent to the live window being full.
 
+For a strict downstream receipt over both KV planner actions:
+
+```bash
+python scripts/circle_ai_contract_ready.py \
+  --kind kv_cache_ring_buffer \
+  --receipt \
+  --format json \
+  --field stale_probe_first_stale_token \
+  --field sink_tokens_retained_by_policy \
+  --field sink_window_exact_policy \
+  --field sink_window_tokens_distinct \
+  --field sink_prefix_disjoint_from_live_window \
+  --field sink_tokens_outside_ordinary_rolling_window \
+  --require-theorem AIM-T0103 \
+  --require-theorem AIM-T0104 \
+  --require-theorem AIM-T0149 \
+  --require-recommendation KV-DROP-STALE-REQUEST-TOKEN \
+  --require-recommendation KV-USE-SINK-ROLLING-WINDOW-REQUEST \
+  --require-recommendation-evidence-field KV-DROP-STALE-REQUEST-TOKEN=stale_probe_first_stale_token \
+  --require-recommendation-evidence-field KV-USE-SINK-ROLLING-WINDOW-REQUEST=sink_tokens_retained_by_policy \
+  --require-recommendation-evidence-field KV-USE-SINK-ROLLING-WINDOW-REQUEST=sink_tokens_outside_ordinary_rolling_window \
+  --require-recommendation-theorem KV-DROP-STALE-REQUEST-TOKEN=AIM-T0103 \
+  --require-recommendation-theorem KV-USE-SINK-ROLLING-WINDOW-REQUEST=AIM-T0149 \
+  --require-recommendation-action-parameter KV-DROP-STALE-REQUEST-TOKEN=target_token \
+  --require-recommendation-action-parameter KV-USE-SINK-ROLLING-WINDOW-REQUEST=sink_size \
+  --require-recommendation-action-parameter-path KV-DROP-STALE-REQUEST-TOKEN=target_token \
+  --require-recommendation-action-parameter-path KV-USE-SINK-ROLLING-WINDOW-REQUEST=sink_size \
+  --require-recommendation-action-parameter-path KV-USE-SINK-ROLLING-WINDOW-REQUEST=request_token_count \
+  --require-recommendation-action-parameter-path KV-USE-SINK-ROLLING-WINDOW-REQUEST=request_token_count_bound \
+  --require-recommendation-action-parameter-path KV-USE-SINK-ROLLING-WINDOW-REQUEST=cache_size \
+  --require-recommendation-action-parameter-path KV-USE-SINK-ROLLING-WINDOW-REQUEST=current
+```
+
+That receipt is a CI-style pin for the finite stale-token and sink-window
+request-list fixtures. It is not a proof of paging correctness, serving-stack
+behavior, throughput, memory savings, or StreamingLLM quality.
+
 The main theorem spine is:
 
 - `AIM-T0059` through `AIM-T0064`: bounded slots, same-slot periodicity, collision/gap facts, overwrite timing, and current-slot distinctness.

@@ -12,14 +12,20 @@ from typing import Any
 
 from check_circle_ai_contract_pack import DEFAULT_PACK, find_contract, validate_pack
 from circle_math.applications.circle_ai_contract_consumer import (
+    ContractAcceptanceError,
+    ContractAcceptancePolicyError,
     ContractConsumerError,
+    contract_acceptance_policy_report,
+    contract_acceptance_receipt,
     contract_digest,
     planner_action_plan,
     planner_recommendation_index,
+    refresh_acceptance_policy_fingerprints,
 )
 
 
 ROOT = Path(__file__).resolve().parents[1]
+DEFAULT_POLICY = ROOT / "examples" / "circle_ai_contract_acceptance_policy.json"
 SHA256_HEX_RE = re.compile(r"^[0-9a-f]{64}$")
 
 
@@ -195,6 +201,107 @@ def _print_fingerprints(pack: dict[str, Any], output_format: str) -> None:
         )
 
 
+def _acceptance_policy_payload(pack: dict[str, Any]) -> dict[str, Any]:
+    return {
+        "schema_id": pack.get("schema_id"),
+        "content_fingerprint_algorithm": pack.get("content_fingerprint_algorithm"),
+        "pack_content_fingerprint": pack.get("pack_content_fingerprint"),
+        "acceptance_policy": pack.get("acceptance_policy", {}),
+    }
+
+
+def _load_json_object(path: Path) -> dict[str, Any]:
+    if not path.is_absolute():
+        path = ROOT / path
+    payload = json.loads(path.read_text())
+    if not isinstance(payload, dict):
+        raise ValueError(f"{path} must contain a JSON object")
+    return payload
+
+
+def _print_acceptance_policy(pack: dict[str, Any], output_format: str) -> None:
+    payload = _acceptance_policy_payload(pack)
+    policy = payload.get("acceptance_policy", {})
+    if output_format == "json":
+        print(json.dumps(payload, indent=2, sort_keys=True))
+        return
+    if not isinstance(policy, dict):
+        policy = {}
+    print(
+        " ".join(
+            [
+                "circle AI acceptance policy ok:",
+                f"schema={policy.get('schema_id')}",
+                f"report_schema={policy.get('report_schema_id')}",
+                f"policy={policy.get('default_policy_path')}",
+                f"checker={policy.get('checker')}",
+                f"standalone={policy.get('standalone_checker')}",
+                f"pack={payload.get('pack_content_fingerprint')}",
+            ]
+        )
+    )
+    refresh_command = policy.get("fingerprint_refresh_command")
+    if isinstance(refresh_command, str) and refresh_command:
+        print(f"fingerprint_refresh_command={refresh_command}")
+    pinned_keys = policy.get("pinned_requirement_keys", [])
+    if isinstance(pinned_keys, list) and pinned_keys:
+        print("pinned_requirement_keys=" + ",".join(str(key) for key in pinned_keys))
+    validation_commands = policy.get("validation_commands", [])
+    if isinstance(validation_commands, list) and validation_commands:
+        print(
+            "validation_commands="
+            + " | ".join(str(command) for command in validation_commands)
+        )
+
+
+def _print_acceptance_policy_report_text(report: dict[str, Any]) -> None:
+    print(
+        "circle AI acceptance policy report ok: "
+        f"id={report.get('policy_id')} "
+        f"contracts={report.get('contract_count')} "
+        f"receipts={report.get('receipt_count')} "
+        f"accepted={report.get('accepted') is True}"
+    )
+    print(
+        " ".join(
+            [
+                f"schema={report.get('acceptance_policy_report_schema')}",
+                f"policy_schema={report.get('policy_schema')}",
+                f"fingerprint_algorithm={report.get('content_fingerprint_algorithm')}",
+                f"pack={report.get('pack_content_fingerprint')}",
+            ]
+        )
+    )
+    receipts = report.get("receipts", [])
+    if not isinstance(receipts, list):
+        return
+    for receipt in receipts:
+        if not isinstance(receipt, dict):
+            continue
+        required_fields = receipt.get("required_fields", [])
+        required_theorem_ids = receipt.get("required_theorem_ids", [])
+        required_recommendation_ids = receipt.get("required_recommendation_ids", [])
+        print(
+            " ".join(
+                [
+                    f"receipt.{receipt.get('kind')}",
+                    f"contract={receipt.get('contract_id')}",
+                    f"accepted={receipt.get('accepted') is True}",
+                    f"fields={len(required_fields) if isinstance(required_fields, list) else 0}",
+                    (
+                        "theorems="
+                        f"{len(required_theorem_ids) if isinstance(required_theorem_ids, list) else 0}"
+                    ),
+                    (
+                        "recommendations="
+                        f"{len(required_recommendation_ids) if isinstance(required_recommendation_ids, list) else 0}"
+                    ),
+                    f"fingerprint={receipt.get('contract_content_fingerprint')}",
+                ]
+            )
+        )
+
+
 def _parse_contract_fingerprint_expectations(
     values: list[str],
 ) -> tuple[dict[str, str], list[str]]:
@@ -225,6 +332,161 @@ def _parse_contract_fingerprint_expectations(
             continue
         expectations[kind] = fingerprint
     return expectations, failures
+
+
+def _parse_recommendation_evidence_requirements(
+    values: list[str],
+) -> tuple[dict[str, tuple[str, ...]], list[str]]:
+    requirements: dict[str, list[str]] = {}
+    failures: list[str] = []
+    for raw in values:
+        if "=" not in raw:
+            failures.append(
+                "--require-recommendation-evidence-field must have the form "
+                "RECOMMENDATION_ID=field_name"
+            )
+            continue
+        recommendation_id, field = raw.split("=", 1)
+        recommendation_id = recommendation_id.strip()
+        field = field.strip()
+        if not recommendation_id:
+            failures.append(
+                "--require-recommendation-evidence-field recommendation id is empty"
+            )
+            continue
+        if not field:
+            failures.append(
+                "--require-recommendation-evidence-field field name is empty"
+            )
+            continue
+        fields = requirements.setdefault(recommendation_id, [])
+        if field in fields:
+            failures.append(
+                "--require-recommendation-evidence-field repeats "
+                f"{recommendation_id}={field}"
+            )
+            continue
+        fields.append(field)
+    return {
+        recommendation_id: tuple(fields)
+        for recommendation_id, fields in requirements.items()
+    }, failures
+
+
+def _parse_recommendation_theorem_requirements(
+    values: list[str],
+) -> tuple[dict[str, tuple[str, ...]], list[str]]:
+    requirements: dict[str, list[str]] = {}
+    failures: list[str] = []
+    for raw in values:
+        if "=" not in raw:
+            failures.append(
+                "--require-recommendation-theorem must have the form "
+                "RECOMMENDATION_ID=THEOREM_ID"
+            )
+            continue
+        recommendation_id, theorem_id = raw.split("=", 1)
+        recommendation_id = recommendation_id.strip()
+        theorem_id = theorem_id.strip()
+        if not recommendation_id:
+            failures.append(
+                "--require-recommendation-theorem recommendation id is empty"
+            )
+            continue
+        if not theorem_id:
+            failures.append("--require-recommendation-theorem theorem id is empty")
+            continue
+        theorem_ids = requirements.setdefault(recommendation_id, [])
+        if theorem_id in theorem_ids:
+            failures.append(
+                "--require-recommendation-theorem repeats "
+                f"{recommendation_id}={theorem_id}"
+            )
+            continue
+        theorem_ids.append(theorem_id)
+    return {
+        recommendation_id: tuple(theorem_ids)
+        for recommendation_id, theorem_ids in requirements.items()
+    }, failures
+
+
+def _parse_recommendation_action_parameter_requirements(
+    values: list[str],
+) -> tuple[dict[str, tuple[str, ...]], list[str]]:
+    requirements: dict[str, list[str]] = {}
+    failures: list[str] = []
+    for raw in values:
+        if "=" not in raw:
+            failures.append(
+                "--require-recommendation-action-parameter must have the form "
+                "RECOMMENDATION_ID=parameter_key"
+            )
+            continue
+        recommendation_id, parameter_key = raw.split("=", 1)
+        recommendation_id = recommendation_id.strip()
+        parameter_key = parameter_key.strip()
+        if not recommendation_id:
+            failures.append(
+                "--require-recommendation-action-parameter recommendation id is empty"
+            )
+            continue
+        if not parameter_key:
+            failures.append(
+                "--require-recommendation-action-parameter parameter key is empty"
+            )
+            continue
+        parameter_keys = requirements.setdefault(recommendation_id, [])
+        if parameter_key in parameter_keys:
+            failures.append(
+                "--require-recommendation-action-parameter repeats "
+                f"{recommendation_id}={parameter_key}"
+            )
+            continue
+        parameter_keys.append(parameter_key)
+    return {
+        recommendation_id: tuple(parameter_keys)
+        for recommendation_id, parameter_keys in requirements.items()
+    }, failures
+
+
+def _parse_recommendation_action_parameter_path_requirements(
+    values: list[str],
+) -> tuple[dict[str, tuple[str, ...]], list[str]]:
+    requirements: dict[str, list[str]] = {}
+    failures: list[str] = []
+    for raw in values:
+        if "=" not in raw:
+            failures.append(
+                "--require-recommendation-action-parameter-path must have the "
+                "form RECOMMENDATION_ID=PARAMETER_PATH"
+            )
+            continue
+        recommendation_id, parameter_path = raw.split("=", 1)
+        recommendation_id = recommendation_id.strip()
+        parameter_path = parameter_path.strip()
+        if not recommendation_id:
+            failures.append(
+                "--require-recommendation-action-parameter-path "
+                "recommendation id is empty"
+            )
+            continue
+        if not parameter_path:
+            failures.append(
+                "--require-recommendation-action-parameter-path path is empty"
+            )
+            continue
+        parameter_paths = requirements.setdefault(recommendation_id, [])
+        if parameter_path in parameter_paths:
+            failures.append(
+                "--require-recommendation-action-parameter-path repeats "
+                f"{recommendation_id}={parameter_path}"
+            )
+            continue
+        parameter_paths.append(parameter_path)
+    return {
+        recommendation_id: tuple(parameter_paths)
+        for recommendation_id, parameter_paths in requirements.items()
+    }, failures
 
 
 def _verify_fingerprint_expectations(
@@ -359,6 +621,161 @@ def _print_digest_text(digest: dict[str, Any]) -> None:
         print("missing_requested_fields=" + ",".join(str(field) for field in missing))
 
 
+def _print_receipt_text(receipt: dict[str, Any]) -> None:
+    evidence = receipt.get("evidence_fields", {})
+    recommendations = receipt.get("planner_recommendations", [])
+    recommendation_evidence_fields = receipt.get(
+        "required_recommendation_evidence_fields",
+        {},
+    )
+    required_recommendation_theorem_ids = receipt.get(
+        "required_recommendation_theorem_ids",
+        {},
+    )
+    required_recommendation_action_parameters = receipt.get(
+        "required_recommendation_action_parameters",
+        {},
+    )
+    required_recommendation_action_parameter_paths = receipt.get(
+        "required_recommendation_action_parameter_paths",
+        {},
+    )
+    theorem_ids = receipt.get("theorem_ids", [])
+    recommendation_evidence_field_count = (
+        sum(len(fields) for fields in recommendation_evidence_fields.values())
+        if isinstance(recommendation_evidence_fields, dict)
+        else 0
+    )
+    recommendation_theorem_count = (
+        sum(len(theorem_ids) for theorem_ids in required_recommendation_theorem_ids.values())
+        if isinstance(required_recommendation_theorem_ids, dict)
+        else 0
+    )
+    recommendation_action_parameter_count = (
+        sum(
+            len(parameter_keys)
+            for parameter_keys in required_recommendation_action_parameters.values()
+        )
+        if isinstance(required_recommendation_action_parameters, dict)
+        else 0
+    )
+    recommendation_action_parameter_path_count = (
+        sum(
+            len(parameter_paths)
+            for parameter_paths in (
+                required_recommendation_action_parameter_paths.values()
+            )
+        )
+        if isinstance(required_recommendation_action_parameter_paths, dict)
+        else 0
+    )
+    print(f"circle AI contract receipt ok: {receipt.get('kind')}")
+    print(
+        " ".join(
+            [
+                f"id={receipt.get('contract_id')}",
+                f"accepted={receipt.get('accepted') is True}",
+                f"fields={len(evidence) if isinstance(evidence, dict) else 0}",
+                (
+                    "recommendations="
+                    f"{len(recommendations) if isinstance(recommendations, list) else 0}"
+                ),
+                f"recommendation_evidence_fields={recommendation_evidence_field_count}",
+                f"recommendation_theorems={recommendation_theorem_count}",
+                (
+                    "recommendation_action_parameters="
+                    f"{recommendation_action_parameter_count}"
+                ),
+                (
+                    "recommendation_action_parameter_paths="
+                    f"{recommendation_action_parameter_path_count}"
+                ),
+                f"theorems={len(theorem_ids) if isinstance(theorem_ids, list) else 0}",
+            ]
+        )
+    )
+    print(
+        " ".join(
+            [
+                f"fingerprint_algorithm={receipt.get('content_fingerprint_algorithm')}",
+                f"pack={receipt.get('pack_content_fingerprint')}",
+                f"contract={receipt.get('contract_content_fingerprint')}",
+            ]
+        )
+    )
+    if isinstance(evidence, dict):
+        for key in sorted(evidence):
+            print(f"evidence.{key}={json.dumps(evidence[key], sort_keys=True)}")
+    if isinstance(recommendations, list):
+        for recommendation in recommendations:
+            if not isinstance(recommendation, dict):
+                continue
+            rec_theorem_ids = recommendation.get("theorem_ids", [])
+            if not isinstance(rec_theorem_ids, list):
+                rec_theorem_ids = []
+            print(
+                " ".join(
+                    [
+                        f"recommendation.{recommendation.get('id')}",
+                        f"action={recommendation.get('action_kind')}",
+                        f"scope={recommendation.get('coverage_scope')}",
+                        f"status={recommendation.get('status')}",
+                        "theorems=" + ",".join(str(item) for item in rec_theorem_ids),
+                    ]
+                )
+            )
+    if isinstance(recommendation_evidence_fields, dict):
+        for recommendation_id in sorted(recommendation_evidence_fields):
+            fields = recommendation_evidence_fields[recommendation_id]
+            if not isinstance(fields, list):
+                continue
+            print(
+                "required_recommendation_evidence_fields."
+                f"{recommendation_id}="
+                + ",".join(str(field) for field in fields)
+            )
+    if isinstance(required_recommendation_theorem_ids, dict):
+        for recommendation_id in sorted(required_recommendation_theorem_ids):
+            theorem_ids = required_recommendation_theorem_ids[recommendation_id]
+            if not isinstance(theorem_ids, list):
+                continue
+            print(
+                "required_recommendation_theorem_ids."
+                f"{recommendation_id}="
+                + ",".join(str(theorem_id) for theorem_id in theorem_ids)
+            )
+    if isinstance(required_recommendation_action_parameters, dict):
+        for recommendation_id in sorted(required_recommendation_action_parameters):
+            parameter_keys = required_recommendation_action_parameters[
+                recommendation_id
+            ]
+            if not isinstance(parameter_keys, list):
+                continue
+            print(
+                "required_recommendation_action_parameters."
+                f"{recommendation_id}="
+                + ",".join(str(parameter_key) for parameter_key in parameter_keys)
+            )
+    if isinstance(required_recommendation_action_parameter_paths, dict):
+        for recommendation_id in sorted(required_recommendation_action_parameter_paths):
+            parameter_paths = required_recommendation_action_parameter_paths[
+                recommendation_id
+            ]
+            if not isinstance(parameter_paths, list):
+                continue
+            print(
+                "required_recommendation_action_parameter_paths."
+                f"{recommendation_id}="
+                + ",".join(str(parameter_path) for parameter_path in parameter_paths)
+            )
+    validation_commands = receipt.get("validation_commands", [])
+    if isinstance(validation_commands, list) and validation_commands:
+        print(
+            "validation_commands="
+            + " | ".join(str(command) for command in validation_commands)
+        )
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(
         description=(
@@ -388,6 +805,39 @@ def main() -> int:
         help=(
             "Print the pack fingerprint and per-contract content fingerprints "
             "for downstream audit logs."
+        ),
+    )
+    parser.add_argument(
+        "--acceptance-policy",
+        action="store_true",
+        help=(
+            "Print the generated acceptance-policy metadata: default policy "
+            "path, checker scripts, refresh command, and pinned requirement keys."
+        ),
+    )
+    parser.add_argument(
+        "--acceptance-policy-report",
+        action="store_true",
+        help=(
+            "Validate the selected downstream acceptance policy and emit the "
+            "bundled strict receipt report for its pinned contracts."
+        ),
+    )
+    parser.add_argument(
+        "--print-refreshed-policy",
+        action="store_true",
+        help=(
+            "Print the selected acceptance policy with only expected pack and "
+            "contract fingerprints refreshed from --path. Requirement pins "
+            "are preserved."
+        ),
+    )
+    parser.add_argument(
+        "--policy",
+        default=str(DEFAULT_POLICY),
+        help=(
+            "Path to a circle_calculus.ai_contract_acceptance_policy.v0 JSON "
+            "file for --acceptance-policy-report or --print-refreshed-policy."
         ),
     )
     parser.add_argument(
@@ -425,6 +875,16 @@ def main() -> int:
         ),
     )
     parser.add_argument(
+        "--recommendation",
+        action="append",
+        default=[],
+        metavar="RECOMMENDATION_ID",
+        help=(
+            "In --action-plan output, emit only this planner recommendation id. "
+            "Repeat for multiple ids. Missing ids fail instead of being ignored."
+        ),
+    )
+    parser.add_argument(
         "--format",
         choices=("text", "json"),
         default="text",
@@ -439,12 +899,31 @@ def main() -> int:
         ),
     )
     parser.add_argument(
+        "--receipt",
+        action="store_true",
+        help=(
+            "Emit a strict acceptance receipt for the selected kind. This "
+            "fails if any requested --field or --require-recommendation is "
+            "missing."
+        ),
+    )
+    parser.add_argument(
         "--field",
         action="append",
         default=[],
         help=(
             "Evidence field to include in --digest output. Repeat to request "
             "multiple fields. Defaults to the contract kind's minimum fields."
+        ),
+    )
+    parser.add_argument(
+        "--require-theorem",
+        action="append",
+        default=[],
+        metavar="THEOREM_ID",
+        help=(
+            "In --receipt output, require a theorem id to appear in the "
+            "selected contract theorem spine. Repeat for multiple theorems."
         ),
     )
     parser.add_argument(
@@ -462,9 +941,142 @@ def main() -> int:
             "Include optional planner recommendation records in --digest output."
         ),
     )
+    parser.add_argument(
+        "--require-recommendation",
+        action="append",
+        default=[],
+        metavar="RECOMMENDATION_ID",
+        help=(
+            "In --receipt output, require a planner recommendation id to exist "
+            "for the selected kind. Repeat for multiple recommendations."
+        ),
+    )
+    parser.add_argument(
+        "--require-recommendation-evidence-field",
+        action="append",
+        default=[],
+        metavar="RECOMMENDATION_ID=FIELD",
+        help=(
+            "In --receipt output, require a planner recommendation to cite a "
+            "specific evidence field. Repeat for multiple fields. This also "
+            "requires the recommendation id itself."
+        ),
+    )
+    parser.add_argument(
+        "--require-recommendation-theorem",
+        action="append",
+        default=[],
+        metavar="RECOMMENDATION_ID=THEOREM_ID",
+        help=(
+            "In --receipt output, require a planner recommendation to cite a "
+            "specific theorem id. Repeat for multiple theorem ids. This also "
+            "requires the recommendation id itself."
+        ),
+    )
+    parser.add_argument(
+        "--require-recommendation-action-parameter",
+        action="append",
+        default=[],
+        metavar="RECOMMENDATION_ID=PARAMETER_KEY",
+        help=(
+            "In --receipt output, require a planner recommendation to expose a "
+            "specific value-mode action parameter key. Repeat for multiple "
+            "keys. This also requires the recommendation id itself."
+        ),
+    )
+    parser.add_argument(
+        "--require-recommendation-action-parameter-path",
+        action="append",
+        default=[],
+        metavar="RECOMMENDATION_ID=PARAMETER_PATH",
+        help=(
+            "In --receipt output, require a planner recommendation to expose a "
+            "nested value-mode action parameter path, for example "
+            "classifier_regions[region=proved].theorem_ids. Repeat for "
+            "multiple paths. This also requires the recommendation id itself."
+        ),
+    )
     args = parser.parse_args()
 
+    recommendation_evidence_requirements, evidence_parse_failures = (
+        _parse_recommendation_evidence_requirements(
+            args.require_recommendation_evidence_field,
+        )
+    )
+    recommendation_theorem_requirements, theorem_parse_failures = (
+        _parse_recommendation_theorem_requirements(
+            args.require_recommendation_theorem,
+        )
+    )
+    recommendation_action_parameter_requirements, action_parse_failures = (
+        _parse_recommendation_action_parameter_requirements(
+            args.require_recommendation_action_parameter,
+        )
+    )
+    recommendation_action_parameter_path_requirements, path_parse_failures = (
+        _parse_recommendation_action_parameter_path_requirements(
+            args.require_recommendation_action_parameter_path,
+        )
+    )
+    parse_failures = (
+        evidence_parse_failures
+        + theorem_parse_failures
+        + action_parse_failures
+        + path_parse_failures
+    )
+    if parse_failures:
+        parser.error("; ".join(parse_failures))
+    if args.require_recommendation_evidence_field and not args.receipt:
+        parser.error("--require-recommendation-evidence-field requires --receipt")
+    if args.require_recommendation_theorem and not args.receipt:
+        parser.error("--require-recommendation-theorem requires --receipt")
+    if args.require_recommendation_action_parameter and not args.receipt:
+        parser.error("--require-recommendation-action-parameter requires --receipt")
+    if args.require_recommendation_action_parameter_path and not args.receipt:
+        parser.error(
+            "--require-recommendation-action-parameter-path requires --receipt"
+        )
+    if args.require_theorem and not args.receipt:
+        parser.error("--require-theorem requires --receipt")
+    if args.recommendation and not args.action_plan:
+        parser.error("--recommendation requires --action-plan")
+    if args.print_refreshed_policy:
+        if (
+            args.kind
+            or args.list_kinds
+            or args.list_recommendations
+            or args.fingerprints
+            or args.acceptance_policy
+            or args.acceptance_policy_report
+            or args.digest
+            or args.receipt
+            or args.action_plan
+            or args.expect_pack_fingerprint
+            or args.expect_contract_fingerprint
+        ):
+            parser.error(
+                "--print-refreshed-policy cannot be used with --kind or "
+                "--list-kinds or --list-recommendations or --fingerprints or "
+                "--acceptance-policy or --acceptance-policy-report or --digest or "
+                "--receipt or --action-plan or fingerprint expectations"
+            )
+
     pack = _load_pack(Path(args.path))
+    if args.print_refreshed_policy:
+        try:
+            policy = _load_json_object(Path(args.policy))
+            refreshed_policy = refresh_acceptance_policy_fingerprints(pack, policy)
+        except (
+            ContractAcceptancePolicyError,
+            OSError,
+            ValueError,
+            json.JSONDecodeError,
+        ) as exc:
+            print(f"acceptance policy refresh failed: {exc}", file=sys.stderr)
+            return 4
+        print(json.dumps(refreshed_policy, indent=2, sort_keys=True))
+        return 0
+
     failures = validate_pack(pack)
     if failures:
         print("circle AI contract pack is not valid:", file=sys.stderr)
@@ -489,41 +1101,118 @@ def main() -> int:
     if args.list_kinds:
         if (
             args.digest
+            or args.receipt
             or args.list_recommendations
             or args.action_plan
             or args.fingerprints
+            or args.acceptance_policy
+            or args.acceptance_policy_report
+            or args.print_refreshed_policy
         ):
             parser.error(
-                "--list-kinds cannot be combined with --digest or "
-                "--list-recommendations or --action-plan or --fingerprints"
+                "--list-kinds cannot be combined with --digest or --receipt or "
+                "--list-recommendations or --action-plan or --fingerprints or "
+                "--acceptance-policy or --acceptance-policy-report or "
+                "--print-refreshed-policy"
             )
         _print_kind_list(pack, args.format)
         return 0
 
     if args.list_recommendations:
-        if args.digest or args.action_plan or args.fingerprints:
+        if (
+            args.digest
+            or args.receipt
+            or args.action_plan
+            or args.fingerprints
+            or args.acceptance_policy
+            or args.acceptance_policy_report
+            or args.print_refreshed_policy
+        ):
             parser.error(
-                "--list-recommendations cannot be used with --digest or "
-                "--action-plan or --fingerprints"
+                "--list-recommendations cannot be used with --digest or --receipt "
+                "or --action-plan or --fingerprints or --acceptance-policy or "
+                "--acceptance-policy-report or --print-refreshed-policy"
             )
         _print_recommendation_list(pack, args.format)
         return 0
 
     if args.fingerprints:
-        if args.digest or args.action_plan:
-            parser.error("--fingerprints cannot be used with --digest or --action-plan")
+        if (
+            args.digest
+            or args.receipt
+            or args.action_plan
+            or args.acceptance_policy
+            or args.acceptance_policy_report
+            or args.print_refreshed_policy
+        ):
+            parser.error(
+                "--fingerprints cannot be used with --digest or --receipt or "
+                "--action-plan or --acceptance-policy or --acceptance-policy-report "
+                "or --print-refreshed-policy"
+            )
         _print_fingerprints(pack, args.format)
         return 0
 
+    if args.acceptance_policy:
+        if (
+            args.kind
+            or args.digest
+            or args.receipt
+            or args.action_plan
+            or args.acceptance_policy_report
+            or args.print_refreshed_policy
+        ):
+            parser.error(
+                "--acceptance-policy cannot be used with --kind or --digest or "
+                "--receipt or --action-plan or --acceptance-policy-report or "
+                "--print-refreshed-policy"
+            )
+        _print_acceptance_policy(pack, args.format)
+        return 0
+
+    if args.acceptance_policy_report:
+        if (
+            args.kind
+            or args.digest
+            or args.receipt
+            or args.action_plan
+            or args.print_refreshed_policy
+        ):
+            parser.error(
+                "--acceptance-policy-report cannot be used with --kind or "
+                "--digest or --receipt or --action-plan or --print-refreshed-policy"
+            )
+        try:
+            policy = _load_json_object(Path(args.policy))
+            report = contract_acceptance_policy_report(
+                pack,
+                policy,
+                include_field_metadata=args.include_field_metadata,
+            )
+        except (
+            ContractAcceptancePolicyError,
+            OSError,
+            ValueError,
+            json.JSONDecodeError,
+        ) as exc:
+            print(f"acceptance policy report failed: {exc}", file=sys.stderr)
+            return 4
+        if args.format == "json":
+            print(json.dumps(report, indent=2, sort_keys=True))
+        else:
+            _print_acceptance_policy_report_text(report)
+        return 0
+
     if args.action_plan:
-        if args.digest:
-            parser.error("--digest cannot be used with --action-plan")
+        if args.digest or args.receipt:
+            parser.error("--digest and --receipt cannot be used with --action-plan")
         selected_kinds = (args.kind,) if args.kind else None
         try:
             plan = planner_action_plan(
                 pack,
                 selected_kinds,
                 include_values=args.include_values,
+                recommendation_ids=args.recommendation or None,
             )
         except ContractConsumerError as exc:
             print(f"contract action plan failed: {exc}", file=sys.stderr)
@@ -537,13 +1226,16 @@ def main() -> int:
     if not args.kind:
         parser.error(
             "--kind is required unless --list-kinds or --list-recommendations "
-            "is passed"
+            "or --fingerprints or --acceptance-policy is passed"
         )
 
     readiness = _readiness_for(pack, args.kind)
     if readiness is None:
         print(f"unknown contract kind: {args.kind}", file=sys.stderr)
         return 1
+
+    if args.digest and args.receipt:
+        parser.error("--digest cannot be used with --receipt")
 
     if args.digest:
         try:
@@ -561,6 +1253,43 @@ def main() -> int:
             print(json.dumps(digest, indent=2, sort_keys=True))
         else:
             _print_digest_text(digest)
+        return 0
+
+    if args.receipt:
+        try:
+            receipt = contract_acceptance_receipt(
+                pack,
+                args.kind,
+                required_fields=tuple(args.field) if args.field else None,
+                required_theorem_ids=(
+                    tuple(args.require_theorem) if args.require_theorem else None
+                ),
+                required_recommendation_ids=(
+                    tuple(args.require_recommendation)
+                    if args.require_recommendation
+                    else None
+                ),
+                required_recommendation_evidence_fields=(
+                    recommendation_evidence_requirements or None
+                ),
+                required_recommendation_theorem_ids=(
+                    recommendation_theorem_requirements or None
+                ),
+                required_recommendation_action_parameters=(
+                    recommendation_action_parameter_requirements or None
+                ),
+                required_recommendation_action_parameter_paths=(
+                    recommendation_action_parameter_path_requirements or None
+                ),
+                include_field_metadata=args.include_field_metadata,
+            )
+        except (ContractAcceptanceError, ContractConsumerError) as exc:
+            print(f"contract receipt failed: {exc}", file=sys.stderr)
+            return 4
+        if args.format == "json":
+            print(json.dumps(receipt, indent=2, sort_keys=True))
+        else:
+            _print_receipt_text(receipt)
         return 0
 
     if args.format == "json":

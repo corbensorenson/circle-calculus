@@ -118,7 +118,7 @@ This is a 160k one-channel standard-RoPE bracket. It is not a full all-channel b
 
 | Name | Bank shape | Requested context | Requested margin | Certified context | Certified margin | Status | Theorem ids |
 | --- | --- | ---: | ---: | ---: | ---: | --- | --- |
-| standard_rope_channel0_d19_bank_bridge_request | standard_channel0_first | 196608 | 1/328459 | 196608 | 1/328459 | PASS | AIRA-T0171, AIRA-T0172 |
+| standard_rope_channel0_d19_bank_bridge_request | standard_channel0_first | 196608 | 1/328459 | 196608 | 1/328459 | PASS | AIRA-T0171, AIRA-T0172, AIRA-T0234 |
 
 This is a conditional one-separating-channel bank certificate based on standard channel 0. It is not a full all-channel standard-RoPE margin theorem and not a model-quality claim.
 
@@ -132,9 +132,9 @@ This is a one-channel standard-RoPE context-range bracket over 103993 < context 
 
 ## Standard RoPE D19 Range Request Classifier
 
-| Name | Requested context | Requested margin | Status | Theorem-backed | Proved applies | Impossible applies | Open gap | Exhaustive | Thresholds ordered | Branches disjoint | Theorem ids |
-| --- | ---: | ---: | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| standard_rope_channel0_d19_range_request_margin_bracket | 131072 | 1/328458 | impossible | True | False | True | False | True | True | True | AIRA-T0216, AIRA-T0217, AIRA-T0218, AIRA-T0219, AIRA-T0220, AIRA-T0221 |
+| Name | Requested context | Requested margin | Status | Theorem-backed | Proved applies | Impossible applies | Open gap | Exhaustive | Semantic trichotomy | Thresholds ordered | Branches disjoint | Theorem ids |
+| --- | ---: | ---: | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| standard_rope_channel0_d19_range_request_margin_bracket | 131072 | 1/328458 | impossible | True | False | True | False | True | True | True | True | AIRA-T0216, AIRA-T0217, AIRA-T0218, AIRA-T0219, AIRA-T0220, AIRA-T0221, AIRA-T0233, AIRA-T0232 |
 
 This is a one-channel standard-RoPE request classifier for the D19 range 103993 < context <= 196608. It is not a full all-channel bank theorem. Lean proves the proved and impossible threshold branches are disjoint, and the classifier deliberately reports undecided for margins strictly between 1/328459 and 1/328458.
 

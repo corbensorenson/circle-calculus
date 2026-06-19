@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import shlex
 import subprocess
 import sys
 from dataclasses import dataclass
@@ -17,7 +18,11 @@ from typing import Iterable
 
 
 ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
 PYTHON = sys.executable
+
+from scripts.check_circle_ai_contract_docs import STRICT_RECEIPT_TOKENS_BY_KIND
 
 
 @dataclass(frozen=True)
@@ -49,6 +54,24 @@ def run_git(args: list[str]) -> list[str]:
     if result.returncode != 0:
         return []
     return [line.strip() for line in result.stdout.splitlines() if line.strip()]
+
+
+def strict_receipt_kinds_from_checks(checks: Iterable[Check]) -> tuple[str, ...]:
+    kinds: set[str] = set()
+    for check in checks:
+        command = check.command
+        if command in {
+            ("make", "check"),
+            ("make", "sourcecheck"),
+            ("make", "circle-ai-contracts-ready"),
+        }:
+            kinds.update(STRICT_RECEIPT_TOKENS_BY_KIND)
+        if "--receipt" not in command or "--kind" not in command:
+            continue
+        kind_index = command.index("--kind") + 1
+        if kind_index < len(command):
+            kinds.add(command[kind_index])
+    return tuple(kind for kind in ALL_AI_CONTRACT_KINDS if kind in kinds)
 
 
 def detect_base() -> str | None:
@@ -121,18 +144,55 @@ def add_circle_ai_contract_checks(checks: list[Check], seen: set[tuple[str, ...]
     add(checks, seen, "Circle AI contract readiness", ("make", "circle-ai-contracts-ready"), reason)
     add(checks, seen, "Circle AI contract pack tests", pytest("tests/test_circle_ai_contract_pack.py"), reason)
     add(checks, seen, "Circle AI consumer tests", pytest("tests/test_circle_ai_contract_consumer.py"), reason)
+    add(
+        checks,
+        seen,
+        "Circle AI acceptance policy tests",
+        pytest("tests/test_circle_ai_contract_acceptance_policy.py"),
+        reason,
+    )
+    add(
+        checks,
+        seen,
+        "Circle AI example consumer tests",
+        pytest("tests/test_example_consume_circle_ai_contract_pack.py"),
+        reason,
+    )
+    add(
+        checks,
+        seen,
+        "Circle AI standalone downstream CI tests",
+        pytest("tests/test_downstream_ci_accept_circle_ai_contracts.py"),
+        reason,
+    )
 
 
 AI_CONTRACT_DIGEST_FIELDS = {
     "rope_position_distinguishability": (
         "d19_proved_request_status",
         "d19_impossible_request_status",
+        "d19_undecided_request_status",
+        "d19_proved_first_channel_bank_transfer",
+        "d19_proved_first_channel_bank_shape",
+        "d19_proved_first_channel_bank_tolerance_rule",
     ),
     "kv_cache_ring_buffer": (
         "stale_probe_first_stale_token",
         "stale_probe_stale_requested_count",
+        "sink_tokens_retained_by_policy",
+        "sink_window_exact_policy",
+        "sink_window_tokens_distinct",
+        "sink_prefix_disjoint_from_live_window",
+        "sink_tokens_outside_ordinary_rolling_window",
     ),
-    "sparse_attention_coverage": ("first_uncovered_lag",),
+    "sparse_attention_coverage": (
+        "first_uncovered_lag",
+        "first_uncovered_interval_start",
+        "complete_repair_window",
+        "complete_repair_window_covers_context",
+        "complete_repair_window_minimal_for_declared_stride_family",
+        "complete_repair_window_minimal_witness_lag",
+    ),
     "recurrence_schedule": (
         "scheduled_work_saving",
         "post_period_multi_extension_scheduled_work_saving",
@@ -183,6 +243,13 @@ def add_circle_ai_contract_core_checks(
     add(checks, seen, "Circle AI contract docs", py("scripts/check_circle_ai_contract_docs.py"), reason)
 
 
+def strict_receipt_args(kind: str) -> tuple[str, ...]:
+    args: list[str] = []
+    for token in STRICT_RECEIPT_TOKENS_BY_KIND.get(kind, ()):
+        args.extend(shlex.split(token))
+    return tuple(args)
+
+
 def add_circle_ai_contract_kind_checks(
     checks: list[Check],
     seen: set[tuple[str, ...]],
@@ -210,6 +277,23 @@ def add_circle_ai_contract_kind_checks(
             py("scripts/circle_ai_contract_ready.py", *digest_args),
             reason,
         )
+    receipt_args = strict_receipt_args(kind)
+    if receipt_args:
+        add(
+            checks,
+            seen,
+            f"Circle AI strict receipt: {kind}",
+            py(
+                "scripts/circle_ai_contract_ready.py",
+                "--kind",
+                kind,
+                "--receipt",
+                "--format",
+                "json",
+                *receipt_args,
+            ),
+            reason,
+        )
 
 
 AI_CONTRACT_SITE_PAGE_KINDS = {
@@ -219,6 +303,12 @@ AI_CONTRACT_SITE_PAGE_KINDS = {
     "site/chapters/applications/kv_cache_ring_buffer_audit.qmd": "kv_cache_ring_buffer",
     "site/chapters/applications/sparse_attention_contract.qmd": "sparse_attention_coverage",
     "site/chapters/applications/sparse_attention_audit.qmd": "sparse_attention_coverage",
+    "site/chapters/applications/strided_candidate_fanout.qmd": "strided_candidate_fanout",
+    "site/chapters/applications/cyclic_memory_residue_winding.qmd": "cyclic_memory_residue_winding",
+    "site/chapters/applications/multicoil_phase_feature.qmd": "multicoil_phase_feature",
+    "site/chapters/applications/circulant_block_cyclic_mixer.qmd": (
+        "circulant_block_cyclic_mixer"
+    ),
     "site/chapters/applications/looped_recurrence_contracts.qmd": "recurrence_schedule",
     "site/chapters/applications/looped_recurrence_audit.qmd": "recurrence_schedule",
     "site/chapters/applications/generative.qmd": "seed_rule_exact_regeneration",
@@ -228,10 +318,13 @@ AI_CONTRACT_SITE_PAGE_KINDS = {
 AI_CONTRACT_SHARED_SITE_PAGES = {
     "site/chapters/applications/ai_contract_suite.qmd",
     "site/chapters/applications/ai_contract_pack_audit.qmd",
+    "site/chapters/applications/ai_contract_ladder.qmd",
+    "site/chapters/applications/ai_contract_ladder_audit.qmd",
 }
 
 AI_CONTRACT_DOC_KINDS = {
     "docs/ROPE_CERTIFIER_QUICKSTART.md": "rope_position_distinguishability",
+    "docs/ROPE_CERTIFIER_REVIEW_PACKET.md": "rope_position_distinguishability",
     "docs/KV_CACHE_CERTIFIER_QUICKSTART.md": "kv_cache_ring_buffer",
     "docs/SPARSE_ATTENTION_CERTIFIER_QUICKSTART.md": "sparse_attention_coverage",
     "docs/RECURRENCE_SCHEDULE_CERTIFIER_QUICKSTART.md": "recurrence_schedule",
@@ -260,6 +353,10 @@ AI_CONTRACT_CERTIFIER_PATH_KINDS = {
 
 AI_CONTRACT_LEAN_PATH_KINDS = {
     "Circle/Applications/RoPECertifier.lean": "rope_position_distinguishability",
+    "Circle/Applications/RoPEFrontier.lean": "rope_position_distinguishability",
+    "Circle/Applications/RoPEGeneratedCertificates.lean": (
+        "rope_position_distinguishability"
+    ),
     "Circle/Applications/CircleTransformer.lean": "sparse_attention_coverage",
     "Circle/Generative/SeedRule.lean": "seed_rule_exact_regeneration",
 }
@@ -272,13 +369,26 @@ AI_CONTRACT_BROAD_SURFACE_PATHS = {
     "circle_math/applications/theseus_hive_contracts.py",
     "scripts/check_circle_ai_contract_docs.py",
     "scripts/check_circle_ai_contract_pack.py",
+    "scripts/check_circle_ai_contract_acceptance_policy.py",
+    "scripts/check_downstream_ci_acceptance_example.py",
     "scripts/circle_ai_contract_ready.py",
     "scripts/example_consume_circle_ai_contract_pack.py",
     "scripts/export_circle_ai_contracts.py",
     "scripts/targeted_check.py",
     "docs/AI_CONTRACT_SUITE.md",
     "docs/CIRCLE_AI_CONTRACTS_INTEGRATION.md",
+    "examples/circle_ai_contract_acceptance_policy.json",
+    "examples/downstream_ci_accept_circle_ai_contracts.py",
 }
+
+AI_CONTRACT_GENERATED_PACK_ARTIFACTS = (
+    "circle_ai_contract_pack.json",
+    "circle_ai_contract_pack.schema.json",
+    "circle_ai_contract_acceptance_policy.schema.json",
+    "circle_ai_contract_acceptance_policy_report.schema.json",
+    "circle_ai_contract_acceptance_receipt.schema.json",
+    "circle_ai_downstream_rejection_report.schema.json",
+)
 
 
 def ai_contract_impact(files: Iterable[str], *, full: bool = False) -> tuple[str, tuple[str, ...]]:
@@ -372,9 +482,19 @@ def plan_for_files(files: Iterable[str], *, full: bool = False) -> list[Check]:
     for path in file_list:
         suffix = Path(path).suffix
 
+        if path == "examples/circle_ai_contract_acceptance_policy.json":
+            add_circle_ai_contract_checks(
+                checks,
+                seen,
+                f"{path} pins the downstream acceptance-policy gate",
+            )
+
         if path == "Makefile":
             add(checks, seen, "Makefile targeted-check smoke", ("make", "targeted-check-list", "TARGETED_FILES=scripts/targeted_check.py"), f"{path} changed")
             add_circle_ai_contract_checks(checks, seen, f"{path} changed AI contract validation targets")
+
+        if path in AI_CONTRACT_BROAD_SURFACE_PATHS:
+            add_circle_ai_contract_checks(checks, seen, f"{path} changed public AI contract validation surface")
 
         if path == "pyproject.toml" or path.startswith(".github/workflows/"):
             add(checks, seen, "full source checks", ("make", "sourcecheck"), f"{path} changes validation plumbing")
@@ -396,6 +516,19 @@ def plan_for_files(files: Iterable[str], *, full: bool = False) -> list[Check]:
             if path.startswith("Circle/Applications/"):
                 add(checks, seen, "application guardrails", py("scripts/check_application_guardrails.py"), f"{path} is an application Lean file")
                 add(checks, seen, "proof-depth audit", py("scripts/check_proof_depth_audit.py", "--fail-on-review-required"), f"{path} is an application Lean file")
+                contract_kind = AI_CONTRACT_LEAN_PATH_KINDS.get(path)
+                if contract_kind is None:
+                    if "RoPE" in path:
+                        contract_kind = "rope_position_distinguishability"
+                    elif "Transformer" in path:
+                        contract_kind = "sparse_attention_coverage"
+                if contract_kind is not None:
+                    add_circle_ai_contract_kind_checks(
+                        checks,
+                        seen,
+                        f"{path} changes a contract-backed application proof",
+                        contract_kind,
+                    )
 
         if path.startswith("sidecars/") and suffix == ".lean":
             add(checks, seen, "Lean sidecars", py("scripts/check_lean_sidecars.py"), f"{path} changed")
@@ -544,9 +677,7 @@ def plan_for_files(files: Iterable[str], *, full: bool = False) -> list[Check]:
 
         if path.startswith("site/data/generated/") and suffix == ".json":
             add_site_checks(checks, seen, f"{path} changed")
-            if path.endswith("circle_ai_contract_pack.json") or path.endswith(
-                "circle_ai_contract_pack.schema.json"
-            ):
+            if path.endswith(AI_CONTRACT_GENERATED_PACK_ARTIFACTS):
                 add_circle_ai_contract_checks(checks, seen, f"{path} is the public contract pack artifact")
             if path.endswith("theseus_hive_ai_contracts.json"):
                 add_theseus_contract_checks(checks, seen, f"{path} is the compatibility contract artifact")
@@ -561,6 +692,7 @@ def plan_for_files(files: Iterable[str], *, full: bool = False) -> list[Check]:
 
 def print_plan(checks: list[Check], files: list[str], *, full: bool = False) -> None:
     ai_scope, ai_kinds = ai_contract_impact(files, full=full)
+    strict_receipt_kinds = strict_receipt_kinds_from_checks(checks)
     print("targeted-check changed files:")
     if files:
         for path in files:
@@ -578,6 +710,10 @@ def print_plan(checks: list[Check], files: list[str], *, full: bool = False) -> 
         "targeted-check impacted AI contract kinds: "
         + (", ".join(ai_kinds) if ai_kinds else "<none>")
     )
+    print(
+        "targeted-check strict receipt kinds: "
+        + (", ".join(strict_receipt_kinds) if strict_receipt_kinds else "<none>")
+    )
     print("targeted-check plan:")
     for index, check in enumerate(checks, start=1):
         print(f"  {index}. {check.label}: {' '.join(check.command)}")
@@ -591,6 +727,7 @@ def plan_payload(
     full: bool = False,
 ) -> dict[str, object]:
     ai_scope, ai_kinds = ai_contract_impact(files, full=full)
+    strict_receipt_kinds = strict_receipt_kinds_from_checks(checks)
     return {
         "changed_files": files,
         "changed_file_count": len(files),
@@ -600,6 +737,7 @@ def plan_payload(
         "release_gate_commands": [] if full else ["make check", "make living-book-check"],
         "ai_contract_validation_scope": ai_scope,
         "impacted_ai_contract_kinds": list(ai_kinds),
+        "strict_receipt_kinds": list(strict_receipt_kinds),
         "checks": [
             {
                 "label": check.label,

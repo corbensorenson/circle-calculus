@@ -1498,6 +1498,7 @@ class StrideFamilyCoverageCertificate:
         "AIT-T0161",
         "AIT-T0162",
         "AIT-T0171",
+        "AIT-T0172",
         "AIT-T0164",
         "AIT-T0165",
     )

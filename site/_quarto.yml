@@ -156,6 +156,14 @@ website:
             text: Sparse Attention Coverage
           - href: chapters/applications/sparse_attention_audit.qmd
             text: Sparse Attention Proof Audit
+          - href: chapters/applications/strided_candidate_fanout.qmd
+            text: Strided Candidate Fanout
+          - href: chapters/applications/cyclic_memory_residue_winding.qmd
+            text: Cyclic Memory Residue Winding
+          - href: chapters/applications/multicoil_phase_feature.qmd
+            text: Multicoil Phase Features
+          - href: chapters/applications/circulant_block_cyclic_mixer.qmd
+            text: Circulant And Block-Cyclic Mixers
           - href: chapters/applications/looped_recurrence_contracts.qmd
             text: Looped Recurrence Contracts
           - href: chapters/applications/looped_recurrence_audit.qmd

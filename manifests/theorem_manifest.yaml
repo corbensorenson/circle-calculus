@@ -111,6 +111,86 @@ theorems:
       no_sorry_required: true
       python_property_tests: ["for prime p and 1<=k<p: len(orbit(p,0,k))==p"]
 
+  - id: CC-T0073
+    name: Primitive horizon containment iff divisibility
+    status: proved
+    lean_name: Circle.primitiveHorizonContained_iff_dvd
+    informal_statement: "The primitive d-horizon is contained in the n-horizon exactly when d divides n."
+    formal_statement: "forall (n d : Nat), Circle.primitiveHorizonContained n d iff d divides n"
+    dictionary_dependencies: ["CC-0201", "CC-0205"]
+    paper_refs: ["docs/PRIME_ENGINE.md"]
+    python_tests: ["cargo test -p circle-prime controls/coil containment tests"]
+    proof_notes: "Lean theorem is compiled in Circle/Core/Horizon.lean by unfolding primitive horizon containment to divisibility."
+    blocker: ""
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["contains_horizon(n,d)==(n%d==0)"]
+
+  - id: CC-T0074
+    name: Prime horizon iff no smaller contained horizon
+    status: proved
+    lean_name: Circle.primeHorizon_iff_no_smaller_contained
+    informal_statement: "An n-horizon is prime exactly when n is at least two and it contains no nontrivial smaller primitive horizon."
+    formal_statement: "forall {n : Nat}, Circle.primeHorizon n iff 2 <= n and forall d, 2 <= d -> d < n -> not (Circle.primitiveHorizonContained n d)"
+    dictionary_dependencies: ["CC-0201", "CC-0206"]
+    paper_refs: ["docs/PRIME_ENGINE.md"]
+    python_tests: ["tests/test_prime_coils.py::test_prime_full_coils", "cargo test -p circle-prime"]
+    proof_notes: "Lean theorem is compiled in Circle/Core/Horizon.lean from Nat.prime_def_lt'."
+    blocker: ""
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["prime(n) iff no d with 2<=d<n divides n"]
+
+  - id: CC-T0075
+    name: Prime horizon iff no square-root contained horizon
+    status: proved
+    lean_name: Circle.primeHorizon_iff_no_sqrt_contained
+    informal_statement: "An n-horizon is prime exactly when n is at least two and no primitive horizon d up to sqrt(n) is contained in it."
+    formal_statement: "forall {n : Nat}, Circle.primeHorizon n iff 2 <= n and forall d, 2 <= d -> d <= Nat.sqrt n -> not (Circle.primitiveHorizonContained n d)"
+    dictionary_dependencies: ["CC-0201", "CC-0206"]
+    paper_refs: ["docs/PRIME_ENGINE.md"]
+    python_tests: ["tests/test_rust_prime_cli.py::test_rust_prime_cli_classifies_known_values", "cargo test -p circle-prime"]
+    proof_notes: "Lean theorem is compiled in Circle/Core/Horizon.lean from Nat.prime_def_le_sqrt. This is the proof-backed square-root cutoff used by the Rust range and scalar paths."
+    blocker: ""
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["prime(n) iff no d with 2<=d<=isqrt(n) divides n"]
+
+  - id: CC-T0076
+    name: Prime horizon from no square-root contained horizon
+    status: proved
+    lean_name: Circle.primeHorizon_of_no_sqrt_contained
+    informal_statement: "If n is at least two and no primitive horizon d up to sqrt(n) is contained in it, then the n-horizon is prime."
+    formal_statement: "forall {n : Nat}, 2 <= n -> (forall d, 2 <= d -> d <= Nat.sqrt n -> not (Circle.primitiveHorizonContained n d)) -> Circle.primeHorizon n"
+    dictionary_dependencies: ["CC-0201", "CC-0206"]
+    paper_refs: ["docs/PRIME_ENGINE.md"]
+    python_tests: ["tests/test_rust_prime_cli.py::test_rust_prime_cli_classifies_known_values", "cargo test -p circle-prime"]
+    proof_notes: "Lean theorem is compiled in Circle/Core/Horizon.lean as the forward operational direction of CC-T0075. This is the theorem-shaped contract for Rust's sqrt-bounded divisor search accepting a candidate."
+    blocker: ""
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["if no d with 2<=d<=isqrt(n) divides n, prime(n)"]
+
+  - id: CC-T0077
+    name: Non-prime horizon has square-root contained horizon
+    status: proved
+    lean_name: Circle.not_primeHorizon_has_sqrt_contained
+    informal_statement: "If n is at least two and its horizon is not prime, then some primitive horizon d up to sqrt(n) is contained in it."
+    formal_statement: "forall {n : Nat}, 2 <= n -> not (Circle.primeHorizon n) -> exists d, 2 <= d and d <= Nat.sqrt n and Circle.primitiveHorizonContained n d"
+    dictionary_dependencies: ["CC-0201", "CC-0206"]
+    paper_refs: ["docs/PRIME_ENGINE.md"]
+    python_tests: ["tests/test_rust_prime_cli.py::test_rust_prime_cli_classifies_known_values", "cargo test -p circle-prime"]
+    proof_notes: "Lean theorem is compiled in Circle/Core/Horizon.lean as the contrapositive operational direction of CC-T0075. This is the theorem-shaped contract for Rust's sqrt-bounded divisor search finding a witness for every composite candidate."
+    blocker: ""
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["if n is composite, some d with 2<=d<=isqrt(n) divides n"]
+
   - id: CC-T0008
     name: Scaling invertible iff coprime
     status: proved

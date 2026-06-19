@@ -39,7 +39,7 @@ def test_strided_candidate_fanout_certifier_cli_text_and_json(tmp_path: Path) ->
         "candidate_budget=12 unique_candidate_count=12 "
         "effective_candidate_budget=12 duplicate_count=0 path_unique=True "
         "candidate_budget_accounting=True candidate_budget_shortfall=0 "
-        "effective_budget_reaches_predicted_reach=True"
+        "effective_budget_reaches_predicted_reach=True budget_theorems=AIT-T0173"
     ) in result.stdout
     assert (
         "consumer_check=ready=True required_fields_present=True "
@@ -73,7 +73,9 @@ def test_strided_candidate_fanout_certifier_cli_text_and_json(tmp_path: Path) ->
     assert fields["effective_budget_matches_unique_candidates"] is True
     assert fields["candidate_budget_shortfall"] == 0
     assert fields["effective_budget_reaches_predicted_reach"] is True
-    assert {"AIT-T0001", "AIT-T0002", "AIT-T0003"} <= set(payload["theorem_ids"])
+    assert {"AIT-T0001", "AIT-T0002", "AIT-T0003", "AIT-T0173"} <= set(
+        payload["theorem_ids"]
+    )
 
 
 def test_strided_candidate_fanout_certifier_cli_json_custom_fixture() -> None:

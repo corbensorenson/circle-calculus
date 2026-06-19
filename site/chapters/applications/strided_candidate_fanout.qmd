@@ -1,0 +1,95 @@
+---
+title: "Strided Candidate Fanout"
+---
+
+Sparse attention often starts with a simple engineering question: if a query
+walks by a fixed stride through a finite context, how many distinct candidates
+does it really see?
+
+::: {.lesson-goal}
+
+## Goal
+
+Learn to read a strided candidate path as a finite coil, then separate the
+useful theorem-backed facts from model-quality claims.
+
+:::
+
+## Concept
+
+The circular object is the context address space `C_n`. A candidate path starts
+at one residue and repeatedly subtracts or adds a stride. If the stride is
+coprime to `n`, the path can traverse the whole circle before repeating. If it
+is not coprime, the path stays in one orbit and misses the others.
+
+The fanout certificate packages that familiar fact for a downstream planner:
+
+```text
+context length -> stride -> candidate budget
+  -> unique candidate count
+  -> duplicate-collapsed effective budget
+  -> full-coverage flag
+```
+
+## Example
+
+The public fixture uses `context_length = 12`, `stride = 5`, and a budget of
+`12`. Since `gcd(12, 5) = 1`, the orbit visits every address exactly once:
+
+```text
+0, 5, 10, 3, 8, 1, 6, 11, 4, 9, 2, 7
+```
+
+The reported effective budget is still `12`, because no duplicate candidate
+slots were spent.
+
+```bash
+python scripts/strided_candidate_fanout_certify.py --format json
+python scripts/circle_ai_contract_ready.py --kind strided_candidate_fanout --digest --field full_coverage --field effective_candidate_budget --field duplicate_count --include-recommendations
+```
+
+## Theorem Trail
+
+<div class="theorem-box" data-theorem-id="AIT-T0001"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0002"></div>
+<div class="theorem-box" data-theorem-id="AIT-T0003"></div>
+
+## Certificate Reading
+
+The most useful fields are:
+
+- `gcd`: the obstruction to full traversal.
+- `predicted_reach`: the theorem-backed orbit size.
+- `full_coverage`: whether the fixture reaches every address.
+- `effective_candidate_budget`: the duplicate-collapsed candidate count.
+- `candidate_budget_shortfall`: how many additional unique candidates would be needed to match the predicted reach.
+
+The planner recommendations are intentionally small:
+
+- `FANOUT-USE-FULL-COVERAGE-STRIDE-CYCLE` says the default coprime stride can be used as a full-cycle fixture.
+- `FANOUT-AUDIT-DUPLICATE-COLLAPSED-BUDGET` says downstream code should account for duplicate candidate slots rather than trusting a raw budget.
+
+::: {.warning-box}
+This contract proves finite orbit and budget-accounting facts for a declared
+candidate path. It does not prove attention quality, retrieval quality, speed,
+or that a strided sparse pattern is better than dense attention. Python fixtures
+are executable references, not proof artifacts and not performance claims.
+:::
+
+## Dictionary
+
+<div class="dictionary-box" data-dictionary-id="COMMON-0028"></div>
+<div class="dictionary-box" data-dictionary-id="COMMON-0079"></div>
+
+## Source Trail
+
+<p data-paper-ref="papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md">Attention and memory paper: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md">Coil Attention And Memory</a></p>
+
+<p>Quickstart: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/docs/STRIDED_CANDIDATE_FANOUT_CERTIFIER_QUICKSTART.md">Strided Candidate Fanout Certifier</a></p>
+
+<div class="book-navigation">
+<a href="sparse_attention_contract.qmd">Previous: Sparse Attention Coverage</a>
+<a href="cyclic_memory_residue_winding.qmd">Next: Cyclic Memory Residue Winding</a>
+</div>
+
+<script type="module" src="../../widgets/shared/widget_base.js"></script>

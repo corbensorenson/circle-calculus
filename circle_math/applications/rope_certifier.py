@@ -197,6 +197,9 @@ ROPE_REAL_PHASE_PRECURSOR_THEOREMS: tuple[str, ...] = (
     "AIRA-T0219",
     "AIRA-T0220",
     "AIRA-T0221",
+    "AIRA-T0233",
+    "AIRA-T0234",
+    "AIRA-T0232",
     "AIRA-T0222",
     "AIRA-T0223",
     "AIRA-T0224",
@@ -253,6 +256,8 @@ ROPE_REAL_PHASE_PRECURSOR_LEAN_DECLARATIONS: tuple[str, ...] = (
     "Circle.Applications.ropeStandardChannel0D19_request_margin_branches_disjoint",
     "Circle.Applications.ropeStandardChannel0D19_request_margin_open_gap_iff_unclassified",
     "Circle.Applications.ropeStandardChannel0D19_request_margin_trichotomy",
+    "Circle.Applications.ropeStandardChannel0D19_contextRange_request_margin_semantic_trichotomy",
+    "Circle.Applications.ropeStandardChannel0D19_proved_request_firstChannel_bank_noNearTurn",
     "Circle.Applications.ropeTurnRatioOneOverNat_gapOneNearestIntegerMargin",
     "Circle.Applications.ropeTurnRatioOneOverNat_exactWeakestGapMargin_report",
     "Circle.Applications.ropeTurnRatioGapNearestIntegerMargin_le_error",
@@ -658,11 +663,13 @@ ROPE_STANDARD_CHANNEL0_D18_BANK_BRIDGE_LEAN_DECLARATIONS: tuple[str, ...] = (
 ROPE_STANDARD_CHANNEL0_D19_BANK_BRIDGE_THEOREMS: tuple[str, ...] = (
     "AIRA-T0171",
     "AIRA-T0172",
+    "AIRA-T0234",
 )
 
 ROPE_STANDARD_CHANNEL0_D19_BANK_BRIDGE_LEAN_DECLARATIONS: tuple[str, ...] = (
     "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D19Seed",
     "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D19Seed_cons",
+    "Circle.Applications.ropeStandardChannel0D19_proved_request_firstChannel_bank_noNearTurn",
 )
 
 ROPE_CERTIFIER_CLAIM_BOUNDARY = (
@@ -1199,6 +1206,10 @@ class StandardChannel0D19RangeRequestBracketCertificate:
     context_range_max_inclusive: int
     proved_margin: str
     impossible_margin_floor: str
+    undecided_margin_interval_lower_exclusive: str
+    undecided_margin_interval_upper_exclusive: str
+    undecided_margin_interval_width: str
+    requested_margin_relation: str
     request_status: str
     theorem_backed_classification: bool
     proved_margin_applies: bool
@@ -1207,6 +1218,7 @@ class StandardChannel0D19RangeRequestBracketCertificate:
     proved_impossible_branches_disjoint: bool
     undecided_margin_open_gap: bool
     margin_status_exhaustive: bool
+    in_range_semantic_trichotomy: bool
     failure_reason: str | None
     theorem_ids: tuple[str, ...]
     lean_declarations: tuple[str, ...]
@@ -3491,6 +3503,7 @@ def certify_standard_channel0_d19_range_request_margin_bracket(
     context_max_inclusive = 196608
     proved_margin = Fraction(1, 328459)
     impossible_margin_floor = Fraction(1, 328458)
+    undecided_margin_interval_width = impossible_margin_floor - proved_margin
     in_context_range = (
         context_min_exclusive < requested_context <= context_max_inclusive
     )
@@ -3512,12 +3525,24 @@ def certify_standard_channel0_d19_range_request_margin_bracket(
         or impossible_margin_applies
         or undecided_margin_open_gap
     )
+    in_range_semantic_trichotomy = (
+        in_context_range
+        and margin_thresholds_ordered
+        and proved_impossible_branches_disjoint
+        and margin_status_exhaustive
+        and (
+            proved_margin_applies
+            or impossible_margin_applies
+            or undecided_margin_open_gap
+        )
+    )
     theorem_backed_classification = (
         proved_margin_applies or impossible_margin_applies
     )
 
     if proved_margin_applies:
         request_status = "proved"
+        requested_margin_relation = "at_or_below_proved_threshold"
         failure_reason = None
         explanation = (
             "Lean proves the requested one-channel standard RoPE margin: the "
@@ -3526,6 +3551,7 @@ def certify_standard_channel0_d19_range_request_margin_bracket(
         )
     elif impossible_margin_applies:
         request_status = "impossible"
+        requested_margin_relation = "at_or_above_impossible_floor"
         failure_reason = None
         explanation = (
             "Lean rejects the requested one-channel standard RoPE margin: the "
@@ -3534,6 +3560,7 @@ def certify_standard_channel0_d19_range_request_margin_bracket(
         )
     elif not in_context_range:
         request_status = "outside_range"
+        requested_margin_relation = "context_outside_range"
         failure_reason = "requested_context_outside_d19_obstruction_range"
         explanation = (
             "The D19 request bracket applies only when "
@@ -3542,6 +3569,7 @@ def certify_standard_channel0_d19_range_request_margin_bracket(
         )
     else:
         request_status = "undecided_margin_gap"
+        requested_margin_relation = "strictly_between_thresholds"
         failure_reason = "requested_margin_between_proved_and_impossible_thresholds"
         explanation = (
             "The requested context lies in the D19 obstruction range, but the "
@@ -3561,6 +3589,14 @@ def certify_standard_channel0_d19_range_request_margin_bracket(
         context_range_max_inclusive=context_max_inclusive,
         proved_margin=format_fraction(proved_margin),
         impossible_margin_floor=format_fraction(impossible_margin_floor),
+        undecided_margin_interval_lower_exclusive=format_fraction(proved_margin),
+        undecided_margin_interval_upper_exclusive=format_fraction(
+            impossible_margin_floor
+        ),
+        undecided_margin_interval_width=format_fraction(
+            undecided_margin_interval_width
+        ),
+        requested_margin_relation=requested_margin_relation,
         request_status=request_status,
         theorem_backed_classification=theorem_backed_classification,
         proved_margin_applies=proved_margin_applies,
@@ -3569,6 +3605,7 @@ def certify_standard_channel0_d19_range_request_margin_bracket(
         proved_impossible_branches_disjoint=proved_impossible_branches_disjoint,
         undecided_margin_open_gap=undecided_margin_open_gap,
         margin_status_exhaustive=margin_status_exhaustive,
+        in_range_semantic_trichotomy=in_range_semantic_trichotomy,
         failure_reason=failure_reason,
         theorem_ids=(
             "AIRA-T0216",
@@ -3577,6 +3614,8 @@ def certify_standard_channel0_d19_range_request_margin_bracket(
             "AIRA-T0219",
             "AIRA-T0220",
             "AIRA-T0221",
+            "AIRA-T0233",
+            "AIRA-T0232",
         ),
         lean_declarations=(
             "Circle.Applications.ropeTurnRatioFiniteMargin_contextRange_request_bracket_of_obstruction",
@@ -3585,6 +3624,8 @@ def certify_standard_channel0_d19_range_request_margin_bracket(
             "Circle.Applications.ropeStandardChannel0D19_request_margin_branches_disjoint",
             "Circle.Applications.ropeStandardChannel0D19_request_margin_open_gap_iff_unclassified",
             "Circle.Applications.ropeStandardChannel0D19_request_margin_trichotomy",
+            "Circle.Applications.ropeStandardChannel0D19_contextRange_request_margin_semantic_trichotomy",
+            "Circle.Applications.ropeStandardChannel0D19_request_margin_open_gap_width",
         ),
         explanation=explanation,
         claim_boundary=(
@@ -4025,7 +4066,7 @@ def certificate_summary_lines(certificate: RoPEPositionCertificate) -> tuple[str
         "iff, negative obstruction iff, scaled no-near-turn iff, certificate-object "
         "no-near-turn iff, finite-certificate bank bridge, context-range obstruction "
         "bridge, request-level D19 classifier bridge, classifier threshold "
-        "ordering, branch-disjointness, open-gap, and exhaustive-status guards, "
+        "ordering, branch-disjointness, open-gap, exhaustive-status, and exact-width guards, "
         "plus band-endpoint and band-list compression bridge precursors only; "
         "not a Diophantine proof)",
         f"theorem_ids={','.join(certificate.theorem_ids)}",

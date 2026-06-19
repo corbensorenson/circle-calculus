@@ -113,7 +113,8 @@ def summary_lines(payload: dict[str, Any]) -> list[str]:
             f"candidate_budget_accounting={fields['candidate_budget_accounting']} "
             f"candidate_budget_shortfall={fields['candidate_budget_shortfall']} "
             "effective_budget_reaches_predicted_reach="
-            f"{fields['effective_budget_reaches_predicted_reach']}"
+            f"{fields['effective_budget_reaches_predicted_reach']} "
+            "budget_theorems=AIT-T0173"
         ),
         (
             "consumer_check="
