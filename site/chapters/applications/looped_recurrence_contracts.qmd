@@ -30,6 +30,16 @@ Learn how Circle Calculus represents looped transformer work as finite recurrenc
 The widgets and Python fixtures on this page are executable references, not proofs. The theorem cards report finite schedule, index, closure, and route facts only. They do not certify semantic convergence, adaptive-exit quality, recursive reasoning, throughput, memory savings, or language-model performance.
 :::
 
+## What This Proves, And What It Does Not
+
+| Layer | Status | Reader Takeaway |
+| --- | --- | --- |
+| Loop phase and recurrence budget | Lean-proved for the finite schedule fixtures | Required loop counts, whole-period shifts, and capped budgets are exact finite index facts. |
+| Exit and active-token schedules | Lean-proved for modeled traces | Exit availability, no-exit controls, active-set counts, and work-accounting identities are theorem-linked schedule facts. |
+| Periodic index reuse | Lean-proved for the declared shift witness | A whole-period token shift preserves the reported schedule fields in the finite model. |
+| Planner recommendations | Theorem-backed finite records | The exported active-work and period-shift recommendations are reusable audit fixtures, not performance promises. |
+| Recursive-transformer capability | Not proved here | The contract does not prove better reasoning, convergence, adaptive-halting quality, speed, memory savings, or model quality. |
+
 ## Why This Belongs In Circle Math
 
 A looped model has a repeated action:
@@ -125,7 +135,16 @@ The same pack exposes a planner-facing whole-period shift witness: in the defaul
 
 The v0.2 work-budget extension sums those per-step active-token counts over a finite horizon. `AIM-T0130` proves that scheduled active-token work is bounded by the fixed-depth schedule that processes every token at every step. `AIM-T0131` proves the saved-work accounting identity. `AIM-T0144` proves that active token-work plus inactive token-work exactly recovers the full fixed-depth budget, and `AIM-T0145` proves that scheduled work saving is exactly total inactive token-work. `AIM-T0138` proves the planner-facing positive-saving iff: scheduled work saving is positive exactly when scheduled active-token work is strictly below full fixed-depth token-work. `AIM-T0139` proves the complementary zero-saving iff: scheduled work saving is zero exactly when scheduled active-token work matches the full fixed-depth budget. `AIM-T0132` through `AIM-T0135`, plus `AIM-T0146`, pin the public `loop_period=4`, `token_count=8`, `steps=4` fixture to `20` active token-steps, `32` fixed-depth token-steps, and `12` inactive/saved token-steps. `AIM-T0140` through `AIM-T0143`, plus `AIM-T0147`, pin the default exported recurrence contract fixture, `loop_period=5`, `token_count=8`, `steps=5`, to `21` active token-steps, `40` fixed-depth token-steps, and `19` inactive/saved token-steps with exact accounting. The public contract now exposes the stop schedule behind those totals: active-count trace `[8,6,4,2,1]`, inactive-count trace `[0,2,4,6,7]`, and a per-token `first_inactive_steps` table where each token stops at `active_budget + 1`. This is the scheduler-facing object a downstream project can consume before implementing recurrence reuse. `AIM-T0150` through `AIM-T0154` add the one-step post-period boundary: moving the default horizon from `5` to `6` adds no active-token work and raises scheduled-work saving from `19` to `27`. `AIM-T0155` through `AIM-T0159` generalize that boundary to any declared number of extra steps after the loop period: active work stays fixed and inactive/saved work increases by `extra_steps * token_count`; the default `horizon=8` fixture raises scheduled-work saving from `19` to `43`. These are planner fields, not runtime measurements.
 
-The generic AI contract pack now exposes those planner fields as two recommendation records. `RECURRENCE-USE-ACTIVE-TOKEN-WORK-SCHEDULE` packages the theorem-backed active-token work schedule, while `RECURRENCE-REUSE-WHOLE-PERIOD-SHIFT` packages the whole-period index-reuse witness. A downstream project can read them with `python scripts/circle_ai_contract_ready.py --kind recurrence_schedule --digest --field scheduled_work_saving --field post_period_multi_extension_scheduled_work_saving --include-recommendations`. The flagship acceptance policy pins both records, so consumers preserve the work-accounting fixture and the periodic index-reuse fixture together. They are finite schedule/index fixtures, not claims about runtime, memory savings, adaptive halting, or reasoning quality.
+The generic AI contract pack now exposes those planner fields as two recommendation records. `RECURRENCE-USE-ACTIVE-TOKEN-WORK-SCHEDULE` packages the theorem-backed active-token work schedule, while `RECURRENCE-REUSE-WHOLE-PERIOD-SHIFT` packages the whole-period index-reuse witness. A downstream project can read them with:
+
+```bash
+python scripts/circle_ai_contract_ready.py --kind recurrence_schedule --digest --field scheduled_work_saving --field post_period_multi_extension_scheduled_work_saving --include-recommendations
+```
+
+The flagship acceptance policy pins both records, so consumers preserve the work-accounting fixture and the periodic index-reuse fixture together. They are finite schedule/index fixtures, not claims about runtime, memory savings, adaptive halting, or reasoning quality.
+
+<details class="audit-detail">
+<summary>Strict recurrence downstream receipt command</summary>
 
 For CI-style downstream use, require the strict receipt:
 
@@ -167,6 +186,8 @@ python scripts/circle_ai_contract_ready.py \
   --require-recommendation-action-parameter-path RECURRENCE-REUSE-WHOLE-PERIOD-SHIFT=shifted_token \
   --require-recommendation-action-parameter-path RECURRENCE-REUSE-WHOLE-PERIOD-SHIFT=shift_amount
 ```
+
+</details>
 
 <div class="widget-panel" data-widget="token_level_recurrence" data-theorem-id="AIM-T0035" data-dictionary-ids="COMMON-0052 COMMON-0053 COMMON-0059 COMMON-0068 COMMON-0069"></div>
 
