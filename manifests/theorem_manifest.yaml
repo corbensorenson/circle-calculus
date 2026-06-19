@@ -191,6 +191,38 @@ theorems:
       no_sorry_required: true
       python_property_tests: ["if n is composite, some d with 2<=d<=isqrt(n) divides n"]
 
+  - id: CC-T0078
+    name: Prime horizons in range membership
+    status: proved
+    lean_name: Circle.mem_primeHorizonsInRange_iff
+    informal_statement: "A horizon belongs to the finite prime-horizon interval exactly when it lies in the half-open range and is a prime horizon."
+    formal_statement: "forall {low high n : Nat}, n in Circle.primeHorizonsInRange low high iff low <= n and n < high and Circle.primeHorizon n"
+    dictionary_dependencies: ["CC-0201", "CC-0206"]
+    paper_refs: ["docs/PRIME_ENGINE.md"]
+    python_tests: ["tests/test_rust_prime_cli.py::test_rust_prime_cli_counts_reference_range", "cargo test -p circle-prime"]
+    proof_notes: "Lean theorem is compiled in Circle/Core/Horizon.lean by unfolding the half-open Finset interval filter used as the Rust range-count specification."
+    blocker: ""
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["n is counted for [low, high) iff low <= n < high and n is prime"]
+
+  - id: CC-T0079
+    name: Prime horizon range count is filter cardinality
+    status: proved
+    lean_name: Circle.primeHorizonRangeCount_eq_filter_card
+    informal_statement: "The prime-horizon range count is the cardinality of the finite half-open interval filtered by prime horizons."
+    formal_statement: "forall (low high : Nat), Circle.primeHorizonRangeCount low high = card ((Finset.Ico low high).filter Circle.primeHorizon)"
+    dictionary_dependencies: ["CC-0201", "CC-0206"]
+    paper_refs: ["docs/PRIME_ENGINE.md"]
+    python_tests: ["tests/test_rust_prime_cli.py::test_rust_prime_cli_counts_reference_range", "cargo test -p circle-prime"]
+    proof_notes: "Lean theorem is compiled in Circle/Core/Horizon.lean as the finite-cardinality specification that every Rust count mode must implement."
+    blocker: ""
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["range count equals number of primes in the half-open interval"]
+
   - id: CC-T0008
     name: Scaling invertible iff coprime
     status: proved

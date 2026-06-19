@@ -196,7 +196,7 @@ True
 AIRA-T0063,AIRA-T0064,AIRA-T0065,...,AIRA-T0173
 ```
 
-Lean proves that channel 0 with standard turn ratio `1 / (2π)` has finite-context nearest-integer margin `1/328459` for gaps `1` through `196607`. The D19 192k seed uses the 20-decimal enclosure `10^20*gap/628318530717958647694 <= gap/(2π) <= 10^20*gap/628318530717958647692`, split across computed integer cells `0` through `31290`. Lean also proves the sharper 64k bracket at margin `1/104219`, while every advertised margin at or above `1/104218` is impossible there because of gap `710`. `AIRA-T0154` and `AIRA-T0155` add the adjacent obstruction for the lower-margin family: gap `103993` is already within `1/328458` of integer turn `16551`, so `1/328458` and larger margins are impossible once that gap is in scope. `AIRA-T0156` through `AIRA-T0161` are the generated D17 128k interval certificate, bank bridges, and bracket; `AIRA-T0162` through `AIRA-T0167` extend the same margin to the generated D18 160k seed; `AIRA-T0168` through `AIRA-T0173` extend it to the generated D19 192k seed; `AIRA-T0209` proves the generic context-range bridge from one certified horizon plus one obstruction gap; `AIRA-T0208` specializes that bridge to the D19 range bracket for every `103993 < context <= 196608`; `AIRA-T0216`/`AIRA-T0217` expose that range as a request-level classifier; `AIRA-T0218`/`AIRA-T0219` prove that the classifier thresholds are ordered and its proved/impossible branches are disjoint; and `AIRA-T0234` packages the proved request branch as a conditional first-channel finite-bank no-near-turn guarantee. This is real standard-RoPE theorem content, but still channel-0 based; it does not turn the impossible one-channel branch into a whole-bank collision theorem.
+Lean proves that channel 0 with standard turn ratio `1 / (2π)` has finite-context nearest-integer margin `1/328459` for gaps `1` through `196607`. The D19 192k seed uses the 20-decimal enclosure `10^20*gap/628318530717958647694 <= gap/(2π) <= 10^20*gap/628318530717958647692`, split across computed integer cells `0` through `31290`. Lean also proves the sharper 64k bracket at margin `1/104219`, while every advertised margin at or above `1/104218` is impossible there because of gap `710`. `AIRA-T0154` and `AIRA-T0155` add the adjacent obstruction for the lower-margin family: gap `103993` is already within `1/328458` of integer turn `16551`, so `1/328458` and larger margins are impossible once that gap is in scope. `AIRA-T0156` through `AIRA-T0161` are the generated D17 128k interval certificate, bank bridges, and bracket; `AIRA-T0162` through `AIRA-T0167` extend the same margin to the generated D18 160k seed; `AIRA-T0168` through `AIRA-T0173` extend it to the generated D19 192k seed; `AIRA-T0209` proves the generic context-range bridge from one certified horizon plus one obstruction gap; `AIRA-T0208` specializes that bridge to the D19 range bracket for every `103993 < context <= 196608`; `AIRA-T0216`/`AIRA-T0217` expose that range as a request-level classifier; `AIRA-T0218`/`AIRA-T0219` prove that the classifier thresholds are ordered and its proved/impossible branches are disjoint; `AIRA-T0234` packages the proved request branch as a conditional first-channel finite-bank no-near-turn guarantee; and `AIRA-T0235` packages the same proved branch as a context-wide statement over every ordered unequal pair inside the requested context. This is real standard-RoPE theorem content, but still channel-0 based; it does not turn the impossible one-channel branch into a whole-bank collision theorem.
 
 To ask the strongest concrete D19 bank-bridge request directly:
 
@@ -209,7 +209,7 @@ request = certify_standard_channel0_d19_bank_request(
     requested_margin=Fraction(1, 328459),
 )
 request.pass_certificate  # True
-request.theorem_ids       # AIRA-T0171,AIRA-T0172,AIRA-T0234
+request.theorem_ids       # AIRA-T0171,AIRA-T0172,AIRA-T0234,AIRA-T0235
 request.tolerance_rule    # tolerance < fullTurn * requestedMargin
 ```
 
@@ -252,7 +252,7 @@ request.requested_margin_relation  # at_or_above_impossible_floor
 request.undecided_margin_interval_width  # 1/107884986222
 ```
 
-The classifier returns `proved` at or below `1/328459`, `impossible` at or above `1/328458`, `undecided_margin_gap` between those rationals, and `outside_range` outside `103993 < context <= 196608`. It also exposes `requested_margin_relation`, `margin_thresholds_ordered`, `proved_impossible_branches_disjoint`, `undecided_margin_open_gap`, `undecided_margin_interval_width`, `margin_status_exhaustive`, `in_range_semantic_trichotomy`, and the first-channel bank-transfer fields so report consumers can audit that the proved and impossible branches cannot overlap, that the remaining in-range margin status is exactly the deliberate open gap of width `1/107884986222`, and that every in-range request is in exactly one semantic branch. `AIRA-T0233` backs that semantic trichotomy; `AIRA-T0232` backs the exact width; `AIRA-T0234` backs the proved branch's conditional first-channel bank no-near-turn transfer.
+The classifier returns `proved` at or below `1/328459`, `impossible` at or above `1/328458`, `undecided_margin_gap` between those rationals, and `outside_range` outside `103993 < context <= 196608`. It also exposes `requested_margin_relation`, `margin_thresholds_ordered`, `proved_impossible_branches_disjoint`, `undecided_margin_open_gap`, `undecided_margin_interval_width`, `margin_status_exhaustive`, `in_range_semantic_trichotomy`, and the first-channel bank-transfer fields so report consumers can audit that the proved and impossible branches cannot overlap, that the remaining in-range margin status is exactly the deliberate open gap of width `1/107884986222`, and that every in-range request is in exactly one semantic branch. `AIRA-T0233` backs that semantic trichotomy; `AIRA-T0232` backs the exact width; `AIRA-T0234` backs the proved branch's conditional first-channel bank no-near-turn transfer; and `AIRA-T0235` backs the context-wide pair scope exposed by the contract pack.
 
 For a copy-safe downstream digest from the public AI contract pack:
 
@@ -264,7 +264,8 @@ python scripts/circle_ai_contract_ready.py \
   --field d19_impossible_request_status \
   --field d19_undecided_request_status \
   --field d19_proved_first_channel_bank_transfer \
-  --field d19_proved_first_channel_bank_shape \
+  --field d19_proved_first_channel_bank_shape --field d19_proved_first_channel_pair_scope \
+  --field d19_proved_first_channel_context_wide_contract \
   --field d19_proved_first_channel_bank_tolerance_rule \
   --include-recommendations
 ```
@@ -281,23 +282,24 @@ python scripts/circle_ai_contract_ready.py \
   --field d19_impossible_request_status \
   --field d19_undecided_request_status \
   --field d19_proved_first_channel_bank_transfer \
-  --field d19_proved_first_channel_bank_shape \
+  --field d19_proved_first_channel_bank_shape --field d19_proved_first_channel_pair_scope \
+  --field d19_proved_first_channel_context_wide_contract \
   --field d19_proved_first_channel_bank_tolerance_rule \
   --require-theorem AIRA-T0171 \
   --require-theorem AIRA-T0172 \
-  --require-theorem AIRA-T0234 \
+  --require-theorem AIRA-T0234 --require-theorem AIRA-T0235 \
   --require-recommendation ROPE-USE-D19-MARGIN-FRONTIER \
-  --require-recommendation-evidence-field ROPE-USE-D19-MARGIN-FRONTIER=d19_proved_first_channel_bank_transfer \
-  --require-recommendation-theorem ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0234 \
+  --require-recommendation-evidence-field ROPE-USE-D19-MARGIN-FRONTIER=d19_proved_first_channel_bank_transfer --require-recommendation-evidence-field ROPE-USE-D19-MARGIN-FRONTIER=d19_proved_first_channel_context_wide_contract \
+  --require-recommendation-theorem ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0234 --require-recommendation-theorem ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0235 \
   --require-recommendation-action-parameter ROPE-USE-D19-MARGIN-FRONTIER=proved_branch_bank_transfer \
-  --require-recommendation-action-parameter-path ROPE-USE-D19-MARGIN-FRONTIER=proved_branch_bank_transfer.applies \
+  --require-recommendation-action-parameter-path ROPE-USE-D19-MARGIN-FRONTIER=proved_branch_bank_transfer.applies --require-recommendation-action-parameter-path ROPE-USE-D19-MARGIN-FRONTIER=proved_branch_bank_transfer.context_wide_contract \
   --require-recommendation-action-parameter-path ROPE-USE-D19-MARGIN-FRONTIER=proved_branch_bank_transfer.theorem_ids
 ```
 
 The RoPE planner recommendations are:
 
 - `ROPE-AUDIT-EXACT-INTEGER-PHASE-BANK`: audit the declared integer-period phase-bank collision boundary with `exact_discrete_pass`, `common_collision_gap`, and `total_bank_collision_pair_count`.
-- `ROPE-USE-D19-MARGIN-FRONTIER`: use the D19 standard-channel-0 theorem-backed request frontier where `1/328459` is proved, `1/328458` is impossible, and `2/656917` is in the deliberate open undecided gap at context `131072`; the planner payload also exposes the exact undecided interval width `1/107884986222`, the in-range semantic trichotomy guard, and the proved-branch first-channel bank-transfer field backed by `AIRA-T0234`.
+- `ROPE-USE-D19-MARGIN-FRONTIER`: use the D19 standard-channel-0 theorem-backed request frontier where `1/328459` is proved, `1/328458` is impossible, and `2/656917` is in the deliberate open undecided gap at context `131072`; the planner payload also exposes the exact undecided interval width `1/107884986222`, the in-range semantic trichotomy guard, and the proved-branch first-channel context-wide bank-transfer fields backed by `AIRA-T0234` and `AIRA-T0235`.
 
 Both records are integration hints over theorem-backed fields. They are not a full all-channel real-RoPE proof, not a Diophantine theorem for arbitrary RoPE channels, and not a model-quality or context-extension claim.
 

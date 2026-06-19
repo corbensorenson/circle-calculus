@@ -199,6 +199,7 @@ ROPE_REAL_PHASE_PRECURSOR_THEOREMS: tuple[str, ...] = (
     "AIRA-T0221",
     "AIRA-T0233",
     "AIRA-T0234",
+    "AIRA-T0235",
     "AIRA-T0232",
     "AIRA-T0222",
     "AIRA-T0223",
@@ -258,6 +259,7 @@ ROPE_REAL_PHASE_PRECURSOR_LEAN_DECLARATIONS: tuple[str, ...] = (
     "Circle.Applications.ropeStandardChannel0D19_request_margin_trichotomy",
     "Circle.Applications.ropeStandardChannel0D19_contextRange_request_margin_semantic_trichotomy",
     "Circle.Applications.ropeStandardChannel0D19_proved_request_firstChannel_bank_noNearTurn",
+    "Circle.Applications.ropeStandardChannel0D19_proved_request_firstChannel_bank_noNearTurn_onContext",
     "Circle.Applications.ropeTurnRatioOneOverNat_gapOneNearestIntegerMargin",
     "Circle.Applications.ropeTurnRatioOneOverNat_exactWeakestGapMargin_report",
     "Circle.Applications.ropeTurnRatioGapNearestIntegerMargin_le_error",
@@ -664,12 +666,14 @@ ROPE_STANDARD_CHANNEL0_D19_BANK_BRIDGE_THEOREMS: tuple[str, ...] = (
     "AIRA-T0171",
     "AIRA-T0172",
     "AIRA-T0234",
+    "AIRA-T0235",
 )
 
 ROPE_STANDARD_CHANNEL0_D19_BANK_BRIDGE_LEAN_DECLARATIONS: tuple[str, ...] = (
     "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D19Seed",
     "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D19Seed_cons",
     "Circle.Applications.ropeStandardChannel0D19_proved_request_firstChannel_bank_noNearTurn",
+    "Circle.Applications.ropeStandardChannel0D19_proved_request_firstChannel_bank_noNearTurn_onContext",
 )
 
 ROPE_CERTIFIER_CLAIM_BOUNDARY = (
@@ -1166,6 +1170,8 @@ class StandardChannel0D19BankBridgeCertificate:
     pass_certificate: bool
     failure_reason: str | None
     bank_shape: str
+    context_wide_pair_scope: str
+    context_wide_first_channel_contract: bool
     theorem_ids: tuple[str, ...]
     lean_declarations: tuple[str, ...]
     assumptions: tuple[str, ...]
@@ -3420,6 +3426,8 @@ def certify_standard_channel0_d19_bank_request(
         pass_certificate=pass_certificate,
         failure_reason=failure_reason,
         bank_shape=bank_shape,
+        context_wide_pair_scope="all ordered unequal pairs left < right < requested_context",
+        context_wide_first_channel_contract=pass_certificate and first_channel_shape,
         theorem_ids=theorem_ids,
         lean_declarations=lean_declarations,
         assumptions=assumptions,

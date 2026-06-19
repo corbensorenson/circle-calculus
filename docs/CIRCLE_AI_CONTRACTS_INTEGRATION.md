@@ -652,7 +652,8 @@ python scripts/circle_ai_contract_ready.py \
   --field d19_impossible_request_status \
   --field d19_undecided_request_status \
   --field d19_proved_first_channel_bank_transfer \
-  --field d19_proved_first_channel_bank_shape \
+  --field d19_proved_first_channel_bank_shape --field d19_proved_first_channel_pair_scope \
+  --field d19_proved_first_channel_context_wide_contract \
   --field d19_proved_first_channel_bank_tolerance_rule \
   --include-field-metadata \
   --include-recommendations
@@ -665,16 +666,17 @@ python scripts/circle_ai_contract_ready.py \
   --field d19_impossible_request_status \
   --field d19_undecided_request_status \
   --field d19_proved_first_channel_bank_transfer \
-  --field d19_proved_first_channel_bank_shape \
+  --field d19_proved_first_channel_bank_shape --field d19_proved_first_channel_pair_scope \
+  --field d19_proved_first_channel_context_wide_contract \
   --field d19_proved_first_channel_bank_tolerance_rule \
   --require-theorem AIRA-T0171 \
   --require-theorem AIRA-T0172 \
-  --require-theorem AIRA-T0234 \
+  --require-theorem AIRA-T0234 --require-theorem AIRA-T0235 \
   --require-recommendation ROPE-USE-D19-MARGIN-FRONTIER \
-  --require-recommendation-evidence-field ROPE-USE-D19-MARGIN-FRONTIER=d19_proved_first_channel_bank_transfer \
-  --require-recommendation-theorem ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0234 \
+  --require-recommendation-evidence-field ROPE-USE-D19-MARGIN-FRONTIER=d19_proved_first_channel_bank_transfer --require-recommendation-evidence-field ROPE-USE-D19-MARGIN-FRONTIER=d19_proved_first_channel_context_wide_contract \
+  --require-recommendation-theorem ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0234 --require-recommendation-theorem ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0235 \
   --require-recommendation-action-parameter ROPE-USE-D19-MARGIN-FRONTIER=proved_branch_bank_transfer \
-  --require-recommendation-action-parameter-path ROPE-USE-D19-MARGIN-FRONTIER=proved_branch_bank_transfer.applies \
+  --require-recommendation-action-parameter-path ROPE-USE-D19-MARGIN-FRONTIER=proved_branch_bank_transfer.applies --require-recommendation-action-parameter-path ROPE-USE-D19-MARGIN-FRONTIER=proved_branch_bank_transfer.context_wide_contract \
   --require-recommendation-action-parameter-path ROPE-USE-D19-MARGIN-FRONTIER=proved_branch_bank_transfer.theorem_ids
 
 python scripts/circle_ai_contract_ready.py \
@@ -809,7 +811,8 @@ python scripts/example_consume_circle_ai_contract_pack.py \
   --field d19_impossible_request_status \
   --field d19_undecided_request_status \
   --field d19_proved_first_channel_bank_transfer \
-  --field d19_proved_first_channel_bank_shape \
+  --field d19_proved_first_channel_bank_shape --field d19_proved_first_channel_pair_scope \
+  --field d19_proved_first_channel_context_wide_contract \
   --field d19_proved_first_channel_bank_tolerance_rule \
   --include-field-metadata
 
@@ -820,16 +823,17 @@ python scripts/example_consume_circle_ai_contract_pack.py \
   --field d19_impossible_request_status \
   --field d19_undecided_request_status \
   --field d19_proved_first_channel_bank_transfer \
-  --field d19_proved_first_channel_bank_shape \
+  --field d19_proved_first_channel_bank_shape --field d19_proved_first_channel_pair_scope \
+  --field d19_proved_first_channel_context_wide_contract \
   --field d19_proved_first_channel_bank_tolerance_rule \
   --require-theorem AIRA-T0171 \
   --require-theorem AIRA-T0172 \
-  --require-theorem AIRA-T0234 \
+  --require-theorem AIRA-T0234 --require-theorem AIRA-T0235 \
   --require-recommendation ROPE-USE-D19-MARGIN-FRONTIER \
-  --require-recommendation-evidence-field ROPE-USE-D19-MARGIN-FRONTIER=d19_proved_first_channel_bank_transfer \
-  --require-recommendation-theorem ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0234 \
+  --require-recommendation-evidence-field ROPE-USE-D19-MARGIN-FRONTIER=d19_proved_first_channel_bank_transfer --require-recommendation-evidence-field ROPE-USE-D19-MARGIN-FRONTIER=d19_proved_first_channel_context_wide_contract \
+  --require-recommendation-theorem ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0234 --require-recommendation-theorem ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0235 \
   --require-recommendation-action-parameter ROPE-USE-D19-MARGIN-FRONTIER=proved_branch_bank_transfer \
-  --require-recommendation-action-parameter-path ROPE-USE-D19-MARGIN-FRONTIER=proved_branch_bank_transfer.applies \
+  --require-recommendation-action-parameter-path ROPE-USE-D19-MARGIN-FRONTIER=proved_branch_bank_transfer.applies --require-recommendation-action-parameter-path ROPE-USE-D19-MARGIN-FRONTIER=proved_branch_bank_transfer.context_wide_contract \
   --require-recommendation-action-parameter-path ROPE-USE-D19-MARGIN-FRONTIER=proved_branch_bank_transfer.theorem_ids
 
 python scripts/example_consume_circle_ai_contract_pack.py \
@@ -1061,7 +1065,7 @@ metrics:
 
 | Contract kind | Minimum fields to read |
 | --- | --- |
-| `rope_position_distinguishability` | `certificate_schema_id`, `exact_discrete_pass`, `common_collision_gap`, `total_bank_collision_pair_count`, `real_phase_margin_pass`, `worst_margin_radians`, `d19_context_range_min_exclusive`, `d19_context_range_max_inclusive`, `d19_proved_request_status`, `d19_proved_request_theorem_backed_classification`, `d19_impossible_request_status`, `d19_impossible_request_theorem_backed_classification`, `d19_undecided_request_status`, `d19_undecided_margin_open_gap`, `d19_undecided_margin_interval_width`, `d19_undecided_request_relation`, `d19_margin_thresholds_ordered`, `d19_proved_impossible_branches_disjoint`, `d19_margin_status_exhaustive`, `d19_in_range_semantic_trichotomy`, `d19_proved_first_channel_bank_transfer`, `d19_proved_first_channel_bank_shape`, `d19_proved_first_channel_bank_tolerance_rule`, `proof_layers` |
+| `rope_position_distinguishability` | `certificate_schema_id`, `exact_discrete_pass`, `common_collision_gap`, `total_bank_collision_pair_count`, `real_phase_margin_pass`, `worst_margin_radians`, `d19_context_range_min_exclusive`, `d19_context_range_max_inclusive`, `d19_proved_request_status`, `d19_proved_request_theorem_backed_classification`, `d19_impossible_request_status`, `d19_impossible_request_theorem_backed_classification`, `d19_undecided_request_status`, `d19_undecided_margin_open_gap`, `d19_undecided_margin_interval_width`, `d19_undecided_request_relation`, `d19_margin_thresholds_ordered`, `d19_proved_impossible_branches_disjoint`, `d19_margin_status_exhaustive`, `d19_in_range_semantic_trichotomy`, `d19_proved_first_channel_bank_transfer`, `d19_proved_first_channel_bank_shape`, `d19_proved_first_channel_pair_scope`, `d19_proved_first_channel_context_wide_contract`, `d19_proved_first_channel_bank_tolerance_rule`, `proof_layers` |
 | `kv_cache_ring_buffer` | `certificate_schema_id`, `adapter_request_pass`, `stale_requested_count`, `pass_iff_stale_count_zero_under_nonfuture_nodup`, `stale_probe_requested_tokens`, `stale_probe_requested_slots`, `stale_probe_pass`, `stale_probe_first_stale_token`, `stale_probe_first_stale_next_overwrite_token`, `stale_probe_stale_requested_count`, `stale_probe_stale_member_blocks_pass`, `stale_probe_pass_iff_stale_count_zero_under_nonfuture_nodup`, `stale_probe_fail_iff_stale_count_positive_under_nonfuture_nodup`, `sink_window_exact_policy`, `sink_window_tokens_distinct`, `sink_window_token_count`, `sink_window_token_count_bound`, `sink_window_token_count_le_sink_plus_cache`, `sink_window_disjoint_exact_token_count`, `sink_window_token_count_eq_sink_plus_live_window_when_disjoint`, `sink_prefix_disjoint_from_live_window`, `sink_rolling_tokens_retained`, `sink_tokens_are_seen_prefix`, `sink_tokens_non_future`, `sink_tokens_retained_by_policy`, `sink_tokens_outside_ordinary_rolling_window` |
 | `sparse_attention_coverage` | `certificate_schema_id`, `coverage_complete`, `covered_lag_count`, `uncovered_lag_count`, `uncovered_lag_intervals`, `first_uncovered_lag`, `first_uncovered_interval_start`, `first_uncovered_interval_stop`, `first_uncovered_interval_length`, `local_window_needed_to_cover_first_uncovered_interval`, `first_uncovered_interval_additional_local_slots`, `first_uncovered_interval_repair_reaches_interval`, `first_interval_repair_next_uncovered_lag`, `first_interval_repair_still_has_gap`, `first_interval_repair_covers_context`, `largest_uncovered_interval_start`, `largest_uncovered_interval_stop`, `largest_uncovered_interval_length`, `local_window_needed_to_cover_largest_uncovered_interval`, `largest_uncovered_interval_additional_local_slots`, `largest_uncovered_interval_repair_reaches_interval`, `largest_interval_repair_next_uncovered_lag`, `largest_interval_repair_still_has_gap`, `largest_interval_repair_covers_context`, `largest_uncovered_interval_is_tail`, `first_gap_local_window_shortfall`, `local_window_needed_to_cover_first_gap`, `current_window_below_first_gap`, `first_gap_repair_window_reaches`, `first_gap_repair_window_covers_context`, `first_gap_repair_window_is_final_positive_lag`, `first_gap_repair_threshold_matches_final_lag`, `local_window_complete_coverage_threshold`, `local_window_complete_coverage_shortfall`, `local_window_reaches_complete_coverage_threshold`, `local_window_threshold_certifies_complete`, `local_window_complete_threshold_is_exact_local_minimum`, `complete_repair_window`, `complete_repair_window_additional_local_slots`, `complete_repair_window_covers_context`, `complete_repair_window_uses_dense_threshold`, `complete_repair_window_minimal_for_declared_stride_family`, `complete_repair_window_minimal_witness_lag`, `interval_repair_plan`, `interval_repair_plan_step_count`, `interval_repair_plan_final_window`, `interval_repair_plan_covers_context`, `interval_repair_plan_strictly_progresses`, `first_gap_repair_window_reaches_complete_threshold`, `raw_budget_shortfall_certifies_incomplete`, `lag_unique_plus_loss_eq_raw`, `query_unique_plus_loss_eq_raw`, `lag_collision_pair_count`, `query_collision_pair_count`, `lag_collision_pair_count_zero_iff_no_collision`, `lag_collision_pair_count_positive_iff_collision`, `lag_collision_pair_count_bounds_dedup_loss`, `lag_collision_pair_count_excess_over_dedup_loss`, `query_collision_pair_count_zero_iff_no_collision`, `query_collision_pair_count_positive_iff_collision`, `query_collision_pair_count_bounds_dedup_loss`, `query_collision_pair_count_excess_over_dedup_loss` |
 | `strided_candidate_fanout` | `context_length`, `stride`, `candidate_budget`, `unique_candidate_count`, `effective_candidate_budget`, `duplicate_count`, `candidate_budget_accounting`, `effective_budget_matches_unique_candidates`, `candidate_budget_shortfall`, `effective_budget_reaches_predicted_reach`, `full_coverage`, `predicted_reach` |

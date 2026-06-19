@@ -25,6 +25,12 @@ DEFAULT_EXTERNAL_MODE_SWEEP_METADATA = (
 DEFAULT_EXTERNAL_MODE_CONFIRMATION = (
     RESULTS_DIR / "prime_engine_external_mode_confirmation_latest.json"
 )
+DEFAULT_EXTERNAL_HIGH_OFFSET_QUICK = (
+    RESULTS_DIR / "prime_engine_high_offset_quick_latest.csv"
+)
+DEFAULT_EXTERNAL_HIGH_OFFSET_QUICK_METADATA = (
+    RESULTS_DIR / "prime_engine_high_offset_quick_latest.json"
+)
 DEFAULT_TUNING = RESULTS_DIR / "prime_engine_tuning_latest.json"
 DEFAULT_OUTPUT_JSON = RESULTS_DIR / "prime_engine_default_calibration_latest.json"
 DEFAULT_OUTPUT_MD = RESULTS_DIR / "prime_engine_default_calibration_latest.md"
@@ -63,6 +69,16 @@ def main() -> int:
         "--external-mode-confirmation",
         type=Path,
         default=DEFAULT_EXTERNAL_MODE_CONFIRMATION,
+    )
+    parser.add_argument(
+        "--external-high-offset-quick",
+        type=Path,
+        default=DEFAULT_EXTERNAL_HIGH_OFFSET_QUICK,
+    )
+    parser.add_argument(
+        "--external-high-offset-quick-metadata",
+        type=Path,
+        default=DEFAULT_EXTERNAL_HIGH_OFFSET_QUICK_METADATA,
     )
     parser.add_argument("--tuning", type=Path, default=DEFAULT_TUNING)
     parser.add_argument(
@@ -112,6 +128,13 @@ def main() -> int:
     )
     external_mode_rows.extend(confirmation_rows)
     external_mode_sample_rows.extend(confirmation_sample_rows)
+    external_high_offset_rows = read_csv_optional(args.external_high_offset_quick)
+    external_high_offset_metadata = read_json_optional(
+        args.external_high_offset_quick_metadata
+    )
+    external_high_offset_sample_rows = read_sample_rows_from_metadata(
+        external_high_offset_metadata
+    )
     tuning_summary = read_json_optional(args.tuning)
     tuning_sample_rows = read_tuning_sample_rows(args.tuning, tuning_summary)
     recommendations = select_recommendations(
@@ -120,6 +143,8 @@ def main() -> int:
         external_mode_rows=external_mode_rows,
         external_mode_sample_rows=external_mode_sample_rows,
         external_mode_confirmation=external_mode_confirmation,
+        external_high_offset_rows=external_high_offset_rows,
+        external_high_offset_sample_rows=external_high_offset_sample_rows,
         tuning_summary=tuning_summary,
         tuning_sample_rows=tuning_sample_rows,
         baseline_priority=baseline_priority,
@@ -131,6 +156,7 @@ def main() -> int:
         external_metadata=external_metadata,
         external_mode_metadata=external_mode_metadata,
         external_mode_confirmation=external_mode_confirmation,
+        external_high_offset_metadata=external_high_offset_metadata,
         tuning_summary=tuning_summary,
         baseline_priority=baseline_priority,
         tolerance=args.tolerance,
@@ -141,6 +167,10 @@ def main() -> int:
             "external_mode_sweep": str(args.external_mode_sweep),
             "external_mode_sweep_metadata": str(args.external_mode_sweep_metadata),
             "external_mode_confirmation": str(args.external_mode_confirmation),
+            "external_high_offset_quick": str(args.external_high_offset_quick),
+            "external_high_offset_quick_metadata": str(
+                args.external_high_offset_quick_metadata
+            ),
             "tuning": str(args.tuning),
             "circle_prime": str(args.circle_prime),
         },
@@ -165,10 +195,22 @@ def select_recommendations(
     external_mode_rows: list[dict[str, str]] | None = None,
     external_mode_sample_rows: list[dict[str, str]] | None = None,
     external_mode_confirmation: dict[str, Any] | None = None,
+    external_high_offset_rows: list[dict[str, str]] | None = None,
+    external_high_offset_sample_rows: list[dict[str, str]] | None = None,
     tuning_summary: dict[str, Any] | None,
     tuning_sample_rows: list[dict[str, str]] | None = None,
     baseline_priority: list[str],
 ) -> list[dict[str, Any]]:
+    high_offset_recommendations = select_external_recommendations(
+        [
+            (
+                "external_high_offset_quick",
+                external_high_offset_rows or [],
+                external_high_offset_sample_rows or [],
+            )
+        ],
+        baseline_priority,
+    )
     mode_recommendations = apply_mode_confirmation(
         select_external_recommendations(
             [("external_mode_sweep", external_mode_rows or [], external_mode_sample_rows or [])],
@@ -176,16 +218,24 @@ def select_recommendations(
         ),
         external_mode_confirmation,
     )
-    mode_ranges = {(row["low"], row["high"]) for row in mode_recommendations}
+    high_offset_ranges = {(row["low"], row["high"]) for row in high_offset_recommendations}
     segment_recommendations = select_external_recommendations(
         [("external_segment_sweep", external_rows, external_sample_rows or [])],
         baseline_priority,
     )
-    recommendations = mode_recommendations + [
+    recommendations = high_offset_recommendations + [
         row
-        for row in segment_recommendations
-        if (row["low"], row["high"]) not in mode_ranges
+        for row in mode_recommendations
+        if (row["low"], row["high"]) not in high_offset_ranges
     ]
+    covered_external_ranges = {(row["low"], row["high"]) for row in recommendations}
+    recommendations.extend(
+        [
+            row
+            for row in segment_recommendations
+            if (row["low"], row["high"]) not in covered_external_ranges
+        ]
+    )
     covered_ranges = {(row["low"], row["high"]) for row in recommendations}
     for row in select_tuning_recommendations(tuning_summary, tuning_sample_rows):
         if (row["low"], row["high"]) not in covered_ranges:
@@ -434,6 +484,7 @@ def build_calibration(
     inputs: dict[str, str],
     external_mode_metadata: dict[str, Any] | None = None,
     external_mode_confirmation: dict[str, Any] | None = None,
+    external_high_offset_metadata: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     calibrated = []
     for recommendation in recommendations:
@@ -460,6 +511,9 @@ def build_calibration(
         "external_mode_sweep": summarize_external_sweep_metadata(external_mode_metadata),
         "external_mode_confirmation": summarize_external_mode_confirmation(
             external_mode_confirmation
+        ),
+        "external_high_offset_quick": summarize_external_sweep_metadata(
+            external_high_offset_metadata
         ),
         "tuning": summarize_tuning_metadata(tuning_summary),
         "recommendations": calibrated,
@@ -751,6 +805,8 @@ def count_mode_from_circle_name(name: str) -> str:
         return "wheel30-mark"
     if "presieve13" in name:
         return "presieve13"
+    if "presieve17" in name:
+        return "presieve17"
     if "dynamic" in name:
         return "dynamic"
     if "balanced" in name:

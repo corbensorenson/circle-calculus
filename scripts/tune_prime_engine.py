@@ -23,9 +23,10 @@ COUNT_MODE_PRIORITY = {
     "balanced": 1,
     "dynamic": 2,
     "prefix-pi": 3,
-    "hybrid-wheel30-mark": 4,
-    "wheel30-mark": 5,
-    "presieve13": 6,
+    "presieve13": 4,
+    "presieve17": 5,
+    "hybrid-wheel30-mark": 6,
+    "wheel30-mark": 7,
 }
 
 
@@ -84,7 +85,7 @@ def main() -> int:
         default=DEFAULT_COUNT_MODES,
         help=(
             "Comma-separated count modes to sweep: segmented, balanced, "
-            "dynamic, prefix-pi, presieve13, wheel30-mark, hybrid-wheel30-mark."
+            "dynamic, prefix-pi, presieve13, presieve17, wheel30-mark, hybrid-wheel30-mark."
         ),
     )
     parser.add_argument("--output-dir", type=Path, default=RESULTS_DIR)

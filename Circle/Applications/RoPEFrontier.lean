@@ -224,6 +224,29 @@ theorem ropeStandardChannel0D19_proved_request_firstChannel_bank_noNearTurn
   not_ropeRealPhaseBankNearTurn_of_standardChannel0D19Seed_cons
     hcontext hmargin_le hleft hright hfull_pos htolerance
 
+/-- The D19 proved request branch gives a context-wide first-channel bank
+guarantee.
+
+This is the user-facing form of the bank bridge: after the context, margin,
+full-turn, and tolerance preconditions are fixed, every ordered unequal pair
+inside the requested context is ruled out as a near-turn collision. It is still
+only a one-separating-channel guarantee based on standard channel 0. -/
+theorem ropeStandardChannel0D19_proved_request_firstChannel_bank_noNearTurn_onContext
+    {extraFrequencies : List ℝ} {fullTurn requestedMargin tolerance : ℝ}
+    {requestedContext : Nat}
+    (hcontext : requestedContext ≤ ropeStandardChannel0D19SeedContext)
+    (hmargin_le : requestedMargin ≤ ropeStandardChannel0D19SeedMargin)
+    (hfull_pos : 0 < fullTurn)
+    (htolerance : tolerance < fullTurn * requestedMargin) :
+    ∀ {left right : Nat}, left < right → right < requestedContext →
+      ¬ ropeRealPhaseBankNearTurn
+        ((ropeStandardChannel0TurnRatio * fullTurn) :: extraFrequencies)
+        fullTurn tolerance left right := by
+  intro left right hleft hright
+  exact
+    ropeStandardChannel0D19_proved_request_firstChannel_bank_noNearTurn
+      hcontext hmargin_le hleft hright hfull_pos htolerance
+
 /-- The D19 classifier's undecided open margin interval has the exact rational
 width reported by the public Python certificate.
 

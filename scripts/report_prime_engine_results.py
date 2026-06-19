@@ -39,6 +39,12 @@ DEFAULT_EXTERNAL_MODE_SWEEP_METADATA = (
 DEFAULT_EXTERNAL_MODE_CONFIRMATION = (
     RESULTS_DIR / "prime_engine_external_mode_confirmation_latest.json"
 )
+DEFAULT_EXTERNAL_HIGH_OFFSET_QUICK = (
+    RESULTS_DIR / "prime_engine_high_offset_quick_latest.csv"
+)
+DEFAULT_EXTERNAL_HIGH_OFFSET_QUICK_METADATA = (
+    RESULTS_DIR / "prime_engine_high_offset_quick_latest.json"
+)
 DEFAULT_TUNING = RESULTS_DIR / "prime_engine_tuning_latest.json"
 DEFAULT_DEFAULT_CALIBRATION = RESULTS_DIR / "prime_engine_default_calibration_latest.json"
 DEFAULT_OUTPUT_MD = RESULTS_DIR / "prime_engine_report_latest.md"
@@ -50,11 +56,15 @@ PRIMARY_COUNT_ROWS = {
     "segmented_range_count",
     "high_offset_segmented_range_count",
     "parallel_high_offset_default_range_count_8t",
+    "parallel_high_offset_presieve13_range_count_8t",
+    "parallel_high_offset_presieve17_range_count_8t",
     "parallel_high_offset_segmented_range_count_8t",
 }
 EXPERIMENTAL_COUNT_ROWS = {
     "bitpacked_range_count",
     "high_offset_bitpacked_range_count",
+    "high_offset_presieve13_range_count",
+    "high_offset_presieve17_range_count",
     "parallel_high_offset_balanced_segmented_range_count_8t",
     "high_offset_hybrid_wheel30_mark_range_count",
     "high_offset_tracked_byte_range_count",
@@ -64,6 +74,7 @@ EXPERIMENTAL_COUNT_ROWS = {
     "parallel_high_offset_wheel30_mark_range_count_8t",
     "hybrid_wheel30_mark_range_count",
     "presieve13_range_count",
+    "presieve17_range_count",
     "tracked_byte_range_count",
     "wheel30_range_count",
     "wheel30_mark_range_count",
@@ -140,6 +151,16 @@ def main() -> int:
         type=Path,
         default=DEFAULT_EXTERNAL_MODE_CONFIRMATION,
     )
+    parser.add_argument(
+        "--external-high-offset-quick",
+        type=Path,
+        default=DEFAULT_EXTERNAL_HIGH_OFFSET_QUICK,
+    )
+    parser.add_argument(
+        "--external-high-offset-quick-metadata",
+        type=Path,
+        default=DEFAULT_EXTERNAL_HIGH_OFFSET_QUICK_METADATA,
+    )
     parser.add_argument("--tuning", type=Path, default=DEFAULT_TUNING)
     parser.add_argument(
         "--default-calibration",
@@ -169,6 +190,8 @@ def main() -> int:
         external_mode_sweep_path=args.external_mode_sweep,
         external_mode_sweep_metadata_path=args.external_mode_sweep_metadata,
         external_mode_confirmation_path=args.external_mode_confirmation,
+        external_high_offset_quick_path=args.external_high_offset_quick,
+        external_high_offset_quick_metadata_path=args.external_high_offset_quick_metadata,
         tuning_path=args.tuning,
         default_calibration_path=args.default_calibration,
         generated_at_utc=datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
@@ -202,6 +225,8 @@ def build_report(
     external_mode_sweep_path: Path | None = None,
     external_mode_sweep_metadata_path: Path | None = None,
     external_mode_confirmation_path: Path | None = None,
+    external_high_offset_quick_path: Path | None = None,
+    external_high_offset_quick_metadata_path: Path | None = None,
     default_calibration_path: Path | None = None,
     generated_at_utc: str,
 ) -> dict[str, Any]:
@@ -236,6 +261,13 @@ def build_report(
         external_mode_sweep_metadata
     )
     external_mode_confirmation = read_json_optional(external_mode_confirmation_path)
+    external_high_offset_quick_rows = read_csv_optional(external_high_offset_quick_path)
+    external_high_offset_quick_metadata = read_json_optional(
+        external_high_offset_quick_metadata_path
+    )
+    external_high_offset_quick_sample_rows = read_sample_rows_from_metadata(
+        external_high_offset_quick_metadata
+    )
     tuning_summary = read_json_if_present(tuning_path, missing_inputs)
     default_calibration = read_json_optional(default_calibration_path)
 
@@ -296,6 +328,16 @@ def build_report(
                 if external_mode_confirmation_path is not None
                 else None
             ),
+            "external_high_offset_quick": (
+                str(external_high_offset_quick_path)
+                if external_high_offset_quick_path is not None
+                else None
+            ),
+            "external_high_offset_quick_metadata": (
+                str(external_high_offset_quick_metadata_path)
+                if external_high_offset_quick_metadata_path is not None
+                else None
+            ),
             "tuning": str(tuning_path),
             "default_calibration": (
                 str(default_calibration_path) if default_calibration_path is not None else None
@@ -331,6 +373,11 @@ def build_report(
         ),
         "external_mode_confirmation": summarize_external_mode_confirmation(
             external_mode_confirmation
+        ),
+        "external_high_offset_quick": summarize_external_segment_sweep(
+            external_high_offset_quick_rows,
+            external_high_offset_quick_metadata,
+            external_high_offset_quick_sample_rows,
         ),
         "tuning": summarize_tuning(tuning_summary, default_calibration_summary),
         "default_calibration": default_calibration_summary,
@@ -1375,6 +1422,15 @@ def render_markdown(report: dict[str, Any]) -> str:
     lines.extend(render_external_correctness_markdown(report["external_correctness"]))
     lines.extend(render_external_markdown(report["external"]))
     lines.extend(render_external_next_markdown(report["external_next"]))
+    lines.extend(
+        render_external_segment_sweep_markdown(
+            report["external_high_offset_quick"],
+            title="High-Offset Quick Scorecard",
+            missing_message="No high-offset quick scorecard artifact was available.",
+            spread_label="High-offset quick candidate spread:",
+            include_circle_row=True,
+        )
+    )
     lines.extend(
         render_external_segment_sweep_markdown(
             report["external_mode_sweep"],

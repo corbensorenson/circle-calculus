@@ -6533,6 +6533,22 @@ theorems:
         - tests/test_circle_ai_contract_pack.py::test_generic_contract_pack_is_standalone_with_compatibility_aliases
         - tests/test_circle_ai_contract_consumer.py::test_consumer_exposes_rope_planner_recommendations
     blocker: ""
+  - id: AIRA-T0235
+    status: lean_proved
+    lean_name: Circle.Applications.ropeStandardChannel0D19_proved_request_firstChannel_bank_noNearTurn_onContext
+    informal_statement: "The D19 proved request branch gives a context-wide first-channel finite-bank no-near-turn guarantee for every ordered unequal pair inside the requested context."
+    formal_statement: "forall {extraFrequencies : List Real} {fullTurn requestedMargin tolerance : Real} {requestedContext : Nat}, requestedContext <= Circle.Applications.ropeStandardChannel0D19SeedContext -> requestedMargin <= Circle.Applications.ropeStandardChannel0D19SeedMargin -> 0 < fullTurn -> tolerance < fullTurn * requestedMargin -> forall {left right : Nat}, left < right -> right < requestedContext -> not (Circle.Applications.ropeRealPhaseBankNearTurn (Circle.Applications.ropeStandardChannel0TurnRatio * fullTurn :: extraFrequencies) fullTurn tolerance left right)"
+    dictionary_dependencies: ["COMMON-0076", "COMMON-0077", "COMMON-0080", "COMMON-0082", "COMMON-0087", "COMMON-0088", "COMMON-0089"]
+    paper_refs: ["papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_rope_certifier.py::test_standard_channel0_d19_bank_request_certificate_marks_covered_request
+        - tests/test_circle_ai_contract_pack.py::test_generic_contract_pack_is_standalone_with_compatibility_aliases
+        - tests/test_circle_ai_contract_consumer.py::test_consumer_exposes_rope_planner_recommendations
+    blocker: ""
   - id: AIT-T0001
     status: lean_proved
     lean_name: Circle.Applications.attentionReach_eq_div_gcd

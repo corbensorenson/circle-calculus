@@ -121,6 +121,10 @@ def test_contract_ready_cli_emits_json_digest_fields() -> None:
             "--field",
             "d19_proved_first_channel_bank_shape",
             "--field",
+            "d19_proved_first_channel_pair_scope",
+            "--field",
+            "d19_proved_first_channel_context_wide_contract",
+            "--field",
             "d19_proved_first_channel_bank_tolerance_rule",
         ],
         check=True,
@@ -137,6 +141,10 @@ def test_contract_ready_cli_emits_json_digest_fields() -> None:
         "d19_undecided_request_status": "undecided_margin_gap",
         "d19_proved_first_channel_bank_transfer": True,
         "d19_proved_first_channel_bank_shape": "standard_channel0_first",
+        "d19_proved_first_channel_pair_scope": (
+            "all ordered unequal pairs left < right < requested_context"
+        ),
+        "d19_proved_first_channel_context_wide_contract": True,
         "d19_proved_first_channel_bank_tolerance_rule": (
             "Lean conclusion applies when tolerance < fullTurn * requestedMargin."
         ),
@@ -145,6 +153,7 @@ def test_contract_ready_cli_emits_json_digest_fields() -> None:
     assert "AIRA-T0214" in payload["theorem_ids"]
     assert "AIRA-T0231" in payload["theorem_ids"]
     assert "AIRA-T0234" in payload["theorem_ids"]
+    assert "AIRA-T0235" in payload["theorem_ids"]
 
 
 def test_contract_ready_cli_emits_rope_digest_recommendations() -> None:
@@ -168,6 +177,10 @@ def test_contract_ready_cli_emits_rope_digest_recommendations() -> None:
             "--field",
             "d19_proved_first_channel_bank_shape",
             "--field",
+            "d19_proved_first_channel_pair_scope",
+            "--field",
+            "d19_proved_first_channel_context_wide_contract",
+            "--field",
             "d19_proved_first_channel_bank_tolerance_rule",
             "--include-recommendations",
         ],
@@ -183,6 +196,10 @@ def test_contract_ready_cli_emits_rope_digest_recommendations() -> None:
         "d19_undecided_request_status": "undecided_margin_gap",
         "d19_proved_first_channel_bank_transfer": True,
         "d19_proved_first_channel_bank_shape": "standard_channel0_first",
+        "d19_proved_first_channel_pair_scope": (
+            "all ordered unequal pairs left < right < requested_context"
+        ),
+        "d19_proved_first_channel_context_wide_contract": True,
         "d19_proved_first_channel_bank_tolerance_rule": (
             "Lean conclusion applies when tolerance < fullTurn * requestedMargin."
         ),
@@ -454,6 +471,10 @@ def test_contract_ready_cli_emits_rope_bank_transfer_receipt() -> None:
             "--field",
             "d19_proved_first_channel_bank_shape",
             "--field",
+            "d19_proved_first_channel_pair_scope",
+            "--field",
+            "d19_proved_first_channel_context_wide_contract",
+            "--field",
             "d19_proved_first_channel_bank_tolerance_rule",
             "--require-theorem",
             "AIRA-T0171",
@@ -461,6 +482,8 @@ def test_contract_ready_cli_emits_rope_bank_transfer_receipt() -> None:
             "AIRA-T0172",
             "--require-theorem",
             "AIRA-T0234",
+            "--require-theorem",
+            "AIRA-T0235",
             "--require-recommendation",
             "ROPE-USE-D19-MARGIN-FRONTIER",
             "--require-recommendation-evidence-field",
@@ -468,12 +491,24 @@ def test_contract_ready_cli_emits_rope_bank_transfer_receipt() -> None:
                 "ROPE-USE-D19-MARGIN-FRONTIER="
                 "d19_proved_first_channel_bank_transfer"
             ),
+            "--require-recommendation-evidence-field",
+            (
+                "ROPE-USE-D19-MARGIN-FRONTIER="
+                "d19_proved_first_channel_context_wide_contract"
+            ),
             "--require-recommendation-theorem",
             "ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0234",
+            "--require-recommendation-theorem",
+            "ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0235",
             "--require-recommendation-action-parameter",
             "ROPE-USE-D19-MARGIN-FRONTIER=proved_branch_bank_transfer",
             "--require-recommendation-action-parameter-path",
             "ROPE-USE-D19-MARGIN-FRONTIER=proved_branch_bank_transfer.applies",
+            "--require-recommendation-action-parameter-path",
+            (
+                "ROPE-USE-D19-MARGIN-FRONTIER="
+                "proved_branch_bank_transfer.context_wide_contract"
+            ),
             "--require-recommendation-action-parameter-path",
             "ROPE-USE-D19-MARGIN-FRONTIER=proved_branch_bank_transfer.theorem_ids",
         ],
@@ -489,6 +524,7 @@ def test_contract_ready_cli_emits_rope_bank_transfer_receipt() -> None:
         "AIRA-T0171",
         "AIRA-T0172",
         "AIRA-T0234",
+        "AIRA-T0235",
     ]
     assert payload["evidence_fields"] == {
         "d19_proved_request_status": "proved",
@@ -496,6 +532,10 @@ def test_contract_ready_cli_emits_rope_bank_transfer_receipt() -> None:
         "d19_undecided_request_status": "undecided_margin_gap",
         "d19_proved_first_channel_bank_transfer": True,
         "d19_proved_first_channel_bank_shape": "standard_channel0_first",
+        "d19_proved_first_channel_pair_scope": (
+            "all ordered unequal pairs left < right < requested_context"
+        ),
+        "d19_proved_first_channel_context_wide_contract": True,
         "d19_proved_first_channel_bank_tolerance_rule": (
             "Lean conclusion applies when tolerance < fullTurn * requestedMargin."
         ),
@@ -505,11 +545,12 @@ def test_contract_ready_cli_emits_rope_bank_transfer_receipt() -> None:
     ]
     assert payload["required_recommendation_evidence_fields"] == {
         "ROPE-USE-D19-MARGIN-FRONTIER": [
-            "d19_proved_first_channel_bank_transfer"
+            "d19_proved_first_channel_bank_transfer",
+            "d19_proved_first_channel_context_wide_contract",
         ],
     }
     assert payload["required_recommendation_theorem_ids"] == {
-        "ROPE-USE-D19-MARGIN-FRONTIER": ["AIRA-T0234"],
+        "ROPE-USE-D19-MARGIN-FRONTIER": ["AIRA-T0234", "AIRA-T0235"],
     }
     assert payload["required_recommendation_action_parameters"] == {
         "ROPE-USE-D19-MARGIN-FRONTIER": ["proved_branch_bank_transfer"],
@@ -517,6 +558,7 @@ def test_contract_ready_cli_emits_rope_bank_transfer_receipt() -> None:
     assert payload["required_recommendation_action_parameter_paths"] == {
         "ROPE-USE-D19-MARGIN-FRONTIER": [
             "proved_branch_bank_transfer.applies",
+            "proved_branch_bank_transfer.context_wide_contract",
             "proved_branch_bank_transfer.theorem_ids",
         ],
     }
@@ -524,10 +566,12 @@ def test_contract_ready_cli_emits_rope_bank_transfer_receipt() -> None:
     assert recommendation["proved_branch_bank_transfer"] == {
         "applies": True,
         "bank_shape": "standard_channel0_first",
+        "pair_scope": "all ordered unequal pairs left < right < requested_context",
+        "context_wide_contract": True,
         "tolerance_rule": (
             "Lean conclusion applies when tolerance < fullTurn * requestedMargin."
         ),
-        "theorem_ids": ["AIRA-T0171", "AIRA-T0172", "AIRA-T0234"],
+        "theorem_ids": ["AIRA-T0171", "AIRA-T0172", "AIRA-T0234", "AIRA-T0235"],
     }
 
 

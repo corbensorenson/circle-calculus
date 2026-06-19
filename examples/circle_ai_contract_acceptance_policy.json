@@ -1,7 +1,7 @@
 {
   "contracts": [
     {
-      "expected_contract_fingerprint": "95ee619c481eaeb2248da3193327587d846db4ae9b240d80efd2821344ed4bf0",
+      "expected_contract_fingerprint": "20e71919a52be1989db250792d00019d1ff2087abbf6f7c2a0d36a9a05fc19bb",
       "kind": "rope_position_distinguishability",
       "required_fields": [
         "preset",
@@ -15,14 +15,16 @@
         "d19_proved_request_status",
         "d19_impossible_request_status",
         "d19_undecided_request_status",
-      "d19_undecided_margin_open_gap",
-      "d19_undecided_margin_interval_width",
-      "d19_undecided_request_relation",
-      "d19_margin_status_exhaustive",
-      "d19_in_range_semantic_trichotomy",
-      "d19_proved_first_channel_bank_transfer",
-      "d19_proved_first_channel_bank_shape",
-      "d19_proved_first_channel_bank_tolerance_rule"
+        "d19_undecided_margin_open_gap",
+        "d19_undecided_margin_interval_width",
+        "d19_undecided_request_relation",
+        "d19_margin_status_exhaustive",
+        "d19_in_range_semantic_trichotomy",
+        "d19_proved_first_channel_bank_transfer",
+        "d19_proved_first_channel_pair_scope",
+        "d19_proved_first_channel_context_wide_contract",
+        "d19_proved_first_channel_bank_shape",
+        "d19_proved_first_channel_bank_tolerance_rule"
       ],
       "required_recommendation_action_parameter_paths": {
         "ROPE-AUDIT-EXACT-INTEGER-PHASE-BANK": [
@@ -41,6 +43,7 @@
           "undecided_interval.width",
           "proved_branch_bank_transfer.applies",
           "proved_branch_bank_transfer.bank_shape",
+          "proved_branch_bank_transfer.context_wide_contract",
           "proved_branch_bank_transfer.theorem_ids"
         ]
       },
@@ -74,14 +77,16 @@
           "d19_proved_request_status",
           "d19_impossible_request_status",
           "d19_undecided_request_status",
-        "d19_undecided_margin_open_gap",
-        "d19_undecided_margin_interval_width",
-        "d19_undecided_request_relation",
-        "d19_margin_status_exhaustive",
-        "d19_in_range_semantic_trichotomy",
-        "d19_proved_first_channel_bank_transfer",
-        "d19_proved_first_channel_bank_shape",
-        "d19_proved_first_channel_bank_tolerance_rule"
+          "d19_undecided_margin_open_gap",
+          "d19_undecided_margin_interval_width",
+          "d19_undecided_request_relation",
+          "d19_margin_status_exhaustive",
+          "d19_in_range_semantic_trichotomy",
+          "d19_proved_first_channel_bank_transfer",
+          "d19_proved_first_channel_pair_scope",
+          "d19_proved_first_channel_context_wide_contract",
+          "d19_proved_first_channel_bank_shape",
+          "d19_proved_first_channel_bank_tolerance_rule"
         ]
       },
       "required_recommendation_ids": [
@@ -100,9 +105,10 @@
           "AIRA-T0171",
           "AIRA-T0172",
           "AIRA-T0216",
-    "AIRA-T0231",
-    "AIRA-T0233",
-    "AIRA-T0234"
+          "AIRA-T0231",
+          "AIRA-T0233",
+          "AIRA-T0234",
+          "AIRA-T0235"
         ]
       },
       "required_theorem_ids": [
@@ -112,7 +118,8 @@
         "AIRA-T0216",
         "AIRA-T0231",
         "AIRA-T0233",
-        "AIRA-T0234"
+        "AIRA-T0234",
+        "AIRA-T0235"
       ]
     },
     {
@@ -201,28 +208,24 @@
         "complete_repair_window_minimal_witness_lag"
       ],
       "required_recommendation_action_parameter_paths": {
-        "SPARSE-LOCAL-FIRST-INTERVAL-REPAIR": [
-          "proposed_local_window"
-        ],
         "SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK": [
           "proposed_local_window",
           "additional_local_slots"
+        ],
+        "SPARSE-LOCAL-FIRST-INTERVAL-REPAIR": [
+          "proposed_local_window"
         ]
       },
       "required_recommendation_action_parameters": {
-        "SPARSE-LOCAL-FIRST-INTERVAL-REPAIR": [
-          "proposed_local_window"
-        ],
         "SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK": [
           "proposed_local_window",
           "additional_local_slots"
+        ],
+        "SPARSE-LOCAL-FIRST-INTERVAL-REPAIR": [
+          "proposed_local_window"
         ]
       },
       "required_recommendation_evidence_fields": {
-        "SPARSE-LOCAL-FIRST-INTERVAL-REPAIR": [
-          "first_uncovered_interval_start",
-          "first_uncovered_interval_stop"
-        ],
         "SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK": [
           "complete_repair_window",
           "complete_repair_window_covers_context",
@@ -230,6 +233,10 @@
           "local_window_complete_threshold_is_exact_local_minimum",
           "complete_repair_window_minimal_for_declared_stride_family",
           "complete_repair_window_minimal_witness_lag"
+        ],
+        "SPARSE-LOCAL-FIRST-INTERVAL-REPAIR": [
+          "first_uncovered_interval_start",
+          "first_uncovered_interval_stop"
         ]
       },
       "required_recommendation_ids": [
@@ -237,9 +244,6 @@
         "SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK"
       ],
       "required_recommendation_theorem_ids": {
-        "SPARSE-LOCAL-FIRST-INTERVAL-REPAIR": [
-          "AIT-T0104"
-        ],
         "SPARSE-DENSE-LOCAL-COMPLETE-FALLBACK": [
           "AIT-T0023",
           "AIT-T0034",
@@ -247,6 +251,9 @@
           "AIT-T0168",
           "AIT-T0169",
           "AIT-T0170"
+        ],
+        "SPARSE-LOCAL-FIRST-INTERVAL-REPAIR": [
+          "AIT-T0104"
         ]
       },
       "required_theorem_ids": [
@@ -268,34 +275,38 @@
         "post_period_multi_extension_scheduled_work_saving"
       ],
       "required_recommendation_action_parameter_paths": {
+        "RECURRENCE-REUSE-WHOLE-PERIOD-SHIFT": [
+          "base_token",
+          "shifted_token",
+          "shift_amount"
+        ],
         "RECURRENCE-USE-ACTIVE-TOKEN-WORK-SCHEDULE": [
           "loop_period",
           "token_count",
           "horizon_steps",
           "scheduled_work_saving",
           "post_period_multi_extension_scheduled_work_saving"
-        ],
-        "RECURRENCE-REUSE-WHOLE-PERIOD-SHIFT": [
-          "base_token",
-          "shifted_token",
-          "shift_amount"
         ]
       },
       "required_recommendation_action_parameters": {
+        "RECURRENCE-REUSE-WHOLE-PERIOD-SHIFT": [
+          "base_token",
+          "shifted_token",
+          "shift_amount"
+        ],
         "RECURRENCE-USE-ACTIVE-TOKEN-WORK-SCHEDULE": [
           "loop_period",
           "token_count",
           "horizon_steps",
           "scheduled_work_saving",
           "post_period_multi_extension_scheduled_work_saving"
-        ],
-        "RECURRENCE-REUSE-WHOLE-PERIOD-SHIFT": [
-          "base_token",
-          "shifted_token",
-          "shift_amount"
         ]
       },
       "required_recommendation_evidence_fields": {
+        "RECURRENCE-REUSE-WHOLE-PERIOD-SHIFT": [
+          "periodic_shift_required_steps_invariant",
+          "periodic_shift_active_at_step_invariant"
+        ],
         "RECURRENCE-USE-ACTIVE-TOKEN-WORK-SCHEDULE": [
           "total_active_token_work",
           "scheduled_work_saving",
@@ -303,10 +314,6 @@
           "active_inactive_work_accounting",
           "scheduled_work_saving_positive",
           "post_period_multi_extension_scheduled_work_saving"
-        ],
-        "RECURRENCE-REUSE-WHOLE-PERIOD-SHIFT": [
-          "periodic_shift_required_steps_invariant",
-          "periodic_shift_active_at_step_invariant"
         ]
       },
       "required_recommendation_ids": [
@@ -314,6 +321,9 @@
         "RECURRENCE-REUSE-WHOLE-PERIOD-SHIFT"
       ],
       "required_recommendation_theorem_ids": {
+        "RECURRENCE-REUSE-WHOLE-PERIOD-SHIFT": [
+          "AIM-T0026"
+        ],
         "RECURRENCE-USE-ACTIVE-TOKEN-WORK-SCHEDULE": [
           "AIM-T0130",
           "AIM-T0131",
@@ -335,9 +345,6 @@
           "AIM-T0157",
           "AIM-T0158",
           "AIM-T0159"
-        ],
-        "RECURRENCE-REUSE-WHOLE-PERIOD-SHIFT": [
-          "AIM-T0026"
         ]
       },
       "required_theorem_ids": [
@@ -347,7 +354,7 @@
       ]
     }
   ],
-  "expected_pack_fingerprint": "a5df4781904e20264aad58761feb352f572abe9fb7fdba9f19c14623e8c45641",
+  "expected_pack_fingerprint": "5179c765f27b2f507f9c0ff594a158eb0e4ac74521cf765b43a7a110885aaa5c",
   "policy_id": "circle_ai_flagship_contracts_acceptance_v0",
   "policy_name": "Circle AI flagship contracts acceptance policy",
   "schema_id": "circle_calculus.ai_contract_acceptance_policy.v0"

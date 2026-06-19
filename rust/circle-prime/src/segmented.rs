@@ -9,6 +9,8 @@ use crate::scalar::is_prime_u64;
 
 const PRESIEVE13_MODULUS: u64 = 30_030;
 const PRESIEVE13_ODD_PERIOD: usize = (PRESIEVE13_MODULUS as usize) / 2;
+const PRESIEVE17_MODULUS: u64 = 510_510;
+const PRESIEVE17_ODD_PERIOD: usize = (PRESIEVE17_MODULUS as usize) / 2;
 const PRESIEVE19_MODULUS: u64 = 9_699_690;
 const PRESIEVE19_ODD_PERIOD: usize = (PRESIEVE19_MODULUS as usize) / 2;
 const WHEEL30_COUNT_BELOW_RESIDUE: [u8; 30] = [
@@ -27,7 +29,7 @@ const BASE_PRIME_ODD_BYTE_LIMIT: u64 = 10_000_000;
 const BASE_PRIME_BITSET_LIMIT: u64 = 100_000_000;
 const SCALAR_RANGE_FALLBACK_SPAN_LIMIT: u64 = 1_000_000;
 const DENSE_MARKING_BASE_LIMIT: u64 = 300_000;
-const HYBRID_DENSE_STEP_DIVISOR: usize = 8;
+const HYBRID_DENSE_STEP_DIVISOR: usize = 4;
 const DYNAMIC_PARALLEL_MAX_SEGMENTS_PER_BATCH: u64 = 64;
 const DYNAMIC_PARALLEL_TARGET_BATCHES_PER_WORKER: u64 = 4;
 const PRIME_PI_PHI_SMALL_PRIME_COUNT: usize = 6;
@@ -404,6 +406,122 @@ pub fn prime_count_in_range_presieve13(
     let limit = (high - 1).isqrt();
     let base = base_primes(limit)?;
     prime_count_in_range_odd_bytes_presieve13_with_base(low, high, segment_size, &base)
+}
+
+pub fn prime_count_in_range_presieve13_parallel(
+    low: u64,
+    high: u64,
+    segment_size: u64,
+    threads: usize,
+) -> Result<usize, RangeError> {
+    if threads == 0 {
+        return Err(RangeError::ThreadCountZero);
+    }
+    if threads == 1 || high <= low {
+        return prime_count_in_range_presieve13(low, high, segment_size);
+    }
+    if segment_size == 0 {
+        return Err(RangeError::SegmentSizeZero);
+    }
+    let workers = effective_parallel_thread_count(low, high, segment_size, threads);
+    if workers <= 1 {
+        return prime_count_in_range_presieve13(low, high, segment_size);
+    }
+    if use_scalar_range_fallback(low, high) {
+        return prime_count_in_range_scalar_parallel(low, high, workers);
+    }
+
+    let limit = (high - 1).isqrt();
+    let base = base_primes(limit)?;
+    let chunks = split_range(low, high, workers);
+    thread::scope(|scope| {
+        let mut handles = Vec::with_capacity(chunks.len());
+        for (chunk_low, chunk_high) in chunks {
+            let base = &base;
+            handles.push(scope.spawn(move || {
+                prime_count_in_range_odd_bytes_presieve13_with_base(
+                    chunk_low,
+                    chunk_high,
+                    segment_size,
+                    base,
+                )
+            }));
+        }
+
+        let mut total = 0usize;
+        for handle in handles {
+            total += handle.join().map_err(|_| RangeError::WorkerPanic)??;
+        }
+        Ok(total)
+    })
+}
+
+pub fn prime_count_in_range_presieve17(
+    low: u64,
+    high: u64,
+    segment_size: u64,
+) -> Result<usize, RangeError> {
+    if segment_size == 0 {
+        return Err(RangeError::SegmentSizeZero);
+    }
+    if high <= low {
+        return Ok(0);
+    }
+    if use_scalar_range_fallback(low, high) {
+        return Ok(prime_count_in_range_scalar(low, high));
+    }
+
+    let limit = (high - 1).isqrt();
+    let base = base_primes(limit)?;
+    prime_count_in_range_odd_bytes_presieve17_with_base(low, high, segment_size, &base)
+}
+
+pub fn prime_count_in_range_presieve17_parallel(
+    low: u64,
+    high: u64,
+    segment_size: u64,
+    threads: usize,
+) -> Result<usize, RangeError> {
+    if threads == 0 {
+        return Err(RangeError::ThreadCountZero);
+    }
+    if threads == 1 || high <= low {
+        return prime_count_in_range_presieve17(low, high, segment_size);
+    }
+    if segment_size == 0 {
+        return Err(RangeError::SegmentSizeZero);
+    }
+    let workers = effective_parallel_thread_count(low, high, segment_size, threads);
+    if workers <= 1 {
+        return prime_count_in_range_presieve17(low, high, segment_size);
+    }
+    if use_scalar_range_fallback(low, high) {
+        return prime_count_in_range_scalar_parallel(low, high, workers);
+    }
+
+    let limit = (high - 1).isqrt();
+    let base = base_primes(limit)?;
+    let chunks = split_range(low, high, workers);
+    thread::scope(|scope| {
+        let mut handles = Vec::with_capacity(chunks.len());
+        for (chunk_low, chunk_high) in chunks {
+            let base = &base;
+            handles.push(scope.spawn(move || {
+                prime_count_in_range_odd_bytes_presieve17_with_base(
+                    chunk_low,
+                    chunk_high,
+                    segment_size,
+                    base,
+                )
+            }));
+        }
+
+        let mut total = 0usize;
+        for handle in handles {
+            total += handle.join().map_err(|_| RangeError::WorkerPanic)??;
+        }
+        Ok(total)
+    })
 }
 
 pub fn prime_count_in_range_wheel30(
@@ -1083,6 +1201,88 @@ fn prime_count_in_range_odd_bytes_presieve13_with_base(
             let odd_count =
                 usize::try_from(odd_count_u64).map_err(|_| RangeError::SegmentTooLarge)?;
             refill_presieved13_odd_flags(&mut flags, odd_low, odd_count);
+
+            mark_active_sieve_cursors(
+                &mut flags,
+                &mut cursors,
+                odd_low,
+                segment_high,
+                dense_marking,
+            );
+
+            count += count_flag_bytes(&flags);
+        }
+
+        segment_low = segment_high;
+    }
+
+    Ok(count)
+}
+
+fn prime_count_in_range_odd_bytes_presieve17_with_base(
+    mut low: u64,
+    high: u64,
+    segment_size: u64,
+    base: &[u64],
+) -> Result<usize, RangeError> {
+    if segment_size == 0 {
+        return Err(RangeError::SegmentSizeZero);
+    }
+    if high <= low {
+        return Ok(0);
+    }
+
+    let mut count = small_prime_count_in_range_through(low, high, 17);
+    if high <= 19 {
+        return Ok(count);
+    }
+
+    low = low.max(19);
+    if high - low <= segment_size {
+        let odd_low = if low % 2 == 0 { low + 1 } else { low };
+        if odd_low >= high {
+            return Ok(count);
+        }
+
+        let odd_count_u64 = ((high - odd_low) + 1) / 2;
+        let odd_count = usize::try_from(odd_count_u64).map_err(|_| RangeError::SegmentTooLarge)?;
+        let mut flags = Vec::<u8>::new();
+        refill_presieved17_odd_flags(&mut flags, odd_low, odd_count);
+        let dense_marking = use_dense_odd_byte_marking(high);
+        mark_single_segment_base_multiples_after(
+            &mut flags,
+            odd_low,
+            high,
+            base,
+            dense_marking,
+            17,
+        )?;
+        return Ok(count + count_flag_bytes(&flags));
+    }
+
+    let mut segment_low = low;
+    let mut flags = Vec::<u8>::new();
+    let dense_marking = use_dense_odd_byte_marking(high);
+    let first_odd_low = if segment_low % 2 == 0 {
+        segment_low + 1
+    } else {
+        segment_low
+    };
+    let mut cursors = initial_sieve_cursors_after(base, first_odd_low, high, 17)?;
+
+    while segment_low < high {
+        let segment_high = segment_low.saturating_add(segment_size).min(high);
+        let odd_low = if segment_low % 2 == 0 {
+            segment_low + 1
+        } else {
+            segment_low
+        };
+
+        if odd_low < segment_high {
+            let odd_count_u64 = ((segment_high - odd_low) + 1) / 2;
+            let odd_count =
+                usize::try_from(odd_count_u64).map_err(|_| RangeError::SegmentTooLarge)?;
+            refill_presieved17_odd_flags(&mut flags, odd_low, odd_count);
 
             mark_active_sieve_cursors(
                 &mut flags,
@@ -1885,6 +2085,17 @@ fn refill_presieved13_odd_flags(flags: &mut Vec<u8>, odd_low: u64, odd_count: us
     );
 }
 
+fn refill_presieved17_odd_flags(flags: &mut Vec<u8>, odd_low: u64, odd_count: usize) {
+    refill_presieved_odd_flags_from(
+        flags,
+        odd_low,
+        odd_count,
+        presieve_3_5_7_11_13_17_pattern(),
+        PRESIEVE17_MODULUS,
+        PRESIEVE17_ODD_PERIOD,
+    );
+}
+
 fn refill_presieved_odd_flags_from(
     flags: &mut Vec<u8>,
     odd_low: u64,
@@ -1948,6 +2159,10 @@ fn presieve_3_5_7_11_13_17_19_pattern() -> &'static [u8] {
 
 fn presieve_3_5_7_11_13_pattern() -> &'static [u8] {
     include_bytes!(concat!(env!("OUT_DIR"), "/presieve_3_5_7_11_13.bin"))
+}
+
+fn presieve_3_5_7_11_13_17_pattern() -> &'static [u8] {
+    include_bytes!(concat!(env!("OUT_DIR"), "/presieve_3_5_7_11_13_17.bin"))
 }
 
 fn presieve_3_5_7_11_13_17_19_words() -> &'static [u64] {
@@ -2473,6 +2688,60 @@ mod tests {
     }
 
     #[test]
+    fn parallel_presieve13_count_matches_byte_count() {
+        for (low, high) in [
+            (0, 1_000),
+            (0, 1_000_000),
+            (0, 10_000_000),
+            (1_000_000_000_000, 1_000_001_000_000),
+        ] {
+            let segment_size = recommended_count_segment_size(low, high, 8);
+            let expected = prime_count_in_range(low, high, segment_size).unwrap();
+            let actual =
+                prime_count_in_range_presieve13_parallel(low, high, segment_size, 8).unwrap();
+            assert_eq!(actual, expected, "range=[{low},{high})");
+        }
+    }
+
+    #[test]
+    fn presieve17_count_matches_byte_count() {
+        for (low, high) in [
+            (0, 10),
+            (0, 1_000),
+            (7, 2_003),
+            (999, 10_001),
+            (1_000_000, 1_010_000),
+            (1_000_000_000, 1_000_050_000),
+            (1_000_000_000_000, 1_000_000_250_000),
+        ] {
+            for segment_size in [64, 1 << 12, 3 << 14, 1 << 16] {
+                let expected = prime_count_in_range(low, high, segment_size).unwrap();
+                let actual = prime_count_in_range_presieve17(low, high, segment_size).unwrap();
+                assert_eq!(
+                    actual, expected,
+                    "range=[{low},{high}), segment_size={segment_size}"
+                );
+            }
+        }
+    }
+
+    #[test]
+    fn parallel_presieve17_count_matches_byte_count() {
+        for (low, high) in [
+            (0, 1_000),
+            (0, 1_000_000),
+            (0, 10_000_000),
+            (1_000_000_000_000, 1_000_001_000_000),
+        ] {
+            let segment_size = recommended_count_segment_size(low, high, 8);
+            let expected = prime_count_in_range(low, high, segment_size).unwrap();
+            let actual =
+                prime_count_in_range_presieve17_parallel(low, high, segment_size, 8).unwrap();
+            assert_eq!(actual, expected, "range=[{low},{high})");
+        }
+    }
+
+    #[test]
     fn wheel30_count_matches_byte_count() {
         for (low, high) in [
             (0, 10),
@@ -2846,6 +3115,10 @@ mod tests {
         );
         assert_eq!(
             prime_count_in_range_presieve13(low, high, 64).unwrap(),
+            expected
+        );
+        assert_eq!(
+            prime_count_in_range_presieve17(low, high, 64).unwrap(),
             expected
         );
         assert_eq!(

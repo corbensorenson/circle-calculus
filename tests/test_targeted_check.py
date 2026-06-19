@@ -211,6 +211,8 @@ def test_rope_frontier_lean_change_runs_rope_contract_checks() -> None:
         "--digest",
         "d19_proved_first_channel_bank_transfer",
         "d19_proved_first_channel_bank_shape",
+        "d19_proved_first_channel_pair_scope",
+        "d19_proved_first_channel_context_wide_contract",
         "d19_proved_first_channel_bank_tolerance_rule",
     )
     assert not contains_command(commands, "make", "circle-ai-contracts-ready")

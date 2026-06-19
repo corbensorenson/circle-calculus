@@ -81,6 +81,11 @@ pub const PRIME_HORIZON_LEAN_NAMES: [&str; 5] = [
     "Circle.primeHorizon_of_no_sqrt_contained",
     "Circle.not_primeHorizon_has_sqrt_contained",
 ];
+pub const PRIME_RANGE_COUNT_THEOREM_IDS: [&str; 2] = ["CC-T0078", "CC-T0079"];
+pub const PRIME_RANGE_COUNT_LEAN_NAMES: [&str; 2] = [
+    "Circle.mem_primeHorizonsInRange_iff",
+    "Circle.primeHorizonRangeCount_eq_filter_card",
+];
 pub const SMALL_PRIME_HORIZONS: [u64; 12] = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37];
 const WHEEL30_FILTERED_SMALL_PRIME_HORIZONS: [u64; 9] = [7, 11, 13, 17, 19, 23, 29, 31, 37];
 const NEXT_PRIME_WHEEL30_RESIDUES: [u64; 8] = [1, 7, 11, 13, 17, 19, 23, 29];
@@ -93,6 +98,10 @@ pub const MR64_BASES: [u64; 7] = [2, 325, 9_375, 28_178, 450_775, 9_780_504, 1_7
 
 pub fn prime_horizon_proof_contract_json() -> &'static str {
     "{\"name\":\"prime_horizon_sqrt_containment\",\"lean_module\":\"Circle.Core.Horizon\",\"theorem_ids\":[\"CC-T0073\",\"CC-T0074\",\"CC-T0075\",\"CC-T0076\",\"CC-T0077\"],\"lean_names\":[\"Circle.primitiveHorizonContained_iff_dvd\",\"Circle.primeHorizon_iff_no_smaller_contained\",\"Circle.primeHorizon_iff_no_sqrt_contained\",\"Circle.primeHorizon_of_no_sqrt_contained\",\"Circle.not_primeHorizon_has_sqrt_contained\"],\"rust_domain\":\"u64_exact_arithmetic\",\"scope\":\"Lean proves the prime-horizon/divisibility contract; Rust supplies exact u64 arithmetic, sieving, and deterministic Miller-Rabin classification.\"}"
+}
+
+pub fn prime_range_count_proof_contract_json() -> &'static str {
+    "{\"name\":\"prime_horizon_range_count_spec\",\"lean_module\":\"Circle.Core.Horizon\",\"theorem_ids\":[\"CC-T0078\",\"CC-T0079\"],\"lean_names\":[\"Circle.mem_primeHorizonsInRange_iff\",\"Circle.primeHorizonRangeCount_eq_filter_card\"],\"rust_domain\":\"u64_exact_arithmetic\",\"scope\":\"Lean specifies the half-open prime-horizon range-count target; Rust count modes implement the finite interval cardinality with exact u64 arithmetic and externally checked controls.\"}"
 }
 
 fn optional_u64_json(value: Option<u64>) -> String {

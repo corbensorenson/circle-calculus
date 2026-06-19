@@ -227,7 +227,7 @@ The proved `AIRA-T0139` through `AIRA-T0141` bridge says how a generated rationa
 </details>
 
 
-The public Circle AI contract pack exports three D19 classifier probes at context `131072`: margin `1/328459` has status `proved`, margin `1/328458` has status `impossible`, and margin `2/656917` has status `undecided_margin_gap`. The same record now exposes `requested_margin_relation` labels, the exact undecided interval width `1/107884986222`, `d19_in_range_semantic_trichotomy`, and the proved-branch first-channel bank-transfer fields, giving downstream tools a theorem-backed frontier check without requiring them to import Lean.
+The public Circle AI contract pack exports three D19 classifier probes at context `131072`: margin `1/328459` has status `proved`, margin `1/328458` has status `impossible`, and margin `2/656917` has status `undecided_margin_gap`. The same record now exposes `requested_margin_relation` labels, the exact undecided interval width `1/107884986222`, `d19_in_range_semantic_trichotomy`, and the proved-branch first-channel context-wide bank-transfer fields, giving downstream tools a theorem-backed frontier check without requiring them to import Lean.
 
 For downstream AI tools, the compact digest also exposes two copy-safe planner records:
 
@@ -239,13 +239,13 @@ python scripts/circle_ai_contract_ready.py \
   --field d19_impossible_request_status \
   --field d19_undecided_request_status \
   --field d19_proved_first_channel_bank_transfer \
-  --field d19_proved_first_channel_bank_shape \
+  --field d19_proved_first_channel_bank_shape --field d19_proved_first_channel_pair_scope \
   --field d19_proved_first_channel_bank_tolerance_rule \
   --include-recommendations
 ```
 
 For CI, use the strict receipt form when a downstream project must pin the
-first-channel bank-transfer payload and the `AIRA-T0234` theorem id:
+first-channel bank-transfer payload and the `AIRA-T0234`/`AIRA-T0235` theorem ids:
 
 ```bash
 python scripts/circle_ai_contract_ready.py \
@@ -256,16 +256,21 @@ python scripts/circle_ai_contract_ready.py \
   --field d19_impossible_request_status \
   --field d19_undecided_request_status \
   --field d19_proved_first_channel_bank_transfer \
-  --field d19_proved_first_channel_bank_shape \
+  --field d19_proved_first_channel_bank_shape --field d19_proved_first_channel_pair_scope \
+  --field d19_proved_first_channel_context_wide_contract \
   --field d19_proved_first_channel_bank_tolerance_rule \
   --require-theorem AIRA-T0171 \
   --require-theorem AIRA-T0172 \
   --require-theorem AIRA-T0234 \
+  --require-theorem AIRA-T0235 \
   --require-recommendation ROPE-USE-D19-MARGIN-FRONTIER \
   --require-recommendation-evidence-field ROPE-USE-D19-MARGIN-FRONTIER=d19_proved_first_channel_bank_transfer \
+  --require-recommendation-evidence-field ROPE-USE-D19-MARGIN-FRONTIER=d19_proved_first_channel_context_wide_contract \
   --require-recommendation-theorem ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0234 \
+  --require-recommendation-theorem ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0235 \
   --require-recommendation-action-parameter ROPE-USE-D19-MARGIN-FRONTIER=proved_branch_bank_transfer \
   --require-recommendation-action-parameter-path ROPE-USE-D19-MARGIN-FRONTIER=proved_branch_bank_transfer.applies \
+  --require-recommendation-action-parameter-path ROPE-USE-D19-MARGIN-FRONTIER=proved_branch_bank_transfer.context_wide_contract \
   --require-recommendation-action-parameter-path ROPE-USE-D19-MARGIN-FRONTIER=proved_branch_bank_transfer.theorem_ids
 ```
 
@@ -395,12 +400,12 @@ The first context-4096 seed lowers the advertised margin and moves to twenty-dec
 
 Those exact rational bands now certify gaps `1` through `196607`, split across generated integer cells `0` through `31290`. D9 first certified the conservative margin `1/131072`; D10 reused the same 20-decimal bounds and cell table to certify the tighter margin `1/105000`; D11 tightened the 4k certificate shape to `1/104219`; D12 reached 8k at the weaker margin `1/104220`; D13 reaches 8k at `1/104219`; D14 reaches 16k at `1/104219`; D15 reaches 32k; D16 reaches 64k; D17 reaches 128k by lowering the advertised margin to `1/328459`; D18 carries that lower margin to 160k; and D19 carries it to 192k.
 
-D19 is the current proved standard-channel frontier. The D19 bridge turns that channel-0 seed into a conditional one-separating-channel bank certificate when standard channel 0 is present: the proved branch at or below `1/328459` transfers to a first-channel finite-bank no-near-turn guarantee, while every margin at or above `1/328458` is impossible only for the one-channel margin throughout `103993 < context <= 196608`. The remaining open interval has exact rational width `1/107884986222`, `AIRA-T0233` proves the in-range semantic partition is exclusive, and `AIRA-T0234` packages the proved-branch bank transfer. This is still not a full all-channel margin theorem.
+D19 is the current proved standard-channel frontier. The D19 bridge turns that channel-0 seed into a conditional one-separating-channel bank certificate when standard channel 0 is present: the proved branch at or below `1/328459` transfers to a first-channel finite-bank no-near-turn guarantee over every ordered unequal pair inside the requested context, while every margin at or above `1/328458` is impossible only for the one-channel margin throughout `103993 < context <= 196608`. The remaining open interval has exact rational width `1/107884986222`, `AIRA-T0233` proves the in-range semantic partition is exclusive, `AIRA-T0234` packages the proved-branch bank transfer, and `AIRA-T0235` packages its context-wide pair scope. This is still not a full all-channel margin theorem.
 
 <details class="audit-detail">
 <summary>Detailed D19 classifier theorem trail</summary>
 
-`AIRA-T0173` packages the 192k endpoint bracket, `AIRA-T0209` proves the generic horizon-plus-obstruction bridge, and `AIRA-T0208` specializes it to the D19 range bracket. `AIRA-T0216` and `AIRA-T0217` package the same fact as a request-level classifier: a requested margin below the proved threshold is certified, a requested margin above the obstruction threshold is rejected, and a requested margin strictly between those two thresholds is deliberately reported as undecided. `AIRA-T0218` proves the two rational thresholds are ordered, `AIRA-T0219` proves the proved and impossible request branches are disjoint, `AIRA-T0220` identifies the undecided branch with the exact open interval, `AIRA-T0221` proves those three margin regions are exhaustive, `AIRA-T0233` proves the in-range semantic branches are exclusive and carry the correct proof/refutation/open-gap meaning, `AIRA-T0234` transfers the proved branch to a conditional first-channel bank no-near-turn guarantee, and `AIRA-T0232` proves the interval width is exactly `1/107884986222`.
+`AIRA-T0173` packages the 192k endpoint bracket, `AIRA-T0209` proves the generic horizon-plus-obstruction bridge, and `AIRA-T0208` specializes it to the D19 range bracket. `AIRA-T0216` and `AIRA-T0217` package the same fact as a request-level classifier: a requested margin below the proved threshold is certified, a requested margin above the obstruction threshold is rejected, and a requested margin strictly between those two thresholds is deliberately reported as undecided. `AIRA-T0218` proves the two rational thresholds are ordered, `AIRA-T0219` proves the proved and impossible request branches are disjoint, `AIRA-T0220` identifies the undecided branch with the exact open interval, `AIRA-T0221` proves those three margin regions are exhaustive, `AIRA-T0233` proves the in-range semantic branches are exclusive and carry the correct proof/refutation/open-gap meaning, `AIRA-T0234` transfers the proved branch to a conditional first-channel bank no-near-turn guarantee, `AIRA-T0235` packages that guarantee for all ordered unequal pairs in the requested context, and `AIRA-T0232` proves the interval width is exactly `1/107884986222`.
 
 </details>
 
@@ -437,7 +442,7 @@ request = certify_standard_channel0_d19_bank_request(
     requested_margin=Fraction(1, 328459),
 )
 request.pass_certificate  # True
-request.theorem_ids       # AIRA-T0171,AIRA-T0172,AIRA-T0234
+request.theorem_ids       # AIRA-T0171,AIRA-T0172,AIRA-T0234,AIRA-T0235
 request.tolerance_rule    # tolerance < fullTurn * requestedMargin
 ```
 
@@ -599,7 +604,7 @@ For the diagnostic prefix preset `[6, 9, 13, 18]` at context `128`, `AIRA-T0188`
 
 The per-channel single-period counts are exact for each individual integer period; they are not all-channel bank counts. `AIRA-T0204` proves the threshold condition for one positive period: no unequal in-context collision exists exactly when the context length is at most the period. `AIRA-T0203` proves the zero-count interpretation, and `AIRA-T0205` proves the positive-count interpretation: nonzero means there is an actual unequal in-context collision witness in that one channel. `AIRA-T0206` and `AIRA-T0207` give the first-repeat-only closed form and the count-`1` one-token-past-boundary case; `AIRA-T0210` proves that `(context - 1) / period` is exactly the number of positive period multiples that can contribute, `AIRA-T0211` proves the executable count loop may sum over only those multiples, `AIRA-T0212` proves the doubled triangular closed-form numerator for that loop, and `AIRA-T0213` proves the exact divided closed form.
 
-The real-valued formal work has begun with an unwrapped phase-gap formula (`AIRA-T0029`), lower-bound precursor (`AIRA-T0030`), one-turn endpoint-error precursor (`AIRA-T0031`), nonnegative full-turn-multiple precursor (`AIRA-T0032`), signed full-turn-multiple precursor (`AIRA-T0033`), turn-separation predicate (`AIRA-T0037`), no-near-turn consequence (`AIRA-T0038`), finite bank-level no-near-turn bridge (`AIRA-T0039`, `AIRA-T0040`), turn-ratio Diophantine scaling bridge (`AIRA-T0041`), finite-context margin consequence (`AIRA-T0042`), bank finite-context margin consequence (`AIRA-T0043`), finite-context monotonicity (`AIRA-T0044`), bank-level certified-context transfer (`AIRA-T0045`), conservative margin downgrade (`AIRA-T0047`), combined context-plus-margin bank transfer (`AIRA-T0050`), integer-turn-ratio and natural-rational-turn-ratio no-positive-margin guardrails (`AIRA-T0053`, `AIRA-T0055`), a positive reduced-rational finite-context certificate before the denominator gap (`AIRA-T0056`), an exact reduced-rational denominator-boundary iff (`AIRA-T0057`), generated-gap finite-enumeration bridge (`AIRA-T0054`), floor/ceiling nearest-integer witness bridge (`AIRA-T0058`, `AIRA-T0059`), scalar nearest-gap margin bridge (`AIRA-T0182`, `AIRA-T0183`), exact weakest-gap report bridge (`AIRA-T0214`, `AIRA-T0215`), finite certificate equivalence (`AIRA-T0177`), positive-margin no-zero-error bridge (`AIRA-T0186`), negative obstruction equivalence (`AIRA-T0178`), one-channel scaled no-near-turn equivalence (`AIRA-T0181`), certificate-object no-near-turn equivalence (`AIRA-T0196`), finite-certificate bank bridge (`AIRA-T0197`), the named rational/discretized `1/4099` certificate and no-zero witness bridge (`AIRA-T0060` through `AIRA-T0062`, `AIRA-T0185`, `AIRA-T0187`), the reusable `1/d` exact weakest-gap family (`AIRA-T0222`, `AIRA-T0223`), the generic reduced-rational modular-inverse exact-gap report family (`AIRA-T0224` through `AIRA-T0226`), the full-denominator reduced-rational exact-gap existence, exact-threshold, and request-obstruction theorems (`AIRA-T0227` through `AIRA-T0229`), the generic exact-weakest request-threshold theorems (`AIRA-T0230`, `AIRA-T0231`), interval-certificate margin monotonicity (`AIRA-T0077`, `AIRA-T0078`), the standard channel-0 seed family through D14 (`AIRA-T0063` through `AIRA-T0138`), the rational-band compression route (`AIRA-T0139` through `AIRA-T0141`), the generated D15/D16 32k/64k certificates and bank bridges (`AIRA-T0142` through `AIRA-T0153`), the generated D17 128k certificate, obstruction, bank bridges, and bracket (`AIRA-T0154` through `AIRA-T0161`), the generated D18 160k certificate, bank bridges, and bracket (`AIRA-T0162` through `AIRA-T0167`), the generated D19 192k certificate, bank bridges, and endpoint bracket (`AIRA-T0168` through `AIRA-T0173`), the generic context-range bracket bridge (`AIRA-T0209`), the D19 context-range bracket (`AIRA-T0208`), the request-level D19 classifier (`AIRA-T0216`, `AIRA-T0217`), its threshold-order/disjoint-branch consistency guards (`AIRA-T0218`, `AIRA-T0219`), the exact open-gap/exhaustive-status theorems (`AIRA-T0220`, `AIRA-T0221`), the in-range semantic trichotomy theorem (`AIRA-T0233`), the proved-branch first-channel bank-transfer theorem (`AIRA-T0234`), and the exact open-gap width theorem (`AIRA-T0232`). The longest proved standard seed is still channel-0 based; it is not a full all-channel bank theorem or a continued-fraction theorem.
+The real-valued formal work has begun with an unwrapped phase-gap formula (`AIRA-T0029`), lower-bound precursor (`AIRA-T0030`), one-turn endpoint-error precursor (`AIRA-T0031`), nonnegative full-turn-multiple precursor (`AIRA-T0032`), signed full-turn-multiple precursor (`AIRA-T0033`), turn-separation predicate (`AIRA-T0037`), no-near-turn consequence (`AIRA-T0038`), finite bank-level no-near-turn bridge (`AIRA-T0039`, `AIRA-T0040`), turn-ratio Diophantine scaling bridge (`AIRA-T0041`), finite-context margin consequence (`AIRA-T0042`), bank finite-context margin consequence (`AIRA-T0043`), finite-context monotonicity (`AIRA-T0044`), bank-level certified-context transfer (`AIRA-T0045`), conservative margin downgrade (`AIRA-T0047`), combined context-plus-margin bank transfer (`AIRA-T0050`), integer-turn-ratio and natural-rational-turn-ratio no-positive-margin guardrails (`AIRA-T0053`, `AIRA-T0055`), a positive reduced-rational finite-context certificate before the denominator gap (`AIRA-T0056`), an exact reduced-rational denominator-boundary iff (`AIRA-T0057`), generated-gap finite-enumeration bridge (`AIRA-T0054`), floor/ceiling nearest-integer witness bridge (`AIRA-T0058`, `AIRA-T0059`), scalar nearest-gap margin bridge (`AIRA-T0182`, `AIRA-T0183`), exact weakest-gap report bridge (`AIRA-T0214`, `AIRA-T0215`), finite certificate equivalence (`AIRA-T0177`), positive-margin no-zero-error bridge (`AIRA-T0186`), negative obstruction equivalence (`AIRA-T0178`), one-channel scaled no-near-turn equivalence (`AIRA-T0181`), certificate-object no-near-turn equivalence (`AIRA-T0196`), finite-certificate bank bridge (`AIRA-T0197`), the named rational/discretized `1/4099` certificate and no-zero witness bridge (`AIRA-T0060` through `AIRA-T0062`, `AIRA-T0185`, `AIRA-T0187`), the reusable `1/d` exact weakest-gap family (`AIRA-T0222`, `AIRA-T0223`), the generic reduced-rational modular-inverse exact-gap report family (`AIRA-T0224` through `AIRA-T0226`), the full-denominator reduced-rational exact-gap existence, exact-threshold, and request-obstruction theorems (`AIRA-T0227` through `AIRA-T0229`), the generic exact-weakest request-threshold theorems (`AIRA-T0230`, `AIRA-T0231`), interval-certificate margin monotonicity (`AIRA-T0077`, `AIRA-T0078`), the standard channel-0 seed family through D14 (`AIRA-T0063` through `AIRA-T0138`), the rational-band compression route (`AIRA-T0139` through `AIRA-T0141`), the generated D15/D16 32k/64k certificates and bank bridges (`AIRA-T0142` through `AIRA-T0153`), the generated D17 128k certificate, obstruction, bank bridges, and bracket (`AIRA-T0154` through `AIRA-T0161`), the generated D18 160k certificate, bank bridges, and bracket (`AIRA-T0162` through `AIRA-T0167`), the generated D19 192k certificate, bank bridges, and endpoint bracket (`AIRA-T0168` through `AIRA-T0173`), the generic context-range bracket bridge (`AIRA-T0209`), the D19 context-range bracket (`AIRA-T0208`), the request-level D19 classifier (`AIRA-T0216`, `AIRA-T0217`), its threshold-order/disjoint-branch consistency guards (`AIRA-T0218`, `AIRA-T0219`), the exact open-gap/exhaustive-status theorems (`AIRA-T0220`, `AIRA-T0221`), the in-range semantic trichotomy theorem (`AIRA-T0233`), the proved-branch first-channel bank-transfer theorem (`AIRA-T0234`), the context-wide first-channel pair-scope theorem (`AIRA-T0235`), and the exact open-gap width theorem (`AIRA-T0232`). The longest proved standard seed is still channel-0 based; it is not a full all-channel bank theorem or a continued-fraction theorem.
 
 </details>
 
@@ -620,6 +625,8 @@ The lesson keeps only the cards needed to follow the proof chain while reading. 
 <div class="theorem-box" data-theorem-id="AIRA-T0217"></div>
 <div class="theorem-box" data-theorem-id="AIRA-T0233"></div>
 <div class="theorem-box" data-theorem-id="AIRA-T0234"></div>
+
+<div class="theorem-box" data-theorem-id="AIRA-T0235"></div>
 
 ## Dictionary
 

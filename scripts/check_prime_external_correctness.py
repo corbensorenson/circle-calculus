@@ -231,7 +231,7 @@ def main() -> int:
 def parse_count_modes_argument(raw: str) -> list[str]:
     if raw.strip() == "all":
         return parse_circle_count_modes(
-            "segmented,balanced,dynamic,prefix-pi,presieve13,wheel30-mark,hybrid-wheel30-mark"
+            "segmented,balanced,dynamic,prefix-pi,presieve13,presieve17,wheel30-mark,hybrid-wheel30-mark"
         )
     return parse_circle_count_modes(raw)
 

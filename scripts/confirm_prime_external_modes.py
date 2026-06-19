@@ -28,7 +28,7 @@ DEFAULT_OUTPUT_JSON = RESULTS_DIR / "prime_engine_external_mode_confirmation_lat
 DEFAULT_OUTPUT_MD = RESULTS_DIR / "prime_engine_external_mode_confirmation_latest.md"
 DEFAULT_RANGES = "0:10000000,0:100000000,1000000000000:1000010000000"
 DEFAULT_COUNT_MODES = (
-    "segmented,balanced,dynamic,prefix-pi,presieve13,wheel30-mark,hybrid-wheel30-mark"
+    "segmented,balanced,dynamic,prefix-pi,presieve13,presieve17,wheel30-mark,hybrid-wheel30-mark"
 )
 
 

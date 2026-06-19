@@ -6,8 +6,8 @@ QUARTO_ENV := HOME="$(QUARTO_HOME)" DENO_DIR="$(QUARTO_DENO_DIR)"
 TARGETED_ARGS :=
 CIRCLE_PRIME_THREADS ?= 8
 EXTERNAL_PRIME_THREADS ?= $(CIRCLE_PRIME_THREADS)
-CIRCLE_PRIME_SEGMENT_SIZES ?= 0,32768,65536,98304,131072,196608,262144,524288,1048576,2097152,3145728,4194304
-CIRCLE_PRIME_TUNE_COUNT_MODES ?= segmented,balanced,dynamic,prefix-pi,wheel30-mark,hybrid-wheel30-mark
+CIRCLE_PRIME_SEGMENT_SIZES ?= 0,32768,65536,98304,131072,196608,262144,524288,1048576,1310720,1376256,1441792,1507328,1572864,2097152,2359296,2621440,3145728,4194304
+CIRCLE_PRIME_TUNE_COUNT_MODES ?= segmented,balanced,dynamic,prefix-pi,presieve13,presieve17,wheel30-mark,hybrid-wheel30-mark
 CIRCLE_PRIME_BENCH_ONLY ?= scalar,next
 CIRCLE_PRIME_BENCH_NAMES ?= scalar_u64_batch,next_prime_search
 CIRCLE_PRIME_BENCH_ROUNDS ?= 7
@@ -24,11 +24,17 @@ CIRCLE_PRIME_EXTERNAL_COMPARE_SAMPLES ?= sidecars/PRIME_ENGINE/results/prime_eng
 CIRCLE_PRIME_EXTERNAL_COMPARE_METADATA ?= sidecars/PRIME_ENGINE/results/prime_engine_external_controls_candidate_latest.json
 CIRCLE_PRIME_HIGH_OFFSET_COMPARE_RANGES ?= 1000000000000:1000010000000
 CIRCLE_PRIME_HIGH_OFFSET_COMPARE_ROUNDS ?= 25
-CIRCLE_PRIME_HIGH_OFFSET_COMPARE_SEGMENT_SIZES ?= 786432,1048576,1310720,1572864,1835008,2097152,2621440,3145728
-CIRCLE_PRIME_HIGH_OFFSET_COMPARE_COUNT_MODES ?= default,segmented,dynamic,balanced
+CIRCLE_PRIME_HIGH_OFFSET_COMPARE_SEGMENT_SIZES ?= 786432,1048576,1310720,1376256,1441792,1507328,1572864,1835008,2097152,2621440,3145728
+CIRCLE_PRIME_HIGH_OFFSET_COMPARE_COUNT_MODES ?= default,segmented,dynamic,balanced,presieve13,presieve17
 CIRCLE_PRIME_HIGH_OFFSET_COMPARE_OUTPUT ?= sidecars/PRIME_ENGINE/results/prime_engine_high_offset_compare_latest.csv
 CIRCLE_PRIME_HIGH_OFFSET_COMPARE_SAMPLES ?= sidecars/PRIME_ENGINE/results/prime_engine_high_offset_compare_samples_latest.csv
 CIRCLE_PRIME_HIGH_OFFSET_COMPARE_METADATA ?= sidecars/PRIME_ENGINE/results/prime_engine_high_offset_compare_latest.json
+CIRCLE_PRIME_HIGH_OFFSET_QUICK_ROUNDS ?= 13
+CIRCLE_PRIME_HIGH_OFFSET_QUICK_SEGMENT_SIZES ?= 1310720,1376256,1441792,1507328
+CIRCLE_PRIME_HIGH_OFFSET_QUICK_COUNT_MODES ?= segmented,presieve13,presieve17
+CIRCLE_PRIME_HIGH_OFFSET_QUICK_OUTPUT ?= sidecars/PRIME_ENGINE/results/prime_engine_high_offset_quick_latest.csv
+CIRCLE_PRIME_HIGH_OFFSET_QUICK_SAMPLES ?= sidecars/PRIME_ENGINE/results/prime_engine_high_offset_quick_samples_latest.csv
+CIRCLE_PRIME_HIGH_OFFSET_QUICK_METADATA ?= sidecars/PRIME_ENGINE/results/prime_engine_high_offset_quick_latest.json
 CIRCLE_PRIME_EXTERNAL_MODE_CONFIRM_RUNS ?= 3
 CIRCLE_PRIME_EXTERNAL_MODE_CONFIRM_MIN ?= 2
 CIRCLE_PRIME_EXTERNAL_MODE_CONFIRM_FAIL ?=
@@ -83,7 +89,7 @@ ifneq ($(strip $(TARGETED_FILES)),)
 TARGETED_ARGS += --files $(TARGETED_FILES)
 endif
 
-.PHONY: check sourcecheck targeted-check targeted-check-list targeted-check-json targeted-check-full lean sidecarlean test manifest leannamecheck dictionary papermanifest paperlinks papersources researchmanifests capabilityshowcase claimlanguage phase4targets phase5targets phase6targets phase7targets phase8targets applicationguardrails glyphfixtures dimensioncheck dimensionindex dimensionimports dimensionmanifests dimensionpaperlinks nofake proofdepthaudit examples prime-engine-check prime-engine-benchmark prime-engine-benchmark-record prime-engine-benchmark-compare prime-engine-external-correctness prime-engine-external-controls prime-engine-external-controls-parallel prime-engine-external-controls-compare prime-engine-external-next prime-engine-external-next-compare prime-engine-external-throughput prime-engine-external-segment-sweep prime-engine-external-mode-sweep prime-engine-external-mode-confirm prime-engine-calibrate-defaults prime-engine-calibrate-defaults-check prime-engine-tune prime-engine-tune-night prime-engine-report prime-engine-overnight prime-engine-overnight-improve circle-ai-contracts circle-ai-contracts-check circle-ai-contracts-ready recurrence-schedule-certify strided-candidate-fanout-certify cyclic-memory-certify multicoil-phase-feature-certify circulant-block-cyclic-mixer-certify seed-rule-certify theseus-ai-contracts theseus-ai-feedback site-data sitenavcontract capabilitycontracts sitecheck quarto-dirs site-render site-render-check site-preview living-book-check
+.PHONY: check sourcecheck targeted-check targeted-check-list targeted-check-json targeted-check-full lean sidecarlean test manifest leannamecheck dictionary papermanifest paperlinks papersources researchmanifests capabilityshowcase claimlanguage phase4targets phase5targets phase6targets phase7targets phase8targets applicationguardrails glyphfixtures dimensioncheck dimensionindex dimensionimports dimensionmanifests dimensionpaperlinks nofake proofdepthaudit examples prime-engine-check prime-engine-benchmark prime-engine-benchmark-record prime-engine-benchmark-compare prime-engine-external-correctness prime-engine-external-controls prime-engine-external-controls-parallel prime-engine-external-controls-compare prime-engine-high-offset-quick prime-engine-high-offset-compare prime-engine-external-next prime-engine-external-next-compare prime-engine-external-throughput prime-engine-external-segment-sweep prime-engine-external-mode-sweep prime-engine-external-mode-confirm prime-engine-calibrate-defaults prime-engine-calibrate-defaults-check prime-engine-tune prime-engine-tune-night prime-engine-report prime-engine-overnight prime-engine-overnight-improve circle-ai-contracts circle-ai-contracts-check circle-ai-contracts-ready recurrence-schedule-certify strided-candidate-fanout-certify cyclic-memory-certify multicoil-phase-feature-certify circulant-block-cyclic-mixer-certify seed-rule-certify theseus-ai-contracts theseus-ai-feedback site-data sitenavcontract capabilitycontracts sitecheck quarto-dirs site-render site-render-check site-preview living-book-check
 
 check: lean sourcecheck
 
@@ -196,7 +202,7 @@ prime-engine-benchmark-compare:
 	python scripts/compare_prime_engine_benchmarks.py $(CIRCLE_PRIME_BENCH_CANDIDATE) $(CIRCLE_PRIME_BENCH_COMPARE_ARGS)
 
 prime-engine-external-correctness:
-	python scripts/check_prime_external_correctness.py --require-tool primesieve --require-tool primecount --circle-count-modes all --segment-sizes 0,65536,196608,4194304 --output sidecars/PRIME_ENGINE/results/prime_engine_external_correctness_latest.json
+	python scripts/check_prime_external_correctness.py --require-tool primesieve --require-tool primecount --circle-count-modes all --segment-sizes 0,65536,196608,1310720,1441792,1507328,2621440,4194304 --output sidecars/PRIME_ENGINE/results/prime_engine_external_correctness_latest.json
 
 prime-engine-external-controls:
 	python scripts/benchmark_prime_external_controls.py --rounds 7 --interleaved --require-tool primesieve --require-tool primecount --circle-count-modes default --output sidecars/PRIME_ENGINE/results/prime_engine_external_controls_latest.csv --sample-output sidecars/PRIME_ENGINE/results/prime_engine_external_controls_samples_latest.csv --metadata-output sidecars/PRIME_ENGINE/results/prime_engine_external_controls_latest.json
@@ -210,6 +216,9 @@ prime-engine-external-controls-compare:
 
 prime-engine-high-offset-compare:
 	python scripts/benchmark_prime_external_controls.py --ranges $(CIRCLE_PRIME_HIGH_OFFSET_COMPARE_RANGES) --rounds $(CIRCLE_PRIME_HIGH_OFFSET_COMPARE_ROUNDS) --interleaved --require-tool primesieve --require-tool primecount --circle-threads $(CIRCLE_PRIME_THREADS) --external-threads $(EXTERNAL_PRIME_THREADS) --segment-sizes $(CIRCLE_PRIME_HIGH_OFFSET_COMPARE_SEGMENT_SIZES) --circle-count-modes $(CIRCLE_PRIME_HIGH_OFFSET_COMPARE_COUNT_MODES) --output $(CIRCLE_PRIME_HIGH_OFFSET_COMPARE_OUTPUT) --sample-output $(CIRCLE_PRIME_HIGH_OFFSET_COMPARE_SAMPLES) --metadata-output $(CIRCLE_PRIME_HIGH_OFFSET_COMPARE_METADATA)
+
+prime-engine-high-offset-quick:
+	python scripts/benchmark_prime_external_controls.py --ranges $(CIRCLE_PRIME_HIGH_OFFSET_COMPARE_RANGES) --rounds $(CIRCLE_PRIME_HIGH_OFFSET_QUICK_ROUNDS) --interleaved --require-tool primesieve --require-tool primecount --circle-threads $(CIRCLE_PRIME_THREADS) --external-threads $(EXTERNAL_PRIME_THREADS) --segment-sizes $(CIRCLE_PRIME_HIGH_OFFSET_QUICK_SEGMENT_SIZES) --circle-count-modes $(CIRCLE_PRIME_HIGH_OFFSET_QUICK_COUNT_MODES) --output $(CIRCLE_PRIME_HIGH_OFFSET_QUICK_OUTPUT) --sample-output $(CIRCLE_PRIME_HIGH_OFFSET_QUICK_SAMPLES) --metadata-output $(CIRCLE_PRIME_HIGH_OFFSET_QUICK_METADATA)
 
 prime-engine-external-next:
 	python scripts/benchmark_prime_external_next.py --starts $(CIRCLE_PRIME_EXTERNAL_NEXT_STARTS) --rounds $(CIRCLE_PRIME_EXTERNAL_NEXT_ROUNDS) --batch-size $(CIRCLE_PRIME_EXTERNAL_NEXT_BATCH_SIZE) --external-threads $(EXTERNAL_PRIME_THREADS) --require-tool primesieve --output sidecars/PRIME_ENGINE/results/prime_engine_external_next_latest.csv --sample-output sidecars/PRIME_ENGINE/results/prime_engine_external_next_samples_latest.csv --metadata-output sidecars/PRIME_ENGINE/results/prime_engine_external_next_latest.json
@@ -225,18 +234,18 @@ prime-engine-external-segment-sweep:
 	python scripts/benchmark_prime_external_controls.py --rounds 5 --interleaved --require-tool primesieve --require-tool primecount --circle-threads $(CIRCLE_PRIME_THREADS) --external-threads $(EXTERNAL_PRIME_THREADS) --segment-sizes $(CIRCLE_PRIME_SEGMENT_SIZES) --output sidecars/PRIME_ENGINE/results/prime_engine_external_segment_sweep_latest.csv --sample-output sidecars/PRIME_ENGINE/results/prime_engine_external_segment_sweep_samples_latest.csv --metadata-output sidecars/PRIME_ENGINE/results/prime_engine_external_segment_sweep_latest.json
 
 prime-engine-external-mode-sweep:
-	python scripts/benchmark_prime_external_controls.py --rounds 5 --interleaved --require-tool primesieve --require-tool primecount --circle-threads $(CIRCLE_PRIME_THREADS) --external-threads $(EXTERNAL_PRIME_THREADS) --circle-count-modes segmented,balanced,dynamic,prefix-pi,presieve13,wheel30-mark,hybrid-wheel30-mark --output sidecars/PRIME_ENGINE/results/prime_engine_external_mode_sweep_latest.csv --sample-output sidecars/PRIME_ENGINE/results/prime_engine_external_mode_sweep_samples_latest.csv --metadata-output sidecars/PRIME_ENGINE/results/prime_engine_external_mode_sweep_latest.json
+	python scripts/benchmark_prime_external_controls.py --rounds 5 --interleaved --require-tool primesieve --require-tool primecount --circle-threads $(CIRCLE_PRIME_THREADS) --external-threads $(EXTERNAL_PRIME_THREADS) --circle-count-modes segmented,balanced,dynamic,prefix-pi,presieve13,presieve17,wheel30-mark,hybrid-wheel30-mark --output sidecars/PRIME_ENGINE/results/prime_engine_external_mode_sweep_latest.csv --sample-output sidecars/PRIME_ENGINE/results/prime_engine_external_mode_sweep_samples_latest.csv --metadata-output sidecars/PRIME_ENGINE/results/prime_engine_external_mode_sweep_latest.json
 
 prime-engine-external-mode-confirm:
 	python scripts/confirm_prime_external_modes.py $(CIRCLE_PRIME_EXTERNAL_MODE_CONFIRM_ARGS)
 
 prime-engine-calibrate-defaults:
 	cargo build --release -p circle-prime --bin circle-prime
-	python scripts/calibrate_prime_engine_defaults.py
+	python scripts/calibrate_prime_engine_defaults.py --external-high-offset-quick $(CIRCLE_PRIME_HIGH_OFFSET_QUICK_OUTPUT) --external-high-offset-quick-metadata $(CIRCLE_PRIME_HIGH_OFFSET_QUICK_METADATA)
 
 prime-engine-calibrate-defaults-check:
 	cargo build --release -p circle-prime --bin circle-prime
-	python scripts/calibrate_prime_engine_defaults.py --fail-on-drift
+	python scripts/calibrate_prime_engine_defaults.py --external-high-offset-quick $(CIRCLE_PRIME_HIGH_OFFSET_QUICK_OUTPUT) --external-high-offset-quick-metadata $(CIRCLE_PRIME_HIGH_OFFSET_QUICK_METADATA) --fail-on-drift
 
 prime-engine-apply-defaults:
 	python scripts/apply_prime_engine_defaults.py
@@ -245,10 +254,10 @@ prime-engine-apply-defaults-check:
 	python scripts/apply_prime_engine_defaults.py --check
 
 prime-engine-tune:
-	python scripts/tune_prime_engine.py --rounds 9 --ranges 0:1000000,0:10000000,0:100000000,1000000000000:1000010000000 --segment-sizes 32768,65536,98304,131072,196608,262144,524288,1048576,2097152,3145728,4194304 --thread-counts 1,2,4,8 --count-modes $(CIRCLE_PRIME_TUNE_COUNT_MODES)
+	python scripts/tune_prime_engine.py --rounds 9 --ranges 0:1000000,0:10000000,0:100000000,1000000000000:1000010000000 --segment-sizes 32768,65536,98304,131072,196608,262144,524288,1048576,1310720,1376256,1441792,1507328,1572864,2097152,2359296,2621440,3145728,4194304 --thread-counts 1,2,4,8 --count-modes $(CIRCLE_PRIME_TUNE_COUNT_MODES)
 
 prime-engine-tune-night:
-	python scripts/tune_prime_engine.py --seconds 28800 --rounds 5 --ranges 0:1000000,0:10000000,1000000000:1010000000,100000000000:100010000000,1000000000000:1000010000000 --segment-sizes 32768,65536,131072,196608,262144,524288,1048576,2097152,3145728,4194304 --thread-counts 1,2,3,4,8 --count-modes $(CIRCLE_PRIME_TUNE_COUNT_MODES)
+	python scripts/tune_prime_engine.py --seconds 28800 --rounds 5 --ranges 0:1000000,0:10000000,1000000000:1010000000,100000000000:100010000000,1000000000000:1000010000000 --segment-sizes 32768,65536,131072,196608,262144,524288,1048576,1310720,1376256,1441792,1507328,1572864,2097152,2359296,2621440,3145728,4194304 --thread-counts 1,2,3,4,8 --count-modes $(CIRCLE_PRIME_TUNE_COUNT_MODES)
 
 prime-engine-report:
 	python scripts/report_prime_engine_results.py --require-inputs
@@ -321,8 +330,8 @@ circle-ai-contracts-ready: circle-ai-contracts-check
 	python scripts/circle_ai_contract_ready.py --print-refreshed-policy >/dev/null
 	python scripts/circle_ai_contract_ready.py --kind seed_rule_exact_regeneration --action-plan --include-values --format json >/dev/null
 	python scripts/circle_ai_contract_ready.py --kind rope_position_distinguishability
-	python scripts/circle_ai_contract_ready.py --kind rope_position_distinguishability --digest --format json --field d19_proved_request_status --field d19_impossible_request_status --field d19_undecided_request_status --field d19_proved_first_channel_bank_transfer --field d19_proved_first_channel_bank_shape --field d19_proved_first_channel_bank_tolerance_rule --include-recommendations >/dev/null
-	python scripts/circle_ai_contract_ready.py --kind rope_position_distinguishability --receipt --format json --field d19_proved_request_status --field d19_impossible_request_status --field d19_undecided_request_status --field d19_proved_first_channel_bank_transfer --field d19_proved_first_channel_bank_shape --field d19_proved_first_channel_bank_tolerance_rule --require-theorem AIRA-T0171 --require-theorem AIRA-T0172 --require-theorem AIRA-T0234 --require-recommendation ROPE-USE-D19-MARGIN-FRONTIER --require-recommendation-evidence-field ROPE-USE-D19-MARGIN-FRONTIER=d19_proved_first_channel_bank_transfer --require-recommendation-theorem ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0234 --require-recommendation-action-parameter ROPE-USE-D19-MARGIN-FRONTIER=proved_branch_bank_transfer --require-recommendation-action-parameter-path ROPE-USE-D19-MARGIN-FRONTIER=proved_branch_bank_transfer.applies --require-recommendation-action-parameter-path ROPE-USE-D19-MARGIN-FRONTIER=proved_branch_bank_transfer.theorem_ids >/dev/null
+	python scripts/circle_ai_contract_ready.py --kind rope_position_distinguishability --digest --format json --field d19_proved_request_status --field d19_impossible_request_status --field d19_undecided_request_status --field d19_proved_first_channel_bank_transfer --field d19_proved_first_channel_bank_shape --field d19_proved_first_channel_pair_scope --field d19_proved_first_channel_context_wide_contract --field d19_proved_first_channel_bank_tolerance_rule --include-recommendations >/dev/null
+	python scripts/circle_ai_contract_ready.py --kind rope_position_distinguishability --receipt --format json --field d19_proved_request_status --field d19_impossible_request_status --field d19_undecided_request_status --field d19_proved_first_channel_bank_transfer --field d19_proved_first_channel_bank_shape --field d19_proved_first_channel_pair_scope --field d19_proved_first_channel_context_wide_contract --field d19_proved_first_channel_bank_tolerance_rule --require-theorem AIRA-T0171 --require-theorem AIRA-T0172 --require-theorem AIRA-T0234 --require-theorem AIRA-T0235 --require-recommendation ROPE-USE-D19-MARGIN-FRONTIER --require-recommendation-evidence-field ROPE-USE-D19-MARGIN-FRONTIER=d19_proved_first_channel_bank_transfer --require-recommendation-evidence-field ROPE-USE-D19-MARGIN-FRONTIER=d19_proved_first_channel_context_wide_contract --require-recommendation-theorem ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0234 --require-recommendation-theorem ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0235 --require-recommendation-action-parameter ROPE-USE-D19-MARGIN-FRONTIER=proved_branch_bank_transfer --require-recommendation-action-parameter-path ROPE-USE-D19-MARGIN-FRONTIER=proved_branch_bank_transfer.applies --require-recommendation-action-parameter-path ROPE-USE-D19-MARGIN-FRONTIER=proved_branch_bank_transfer.context_wide_contract --require-recommendation-action-parameter-path ROPE-USE-D19-MARGIN-FRONTIER=proved_branch_bank_transfer.theorem_ids >/dev/null
 	python scripts/circle_ai_contract_ready.py --kind kv_cache_ring_buffer
 	python scripts/circle_ai_contract_ready.py --kind kv_cache_ring_buffer --digest --field stale_probe_first_stale_token --field stale_probe_stale_requested_count
 	python scripts/circle_ai_contract_ready.py --kind kv_cache_ring_buffer --receipt --format json --field stale_probe_first_stale_token --field sink_tokens_retained_by_policy --field sink_window_exact_policy --field sink_window_tokens_distinct --field sink_prefix_disjoint_from_live_window --field sink_tokens_outside_ordinary_rolling_window --require-theorem AIM-T0103 --require-theorem AIM-T0104 --require-theorem AIM-T0149 --require-recommendation KV-DROP-STALE-REQUEST-TOKEN --require-recommendation KV-USE-SINK-ROLLING-WINDOW-REQUEST --require-recommendation-evidence-field KV-DROP-STALE-REQUEST-TOKEN=stale_probe_first_stale_token --require-recommendation-evidence-field KV-USE-SINK-ROLLING-WINDOW-REQUEST=sink_tokens_retained_by_policy --require-recommendation-evidence-field KV-USE-SINK-ROLLING-WINDOW-REQUEST=sink_tokens_outside_ordinary_rolling_window --require-recommendation-theorem KV-DROP-STALE-REQUEST-TOKEN=AIM-T0103 --require-recommendation-theorem KV-USE-SINK-ROLLING-WINDOW-REQUEST=AIM-T0149 --require-recommendation-action-parameter KV-DROP-STALE-REQUEST-TOKEN=target_token --require-recommendation-action-parameter KV-USE-SINK-ROLLING-WINDOW-REQUEST=sink_size --require-recommendation-action-parameter-path KV-DROP-STALE-REQUEST-TOKEN=target_token --require-recommendation-action-parameter-path KV-USE-SINK-ROLLING-WINDOW-REQUEST=sink_size --require-recommendation-action-parameter-path KV-USE-SINK-ROLLING-WINDOW-REQUEST=request_token_count --require-recommendation-action-parameter-path KV-USE-SINK-ROLLING-WINDOW-REQUEST=request_token_count_bound --require-recommendation-action-parameter-path KV-USE-SINK-ROLLING-WINDOW-REQUEST=cache_size --require-recommendation-action-parameter-path KV-USE-SINK-ROLLING-WINDOW-REQUEST=current >/dev/null

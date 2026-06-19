@@ -83,18 +83,29 @@ STRICT_ROPE_RECEIPT_TOKENS = (
     "--field d19_undecided_request_status",
     "--field d19_proved_first_channel_bank_transfer",
     "--field d19_proved_first_channel_bank_shape",
+    "--field d19_proved_first_channel_pair_scope",
+    "--field d19_proved_first_channel_context_wide_contract",
     "--field d19_proved_first_channel_bank_tolerance_rule",
     "--require-theorem AIRA-T0171",
     "--require-theorem AIRA-T0172",
     "--require-theorem AIRA-T0234",
+    "--require-theorem AIRA-T0235",
     "--require-recommendation ROPE-USE-D19-MARGIN-FRONTIER",
     (
         "--require-recommendation-evidence-field "
         "ROPE-USE-D19-MARGIN-FRONTIER=d19_proved_first_channel_bank_transfer"
     ),
     (
+        "--require-recommendation-evidence-field "
+        "ROPE-USE-D19-MARGIN-FRONTIER=d19_proved_first_channel_context_wide_contract"
+    ),
+    (
         "--require-recommendation-theorem "
         "ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0234"
+    ),
+    (
+        "--require-recommendation-theorem "
+        "ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0235"
     ),
     (
         "--require-recommendation-action-parameter "
@@ -103,6 +114,11 @@ STRICT_ROPE_RECEIPT_TOKENS = (
     (
         "--require-recommendation-action-parameter-path "
         "ROPE-USE-D19-MARGIN-FRONTIER=proved_branch_bank_transfer.applies"
+    ),
+    (
+        "--require-recommendation-action-parameter-path "
+        "ROPE-USE-D19-MARGIN-FRONTIER="
+        "proved_branch_bank_transfer.context_wide_contract"
     ),
     (
         "--require-recommendation-action-parameter-path "

@@ -58,8 +58,8 @@ looks complete.
 `make prime-engine-check` compiles the Rust crate, exercises representative CLI
 classification/count commands, and runs
 `scripts/check_prime_proof_contract.py` so the JSON `proof_contract` emitted by
-the Rust CLI must match the proved theorem ids and Lean names in
-`manifests/theorem_manifest.yaml`.
+the Rust CLI, plus the `count_proof_contract` emitted by count JSON, must match
+the proved theorem ids and Lean names in `manifests/theorem_manifest.yaml`.
 
 ## Current Guarantees
 
@@ -72,12 +72,21 @@ the Rust CLI must match the proved theorem ids and Lean names in
   candidate horizon is prime.
 - `CC-T0077`: every non-prime horizon has a contained primitive horizon up to
   `Nat.sqrt n`.
+- `CC-T0078`: membership in `primeHorizonsInRange low high` is exactly
+  `low <= n < high` plus `primeHorizon n`.
+- `CC-T0079`: `primeHorizonRangeCount low high` is the cardinality of the
+  half-open interval filtered by prime horizons.
 - JSON output from `circle-prime inspect`, `circle-prime test`,
   `circle-prime recommend --json`, and `circle-prime range --json` includes a
   `proof_contract` object naming the Lean module and theorem ids behind the
   prime-horizon interpretation. This metadata is deliberately a contract link:
   Lean proves the horizon/divisibility equivalence, while Rust supplies exact
   `u64` arithmetic, sieving, and deterministic Miller-Rabin classification.
+- Count JSON from `circle-prime recommend --count --json` and
+  `circle-prime range ... --count --json` also includes
+  `count_proof_contract`, which points at the finite half-open range-count spec
+  proved in Lean. This does not prove each Rust optimization internally; it
+  fixes the mathematical target every count mode must match.
 - Rust primality decisions for `u64` use exact arithmetic and the 7-base
   deterministic Miller-Rabin witness set for the full 64-bit domain:
   `{2, 325, 9375, 28178, 450775, 9780504, 1795265022}`.
@@ -108,14 +117,13 @@ the Rust CLI must match the proved theorem ids and Lean names in
 - Count-only CLI runs can use `--threads N`. The value is a maximum worker
   count: the engine caps actual workers to the number of useful segments for
   the range. When no explicit `--segment-size` is provided, count-only threaded
-  prefix-style ranges use command-level tuned defaults: `65536` up to
-  about 16M and `196608` up to about 128M.
-  Very-high-offset threaded counts with small spans use a tuned `4194304`
-  default to balance useful worker chunks against repeated high-offset cursor
-  setup. The current calibrated count modes are `dynamic` for the small-prefix
-  threaded bucket, `segmented` for the medium-prefix bucket, and `balanced` for
-  the very-high-offset bucket. Other ranges keep the conservative single-thread
-  default.
+  prefix-style ranges use command-level tuned defaults: `262144` up to
+  about 2M, `65536` up to about 16M, and `196608` up to about 128M.
+  True prefix buckets use the exact `prefix-pi` counter. Very-high-offset
+  threaded counts with small spans use a tuned `1310720` default and the
+  threaded `presieve13` count mode, which currently gives the best short-run
+  command-level result against `primesieve` without claiming parity. Other
+  ranges keep the conservative segmented default.
   The threaded-count values live in
   `rust/circle-prime/prime_engine_defaults.json`; Cargo's build script renders
   them into Rust constants, and the CLI tests read the same JSON.
@@ -207,14 +215,24 @@ Current CPU findings:
 - Reusable pre-sieving through 19 is a measured warm-run win. Rebuilding large
   pre-sieve patterns per segment was a loss; the table is now generated at
   build time and embedded with `include_bytes!`.
-- A smaller cache-resident pre-sieve through 13 is kept as an experimental row.
-  It was correct but slower on sustained rows because marking 17/19 costs more
-  than the cache benefit of the smaller table on the current CPU.
+- A smaller cache-resident pre-sieve through 13 is available as `presieve13`.
+  Its original single-thread row was slower on sustained rows because marking
+  17/19 cost more than the cache benefit. The threaded variant is now promoted
+  only for the narrow very-high-offset default, where command-level comparisons
+  favor the smaller table over the larger 19-prime pre-sieve.
+- A middle-sized pre-sieve through 17 is available as `presieve17`. It avoids
+  marking multiples of 17 while staying much smaller than the 19-prime table,
+  but the latest high-offset external comparison did not beat the promoted
+  `presieve13` default, so it remains an experimental sweep mode.
 - Carrying per-prime cursor state across segments is a measured win because it
   removes repeated per-prime ceil-division setup.
 - Single-segment count chunks skip cursor-vector allocation and mark directly
   from the base-prime table. This is mainly for command-level parallel chunks
   and high-offset slices whose effective worker chunk fits inside one segment.
+- The high-offset odd-byte marker now switches to sparse writes at
+  `flags.len() / 4` instead of the older `/8` cutoff. Focused external-control
+  sweeps kept correctness fixed and closed part of the remaining median
+  `primesieve` gap for the promoted `presieve13` high-offset lane.
 - A monotonic active-cursor boundary that skipped cursors whose square had not
   reached the current segment was correct but slower on the benchmark rows, so
   it was reverted rather than promoted.
@@ -271,9 +289,9 @@ Current CPU findings:
   defaults file now carries both segment-size and count-mode slots per tuned
   range; mode slots start conservatively and are promoted only when stable
   external-control calibration evidence favors another algorithm.
-  Very-high-offset small-span threaded counts use the `4194304` default because
-  the latest stable command-level median probes favored the larger segment and
-  three useful worker chunks over smaller chunks.
+  Very-high-offset small-span threaded counts use the `1310720` default with
+  `presieve13` because the latest focused command-level probes favored that
+  path over the previous dynamic odd-byte default.
 - The release benchmark also includes `[10^12, 10^12 + 10M)` high-offset rows:
   one conservative single-thread row, one explicit segmented count-threaded
   row, a hot-loop `parallel_high_offset_default_range_count_8t` row that
@@ -419,7 +437,7 @@ collecting timing samples. The default Makefile target requires both external
 tools and checks all exposed count modes across prefix, offset, and high-offset
 ranges, including windows that cross `2^32` and `10^12`, using the adaptive
 default plus representative tuned segment sizes
-`65536`, `196608`, and `4194304`. Use this as the fast external correctness
+`65536`, `196608`, `1310720`, `1441792`, `1507328`, `2621440`, and `4194304`. Use this as the fast external correctness
 gate; use the external-control targets below for timing evidence.
 
 `prime-engine-external-controls` writes:
@@ -567,7 +585,7 @@ For direct exploratory runs, `scripts/benchmark_prime_external_controls.py`
 also accepts `--circle-count-modes`. The script default remains `segmented` for
 backward-compatible direct runs; pass `default` to omit `--count-mode` and
 measure the current adaptive CLI default. Opt-in values `balanced`, `dynamic`,
-`prefix-pi`, `presieve13`, `wheel30-mark`, and `hybrid-wheel30-mark` expose the current
+`prefix-pi`, `presieve13`, `presieve17`, `wheel30-mark`, and `hybrid-wheel30-mark` expose the current
 experimental counters as separate Circle rows against the same
 `primesieve`/`primecount` command-level controls:
 
@@ -580,7 +598,7 @@ python scripts/benchmark_prime_external_controls.py \
   --require-tool primecount \
   --circle-threads 4 \
   --external-threads 4 \
-  --circle-count-modes default,segmented,dynamic,prefix-pi,hybrid-wheel30-mark,wheel30-mark,balanced,presieve13
+  --circle-count-modes default,segmented,dynamic,prefix-pi,hybrid-wheel30-mark,wheel30-mark,balanced,presieve13,presieve17
 ```
 
 `prime-engine-external-mode-sweep` records the durable version of that
@@ -594,7 +612,7 @@ sidecars/PRIME_ENGINE/results/prime_engine_external_mode_sweep_samples_latest.cs
 
 It keeps the adaptive Circle segment default fixed and sweeps the available
 count implementations: `segmented`, `balanced`, `dynamic`, `prefix-pi`,
-`presieve13`, `wheel30-mark`, and `hybrid-wheel30-mark`. Use it to decide which implementation family
+`presieve13`, `presieve17`, `wheel30-mark`, and `hybrid-wheel30-mark`. Use it to decide which implementation family
 deserves deeper work. Keep `prime-engine-external-segment-sweep` as the
 default-change gate for current segmented CLI defaults.
 
@@ -604,12 +622,28 @@ mode. It is promoted for true prefix-count buckets such as `[0, 1M)`,
 adaptive default beating both `primesieve` and `primecount`. It is deliberately
 not the high-offset default: high-offset intervals such as
 `[1e12, 1e12 + 1e7)` stay on the segmented-sieve family, currently the
-`dynamic` count mode with a tuned high-offset segment size.
+threaded `presieve13` count mode with a tuned high-offset segment size.
 
-`prime-engine-high-offset-compare` is the short-run target for the remaining
-`primesieve` gap. It isolates `[1e12, 1e12 + 1e7)`, sweeps the current
-high-offset segment-size neighborhood across `default`, `segmented`,
-`dynamic`, and `balanced`, and writes:
+`prime-engine-high-offset-quick` is the interactive scorecard for the remaining
+`primesieve` gap. It isolates `[1e12, 1e12 + 1e7)`, runs 13 interleaved rounds
+by default, and compares the current high-offset neighborhood
+`1310720,1376256,1441792,1507328` across `segmented`, `presieve13`, and `presieve17`.
+It writes:
+
+```text
+sidecars/PRIME_ENGINE/results/prime_engine_high_offset_quick_latest.csv
+sidecars/PRIME_ENGINE/results/prime_engine_high_offset_quick_latest.json
+sidecars/PRIME_ENGINE/results/prime_engine_high_offset_quick_samples_latest.csv
+```
+
+Use this target first when editing high-offset marker internals or defaults; it
+is short enough for interactive iteration and still compares against both
+current controls.
+
+`prime-engine-high-offset-compare` is the broader confirmation target for the
+same gap. It isolates `[1e12, 1e12 + 1e7)`, sweeps the larger high-offset
+segment-size neighborhood across `default`, `segmented`, `dynamic`, `balanced`,
+`presieve13`, and `presieve17`, and writes:
 
 ```text
 sidecars/PRIME_ENGINE/results/prime_engine_high_offset_compare_latest.csv
@@ -617,9 +651,9 @@ sidecars/PRIME_ENGINE/results/prime_engine_high_offset_compare_latest.json
 sidecars/PRIME_ENGINE/results/prime_engine_high_offset_compare_samples_latest.csv
 ```
 
-Use this target before changing high-offset defaults or marker internals; it is
-fast enough for interactive iteration and keeps `prime-engine-overnight` as a
-regression workflow rather than the default way to learn whether a change helped.
+Use the broader target before promoting a surprising winner into defaults; keep
+`prime-engine-overnight` as a regression workflow rather than the default way
+to learn whether a change helped.
 
 `prime-engine-external-mode-confirm` runs repeated interleaved external
 count-mode sweeps and writes:
@@ -639,7 +673,7 @@ them into adaptive defaults, for example:
 
 ```bash
 make prime-engine-external-mode-confirm \
-  CIRCLE_PRIME_EXTERNAL_MODE_CONFIRM_SEGMENT_SIZES=0,65536,98304,131072,196608,262144,3145728,4194304
+  CIRCLE_PRIME_EXTERNAL_MODE_CONFIRM_SEGMENT_SIZES=0,65536,98304,131072,196608,262144,1376256,1441792,1507328,2359296,2621440,3145728,4194304
 ```
 
 Use
@@ -690,12 +724,15 @@ sidecars/PRIME_ENGINE/results/prime_engine_default_calibration_latest.json
 sidecars/PRIME_ENGINE/results/prime_engine_default_calibration_latest.md
 ```
 
-It reads the latest external segment sweep, external count-mode sweep, repeated
-mode-confirmation artifact, and in-process tuner summary as one evidence pool,
-preferring `primesieve` rows over `primecount` rows because `primesieve` is the
-stronger range-counting control. Confirmed repeated mode winners override a
-single latest mode sweep when the current sweep still contains matching
-candidate evidence. Unconfirmed mode winners are recorded as
+It reads the latest high-offset quick scorecard, external segment sweep,
+external count-mode sweep, repeated mode-confirmation artifact, and in-process
+tuner summary as one evidence pool, preferring `primesieve` rows over
+`primecount` rows because `primesieve` is the stronger range-counting control.
+The high-offset quick scorecard gets first priority for the tracked
+`[1e12, 1e12+1e7)` lane because it varies both segment size and count mode
+around that hot range. Confirmed repeated mode winners override a single latest
+mode sweep for the remaining ranges when the current sweep still contains
+matching candidate evidence. Unconfirmed mode winners are recorded as
 `unconfirmed_mode_drift` rather than promoted. If no external sweep exists for a
 tuned range, calibration falls back to the in-process tuner summary. The script
 then probes the release `circle-prime recommend --count --json` CLI for the
@@ -731,15 +768,17 @@ make prime-engine-apply-defaults-check
 
 Current external-control readout on this machine:
 
-- `primesieve` remains the serious range-counting bar. The latest seven-round
-  report still has `primesieve` ahead on all three tracked ranges. The
-  comparison is intentionally command-level and therefore noisy, but it records
-  actual worker counts. With `CIRCLE_PRIME_THREADS=8`, prefix ranges currently
-  run as `8t`; the high-offset interval currently caps to `3t` under the stable
-  calibrated `4194304` threaded-count default.
-- `primecount` remains much faster for larger prefix `pi(x)` queries such as
-  `pi(100M)`, while the command-level 10M prefix row is close enough to move
-  with local noise.
+- `primesieve` remains the serious range-counting bar. Prefix defaults now beat
+  it on the tracked true-prefix count rows, while the high-offset interval is
+  still slightly behind in median command-level runs. The comparison is
+  intentionally command-level and therefore noisy, but it records actual worker
+  counts. With `CIRCLE_PRIME_THREADS=8`, prefix-pi rows report `1/8` effective
+  Circle thread, and the high-offset interval currently caps to `7/8` under the
+  calibrated `1310720` threaded-count default.
+- `primecount` remains the specialized prefix `pi(x)` bar, but Circle's
+  `prefix-pi` default currently beats it on the tracked 10M and 100M command
+  rows. Keep using external controls for confirmation because startup noise can
+  move narrow margins.
 - The Circle interval counter is faster than `primecount(high - 1) -
   primecount(low - 1)` on the high-offset interval test, because it directly
   sieves only the requested interval.
@@ -767,16 +806,18 @@ sidecars/PRIME_ENGINE/results/prime_engine_report_latest.json
 
 The report reads the latest release benchmark CSV, external-correctness JSON,
 external-control CSV/JSON, external count-mode sweep CSV/JSON, repeated
-mode-confirmation JSON, external segment-sweep CSV/JSON, default-calibration
-JSON, and tuning JSON if they exist. It summarizes external correctness
+mode-confirmation JSON, high-offset quick scorecard CSV/JSON, external
+segment-sweep CSV/JSON, default-calibration JSON, and tuning JSON if they exist.
+It summarizes external correctness
 status, `primesieve`/`primecount`
 best and median speedups, tool versions, fastest in-repo count rows,
 high-offset rows, base-prime setup rows, materialized generation rows,
-command-level count-mode winners, command-level segment-sweep winners, and the
+command-level high-offset quick winners, command-level count-mode winners,
+command-level segment-sweep winners, and the
 median-selected segment/thread result for each tuned range. It also reports the
 calibration drift status for
 the current adaptive defaults. It also shows compact spreads of primary count
-candidates and external segment-sweep
+candidates, high-offset quick candidates, and external segment-sweep
 candidates, so tuner-favored segment sizes remain visible even when they do not
 win a particular run. External segment-sweep winners are ranked by median
 speedup when available, with best-speedup columns retained to show peak
@@ -855,9 +896,9 @@ python scripts/tune_prime_engine.py \
   --seconds 28800 \
   --rounds 5 \
   --ranges 0:1000000,0:10000000,1000000000:1010000000,100000000000:100010000000,1000000000000:1000010000000 \
-  --segment-sizes 4096,8192,16384,32768,65536,131072,196608,262144,524288,1048576,2097152,3145728,4194304 \
+  --segment-sizes 4096,8192,16384,32768,65536,131072,196608,262144,524288,1048576,1310720,1376256,1441792,1507328,1572864,2097152,2359296,2621440,3145728,4194304 \
   --thread-counts 1,2,3,4,8 \
-  --count-modes segmented,balanced,dynamic,prefix-pi,wheel30-mark,hybrid-wheel30-mark
+  --count-modes segmented,balanced,dynamic,prefix-pi,presieve13,presieve17,wheel30-mark,hybrid-wheel30-mark
 ```
 
 The tuner validates that every mode/segment/thread candidate returns the same

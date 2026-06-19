@@ -162,20 +162,30 @@ CONTRACT_ARTIFACTS = {
                 "--field d19_undecided_request_status "
                 "--field d19_proved_first_channel_bank_transfer "
                 "--field d19_proved_first_channel_bank_shape "
+                "--field d19_proved_first_channel_pair_scope "
+                "--field d19_proved_first_channel_context_wide_contract "
                 "--field d19_proved_first_channel_bank_tolerance_rule "
                 "--require-theorem AIRA-T0171 --require-theorem AIRA-T0172 "
-                "--require-theorem AIRA-T0234 "
+                "--require-theorem AIRA-T0234 --require-theorem AIRA-T0235 "
                 "--require-recommendation ROPE-USE-D19-MARGIN-FRONTIER "
                 "--require-recommendation-evidence-field "
                 "ROPE-USE-D19-MARGIN-FRONTIER="
                 "d19_proved_first_channel_bank_transfer "
+                "--require-recommendation-evidence-field "
+                "ROPE-USE-D19-MARGIN-FRONTIER="
+                "d19_proved_first_channel_context_wide_contract "
                 "--require-recommendation-theorem "
                 "ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0234 "
+                "--require-recommendation-theorem "
+                "ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0235 "
                 "--require-recommendation-action-parameter "
                 "ROPE-USE-D19-MARGIN-FRONTIER=proved_branch_bank_transfer "
                 "--require-recommendation-action-parameter-path "
                 "ROPE-USE-D19-MARGIN-FRONTIER="
                 "proved_branch_bank_transfer.applies "
+                "--require-recommendation-action-parameter-path "
+                "ROPE-USE-D19-MARGIN-FRONTIER="
+                "proved_branch_bank_transfer.context_wide_contract "
                 "--require-recommendation-action-parameter-path "
                 "ROPE-USE-D19-MARGIN-FRONTIER="
                 "proved_branch_bank_transfer.theorem_ids"
@@ -551,6 +561,8 @@ MINIMUM_FIELDS_BY_KIND = {
         "d19_in_range_semantic_trichotomy",
         "d19_proved_first_channel_bank_transfer",
         "d19_proved_first_channel_bank_shape",
+        "d19_proved_first_channel_pair_scope",
+        "d19_proved_first_channel_context_wide_contract",
         "d19_proved_first_channel_bank_tolerance_rule",
         "proof_layers",
     ),
@@ -903,6 +915,8 @@ PACK_VALIDATION_COMMANDS = [
         "--field d19_undecided_request_status "
         "--field d19_proved_first_channel_bank_transfer "
         "--field d19_proved_first_channel_bank_shape "
+        "--field d19_proved_first_channel_pair_scope "
+        "--field d19_proved_first_channel_context_wide_contract "
         "--field d19_proved_first_channel_bank_tolerance_rule "
         "--include-field-metadata --include-recommendations"
     ),
@@ -914,18 +928,28 @@ PACK_VALIDATION_COMMANDS = [
         "--field d19_undecided_request_status "
         "--field d19_proved_first_channel_bank_transfer "
         "--field d19_proved_first_channel_bank_shape "
+        "--field d19_proved_first_channel_pair_scope "
+        "--field d19_proved_first_channel_context_wide_contract "
         "--field d19_proved_first_channel_bank_tolerance_rule "
         "--require-theorem AIRA-T0171 --require-theorem AIRA-T0172 "
-        "--require-theorem AIRA-T0234 "
+        "--require-theorem AIRA-T0234 --require-theorem AIRA-T0235 "
         "--require-recommendation ROPE-USE-D19-MARGIN-FRONTIER "
         "--require-recommendation-evidence-field "
         "ROPE-USE-D19-MARGIN-FRONTIER=d19_proved_first_channel_bank_transfer "
+        "--require-recommendation-evidence-field "
+        "ROPE-USE-D19-MARGIN-FRONTIER="
+        "d19_proved_first_channel_context_wide_contract "
         "--require-recommendation-theorem "
         "ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0234 "
+        "--require-recommendation-theorem "
+        "ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0235 "
         "--require-recommendation-action-parameter "
         "ROPE-USE-D19-MARGIN-FRONTIER=proved_branch_bank_transfer "
         "--require-recommendation-action-parameter-path "
         "ROPE-USE-D19-MARGIN-FRONTIER=proved_branch_bank_transfer.applies "
+        "--require-recommendation-action-parameter-path "
+        "ROPE-USE-D19-MARGIN-FRONTIER="
+        "proved_branch_bank_transfer.context_wide_contract "
         "--require-recommendation-action-parameter-path "
         "ROPE-USE-D19-MARGIN-FRONTIER=proved_branch_bank_transfer.theorem_ids"
     ),
@@ -1491,6 +1515,15 @@ FIELD_DESCRIPTION_OVERRIDES = {
     "d19_proved_first_channel_bank_tolerance_rule": (
         "Tolerance premise for applying the D19 first-channel finite-bank "
         "no-near-turn theorem."
+    ),
+    "d19_proved_first_channel_context_wide_contract": (
+        "Boolean check that the D19 proved-branch first-channel bank transfer "
+        "is packaged as a context-wide guarantee over every ordered unequal "
+        "pair inside the requested context."
+    ),
+    "d19_proved_first_channel_pair_scope": (
+        "The ordered-pair scope covered by the D19 first-channel context-wide "
+        "bank theorem."
     ),
     "first_uncovered_interval_start": (
         "Start of the first consecutive uncovered positive-lag interval in the "
@@ -2509,10 +2542,19 @@ def _generic_planner_recommendations(
                 "proved_branch_bank_transfer": {
                     "applies": fields["d19_proved_first_channel_bank_transfer"],
                     "bank_shape": fields["d19_proved_first_channel_bank_shape"],
+                    "pair_scope": fields["d19_proved_first_channel_pair_scope"],
+                    "context_wide_contract": fields[
+                        "d19_proved_first_channel_context_wide_contract"
+                    ],
                     "tolerance_rule": fields[
                         "d19_proved_first_channel_bank_tolerance_rule"
                     ],
-                    "theorem_ids": ["AIRA-T0171", "AIRA-T0172", "AIRA-T0234"],
+                    "theorem_ids": [
+                        "AIRA-T0171",
+                        "AIRA-T0172",
+                        "AIRA-T0234",
+                        "AIRA-T0235",
+                    ],
                 },
                 "classifier_regions": [
                     {
@@ -2591,6 +2633,8 @@ def _generic_planner_recommendations(
                     "d19_in_range_semantic_trichotomy",
                     "d19_proved_first_channel_bank_transfer",
                     "d19_proved_first_channel_bank_shape",
+                    "d19_proved_first_channel_pair_scope",
+                    "d19_proved_first_channel_context_wide_contract",
                     "d19_proved_first_channel_bank_tolerance_rule",
                 ],
                 "theorem_ids": [
@@ -2605,6 +2649,7 @@ def _generic_planner_recommendations(
                     "AIRA-T0232",
                     "AIRA-T0233",
                     "AIRA-T0234",
+                    "AIRA-T0235",
                     "AIRA-T0230",
                     "AIRA-T0231",
                 ],
@@ -3225,6 +3270,12 @@ def _rope_position_contract() -> dict[str, Any]:
             first_channel_bank.pass_certificate
         ),
         "d19_proved_first_channel_bank_shape": first_channel_bank.bank_shape,
+        "d19_proved_first_channel_pair_scope": (
+            first_channel_bank.context_wide_pair_scope
+        ),
+        "d19_proved_first_channel_context_wide_contract": (
+            first_channel_bank.context_wide_first_channel_contract
+        ),
         "d19_proved_first_channel_bank_tolerance_rule": (
             first_channel_bank.tolerance_rule
         ),

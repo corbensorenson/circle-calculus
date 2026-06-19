@@ -358,6 +358,45 @@ def test_prime_engine_report_summarizes_artifacts(tmp_path: Path) -> None:
         )
         + "\n"
     )
+    external_high_offset_quick = tmp_path / "high-offset-quick.csv"
+    external_high_offset_quick.write_text(
+        "\n".join(
+            [
+                "kind,name,low,high,span,segment_size,result,rounds,best_ms,median_ms,rate_per_second,median_rate_per_second,threads,requested_threads,baseline,best_speedup,median_speedup,count_mode",
+                "timing,circle_prime_parallel_presieve13_count_8t,1000000000000,1000010000000,10000000,1310720,361726,13,5.100,5.700,1960784313,1754385964,8,8,,,,presieve13",
+                "timing,circle_prime_parallel_presieve13_count_7t,1000000000000,1000010000000,10000000,1507328,361726,13,5.300,6.100,1886792452,1639344262,7,8,,,,presieve13",
+                "timing,external_primesieve_count,1000000000000,1000010000000,10000000,0,361726,13,4.800,5.200,2083333333,1923076923,8,8,,,,",
+                "speedup,circle_prime_parallel_presieve13_count_8t,1000000000000,1000010000000,10000000,1310720,361726,13,5.100,5.700,1960784313,1754385964,8,8,external_primesieve_count,0.941,0.912,presieve13",
+                "speedup,circle_prime_parallel_presieve13_count_7t,1000000000000,1000010000000,10000000,1507328,361726,13,5.300,6.100,1886792452,1639344262,7,8,external_primesieve_count,0.906,0.852,presieve13",
+            ]
+        )
+        + "\n"
+    )
+    external_high_offset_quick_metadata = tmp_path / "high-offset-quick.json"
+    external_high_offset_quick_metadata.write_text(
+        json.dumps(
+            {
+                "row_count": 5,
+                "rounds": 13,
+                "required_external_tools": ["primesieve", "primecount"],
+                "requested_segment_sizes": [1310720, 1507328],
+                "circle_count_modes": ["presieve13"],
+                "thread_policy": {
+                    "circle_requested_threads": 8,
+                    "external_requested_threads": 8,
+                },
+                "ranges": [
+                    {
+                        "low": 1000000000000,
+                        "high": 1000010000000,
+                        "span": 10000000,
+                    }
+                ],
+                "tools": {},
+            }
+        )
+        + "\n"
+    )
     tuning = tmp_path / "tuning.json"
     tuning.write_text(
         json.dumps(
@@ -508,6 +547,8 @@ def test_prime_engine_report_summarizes_artifacts(tmp_path: Path) -> None:
         external_mode_sweep_path=external_mode_sweep,
         external_mode_sweep_metadata_path=external_mode_sweep_metadata,
         external_mode_confirmation_path=mode_confirmation,
+        external_high_offset_quick_path=external_high_offset_quick,
+        external_high_offset_quick_metadata_path=external_high_offset_quick_metadata,
         tuning_path=tuning,
         default_calibration_path=calibration,
         generated_at_utc="2026-01-01T00:00:00Z",
@@ -581,6 +622,13 @@ def test_prime_engine_report_summarizes_artifacts(tmp_path: Path) -> None:
     assert throughput["metadata"]["requested_segment_sizes"] == [131072, 196608]
     assert throughput["best_by_range_baseline"][0]["segment_size"] == 196608
     assert throughput["best_by_range_baseline"][0]["median_circle_speedup"] == 0.463
+    high_offset_quick = report["external_high_offset_quick"]
+    assert high_offset_quick["available"] is True
+    assert high_offset_quick["metadata"]["requested_segment_sizes"] == [1310720, 1507328]
+    assert high_offset_quick["metadata"]["circle_count_modes"] == ["presieve13"]
+    assert high_offset_quick["best_by_range_baseline"][0]["segment_size"] == 1310720
+    assert high_offset_quick["best_by_range_baseline"][0]["median_circle_speedup"] == 0.912
+    assert high_offset_quick["candidate_spread"][0]["candidates"][1]["segment_size"] == 1507328
     fastest = report["benchmark"]["fastest_primary_counts"]
     materialized = report["benchmark"]["materialized_generation"]
     assert materialized[0]["name"] == "enumerate_range_primes"
@@ -674,6 +722,9 @@ def test_prime_engine_report_summarizes_artifacts(tmp_path: Path) -> None:
     assert "External Count Mode Sweep" in markdown
     assert "External Mode Confirmation" in markdown
     assert "External Throughput" in markdown
+    assert "High-Offset Quick Scorecard" in markdown
+    assert "High-offset quick candidate spread" in markdown
+    assert "Requested Circle segment sizes: `1310720`, `1507328`." in markdown
     assert "Count mode candidate spread" in markdown
     assert "Throughput segment candidate spread" in markdown
     assert "Circle count modes: `segmented`, `hybrid-wheel30-mark`." in markdown

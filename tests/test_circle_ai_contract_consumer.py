@@ -677,6 +677,11 @@ def test_consumer_digest_exposes_rope_d19_request_classifier_fields() -> None:
             "d19_proved_impossible_branches_disjoint",
             "d19_margin_status_exhaustive",
             "d19_in_range_semantic_trichotomy",
+            "d19_proved_first_channel_bank_transfer",
+            "d19_proved_first_channel_bank_shape",
+            "d19_proved_first_channel_pair_scope",
+            "d19_proved_first_channel_context_wide_contract",
+            "d19_proved_first_channel_bank_tolerance_rule",
         ),
     )
 
@@ -698,12 +703,22 @@ def test_consumer_digest_exposes_rope_d19_request_classifier_fields() -> None:
         "d19_proved_impossible_branches_disjoint": True,
         "d19_margin_status_exhaustive": True,
         "d19_in_range_semantic_trichotomy": True,
+        "d19_proved_first_channel_bank_transfer": True,
+        "d19_proved_first_channel_bank_shape": "standard_channel0_first",
+        "d19_proved_first_channel_pair_scope": (
+            "all ordered unequal pairs left < right < requested_context"
+        ),
+        "d19_proved_first_channel_context_wide_contract": True,
+        "d19_proved_first_channel_bank_tolerance_rule": (
+            "Lean conclusion applies when tolerance < fullTurn * requestedMargin."
+        ),
     }
     assert "AIRA-T0216" in digest["theorem_ids"]
     assert "AIRA-T0221" in digest["theorem_ids"]
     assert "AIRA-T0214" in digest["theorem_ids"]
     assert "AIRA-T0231" in digest["theorem_ids"]
     assert "AIRA-T0234" in digest["theorem_ids"]
+    assert "AIRA-T0235" in digest["theorem_ids"]
 
 
 def test_consumer_exposes_rope_planner_recommendations() -> None:
@@ -743,10 +758,12 @@ def test_consumer_exposes_rope_planner_recommendations() -> None:
     assert d19_frontier["proved_branch_bank_transfer"] == {
         "applies": True,
         "bank_shape": "standard_channel0_first",
+        "pair_scope": "all ordered unequal pairs left < right < requested_context",
+        "context_wide_contract": True,
         "tolerance_rule": (
             "Lean conclusion applies when tolerance < fullTurn * requestedMargin."
         ),
-        "theorem_ids": ["AIRA-T0171", "AIRA-T0172", "AIRA-T0234"],
+        "theorem_ids": ["AIRA-T0171", "AIRA-T0172", "AIRA-T0234", "AIRA-T0235"],
     }
     assert d19_frontier["theorem_ids"] == [
         "AIRA-T0171",
@@ -760,6 +777,7 @@ def test_consumer_exposes_rope_planner_recommendations() -> None:
         "AIRA-T0232",
         "AIRA-T0233",
         "AIRA-T0234",
+        "AIRA-T0235",
         "AIRA-T0230",
         "AIRA-T0231",
     ]
@@ -806,10 +824,13 @@ def test_consumer_exposes_top_level_planner_recommendation_index() -> None:
         "d19_in_range_semantic_trichotomy",
         "d19_proved_first_channel_bank_transfer",
         "d19_proved_first_channel_bank_shape",
+        "d19_proved_first_channel_pair_scope",
+        "d19_proved_first_channel_context_wide_contract",
         "d19_proved_first_channel_bank_tolerance_rule",
     ]
     assert "AIRA-T0216" in rope_frontier["theorem_ids"]
     assert "AIRA-T0234" in rope_frontier["theorem_ids"]
+    assert "AIRA-T0235" in rope_frontier["theorem_ids"]
     assert "docs/ROPE_CERTIFIER_QUICKSTART.md" in rope_frontier["quickstart_docs"]
     assert (
         "python scripts/circle_ai_contract_ready.py --kind rope_position_distinguishability"

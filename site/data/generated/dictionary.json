@@ -1550,6 +1550,18 @@
           "status": "proved"
         },
         {
+          "id": "CC-T0078",
+          "lean_name": "Circle.mem_primeHorizonsInRange_iff",
+          "name": "Prime horizons in range membership",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0079",
+          "lean_name": "Circle.primeHorizonRangeCount_eq_filter_card",
+          "name": "Prime horizon range count is filter cardinality",
+          "status": "proved"
+        },
+        {
           "id": "GEN-T0002",
           "lean_name": "Circle.Generative.coilOrbitGenerator_regenerates_orbit",
           "name": "Circle.Generative.coilOrbitGenerator_regenerates_orbit",
@@ -2067,6 +2079,18 @@
           "id": "CC-T0077",
           "lean_name": "Circle.not_primeHorizon_has_sqrt_contained",
           "name": "Non-prime horizon has square-root contained horizon",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0078",
+          "lean_name": "Circle.mem_primeHorizonsInRange_iff",
+          "name": "Prime horizons in range membership",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0079",
+          "lean_name": "Circle.primeHorizonRangeCount_eq_filter_card",
+          "name": "Prime horizon range count is filter cardinality",
           "status": "proved"
         }
       ],
@@ -15983,6 +16007,12 @@
           "lean_name": "Circle.Applications.ropeStandardChannel0D19_proved_request_firstChannel_bank_noNearTurn",
           "name": "Circle.Applications.ropeStandardChannel0D19_proved_request_firstChannel_bank_noNearTurn",
           "status": "proved"
+        },
+        {
+          "id": "AIRA-T0235",
+          "lean_name": "Circle.Applications.ropeStandardChannel0D19_proved_request_firstChannel_bank_noNearTurn_onContext",
+          "name": "Circle.Applications.ropeStandardChannel0D19_proved_request_firstChannel_bank_noNearTurn_onContext",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -17290,6 +17320,12 @@
           "id": "AIRA-T0234",
           "lean_name": "Circle.Applications.ropeStandardChannel0D19_proved_request_firstChannel_bank_noNearTurn",
           "name": "Circle.Applications.ropeStandardChannel0D19_proved_request_firstChannel_bank_noNearTurn",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0235",
+          "lean_name": "Circle.Applications.ropeStandardChannel0D19_proved_request_firstChannel_bank_noNearTurn_onContext",
+          "name": "Circle.Applications.ropeStandardChannel0D19_proved_request_firstChannel_bank_noNearTurn_onContext",
           "status": "proved"
         }
       ],
@@ -19546,6 +19582,12 @@
           "lean_name": "Circle.Applications.ropeStandardChannel0D19_proved_request_firstChannel_bank_noNearTurn",
           "name": "Circle.Applications.ropeStandardChannel0D19_proved_request_firstChannel_bank_noNearTurn",
           "status": "proved"
+        },
+        {
+          "id": "AIRA-T0235",
+          "lean_name": "Circle.Applications.ropeStandardChannel0D19_proved_request_firstChannel_bank_noNearTurn_onContext",
+          "name": "Circle.Applications.ropeStandardChannel0D19_proved_request_firstChannel_bank_noNearTurn_onContext",
+          "status": "proved"
         }
       ],
       "used_by_widgets": []
@@ -20934,6 +20976,12 @@
           "id": "AIRA-T0234",
           "lean_name": "Circle.Applications.ropeStandardChannel0D19_proved_request_firstChannel_bank_noNearTurn",
           "name": "Circle.Applications.ropeStandardChannel0D19_proved_request_firstChannel_bank_noNearTurn",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0235",
+          "lean_name": "Circle.Applications.ropeStandardChannel0D19_proved_request_firstChannel_bank_noNearTurn_onContext",
+          "name": "Circle.Applications.ropeStandardChannel0D19_proved_request_firstChannel_bank_noNearTurn_onContext",
           "status": "proved"
         }
       ],
@@ -22349,6 +22397,12 @@
           "lean_name": "Circle.Applications.ropeStandardChannel0D19_proved_request_firstChannel_bank_noNearTurn",
           "name": "Circle.Applications.ropeStandardChannel0D19_proved_request_firstChannel_bank_noNearTurn",
           "status": "proved"
+        },
+        {
+          "id": "AIRA-T0235",
+          "lean_name": "Circle.Applications.ropeStandardChannel0D19_proved_request_firstChannel_bank_noNearTurn_onContext",
+          "name": "Circle.Applications.ropeStandardChannel0D19_proved_request_firstChannel_bank_noNearTurn_onContext",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -23350,6 +23404,12 @@
           "lean_name": "Circle.Applications.ropeStandardChannel0D19_proved_request_firstChannel_bank_noNearTurn",
           "name": "Circle.Applications.ropeStandardChannel0D19_proved_request_firstChannel_bank_noNearTurn",
           "status": "proved"
+        },
+        {
+          "id": "AIRA-T0235",
+          "lean_name": "Circle.Applications.ropeStandardChannel0D19_proved_request_firstChannel_bank_noNearTurn_onContext",
+          "name": "Circle.Applications.ropeStandardChannel0D19_proved_request_firstChannel_bank_noNearTurn_onContext",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -24148,6 +24208,12 @@
           "id": "AIRA-T0234",
           "lean_name": "Circle.Applications.ropeStandardChannel0D19_proved_request_firstChannel_bank_noNearTurn",
           "name": "Circle.Applications.ropeStandardChannel0D19_proved_request_firstChannel_bank_noNearTurn",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0235",
+          "lean_name": "Circle.Applications.ropeStandardChannel0D19_proved_request_firstChannel_bank_noNearTurn_onContext",
+          "name": "Circle.Applications.ropeStandardChannel0D19_proved_request_firstChannel_bank_noNearTurn_onContext",
           "status": "proved"
         }
       ],

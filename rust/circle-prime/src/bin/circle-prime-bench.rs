@@ -11,10 +11,12 @@ use circle_prime::{
     prime_count_in_range_hybrid_wheel30_marks, prime_count_in_range_hybrid_wheel30_marks_parallel,
     prime_count_in_range_parallel, prime_count_in_range_parallel_balanced,
     prime_count_in_range_parallel_dynamic, prime_count_in_range_prefix_pi,
-    prime_count_in_range_presieve13, prime_count_in_range_tracked_bytes,
-    prime_count_in_range_wheel30, prime_count_in_range_wheel30_marks,
-    prime_count_in_range_wheel30_marks_parallel, primes_in_range, recommended_count_mode,
-    recommended_count_segment_size, recommended_segment_size,
+    prime_count_in_range_presieve13, prime_count_in_range_presieve13_parallel,
+    prime_count_in_range_presieve17, prime_count_in_range_presieve17_parallel,
+    prime_count_in_range_tracked_bytes, prime_count_in_range_wheel30,
+    prime_count_in_range_wheel30_marks, prime_count_in_range_wheel30_marks_parallel,
+    primes_in_range, recommended_count_mode, recommended_count_segment_size,
+    recommended_segment_size,
 };
 
 const HIGH_OFFSET_LOW: u64 = 1_000_000_000_000;
@@ -23,7 +25,7 @@ const U64_SCALAR_FALLBACK_LOW: u64 = u64::MAX - 100_000;
 const U64_SCALAR_FALLBACK_HIGH: u64 = u64::MAX;
 const U64_SCALAR_FALLBACK_SEGMENT_SIZE: u64 = 64;
 const NEXT_PRIME_SEARCH_BATCH_REPETITIONS: u64 = 4_096;
-const BENCH_SECTIONS: [&str; 19] = [
+const BENCH_SECTIONS: [&str; 20] = [
     "scalar",
     "next",
     "base",
@@ -35,6 +37,7 @@ const BENCH_SECTIONS: [&str; 19] = [
     "hybrid-wheel30-mark",
     "parallel-hybrid-wheel30-mark",
     "presieve13",
+    "presieve17",
     "tracked-byte",
     "bitpacked",
     "parallel",
@@ -52,6 +55,7 @@ enum CountMode {
     Dynamic,
     PrefixPi,
     Presieve13,
+    Presieve17,
     Wheel30Marks,
     HybridWheel30Marks,
 }
@@ -64,17 +68,18 @@ impl CountMode {
             "dynamic" => Ok(Self::Dynamic),
             "prefix-pi" | "pi" => Ok(Self::PrefixPi),
             "presieve13" => Ok(Self::Presieve13),
+            "presieve17" => Ok(Self::Presieve17),
             "wheel30-mark" | "wheel30-marks" => Ok(Self::Wheel30Marks),
             "hybrid-wheel30-mark" | "hybrid-wheel30-marks" => Ok(Self::HybridWheel30Marks),
             _ => Err(format!(
-                "unknown compiled count-mode default {raw:?}; expected segmented, balanced, dynamic, prefix-pi, presieve13, wheel30-mark, or hybrid-wheel30-mark"
+                "unknown compiled count-mode default {raw:?}; expected segmented, balanced, dynamic, prefix-pi, presieve13, presieve17, wheel30-mark, or hybrid-wheel30-mark"
             )),
         }
     }
 
     fn effective_threads(self, general_effective_threads: usize) -> usize {
         match self {
-            Self::PrefixPi | Self::Presieve13 => 1,
+            Self::PrefixPi => 1,
             _ => general_effective_threads,
         }
     }
@@ -138,6 +143,9 @@ fn run(args: Vec<String>) -> Result<(), String> {
     }
     if should_run_section(&sections, "presieve13") {
         rows.extend(bench_presieve13_range_counts(rounds));
+    }
+    if should_run_section(&sections, "presieve17") {
+        rows.extend(bench_presieve17_range_counts(rounds));
     }
     if should_run_section(&sections, "tracked-byte") {
         rows.extend(bench_tracked_byte_range_counts(rounds));
@@ -400,6 +408,24 @@ fn bench_presieve13_range_counts(rounds: usize) -> Vec<BenchRow> {
     .collect()
 }
 
+fn bench_presieve17_range_counts(rounds: usize) -> Vec<BenchRow> {
+    [
+        (10_000_000u64, 1 << 17),
+        (10_000_000u64, 1 << 18),
+        (100_000_000u64, 1 << 17),
+        (100_000_000u64, 1 << 18),
+        (1_000_000_000u64, 3 << 16),
+    ]
+    .into_iter()
+    .map(|(high, segment_size)| {
+        measure("presieve17_range_count", high, segment_size, rounds, || {
+            prime_count_in_range_presieve17(0, high, segment_size)
+                .expect("presieve17 range sieve benchmark failed") as u64
+        })
+    })
+    .collect()
+}
+
 fn bench_wheel30_range_counts(rounds: usize) -> Vec<BenchRow> {
     [
         (1_000_000u64, 1 << 15),
@@ -636,6 +662,68 @@ fn bench_high_offset_range_counts(rounds: usize) -> Vec<BenchRow> {
                     8,
                 )
                 .expect("balanced parallel high-offset range sieve benchmark failed")
+                    as u64
+            },
+        ),
+        measure(
+            "high_offset_presieve13_range_count",
+            HIGH_OFFSET_HIGH - HIGH_OFFSET_LOW,
+            parallel_segment_size,
+            rounds,
+            || {
+                prime_count_in_range_presieve13(
+                    HIGH_OFFSET_LOW,
+                    HIGH_OFFSET_HIGH,
+                    parallel_segment_size,
+                )
+                .expect("presieve13 high-offset range sieve benchmark failed")
+                    as u64
+            },
+        ),
+        measure(
+            "parallel_high_offset_presieve13_range_count_8t",
+            HIGH_OFFSET_HIGH - HIGH_OFFSET_LOW,
+            parallel_segment_size,
+            rounds,
+            || {
+                prime_count_in_range_presieve13_parallel(
+                    HIGH_OFFSET_LOW,
+                    HIGH_OFFSET_HIGH,
+                    parallel_segment_size,
+                    8,
+                )
+                .expect("parallel presieve13 high-offset range sieve benchmark failed")
+                    as u64
+            },
+        ),
+        measure(
+            "high_offset_presieve17_range_count",
+            HIGH_OFFSET_HIGH - HIGH_OFFSET_LOW,
+            parallel_segment_size,
+            rounds,
+            || {
+                prime_count_in_range_presieve17(
+                    HIGH_OFFSET_LOW,
+                    HIGH_OFFSET_HIGH,
+                    parallel_segment_size,
+                )
+                .expect("presieve17 high-offset range sieve benchmark failed")
+                    as u64
+            },
+        ),
+        measure(
+            "parallel_high_offset_presieve17_range_count_8t",
+            HIGH_OFFSET_HIGH - HIGH_OFFSET_LOW,
+            parallel_segment_size,
+            rounds,
+            || {
+                prime_count_in_range_presieve17_parallel(
+                    HIGH_OFFSET_LOW,
+                    HIGH_OFFSET_HIGH,
+                    parallel_segment_size,
+                    8,
+                )
+                .expect("parallel presieve17 high-offset range sieve benchmark failed")
                     as u64
             },
         ),
@@ -1004,7 +1092,20 @@ fn count_range_with_mode(
             }
         }
         CountMode::PrefixPi => prime_count_in_range_prefix_pi(low, high),
-        CountMode::Presieve13 => prime_count_in_range_presieve13(low, high, segment_size),
+        CountMode::Presieve13 => {
+            if worker_threads == 1 {
+                prime_count_in_range_presieve13(low, high, segment_size)
+            } else {
+                prime_count_in_range_presieve13_parallel(low, high, segment_size, worker_threads)
+            }
+        }
+        CountMode::Presieve17 => {
+            if worker_threads == 1 {
+                prime_count_in_range_presieve17(low, high, segment_size)
+            } else {
+                prime_count_in_range_presieve17_parallel(low, high, segment_size, worker_threads)
+            }
+        }
         CountMode::Wheel30Marks => {
             if worker_threads == 1 {
                 prime_count_in_range_wheel30_marks(low, high, segment_size)

@@ -597,6 +597,8 @@ def test_default_flagship_policy_matches_generated_contract_pack() -> None:
         "d19_margin_status_exhaustive",
         "d19_in_range_semantic_trichotomy",
         "d19_proved_first_channel_bank_transfer",
+        "d19_proved_first_channel_pair_scope",
+        "d19_proved_first_channel_context_wide_contract",
         "d19_proved_first_channel_bank_shape",
         "d19_proved_first_channel_bank_tolerance_rule",
     ]
@@ -628,6 +630,8 @@ def test_default_flagship_policy_matches_generated_contract_pack() -> None:
         "d19_margin_status_exhaustive",
         "d19_in_range_semantic_trichotomy",
         "d19_proved_first_channel_bank_transfer",
+        "d19_proved_first_channel_pair_scope",
+        "d19_proved_first_channel_context_wide_contract",
         "d19_proved_first_channel_bank_shape",
         "d19_proved_first_channel_bank_tolerance_rule",
     ]
@@ -639,6 +643,7 @@ def test_default_flagship_policy_matches_generated_contract_pack() -> None:
         "AIRA-T0231",
         "AIRA-T0233",
         "AIRA-T0234",
+        "AIRA-T0235",
     ]
     assert rope_receipt["required_recommendation_theorem_ids"][
         "ROPE-AUDIT-EXACT-INTEGER-PHASE-BANK"
@@ -658,6 +663,7 @@ def test_default_flagship_policy_matches_generated_contract_pack() -> None:
         "AIRA-T0231",
         "AIRA-T0233",
         "AIRA-T0234",
+        "AIRA-T0235",
     ]
     assert rope_receipt["required_recommendation_action_parameters"][
         "ROPE-AUDIT-EXACT-INTEGER-PHASE-BANK"
@@ -696,6 +702,7 @@ def test_default_flagship_policy_matches_generated_contract_pack() -> None:
         "undecided_interval.width",
         "proved_branch_bank_transfer.applies",
         "proved_branch_bank_transfer.bank_shape",
+        "proved_branch_bank_transfer.context_wide_contract",
         "proved_branch_bank_transfer.theorem_ids",
     ]
     kv_receipt = report["receipts"][1]

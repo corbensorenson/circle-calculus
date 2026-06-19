@@ -174,6 +174,8 @@ AI_CONTRACT_DIGEST_FIELDS = {
         "d19_undecided_request_status",
         "d19_proved_first_channel_bank_transfer",
         "d19_proved_first_channel_bank_shape",
+        "d19_proved_first_channel_pair_scope",
+        "d19_proved_first_channel_context_wide_contract",
         "d19_proved_first_channel_bank_tolerance_rule",
     ),
     "kv_cache_ring_buffer": (

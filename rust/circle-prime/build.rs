@@ -4,6 +4,8 @@ use std::path::PathBuf;
 
 const PRESIEVE13_MODULUS: usize = 30_030;
 const PRESIEVE13_ODD_PERIOD: usize = PRESIEVE13_MODULUS / 2;
+const PRESIEVE17_MODULUS: usize = 510_510;
+const PRESIEVE17_ODD_PERIOD: usize = PRESIEVE17_MODULUS / 2;
 const PRESIEVE19_MODULUS: usize = 9_699_690;
 const PRESIEVE19_ODD_PERIOD: usize = PRESIEVE19_MODULUS / 2;
 const STATIC_BASE_PRIME_LIMIT: usize = 1_100_000;
@@ -11,6 +13,7 @@ const STATIC_BASE_PRIME_LIMIT: usize = 1_100_000;
 fn main() {
     let out_dir = PathBuf::from(env::var_os("OUT_DIR").expect("OUT_DIR is set by Cargo"));
     write_presieve13_table(&out_dir);
+    write_presieve17_table(&out_dir);
     write_presieve19_table(&out_dir);
     write_static_base_prime_table(&out_dir);
     write_prime_engine_defaults(&out_dir);
@@ -34,6 +37,25 @@ fn write_presieve13_table(out_dir: &PathBuf) {
     }
 
     fs::write(path, pattern).expect("write generated pre-sieve 13 table");
+}
+
+fn write_presieve17_table(out_dir: &PathBuf) {
+    let path = out_dir.join("presieve_3_5_7_11_13_17.bin");
+    let mut pattern = Vec::with_capacity(PRESIEVE17_ODD_PERIOD);
+
+    for index in 0..PRESIEVE17_ODD_PERIOD {
+        let residue = 1 + 2 * index;
+        pattern.push(u8::from(
+            residue % 3 != 0
+                && residue % 5 != 0
+                && residue % 7 != 0
+                && residue % 11 != 0
+                && residue % 13 != 0
+                && residue % 17 != 0,
+        ));
+    }
+
+    fs::write(path, pattern).expect("write generated pre-sieve 17 table");
 }
 
 fn write_presieve19_table(out_dir: &PathBuf) {
@@ -143,10 +165,10 @@ fn json_u64(document: &str, key: &str) -> u64 {
 fn json_count_mode(document: &str, key: &str) -> String {
     let value = json_string(document, key);
     match value.as_str() {
-        "segmented" | "balanced" | "dynamic" | "prefix-pi" | "presieve13" | "wheel30-mark"
-        | "hybrid-wheel30-mark" => value,
+        "segmented" | "balanced" | "dynamic" | "prefix-pi" | "presieve13" | "presieve17"
+        | "wheel30-mark" | "hybrid-wheel30-mark" => value,
         _ => panic!(
-            "{key} must be one of segmented, balanced, dynamic, prefix-pi, presieve13, wheel30-mark, hybrid-wheel30-mark"
+            "{key} must be one of segmented, balanced, dynamic, prefix-pi, presieve13, presieve17, wheel30-mark, hybrid-wheel30-mark"
         ),
     }
 }

@@ -90,6 +90,10 @@ def test_example_consumer_emits_selected_rope_digest(tmp_path: Path) -> None:
             "--field",
             "d19_proved_first_channel_bank_shape",
             "--field",
+            "d19_proved_first_channel_pair_scope",
+            "--field",
+            "d19_proved_first_channel_context_wide_contract",
+            "--field",
             "d19_proved_first_channel_bank_tolerance_rule",
         ],
         check=True,
@@ -107,6 +111,10 @@ def test_example_consumer_emits_selected_rope_digest(tmp_path: Path) -> None:
         "d19_undecided_request_status": "undecided_margin_gap",
         "d19_proved_first_channel_bank_transfer": True,
         "d19_proved_first_channel_bank_shape": "standard_channel0_first",
+        "d19_proved_first_channel_pair_scope": (
+            "all ordered unequal pairs left < right < requested_context"
+        ),
+        "d19_proved_first_channel_context_wide_contract": True,
         "d19_proved_first_channel_bank_tolerance_rule": (
             "Lean conclusion applies when tolerance < fullTurn * requestedMargin."
         ),
@@ -114,6 +122,7 @@ def test_example_consumer_emits_selected_rope_digest(tmp_path: Path) -> None:
     assert "AIRA-T0214" in payload["theorem_ids"]
     assert "AIRA-T0231" in payload["theorem_ids"]
     assert "AIRA-T0234" in payload["theorem_ids"]
+    assert "AIRA-T0235" in payload["theorem_ids"]
     assert "model quality" in payload["not_claimed"]
 
 
@@ -368,6 +377,10 @@ def test_example_consumer_emits_rope_bank_transfer_receipt(
             "--field",
             "d19_proved_first_channel_bank_shape",
             "--field",
+            "d19_proved_first_channel_pair_scope",
+            "--field",
+            "d19_proved_first_channel_context_wide_contract",
+            "--field",
             "d19_proved_first_channel_bank_tolerance_rule",
             "--require-theorem",
             "AIRA-T0171",
@@ -375,6 +388,8 @@ def test_example_consumer_emits_rope_bank_transfer_receipt(
             "AIRA-T0172",
             "--require-theorem",
             "AIRA-T0234",
+            "--require-theorem",
+            "AIRA-T0235",
             "--require-recommendation",
             "ROPE-USE-D19-MARGIN-FRONTIER",
             "--require-recommendation-evidence-field",
@@ -382,12 +397,24 @@ def test_example_consumer_emits_rope_bank_transfer_receipt(
                 "ROPE-USE-D19-MARGIN-FRONTIER="
                 "d19_proved_first_channel_bank_transfer"
             ),
+            "--require-recommendation-evidence-field",
+            (
+                "ROPE-USE-D19-MARGIN-FRONTIER="
+                "d19_proved_first_channel_context_wide_contract"
+            ),
             "--require-recommendation-theorem",
             "ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0234",
+            "--require-recommendation-theorem",
+            "ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0235",
             "--require-recommendation-action-parameter",
             "ROPE-USE-D19-MARGIN-FRONTIER=proved_branch_bank_transfer",
             "--require-recommendation-action-parameter-path",
             "ROPE-USE-D19-MARGIN-FRONTIER=proved_branch_bank_transfer.applies",
+            "--require-recommendation-action-parameter-path",
+            (
+                "ROPE-USE-D19-MARGIN-FRONTIER="
+                "proved_branch_bank_transfer.context_wide_contract"
+            ),
             "--require-recommendation-action-parameter-path",
             "ROPE-USE-D19-MARGIN-FRONTIER=proved_branch_bank_transfer.theorem_ids",
             "--expect-pack-fingerprint",
@@ -409,13 +436,18 @@ def test_example_consumer_emits_rope_bank_transfer_receipt(
         "AIRA-T0171",
         "AIRA-T0172",
         "AIRA-T0234",
+        "AIRA-T0235",
     ]
     assert payload["evidence_fields"]["d19_proved_first_channel_bank_transfer"] is True
+    assert (
+        payload["evidence_fields"]["d19_proved_first_channel_context_wide_contract"]
+        is True
+    )
     assert payload["required_recommendation_ids"] == [
         "ROPE-USE-D19-MARGIN-FRONTIER"
     ]
     assert payload["required_recommendation_theorem_ids"] == {
-        "ROPE-USE-D19-MARGIN-FRONTIER": ["AIRA-T0234"],
+        "ROPE-USE-D19-MARGIN-FRONTIER": ["AIRA-T0234", "AIRA-T0235"],
     }
     assert payload["required_recommendation_action_parameters"] == {
         "ROPE-USE-D19-MARGIN-FRONTIER": ["proved_branch_bank_transfer"],
@@ -423,6 +455,7 @@ def test_example_consumer_emits_rope_bank_transfer_receipt(
     assert payload["required_recommendation_action_parameter_paths"] == {
         "ROPE-USE-D19-MARGIN-FRONTIER": [
             "proved_branch_bank_transfer.applies",
+            "proved_branch_bank_transfer.context_wide_contract",
             "proved_branch_bank_transfer.theorem_ids",
         ],
     }
@@ -431,6 +464,7 @@ def test_example_consumer_emits_rope_bank_transfer_receipt(
         "AIRA-T0171",
         "AIRA-T0172",
         "AIRA-T0234",
+        "AIRA-T0235",
     ]
 
 

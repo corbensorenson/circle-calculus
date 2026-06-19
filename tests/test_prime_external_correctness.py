@@ -12,6 +12,7 @@ def test_parse_count_modes_all_expands_current_modes() -> None:
         "dynamic",
         "prefix-pi",
         "presieve13",
+        "presieve17",
         "wheel30-mark",
         "hybrid-wheel30-mark",
     ]

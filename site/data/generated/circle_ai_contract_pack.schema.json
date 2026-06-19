@@ -585,6 +585,8 @@
                 "d19_in_range_semantic_trichotomy",
                 "d19_proved_first_channel_bank_transfer",
                 "d19_proved_first_channel_bank_shape",
+                "d19_proved_first_channel_pair_scope",
+                "d19_proved_first_channel_context_wide_contract",
                 "d19_proved_first_channel_bank_tolerance_rule",
                 "proof_layers"
               ],
@@ -1240,6 +1242,8 @@
                     "d19_in_range_semantic_trichotomy",
                     "d19_proved_first_channel_bank_transfer",
                     "d19_proved_first_channel_bank_shape",
+                    "d19_proved_first_channel_pair_scope",
+                    "d19_proved_first_channel_context_wide_contract",
                     "d19_proved_first_channel_bank_tolerance_rule",
                     "proof_layers"
                   ],

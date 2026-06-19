@@ -19,6 +19,7 @@ VALID_COUNT_MODES = {
     "dynamic",
     "prefix-pi",
     "presieve13",
+    "presieve17",
     "wheel30-mark",
     "hybrid-wheel30-mark",
 }

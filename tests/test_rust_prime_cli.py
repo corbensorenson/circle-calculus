@@ -77,7 +77,7 @@ def effective_threads_for_mode(
     requested_threads: int,
     count_mode: str,
 ) -> int:
-    if count_mode in {"prefix-pi", "presieve13"}:
+    if count_mode == "prefix-pi":
         return 1
     return effective_threads(span, segment_size, requested_threads)
 
@@ -125,6 +125,16 @@ def assert_prime_horizon_proof_contract(payload: dict) -> None:
         "CC-T0077",
     ]
     assert "Circle.primeHorizon_iff_no_sqrt_contained" in contract["lean_names"]
+    assert contract["rust_domain"] == "u64_exact_arithmetic"
+
+
+def assert_prime_range_count_proof_contract(payload: dict) -> None:
+    contract = payload["count_proof_contract"]
+    assert contract["name"] == "prime_horizon_range_count_spec"
+    assert contract["lean_module"] == "Circle.Core.Horizon"
+    assert contract["theorem_ids"] == ["CC-T0078", "CC-T0079"]
+    assert "Circle.mem_primeHorizonsInRange_iff" in contract["lean_names"]
+    assert "Circle.primeHorizonRangeCount_eq_filter_card" in contract["lean_names"]
     assert contract["rust_domain"] == "u64_exact_arithmetic"
 
 
@@ -180,6 +190,7 @@ def test_rust_prime_cli_counts_reference_range_in_parallel(circle_prime_bin: Pat
     )
     payload = json.loads(output)
     assert payload["count"] == 78498
+    assert_prime_range_count_proof_contract(payload)
     assert payload["threads"] == effective_threads_for_mode(
         1_000_000,
         DEFAULTS["parallel_tiny_prefix_segment_size"],
@@ -196,6 +207,7 @@ def test_rust_prime_cli_counts_reference_range_in_parallel(circle_prime_bin: Pat
         "dynamic",
         "prefix-pi",
         "presieve13",
+        "presieve17",
         "wheel30-mark",
         "hybrid-wheel30-mark",
     ],
@@ -219,7 +231,8 @@ def test_rust_prime_cli_count_modes_match_reference(
     payload = json.loads(output)
     assert payload["count"] == 78498
     assert payload["count_mode"] == count_mode
-    assert payload["threads"] == (1 if count_mode in {"prefix-pi", "presieve13"} else 4)
+    assert_prime_range_count_proof_contract(payload)
+    assert payload["threads"] == (1 if count_mode == "prefix-pi" else 4)
 
 
 def test_rust_prime_cli_rejects_count_mode_without_count(circle_prime_bin: Path) -> None:
@@ -250,6 +263,7 @@ def test_rust_prime_cli_uses_threaded_count_segment_default(circle_prime_bin: Pa
     assert payload["count"] == 664579
     assert payload["segment_size"] == DEFAULTS["parallel_small_prefix_segment_size"]
     assert payload["count_mode"] == DEFAULTS["parallel_small_prefix_count_mode"]
+    assert_prime_range_count_proof_contract(payload)
     assert payload["threads"] == effective_threads_for_mode(
         10_000_000,
         DEFAULTS["parallel_small_prefix_segment_size"],
@@ -300,6 +314,7 @@ def test_rust_prime_cli_recommends_count_defaults(circle_prime_bin: Path) -> Non
     assert payload["segment_size"] == DEFAULTS["parallel_small_prefix_segment_size"]
     assert payload["count_mode"] == DEFAULTS["parallel_small_prefix_count_mode"]
     assert_prime_horizon_proof_contract(payload)
+    assert_prime_range_count_proof_contract(payload)
     assert payload["threads"] == effective_threads_for_mode(
         10_000_000,
         DEFAULTS["parallel_small_prefix_segment_size"],

@@ -24,6 +24,7 @@ VALID_CIRCLE_COUNT_MODES = {
     "dynamic",
     "prefix-pi",
     "presieve13",
+    "presieve17",
     "wheel30-mark",
     "hybrid-wheel30-mark",
 }
@@ -111,7 +112,7 @@ def main() -> int:
             "Comma-separated Circle count modes to benchmark. The default "
             "is segmented; use default to omit --count-mode and follow the "
             "current CLI adaptive default. Experimental modes include "
-            "balanced, dynamic, prefix-pi, presieve13, wheel30-mark, and hybrid-wheel30-mark."
+            "balanced, dynamic, prefix-pi, presieve13, presieve17, wheel30-mark, and hybrid-wheel30-mark."
         ),
     )
     parser.add_argument(

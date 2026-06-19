@@ -13050,7 +13050,7 @@
       "informal_statement": "The standard channel-0 D19 request classifier's undecided open margin interval has exact rational width 1/107884986222.",
       "lean_name": "Circle.Applications.ropeStandardChannel0D19_request_margin_open_gap_width",
       "lean_source": "Circle/Applications/RoPEFrontier.lean",
-      "lean_source_line": 232,
+      "lean_source_line": 255,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
@@ -13127,6 +13127,44 @@
       "lean_name": "Circle.Applications.ropeStandardChannel0D19_proved_request_firstChannel_bank_noNearTurn",
       "lean_source": "Circle/Applications/RoPEFrontier.lean",
       "lean_source_line": 213,
+      "original_status": "lean_proved",
+      "paper_refs": [
+        "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
+      ],
+      "source_manifest": "manifests/dimensions/Common.yaml",
+      "status": "lean_proved",
+      "used_by_papers": [],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": [
+          "tests/test_rope_certifier.py::test_standard_channel0_d19_bank_request_certificate_marks_covered_request",
+          "tests/test_circle_ai_contract_pack.py::test_generic_contract_pack_is_standalone_with_compatibility_aliases",
+          "tests/test_circle_ai_contract_consumer.py::test_consumer_exposes_rope_planner_recommendations"
+        ]
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "COMMON-0076",
+        "COMMON-0077",
+        "COMMON-0080",
+        "COMMON-0082",
+        "COMMON-0087",
+        "COMMON-0088",
+        "COMMON-0089"
+      ],
+      "formal_statement": "forall {extraFrequencies : List Real} {fullTurn requestedMargin tolerance : Real} {requestedContext : Nat}, requestedContext <= Circle.Applications.ropeStandardChannel0D19SeedContext -> requestedMargin <= Circle.Applications.ropeStandardChannel0D19SeedMargin -> 0 < fullTurn -> tolerance < fullTurn * requestedMargin -> forall {left right : Nat}, left < right -> right < requestedContext -> not (Circle.Applications.ropeRealPhaseBankNearTurn (Circle.Applications.ropeStandardChannel0TurnRatio * fullTurn :: extraFrequencies) fullTurn tolerance left right)",
+      "id": "AIRA-T0235",
+      "imports_allowed": [
+        "Common"
+      ],
+      "informal_statement": "The D19 proved request branch gives a context-wide first-channel finite-bank no-near-turn guarantee for every ordered unequal pair inside the requested context.",
+      "lean_name": "Circle.Applications.ropeStandardChannel0D19_proved_request_firstChannel_bank_noNearTurn_onContext",
+      "lean_source": "Circle/Applications/RoPEFrontier.lean",
+      "lean_source_line": 234,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
@@ -23617,7 +23655,7 @@
       "informal_statement": "The primitive d-horizon is contained in the n-horizon exactly when d divides n.",
       "lean_name": "Circle.primitiveHorizonContained_iff_dvd",
       "lean_source": "Circle/Core/Horizon.lean",
-      "lean_source_line": 38,
+      "lean_source_line": 52,
       "name": "Primitive horizon containment iff divisibility",
       "original_status": "proved",
       "paper_refs": [
@@ -23650,7 +23688,7 @@
       "informal_statement": "An n-horizon is prime exactly when n is at least two and it contains no nontrivial smaller primitive horizon.",
       "lean_name": "Circle.primeHorizon_iff_no_smaller_contained",
       "lean_source": "Circle/Core/Horizon.lean",
-      "lean_source_line": 47,
+      "lean_source_line": 72,
       "name": "Prime horizon iff no smaller contained horizon",
       "original_status": "proved",
       "paper_refs": [
@@ -23684,7 +23722,7 @@
       "informal_statement": "An n-horizon is prime exactly when n is at least two and no primitive horizon d up to sqrt(n) is contained in it.",
       "lean_name": "Circle.primeHorizon_iff_no_sqrt_contained",
       "lean_source": "Circle/Core/Horizon.lean",
-      "lean_source_line": 53,
+      "lean_source_line": 78,
       "name": "Prime horizon iff no square-root contained horizon",
       "original_status": "proved",
       "paper_refs": [
@@ -23718,7 +23756,7 @@
       "informal_statement": "If n is at least two and no primitive horizon d up to sqrt(n) is contained in it, then the n-horizon is prime.",
       "lean_name": "Circle.primeHorizon_of_no_sqrt_contained",
       "lean_source": "Circle/Core/Horizon.lean",
-      "lean_source_line": 59,
+      "lean_source_line": 84,
       "name": "Prime horizon from no square-root contained horizon",
       "original_status": "proved",
       "paper_refs": [
@@ -23752,7 +23790,7 @@
       "informal_statement": "If n is at least two and its horizon is not prime, then some primitive horizon d up to sqrt(n) is contained in it.",
       "lean_name": "Circle.not_primeHorizon_has_sqrt_contained",
       "lean_source": "Circle/Core/Horizon.lean",
-      "lean_source_line": 75,
+      "lean_source_line": 100,
       "name": "Non-prime horizon has square-root contained horizon",
       "original_status": "proved",
       "paper_refs": [
@@ -23771,6 +23809,74 @@
         "no_sorry_required": true,
         "python_property_tests": [
           "if n is composite, some d with 2<=d<=isqrt(n) divides n"
+        ]
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "CC-0201",
+        "CC-0206"
+      ],
+      "formal_statement": "forall {low high n : Nat}, n in Circle.primeHorizonsInRange low high iff low <= n and n < high and Circle.primeHorizon n",
+      "id": "CC-T0078",
+      "informal_statement": "A horizon belongs to the finite prime-horizon interval exactly when it lies in the half-open range and is a prime horizon.",
+      "lean_name": "Circle.mem_primeHorizonsInRange_iff",
+      "lean_source": "Circle/Core/Horizon.lean",
+      "lean_source_line": 56,
+      "name": "Prime horizons in range membership",
+      "original_status": "proved",
+      "paper_refs": [
+        "docs/PRIME_ENGINE.md"
+      ],
+      "proof_notes": "Lean theorem is compiled in Circle/Core/Horizon.lean by unfolding the half-open Finset interval filter used as the Rust range-count specification.",
+      "python_tests": [
+        "tests/test_rust_prime_cli.py::test_rust_prime_cli_counts_reference_range",
+        "cargo test -p circle-prime"
+      ],
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved",
+      "used_by_papers": [],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": [
+          "n is counted for [low, high) iff low <= n < high and n is prime"
+        ]
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "CC-0201",
+        "CC-0206"
+      ],
+      "formal_statement": "forall (low high : Nat), Circle.primeHorizonRangeCount low high = card ((Finset.Ico low high).filter Circle.primeHorizon)",
+      "id": "CC-T0079",
+      "informal_statement": "The prime-horizon range count is the cardinality of the finite half-open interval filtered by prime horizons.",
+      "lean_name": "Circle.primeHorizonRangeCount_eq_filter_card",
+      "lean_source": "Circle/Core/Horizon.lean",
+      "lean_source_line": 62,
+      "name": "Prime horizon range count is filter cardinality",
+      "original_status": "proved",
+      "paper_refs": [
+        "docs/PRIME_ENGINE.md"
+      ],
+      "proof_notes": "Lean theorem is compiled in Circle/Core/Horizon.lean as the finite-cardinality specification that every Rust count mode must implement.",
+      "python_tests": [
+        "tests/test_rust_prime_cli.py::test_rust_prime_cli_counts_reference_range",
+        "cargo test -p circle-prime"
+      ],
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved",
+      "used_by_papers": [],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": [
+          "range count equals number of primes in the half-open interval"
         ]
       }
     },

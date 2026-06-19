@@ -1,4 +1,5 @@
 import Mathlib.Data.Nat.Prime.Basic
+import Mathlib.Order.Interval.Finset.Nat
 
 namespace Circle
 
@@ -20,6 +21,19 @@ the Circle-prime vocabulary used by the Rust engine diagnostics. -/
 def primeHorizon (n : Nat) : Prop :=
   Nat.Prime n
 
+noncomputable instance instDecidablePredPrimeHorizon : DecidablePred primeHorizon := by
+  classical
+  infer_instance
+
+/-- The finite set of prime horizons in the half-open interval `[low, high)`. -/
+noncomputable def primeHorizonsInRange (low high : Nat) : Finset Nat := by
+  classical
+  exact (Finset.Ico low high).filter primeHorizon
+
+/-- The exact mathematical range-count target for the Rust count modes. -/
+noncomputable def primeHorizonRangeCount (low high : Nat) : Nat :=
+  (primeHorizonsInRange low high).card
+
 theorem primitiveHorizonCollision_exists_iff_dvd (n d : Nat) :
     (∃ k, primitiveHorizonCollision n d k) ↔ d ∣ n := by
   constructor
@@ -37,6 +51,17 @@ theorem primitiveHorizonCollision_exists_iff_dvd (n d : Nat) :
 
 theorem primitiveHorizonContained_iff_dvd (n d : Nat) :
     primitiveHorizonContained n d ↔ d ∣ n := by
+  rfl
+
+theorem mem_primeHorizonsInRange_iff {low high n : Nat} :
+    n ∈ primeHorizonsInRange low high ↔ low ≤ n ∧ n < high ∧ primeHorizon n := by
+  classical
+  unfold primeHorizonsInRange
+  simp [and_left_comm, and_comm]
+
+theorem primeHorizonRangeCount_eq_filter_card (low high : Nat) :
+    primeHorizonRangeCount low high = ((Finset.Ico low high).filter primeHorizon).card := by
+  classical
   rfl
 
 theorem primitiveHorizonCollision_div_skip {n d : Nat} (hd : d ∣ n) :

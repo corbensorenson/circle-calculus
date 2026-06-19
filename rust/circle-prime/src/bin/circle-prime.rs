@@ -7,8 +7,10 @@ use circle_prime::{
     prime_count_in_range_hybrid_wheel30_marks_parallel, prime_count_in_range_parallel,
     prime_count_in_range_parallel_balanced, prime_count_in_range_parallel_dynamic,
     prime_count_in_range_prefix_pi, prime_count_in_range_presieve13,
-    prime_count_in_range_wheel30_marks, prime_count_in_range_wheel30_marks_parallel,
-    prime_horizon_proof_contract_json, primes_in_range, recommended_count_mode,
+    prime_count_in_range_presieve13_parallel, prime_count_in_range_presieve17,
+    prime_count_in_range_presieve17_parallel, prime_count_in_range_wheel30_marks,
+    prime_count_in_range_wheel30_marks_parallel, prime_horizon_proof_contract_json,
+    prime_range_count_proof_contract_json, primes_in_range, recommended_count_mode,
     recommended_count_segment_size, recommended_segment_size,
 };
 
@@ -21,6 +23,7 @@ enum CountMode {
     Dynamic,
     PrefixPi,
     Presieve13,
+    Presieve17,
     Wheel30Marks,
     HybridWheel30Marks,
 }
@@ -33,10 +36,11 @@ impl CountMode {
             "dynamic" => Ok(Self::Dynamic),
             "prefix-pi" | "pi" => Ok(Self::PrefixPi),
             "presieve13" => Ok(Self::Presieve13),
+            "presieve17" => Ok(Self::Presieve17),
             "wheel30-mark" | "wheel30-marks" => Ok(Self::Wheel30Marks),
             "hybrid-wheel30-mark" | "hybrid-wheel30-marks" => Ok(Self::HybridWheel30Marks),
             _ => Err(format!(
-                "unknown --count-mode {raw:?}; expected segmented, balanced, dynamic, prefix-pi, presieve13, wheel30-mark, or hybrid-wheel30-mark"
+                "unknown --count-mode {raw:?}; expected segmented, balanced, dynamic, prefix-pi, presieve13, presieve17, wheel30-mark, or hybrid-wheel30-mark"
             )),
         }
     }
@@ -48,6 +52,7 @@ impl CountMode {
             Self::Dynamic => "dynamic",
             Self::PrefixPi => "prefix-pi",
             Self::Presieve13 => "presieve13",
+            Self::Presieve17 => "presieve17",
             Self::Wheel30Marks => "wheel30-mark",
             Self::HybridWheel30Marks => "hybrid-wheel30-mark",
         }
@@ -55,7 +60,7 @@ impl CountMode {
 
     fn effective_threads(self, general_effective_threads: usize) -> usize {
         match self {
-            Self::PrefixPi | Self::Presieve13 => 1,
+            Self::PrefixPi => 1,
             _ => general_effective_threads,
         }
     }
@@ -216,7 +221,7 @@ fn recommend_command(args: &[String]) -> Result<(), String> {
     if json {
         if count_only {
             println!(
-                "{{\"low\":{},\"high\":{},\"count\":{},\"segment_size\":{},\"threads\":{},\"requested_threads\":{},\"count_mode\":\"{}\",\"proof_contract\":{}}}",
+                "{{\"low\":{},\"high\":{},\"count\":{},\"segment_size\":{},\"threads\":{},\"requested_threads\":{},\"count_mode\":\"{}\",\"proof_contract\":{},\"count_proof_contract\":{}}}",
                 low,
                 high,
                 count_only,
@@ -224,7 +229,8 @@ fn recommend_command(args: &[String]) -> Result<(), String> {
                 worker_threads,
                 threads,
                 count_mode.as_str(),
-                prime_horizon_proof_contract_json()
+                prime_horizon_proof_contract_json(),
+                prime_range_count_proof_contract_json()
             );
         } else {
             println!(
@@ -314,7 +320,7 @@ fn range_command(args: &[String]) -> Result<(), String> {
             .map_err(|err| format!("range sieve failed: {err:?}"))?;
         if json {
             println!(
-                "{{\"low\":{},\"high\":{},\"count\":{},\"segment_size\":{},\"threads\":{},\"requested_threads\":{},\"count_mode\":\"{}\",\"proof_contract\":{}}}",
+                "{{\"low\":{},\"high\":{},\"count\":{},\"segment_size\":{},\"threads\":{},\"requested_threads\":{},\"count_mode\":\"{}\",\"proof_contract\":{},\"count_proof_contract\":{}}}",
                 low,
                 high,
                 count,
@@ -322,7 +328,8 @@ fn range_command(args: &[String]) -> Result<(), String> {
                 worker_threads,
                 threads,
                 count_mode.as_str(),
-                prime_horizon_proof_contract_json()
+                prime_horizon_proof_contract_json(),
+                prime_range_count_proof_contract_json()
             );
         } else {
             println!("{count}");
@@ -398,7 +405,20 @@ fn count_range_with_mode(
             }
         }
         CountMode::PrefixPi => prime_count_in_range_prefix_pi(low, high),
-        CountMode::Presieve13 => prime_count_in_range_presieve13(low, high, segment_size),
+        CountMode::Presieve13 => {
+            if worker_threads == 1 {
+                prime_count_in_range_presieve13(low, high, segment_size)
+            } else {
+                prime_count_in_range_presieve13_parallel(low, high, segment_size, worker_threads)
+            }
+        }
+        CountMode::Presieve17 => {
+            if worker_threads == 1 {
+                prime_count_in_range_presieve17(low, high, segment_size)
+            } else {
+                prime_count_in_range_presieve17_parallel(low, high, segment_size, worker_threads)
+            }
+        }
         CountMode::Wheel30Marks => {
             if worker_threads == 1 {
                 prime_count_in_range_wheel30_marks(low, high, segment_size)
@@ -459,7 +479,7 @@ fn usage() -> String {
         "  circle-prime recommend LOW HIGH [--count] [--json] [--threads N]",
         "  circle-prime range LOW HIGH [--count] [--json] [--segment-size N] [--threads N] [--count-mode MODE]",
         "",
-        "count modes: segmented, balanced, dynamic, prefix-pi, presieve13, wheel30-mark, hybrid-wheel30-mark",
+        "count modes: segmented, balanced, dynamic, prefix-pi, presieve13, presieve17, wheel30-mark, hybrid-wheel30-mark",
     ]
     .join("\n")
 }
