@@ -66,6 +66,16 @@ Read the proof layer in four chunks:
 
 The lesson uses this map so the widget and worked example stay readable. The full theorem-card trail lives in [KV-Cache Ring Buffer Proof Audit](kv_cache_ring_buffer_audit.qmd).
 
+## What This Proves, And What It Does Not
+
+| Layer | Status | Reader Takeaway |
+| --- | --- | --- |
+| Slot assignment | Lean-proved for positive cache sizes | A token writes the residue slot `token mod cache_size`, and same-slot writers recur one cache size apart. |
+| Retention and stale reads | Lean-proved for the finite model | A non-future token is retained exactly when its next same-slot overwrite is still after `current`. |
+| Generated live and sink windows | Lean-proved request-shape contracts | The generated rolling window and pinned-prefix request have exact membership, duplicate, and count guarantees. |
+| Adapter request pass/fail | Lean-proved for modeled finite request traces | Passing means the requested tokens are non-future, duplicate-free, and trace-fresh in this finite model. |
+| Production serving behavior | Not proved here | The contract does not prove paging strategy, kernel correctness, memory savings, latency, retrieval quality, safety, or model quality. |
+
 <details class="audit-detail">
 <summary>Detailed theorem trail for the KV-cache contract</summary>
 
@@ -189,6 +199,9 @@ probe and `KV-USE-SINK-ROLLING-WINDOW-REQUEST` for the sink-prefix plus rolling
 window request fixture, including the theorem-linked sink-retention fields.
 This is a finite request-shape contract, not a serving-stack proof.
 
+<details class="audit-detail">
+<summary>Strict KV downstream receipt command</summary>
+
 The same pin can be checked directly:
 
 ```bash
@@ -221,6 +234,8 @@ python scripts/circle_ai_contract_ready.py \
   --require-recommendation-action-parameter-path KV-USE-SINK-ROLLING-WINDOW-REQUEST=cache_size \
   --require-recommendation-action-parameter-path KV-USE-SINK-ROLLING-WINDOW-REQUEST=current
 ```
+
+</details>
 
 The important point is that freshness is not only a residue fact. Slot `4` repeats every `16` tokens; the theorem-backed contract combines the residue with the overwrite boundary `current < token + cache_size`.
 
