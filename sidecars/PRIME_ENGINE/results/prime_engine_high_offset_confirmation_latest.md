@@ -1,6 +1,6 @@
 # Prime Engine External Mode Confirmation
 
-Generated: `2026-06-19T22:59:00Z`
+Generated: `2026-06-19T23:04:48Z`
 Minimum confirmations: `2`
 Require stable samples: `True`
 
@@ -10,4 +10,4 @@ Require stable samples: `True`
 
 | Range | Baseline | Mode | Segment | Threads | Confirmations | Stable Runs | Median ms Values | Status |
 | --- | --- | --- | ---: | ---: | ---: | ---: | --- | --- |
-| [1000000000000, 1000010000000) | `external_primesieve_count` | `presieve17` | 4194304 | 3/8 | 1/2 | 2/3 | 4.843 | `unconfirmed` |
+| [1000000000000, 1000010000000) | `external_primesieve_count` | `segmented` | 1376256 | 8/8 | 1/2 | 1/3 | 8.026, 6.741 | `unconfirmed` |
