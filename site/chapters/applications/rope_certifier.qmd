@@ -170,6 +170,16 @@ That says the declared bank repeats after gap `96`, and the report lists actual 
 
 The real-phase row is separate. It is useful evidence about the floating-point RoPE schedule, but this page only treats it as a theorem-backed result when it points to a named finite-margin certificate or standard channel-0 interval seed.
 
+## What This Proves, And What It Does Not
+
+| Layer | Status | Reader Takeaway |
+| --- | --- | --- |
+| Declared integer-period phase bank | Lean-proved for the theorem ids in the exact layer | The pass/fail/count fields are exact for the periods stated in the report. |
+| Rational finite-margin examples | Lean-proved when the report points to a named certificate | The finite nearest-integer certificate is a formal proof for that declared rational ratio and context. |
+| Standard channel-0 D19 frontier | Lean-proved, conditional, one-channel based | Inside the D19 range, requests are classified as proved, impossible, or deliberately undecided for the stated channel-0 margin contract. |
+| Full real-valued all-channel model behavior | Not proved here | Numerical rows are engineering diagnostics unless backed by a named theorem id and compiled Lean declaration. |
+| Model quality or long-context performance | Not claimed | The certifier checks phase distinguishability contracts; it does not prove lower loss, better reasoning, speed, safety, or deployment fitness. |
+
 ## Proof Map
 
 The main lesson uses only the proof families needed to read a report. The full audit page keeps the longer theorem-card trail.
@@ -229,6 +239,9 @@ The proved `AIRA-T0139` through `AIRA-T0141` bridge says how a generated rationa
 
 The public Circle AI contract pack exports three D19 classifier probes at context `131072`: margin `1/328459` has status `proved`, margin `1/328458` has status `impossible`, and margin `2/656917` has status `undecided_margin_gap`. The same record now exposes `requested_margin_relation` labels, the exact undecided interval width `1/107884986222`, `d19_in_range_semantic_trichotomy`, and the proved-branch first-channel context-wide bank-transfer fields, giving downstream tools a theorem-backed frontier check without requiring them to import Lean.
 
+<details class="audit-detail">
+<summary>Downstream D19 planner and receipt commands</summary>
+
 For downstream AI tools, the compact digest also exposes two copy-safe planner records:
 
 ```bash
@@ -275,6 +288,8 @@ python scripts/circle_ai_contract_ready.py \
 ```
 
 `ROPE-AUDIT-EXACT-INTEGER-PHASE-BANK` points a consumer to the declared integer-period phase-bank collision audit. `ROPE-USE-D19-MARGIN-FRONTIER` points a consumer to the D19 standard-channel-0 margin frontier. The flagship acceptance policy pins both records, so downstream consumers preserve the exact discrete collision audit alongside the D19 request frontier. They are planner/audit records over theorem-backed fields, not claims that a real model gets longer context, lower loss, or full all-channel real-RoPE guarantees.
+
+</details>
 
 ::: {.checkpoint-box}
 
