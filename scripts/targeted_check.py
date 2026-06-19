@@ -364,7 +364,6 @@ AI_CONTRACT_LEAN_PATH_KINDS = {
 }
 
 AI_CONTRACT_BROAD_SURFACE_PATHS = {
-    "Makefile",
     "circle_math/applications/circle_ai.py",
     "circle_math/applications/circle_ai_contracts.py",
     "circle_math/applications/circle_ai_contract_consumer.py",
@@ -402,7 +401,8 @@ def ai_contract_impact(files: Iterable[str], *, full: bool = False) -> tuple[str
     for raw_path in files:
         path = rel(raw_path)
         if (
-            path in AI_CONTRACT_BROAD_SURFACE_PATHS
+            path == "Makefile"
+            or path in AI_CONTRACT_BROAD_SURFACE_PATHS
             or path in AI_CONTRACT_SHARED_SITE_PAGES
             or path.startswith("site/data/generated/circle_ai_contract_pack")
             or path.startswith("sidecars/PAPER_AI_")
@@ -567,7 +567,13 @@ def plan_for_files(files: Iterable[str], *, full: bool = False) -> list[Check]:
 
         if path == "Makefile":
             add(checks, seen, "Makefile targeted-check smoke", ("make", "targeted-check-list", "TARGETED_FILES=scripts/targeted_check.py"), f"{path} changed")
-            add_circle_ai_contract_checks(checks, seen, f"{path} changed AI contract validation targets")
+            add(
+                checks,
+                seen,
+                "Circle AI contract readiness",
+                ("make", "circle-ai-contracts-ready"),
+                f"{path} changed validation targets",
+            )
 
         if path in AI_CONTRACT_BROAD_SURFACE_PATHS:
             add_circle_ai_contract_checks(checks, seen, f"{path} changed public AI contract validation surface")

@@ -110,6 +110,12 @@ where
     }
 }
 
+fn active_sieving_base_primes(base: &[u64], limit: u64, presieved_through: u64) -> &[u64] {
+    let start = base.partition_point(|&q| q <= presieved_through);
+    let end = start + base[start..].partition_point(|&q| q <= limit);
+    &base[start..end]
+}
+
 fn base_primes_odd_bytes(limit: u64) -> Result<Vec<u64>, RangeError> {
     if limit < 2 {
         return Ok(Vec::new());
@@ -1161,7 +1167,7 @@ fn prime_count_single_odd_segment_with_base(
 
     let odd_count_u64 = ((high - odd_low) + 1) / 2;
     let odd_count = usize::try_from(odd_count_u64).map_err(|_| RangeError::SegmentTooLarge)?;
-    let mut flags = Vec::<u8>::new();
+    let mut flags = Vec::<u8>::with_capacity(odd_count);
     refill_presieved_odd_flags(&mut flags, odd_low, odd_count);
     let dense_marking = use_dense_odd_byte_marking(high);
 
@@ -1197,7 +1203,7 @@ fn prime_count_in_range_odd_bytes_presieve13_with_base(
 
         let odd_count_u64 = ((high - odd_low) + 1) / 2;
         let odd_count = usize::try_from(odd_count_u64).map_err(|_| RangeError::SegmentTooLarge)?;
-        let mut flags = Vec::<u8>::new();
+        let mut flags = Vec::<u8>::with_capacity(odd_count);
         refill_presieved13_odd_flags(&mut flags, odd_low, odd_count);
         let dense_marking = use_dense_odd_byte_marking(high);
         mark_single_segment_base_multiples_after(
@@ -1279,7 +1285,7 @@ fn prime_count_in_range_odd_bytes_presieve17_with_base(
 
         let odd_count_u64 = ((high - odd_low) + 1) / 2;
         let odd_count = usize::try_from(odd_count_u64).map_err(|_| RangeError::SegmentTooLarge)?;
-        let mut flags = Vec::<u8>::new();
+        let mut flags = Vec::<u8>::with_capacity(odd_count);
         refill_presieved17_odd_flags(&mut flags, odd_low, odd_count);
         let dense_marking = use_dense_odd_byte_marking(high);
         mark_single_segment_base_multiples_after(
@@ -1739,27 +1745,16 @@ fn mark_single_segment_base_multiples_after(
     presieved_through: u64,
 ) -> Result<(), RangeError> {
     let limit = (high - 1).isqrt();
+    let active_base = active_sieving_base_primes(base, limit, presieved_through);
     if dense_marking {
-        for &q in base {
-            if q <= presieved_through {
-                continue;
-            }
-            if q > limit {
-                break;
-            }
+        for &q in active_base {
             let index = first_odd_multiple_index_at_or_after(q, odd_low)?;
             let step = usize::try_from(q).map_err(|_| RangeError::SegmentTooLarge)?;
             mark_dense_odd_byte_multiples(flags, index, step);
         }
     } else {
         let dense_step_limit = flags.len() / HYBRID_DENSE_STEP_DIVISOR;
-        for &q in base {
-            if q <= presieved_through {
-                continue;
-            }
-            if q > limit {
-                break;
-            }
+        for &q in active_base {
             let mut index = first_odd_multiple_index_at_or_after(q, odd_low)?;
             let step = usize::try_from(q).map_err(|_| RangeError::SegmentTooLarge)?;
             if step <= dense_step_limit {
@@ -1968,12 +1963,14 @@ fn first_odd_multiple_at_or_after(q: u64, low: u64) -> u64 {
         return q_squared;
     }
 
-    let ceil_multiple = ceil_multiple_saturating(low, q);
-    let mut start = q_squared.max(ceil_multiple);
-    if start % 2 == 0 {
-        start = start.saturating_add(q);
-    }
-    start
+    let remainder = low % q;
+    let delta = if remainder == 0 { 0 } else { q - remainder };
+    let odd_delta = if (low ^ delta) & 1 == 1 {
+        delta
+    } else {
+        delta + q
+    };
+    low.saturating_add(odd_delta)
 }
 
 fn first_odd_multiple_index_at_or_after(q: u64, odd_low: u64) -> Result<usize, RangeError> {
@@ -2566,6 +2563,16 @@ mod tests {
         ] {
             assert_eq!(base_primes_static_slice(limit), base_primes_static(limit));
         }
+    }
+
+    #[test]
+    fn active_sieving_base_prime_slice_tracks_presieve_and_limit_bounds() {
+        let base = base_primes(100).unwrap();
+
+        assert_eq!(active_sieving_base_primes(&base, 29, 13), &[17, 19, 23, 29]);
+        assert_eq!(active_sieving_base_primes(&base, 29, 29), &[]);
+        assert_eq!(active_sieving_base_primes(&base, 101, 97), &[]);
+        assert_eq!(active_sieving_base_primes(&base, 1, 0), &[]);
     }
 
     #[test]

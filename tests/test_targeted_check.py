@@ -337,6 +337,8 @@ def test_makefile_change_uses_targeted_smoke_without_sourcecheck() -> None:
 
     assert contains_command(commands, "make", "targeted-check-list")
     assert contains_command(commands, "make", "circle-ai-contracts-ready")
+    assert not contains_command(commands, "pytest", "tests/test_circle_ai_contract_pack.py")
+    assert not contains_command(commands, "pytest", "tests/test_circle_ai_contract_consumer.py")
     assert ("make", "sourcecheck") not in commands
     assert ("make", "check") not in commands
 
