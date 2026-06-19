@@ -274,9 +274,11 @@ Current CPU findings:
   high-offset and cold-process benchmark sections, writes
   `prime_engine_high_offset_hot_cold_latest.csv`, and the report uses that
   artifact for the high-offset cold/hot overhead table when present. The same
-  artifact now includes a persistent `count-server` CLI row, which keeps the
-  Circle binary loaded and times repeated stdin/stdout count requests. Use it
-  after small hot-path changes before spending time on broader external sweeps.
+  artifact now includes persistent `count-server` CLI rows, which keep the
+  Circle binary loaded and time repeated stdin/stdout count requests. The report
+  calls out the fastest server row so candidate modes such as `presieve17` are
+  visible without a broad external sweep. Use it after small hot-path changes
+  before spending time on broader external sweeps.
 - The scalar `u64` primality lane uses the 7-base deterministic Miller-Rabin
   set instead of the first 12 prime bases. That is both the stronger documented
   `u64` coverage and a measured speedup for random candidate batches.
@@ -660,7 +662,7 @@ current controls.
 `prime-engine-high-offset-hot-cold` is the shorter diagnostic target for code
 changes that should affect the Rust engine before they affect command-vs-command
 scorecards. It runs only the in-process high-offset rows plus persistent
-`count-server`, cold process, and cold CLI rows, writing:
+`count-server` candidate rows, cold process, and cold CLI rows, writing:
 
 ```text
 sidecars/PRIME_ENGINE/results/prime_engine_high_offset_hot_cold_latest.csv
