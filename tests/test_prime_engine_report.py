@@ -444,6 +444,7 @@ def test_prime_engine_report_summarizes_artifacts(tmp_path: Path) -> None:
                 "timing,parallel_high_offset_default_range_count_8t,10000000,1376256,361726,7,2.200,4545454545,,",
                 "timing,parallel_high_offset_presieve17_range_count_8t,10000000,1376256,361726,7,2.050,4878048780,,",
                 "timing,hot_cli_count_server_parallel_high_offset_default_range_count_8t,10000000,1376256,361726,7,2.600,3846153846,,",
+                "timing,hot_cli_count_server_parallel_high_offset_presieve17_count_8t,10000000,1376256,361726,7,2.500,4000000000,,",
                 "timing,cold_cli_parallel_high_offset_default_range_count_8t,10000000,1376256,361726,7,4.400,2272727273,,",
                 "timing,cold_process_parallel_high_offset_segmented_range_count_8t,10000000,1376256,361726,7,4.100,2439024390,,",
             ]
@@ -720,9 +721,12 @@ def test_prime_engine_report_summarizes_artifacts(tmp_path: Path) -> None:
     )
     overhead = report["benchmark"]["high_offset_cold_hot_overhead"][0]
     assert overhead["hot_best_ms"] == 2.2
-    assert overhead["hot_server_best_ms"] == 2.6
-    assert overhead["hot_server_over_hot"] == pytest.approx(2.6 / 2.2)
-    assert overhead["hot_server_over_cold_cli"] == pytest.approx(2.6 / 4.4)
+    assert overhead["hot_server_name"] == (
+        "hot_cli_count_server_parallel_high_offset_presieve17_count_8t"
+    )
+    assert overhead["hot_server_best_ms"] == 2.5
+    assert overhead["hot_server_over_hot"] == pytest.approx(2.5 / 2.2)
+    assert overhead["hot_server_over_cold_cli"] == pytest.approx(2.5 / 4.4)
     assert overhead["cold_cli_best_ms"] == 4.4
     assert overhead["cold_cli_over_hot"] == pytest.approx(2.0)
     assert overhead["cold_cli_extra_ms"] == pytest.approx(2.2)
@@ -785,7 +789,7 @@ def test_prime_engine_report_summarizes_artifacts(tmp_path: Path) -> None:
     assert "High-offset hot/cold rows" in markdown
     assert "High-offset cold/hot overhead" in markdown
     assert "High-offset cold/hot overhead (source: `high_offset_hot_cold`)" in markdown
-    assert "| 10000000 | `parallel_high_offset_default_range_count_8t` | 2.200 | 2.600 | 1.18x | 0.59x | 4.400 | 2.00x | 2.200 | 4.100 | 1.86x |" in markdown
+    assert "| 10000000 | `parallel_high_offset_default_range_count_8t` | 2.200 | `hot_cli_count_server_parallel_high_offset_presieve17_count_8t` | 2.500 | 1.14x | 0.57x | 4.400 | 2.00x | 2.200 | 4.100 | 1.86x |" in markdown
     assert (
         "| 10000000 | `parallel_high_offset_default_range_count_8t` | "
         "3145728 | 3.400 | 361726 |"

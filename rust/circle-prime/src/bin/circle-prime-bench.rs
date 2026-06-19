@@ -958,6 +958,16 @@ fn bench_cold_process_counts(rounds: usize) -> Vec<BenchRow> {
         HIGH_OFFSET_HIGH,
         high_offset_segment_size,
         8,
+        None,
+        rounds,
+    ));
+    rows.push(measure_count_server_prime_count(
+        "hot_cli_count_server_parallel_high_offset_presieve17_count_8t",
+        HIGH_OFFSET_LOW,
+        HIGH_OFFSET_HIGH,
+        high_offset_segment_size,
+        8,
+        Some("presieve17"),
         rounds,
     ));
 
@@ -1192,6 +1202,7 @@ fn measure_count_server_prime_count(
     high: u64,
     segment_size: u64,
     threads: usize,
+    count_mode: Option<&str>,
     rounds: usize,
 ) -> BenchRow {
     let executable = circle_prime_cli_executable();
@@ -1214,7 +1225,11 @@ fn measure_count_server_prime_count(
         .take()
         .expect("hot CLI count server stdout unavailable");
     let mut stdout = BufReader::new(stdout);
-    let request = format!("{low} {high}\n");
+    let request = if let Some(count_mode) = count_mode {
+        format!("{low} {high} {segment_size} {threads} {count_mode}\n")
+    } else {
+        format!("{low} {high}\n")
+    };
     let mut best_seconds = f64::INFINITY;
     let mut result = 0u64;
     let mut response = String::new();

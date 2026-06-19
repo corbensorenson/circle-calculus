@@ -613,8 +613,15 @@ def summarize_high_offset_cold_hot_overhead(
         if row.get("scope") == "high_offset"
     }
     hot = rows_by_name.get("parallel_high_offset_default_range_count_8t")
-    hot_server = rows_by_name.get(
-        "hot_cli_count_server_parallel_high_offset_default_range_count_8t"
+    hot_server_candidates = [
+        row
+        for row in rows_by_name.values()
+        if row["name"].startswith("hot_cli_count_server_parallel_high_offset_")
+    ]
+    hot_server = min(
+        hot_server_candidates,
+        key=lambda row: float(row["best_ms"]),
+        default=None,
     )
     cold_cli = rows_by_name.get("cold_cli_parallel_high_offset_default_range_count_8t")
     cold_process = rows_by_name.get("cold_process_parallel_high_offset_segmented_range_count_8t")
@@ -1365,6 +1372,10 @@ def format_optional_ms(value: float | None) -> str:
 
 def format_optional_ratio(value: float | None) -> str:
     return "n/a" if value is None else f"{value:.2f}x"
+
+
+def format_optional_code(value: str | None) -> str:
+    return "n/a" if value is None else f"`{value}`"
 
 
 def summarize_tuning(
@@ -2255,14 +2266,15 @@ def render_benchmark_markdown(summary: dict[str, Any]) -> list[str]:
             [
                 f"High-offset cold/hot overhead (source: `{source_label}`):",
                 "",
-                "| Workload | Hot Row | Hot ms | Count Server ms | Server / Hot | Server / Cold CLI | Cold CLI ms | CLI / Hot | CLI Extra ms | Cold Process ms | Process / Hot |",
-                "| ---: | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |",
+                "| Workload | Hot Row | Hot ms | Server Row | Count Server ms | Server / Hot | Server / Cold CLI | Cold CLI ms | CLI / Hot | CLI Extra ms | Cold Process ms | Process / Hot |",
+                "| ---: | --- | ---: | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |",
             ]
         )
         for row in summary["high_offset_cold_hot_overhead"]:
             lines.append(
                 f"| {row['workload']} | `{row['hot_name']}` | "
                 f"{row['hot_best_ms']:.3f} | "
+                f"{format_optional_code(row['hot_server_name'])} | "
                 f"{format_optional_ms(row['hot_server_best_ms'])} | "
                 f"{format_optional_ratio(row['hot_server_over_hot'])} | "
                 f"{format_optional_ratio(row['hot_server_over_cold_cli'])} | "
