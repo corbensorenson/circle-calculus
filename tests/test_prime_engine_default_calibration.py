@@ -211,6 +211,64 @@ def test_high_offset_quick_precedes_mode_and_segment_sweeps() -> None:
     assert selected[0]["candidate_count"] == 2
 
 
+def test_confirmed_high_offset_quick_overrides_latest_median_pick() -> None:
+    low = 1_000_000_000_000
+    high = 1_000_010_000_000
+
+    selected = select_recommendations(
+        external_rows=[],
+        external_high_offset_rows=[
+            speedup_row(
+                low=low,
+                high=high,
+                name="circle_prime_parallel_presieve13_count_7t",
+                segment_size=1_441_792,
+                threads=7,
+                requested_threads=8,
+                best_ms="4.6",
+                median_ms="4.8",
+            ),
+            speedup_row(
+                low=low,
+                high=high,
+                name="circle_prime_parallel_presieve13_count_8t",
+                segment_size=1_310_720,
+                threads=8,
+                requested_threads=8,
+                best_ms="4.9",
+                median_ms="5.1",
+            ),
+        ],
+        external_high_offset_confirmation={
+            "min_confirmations": 2,
+            "require_stable_samples": True,
+            "winners": [
+                {
+                    "low": low,
+                    "high": high,
+                    "baseline": "external_primesieve_count",
+                    "count_mode": "presieve13",
+                    "segment_size": 1_310_720,
+                    "threads": 8,
+                    "requested_threads": 8,
+                    "confirmation_count": 2,
+                    "observed_count": 3,
+                    "stable_observed_count": 2,
+                    "status": "confirmed",
+                }
+            ],
+        },
+        tuning_summary=None,
+        baseline_priority=["external_primesieve_count"],
+    )
+
+    assert selected[0]["source"] == "external_high_offset_quick"
+    assert selected[0]["segment_size"] == 1_310_720
+    assert selected[0]["threads"] == 8
+    assert selected[0]["selected_by"] == "confirmed_external_high_offset"
+    assert selected[0]["mode_confirmation_status"] == "confirmed"
+
+
 def test_confirmed_external_mode_overrides_latest_median_pick() -> None:
     selected = select_recommendations(
         external_rows=[],
@@ -323,6 +381,81 @@ def test_unconfirmed_external_mode_drift_does_not_fail_calibration() -> None:
     assert "mode unconfirmed 1/2" in render_markdown(calibration)
 
 
+def test_unconfirmed_high_offset_quick_drift_does_not_fail_calibration() -> None:
+    low = 1_000_000_000_000
+    high = 1_000_010_000_000
+    selected = select_recommendations(
+        external_rows=[],
+        external_high_offset_rows=[
+            speedup_row(
+                low=low,
+                high=high,
+                name="circle_prime_parallel_presieve13_count_7t",
+                segment_size=1_441_792,
+                threads=7,
+                requested_threads=8,
+                best_ms="4.6",
+                median_ms="4.8",
+            ),
+            speedup_row(
+                low=low,
+                high=high,
+                name="circle_prime_parallel_presieve13_count_8t",
+                segment_size=1_310_720,
+                threads=8,
+                requested_threads=8,
+                best_ms="5.2",
+                median_ms="5.6",
+            ),
+        ],
+        external_high_offset_confirmation={
+            "min_confirmations": 2,
+            "require_stable_samples": True,
+            "winners": [
+                {
+                    "low": low,
+                    "high": high,
+                    "baseline": "external_primesieve_count",
+                    "count_mode": "presieve13",
+                    "segment_size": 1_441_792,
+                    "threads": 7,
+                    "requested_threads": 8,
+                    "confirmation_count": 1,
+                    "observed_count": 2,
+                    "stable_observed_count": 1,
+                    "status": "unconfirmed",
+                }
+            ],
+        },
+        tuning_summary=None,
+        baseline_priority=["external_primesieve_count"],
+    )
+
+    calibration = build_calibration(
+        recommendations=selected,
+        current_defaults={
+            (low, high, 8): {
+                "count_mode": "presieve13",
+                "segment_size": 1_310_720,
+                "threads": 8,
+                "requested_threads": 8,
+            }
+        },
+        external_metadata=None,
+        tuning_summary=None,
+        baseline_priority=["external_primesieve_count"],
+        tolerance=0.05,
+        generated_at_utc="2026-01-01T00:00:00Z",
+        inputs={},
+    )
+
+    row = calibration["recommendations"][0]
+    assert row["status"] == "unconfirmed_mode_drift"
+    assert row["passes"] is True
+    assert calibration["unconfirmed_mode_drift_count"] == 1
+    assert calibration["failing_recommendation_count"] == 0
+
+
 def test_build_calibration_fails_when_default_mode_lacks_evidence() -> None:
     recommendations = [
         {
@@ -404,6 +537,63 @@ def test_build_calibration_reports_noisy_drift_without_failing() -> None:
     assert calibration["noisy_drift_count"] == 1
     assert calibration["failing_recommendation_count"] == 0
     assert calibration["recommendations"][0]["status"] == "noisy_drift"
+
+
+def test_build_calibration_ignores_non_actionable_absolute_delta() -> None:
+    recommendations = [
+        {
+            "source": "tuning",
+            "baseline": None,
+            "low": 0,
+            "high": 1_000_000,
+            "span": 1_000_000,
+            "count_mode": "prefix-pi",
+            "segment_size": 131_072,
+            "threads": 1,
+            "requested_threads": 1,
+            "best_ms": 0.000083,
+            "median_ms": 0.000083,
+            "circle_speedup": None,
+            "median_circle_speedup": None,
+            "candidate_count": 2,
+            "candidates": [
+                {
+                    "count_mode": "prefix-pi",
+                    "segment_size": 262_144,
+                    "threads": 1,
+                    "requested_threads": 1,
+                    "best_ms": 0.000125,
+                    "median_ms": 0.000125,
+                }
+            ],
+            "selected_by": "median_ms",
+        }
+    ]
+
+    calibration = build_calibration(
+        recommendations=recommendations,
+        current_defaults={
+            (0, 1_000_000, 1): {
+                "count_mode": "prefix-pi",
+                "segment_size": 262_144,
+                "threads": 1,
+                "requested_threads": 1,
+            }
+        },
+        external_metadata=None,
+        tuning_summary=None,
+        baseline_priority=["external_primesieve_count"],
+        tolerance=0.05,
+        min_actionable_median_delta_ms=0.01,
+        generated_at_utc="2026-01-01T00:00:00Z",
+        inputs={},
+    )
+
+    row = calibration["recommendations"][0]
+    assert row["default_over_selected"] > 1.5
+    assert row["default_minus_selected_median_ms"] == 0.000125 - 0.000083
+    assert row["status"] == "within_tolerance"
+    assert calibration["failing_recommendation_count"] == 0
 
 
 def test_build_calibration_summarizes_high_offset_quick_metadata() -> None:

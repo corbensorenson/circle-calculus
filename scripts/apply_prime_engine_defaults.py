@@ -157,11 +157,11 @@ def build_default_updates(
         confirmation_status = row.get("selected_mode_confirmation_status")
         if (
             would_change
-            and str(source) == "external_mode_sweep"
-            and confirmation_status != "confirmed"
+            and str(source) in {"external_mode_sweep", "external_high_offset_quick"}
+            and confirmation_status not in (None, "confirmed")
         ):
             skipped.append(
-                "refusing unconfirmed external mode recommendation for "
+                "refusing unconfirmed external recommendation for "
                 f"{keys['segment_size']}/{keys['count_mode']}: {confirmation_status}"
             )
             continue

@@ -96,21 +96,34 @@ fn write_static_base_prime_table(out_dir: &PathBuf) {
     }
 
     let mut bytes = Vec::new();
-    let mut rust_table = String::from("static STATIC_BASE_PRIMES_U32: &[u32] = &[\n");
+    let mut rust_table_u32 = String::from("static STATIC_BASE_PRIMES_U32: &[u32] = &[\n");
+    let mut rust_table_u64 = String::from("static STATIC_BASE_PRIMES_U64: &[u64] = &[\n");
     for (n, is_prime) in sieve.into_iter().enumerate() {
         if is_prime {
             bytes.extend_from_slice(&(n as u32).to_le_bytes());
-            rust_table.push_str("    ");
-            rust_table.push_str(&n.to_string());
-            rust_table.push_str(",\n");
+            rust_table_u32.push_str("    ");
+            rust_table_u32.push_str(&n.to_string());
+            rust_table_u32.push_str(",\n");
+            rust_table_u64.push_str("    ");
+            rust_table_u64.push_str(&n.to_string());
+            rust_table_u64.push_str(",\n");
         }
     }
-    rust_table.push_str("];\n");
+    rust_table_u32.push_str("];\n");
+    rust_table_u64.push_str("];\n");
 
     fs::write(out_dir.join("base_primes_upto_1100000_u32le.bin"), bytes)
         .expect("write generated base-prime binary table");
-    fs::write(out_dir.join("base_primes_upto_1100000_u32.rs"), rust_table)
-        .expect("write generated base-prime Rust table");
+    fs::write(
+        out_dir.join("base_primes_upto_1100000_u32.rs"),
+        rust_table_u32,
+    )
+    .expect("write generated base-prime Rust table");
+    fs::write(
+        out_dir.join("base_primes_upto_1100000_u64.rs"),
+        rust_table_u64,
+    )
+    .expect("write generated u64 base-prime Rust table");
 }
 
 fn write_prime_engine_defaults(out_dir: &PathBuf) {

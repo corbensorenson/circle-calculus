@@ -445,6 +445,80 @@ def add_theseus_contract_checks(checks: list[Check], seen: set[tuple[str, ...]],
     add(checks, seen, "Theseus contract export", ("make", "theseus-ai-contracts"), reason)
 
 
+PRIME_ENGINE_SCRIPT_TESTS = {
+    "scripts/apply_prime_engine_defaults.py": ("tests/test_prime_engine_apply_defaults.py",),
+    "scripts/benchmark_prime_external_controls.py": (
+        "tests/test_external_prime_controls.py",
+    ),
+    "scripts/benchmark_prime_external_next.py": ("tests/test_external_prime_next.py",),
+    "scripts/calibrate_prime_engine_defaults.py": (
+        "tests/test_prime_engine_default_calibration.py",
+    ),
+    "scripts/check_prime_external_correctness.py": (
+        "tests/test_prime_external_correctness.py",
+    ),
+    "scripts/check_prime_proof_contract.py": ("tests/test_prime_proof_contract.py",),
+    "scripts/compare_prime_external_controls.py": (
+        "tests/test_prime_external_control_compare.py",
+    ),
+    "scripts/compare_prime_external_next.py": (
+        "tests/test_prime_external_next_compare.py",
+    ),
+    "scripts/compare_prime_engine_benchmarks.py": (
+        "tests/test_prime_engine_benchmark_compare.py",
+    ),
+    "scripts/confirm_prime_external_modes.py": (
+        "tests/test_prime_external_mode_confirm.py",
+    ),
+    "scripts/report_prime_engine_results.py": ("tests/test_prime_engine_report.py",),
+    "scripts/tune_prime_engine.py": ("tests/test_prime_engine_tune.py",),
+}
+
+PRIME_ENGINE_RESULT_TESTS = {
+    "prime_engine_default_calibration": (
+        "tests/test_prime_engine_default_calibration.py",
+    ),
+    "prime_engine_external_mode_confirmation": (
+        "tests/test_prime_external_mode_confirm.py",
+    ),
+    "prime_engine_high_offset_confirmation": (
+        "tests/test_prime_external_mode_confirm.py",
+    ),
+    "prime_engine_report": ("tests/test_prime_engine_report.py",),
+}
+
+
+def add_prime_engine_tests(
+    checks: list[Check],
+    seen: set[tuple[str, ...]],
+    tests: Iterable[str],
+    reason: str,
+) -> None:
+    test_paths = tuple(dict.fromkeys(tests))
+    if test_paths:
+        add(checks, seen, "prime-engine targeted tests", pytest(*test_paths), reason)
+
+
+def prime_engine_result_tests(path: str) -> tuple[str, ...]:
+    if not path.startswith("sidecars/PRIME_ENGINE/results/"):
+        return ()
+    filename = Path(path).name
+    tests: list[str] = []
+    for stem, stem_tests in PRIME_ENGINE_RESULT_TESTS.items():
+        if filename.startswith(stem):
+            tests.extend(stem_tests)
+    return tuple(dict.fromkeys(tests))
+
+
+def add_rust_prime_checks(
+    checks: list[Check],
+    seen: set[tuple[str, ...]],
+    reason: str,
+) -> None:
+    add(checks, seen, "Rust circle-prime tests", ("cargo", "test", "-p", "circle-prime"), reason)
+    add(checks, seen, "Rust prime CLI tests", pytest("tests/test_rust_prime_cli.py"), reason)
+
+
 def sidecar_python_tests(path: str) -> tuple[str, ...]:
     path_obj = ROOT / path
     if path_obj.name.startswith("test_") and path_obj.suffix == ".py":
@@ -504,6 +578,9 @@ def plan_for_files(files: Iterable[str], *, full: bool = False) -> list[Check]:
         if path in {"lakefile.lean", "lakefile.toml"}:
             add(checks, seen, "Lean build", ("lake", "build"), f"{path} changes Lean build configuration")
 
+        if path.startswith("rust/circle-prime/"):
+            add_rust_prime_checks(checks, seen, f"{path} changed executable prime-engine code")
+
         if path.startswith("Circle/") and suffix == ".lean":
             module = lean_module_name(path)
             if module is not None:
@@ -556,6 +633,14 @@ def plan_for_files(files: Iterable[str], *, full: bool = False) -> list[Check]:
             add(checks, seen, f"pytest: {path}", pytest(path), f"{path} changed")
 
         if suffix == ".py" and not path.startswith("tests/"):
+            prime_tests = PRIME_ENGINE_SCRIPT_TESTS.get(path)
+            if prime_tests is not None:
+                add_prime_engine_tests(
+                    checks,
+                    seen,
+                    prime_tests,
+                    f"{path} changed prime-engine validation plumbing",
+                )
             if path_matches(path, "rope", "phase_bank", "generate_rope"):
                 add(checks, seen, "RoPE certifier tests", pytest("tests/test_rope_certifier.py"), f"{path} changed")
                 add_circle_ai_contract_kind_checks(checks, seen, f"{path} changed", "rope_position_distinguishability")
@@ -685,6 +770,15 @@ def plan_for_files(files: Iterable[str], *, full: bool = False) -> list[Check]:
                 add_theseus_contract_checks(checks, seen, f"{path} is the compatibility contract artifact")
             if path.endswith("capability_showcase.json"):
                 add(checks, seen, "capability showcase", py("scripts/check_capability_showcase.py"), f"{path} mirrors capability manifest evidence")
+
+        result_prime_tests = prime_engine_result_tests(path)
+        if result_prime_tests:
+            add_prime_engine_tests(
+                checks,
+                seen,
+                result_prime_tests,
+                f"{path} is a generated prime-engine result artifact",
+            )
 
     if not checks:
         add(checks, seen, "manifest", py("scripts/check_manifest.py"), "fallback for unclassified changes")

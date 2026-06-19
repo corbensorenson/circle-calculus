@@ -627,7 +627,8 @@ threaded `presieve13` count mode with a tuned high-offset segment size.
 `prime-engine-high-offset-quick` is the interactive scorecard for the remaining
 `primesieve` gap. It isolates `[1e12, 1e12 + 1e7)`, runs 13 interleaved rounds
 by default, and compares the current high-offset neighborhood
-`1310720,1376256,1441792,1507328` across `segmented`, `presieve13`, and `presieve17`.
+`1310720,1376256,1441792,1507328,2097152,3145728,4194304`
+across `segmented`, `presieve13`, and `presieve17`.
 It writes:
 
 ```text
@@ -639,6 +640,19 @@ sidecars/PRIME_ENGINE/results/prime_engine_high_offset_quick_samples_latest.csv
 Use this target first when editing high-offset marker internals or defaults; it
 is short enough for interactive iteration and still compares against both
 current controls.
+
+`prime-engine-high-offset-confirm` repeats the focused quick candidate set and
+writes:
+
+```text
+sidecars/PRIME_ENGINE/results/prime_engine_high_offset_confirmation_latest.json
+sidecars/PRIME_ENGINE/results/prime_engine_high_offset_confirmation_latest.md
+```
+
+Calibration reads this confirmation file when present. A confirmed repeated
+winner can override the latest quick median pick; an unconfirmed or noisy
+winner stays visible as drift evidence but is not promoted by
+`prime-engine-apply-defaults` unless the explicit noisy override is used.
 
 `prime-engine-high-offset-compare` is the broader confirmation target for the
 same gap. It isolates `[1e12, 1e12 + 1e7)`, sweeps the larger high-offset
@@ -724,17 +738,20 @@ sidecars/PRIME_ENGINE/results/prime_engine_default_calibration_latest.json
 sidecars/PRIME_ENGINE/results/prime_engine_default_calibration_latest.md
 ```
 
-It reads the latest high-offset quick scorecard, external segment sweep,
-external count-mode sweep, repeated mode-confirmation artifact, and in-process
-tuner summary as one evidence pool, preferring `primesieve` rows over
-`primecount` rows because `primesieve` is the stronger range-counting control.
-The high-offset quick scorecard gets first priority for the tracked
-`[1e12, 1e12+1e7)` lane because it varies both segment size and count mode
-around that hot range. Confirmed repeated mode winners override a single latest
-mode sweep for the remaining ranges when the current sweep still contains
-matching candidate evidence. Unconfirmed mode winners are recorded as
-`unconfirmed_mode_drift` rather than promoted. If no external sweep exists for a
-tuned range, calibration falls back to the in-process tuner summary. The script
+It reads the latest high-offset quick scorecard, repeated high-offset
+confirmation artifact, external segment sweep, external count-mode sweep,
+repeated mode-confirmation artifact, and in-process tuner summary as one
+evidence pool, preferring `primesieve` rows over `primecount` rows because
+`primesieve` is the stronger range-counting control. The high-offset quick
+scorecard gets first priority for the tracked `[1e12, 1e12+1e7)` lane because it
+varies both segment size and count mode around that hot range. Confirmed
+repeated high-offset winners override a single latest high-offset quick pick
+when the current evidence still contains matching candidate rows. Confirmed
+repeated mode winners override a single latest mode sweep for the remaining
+ranges when the current sweep still contains matching candidate evidence.
+Unconfirmed winners are recorded as `unconfirmed_mode_drift` rather than
+promoted. If no external sweep exists for a tuned range, calibration falls back
+to the in-process tuner summary. The script
 then probes the release `circle-prime recommend --count --json` CLI for the
 current adaptive default and records whether that default mode/segment/thread
 combination is exactly aligned, within the configured median-slowdown tolerance,

@@ -125,8 +125,34 @@ def test_build_default_updates_skips_unconfirmed_external_mode_recommendation() 
     assert updated == defaults
     assert changes == []
     assert skipped == [
-        "refusing unconfirmed external mode recommendation for "
+        "refusing unconfirmed external recommendation for "
         "parallel_small_prefix_segment_size/parallel_small_prefix_count_mode: unconfirmed"
+    ]
+
+
+def test_build_default_updates_skips_unconfirmed_high_offset_recommendation() -> None:
+    defaults = defaults_fixture()
+
+    row = calibration_row(
+        low=1_000_000_000_000,
+        high=1_000_010_000_000,
+        source="external_high_offset_quick",
+        stability="stable",
+        selected_segment_size=1_441_792,
+        selected_count_mode="presieve13",
+    )
+    row["selected_mode_confirmation_status"] = "unconfirmed"
+    updated, changes, skipped = build_default_updates(
+        {"recommendations": [row]},
+        defaults,
+    )
+
+    assert updated == defaults
+    assert changes == []
+    assert skipped == [
+        "refusing unconfirmed external recommendation for "
+        "parallel_very_high_offset_segment_size/"
+        "parallel_very_high_offset_count_mode: unconfirmed"
     ]
 
 

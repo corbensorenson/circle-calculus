@@ -45,6 +45,9 @@ DEFAULT_EXTERNAL_HIGH_OFFSET_QUICK = (
 DEFAULT_EXTERNAL_HIGH_OFFSET_QUICK_METADATA = (
     RESULTS_DIR / "prime_engine_high_offset_quick_latest.json"
 )
+DEFAULT_EXTERNAL_HIGH_OFFSET_CONFIRMATION = (
+    RESULTS_DIR / "prime_engine_high_offset_confirmation_latest.json"
+)
 DEFAULT_TUNING = RESULTS_DIR / "prime_engine_tuning_latest.json"
 DEFAULT_DEFAULT_CALIBRATION = RESULTS_DIR / "prime_engine_default_calibration_latest.json"
 DEFAULT_OUTPUT_MD = RESULTS_DIR / "prime_engine_report_latest.md"
@@ -161,6 +164,11 @@ def main() -> int:
         type=Path,
         default=DEFAULT_EXTERNAL_HIGH_OFFSET_QUICK_METADATA,
     )
+    parser.add_argument(
+        "--external-high-offset-confirmation",
+        type=Path,
+        default=DEFAULT_EXTERNAL_HIGH_OFFSET_CONFIRMATION,
+    )
     parser.add_argument("--tuning", type=Path, default=DEFAULT_TUNING)
     parser.add_argument(
         "--default-calibration",
@@ -192,6 +200,7 @@ def main() -> int:
         external_mode_confirmation_path=args.external_mode_confirmation,
         external_high_offset_quick_path=args.external_high_offset_quick,
         external_high_offset_quick_metadata_path=args.external_high_offset_quick_metadata,
+        external_high_offset_confirmation_path=args.external_high_offset_confirmation,
         tuning_path=args.tuning,
         default_calibration_path=args.default_calibration,
         generated_at_utc=datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
@@ -227,6 +236,7 @@ def build_report(
     external_mode_confirmation_path: Path | None = None,
     external_high_offset_quick_path: Path | None = None,
     external_high_offset_quick_metadata_path: Path | None = None,
+    external_high_offset_confirmation_path: Path | None = None,
     default_calibration_path: Path | None = None,
     generated_at_utc: str,
 ) -> dict[str, Any]:
@@ -267,6 +277,9 @@ def build_report(
     )
     external_high_offset_quick_sample_rows = read_sample_rows_from_metadata(
         external_high_offset_quick_metadata
+    )
+    external_high_offset_confirmation = read_json_optional(
+        external_high_offset_confirmation_path
     )
     tuning_summary = read_json_if_present(tuning_path, missing_inputs)
     default_calibration = read_json_optional(default_calibration_path)
@@ -338,6 +351,11 @@ def build_report(
                 if external_high_offset_quick_metadata_path is not None
                 else None
             ),
+            "external_high_offset_confirmation": (
+                str(external_high_offset_confirmation_path)
+                if external_high_offset_confirmation_path is not None
+                else None
+            ),
             "tuning": str(tuning_path),
             "default_calibration": (
                 str(default_calibration_path) if default_calibration_path is not None else None
@@ -378,6 +396,9 @@ def build_report(
             external_high_offset_quick_rows,
             external_high_offset_quick_metadata,
             external_high_offset_quick_sample_rows,
+        ),
+        "external_high_offset_confirmation": summarize_external_mode_confirmation(
+            external_high_offset_confirmation
         ),
         "tuning": summarize_tuning(tuning_summary, default_calibration_summary),
         "default_calibration": default_calibration_summary,
@@ -1432,6 +1453,13 @@ def render_markdown(report: dict[str, Any]) -> str:
         )
     )
     lines.extend(
+        render_external_mode_confirmation_markdown(
+            report["external_high_offset_confirmation"],
+            title="High-Offset Confirmation",
+            missing_message="No repeated high-offset confirmation artifact was available.",
+        )
+    )
+    lines.extend(
         render_external_segment_sweep_markdown(
             report["external_mode_sweep"],
             title="External Count Mode Sweep",
@@ -1716,10 +1744,15 @@ def circle_row_label(row: dict[str, Any]) -> str:
     return label
 
 
-def render_external_mode_confirmation_markdown(summary: dict[str, Any]) -> list[str]:
-    lines = ["## External Mode Confirmation", ""]
+def render_external_mode_confirmation_markdown(
+    summary: dict[str, Any],
+    *,
+    title: str = "External Mode Confirmation",
+    missing_message: str = "No repeated external mode-confirmation artifact was available.",
+) -> list[str]:
+    lines = [f"## {title}", ""]
     if not summary["available"]:
-        lines.append("No repeated external mode-confirmation artifact was available.")
+        lines.append(missing_message)
         lines.append("")
         return lines
 

@@ -293,6 +293,45 @@ def test_validation_script_change_runs_matching_test_when_present() -> None:
     assert contains_command(commands, "pytest", "tests/test_targeted_check.py")
 
 
+def test_prime_calibration_script_change_runs_calibration_tests() -> None:
+    commands = commands_for(["scripts/calibrate_prime_engine_defaults.py"])
+
+    assert contains_command(
+        commands,
+        "pytest",
+        "tests/test_prime_engine_default_calibration.py",
+    )
+    assert ("make", "check") not in commands
+
+
+def test_prime_engine_result_artifacts_run_matching_local_tests() -> None:
+    paths_and_tests = {
+        "sidecars/PRIME_ENGINE/results/prime_engine_default_calibration_latest.md": (
+            "tests/test_prime_engine_default_calibration.py"
+        ),
+        "sidecars/PRIME_ENGINE/results/prime_engine_high_offset_confirmation_latest.md": (
+            "tests/test_prime_external_mode_confirm.py"
+        ),
+        "sidecars/PRIME_ENGINE/results/prime_engine_report_latest.md": (
+            "tests/test_prime_engine_report.py"
+        ),
+    }
+
+    for path, test_path in paths_and_tests.items():
+        commands = commands_for([path])
+
+        assert contains_command(commands, "pytest", test_path)
+        assert ("make", "check") not in commands
+
+
+def test_rust_prime_engine_change_runs_cargo_and_cli_tests() -> None:
+    commands = commands_for(["rust/circle-prime/src/segmented.rs"])
+
+    assert ("cargo", "test", "-p", "circle-prime") in commands
+    assert contains_command(commands, "pytest", "tests/test_rust_prime_cli.py")
+    assert ("make", "check") not in commands
+
+
 def test_makefile_change_uses_targeted_smoke_without_sourcecheck() -> None:
     commands = commands_for(["Makefile"])
 

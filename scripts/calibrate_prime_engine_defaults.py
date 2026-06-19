@@ -31,11 +31,15 @@ DEFAULT_EXTERNAL_HIGH_OFFSET_QUICK = (
 DEFAULT_EXTERNAL_HIGH_OFFSET_QUICK_METADATA = (
     RESULTS_DIR / "prime_engine_high_offset_quick_latest.json"
 )
+DEFAULT_EXTERNAL_HIGH_OFFSET_CONFIRMATION = (
+    RESULTS_DIR / "prime_engine_high_offset_confirmation_latest.json"
+)
 DEFAULT_TUNING = RESULTS_DIR / "prime_engine_tuning_latest.json"
 DEFAULT_OUTPUT_JSON = RESULTS_DIR / "prime_engine_default_calibration_latest.json"
 DEFAULT_OUTPUT_MD = RESULTS_DIR / "prime_engine_default_calibration_latest.md"
 DEFAULT_BASELINE_PRIORITY = "external_primesieve_count,external_primecount_pi_diff"
 SAMPLE_NOISY_MAX_OVER_MEDIAN = 1.5
+DEFAULT_MIN_ACTIONABLE_MEDIAN_DELTA_MS = 0.001
 
 
 def main() -> int:
@@ -80,6 +84,11 @@ def main() -> int:
         type=Path,
         default=DEFAULT_EXTERNAL_HIGH_OFFSET_QUICK_METADATA,
     )
+    parser.add_argument(
+        "--external-high-offset-confirmation",
+        type=Path,
+        default=DEFAULT_EXTERNAL_HIGH_OFFSET_CONFIRMATION,
+    )
     parser.add_argument("--tuning", type=Path, default=DEFAULT_TUNING)
     parser.add_argument(
         "--circle-prime",
@@ -101,6 +110,15 @@ def main() -> int:
         default=0.05,
         help="Allowed default median slowdown over the selected row.",
     )
+    parser.add_argument(
+        "--min-actionable-median-delta-ms",
+        type=float,
+        default=DEFAULT_MIN_ACTIONABLE_MEDIAN_DELTA_MS,
+        help=(
+            "Ignore ratio drift when the absolute median delta is this many "
+            "milliseconds or less."
+        ),
+    )
     parser.add_argument("--output-json", type=Path, default=DEFAULT_OUTPUT_JSON)
     parser.add_argument("--output-md", type=Path, default=DEFAULT_OUTPUT_MD)
     parser.add_argument(
@@ -112,6 +130,8 @@ def main() -> int:
 
     if args.tolerance < 0:
         parser.error("--tolerance must be nonnegative")
+    if args.min_actionable_median_delta_ms < 0:
+        parser.error("--min-actionable-median-delta-ms must be nonnegative")
     baseline_priority = split_csv(args.baseline_priority)
     if not baseline_priority:
         parser.error("--baseline-priority must include at least one baseline")
@@ -135,6 +155,9 @@ def main() -> int:
     external_high_offset_sample_rows = read_sample_rows_from_metadata(
         external_high_offset_metadata
     )
+    external_high_offset_confirmation = read_json_optional(
+        args.external_high_offset_confirmation
+    )
     tuning_summary = read_json_optional(args.tuning)
     tuning_sample_rows = read_tuning_sample_rows(args.tuning, tuning_summary)
     recommendations = select_recommendations(
@@ -145,6 +168,7 @@ def main() -> int:
         external_mode_confirmation=external_mode_confirmation,
         external_high_offset_rows=external_high_offset_rows,
         external_high_offset_sample_rows=external_high_offset_sample_rows,
+        external_high_offset_confirmation=external_high_offset_confirmation,
         tuning_summary=tuning_summary,
         tuning_sample_rows=tuning_sample_rows,
         baseline_priority=baseline_priority,
@@ -157,9 +181,11 @@ def main() -> int:
         external_mode_metadata=external_mode_metadata,
         external_mode_confirmation=external_mode_confirmation,
         external_high_offset_metadata=external_high_offset_metadata,
+        external_high_offset_confirmation=external_high_offset_confirmation,
         tuning_summary=tuning_summary,
         baseline_priority=baseline_priority,
         tolerance=args.tolerance,
+        min_actionable_median_delta_ms=args.min_actionable_median_delta_ms,
         generated_at_utc=datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
         inputs={
             "external_segment_sweep": str(args.external_segment_sweep),
@@ -170,6 +196,9 @@ def main() -> int:
             "external_high_offset_quick": str(args.external_high_offset_quick),
             "external_high_offset_quick_metadata": str(
                 args.external_high_offset_quick_metadata
+            ),
+            "external_high_offset_confirmation": str(
+                args.external_high_offset_confirmation
             ),
             "tuning": str(args.tuning),
             "circle_prime": str(args.circle_prime),
@@ -197,19 +226,24 @@ def select_recommendations(
     external_mode_confirmation: dict[str, Any] | None = None,
     external_high_offset_rows: list[dict[str, str]] | None = None,
     external_high_offset_sample_rows: list[dict[str, str]] | None = None,
+    external_high_offset_confirmation: dict[str, Any] | None = None,
     tuning_summary: dict[str, Any] | None,
     tuning_sample_rows: list[dict[str, str]] | None = None,
     baseline_priority: list[str],
 ) -> list[dict[str, Any]]:
-    high_offset_recommendations = select_external_recommendations(
-        [
-            (
-                "external_high_offset_quick",
-                external_high_offset_rows or [],
-                external_high_offset_sample_rows or [],
-            )
-        ],
-        baseline_priority,
+    high_offset_recommendations = apply_mode_confirmation(
+        select_external_recommendations(
+            [
+                (
+                    "external_high_offset_quick",
+                    external_high_offset_rows or [],
+                    external_high_offset_sample_rows or [],
+                )
+            ],
+            baseline_priority,
+        ),
+        external_high_offset_confirmation,
+        selected_by="confirmed_external_high_offset",
     )
     mode_recommendations = apply_mode_confirmation(
         select_external_recommendations(
@@ -299,6 +333,8 @@ def select_external_recommendations(
 def apply_mode_confirmation(
     recommendations: list[dict[str, Any]],
     confirmation: dict[str, Any] | None,
+    *,
+    selected_by: str = "confirmed_external_mode",
 ) -> list[dict[str, Any]]:
     if confirmation is None:
         return recommendations
@@ -334,7 +370,7 @@ def apply_mode_confirmation(
                 {
                     "candidate_count": int(recommendation.get("candidate_count", 0)),
                     "candidates": recommendation.get("candidates", []),
-                    "selected_by": "confirmed_external_mode",
+                    "selected_by": selected_by,
                 }
             )
             selected.update(mode_confirmation_fields(winner, confirmation))
@@ -480,11 +516,13 @@ def build_calibration(
     tuning_summary: dict[str, Any] | None,
     baseline_priority: list[str],
     tolerance: float,
+    min_actionable_median_delta_ms: float = DEFAULT_MIN_ACTIONABLE_MEDIAN_DELTA_MS,
     generated_at_utc: str,
     inputs: dict[str, str],
     external_mode_metadata: dict[str, Any] | None = None,
     external_mode_confirmation: dict[str, Any] | None = None,
     external_high_offset_metadata: dict[str, Any] | None = None,
+    external_high_offset_confirmation: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     calibrated = []
     for recommendation in recommendations:
@@ -499,6 +537,7 @@ def build_calibration(
                     )
                 ),
                 tolerance,
+                min_actionable_median_delta_ms,
             )
         )
     failing = [row for row in calibrated if not row["passes"]]
@@ -507,6 +546,7 @@ def build_calibration(
         "inputs": inputs,
         "baseline_priority": baseline_priority,
         "tolerance": tolerance,
+        "min_actionable_median_delta_ms": min_actionable_median_delta_ms,
         "external_sweep": summarize_external_sweep_metadata(external_metadata),
         "external_mode_sweep": summarize_external_sweep_metadata(external_mode_metadata),
         "external_mode_confirmation": summarize_external_mode_confirmation(
@@ -514,6 +554,9 @@ def build_calibration(
         ),
         "external_high_offset_quick": summarize_external_sweep_metadata(
             external_high_offset_metadata
+        ),
+        "external_high_offset_confirmation": summarize_external_mode_confirmation(
+            external_high_offset_confirmation
         ),
         "tuning": summarize_tuning_metadata(tuning_summary),
         "recommendations": calibrated,
@@ -540,6 +583,7 @@ def calibrate_recommendation(
     recommendation: dict[str, Any],
     current_default: dict[str, Any] | None,
     tolerance: float,
+    min_actionable_median_delta_ms: float = DEFAULT_MIN_ACTIONABLE_MEDIAN_DELTA_MS,
 ) -> dict[str, Any]:
     row = {
         "source": recommendation["source"],
@@ -649,7 +693,11 @@ def calibrate_recommendation(
 
     default_median = float(default_candidate["median_ms"])
     ratio = default_median / row["selected_median_ms"]
-    within_tolerance = ratio <= 1.0 + tolerance
+    median_delta_ms = default_median - row["selected_median_ms"]
+    within_tolerance = (
+        ratio <= 1.0 + tolerance
+        or median_delta_ms <= min_actionable_median_delta_ms
+    )
     noisy_external_drift = (
         not within_tolerance
         and str(row["source"]).startswith("external_")
@@ -657,13 +705,14 @@ def calibrate_recommendation(
     )
     unconfirmed_mode_drift = (
         not within_tolerance
-        and row["source"] == "external_mode_sweep"
+        and row["source"] in {"external_mode_sweep", "external_high_offset_quick"}
         and row.get("selected_mode_confirmation_status") not in (None, "confirmed")
     )
     row.update(
         {
             "default_best_ms": float(default_candidate["best_ms"]),
             "default_median_ms": default_median,
+            "default_minus_selected_median_ms": median_delta_ms,
             "default_over_selected": ratio,
             "status": (
                 "within_tolerance"
@@ -981,6 +1030,8 @@ def render_markdown(calibration: dict[str, Any]) -> str:
         "",
         f"Generated: `{calibration['generated_at_utc']}`",
         f"Tolerance: `{calibration['tolerance']:.3f}` median slowdown over selected row.",
+        "Minimum actionable median delta: "
+        f"`{calibration.get('min_actionable_median_delta_ms', 0.0):.6f}` ms.",
         "",
         f"- recommendations: `{calibration['recommendation_count']}`",
         f"- aligned: `{calibration['aligned_count']}`",

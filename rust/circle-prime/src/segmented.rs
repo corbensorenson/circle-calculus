@@ -37,6 +37,7 @@ const PRIME_PI_PHI_SMALL_MODULUS: u64 = 30_030;
 pub const DEFAULT_SEGMENT_SIZE: u64 = 1 << 18;
 include!(concat!(env!("OUT_DIR"), "/prime_engine_defaults.rs"));
 include!(concat!(env!("OUT_DIR"), "/base_primes_upto_1100000_u32.rs"));
+include!(concat!(env!("OUT_DIR"), "/base_primes_upto_1100000_u64.rs"));
 pub const HIGH_OFFSET_SEGMENT_SIZE: u64 = 1 << 20;
 pub const VERY_HIGH_OFFSET_SEGMENT_SIZE: u64 = 1 << 22;
 
@@ -85,15 +86,28 @@ pub fn base_primes(limit: u64) -> Result<Vec<u64>, RangeError> {
 }
 
 fn base_primes_static(limit: u64) -> Vec<u64> {
+    base_primes_static_slice(limit).to_vec()
+}
+
+fn base_primes_static_slice(limit: u64) -> &'static [u64] {
     let count = if limit >= STATIC_BASE_PRIME_LIMIT {
-        STATIC_BASE_PRIMES_U32.len()
+        STATIC_BASE_PRIMES_U64.len()
     } else {
-        STATIC_BASE_PRIMES_U32.partition_point(|&prime| u64::from(prime) <= limit)
+        STATIC_BASE_PRIMES_U64.partition_point(|&prime| prime <= limit)
     };
-    STATIC_BASE_PRIMES_U32[..count]
-        .iter()
-        .map(|&prime| u64::from(prime))
-        .collect()
+    &STATIC_BASE_PRIMES_U64[..count]
+}
+
+fn with_base_primes<R, F>(limit: u64, f: F) -> Result<R, RangeError>
+where
+    F: FnOnce(&[u64]) -> Result<R, RangeError>,
+{
+    if limit <= STATIC_BASE_PRIME_LIMIT {
+        f(base_primes_static_slice(limit))
+    } else {
+        let base = base_primes(limit)?;
+        f(&base)
+    }
 }
 
 fn base_primes_odd_bytes(limit: u64) -> Result<Vec<u64>, RangeError> {
@@ -318,8 +332,9 @@ where
 
     low = low.max(23);
     let limit = (high - 1).isqrt();
-    let base = base_primes(limit)?;
-    for_each_presieved_odd_prime_with_base(low, high, segment_size, &base, on_prime)
+    with_base_primes(limit, |base| {
+        for_each_presieved_odd_prime_with_base(low, high, segment_size, base, on_prime)
+    })
 }
 
 pub fn prime_count_in_range(low: u64, high: u64, segment_size: u64) -> Result<usize, RangeError> {
@@ -364,8 +379,9 @@ pub fn prime_count_in_range_bitpacked(
     }
 
     let limit = (high - 1).isqrt();
-    let base = base_primes(limit)?;
-    prime_count_in_range_bitpacked_with_base(low, high, segment_size, &base)
+    with_base_primes(limit, |base| {
+        prime_count_in_range_bitpacked_with_base(low, high, segment_size, base)
+    })
 }
 
 pub fn prime_count_in_range_tracked_bytes(
@@ -384,8 +400,9 @@ pub fn prime_count_in_range_tracked_bytes(
     }
 
     let limit = (high - 1).isqrt();
-    let base = base_primes(limit)?;
-    prime_count_in_range_tracked_bytes_with_base(low, high, segment_size, &base)
+    with_base_primes(limit, |base| {
+        prime_count_in_range_tracked_bytes_with_base(low, high, segment_size, base)
+    })
 }
 
 pub fn prime_count_in_range_presieve13(
@@ -404,8 +421,9 @@ pub fn prime_count_in_range_presieve13(
     }
 
     let limit = (high - 1).isqrt();
-    let base = base_primes(limit)?;
-    prime_count_in_range_odd_bytes_presieve13_with_base(low, high, segment_size, &base)
+    with_base_primes(limit, |base| {
+        prime_count_in_range_odd_bytes_presieve13_with_base(low, high, segment_size, base)
+    })
 }
 
 pub fn prime_count_in_range_presieve13_parallel(
@@ -432,27 +450,27 @@ pub fn prime_count_in_range_presieve13_parallel(
     }
 
     let limit = (high - 1).isqrt();
-    let base = base_primes(limit)?;
-    let chunks = split_range(low, high, workers);
-    thread::scope(|scope| {
-        let mut handles = Vec::with_capacity(chunks.len());
-        for (chunk_low, chunk_high) in chunks {
-            let base = &base;
-            handles.push(scope.spawn(move || {
-                prime_count_in_range_odd_bytes_presieve13_with_base(
-                    chunk_low,
-                    chunk_high,
-                    segment_size,
-                    base,
-                )
-            }));
-        }
+    with_base_primes(limit, |base| {
+        let chunks = split_range(low, high, workers);
+        thread::scope(|scope| {
+            let mut handles = Vec::with_capacity(chunks.len());
+            for (chunk_low, chunk_high) in chunks {
+                handles.push(scope.spawn(move || {
+                    prime_count_in_range_odd_bytes_presieve13_with_base(
+                        chunk_low,
+                        chunk_high,
+                        segment_size,
+                        base,
+                    )
+                }));
+            }
 
-        let mut total = 0usize;
-        for handle in handles {
-            total += handle.join().map_err(|_| RangeError::WorkerPanic)??;
-        }
-        Ok(total)
+            let mut total = 0usize;
+            for handle in handles {
+                total += handle.join().map_err(|_| RangeError::WorkerPanic)??;
+            }
+            Ok(total)
+        })
     })
 }
 
@@ -472,8 +490,9 @@ pub fn prime_count_in_range_presieve17(
     }
 
     let limit = (high - 1).isqrt();
-    let base = base_primes(limit)?;
-    prime_count_in_range_odd_bytes_presieve17_with_base(low, high, segment_size, &base)
+    with_base_primes(limit, |base| {
+        prime_count_in_range_odd_bytes_presieve17_with_base(low, high, segment_size, base)
+    })
 }
 
 pub fn prime_count_in_range_presieve17_parallel(
@@ -500,27 +519,27 @@ pub fn prime_count_in_range_presieve17_parallel(
     }
 
     let limit = (high - 1).isqrt();
-    let base = base_primes(limit)?;
-    let chunks = split_range(low, high, workers);
-    thread::scope(|scope| {
-        let mut handles = Vec::with_capacity(chunks.len());
-        for (chunk_low, chunk_high) in chunks {
-            let base = &base;
-            handles.push(scope.spawn(move || {
-                prime_count_in_range_odd_bytes_presieve17_with_base(
-                    chunk_low,
-                    chunk_high,
-                    segment_size,
-                    base,
-                )
-            }));
-        }
+    with_base_primes(limit, |base| {
+        let chunks = split_range(low, high, workers);
+        thread::scope(|scope| {
+            let mut handles = Vec::with_capacity(chunks.len());
+            for (chunk_low, chunk_high) in chunks {
+                handles.push(scope.spawn(move || {
+                    prime_count_in_range_odd_bytes_presieve17_with_base(
+                        chunk_low,
+                        chunk_high,
+                        segment_size,
+                        base,
+                    )
+                }));
+            }
 
-        let mut total = 0usize;
-        for handle in handles {
-            total += handle.join().map_err(|_| RangeError::WorkerPanic)??;
-        }
-        Ok(total)
+            let mut total = 0usize;
+            for handle in handles {
+                total += handle.join().map_err(|_| RangeError::WorkerPanic)??;
+            }
+            Ok(total)
+        })
     })
 }
 
@@ -540,8 +559,9 @@ pub fn prime_count_in_range_wheel30(
     }
 
     let limit = (high - 1).isqrt();
-    let base = base_primes(limit)?;
-    prime_count_in_range_wheel30_with_base(low, high, segment_size, &base)
+    with_base_primes(limit, |base| {
+        prime_count_in_range_wheel30_with_base(low, high, segment_size, base)
+    })
 }
 
 pub fn prime_count_in_range_wheel30_marks(
@@ -560,8 +580,9 @@ pub fn prime_count_in_range_wheel30_marks(
     }
 
     let limit = (high - 1).isqrt();
-    let base = base_primes(limit)?;
-    prime_count_in_range_wheel30_marks_with_base(low, high, segment_size, &base)
+    with_base_primes(limit, |base| {
+        prime_count_in_range_wheel30_marks_with_base(low, high, segment_size, base)
+    })
 }
 
 pub fn prime_count_in_range_wheel30_marks_parallel(
@@ -588,27 +609,27 @@ pub fn prime_count_in_range_wheel30_marks_parallel(
     }
 
     let limit = (high - 1).isqrt();
-    let base = base_primes(limit)?;
-    let chunks = split_range(low, high, workers);
-    thread::scope(|scope| {
-        let mut handles = Vec::with_capacity(chunks.len());
-        for (chunk_low, chunk_high) in chunks {
-            let base = &base;
-            handles.push(scope.spawn(move || {
-                prime_count_in_range_wheel30_marks_with_base(
-                    chunk_low,
-                    chunk_high,
-                    segment_size,
-                    base,
-                )
-            }));
-        }
+    with_base_primes(limit, |base| {
+        let chunks = split_range(low, high, workers);
+        thread::scope(|scope| {
+            let mut handles = Vec::with_capacity(chunks.len());
+            for (chunk_low, chunk_high) in chunks {
+                handles.push(scope.spawn(move || {
+                    prime_count_in_range_wheel30_marks_with_base(
+                        chunk_low,
+                        chunk_high,
+                        segment_size,
+                        base,
+                    )
+                }));
+            }
 
-        let mut total = 0usize;
-        for handle in handles {
-            total += handle.join().map_err(|_| RangeError::WorkerPanic)??;
-        }
-        Ok(total)
+            let mut total = 0usize;
+            for handle in handles {
+                total += handle.join().map_err(|_| RangeError::WorkerPanic)??;
+            }
+            Ok(total)
+        })
     })
 }
 
@@ -628,8 +649,9 @@ pub fn prime_count_in_range_hybrid_wheel30_marks(
     }
 
     let limit = (high - 1).isqrt();
-    let base = base_primes(limit)?;
-    prime_count_in_range_hybrid_wheel30_marks_with_base(low, high, segment_size, &base)
+    with_base_primes(limit, |base| {
+        prime_count_in_range_hybrid_wheel30_marks_with_base(low, high, segment_size, base)
+    })
 }
 
 pub fn prime_count_in_range_hybrid_wheel30_marks_parallel(
@@ -656,27 +678,27 @@ pub fn prime_count_in_range_hybrid_wheel30_marks_parallel(
     }
 
     let limit = (high - 1).isqrt();
-    let base = base_primes(limit)?;
-    let chunks = split_range(low, high, workers);
-    thread::scope(|scope| {
-        let mut handles = Vec::with_capacity(chunks.len());
-        for (chunk_low, chunk_high) in chunks {
-            let base = &base;
-            handles.push(scope.spawn(move || {
-                prime_count_in_range_hybrid_wheel30_marks_with_base(
-                    chunk_low,
-                    chunk_high,
-                    segment_size,
-                    base,
-                )
-            }));
-        }
+    with_base_primes(limit, |base| {
+        let chunks = split_range(low, high, workers);
+        thread::scope(|scope| {
+            let mut handles = Vec::with_capacity(chunks.len());
+            for (chunk_low, chunk_high) in chunks {
+                handles.push(scope.spawn(move || {
+                    prime_count_in_range_hybrid_wheel30_marks_with_base(
+                        chunk_low,
+                        chunk_high,
+                        segment_size,
+                        base,
+                    )
+                }));
+            }
 
-        let mut total = 0usize;
-        for handle in handles {
-            total += handle.join().map_err(|_| RangeError::WorkerPanic)??;
-        }
-        Ok(total)
+            let mut total = 0usize;
+            for handle in handles {
+                total += handle.join().map_err(|_| RangeError::WorkerPanic)??;
+            }
+            Ok(total)
+        })
     })
 }
 
@@ -704,22 +726,27 @@ pub fn prime_count_in_range_parallel(
     }
 
     let limit = (high - 1).isqrt();
-    let base = base_primes(limit)?;
-    let chunks = split_range(low, high, workers);
-    thread::scope(|scope| {
-        let mut handles = Vec::with_capacity(chunks.len());
-        for (chunk_low, chunk_high) in chunks {
-            let base = &base;
-            handles.push(scope.spawn(move || {
-                prime_count_in_range_odd_bytes_with_base(chunk_low, chunk_high, segment_size, base)
-            }));
-        }
+    with_base_primes(limit, |base| {
+        let chunks = split_range(low, high, workers);
+        thread::scope(|scope| {
+            let mut handles = Vec::with_capacity(chunks.len());
+            for (chunk_low, chunk_high) in chunks {
+                handles.push(scope.spawn(move || {
+                    prime_count_in_range_odd_bytes_with_base(
+                        chunk_low,
+                        chunk_high,
+                        segment_size,
+                        base,
+                    )
+                }));
+            }
 
-        let mut total = 0usize;
-        for handle in handles {
-            total += handle.join().map_err(|_| RangeError::WorkerPanic)??;
-        }
-        Ok(total)
+            let mut total = 0usize;
+            for handle in handles {
+                total += handle.join().map_err(|_| RangeError::WorkerPanic)??;
+            }
+            Ok(total)
+        })
     })
 }
 
@@ -747,22 +774,27 @@ pub fn prime_count_in_range_parallel_balanced(
     }
 
     let limit = (high - 1).isqrt();
-    let base = base_primes(limit)?;
-    let chunks = split_range_by_sieve_work(low, high, workers);
-    thread::scope(|scope| {
-        let mut handles = Vec::with_capacity(chunks.len());
-        for (chunk_low, chunk_high) in chunks {
-            let base = &base;
-            handles.push(scope.spawn(move || {
-                prime_count_in_range_odd_bytes_with_base(chunk_low, chunk_high, segment_size, base)
-            }));
-        }
+    with_base_primes(limit, |base| {
+        let chunks = split_range_by_sieve_work(low, high, workers);
+        thread::scope(|scope| {
+            let mut handles = Vec::with_capacity(chunks.len());
+            for (chunk_low, chunk_high) in chunks {
+                handles.push(scope.spawn(move || {
+                    prime_count_in_range_odd_bytes_with_base(
+                        chunk_low,
+                        chunk_high,
+                        segment_size,
+                        base,
+                    )
+                }));
+            }
 
-        let mut total = 0usize;
-        for handle in handles {
-            total += handle.join().map_err(|_| RangeError::WorkerPanic)??;
-        }
-        Ok(total)
+            let mut total = 0usize;
+            for handle in handles {
+                total += handle.join().map_err(|_| RangeError::WorkerPanic)??;
+            }
+            Ok(total)
+        })
     })
 }
 
@@ -790,49 +822,49 @@ pub fn prime_count_in_range_parallel_dynamic(
     }
 
     let limit = (high - 1).isqrt();
-    let base = base_primes(limit)?;
-    let span = high - low;
-    let segment_count = span.div_ceil(segment_size);
-    let segments_per_batch = dynamic_parallel_segments_per_batch(segment_count, workers);
-    let batch_count = segment_count.div_ceil(segments_per_batch);
+    with_base_primes(limit, |base| {
+        let span = high - low;
+        let segment_count = span.div_ceil(segment_size);
+        let segments_per_batch = dynamic_parallel_segments_per_batch(segment_count, workers);
+        let batch_count = segment_count.div_ceil(segments_per_batch);
 
-    let next_batch = AtomicU64::new(0);
-    thread::scope(|scope| {
-        let mut handles = Vec::with_capacity(workers);
-        for _ in 0..workers {
-            let base = &base;
-            let next_batch = &next_batch;
-            handles.push(scope.spawn(move || {
-                let mut subtotal = 0usize;
-                loop {
-                    let batch_index = next_batch.fetch_add(1, Ordering::Relaxed);
-                    if batch_index >= batch_count {
-                        break;
+        let next_batch = AtomicU64::new(0);
+        thread::scope(|scope| {
+            let mut handles = Vec::with_capacity(workers);
+            for _ in 0..workers {
+                let next_batch = &next_batch;
+                handles.push(scope.spawn(move || {
+                    let mut subtotal = 0usize;
+                    loop {
+                        let batch_index = next_batch.fetch_add(1, Ordering::Relaxed);
+                        if batch_index >= batch_count {
+                            break;
+                        }
+                        let start_segment = batch_index.saturating_mul(segments_per_batch);
+                        let end_segment = start_segment
+                            .saturating_add(segments_per_batch)
+                            .min(segment_count);
+                        let chunk_low = low + start_segment.saturating_mul(segment_size).min(span);
+                        let chunk_high = low + end_segment.saturating_mul(segment_size).min(span);
+                        if chunk_low < chunk_high {
+                            subtotal += prime_count_in_range_odd_bytes_with_base(
+                                chunk_low,
+                                chunk_high,
+                                segment_size,
+                                base,
+                            )?;
+                        }
                     }
-                    let start_segment = batch_index.saturating_mul(segments_per_batch);
-                    let end_segment = start_segment
-                        .saturating_add(segments_per_batch)
-                        .min(segment_count);
-                    let chunk_low = low + start_segment.saturating_mul(segment_size).min(span);
-                    let chunk_high = low + end_segment.saturating_mul(segment_size).min(span);
-                    if chunk_low < chunk_high {
-                        subtotal += prime_count_in_range_odd_bytes_with_base(
-                            chunk_low,
-                            chunk_high,
-                            segment_size,
-                            base,
-                        )?;
-                    }
-                }
-                Ok(subtotal)
-            }));
-        }
+                    Ok(subtotal)
+                }));
+            }
 
-        let mut total = 0usize;
-        for handle in handles {
-            total += handle.join().map_err(|_| RangeError::WorkerPanic)??;
-        }
-        Ok(total)
+            let mut total = 0usize;
+            for handle in handles {
+                total += handle.join().map_err(|_| RangeError::WorkerPanic)??;
+            }
+            Ok(total)
+        })
     })
 }
 
@@ -993,8 +1025,9 @@ fn prime_count_in_range_odd_bytes(
     }
 
     let limit = (high - 1).isqrt();
-    let base = base_primes(limit)?;
-    prime_count_in_range_odd_bytes_with_base(low, high, segment_size, &base)
+    with_base_primes(limit, |base| {
+        prime_count_in_range_odd_bytes_with_base(low, high, segment_size, base)
+    })
 }
 
 fn prime_count_in_range_odd_bytes_with_base(
@@ -2515,6 +2548,23 @@ mod tests {
                 base_primes_odd_bytes(limit).unwrap(),
                 "limit={limit}"
             );
+        }
+    }
+
+    #[test]
+    fn cached_static_base_prime_slice_matches_owned_generation() {
+        for limit in [
+            0,
+            1,
+            2,
+            3,
+            30,
+            10_000,
+            1_000_000,
+            STATIC_BASE_PRIME_LIMIT - 1,
+            STATIC_BASE_PRIME_LIMIT,
+        ] {
+            assert_eq!(base_primes_static_slice(limit), base_primes_static(limit));
         }
     }
 
