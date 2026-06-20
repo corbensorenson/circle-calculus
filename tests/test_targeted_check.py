@@ -337,6 +337,14 @@ def test_validation_script_change_runs_matching_test_when_present() -> None:
     assert contains_command(commands, "pytest", "tests/test_targeted_check.py")
 
 
+def test_receipt_verifier_script_change_runs_matching_and_contract_tests() -> None:
+    commands = commands_for(["scripts/check_circle_ai_receipt.py"])
+
+    assert contains_command(commands, "pytest", "tests/test_check_circle_ai_receipt.py")
+    assert contains_command(commands, "scripts/check_circle_ai_contract_runner.py")
+    assert contains_command(commands, "make", "circle-ai-contracts-ready")
+
+
 def test_prime_calibration_script_change_runs_calibration_tests() -> None:
     commands = commands_for(["scripts/calibrate_prime_engine_defaults.py"])
 
@@ -434,6 +442,7 @@ def test_generic_contract_pack_change_runs_pack_tests() -> None:
 
     assert contains_command(commands, "pytest", "tests/test_circle_ai_contract_pack.py")
     assert contains_command(commands, "pytest", "tests/test_circle_ai_contract_consumer.py")
+    assert contains_command(commands, "pytest", "tests/test_check_circle_ai_receipt.py")
     assert contains_command(
         commands,
         "pytest",
@@ -581,6 +590,15 @@ def test_contract_docs_change_runs_contract_docs_check() -> None:
     assert contains_command(commands, "make", "circle-ai-contracts-ready")
 
 
+def test_contract_runner_doc_change_runs_runner_and_receipt_checks() -> None:
+    commands = commands_for(["docs/CIRCLE_AI_CONTRACT_RUNNER.md"])
+
+    assert contains_command(commands, "scripts/check_circle_ai_contract_runner.py")
+    assert contains_command(commands, "pytest", "tests/test_circle_ai_contract_runner.py")
+    assert contains_command(commands, "pytest", "tests/test_check_circle_ai_receipt.py")
+    assert contains_command(commands, "make", "circle-ai-contracts-ready")
+
+
 def test_contract_quickstart_doc_change_runs_kind_check_not_all_contracts() -> None:
     commands = commands_for(["docs/SEED_RULE_CERTIFIER_QUICKSTART.md"])
 
@@ -638,6 +656,16 @@ def test_ai_contract_suite_lesson_change_runs_contract_pack_checks() -> None:
     assert contains_command(commands, "pytest", "tests/test_circle_ai_contract_pack.py")
     assert contains_command(commands, "pytest", "tests/test_circle_ai_contract_consumer.py")
     assert not contains_command(commands, "scripts/check_circle_ai_contract_docs.py")
+
+
+def test_ai_contract_runner_lesson_change_runs_runner_and_receipt_checks() -> None:
+    commands = commands_for(["site/chapters/applications/ai_contract_runner.qmd"])
+
+    assert contains_command(commands, "scripts/site/check_site_manifest_links.py")
+    assert contains_command(commands, "scripts/check_circle_ai_contract_runner.py")
+    assert contains_command(commands, "pytest", "tests/test_circle_ai_contract_runner.py")
+    assert contains_command(commands, "pytest", "tests/test_check_circle_ai_receipt.py")
+    assert contains_command(commands, "make", "circle-ai-contracts-ready")
 
 
 def test_ai_contract_ladder_pages_run_broad_contract_checks() -> None:
@@ -847,6 +875,23 @@ def test_contract_pack_schema_json_change_runs_pack_validator() -> None:
     assert contains_command(commands, "scripts/site/check_site_manifest_links.py")
     assert contains_command(commands, "make", "circle-ai-contracts-ready")
     assert contains_command(commands, "pytest", "tests/test_circle_ai_contract_pack.py")
+
+
+def test_contract_runner_schema_json_change_runs_receipt_verifier_tests() -> None:
+    paths = [
+        "site/data/generated/circle_ai_contract_request.schema.json",
+        "site/data/generated/circle_ai_contract_request_validation.schema.json",
+        "site/data/generated/circle_ai_contract_receipt.schema.json",
+        "site/data/generated/circle_ai_contract_runner_check.schema.json",
+    ]
+
+    for path in paths:
+        commands = commands_for([path])
+
+        assert contains_command(commands, "scripts/site/check_site_manifest_links.py")
+        assert contains_command(commands, "make", "circle-ai-contracts-ready")
+        assert contains_command(commands, "pytest", "tests/test_circle_ai_contract_pack.py")
+        assert contains_command(commands, "pytest", "tests/test_check_circle_ai_receipt.py")
 
 
 def test_acceptance_policy_schema_json_change_runs_pack_validator() -> None:

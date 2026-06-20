@@ -273,6 +273,13 @@ def add_circle_ai_contract_checks(checks: list[Check], seen: set[tuple[str, ...]
     add(
         checks,
         seen,
+        "Circle AI receipt verifier tests",
+        pytest("tests/test_check_circle_ai_receipt.py"),
+        reason,
+    )
+    add(
+        checks,
+        seen,
         "Circle AI contract runner example check",
         py("scripts/check_circle_ai_contract_runner.py"),
         reason,
@@ -438,6 +445,7 @@ AI_CONTRACT_SITE_PAGE_KINDS = {
 }
 
 AI_CONTRACT_SHARED_SITE_PAGES = {
+    "site/chapters/applications/ai_contract_runner.qmd",
     "site/chapters/applications/ai_contract_suite.qmd",
     "site/chapters/applications/ai_contract_pack_audit.qmd",
     "site/chapters/applications/ai_contract_ladder.qmd",
@@ -488,10 +496,14 @@ AI_CONTRACT_BROAD_SURFACE_PATHS = {
     "circle_math/applications/circle_ai.py",
     "circle_math/applications/circle_ai_contracts.py",
     "circle_math/applications/circle_ai_contract_consumer.py",
+    "circle_math/applications/circle_ai_contract_runner.py",
     "circle_math/applications/theseus_hive_contracts.py",
+    "scripts/circle_ai_certify.py",
     "scripts/check_circle_ai_contract_docs.py",
     "scripts/check_circle_ai_contract_pack.py",
     "scripts/check_circle_ai_contract_acceptance_policy.py",
+    "scripts/check_circle_ai_contract_runner.py",
+    "scripts/check_circle_ai_receipt.py",
     "scripts/check_downstream_ci_acceptance_example.py",
     "scripts/circle_ai_contract_ready.py",
     "scripts/example_consume_circle_ai_contract_pack.py",
@@ -499,6 +511,7 @@ AI_CONTRACT_BROAD_SURFACE_PATHS = {
     "scripts/targeted_check.py",
     "docs/AI_CONTRACT_SUITE.md",
     "docs/CIRCLE_AI_CONTRACTS_INTEGRATION.md",
+    "docs/CIRCLE_AI_CONTRACT_RUNNER.md",
     "examples/circle_ai_contract_acceptance_policy.json",
     "examples/downstream_ci_accept_circle_ai_contracts.py",
 }
@@ -510,6 +523,10 @@ AI_CONTRACT_GENERATED_PACK_ARTIFACTS = (
     "circle_ai_contract_acceptance_policy_report.schema.json",
     "circle_ai_contract_acceptance_receipt.schema.json",
     "circle_ai_downstream_rejection_report.schema.json",
+    "circle_ai_contract_request.schema.json",
+    "circle_ai_contract_request_validation.schema.json",
+    "circle_ai_contract_receipt.schema.json",
+    "circle_ai_contract_runner_check.schema.json",
 )
 
 
