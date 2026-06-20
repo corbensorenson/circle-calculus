@@ -453,6 +453,11 @@ def test_external_metadata_records_thread_policy_and_commands(monkeypatch) -> No
         "target/release/circle-prime",
         "count-server",
     ]
+    assert first_commands["circle_variants"][0]["count_server"] == {
+        "command": ["target/release/circle-prime", "count-server"],
+        "uses_server_defaults": False,
+        "request": "0 1000 131072 8 segmented",
+    }
     assert first_commands["primesieve"] == [
         "/opt/bin/primesieve",
         "0",
@@ -521,6 +526,83 @@ def test_external_baseline_selection_filters_metadata_commands(monkeypatch) -> N
     assert "primesieve" not in commands
     assert "primecount_high" not in commands
     assert "primecount_low" not in commands
+
+
+def test_external_metadata_records_count_server_request_shape(monkeypatch) -> None:
+    monkeypatch.setattr(
+        benchmark_prime_external_controls,
+        "circle_prime_package_metadata",
+        lambda cargo: {"name": "circle-prime", "version": "0.1.0"},
+    )
+    args = SimpleNamespace(
+        rounds=3,
+        batch_size=1,
+        warmup_rounds=0,
+        segment_size=0,
+        segment_sizes=None,
+        circle_count_modes="segmented",
+        circle_variant=[
+            "default:0",
+            "default:131072",
+            "presieve13:131072",
+            "presieve13:0",
+        ],
+        circle_threads=8,
+        external_threads=8,
+        require_tool=[],
+        include_circle_server=True,
+        circle_server_only=True,
+        include_primesieve_count_server=True,
+    )
+
+    metadata = build_run_metadata(
+        args=args,
+        ranges=[(1_000_000_000_000, 1_000_010_000_000)],
+        started_at_utc="2026-01-01T00:00:00Z",
+        cargo=None,
+        circle_prime=Path("target/release/circle-prime"),
+        primesieve="/opt/bin/primesieve",
+        primecount="/opt/bin/primecount",
+        primesieve_count_server=Path("target/prime-controls/primesieve-count-server"),
+        row_count=4,
+    )
+
+    variants = metadata["range_commands"][0]["circle_variants"]
+    assert variants[0]["count_server"] == {
+        "command": [
+            "target/release/circle-prime",
+            "count-server",
+            "--threads",
+            "8",
+        ],
+        "uses_server_defaults": True,
+        "request": "1000000000000 1000010000000",
+    }
+    assert variants[1]["count_server"] == {
+        "command": [
+            "target/release/circle-prime",
+            "count-server",
+            "--segment-size",
+            "131072",
+            "--threads",
+            "8",
+        ],
+        "uses_server_defaults": True,
+        "request": "1000000000000 1000010000000",
+    }
+    assert variants[2]["count_server"] == {
+        "command": ["target/release/circle-prime", "count-server"],
+        "uses_server_defaults": False,
+        "request": "1000000000000 1000010000000 131072 8 presieve13",
+    }
+    assert variants[3]["count_server"] == {
+        "command": ["target/release/circle-prime", "count-server"],
+        "uses_server_defaults": False,
+        "request_template": (
+            "1000000000000 1000010000000 <resolved_segment_size> 8 presieve13"
+        ),
+        "request_resolves_segment_size_from_json_probe": True,
+    }
 
 
 def test_external_metadata_records_circle_sweep_commands(monkeypatch) -> None:

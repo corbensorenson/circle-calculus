@@ -1710,6 +1710,7 @@ def build_run_metadata(
             external_baselines,
             args.circle_threads,
             args.external_threads,
+            include_circle_server=bool(getattr(args, "include_circle_server", False)),
         ),
     }
 
@@ -1757,6 +1758,42 @@ def circle_variant_metadata(variant: CircleVariant) -> dict[str, Any]:
     }
     if variant.threads is not None:
         metadata["threads"] = variant.threads
+    return metadata
+
+
+def circle_count_server_variant_metadata(
+    circle_prime: Path,
+    low: int,
+    high: int,
+    variant: CircleVariant,
+    circle_threads: int,
+) -> dict[str, Any]:
+    variant_threads = variant.threads or circle_threads
+    use_request_defaults = variant.count_mode == "default"
+    metadata: dict[str, Any] = {
+        "command": count_server_command(
+            circle_prime,
+            default_segment_size=variant.segment_size if use_request_defaults else 0,
+            default_threads=variant_threads if use_request_defaults else 1,
+            default_count_mode=variant.count_mode if use_request_defaults else "default",
+        ),
+        "uses_server_defaults": use_request_defaults,
+    }
+    if use_request_defaults or variant.segment_size > 0:
+        metadata["request"] = count_server_request(
+            low,
+            high,
+            variant.segment_size,
+            variant_threads,
+            variant.count_mode,
+            use_request_defaults=use_request_defaults,
+        ).strip()
+    else:
+        metadata["request_template"] = (
+            f"{low} {high} <resolved_segment_size> {variant_threads} "
+            f"{variant.count_mode}"
+        )
+        metadata["request_resolves_segment_size_from_json_probe"] = True
     return metadata
 
 
@@ -1875,19 +1912,23 @@ def range_command_metadata(
     external_baselines: set[str] | None,
     circle_threads: int,
     external_threads: int,
+    *,
+    include_circle_server: bool = False,
 ) -> list[dict[str, Any]]:
     commands = []
     for low, high in ranges:
         stop = high - 1
-        circle_variant_commands = [
-            {
+        circle_variant_commands = []
+        for variant in circle_variants:
+            variant_threads = variant.threads or circle_threads
+            variant_metadata = {
                 **circle_variant_metadata(variant),
                 "json_probe": circle_prime_command(
                     circle_prime,
                     low,
                     high,
                     variant.segment_size,
-                    variant.threads or circle_threads,
+                    variant_threads,
                     variant.count_mode,
                     json_output=True,
                 ),
@@ -1896,13 +1937,20 @@ def range_command_metadata(
                     low,
                     high,
                     variant.segment_size,
-                    variant.threads or circle_threads,
+                    variant_threads,
                     variant.count_mode,
                     json_output=False,
                 ),
             }
-            for variant in circle_variants
-        ]
+            if include_circle_server:
+                variant_metadata["count_server"] = circle_count_server_variant_metadata(
+                    circle_prime,
+                    low,
+                    high,
+                    variant,
+                    circle_threads,
+                )
+            circle_variant_commands.append(variant_metadata)
         first_variant = circle_variant_commands[0]
         entry: dict[str, Any] = {
             "low": low,
@@ -1910,8 +1958,9 @@ def range_command_metadata(
             "circle_json_probe": first_variant["json_probe"],
             "circle_timing": first_variant["timing"],
             "circle_variants": circle_variant_commands,
-            "circle_count_server": [str(circle_prime), "count-server"],
         }
+        if include_circle_server:
+            entry["circle_count_server"] = [str(circle_prime), "count-server"]
         if (
             external_baseline_enabled(external_baselines, "external_primesieve_count")
             and primesieve is not None

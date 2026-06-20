@@ -141,10 +141,11 @@ the short competitive workflow.
   the high-offset default. Non-prefix `prefix-pi` ranges can use two workers
   for the exact `pi(high - 1) - pi(low - 1)` difference when the requested
   thread count allows it.
-  Very-high-offset threaded counts with small spans use a tuned `1507328`
-  default and the threaded `presieve17` count mode, which currently gives the best short-run
-  command-level result against `primesieve` without claiming parity. Other
-  ranges keep the conservative segmented default.
+  Very-high-offset threaded counts with small spans use a tuned `1310720`
+  segment default and the threaded `segmented` count mode. Focused hot-server
+  confirmation kept this lane ahead of persistent `libprimesieve` across the
+  tracked high-offset range set more reliably than the faster but noisier
+  pre-sieve candidates. Other ranges keep the conservative segmented default.
   The threaded-count values live in
   `rust/circle-prime/prime_engine_defaults.json`; Cargo's build script renders
   them into Rust constants, and the CLI tests read the same JSON.
@@ -238,14 +239,14 @@ Current CPU findings:
   build time and embedded with `include_bytes!`.
 - A smaller cache-resident pre-sieve through 13 is available as `presieve13`.
   Its original single-thread row was slower on sustained rows because marking
-  17/19 cost more than the cache benefit. The threaded variant is now promoted
-  only for the narrow very-high-offset default, where command-level comparisons
-  favor the smaller table over the larger 19-prime pre-sieve.
+  17/19 cost more than the cache benefit. The threaded variant remains a
+  high-offset candidate and can win isolated hot-server sweeps, but repeated
+  confirmation found the segmented lane more reliable against persistent
+  `libprimesieve` at the lower tracked high offsets.
 - A middle-sized pre-sieve through 17 is available as `presieve17`. It avoids
   marking multiples of 17 while staying much smaller than the 19-prime table.
-  The latest high-offset tight scorecard found it slightly ahead of the
-  promoted `presieve13` lane, but the confirmation gate has not yet proved the
-  win stable enough to auto-promote the default.
+  It remains part of the high-offset candidate grid, but it is not the current
+  promoted default.
 - Carrying per-prime cursor state across segments is a measured win because it
   removes repeated per-prime ceil-division setup.
 - Single-segment count chunks skip cursor-vector allocation and mark directly
@@ -259,7 +260,7 @@ Current CPU findings:
 - The high-offset odd-byte marker now switches to sparse writes at
   `flags.len() / 4` instead of the older `/8` cutoff. Focused external-control
   sweeps kept correctness fixed and closed part of the remaining median
-  `primesieve` gap for the promoted `presieve13` high-offset lane.
+  `primesieve` gap for the high-offset candidate lanes.
 - A monotonic active-cursor boundary that skipped cursors whose square had not
   reached the current segment was correct but slower on the benchmark rows, so
   it was reverted rather than promoted.
@@ -326,10 +327,10 @@ Current CPU findings:
   defaults file now carries both segment-size and count-mode slots per tuned
   range; mode slots start conservatively and are promoted only when stable
   external-control calibration evidence favors another algorithm.
-  Very-high-offset small-span threaded counts use the `1507328` default with
-  `presieve17`; focused short probes keep nearby balanced and presieve segment
-  choices as evidence lanes rather than default promotions because their wins
-  have been noisy run-to-run.
+  Very-high-offset small-span threaded counts use the `1310720` default with
+  the segmented counter; focused short probes keep nearby balanced and
+  pre-sieve segment choices as evidence lanes rather than default promotions
+  because their wins have been noisy run-to-run.
 - The release benchmark also includes `[10^12, 10^12 + 10M)` high-offset rows:
   one conservative single-thread row, one explicit segmented count-threaded
   row, hot-loop `parallel_high_offset_*_range_count_8t` rows covering the
@@ -718,7 +719,7 @@ there, and the two-worker non-prefix difference is now close to specialized
 `primecount` on `[1e9, 2e9)`. It is deliberately not the larger-range or
 high-offset default: probes above the cutoff, and high-offset intervals such as
 `[1e12, 1e12 + 1e7)`, stay on the segmented-sieve family, currently the
-threaded `presieve13` count mode with a tuned high-offset segment size.
+threaded `segmented` count mode with a tuned high-offset segment size.
 
 `prime-engine-competitive-short` is the daytime orientation workflow. It runs
 external correctness, the prime proof-contract gate, warmed persistent count
@@ -766,10 +767,11 @@ the external high-offset command controls by best time.
 `prime-engine-high-offset-hot-server-check` reads the hot-server scorecard and
 fails unless the selected adaptive `circle_prime_server_default_count` rows
 beat the persistent `libprimesieve` count helper by median speed and have
-stable samples. By default it checks `CIRCLE_PRIME_HIGH_OFFSET_COMPARE_RANGES`
-with a `1.0` floor; raise
-`CIRCLE_PRIME_HIGH_OFFSET_HOT_SERVER_MIN_MEDIAN_SPEEDUP` or widen the range list
-when a change needs to prove a larger margin.
+stable samples. By default it checks
+`CIRCLE_PRIME_HIGH_OFFSET_HOT_SERVER_CHECK_RANGES`, which follows the full
+`CIRCLE_PRIME_HIGH_OFFSET_HOT_SERVER_RANGES` set, with a `1.0` floor; raise
+`CIRCLE_PRIME_HIGH_OFFSET_HOT_SERVER_MIN_MEDIAN_SPEEDUP` or override the check
+range list when a change needs to prove a larger margin.
 
 `prime-engine-high-offset-tight` is the follow-up scorecard when the broad
 quick run keeps pointing at the same neighborhood. It narrows the sweep to
@@ -792,8 +794,10 @@ sidecars/PRIME_ENGINE/results/prime_engine_high_offset_confirmation_latest.md
 
 By default it runs three warmed confirmation sweeps, requires two stable median
 wins, and times only persistent server requests for `circle_prime_server_default_count`
-versus `external_primesieve_count_server`. This keeps the daytime confirmation
-target short while still requiring a repeatable default-lane win. Calibration
+versus `external_primesieve_count_server` across
+`CIRCLE_PRIME_HIGH_OFFSET_CONFIRM_RANGES`, which follows the hot-server range
+set by default. This keeps the daytime confirmation target short while avoiding
+a single sub-3 ms range deciding the default-lane result. Calibration
 reads this confirmation file when present. A confirmed repeated winner can
 override the latest quick median pick; an unconfirmed or noisy winner stays
 visible as drift evidence but is not promoted by `prime-engine-apply-defaults`
@@ -953,13 +957,16 @@ Current external-control readout on this machine:
 - `primesieve` remains the serious range-counting bar. Prefix defaults now beat
   it on the tracked small true-prefix count rows, `pi(1e9)`, and the tracked
   `[1e9, 2e9)` broad low-absolute count row. The high-offset cold CLI interval
-  is near parity in the current
-  short command-level run, while the persistent `count-server` row is clearly ahead. The
-  comparison is intentionally command-level and therefore noisy, but it records
-  actual worker counts. With `CIRCLE_PRIME_THREADS=8`, true-prefix `prefix-pi`
-  rows report `1/8` effective Circle thread, broad non-prefix `prefix-pi` rows
-  can report `2/8`, and the high-offset interval currently caps to `7/8` under
-  the calibrated `1507328` threaded-count default.
+  still loses in the current short command-level run. The dedicated hot-server
+  scorecard and confirmation show the persistent Circle `count-server` default
+  ahead across the tracked high-offset range set, but the mixed top-level
+  external-control run can still lose the single `[1e12, 1e12 + 1e7)` server
+  row on median. Treat that as the current thin-margin lane, not as a settled
+  win. The comparison is intentionally command-level and therefore noisy, but
+  it records actual worker counts. With `CIRCLE_PRIME_THREADS=8`, true-prefix
+  `prefix-pi` rows report `1/8` effective Circle thread, broad non-prefix
+  `prefix-pi` rows can report `2/8`, and the high-offset interval currently
+  uses `8/8` under the calibrated `1310720` threaded-count default.
 - `primecount` remains the specialized prefix `pi(x)` bar, but Circle's
   `prefix-pi` default currently beats it on the tracked 10M and 100M command
   rows. Keep using external controls for confirmation because startup noise can

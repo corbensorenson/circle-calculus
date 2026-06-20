@@ -71,6 +71,7 @@ CIRCLE_PRIME_HIGH_OFFSET_HOT_SERVER_VARIANTS ?= default:0:8,segmented:1507328:8,
 CIRCLE_PRIME_HIGH_OFFSET_HOT_SERVER_OUTPUT ?= sidecars/PRIME_ENGINE/results/prime_engine_high_offset_hot_server_latest.csv
 CIRCLE_PRIME_HIGH_OFFSET_HOT_SERVER_SAMPLES ?= sidecars/PRIME_ENGINE/results/prime_engine_high_offset_hot_server_samples_latest.csv
 CIRCLE_PRIME_HIGH_OFFSET_HOT_SERVER_METADATA ?= sidecars/PRIME_ENGINE/results/prime_engine_high_offset_hot_server_latest.json
+CIRCLE_PRIME_HIGH_OFFSET_HOT_SERVER_CHECK_RANGES ?= $(CIRCLE_PRIME_HIGH_OFFSET_HOT_SERVER_RANGES)
 CIRCLE_PRIME_HIGH_OFFSET_HOT_SERVER_MIN_MEDIAN_SPEEDUP ?= 1.0
 CIRCLE_PRIME_HIGH_OFFSET_HOT_COLD_ROUNDS ?= 7
 CIRCLE_PRIME_HIGH_OFFSET_HOT_COLD_OUTPUT ?= sidecars/PRIME_ENGINE/results/prime_engine_high_offset_hot_cold_latest.csv
@@ -78,6 +79,7 @@ CIRCLE_PRIME_HIGH_OFFSET_CONFIRM_RUNS ?= 3
 CIRCLE_PRIME_HIGH_OFFSET_CONFIRM_ROUNDS ?= 9
 CIRCLE_PRIME_HIGH_OFFSET_CONFIRM_BATCH_SIZE ?= 20
 CIRCLE_PRIME_HIGH_OFFSET_CONFIRM_WARMUP_ROUNDS ?= 2
+CIRCLE_PRIME_HIGH_OFFSET_CONFIRM_RANGES ?= $(CIRCLE_PRIME_HIGH_OFFSET_HOT_SERVER_RANGES)
 CIRCLE_PRIME_HIGH_OFFSET_CONFIRM_MIN ?= 2
 CIRCLE_PRIME_HIGH_OFFSET_CONFIRM_FAIL ?=
 CIRCLE_PRIME_HIGH_OFFSET_CONFIRM_BASELINE_PRIORITY ?= external_primesieve_count_server
@@ -155,7 +157,7 @@ ifneq ($(strip $(CIRCLE_PRIME_EXTERNAL_NEXT_COMPARE_BASELINES)),)
 CIRCLE_PRIME_EXTERNAL_NEXT_COMPARE_ARGS += --baselines $(CIRCLE_PRIME_EXTERNAL_NEXT_COMPARE_BASELINES)
 endif
 CIRCLE_PRIME_EXTERNAL_MODE_CONFIRM_ARGS := --runs $(CIRCLE_PRIME_EXTERNAL_MODE_CONFIRM_RUNS) --rounds 5 --batch-size $(CIRCLE_PRIME_EXTERNAL_MODE_CONFIRM_BATCH_SIZE) --ranges $(CIRCLE_PRIME_EXTERNAL_COMPARE_RANGES) --circle-threads $(CIRCLE_PRIME_THREADS) --external-threads $(EXTERNAL_PRIME_THREADS) --segment-sizes $(CIRCLE_PRIME_EXTERNAL_MODE_CONFIRM_SEGMENT_SIZES) --min-confirmations $(CIRCLE_PRIME_EXTERNAL_MODE_CONFIRM_MIN)
-CIRCLE_PRIME_HIGH_OFFSET_CONFIRM_ARGS := --runs $(CIRCLE_PRIME_HIGH_OFFSET_CONFIRM_RUNS) --rounds $(CIRCLE_PRIME_HIGH_OFFSET_CONFIRM_ROUNDS) --batch-size $(CIRCLE_PRIME_HIGH_OFFSET_CONFIRM_BATCH_SIZE) --warmup-rounds $(CIRCLE_PRIME_HIGH_OFFSET_CONFIRM_WARMUP_ROUNDS) --ranges $(CIRCLE_PRIME_HIGH_OFFSET_COMPARE_RANGES) --circle-threads $(CIRCLE_PRIME_THREADS) --external-threads $(EXTERNAL_PRIME_THREADS) --external-baselines $(CIRCLE_PRIME_HIGH_OFFSET_CONFIRM_EXTERNAL_BASELINES) --segment-sizes $(CIRCLE_PRIME_HIGH_OFFSET_CONFIRM_SEGMENT_SIZES) --circle-count-modes $(CIRCLE_PRIME_HIGH_OFFSET_CONFIRM_COUNT_MODES) --circle-variant $(CIRCLE_PRIME_HIGH_OFFSET_CONFIRM_CIRCLE_VARIANTS) --include-circle-server --include-primesieve-count-server --require-tool primesieve-library --baseline-priority $(CIRCLE_PRIME_HIGH_OFFSET_CONFIRM_BASELINE_PRIORITY) --min-confirmations $(CIRCLE_PRIME_HIGH_OFFSET_CONFIRM_MIN) --output-json $(CIRCLE_PRIME_HIGH_OFFSET_CONFIRM_OUTPUT) --output-md $(CIRCLE_PRIME_HIGH_OFFSET_CONFIRM_MD)
+CIRCLE_PRIME_HIGH_OFFSET_CONFIRM_ARGS := --runs $(CIRCLE_PRIME_HIGH_OFFSET_CONFIRM_RUNS) --rounds $(CIRCLE_PRIME_HIGH_OFFSET_CONFIRM_ROUNDS) --batch-size $(CIRCLE_PRIME_HIGH_OFFSET_CONFIRM_BATCH_SIZE) --warmup-rounds $(CIRCLE_PRIME_HIGH_OFFSET_CONFIRM_WARMUP_ROUNDS) --ranges $(CIRCLE_PRIME_HIGH_OFFSET_CONFIRM_RANGES) --circle-threads $(CIRCLE_PRIME_THREADS) --external-threads $(EXTERNAL_PRIME_THREADS) --external-baselines $(CIRCLE_PRIME_HIGH_OFFSET_CONFIRM_EXTERNAL_BASELINES) --segment-sizes $(CIRCLE_PRIME_HIGH_OFFSET_CONFIRM_SEGMENT_SIZES) --circle-count-modes $(CIRCLE_PRIME_HIGH_OFFSET_CONFIRM_COUNT_MODES) --circle-variant $(CIRCLE_PRIME_HIGH_OFFSET_CONFIRM_CIRCLE_VARIANTS) --include-circle-server --include-primesieve-count-server --require-tool primesieve-library --baseline-priority $(CIRCLE_PRIME_HIGH_OFFSET_CONFIRM_BASELINE_PRIORITY) --min-confirmations $(CIRCLE_PRIME_HIGH_OFFSET_CONFIRM_MIN) --output-json $(CIRCLE_PRIME_HIGH_OFFSET_CONFIRM_OUTPUT) --output-md $(CIRCLE_PRIME_HIGH_OFFSET_CONFIRM_MD)
 ifneq ($(strip $(CIRCLE_PRIME_EXTERNAL_MODE_CONFIRM_FAIL)),)
 CIRCLE_PRIME_EXTERNAL_MODE_CONFIRM_ARGS += --fail-on-unconfirmed
 endif
@@ -328,7 +330,7 @@ prime-engine-high-offset-hot-server:
 	python scripts/benchmark_prime_external_controls.py --ranges $(CIRCLE_PRIME_HIGH_OFFSET_HOT_SERVER_RANGES) --rounds $(CIRCLE_PRIME_HIGH_OFFSET_HOT_SERVER_ROUNDS) --batch-size $(CIRCLE_PRIME_HIGH_OFFSET_HOT_SERVER_BATCH_SIZE) --warmup-rounds $(CIRCLE_PRIME_HIGH_OFFSET_HOT_SERVER_WARMUP_ROUNDS) --interleaved --include-circle-server --circle-server-only --include-primesieve-count-server --external-baselines external_primesieve_count_server --require-tool primesieve-library --circle-threads $(CIRCLE_PRIME_THREADS) --external-threads $(EXTERNAL_PRIME_THREADS) --circle-variant $(CIRCLE_PRIME_HIGH_OFFSET_HOT_SERVER_VARIANTS) --output $(CIRCLE_PRIME_HIGH_OFFSET_HOT_SERVER_OUTPUT) --sample-output $(CIRCLE_PRIME_HIGH_OFFSET_HOT_SERVER_SAMPLES) --metadata-output $(CIRCLE_PRIME_HIGH_OFFSET_HOT_SERVER_METADATA)
 
 prime-engine-high-offset-hot-server-check:
-	python scripts/compare_prime_external_controls.py $(CIRCLE_PRIME_HIGH_OFFSET_HOT_SERVER_OUTPUT) --baseline $(CIRCLE_PRIME_HIGH_OFFSET_HOT_SERVER_OUTPUT) --names circle_prime_server_default_count --baselines external_primesieve_count_server --ranges $(CIRCLE_PRIME_HIGH_OFFSET_COMPARE_RANGES) --min-median-speedup-ratio 0.0 --min-best-speedup-ratio 0.0 --require-each-median-speedup-at-least $(CIRCLE_PRIME_HIGH_OFFSET_HOT_SERVER_MIN_MEDIAN_SPEEDUP) --require-stable-samples
+	python scripts/compare_prime_external_controls.py $(CIRCLE_PRIME_HIGH_OFFSET_HOT_SERVER_OUTPUT) --baseline $(CIRCLE_PRIME_HIGH_OFFSET_HOT_SERVER_OUTPUT) --names circle_prime_server_default_count --baselines external_primesieve_count_server --ranges $(CIRCLE_PRIME_HIGH_OFFSET_HOT_SERVER_CHECK_RANGES) --min-median-speedup-ratio 0.0 --min-best-speedup-ratio 0.0 --require-each-median-speedup-at-least $(CIRCLE_PRIME_HIGH_OFFSET_HOT_SERVER_MIN_MEDIAN_SPEEDUP) --require-stable-samples
 
 prime-engine-high-offset-hot-cold:
 	mkdir -p sidecars/PRIME_ENGINE/results

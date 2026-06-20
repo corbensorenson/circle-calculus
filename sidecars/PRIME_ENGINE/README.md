@@ -39,21 +39,22 @@ regression/tuning jobs, not the primary way to learn whether Circle is
 competitive.
 
 `make prime-engine-high-offset-confirm` is the stricter short gate for the
-remaining hard count lane near `1e12`. It runs warmed repeated confirmations
+remaining hard high-offset count lane. It runs warmed repeated confirmations
 against the persistent `libprimesieve` count helper and the adaptive Circle
 server default row. Fresh confirmation runs also batch repeated count requests
 and report per-request timings, so default changes require a repeatable win
 rather than a one-run median. This target focuses the timing loop on
 `circle_prime_server_default_count` versus `external_primesieve_count_server`
-by default and requires two stable median wins across three runs. The broader
+across the hot-server range set by default and requires two stable median wins
+across three runs for each observed range. The broader
 `prime-engine-competitive-short` target includes this gate and also refreshes
 CLI controls, candidate spreads, and next-prime evidence.
 
 `make prime-engine-high-offset-hot-server-check` reads the latest hot-server
 scorecard and fails unless the selected adaptive Circle server default rows
 beat the persistent `libprimesieve` count helper by median speed with stable
-samples. By default it checks the tracked high-offset comparison range with a
-parity-plus `1.0` median-speedup floor.
+samples. By default it checks the full hot-server range set with a parity-plus
+`1.0` median-speedup floor.
 
 Short-run sample stability ignores a single high outlier when there are at
 least five samples, but still marks repeated high samples as noisy. This keeps
