@@ -65,8 +65,10 @@ def test_build_confirmation_requires_repeated_stable_winner() -> None:
     assert row["count_mode"] == "dynamic"
     assert row["confirmation_count"] == 2
     assert row["stable_observed_count"] == 3
+    assert row["median_speedup_values"] == [1.1, 1.1]
     markdown = render_markdown(confirmation)
     assert "External Mode Confirmation" in markdown
+    assert "Median Speedups" in markdown
     assert "Fresh-run count requests per timed sample: `3`" in markdown
 
 

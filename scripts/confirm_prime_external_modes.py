@@ -46,6 +46,7 @@ class ConfirmedWinner:
     stable_observed_count: int
     status: str
     median_ms_values: list[float]
+    median_speedup_values: list[float]
     source_labels: list[str]
 
 
@@ -415,6 +416,7 @@ def confirm_group(
         stable_observed_count=stable_observed,
         status=status,
         median_ms_values=[float(row["median_ms"]) for row in selected_rows],
+        median_speedup_values=median_speedup_values(selected_rows),
         source_labels=[str(row.get("source_path") or row.get("source")) for row in selected_rows],
     )
 
@@ -439,10 +441,26 @@ def row_is_confirmation_eligible(
 
 
 def median_speedup_beats_baseline(row: dict[str, Any]) -> bool:
+    speedup = median_speedup_value(row)
+    if speedup is None:
+        return False
+    return speedup > 1.0
+
+
+def median_speedup_value(row: dict[str, Any]) -> float | None:
     raw = row.get("median_circle_speedup", row.get("median_speedup"))
     if raw is None or raw == "":
-        return False
-    return float(raw) > 1.0
+        return None
+    return float(raw)
+
+
+def median_speedup_values(rows: list[dict[str, Any]]) -> list[float]:
+    values = []
+    for row in rows:
+        speedup = median_speedup_value(row)
+        if speedup is not None:
+            values.append(speedup)
+    return values
 
 
 def render_markdown(confirmation: dict[str, Any]) -> str:
@@ -470,19 +488,22 @@ def render_markdown(confirmation: dict[str, Any]) -> str:
     if confirmation["winners"]:
         lines.extend(
             [
-                "| Range | Baseline | Mode | Segment | Threads | Confirmations | Stable Runs | Median ms Values | Status |",
-                "| --- | --- | --- | ---: | ---: | ---: | ---: | --- | --- |",
+                "| Range | Baseline | Mode | Segment | Threads | Confirmations | Stable Runs | Median ms Values | Median Speedups | Status |",
+                "| --- | --- | --- | ---: | ---: | ---: | ---: | --- | ---: | --- |",
             ]
         )
         for row in confirmation["winners"]:
             medians = ", ".join(f"{value:.3f}" for value in row["median_ms_values"])
+            speedups = ", ".join(
+                f"{value:.3f}" for value in row.get("median_speedup_values", [])
+            )
             lines.append(
                 f"| [{row['low']}, {row['high']}) | `{row['baseline']}` | "
                 f"`{row['count_mode']}` | {row['segment_size']} | "
                 f"{row['threads']}/{row['requested_threads']} | "
                 f"{row['confirmation_count']}/{confirmation['min_confirmations']} | "
                 f"{row['stable_observed_count']}/{row['observed_count']} | "
-                f"{medians} | `{row['status']}` |"
+                f"{medians} | {speedups} | `{row['status']}` |"
             )
         lines.append("")
     return "\n".join(lines).rstrip() + "\n"
