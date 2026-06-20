@@ -815,17 +815,21 @@ sidecars/PRIME_ENGINE/results/prime_engine_external_throughput_samples_latest.cs
 ```
 
 It runs `pi(1e9)` and `[1e9, 2e9)` across the adaptive default, explicit
-segmented sieving, and explicit `prefix-pi`, with a small segment sweep for the
-segmented rows. This is intentionally separate from the default external
-controls because it exposes whether a count-only workload should use prefix
-counting or sustained marking. On the current machine, these rows show
-`prefix-pi` is the correct Circle lane for tracked low-absolute broad counts,
-while specialized `primecount` remains the bar to beat for pure prime-counting.
-The target uses exact `--circle-variant` entries instead of a full segment-size
-by count-mode grid, so the adaptive default row is measured once with no
-explicit segment-size override. The generated report renders an adaptive
-default scorecard before the broader candidate spread so the headline reflects
-the behavior users get without explicit tuning flags.
+segmented sieving, serial explicit `prefix-pi`, and default-thread explicit
+`prefix-pi`, with a small segment sweep for the segmented rows. This is
+intentionally separate from the default external controls because it exposes
+whether a count-only workload should use prefix counting or sustained marking,
+and whether a non-prefix `pi(high - 1) - pi(low - 1)` range benefits from the
+two-worker difference path. On the current machine, these rows show `prefix-pi`
+is the correct Circle lane for tracked low-absolute broad counts, while
+specialized `primecount` remains the bar to beat for pure prime-counting. The
+target uses exact `--circle-variant` entries instead of a full segment-size by
+count-mode grid, so the adaptive default row is measured once with no explicit
+segment-size override. A variant may append `:THREADS`, for example
+`prefix-pi:0:1`, to force a serial comparison inside the same interleaved run.
+The generated report renders an adaptive default scorecard before the broader
+candidate spread so the headline reflects the behavior users get without
+explicit tuning flags.
 
 `prime-engine-external-throughput-compare` reruns the same short workload into
 candidate artifacts and then gates `circle_prime_default_count` against
