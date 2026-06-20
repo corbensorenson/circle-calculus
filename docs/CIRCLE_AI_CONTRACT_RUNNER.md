@@ -66,6 +66,15 @@ python scripts/circle_ai_certify.py request \
   --json-out path/to/receipt.json
 ```
 
+Preflight a request file without issuing a receipt:
+
+```bash
+python scripts/circle_ai_certify.py request \
+  --request-json path/to/request.json \
+  --validate-only \
+  --format json
+```
+
 Copyable starting points live under:
 
 ```text

@@ -470,3 +470,98 @@ def test_circle_ai_certify_cli_accepts_request_json(tmp_path: Path) -> None:
     assert guardrail["requested_margin_relation_to_ceiling"] == (
         "above_dirichlet_ceiling"
     )
+
+
+def test_circle_ai_certify_cli_validates_request_without_receipt(
+    tmp_path: Path,
+) -> None:
+    request_path = tmp_path / "sparse_request.json"
+    request_path.write_text(
+        json.dumps(
+            {
+                "schema_id": "circle_calculus.ai_contract_request.v0",
+                "kind": "sparse-attention",
+                "parameters": {
+                    "context": 32,
+                    "strides": [5, 11, 17],
+                    "path_length": 16,
+                    "local_window": 9,
+                },
+            }
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+
+    result = subprocess.run(
+        [
+            sys.executable,
+            str(SCRIPT),
+            "request",
+            "--request-json",
+            str(request_path),
+            "--validate-only",
+            "--format",
+            "json",
+        ],
+        cwd=ROOT,
+        check=True,
+        text=True,
+        capture_output=True,
+    )
+
+    payload = json.loads(result.stdout)
+    assert payload == {
+        "schema_id": "circle_calculus.ai_contract_request_validation.v0",
+        "request_schema_id": "circle_calculus.ai_contract_request.v0",
+        "ok": True,
+        "kind": "sparse-attention",
+        "canonical_kind": "sparse_attention_coverage",
+        "failure_count": 0,
+        "failures": [],
+    }
+
+
+def test_circle_ai_certify_cli_validate_only_rejects_bad_request(
+    tmp_path: Path,
+) -> None:
+    request_path = tmp_path / "bad_sparse_request.json"
+    request_path.write_text(
+        json.dumps(
+            {
+                "schema_id": "circle_calculus.ai_contract_request.v0",
+                "kind": "sparse-attention",
+                "parameters": {
+                    "context": 32,
+                    "strides": [5, 0],
+                    "path_length": 16,
+                    "local_window": 9,
+                },
+            }
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+
+    result = subprocess.run(
+        [
+            sys.executable,
+            str(SCRIPT),
+            "request",
+            "--request-json",
+            str(request_path),
+            "--validate-only",
+            "--format",
+            "json",
+        ],
+        cwd=ROOT,
+        check=False,
+        text=True,
+        capture_output=True,
+    )
+
+    payload = json.loads(result.stdout)
+    assert result.returncode == 1
+    assert payload["ok"] is False
+    assert payload["canonical_kind"] == "sparse_attention_coverage"
+    assert any("positive integers" in failure for failure in payload["failures"])

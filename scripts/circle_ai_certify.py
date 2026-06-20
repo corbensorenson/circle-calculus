@@ -16,8 +16,10 @@ if str(ROOT) not in sys.path:
 from circle_math.applications import (  # noqa: E402
     build_contract_receipt,
     build_contract_receipt_from_request,
+    canonical_contract_kind,
     load_contract_pack,
     receipt_summary_lines,
+    validate_contract_request,
 )
 
 
@@ -80,6 +82,11 @@ def parse_args() -> argparse.Namespace:
         required=True,
         type=Path,
         help="Path to a circle_calculus.ai_contract_request.v0 JSON request.",
+    )
+    request.add_argument(
+        "--validate-only",
+        action="store_true",
+        help="Validate the request file and exit without issuing a receipt.",
     )
 
     rope = subparsers.add_parser(
@@ -171,6 +178,27 @@ def _receipt_from_request_json(
         raise SystemExit(str(exc)) from exc
 
 
+def _request_validation_report(path: Path) -> dict[str, Any]:
+    payload = _load_request_json(path)
+    failures = validate_contract_request(payload)
+    kind = payload.get("kind")
+    canonical_kind = None
+    if isinstance(kind, str):
+        try:
+            canonical_kind = canonical_contract_kind(kind)
+        except ValueError:
+            canonical_kind = None
+    return {
+        "schema_id": "circle_calculus.ai_contract_request_validation.v0",
+        "request_schema_id": "circle_calculus.ai_contract_request.v0",
+        "ok": not failures,
+        "kind": kind,
+        "canonical_kind": canonical_kind,
+        "failure_count": len(failures),
+        "failures": failures,
+    }
+
+
 def _parameters_from_args(args: argparse.Namespace) -> dict[str, Any]:
     if args.kind == "rope":
         return {
@@ -219,6 +247,22 @@ def main() -> int:
     args = parse_args()
     pack = _pack_from_args(args)
     if args.kind == "request":
+        if args.validate_only:
+            report = _request_validation_report(args.request_json)
+            if args.json_out is not None:
+                write_json(args.json_out, report)
+            if args.format == "json":
+                print(json.dumps(report, indent=2, sort_keys=True))
+            else:
+                print(
+                    "circle_ai_contract_request_validation="
+                    f"{report['ok']} kind={report['kind']} "
+                    f"canonical_kind={report['canonical_kind']} "
+                    f"failures={report['failure_count']}"
+                )
+                for failure in report["failures"]:
+                    print(f"failure={failure}", file=sys.stderr)
+            return 0 if report["ok"] else 1
         receipt = _receipt_from_request_json(args.request_json, pack=pack)
     else:
         receipt = build_contract_receipt(

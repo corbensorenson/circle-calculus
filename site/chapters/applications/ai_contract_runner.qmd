@@ -148,6 +148,15 @@ python scripts/circle_ai_certify.py request \
   --json-out reports/rope_receipt.json
 ```
 
+Preflight a request before issuing a receipt:
+
+```bash
+python scripts/circle_ai_certify.py request \
+  --request-json reports/rope_request.json \
+  --validate-only \
+  --format json
+```
+
 Checked-in examples are available for all four runner surfaces:
 
 ```text
