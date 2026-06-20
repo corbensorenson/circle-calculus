@@ -2,6 +2,191 @@
   "$id": "https://circle-calculus.local/schemas/circle_ai_contract_request.schema.json",
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "additionalProperties": true,
+  "oneOf": [
+    {
+      "properties": {
+        "kind": {
+          "enum": [
+            "rope",
+            "rope_position_distinguishability"
+          ]
+        },
+        "parameters": {
+          "additionalProperties": false,
+          "properties": {
+            "base": {
+              "exclusiveMinimum": 0,
+              "type": "number"
+            },
+            "context": {
+              "minimum": 1,
+              "type": "integer"
+            },
+            "discretization": {
+              "enum": [
+                "round",
+                "floor",
+                "ceil"
+              ]
+            },
+            "head_dim": {
+              "minimum": 1,
+              "type": "integer"
+            },
+            "requested_margin": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "tolerance": {
+              "minimum": 0,
+              "type": "number"
+            }
+          },
+          "type": "object"
+        }
+      }
+    },
+    {
+      "properties": {
+        "kind": {
+          "enum": [
+            "kv",
+            "kv-cache",
+            "kv_cache",
+            "kv_cache_ring_buffer"
+          ]
+        },
+        "parameters": {
+          "additionalProperties": false,
+          "properties": {
+            "batch_tokens": {
+              "items": {
+                "type": "integer"
+              },
+              "type": "array"
+            },
+            "cache_size": {
+              "minimum": 1,
+              "type": "integer"
+            },
+            "current": {
+              "minimum": 0,
+              "type": "integer"
+            },
+            "request_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "sink_size": {
+              "minimum": 0,
+              "type": "integer"
+            },
+            "token": {
+              "minimum": 0,
+              "type": "integer"
+            }
+          },
+          "required": [
+            "cache_size",
+            "current",
+            "token"
+          ],
+          "type": "object"
+        }
+      }
+    },
+    {
+      "properties": {
+        "kind": {
+          "enum": [
+            "sparse",
+            "sparse-attention",
+            "sparse_attention",
+            "sparse_attention_coverage"
+          ]
+        },
+        "parameters": {
+          "additionalProperties": false,
+          "properties": {
+            "context": {
+              "minimum": 1,
+              "type": "integer"
+            },
+            "local_window": {
+              "minimum": 0,
+              "type": "integer"
+            },
+            "path_length": {
+              "minimum": 0,
+              "type": "integer"
+            },
+            "strides": {
+              "items": {
+                "minimum": 1,
+                "type": "integer"
+              },
+              "minItems": 1,
+              "type": "array"
+            }
+          },
+          "required": [
+            "context",
+            "strides",
+            "path_length",
+            "local_window"
+          ],
+          "type": "object"
+        }
+      }
+    },
+    {
+      "properties": {
+        "kind": {
+          "enum": [
+            "recurrence",
+            "recurrence-schedule",
+            "recurrence_schedule"
+          ]
+        },
+        "parameters": {
+          "additionalProperties": false,
+          "properties": {
+            "loop_period": {
+              "minimum": 1,
+              "type": "integer"
+            },
+            "max_loops": {
+              "minimum": 0,
+              "type": "integer"
+            },
+            "sample_index": {
+              "minimum": 0,
+              "type": "integer"
+            },
+            "selected_block_start": {
+              "minimum": 0,
+              "type": "integer"
+            },
+            "selected_block_width": {
+              "minimum": 0,
+              "type": "integer"
+            },
+            "shift_passes": {
+              "minimum": 0,
+              "type": "integer"
+            },
+            "token_count": {
+              "minimum": 1,
+              "type": "integer"
+            }
+          },
+          "type": "object"
+        }
+      }
+    }
+  ],
   "properties": {
     "kind": {
       "enum": [

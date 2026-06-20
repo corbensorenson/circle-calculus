@@ -1114,6 +1114,33 @@ def receipt_summary_lines(receipt: Mapping[str, Any]) -> list[str]:
 
 
 def build_contract_request_json_schema() -> dict[str, Any]:
+    rope_aliases = [
+        alias
+        for alias, canonical in KIND_ALIASES.items()
+        if canonical == "rope_position_distinguishability"
+    ]
+    kv_aliases = [
+        alias
+        for alias, canonical in KIND_ALIASES.items()
+        if canonical == "kv_cache_ring_buffer"
+    ]
+    sparse_aliases = [
+        alias
+        for alias, canonical in KIND_ALIASES.items()
+        if canonical == "sparse_attention_coverage"
+    ]
+    recurrence_aliases = [
+        alias
+        for alias, canonical in KIND_ALIASES.items()
+        if canonical == "recurrence_schedule"
+    ]
+    integer = {"type": "integer"}
+    positive_integer = {"type": "integer", "minimum": 1}
+    nonnegative_integer = {"type": "integer", "minimum": 0}
+    integer_array = {
+        "type": "array",
+        "items": integer,
+    }
     return {
         "$schema": "https://json-schema.org/draft/2020-12/schema",
         "$id": "https://circle-calculus.local/schemas/circle_ai_contract_request.schema.json",
@@ -1125,6 +1152,86 @@ def build_contract_request_json_schema() -> dict[str, Any]:
             "kind": {"enum": sorted(KIND_ALIASES)},
             "parameters": {"type": "object", "minProperties": 0},
         },
+        "oneOf": [
+            {
+                "properties": {
+                    "kind": {"enum": sorted(rope_aliases)},
+                    "parameters": {
+                        "type": "object",
+                        "properties": {
+                            "head_dim": positive_integer,
+                            "base": {"type": "number", "exclusiveMinimum": 0},
+                            "context": positive_integer,
+                            "tolerance": {"type": "number", "minimum": 0},
+                            "discretization": {"enum": ["round", "floor", "ceil"]},
+                            "requested_margin": {"type": ["string", "null"]},
+                        },
+                        "additionalProperties": False,
+                    },
+                },
+            },
+            {
+                "properties": {
+                    "kind": {"enum": sorted(kv_aliases)},
+                    "parameters": {
+                        "type": "object",
+                        "required": ["cache_size", "current", "token"],
+                        "properties": {
+                            "cache_size": positive_integer,
+                            "current": nonnegative_integer,
+                            "token": nonnegative_integer,
+                            "batch_tokens": integer_array,
+                            "sink_size": nonnegative_integer,
+                            "request_id": {"type": "string", "minLength": 1},
+                        },
+                        "additionalProperties": False,
+                    },
+                },
+            },
+            {
+                "properties": {
+                    "kind": {"enum": sorted(sparse_aliases)},
+                    "parameters": {
+                        "type": "object",
+                        "required": [
+                            "context",
+                            "strides",
+                            "path_length",
+                            "local_window",
+                        ],
+                        "properties": {
+                            "context": positive_integer,
+                            "strides": {
+                                "type": "array",
+                                "items": positive_integer,
+                                "minItems": 1,
+                            },
+                            "path_length": nonnegative_integer,
+                            "local_window": nonnegative_integer,
+                        },
+                        "additionalProperties": False,
+                    },
+                },
+            },
+            {
+                "properties": {
+                    "kind": {"enum": sorted(recurrence_aliases)},
+                    "parameters": {
+                        "type": "object",
+                        "properties": {
+                            "loop_period": positive_integer,
+                            "sample_index": nonnegative_integer,
+                            "max_loops": nonnegative_integer,
+                            "token_count": positive_integer,
+                            "selected_block_start": nonnegative_integer,
+                            "selected_block_width": nonnegative_integer,
+                            "shift_passes": nonnegative_integer,
+                        },
+                        "additionalProperties": False,
+                    },
+                },
+            },
+        ],
         "additionalProperties": True,
     }
 

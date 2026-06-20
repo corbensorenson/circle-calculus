@@ -5,6 +5,7 @@ import subprocess
 import sys
 from pathlib import Path
 
+import jsonschema
 import pytest
 
 from circle_math.applications import (
@@ -286,6 +287,75 @@ def test_request_schema_accepts_public_aliases() -> None:
     assert "rope" in schema["properties"]["kind"]["enum"]
     assert "rope_position_distinguishability" in schema["properties"]["kind"]["enum"]
     assert schema["properties"]["parameters"]["type"] == "object"
+
+
+def test_request_schema_validates_public_parameter_shapes() -> None:
+    schema = build_contract_request_json_schema()
+
+    jsonschema.Draft202012Validator.check_schema(schema)
+    jsonschema.validate(
+        {
+            "schema_id": "circle_calculus.ai_contract_request.v0",
+            "kind": "rope",
+            "parameters": {},
+        },
+        schema,
+    )
+    jsonschema.validate(
+        {
+            "schema_id": "circle_calculus.ai_contract_request.v0",
+            "kind": "kv-cache",
+            "parameters": {
+                "cache_size": 16,
+                "current": 31,
+                "token": 20,
+                "batch_tokens": [20, 24],
+                "sink_size": 4,
+            },
+        },
+        schema,
+    )
+    jsonschema.validate(
+        {
+            "schema_id": "circle_calculus.ai_contract_request.v0",
+            "kind": "sparse-attention",
+            "parameters": {
+                "context": 32,
+                "strides": [5, 11, 17],
+                "path_length": 16,
+                "local_window": 9,
+            },
+        },
+        schema,
+    )
+    jsonschema.validate(
+        {
+            "schema_id": "circle_calculus.ai_contract_request.v0",
+            "kind": "recurrence",
+            "parameters": {},
+        },
+        schema,
+    )
+
+    missing_sparse_field = {
+        "schema_id": "circle_calculus.ai_contract_request.v0",
+        "kind": "sparse-attention",
+        "parameters": {
+            "context": 32,
+            "strides": [5, 11, 17],
+            "path_length": 16,
+        },
+    }
+    typo_parameter = {
+        "schema_id": "circle_calculus.ai_contract_request.v0",
+        "kind": "recurrence",
+        "parameters": {"shift_presses": 3},
+    }
+
+    with pytest.raises(jsonschema.ValidationError):
+        jsonschema.validate(missing_sparse_field, schema)
+    with pytest.raises(jsonschema.ValidationError):
+        jsonschema.validate(typo_parameter, schema)
 
 
 def test_receipt_schema_exposes_runner_metadata() -> None:

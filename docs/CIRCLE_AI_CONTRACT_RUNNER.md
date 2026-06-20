@@ -148,6 +148,11 @@ site/data/generated/circle_ai_contract_request.schema.json
 site/data/generated/circle_ai_contract_receipt.schema.json
 ```
 
+The request schema has contract-specific parameter shapes. RoPE and recurrence
+requests may rely on defaults, while KV-cache and sparse-attention requests must
+include their required fields. Unknown parameter keys are rejected so typoed
+configs fail before a receipt is issued.
+
 ## Non-Claims
 
 The runner proves finite contract fields only. It does not prove model quality,

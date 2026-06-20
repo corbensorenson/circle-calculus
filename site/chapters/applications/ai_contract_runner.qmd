@@ -225,6 +225,10 @@ site/data/generated/circle_ai_contract_request.schema.json
 site/data/generated/circle_ai_contract_receipt.schema.json
 ```
 
+The request schema is contract-specific: it accepts defaults for RoPE and
+recurrence, requires the core KV-cache and sparse-attention fields, and rejects
+unknown parameter names before a receipt is issued.
+
 ## What This Does Not Prove
 
 The runner does not prove better language-model quality, better reasoning,
