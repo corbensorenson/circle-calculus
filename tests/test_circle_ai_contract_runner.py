@@ -503,6 +503,8 @@ def test_circle_ai_certify_cli_validates_request_without_receipt(
             "--validate-only",
             "--format",
             "json",
+            "--pack",
+            str(tmp_path / "missing_contract_pack.json"),
         ],
         cwd=ROOT,
         check=True,

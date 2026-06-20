@@ -245,7 +245,6 @@ def write_json(path: Path, payload: dict[str, Any]) -> None:
 
 def main() -> int:
     args = parse_args()
-    pack = _pack_from_args(args)
     if args.kind == "request":
         if args.validate_only:
             report = _request_validation_report(args.request_json)
@@ -263,8 +262,10 @@ def main() -> int:
                 for failure in report["failures"]:
                     print(f"failure={failure}", file=sys.stderr)
             return 0 if report["ok"] else 1
+        pack = _pack_from_args(args)
         receipt = _receipt_from_request_json(args.request_json, pack=pack)
     else:
+        pack = _pack_from_args(args)
         receipt = build_contract_receipt(
             args.kind,
             _parameters_from_args(args),
