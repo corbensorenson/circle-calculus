@@ -208,6 +208,7 @@ project needs:
 
 ```bash
 make circle-ai-contracts-ready
+python scripts/circle_ai_contract_ready.py
 python scripts/circle_ai_contract_ready.py --kind sparse_attention_coverage
 python scripts/circle_ai_contract_ready.py --kind sparse_attention_coverage --format json
 python scripts/circle_ai_contract_ready.py --list-kinds

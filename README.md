@@ -137,6 +137,7 @@ For the standalone Circle AI contract pack, run:
 make circle-ai-contracts
 make circle-ai-contracts-check
 make circle-ai-contracts-ready
+python scripts/circle_ai_contract_ready.py
 python scripts/circle_ai_contract_ready.py --kind sparse_attention_coverage
 ```
 

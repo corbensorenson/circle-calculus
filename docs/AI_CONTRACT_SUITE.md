@@ -40,7 +40,7 @@ Start here if you want to use the suite rather than audit every theorem:
 
 ```bash
 make circle-ai-contracts-ready
-python scripts/circle_ai_contract_ready.py --list-kinds
+python scripts/circle_ai_contract_ready.py
 python scripts/circle_ai_contract_ready.py --kind rope_position_distinguishability
 python scripts/circle_ai_contract_ready.py \
   --kind sparse_attention_coverage \
@@ -119,8 +119,10 @@ For one contract kind, downstream tools can use the readiness CLI:
 
 ```bash
 make circle-ai-contracts-ready
+python scripts/circle_ai_contract_ready.py
 python scripts/example_validate_circle_ai_contract_pack_schema.py --summary
 python scripts/check_downstream_ci_acceptance_example.py --summary
+python scripts/circle_ai_contract_ready.py --list-kinds
 python scripts/circle_ai_contract_ready.py --list-recommendations
 python scripts/circle_ai_contract_ready.py --fingerprints
 python scripts/circle_ai_contract_ready.py --action-plan

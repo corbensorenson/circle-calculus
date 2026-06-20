@@ -129,8 +129,100 @@ def _print_kind_list(pack: dict[str, Any], output_format: str) -> None:
                     f"unproved={readiness.get('unproved_theorem_count')}",
                     f"recommendations={readiness.get('planner_recommendation_count', 0)}",
                 ]
+                )
+            )
+
+
+def _readiness_summary_payload(pack: dict[str, Any]) -> dict[str, Any]:
+    readiness_index = pack.get("contract_readiness_index", {})
+    if not isinstance(readiness_index, dict):
+        readiness_index = {}
+    records: list[dict[str, Any]] = []
+    for kind in sorted(readiness_index):
+        readiness = readiness_index[kind]
+        if not isinstance(readiness, dict):
+            continue
+        records.append(
+            {
+                "kind": kind,
+                "id": readiness.get("id"),
+                "ready_for_downstream_fixture_use": readiness.get(
+                    "ready_for_downstream_fixture_use"
+                )
+                is True,
+                "contract_passed": readiness.get("contract_passed") is True,
+                "required_fields_present": readiness.get("required_fields_present")
+                is True,
+                "all_theorem_ids_resolved": readiness.get(
+                    "all_theorem_ids_resolved"
+                )
+                is True,
+                "all_theorem_ids_proved": readiness.get("all_theorem_ids_proved")
+                is True,
+                "missing_minimum_field_count": readiness.get(
+                    "missing_minimum_field_count"
+                ),
+                "unresolved_theorem_count": readiness.get("unresolved_theorem_count"),
+                "unproved_theorem_count": readiness.get("unproved_theorem_count"),
+                "theorem_count": readiness.get("theorem_count"),
+                "planner_recommendation_count": readiness.get(
+                    "planner_recommendation_count",
+                    0,
+                ),
+            }
+        )
+    ready_count = sum(
+        1 for record in records if record["ready_for_downstream_fixture_use"]
+    )
+    return {
+        "schema_id": pack.get("schema_id"),
+        "content_fingerprint_algorithm": pack.get("content_fingerprint_algorithm"),
+        "pack_content_fingerprint": pack.get("pack_content_fingerprint"),
+        "contract_count": len(records),
+        "ready_contract_count": ready_count,
+        "not_ready_contract_count": len(records) - ready_count,
+        "all_ready_for_downstream_fixture_use": ready_count == len(records),
+        "contracts": records,
+    }
+
+
+def _print_readiness_summary(pack: dict[str, Any], output_format: str) -> bool:
+    payload = _readiness_summary_payload(pack)
+    if output_format == "json":
+        print(json.dumps(payload, indent=2, sort_keys=True))
+        return payload["all_ready_for_downstream_fixture_use"] is True
+    status = "ok" if payload["all_ready_for_downstream_fixture_use"] else "not-ready"
+    print(
+        " ".join(
+            [
+                f"circle AI contract readiness summary {status}:",
+                f"contracts={payload['contract_count']}",
+                f"ready={payload['ready_contract_count']}",
+                f"not_ready={payload['not_ready_contract_count']}",
+                f"fingerprint={payload.get('pack_content_fingerprint')}",
+            ]
+        )
+    )
+    for record in payload["contracts"]:
+        print(
+            " ".join(
+                [
+                    f"kind={record['kind']}",
+                    f"id={record.get('id')}",
+                    f"ready={record['ready_for_downstream_fixture_use']}",
+                    f"contract_passed={record['contract_passed']}",
+                    f"fields_present={record['required_fields_present']}",
+                    f"proof_resolved={record['all_theorem_ids_resolved']}",
+                    f"proof_proved={record['all_theorem_ids_proved']}",
+                    f"missing_fields={record.get('missing_minimum_field_count')}",
+                    f"unresolved={record.get('unresolved_theorem_count')}",
+                    f"unproved={record.get('unproved_theorem_count')}",
+                    f"theorems={record.get('theorem_count')}",
+                    f"recommendations={record.get('planner_recommendation_count')}",
+                ]
             )
         )
+    return payload["all_ready_for_downstream_fixture_use"] is True
 
 
 def _print_recommendation_list(pack: dict[str, Any], output_format: str) -> None:
@@ -1224,10 +1316,26 @@ def main() -> int:
         return 0
 
     if not args.kind:
-        parser.error(
-            "--kind is required unless --list-kinds or --list-recommendations "
-            "or --fingerprints or --acceptance-policy is passed"
-        )
+        if (
+            args.digest
+            or args.receipt
+            or args.field
+            or args.require_theorem
+            or args.include_field_metadata
+            or args.include_recommendations
+            or args.require_recommendation
+            or args.require_recommendation_evidence_field
+            or args.require_recommendation_theorem
+            or args.require_recommendation_action_parameter
+            or args.require_recommendation_action_parameter_path
+        ):
+            parser.error(
+                "--kind is required for digest, receipt, field metadata, "
+                "recommendation inclusion, and theorem/recommendation "
+                "requirements"
+            )
+        summary_ready = _print_readiness_summary(pack, args.format)
+        return 0 if summary_ready else 2
 
     readiness = _readiness_for(pack, args.kind)
     if readiness is None:

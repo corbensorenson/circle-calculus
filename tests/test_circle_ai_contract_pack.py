@@ -2583,6 +2583,67 @@ def test_generic_pack_validator_rejects_unknown_validation_kind(
     assert "unknown contract kind in command: not_a_contract_kind" in result.stderr
 
 
+def test_contract_ready_default_invocation_prints_readiness_summary() -> None:
+    result = subprocess.run(
+        [
+            sys.executable,
+            "scripts/circle_ai_contract_ready.py",
+        ],
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+
+    assert "circle AI contract readiness summary ok:" in result.stdout
+    assert "ready=" in result.stdout
+    assert "not_ready=0" in result.stdout
+    assert "kind=rope_position_distinguishability" in result.stdout
+    assert "kind=kv_cache_ring_buffer" in result.stdout
+    assert "proof_proved=True" in result.stdout
+
+
+def test_contract_ready_default_invocation_json_summary() -> None:
+    result = subprocess.run(
+        [
+            sys.executable,
+            "scripts/circle_ai_contract_ready.py",
+            "--format",
+            "json",
+        ],
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+
+    payload = json.loads(result.stdout)
+    assert payload["all_ready_for_downstream_fixture_use"] is True
+    assert payload["not_ready_contract_count"] == 0
+    assert payload["ready_contract_count"] == payload["contract_count"]
+    assert {
+        record["kind"] for record in payload["contracts"]
+    } >= {
+        "rope_position_distinguishability",
+        "kv_cache_ring_buffer",
+        "sparse_attention_coverage",
+        "recurrence_schedule",
+    }
+
+
+def test_contract_ready_digest_without_kind_still_fails() -> None:
+    result = subprocess.run(
+        [
+            sys.executable,
+            "scripts/circle_ai_contract_ready.py",
+            "--digest",
+        ],
+        capture_output=True,
+        text=True,
+    )
+
+    assert result.returncode != 0
+    assert "--kind is required for digest" in result.stderr
+
+
 def test_generic_pack_validator_rejects_unknown_validation_field(
     tmp_path: Path,
 ) -> None:
