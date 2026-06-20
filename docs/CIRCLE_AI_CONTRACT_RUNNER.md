@@ -26,7 +26,9 @@ python scripts/circle_ai_certify.py rope \
 python scripts/circle_ai_certify.py rope \
   --model-config path/to/config.json \
   --requested-margin 1/328459 \
-  --format json
+  --format json \
+  --request-out reports/rope_request.json \
+  --json-out reports/rope_receipt.json
 
 python scripts/circle_ai_certify.py kv-cache \
   --cache-size 16 \
@@ -44,8 +46,9 @@ python scripts/circle_ai_certify.py sparse-attention \
 python scripts/circle_ai_certify.py recurrence
 ```
 
-Add `--format json` for a machine-readable receipt, or `--json-out PATH` to
-write one to disk.
+Add `--format json` for a machine-readable receipt, `--json-out PATH` to write
+one to disk, and `--request-out PATH` to save the exact versioned request JSON
+used by the run.
 
 For standard RoPE model configs, `--model-config` infers `head_dim` from
 `head_dim` or `hidden_size / num_attention_heads`, `base` from `rope_theta`
@@ -139,11 +142,12 @@ future sharper theorem.
 from circle_math.applications import (
     build_contract_receipt,
     build_contract_receipt_from_request,
+    build_contract_request,
     build_contract_request_validation_report,
     validate_contract_request,
 )
 
-receipt = build_contract_receipt(
+request = build_contract_request(
     "rope",
     {
         "head_dim": 128,
@@ -151,6 +155,11 @@ receipt = build_contract_receipt(
         "context": 131072,
         "requested_margin": "1/328459",
     },
+)
+
+receipt = build_contract_receipt(
+    request["kind"],
+    request["parameters"],
 )
 assert receipt["schema_id"] == "circle_calculus.ai_contract_receipt.v0"
 assert receipt["proof_status"]["all_theorem_ids_proved"] is True

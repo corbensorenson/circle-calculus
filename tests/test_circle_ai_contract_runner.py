@@ -12,6 +12,7 @@ from circle_math.applications import (
     build_contract_receipt,
     build_contract_receipt_json_schema,
     build_contract_receipt_from_request,
+    build_contract_request,
     build_contract_runner_check_json_schema,
     build_contract_request_json_schema,
     build_contract_request_validation_report,
@@ -232,6 +233,30 @@ def test_request_api_validates_and_builds_receipts(contract_pack: dict) -> None:
     assert receipt["kind"] == "sparse_attention_coverage"
     assert receipt["request_passed"] is True
     assert validate_contract_receipt(receipt) == []
+
+
+def test_request_api_builds_canonical_json_safe_requests() -> None:
+    request = build_contract_request(
+        "sparse-attention",
+        {
+            "context": 9,
+            "strides": (2, 5),
+            "path_length": 4,
+            "local_window": 8,
+        },
+    )
+
+    assert request == {
+        "schema_id": "circle_calculus.ai_contract_request.v0",
+        "kind": "sparse_attention_coverage",
+        "parameters": {
+            "context": 9,
+            "strides": [2, 5],
+            "path_length": 4,
+            "local_window": 8,
+        },
+    }
+    assert validate_contract_request(request) == []
 
 
 def test_rope_model_config_import_builds_standard_request_parameters() -> None:
@@ -569,6 +594,7 @@ def test_circle_ai_certify_cli_imports_standard_rope_model_config(
     tmp_path: Path,
 ) -> None:
     config_path = tmp_path / "config.json"
+    request_path = tmp_path / "circle_request.json"
     config_path.write_text(
         json.dumps(
             {
@@ -593,6 +619,8 @@ def test_circle_ai_certify_cli_imports_standard_rope_model_config(
             "1/328459",
             "--format",
             "json",
+            "--request-out",
+            str(request_path),
         ],
         cwd=ROOT,
         check=True,
@@ -607,6 +635,9 @@ def test_circle_ai_certify_cli_imports_standard_rope_model_config(
     assert payload["normalized_request"]["base"] == 10000.0
     assert payload["normalized_request"]["context_length"] == 131072
     assert payload["request"]["parameters"]["requested_margin"] == "1/328459"
+    saved_request = json.loads(request_path.read_text())
+    assert saved_request == payload["request"]
+    assert validate_contract_request(saved_request) == []
 
 
 def test_circle_ai_certify_cli_rejects_scaled_rope_model_config(

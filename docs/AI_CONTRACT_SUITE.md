@@ -32,7 +32,9 @@ For standard RoPE model configs, the same runner can infer parameters from a
 python scripts/circle_ai_certify.py rope \
   --model-config path/to/config.json \
   --requested-margin 1/328459 \
-  --format json
+  --format json \
+  --request-out reports/rope_request.json \
+  --json-out reports/rope_receipt.json
 ```
 
 This imports only the standard-RoPE fields used by the current theorem-backed

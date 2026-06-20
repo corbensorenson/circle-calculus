@@ -16,6 +16,7 @@ if str(ROOT) not in sys.path:
 from circle_math.applications import (  # noqa: E402
     build_contract_receipt,
     build_contract_receipt_from_request,
+    build_contract_request,
     build_contract_request_validation_report,
     build_rope_request_parameters_from_model_config,
     load_contract_pack,
@@ -49,6 +50,14 @@ def add_common_options(parser: argparse.ArgumentParser) -> None:
         "--json-out",
         type=Path,
         help="Optional path for the machine-readable receipt JSON.",
+    )
+    parser.add_argument(
+        "--request-out",
+        type=Path,
+        help=(
+            "Optional path for the exact versioned request JSON used by this "
+            "run. For validate-only request files, this writes the loaded request."
+        ),
     )
     parser.add_argument(
         "--pack",
@@ -251,6 +260,8 @@ def write_json(path: Path, payload: dict[str, Any]) -> None:
 def main() -> int:
     args = parse_args()
     if args.kind == "request":
+        if args.request_out is not None:
+            write_json(args.request_out, _load_request_json(args.request_json))
         if args.validate_only:
             report = _request_validation_report(args.request_json)
             if args.json_out is not None:
@@ -272,9 +283,12 @@ def main() -> int:
     else:
         pack = _pack_from_args(args)
         try:
+            request = build_contract_request(args.kind, _parameters_from_args(args))
+            if args.request_out is not None:
+                write_json(args.request_out, request)
             receipt = build_contract_receipt(
-                args.kind,
-                _parameters_from_args(args),
+                request["kind"],
+                request["parameters"],
                 pack=pack,
             )
         except ValueError as exc:

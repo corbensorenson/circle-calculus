@@ -84,13 +84,18 @@ fields directly:
 python scripts/circle_ai_certify.py rope \
   --model-config path/to/config.json \
   --requested-margin 1/328459 \
-  --format json
+  --format json \
+  --request-out reports/rope_request.json \
+  --json-out reports/rope_receipt.json
 ```
 
 The importer reads `head_dim` or `hidden_size / num_attention_heads`, `rope_theta`
 when present, and `max_position_embeddings` or related context fields. Explicit
 CLI flags override inferred values. Non-default `rope_scaling` metadata is
 rejected because the current receipt does not prove scaled-RoPE semantics.
+The saved request is the exact versioned Circle request object used to produce
+the receipt, so downstream tools can pin it before rerunning or auditing the
+certificate.
 
 Expected shape:
 
@@ -136,6 +141,7 @@ python scripts/circle_ai_certify.py sparse-attention \
   --path-length 3 \
   --local-window 4 \
   --format json \
+  --request-out reports/sparse_attention_request.json \
   --json-out reports/sparse_attention_receipt.json
 ```
 
@@ -223,11 +229,12 @@ Read every receipt in this order:
 from circle_math.applications import (
     build_contract_receipt,
     build_contract_receipt_from_request,
+    build_contract_request,
     build_contract_request_validation_report,
     validate_contract_request,
 )
 
-receipt = build_contract_receipt(
+request = build_contract_request(
     "kv-cache",
     {
         "cache_size": 16,
@@ -236,6 +243,11 @@ receipt = build_contract_receipt(
         "batch_tokens": (20, 24, 29, 31),
         "sink_size": 4,
     },
+)
+
+receipt = build_contract_receipt(
+    request["kind"],
+    request["parameters"],
 )
 ```
 

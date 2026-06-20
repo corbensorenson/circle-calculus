@@ -277,6 +277,14 @@ def _strip_fingerprint_fields(value: Any) -> Any:
     return value
 
 
+def _json_ready_value(value: Any) -> Any:
+    if isinstance(value, Mapping):
+        return {key: _json_ready_value(child) for key, child in value.items()}
+    if isinstance(value, (list, tuple)):
+        return [_json_ready_value(child) for child in value]
+    return value
+
+
 def _json_fingerprint(value: Any) -> str:
     payload = json.dumps(
         _strip_fingerprint_fields(value),
@@ -294,6 +302,21 @@ def _unique_strings(values: Iterable[str]) -> tuple[str, ...]:
             seen.add(value)
             ordered.append(value)
     return tuple(ordered)
+
+
+def build_contract_request(kind: str, parameters: Mapping[str, Any]) -> dict[str, Any]:
+    """Build and validate a versioned public runner request object."""
+
+    canonical = canonical_contract_kind(kind)
+    request = {
+        "schema_id": REQUEST_SCHEMA_ID,
+        "kind": canonical,
+        "parameters": _json_ready_value(dict(parameters)),
+    }
+    failures = validate_contract_request(request)
+    if failures:
+        raise ValueError("invalid Circle AI contract request: " + "; ".join(failures))
+    return request
 
 
 def _default_pack(pack: Mapping[str, Any] | None) -> dict[str, Any]:
@@ -448,11 +471,7 @@ def _base_receipt(
         support=support,
         pack=pack_dict,
     )
-    request_object = {
-        "schema_id": REQUEST_SCHEMA_ID,
-        "kind": canonical,
-        "parameters": dict(request_parameters),
-    }
+    request_object = build_contract_request(canonical, request_parameters)
     normalized_object = dict(normalized_parameters)
     receipt = {
         "schema_id": RECEIPT_SCHEMA_ID,
