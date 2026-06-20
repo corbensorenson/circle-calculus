@@ -63,7 +63,8 @@ Each contract record contains:
 - `integration_use`: the intended external use;
 - `ordinary_baselines`: baseline categories a downstream experiment should compare against;
 - `source_paper`, `quickstart_docs`, `living_book_pages`, and `entrypoints`:
-  local source trails and command-line entrypoints for non-Lean consumers;
+  local source trails, compact result notes, and command-line entrypoints for
+  non-Lean consumers;
 - `validation_commands`: focused commands for rechecking this contract without
   running the entire repository gate;
 - `not_claimed`: the claim boundary;

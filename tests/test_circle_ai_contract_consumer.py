@@ -860,6 +860,7 @@ def test_consumer_exposes_top_level_planner_recommendation_index() -> None:
     assert "AIRA-T0239" in rope_frontier["theorem_ids"]
     assert "AIRA-T0240" in rope_frontier["theorem_ids"]
     assert "docs/ROPE_CERTIFIER_QUICKSTART.md" in rope_frontier["quickstart_docs"]
+    assert "docs/ROPE_CERTIFIER_RESULTS_NOTE.md" in rope_frontier["quickstart_docs"]
     assert (
         "python scripts/circle_ai_contract_ready.py --kind rope_position_distinguishability"
         in rope_frontier["validation_commands"]

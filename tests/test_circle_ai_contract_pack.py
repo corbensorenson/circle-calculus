@@ -619,6 +619,9 @@ def test_generic_contract_pack_is_standalone_with_compatibility_aliases() -> Non
     assert contracts["rope_position_distinguishability"]["fields"][
         "certificate_schema_id"
     ] == "circle_calculus.rope_position_distinguishability.v0"
+    assert "docs/ROPE_CERTIFIER_RESULTS_NOTE.md" in contracts[
+        "rope_position_distinguishability"
+    ]["quickstart_docs"]
     field_catalog = pack["contract_schema"]["minimum_field_catalog_by_kind"]
     rope_catalog = field_catalog["rope_position_distinguishability"]
     assert rope_catalog["certificate_schema_id"]["value_kind"] == "string"

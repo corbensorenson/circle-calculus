@@ -146,7 +146,10 @@ GENERIC_USES = {
 CONTRACT_ARTIFACTS = {
     "rope_position_distinguishability": {
         "source_paper": "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md",
-        "quickstart_docs": ["docs/ROPE_CERTIFIER_QUICKSTART.md"],
+        "quickstart_docs": [
+            "docs/ROPE_CERTIFIER_QUICKSTART.md",
+            "docs/ROPE_CERTIFIER_RESULTS_NOTE.md",
+        ],
         "living_book_pages": [
             "site/chapters/applications/rope_certifier.qmd",
             "site/chapters/applications/rope_certifier_audit.qmd",

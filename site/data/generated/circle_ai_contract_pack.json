@@ -71,7 +71,7 @@
       "id": "CC-AI-CONTRACT-RECURRENCE-001"
     },
     "rope_position_distinguishability": {
-      "content_fingerprint": "12b13d19abbc15480e2962b7194453cef421e4b9aefe6bac7d7429d6b87985c6",
+      "content_fingerprint": "29a773e248190f980f329b3f1aa544a8f2cd0f4e440b11fc70dff0f26e86a467",
       "content_fingerprint_algorithm": "sha256-json-v1",
       "id": "CC-AI-CONTRACT-ROPE-001"
     },
@@ -256,7 +256,8 @@
         "ROPE-USE-D19-MARGIN-FRONTIER"
       ],
       "quickstart_docs": [
-        "docs/ROPE_CERTIFIER_QUICKSTART.md"
+        "docs/ROPE_CERTIFIER_QUICKSTART.md",
+        "docs/ROPE_CERTIFIER_RESULTS_NOTE.md"
       ],
       "ready_for_downstream_fixture_use": true,
       "required_fields_present": true,
@@ -2211,7 +2212,7 @@
         "unproved_theorem_ids": [],
         "unresolved_theorem_ids": []
       },
-      "content_fingerprint": "12b13d19abbc15480e2962b7194453cef421e4b9aefe6bac7d7429d6b87985c6",
+      "content_fingerprint": "29a773e248190f980f329b3f1aa544a8f2cd0f4e440b11fc70dff0f26e86a467",
       "content_fingerprint_algorithm": "sha256-json-v1",
       "contract_passed": true,
       "dictionary_ids": [
@@ -2904,7 +2905,8 @@
         "unresolved_theorem_ids": []
       },
       "quickstart_docs": [
-        "docs/ROPE_CERTIFIER_QUICKSTART.md"
+        "docs/ROPE_CERTIFIER_QUICKSTART.md",
+        "docs/ROPE_CERTIFIER_RESULTS_NOTE.md"
       ],
       "source_paper": "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md",
       "status": "fixture",
@@ -7883,7 +7885,7 @@
       "schema_id": "circle_calculus.theseus_hive_ai_contracts.v0"
     }
   },
-  "pack_content_fingerprint": "7b74e4de50314adca3d2e88c15660d92adb49a0c1506484d843514f105ca901b",
+  "pack_content_fingerprint": "448c01e271080dcebed337ace4ad251b156b51231e0835d24a93c28e2baf44e1",
   "planner_recommendation_index": {
     "FANOUT-AUDIT-DUPLICATE-COLLAPSED-BUDGET": {
       "action_kind": "audit_duplicate_collapsed_candidate_budget",
@@ -8410,7 +8412,8 @@
       ],
       "not_claimed": "This recommendation audits the declared integer-period phase-bank model only. It is not a proof of all-channel real-valued RoPE distinguishability, model quality, long context behavior, or training/deployment performance.",
       "quickstart_docs": [
-        "docs/ROPE_CERTIFIER_QUICKSTART.md"
+        "docs/ROPE_CERTIFIER_QUICKSTART.md",
+        "docs/ROPE_CERTIFIER_RESULTS_NOTE.md"
       ],
       "ready_for_downstream_fixture_use": true,
       "source_paper": "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md",
@@ -8470,7 +8473,8 @@
       ],
       "not_claimed": "This recommendation exposes the D19 standard-channel-0 margin frontier for request gating and a conditional first-channel finite-bank transfer for the proved branch. It does not transfer the impossible branch to a whole-bank collision claim, is not a Diophantine theorem for arbitrary RoPE frequencies, and is not a model-quality or context-length extension claim.",
       "quickstart_docs": [
-        "docs/ROPE_CERTIFIER_QUICKSTART.md"
+        "docs/ROPE_CERTIFIER_QUICKSTART.md",
+        "docs/ROPE_CERTIFIER_RESULTS_NOTE.md"
       ],
       "ready_for_downstream_fixture_use": true,
       "source_paper": "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md",

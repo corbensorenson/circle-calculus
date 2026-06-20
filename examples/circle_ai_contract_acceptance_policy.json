@@ -1,7 +1,7 @@
 {
   "contracts": [
     {
-      "expected_contract_fingerprint": "12b13d19abbc15480e2962b7194453cef421e4b9aefe6bac7d7429d6b87985c6",
+      "expected_contract_fingerprint": "29a773e248190f980f329b3f1aa544a8f2cd0f4e440b11fc70dff0f26e86a467",
       "kind": "rope_position_distinguishability",
       "required_fields": [
         "preset",
@@ -373,7 +373,7 @@
       ]
     }
   ],
-  "expected_pack_fingerprint": "7b74e4de50314adca3d2e88c15660d92adb49a0c1506484d843514f105ca901b",
+  "expected_pack_fingerprint": "448c01e271080dcebed337ace4ad251b156b51231e0835d24a93c28e2baf44e1",
   "policy_id": "circle_ai_flagship_contracts_acceptance_v0",
   "policy_name": "Circle AI flagship contracts acceptance policy",
   "schema_id": "circle_calculus.ai_contract_acceptance_policy.v0"
