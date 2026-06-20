@@ -64,6 +64,7 @@ CIRCLE_PRIME_EXTERNAL_NEXT_STARTS ?= 90,1000000,4294967000,1000000000000,1844674
 CIRCLE_PRIME_EXTERNAL_NEXT_ROUNDS ?= 5
 CIRCLE_PRIME_EXTERNAL_NEXT_BATCH_SIZE ?= 4
 CIRCLE_PRIME_EXTERNAL_NEXT_PRIMECOUNT_MAX_START ?= 1000000000000
+CIRCLE_PRIME_EXTERNAL_NEXT_PRIMESIEVE_LIBRARY_MAX_START ?= 18446744073709551615
 CIRCLE_PRIME_EXTERNAL_NEXT_COMPARE_STARTS ?= 4294967000,1000000000000,18446744073709551500
 CIRCLE_PRIME_EXTERNAL_NEXT_COMPARE_BASELINE ?= sidecars/PRIME_ENGINE/results/prime_engine_external_next_latest.csv
 CIRCLE_PRIME_EXTERNAL_NEXT_COMPARE_CANDIDATE ?= sidecars/PRIME_ENGINE/results/prime_engine_external_next_candidate_latest.csv
@@ -253,10 +254,10 @@ prime-engine-high-offset-confirm:
 	python scripts/confirm_prime_external_modes.py $(CIRCLE_PRIME_HIGH_OFFSET_CONFIRM_ARGS)
 
 prime-engine-external-next:
-	python scripts/benchmark_prime_external_next.py --starts $(CIRCLE_PRIME_EXTERNAL_NEXT_STARTS) --rounds $(CIRCLE_PRIME_EXTERNAL_NEXT_ROUNDS) --batch-size $(CIRCLE_PRIME_EXTERNAL_NEXT_BATCH_SIZE) --include-circle-server --include-primecount --primecount-max-start $(CIRCLE_PRIME_EXTERNAL_NEXT_PRIMECOUNT_MAX_START) --external-threads $(EXTERNAL_PRIME_THREADS) --require-tool primesieve --require-tool primecount --output sidecars/PRIME_ENGINE/results/prime_engine_external_next_latest.csv --sample-output sidecars/PRIME_ENGINE/results/prime_engine_external_next_samples_latest.csv --metadata-output sidecars/PRIME_ENGINE/results/prime_engine_external_next_latest.json
+	python scripts/benchmark_prime_external_next.py --starts $(CIRCLE_PRIME_EXTERNAL_NEXT_STARTS) --rounds $(CIRCLE_PRIME_EXTERNAL_NEXT_ROUNDS) --batch-size $(CIRCLE_PRIME_EXTERNAL_NEXT_BATCH_SIZE) --include-circle-server --include-primecount --include-primesieve-library-server --primecount-max-start $(CIRCLE_PRIME_EXTERNAL_NEXT_PRIMECOUNT_MAX_START) --primesieve-library-max-start $(CIRCLE_PRIME_EXTERNAL_NEXT_PRIMESIEVE_LIBRARY_MAX_START) --external-threads $(EXTERNAL_PRIME_THREADS) --require-tool primesieve --require-tool primecount --require-tool primesieve-library --output sidecars/PRIME_ENGINE/results/prime_engine_external_next_latest.csv --sample-output sidecars/PRIME_ENGINE/results/prime_engine_external_next_samples_latest.csv --metadata-output sidecars/PRIME_ENGINE/results/prime_engine_external_next_latest.json
 
 prime-engine-external-next-compare:
-	python scripts/benchmark_prime_external_next.py --starts $(CIRCLE_PRIME_EXTERNAL_NEXT_STARTS) --rounds $(CIRCLE_PRIME_EXTERNAL_NEXT_ROUNDS) --batch-size $(CIRCLE_PRIME_EXTERNAL_NEXT_BATCH_SIZE) --include-circle-server --include-primecount --primecount-max-start $(CIRCLE_PRIME_EXTERNAL_NEXT_PRIMECOUNT_MAX_START) --external-threads $(EXTERNAL_PRIME_THREADS) --require-tool primesieve --require-tool primecount --output $(CIRCLE_PRIME_EXTERNAL_NEXT_COMPARE_CANDIDATE) --sample-output $(CIRCLE_PRIME_EXTERNAL_NEXT_COMPARE_SAMPLES) --metadata-output $(CIRCLE_PRIME_EXTERNAL_NEXT_COMPARE_METADATA)
+	python scripts/benchmark_prime_external_next.py --starts $(CIRCLE_PRIME_EXTERNAL_NEXT_STARTS) --rounds $(CIRCLE_PRIME_EXTERNAL_NEXT_ROUNDS) --batch-size $(CIRCLE_PRIME_EXTERNAL_NEXT_BATCH_SIZE) --include-circle-server --include-primecount --include-primesieve-library-server --primecount-max-start $(CIRCLE_PRIME_EXTERNAL_NEXT_PRIMECOUNT_MAX_START) --primesieve-library-max-start $(CIRCLE_PRIME_EXTERNAL_NEXT_PRIMESIEVE_LIBRARY_MAX_START) --external-threads $(EXTERNAL_PRIME_THREADS) --require-tool primesieve --require-tool primecount --require-tool primesieve-library --output $(CIRCLE_PRIME_EXTERNAL_NEXT_COMPARE_CANDIDATE) --sample-output $(CIRCLE_PRIME_EXTERNAL_NEXT_COMPARE_SAMPLES) --metadata-output $(CIRCLE_PRIME_EXTERNAL_NEXT_COMPARE_METADATA)
 	python scripts/compare_prime_external_next.py $(CIRCLE_PRIME_EXTERNAL_NEXT_COMPARE_CANDIDATE) $(CIRCLE_PRIME_EXTERNAL_NEXT_COMPARE_ARGS)
 
 prime-engine-external-throughput:

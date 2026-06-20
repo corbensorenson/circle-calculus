@@ -6,6 +6,7 @@ use std::sync::OnceLock;
 use std::thread;
 
 use crate::scalar::is_prime_u64;
+use crate::tables::{STATIC_BASE_PRIMES_U64, STATIC_BASE_PRIME_LIMIT};
 
 const PRESIEVE13_MODULUS: u64 = 30_030;
 const PRESIEVE13_ODD_PERIOD: usize = (PRESIEVE13_MODULUS as usize) / 2;
@@ -24,7 +25,6 @@ const WHEEL30_GAP_BY_RESIDUE: [u8; 30] = [
     0, 6, 0, 0, 0, 0, 0, 4, 0, 0, 0, 2, 0, 4, 0, 0, 0, 2, 0, 4, 0, 0, 0, 6, 0, 0, 0, 0, 0, 2,
 ];
 const WHEEL30_HALF_GAP_BY_INDEX: [usize; 8] = [3, 2, 1, 2, 1, 2, 3, 1];
-const STATIC_BASE_PRIME_LIMIT: u64 = 1_100_000;
 const BASE_PRIME_ODD_BYTE_LIMIT: u64 = 10_000_000;
 const BASE_PRIME_BITSET_LIMIT: u64 = 100_000_000;
 const SCALAR_RANGE_FALLBACK_SPAN_LIMIT: u64 = 1_000_000;
@@ -36,7 +36,6 @@ const PRIME_PI_PHI_SMALL_PRIME_COUNT: usize = 6;
 const PRIME_PI_PHI_SMALL_MODULUS: u64 = 30_030;
 pub const DEFAULT_SEGMENT_SIZE: u64 = 1 << 18;
 include!(concat!(env!("OUT_DIR"), "/prime_engine_defaults.rs"));
-include!(concat!(env!("OUT_DIR"), "/base_primes_upto_1100000_u64.rs"));
 pub const HIGH_OFFSET_SEGMENT_SIZE: u64 = 1 << 20;
 pub const VERY_HIGH_OFFSET_SEGMENT_SIZE: u64 = 1 << 22;
 

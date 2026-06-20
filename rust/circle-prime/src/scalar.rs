@@ -1,3 +1,5 @@
+use crate::tables::{STATIC_BASE_PRIMES_U64, STATIC_BASE_PRIME_LIMIT};
+
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum PrimeStatus {
     Composite,
@@ -287,6 +289,10 @@ pub fn next_prime_u64(start: u64) -> NextPrimeSearch {
         }
     }
 
+    if let Some(search) = next_prime_from_static_table(start) {
+        return search;
+    }
+
     let Some((mut candidate, mut wheel_index)) = first_wheel30_candidate_at_or_above(start) else {
         return NextPrimeSearch {
             start,
@@ -319,6 +325,44 @@ pub fn next_prime_u64(start: u64) -> NextPrimeSearch {
         candidate = next_candidate;
         wheel_index = (wheel_index + 1) % NEXT_PRIME_WHEEL30_GAPS.len();
     }
+}
+
+fn next_prime_from_static_table(start: u64) -> Option<NextPrimeSearch> {
+    if start > STATIC_BASE_PRIME_LIMIT {
+        return None;
+    }
+    let table_index = STATIC_BASE_PRIMES_U64.partition_point(|&prime| prime < start);
+    let &prime = STATIC_BASE_PRIMES_U64.get(table_index)?;
+    let candidate_count = wheel30_candidate_count_inclusive(start, prime)?;
+    Some(NextPrimeSearch {
+        start,
+        prime: Some(prime),
+        candidate_count,
+        decision: Some(PrimeDecision {
+            n: prime,
+            status: PrimeStatus::Prime,
+            method: "static_prime_table",
+            stage: "exact_generated_sieve",
+            factor: None,
+            witness_base: None,
+            checked_horizon_bound: Some(prime.isqrt()),
+        }),
+    })
+}
+
+fn wheel30_candidate_count_inclusive(start: u64, end: u64) -> Option<u64> {
+    let (mut candidate, mut wheel_index) = first_wheel30_candidate_at_or_above(start)?;
+    let mut count = 0u64;
+    while candidate <= end {
+        count += 1;
+        if candidate == end {
+            return Some(count);
+        }
+        let gap = NEXT_PRIME_WHEEL30_GAPS[wheel_index];
+        candidate = candidate.checked_add(gap)?;
+        wheel_index = (wheel_index + 1) % NEXT_PRIME_WHEEL30_GAPS.len();
+    }
+    None
 }
 
 fn first_wheel30_candidate_at_or_above(start: u64) -> Option<(u64, usize)> {
@@ -487,6 +531,49 @@ mod tests {
         assert_eq!(next_prime_u64(0).prime, Some(2));
         assert_eq!(next_prime_u64(97).prime, Some(97));
         assert_eq!(next_prime_u64(98).prime, Some(101));
+    }
+
+    #[test]
+    fn next_prime_uses_static_prime_table_for_small_starts() {
+        let search = next_prime_u64(90);
+        assert_eq!(search.prime, Some(97));
+        assert_eq!(search.candidate_count, 2);
+        let decision = search.decision.expect("static-table search has a decision");
+        assert_eq!(decision.status, PrimeStatus::Prime);
+        assert_eq!(decision.method, "static_prime_table");
+        assert_eq!(decision.stage, "exact_generated_sieve");
+        assert_eq!(decision.checked_horizon_bound, Some(9));
+
+        let million = next_prime_u64(1_000_000);
+        assert_eq!(million.prime, Some(1_000_003));
+        assert_eq!(million.candidate_count, 2);
+        assert_eq!(
+            million.decision.as_ref().map(|decision| decision.method),
+            Some("static_prime_table")
+        );
+    }
+
+    #[test]
+    fn static_prime_table_path_declines_after_last_table_prime() {
+        let last_static_prime = *STATIC_BASE_PRIMES_U64.last().expect("static primes");
+        assert_eq!(
+            next_prime_u64(last_static_prime).prime,
+            Some(last_static_prime)
+        );
+        assert_eq!(
+            next_prime_u64(last_static_prime)
+                .decision
+                .as_ref()
+                .map(|decision| decision.method),
+            Some("static_prime_table")
+        );
+
+        let search = next_prime_u64(last_static_prime + 1);
+        assert!(search.prime.is_some());
+        assert_ne!(
+            search.decision.as_ref().map(|decision| decision.method),
+            Some("static_prime_table")
+        );
     }
 
     #[test]

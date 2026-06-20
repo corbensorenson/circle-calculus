@@ -2,6 +2,7 @@ pub mod coil;
 pub mod controls;
 pub mod scalar;
 pub mod segmented;
+mod tables;
 
 pub use coil::{
     coil_signature, coil_spectrum, contains_horizon, contains_smaller_horizon, horizon_collision,

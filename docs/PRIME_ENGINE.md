@@ -534,17 +534,27 @@ sidecars/PRIME_ENGINE/results/prime_engine_external_next_latest.json
 sidecars/PRIME_ENGINE/results/prime_engine_external_next_samples_latest.csv
 ```
 
-It benchmarks `circle-prime next START` against
-`primesieve 1 START-1 --nth-prime --quiet`, which gives the first prime at or
-above `START`. The Makefile target also includes a `primecount` control for
-starts at or below `CIRCLE_PRIME_EXTERNAL_NEXT_PRIMECOUNT_MAX_START` (default
-`1000000000000`): it computes `pi(START-1)` and then asks `primecount
---nth-prime` for the next index. That keeps `primecount` as a serious second
-control where it is short-run friendly without letting near-`u64::MAX`
-`pi(x)` dominate the routine next-prime benchmark. The Makefile target also
-includes persistent `next-server` request rows beside the cold CLI rows, so the
-report separates command-level startup cost from steady-state search
-throughput. The default starts cover small search, the `2^32` boundary,
+It benchmarks `circle-prime next START` against three external next-prime
+controls:
+
+- `primesieve 1 START-1 --nth-prime --quiet`, which gives the first prime at or
+  above `START` through the installed command-line tool.
+- a tiny repo-owned line server linked against `libprimesieve` and using
+  `primesieve_generate_n_primes(1, START, UINT64_PRIMES)`. This is the harder
+  low-overhead control for independent next-prime queries, because it removes
+  process startup and uses the library API directly.
+- `primecount` for starts at or below
+  `CIRCLE_PRIME_EXTERNAL_NEXT_PRIMECOUNT_MAX_START` (default
+  `1000000000000`): it computes `pi(START-1)` and then asks `primecount
+  --nth-prime` for the next index. That keeps `primecount` as a serious second
+  control where it is short-run friendly without letting near-`u64::MAX`
+  `pi(x)` dominate the routine next-prime benchmark.
+
+The Makefile target includes persistent `next-server` Circle request rows
+beside the cold CLI rows, so the report separates command-level startup cost
+from steady-state search throughput. The libprimesieve helper is also
+persistent, which makes it the right comparison for judging Circle's persistent
+server path. The default starts cover small search, the `2^32` boundary,
 `10^12`, and a near-`u64::MAX` scalar path.
 The CSV keeps next-prime fields separate from range-count fields: `start`,
 `batch_size`, resolved `result`, Circle `candidate_count`, and searches/sec. Use
@@ -553,6 +563,9 @@ the Makefile default is `4` so command-level next-prime comparisons are less
 sensitive to launch jitter while still keeping the near-`2^64` `primesieve`
 row short enough for routine regression gates. Use `1` for quick local probes.
 Raise `CIRCLE_PRIME_EXTERNAL_NEXT_PRIMECOUNT_MAX_START` only for explicit
+primecount stress probes. Lower
+`CIRCLE_PRIME_EXTERNAL_NEXT_PRIMESIEVE_LIBRARY_MAX_START` only if the
+near-`u64::MAX` libprimesieve helper row is too slow for a local quick run.
 experiments; the default cap is intentionally short-run oriented.
 
 `prime-engine-external-next-compare` writes candidate artifacts without

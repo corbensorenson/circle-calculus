@@ -114,19 +114,25 @@ fn next_command(args: &[String]) -> Result<(), String> {
 fn next_server_command(args: &[String]) -> Result<(), String> {
     let json = args.iter().any(|arg| arg == "--json");
     let stdin = io::stdin();
+    let mut reader = stdin.lock();
     let mut stdout = io::BufWriter::new(io::stdout().lock());
-    for line in stdin.lock().lines() {
-        let line = line.map_err(|err| format!("failed to read request: {err}"))?;
-        let request = line.trim();
+    let mut buffer = Vec::with_capacity(32);
+    loop {
+        buffer.clear();
+        let bytes_read = reader
+            .read_until(b'\n', &mut buffer)
+            .map_err(|err| format!("failed to read request: {err}"))?;
+        if bytes_read == 0 {
+            break;
+        }
+        let request = trim_ascii_bytes(&buffer);
         if request.is_empty() {
             continue;
         }
-        if request == "quit" || request == "exit" {
+        if request == b"quit" || request == b"exit" {
             break;
         }
-        let start = request
-            .parse::<u64>()
-            .map_err(|_| "next-server request must be START fitting in u64".to_string())?;
+        let start = parse_u64_ascii(request)?;
         let search = next_prime_u64(start);
         if json {
             writeln!(stdout, "{}", search.to_json())
@@ -142,6 +148,39 @@ fn next_server_command(args: &[String]) -> Result<(), String> {
             .map_err(|err| format!("failed to flush response: {err}"))?;
     }
     Ok(())
+}
+
+fn trim_ascii_bytes(mut bytes: &[u8]) -> &[u8] {
+    while bytes
+        .first()
+        .is_some_and(|byte| matches!(byte, b' ' | b'\t' | b'\r' | b'\n'))
+    {
+        bytes = &bytes[1..];
+    }
+    while bytes
+        .last()
+        .is_some_and(|byte| matches!(byte, b' ' | b'\t' | b'\r' | b'\n'))
+    {
+        bytes = &bytes[..bytes.len() - 1];
+    }
+    bytes
+}
+
+fn parse_u64_ascii(bytes: &[u8]) -> Result<u64, String> {
+    if bytes.is_empty() {
+        return Err("next-server request must be START fitting in u64".to_string());
+    }
+    let mut value = 0u64;
+    for &byte in bytes {
+        if !byte.is_ascii_digit() {
+            return Err("next-server request must be START fitting in u64".to_string());
+        }
+        value = value
+            .checked_mul(10)
+            .and_then(|value| value.checked_add(u64::from(byte - b'0')))
+            .ok_or_else(|| "next-server request must be START fitting in u64".to_string())?;
+    }
+    Ok(value)
 }
 
 fn inspect_command(args: &[String]) -> Result<(), String> {
@@ -710,5 +749,15 @@ mod tests {
             count_server_request("0 100000 65536 4 presieve13", None, 1, None).unwrap(),
             9592
         );
+    }
+
+    #[test]
+    fn next_server_ascii_parser_trims_and_rejects_invalid_requests() {
+        assert_eq!(trim_ascii_bytes(b" \t90\r\n"), b"90");
+        assert_eq!(parse_u64_ascii(trim_ascii_bytes(b" \t90\r\n")).unwrap(), 90);
+        assert_eq!(parse_u64_ascii(b"18446744073709551615").unwrap(), u64::MAX);
+        assert!(parse_u64_ascii(b"").is_err());
+        assert!(parse_u64_ascii(b"12x").is_err());
+        assert!(parse_u64_ascii(b"18446744073709551616").is_err());
     }
 }

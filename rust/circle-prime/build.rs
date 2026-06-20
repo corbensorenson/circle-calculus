@@ -95,7 +95,8 @@ fn write_static_base_prime_table(out_dir: &PathBuf) {
         p += 1;
     }
 
-    let mut rust_table_u64 = String::from("static STATIC_BASE_PRIMES_U64: &[u64] = &[\n");
+    let mut rust_table_u64 =
+        String::from("pub(crate) static STATIC_BASE_PRIMES_U64: &[u64] = &[\n");
     for (n, is_prime) in sieve.into_iter().enumerate() {
         if is_prime {
             rust_table_u64.push_str("    ");

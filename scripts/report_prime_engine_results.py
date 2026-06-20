@@ -1069,6 +1069,8 @@ def summarize_external_next_metadata(metadata: dict[str, Any] | None) -> dict[st
             "batch_size": None,
             "include_primecount": False,
             "primecount_max_start": None,
+            "include_primesieve_library_server": False,
+            "primesieve_library_max_start": None,
             "required_external_tools": [],
         }
     tools = metadata.get("tools", {})
@@ -1082,6 +1084,10 @@ def summarize_external_next_metadata(metadata: dict[str, Any] | None) -> dict[st
         "include_circle_server": bool(metadata.get("include_circle_server")),
         "include_primecount": bool(metadata.get("include_primecount")),
         "primecount_max_start": metadata.get("primecount_max_start"),
+        "include_primesieve_library_server": bool(
+            metadata.get("include_primesieve_library_server")
+        ),
+        "primesieve_library_max_start": metadata.get("primesieve_library_max_start"),
         "sample_output": metadata.get("sample_output"),
         "thread_policy": metadata.get("thread_policy", {}),
         "starts": metadata.get("starts", []),
@@ -1093,6 +1099,9 @@ def summarize_external_next_metadata(metadata: dict[str, Any] | None) -> dict[st
                 "available": bool(tool.get("available")),
                 "path": tool.get("path"),
                 "version": first_nonempty_line(tool.get("version")),
+                "source": tool.get("source"),
+                "method": tool.get("method"),
+                "error": tool.get("error"),
             }
             for name, tool in tools.items()
         },
@@ -2065,14 +2074,16 @@ def external_next_lane_summary_lines(
 
 def external_next_baseline_sort_key(baseline: str) -> tuple[int, str]:
     order = {
-        "external_primesieve_next_prime": 0,
-        "external_primecount_next_prime": 1,
+        "external_primesieve_generate_next_server": 0,
+        "external_primesieve_next_prime": 1,
+        "external_primecount_next_prime": 2,
     }
     return (order.get(baseline, 99), baseline)
 
 
 def external_next_baseline_label(baseline: str) -> str:
     labels = {
+        "external_primesieve_generate_next_server": "libprimesieve generate_n_primes server",
         "external_primesieve_next_prime": "primesieve --nth-prime",
         "external_primecount_next_prime": "primecount pi+nth-prime",
     }
@@ -2090,6 +2101,18 @@ def render_external_next_metadata_markdown(metadata: dict[str, Any]) -> list[str
         path = tool.get("path") or "path unavailable"
         status = version if available else "not installed"
         lines.append(f"- `{name}`: {status} (`{path}`)")
+    library_tool = metadata.get("tools", {}).get("primesieve_library_server", {})
+    if library_tool:
+        path = library_tool.get("path") or "path unavailable"
+        method = library_tool.get("method") or "method unavailable"
+        if library_tool.get("available"):
+            lines.append(
+                "- `primesieve_library_server`: available "
+                f"(`{path}`); method `{method}`."
+            )
+        else:
+            status = library_tool.get("error") or "not built"
+            lines.append(f"- `primesieve_library_server`: {status} (`{path}`)")
     thread_policy = metadata.get("thread_policy", {})
     external_threads = thread_policy.get("external_requested_threads")
     if external_threads is not None:
@@ -2113,6 +2136,15 @@ def render_external_next_metadata_markdown(metadata: dict[str, Any]) -> list[str
         else:
             lines.append(
                 "- `primecount` next-prime rows included for starts at or below "
+                f"`{cap}`."
+            )
+    if metadata.get("include_primesieve_library_server"):
+        cap = metadata.get("primesieve_library_max_start")
+        if cap is None:
+            lines.append("- libprimesieve next-prime helper rows included where available.")
+        else:
+            lines.append(
+                "- libprimesieve next-prime helper rows included for starts at or below "
                 f"`{cap}`."
             )
     required_tools = metadata.get("required_external_tools") or []

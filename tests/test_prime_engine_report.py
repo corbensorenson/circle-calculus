@@ -227,8 +227,11 @@ def test_prime_engine_report_summarizes_artifacts(tmp_path: Path) -> None:
                 "kind,name,start,batch_size,result,candidate_count,rounds,best_ms,median_ms,searches_per_second,median_searches_per_second,threads,requested_threads,baseline,best_speedup,median_speedup",
                 "timing,circle_prime_next_prime,100,1,101,1,3,1.000,1.200,1000,833.333,1,1,,,",
                 "timing,circle_prime_server_next_prime,100,1,101,1,3,0.250,0.300,4000,3333.333,1,1,,,",
+                "timing,external_primesieve_generate_next_server,100,1,101,0,3,0.500,0.600,2000,1666.667,1,1,,,",
                 "timing,external_primesieve_next_prime,100,1,101,0,3,2.000,2.400,500,416.667,8,8,,,",
                 "timing,external_primecount_next_prime,100,1,101,0,3,4.000,4.800,250,208.333,8,8,,,",
+                "speedup,circle_prime_next_prime,100,1,101,1,3,1.000,1.200,1000,833.333,1,1,external_primesieve_generate_next_server,0.500,0.500",
+                "speedup,circle_prime_server_next_prime,100,1,101,1,3,0.250,0.300,4000,3333.333,1,1,external_primesieve_generate_next_server,2.000,2.000",
                 "speedup,circle_prime_next_prime,100,1,101,1,3,1.000,1.200,1000,833.333,1,1,external_primesieve_next_prime,2.000,2.000",
                 "speedup,circle_prime_server_next_prime,100,1,101,1,3,0.250,0.300,4000,3333.333,1,1,external_primesieve_next_prime,8.000,8.000",
                 "speedup,circle_prime_next_prime,100,1,101,1,3,1.000,1.200,1000,833.333,1,1,external_primecount_next_prime,4.000,4.000",
@@ -249,8 +252,14 @@ def test_prime_engine_report_summarizes_artifacts(tmp_path: Path) -> None:
                 "include_circle_server": True,
                 "include_primecount": True,
                 "primecount_max_start": 1000000000000,
+                "include_primesieve_library_server": True,
+                "primesieve_library_max_start": 18446744073709551615,
                 "starts": [100],
-                "required_external_tools": ["primesieve", "primecount"],
+                "required_external_tools": [
+                    "primesieve",
+                    "primecount",
+                    "primesieve-library",
+                ],
                 "sample_output": None,
                 "thread_policy": {
                     "circle_requested_threads": 1,
@@ -271,6 +280,12 @@ def test_prime_engine_report_summarizes_artifacts(tmp_path: Path) -> None:
                             "available": True,
                             "path": "/usr/local/bin/primecount",
                             "version": "primecount 8.5",
+                        },
+                        "primesieve_library_server": {
+                            "available": True,
+                            "path": "/tmp/primesieve-next-server",
+                            "source": "/tmp/primesieve_next_server.c",
+                            "method": "primesieve_generate_n_primes(1, START, UINT64_PRIMES)",
                         },
                     },
                 }
@@ -676,14 +691,28 @@ def test_prime_engine_report_summarizes_artifacts(tmp_path: Path) -> None:
     assert external_next_summary["server"]["by_baseline"]["external_primecount_next_prime"][
         "wins"
     ] == 1
+    assert external_next_summary["cold_cli"]["by_baseline"][
+        "external_primesieve_generate_next_server"
+    ]["wins"] == 0
+    assert external_next_summary["server"]["by_baseline"][
+        "external_primesieve_generate_next_server"
+    ]["wins"] == 1
     assert external_next_summary["metadata"]["starts"] == [100]
     assert external_next_summary["metadata"]["include_circle_server"] is True
     assert external_next_summary["metadata"]["include_primecount"] is True
     assert external_next_summary["metadata"]["primecount_max_start"] == 1000000000000
+    assert external_next_summary["metadata"]["include_primesieve_library_server"] is True
+    assert (
+        external_next_summary["metadata"]["tools"]["primesieve_library_server"]["method"]
+        == "primesieve_generate_n_primes(1, START, UINT64_PRIMES)"
+    )
     assert external_next_summary["speedups"][0]["start"] == 100
     assert external_next_summary["speedups"][0]["result"] == 101
     assert external_next_summary["speedups"][0]["candidate_count"] == 1
-    assert external_next_summary["speedups"][0]["circle_speedup"] == 2.0
+    assert external_next_summary["speedups"][0]["baseline"] == (
+        "external_primesieve_generate_next_server"
+    )
+    assert external_next_summary["speedups"][0]["circle_speedup"] == 0.5
     assert report["default_calibration"]["available"] is True
     assert report["default_calibration"]["within_tolerance_count"] == 1
     assert report["default_calibration"]["noisy_drift_count"] == 0
@@ -833,10 +862,21 @@ def test_prime_engine_report_summarizes_artifacts(tmp_path: Path) -> None:
         "next-prime checks: `1`."
     ) in markdown
     assert "External Next-Prime Search" in markdown
+    assert (
+        "`libprimesieve generate_n_primes server` cold CLI: "
+        "Circle faster on 0/1 rows"
+    ) in markdown
+    assert (
+        "`libprimesieve generate_n_primes server` server: Circle faster on 1/1 rows"
+    ) in markdown
     assert "`primesieve --nth-prime` cold CLI: Circle faster on 1/1 rows" in markdown
     assert "`primesieve --nth-prime` server: Circle faster on 1/1 rows" in markdown
     assert "`primecount pi+nth-prime` cold CLI: Circle faster on 1/1 rows" in markdown
     assert "`primecount pi+nth-prime` server: Circle faster on 1/1 rows" in markdown
+    assert (
+        "| 100 | `libprimesieve generate_n_primes server` | 101 | 1 | 1 | "
+        "1.000 | 0.500 | 0.500 | 0.500 | unknown | baseline_faster |"
+    ) in markdown
     assert (
         "| 100 | `primesieve --nth-prime` | 101 | 1 | 1 | 1.000 | 2.000 | "
         "2.000 | 2.000 | unknown | circle_faster |"
