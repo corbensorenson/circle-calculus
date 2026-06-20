@@ -128,6 +128,12 @@ is still present in source.
   prefix-style ranges use command-level tuned defaults: `262144` up to
   about 2M, `65536` up to about 16M, and `196608` up to about 128M.
   True prefix buckets use the exact `prefix-pi` counter through `1e9`.
+  Broad low-absolute count-only ranges also use `prefix-pi` when the upper
+  bound is at most `3e9`; short external-control probes show that lane still
+  beats `primesieve` there, while it loses by `[3e9, 4e9)` and must not become
+  the high-offset default. Non-prefix `prefix-pi` ranges can use two workers
+  for the exact `pi(high - 1) - pi(low - 1)` difference when the requested
+  thread count allows it.
   Very-high-offset threaded counts with small spans use a tuned `1507328`
   default and the threaded `presieve17` count mode, which currently gives the best short-run
   command-level result against `primesieve` without claiming parity. Other
@@ -691,12 +697,14 @@ default-change gate for current segmented CLI defaults.
 
 `prefix-pi` is a Lehmer-style exact prefix counter exposed as a Circle count
 mode. It is promoted for true prefix-count buckets such as `[0, 1M)`,
-`[0, 10M)`, `[0, 100M)`, and `[0, 1B)`. Short external-control runs show this
-lane is the right Circle default for `pi(1e9)`: it is roughly competitive with
-`primesieve` but still behind specialized `primecount`. It is deliberately not
-the high-offset default: high-offset intervals such as `[1e12, 1e12 + 1e7)`
-stay on the segmented-sieve family, currently the threaded `presieve17` count
-mode with a tuned high-offset segment size.
+`[0, 10M)`, `[0, 100M)`, and `[0, 1B)`, plus broad low-absolute count ranges
+ending at or below `3e9`. Short external-control runs show this lane is the
+right Circle default for `pi(1e9)` and `[1e9, 2e9)`: it beats `primesieve`
+there, and the two-worker non-prefix difference is now close to specialized
+`primecount` on `[1e9, 2e9)`. It is deliberately not the larger-range or
+high-offset default: probes above the cutoff, and high-offset intervals such as
+`[1e12, 1e12 + 1e7)`, stay on the segmented-sieve family, currently the
+threaded `presieve17` count mode with a tuned high-offset segment size.
 
 `prime-engine-high-offset-quick` is the interactive scorecard for the remaining
 `primesieve` gap. It isolates `[1e12, 1e12 + 1e7)`, runs 13 interleaved rounds
@@ -806,23 +814,26 @@ sidecars/PRIME_ENGINE/results/prime_engine_external_throughput_latest.json
 sidecars/PRIME_ENGINE/results/prime_engine_external_throughput_samples_latest.csv
 ```
 
-It runs a 1B prefix range across the adaptive default, explicit segmented
-sieving, and explicit `prefix-pi`, with a small segment sweep for the segmented
-rows. This is intentionally separate from the default external controls because
-it exposes whether a `pi(x)` workload should use prefix counting or sustained
-marking. On the current machine, this row shows `prefix-pi` is the correct
-Circle lane for `pi(1e9)`, while specialized `primecount` remains the bar to
-beat for pure prefix-counting. The target uses exact `--circle-variant`
-entries instead of a full segment-size by count-mode grid, so the adaptive
-default row is measured once with no explicit segment-size override.
+It runs `pi(1e9)` and `[1e9, 2e9)` across the adaptive default, explicit
+segmented sieving, and explicit `prefix-pi`, with a small segment sweep for the
+segmented rows. This is intentionally separate from the default external
+controls because it exposes whether a count-only workload should use prefix
+counting or sustained marking. On the current machine, these rows show
+`prefix-pi` is the correct Circle lane for tracked low-absolute broad counts,
+while specialized `primecount` remains the bar to beat for pure prime-counting.
+The target uses exact `--circle-variant` entries instead of a full segment-size
+by count-mode grid, so the adaptive default row is measured once with no
+explicit segment-size override. The generated report renders an adaptive
+default scorecard before the broader candidate spread so the headline reflects
+the behavior users get without explicit tuning flags.
 
 `prime-engine-external-throughput-compare` reruns the same short workload into
 candidate artifacts and then gates `circle_prime_default_count` against
 `external_primesieve_count` with
 `CIRCLE_PRIME_EXTERNAL_THROUGHPUT_MEDIAN_FLOOR` (default `1.0`). This is a
-focused regression check for the adaptive `pi(1e9)` default; it deliberately
-does not require a `primecount` win because the current `primecount` comparison
-is near parity and noisier.
+focused regression check for the adaptive low-absolute count defaults; it
+deliberately does not require a `primecount` win because `primecount` is the
+specialized exact-`pi` implementation we still need to beat.
 
 `prime-engine-external-segment-sweep` writes:
 
@@ -902,13 +913,15 @@ make prime-engine-apply-defaults-check
 Current external-control readout on this machine:
 
 - `primesieve` remains the serious range-counting bar. Prefix defaults now beat
-  it on the tracked small true-prefix count rows and are competitive on
-  `pi(1e9)`. The high-offset cold CLI interval is near parity in the current
+  it on the tracked small true-prefix count rows, `pi(1e9)`, and the tracked
+  `[1e9, 2e9)` broad low-absolute count row. The high-offset cold CLI interval
+  is near parity in the current
   short command-level run, while the persistent `count-server` row is clearly ahead. The
   comparison is intentionally command-level and therefore noisy, but it records
-  actual worker counts. With `CIRCLE_PRIME_THREADS=8`, prefix-pi rows report
-  `1/8` effective Circle thread, and the high-offset interval currently caps to
-  `7/8` under the calibrated `1507328` threaded-count default.
+  actual worker counts. With `CIRCLE_PRIME_THREADS=8`, true-prefix `prefix-pi`
+  rows report `1/8` effective Circle thread, broad non-prefix `prefix-pi` rows
+  can report `2/8`, and the high-offset interval currently caps to `7/8` under
+  the calibrated `1507328` threaded-count default.
 - `primecount` remains the specialized prefix `pi(x)` bar, but Circle's
   `prefix-pi` default currently beats it on the tracked 10M and 100M command
   rows. Keep using external controls for confirmation because startup noise can

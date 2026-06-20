@@ -1125,6 +1125,7 @@ def summarize_external_segment_sweep(
         grouped.setdefault((row["low"], row["high"], row["baseline"]), []).append(row)
 
     best_by_range_baseline = []
+    default_by_range_baseline = []
     candidate_spread = []
     for (low, high, baseline), candidates in sorted(grouped.items()):
         ordered = sorted(
@@ -1141,6 +1142,11 @@ def summarize_external_segment_sweep(
         )
         best = ordered[0]
         best_by_range_baseline.append(best)
+        default_candidates = [
+            row for row in ordered if is_adaptive_default_row(str(row["name"]))
+        ]
+        if default_candidates:
+            default_by_range_baseline.append(default_candidates[0])
         candidate_spread.append(
             {
                 "low": low,
@@ -1155,6 +1161,7 @@ def summarize_external_segment_sweep(
         "available": bool(rows),
         "speedups": speedups,
         "best_by_range_baseline": best_by_range_baseline,
+        "default_by_range_baseline": default_by_range_baseline,
         "candidate_spread": candidate_spread,
         "metadata": summarize_external_sweep_metadata(metadata),
     }
@@ -1809,6 +1816,7 @@ def render_markdown(report: dict[str, Any]) -> str:
             report["external_throughput"],
             title="External Throughput",
             missing_message="No external throughput artifact was available.",
+            default_label="Adaptive default scorecard:",
             spread_label="Throughput segment candidate spread:",
             include_circle_row=True,
         )
@@ -2166,6 +2174,10 @@ def circle_row_label(row: dict[str, Any]) -> str:
     return label
 
 
+def is_adaptive_default_row(name: str) -> bool:
+    return "_default_count" in name
+
+
 def render_external_mode_confirmation_markdown(
     summary: dict[str, Any],
     *,
@@ -2217,6 +2229,7 @@ def render_external_segment_sweep_markdown(
     missing_message: str = "No external segment sweep artifact was available.",
     spread_label: str = "Segment candidate spread:",
     include_circle_row: bool = False,
+    default_label: str | None = None,
 ) -> list[str]:
     lines = [f"## {title}", ""]
     if not summary["available"]:
@@ -2242,6 +2255,26 @@ def render_external_segment_sweep_markdown(
             )
         if metadata.get("rounds") is not None:
             lines.append(f"Rounds per row: `{metadata['rounds']}`.")
+        lines.append("")
+
+    if default_label and summary.get("default_by_range_baseline"):
+        lines.extend([default_label, ""])
+        lines.extend(
+            [
+                "| Range | Baseline | Circle Row | Segment | Threads | Best ms | Median ms | Best Speedup | Median Speedup | Samples | Verdict |",
+                "| --- | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | --- | --- |",
+            ]
+        )
+        for row in summary["default_by_range_baseline"]:
+            lines.append(
+                f"| [{row['low']}, {row['high']}) | `{row['baseline']}` | "
+                + f"{circle_row_label(row)} | {row['segment_size']} | "
+                + f"{thread_text(row.get('circle_threads'), row.get('circle_requested_threads'))} | "
+                + f"{row['best_ms']:.3f} | {row['median_ms']:.3f} | "
+                + f"{row['circle_speedup']:.3f} | {row['median_circle_speedup']:.3f} | "
+                + f"{sample_stability_text(row)} | "
+                + f"{row['verdict']} |"
+            )
         lines.append("")
 
     if summary["best_by_range_baseline"]:

@@ -186,6 +186,42 @@ def test_adaptive_default_rows_compare_across_effective_thread_changes() -> None
     assert comparisons[0].median_speedup_ratio == 1.300 / 0.950
 
 
+def test_name_filter_matches_adaptive_default_comparison_name() -> None:
+    baseline_row = speedup_row(
+        name="circle_prime_default_count",
+        threads=1,
+        requested_threads=8,
+        count_mode="prefix-pi",
+    )
+    candidate_row = speedup_row(
+        name="circle_prime_parallel_default_count_2t",
+        threads=2,
+        requested_threads=8,
+        best_speedup=1.100,
+        median_speedup=1.200,
+        count_mode="prefix-pi",
+    )
+
+    comparisons = compare_speedup_rows(
+        baseline_rows={baseline_row.key: baseline_row},
+        candidate_rows={candidate_row.key: candidate_row},
+        names={"circle_prime_default_count"},
+        baselines={"external_primesieve_count"},
+    )
+
+    assert len(comparisons) == 1
+    assert comparisons[0].key == (
+        "circle_prime_default_count",
+        0,
+        10_000_000,
+        0,
+        8,
+        8,
+        "external_primesieve_count",
+    )
+    assert comparisons[0].candidate_median_speedup == 1.200
+
+
 def test_adaptive_server_default_rows_keep_separate_comparison_key() -> None:
     cold_baseline = speedup_row(
         name="circle_prime_parallel_default_count_7t",

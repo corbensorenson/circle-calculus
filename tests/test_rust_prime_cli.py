@@ -462,6 +462,27 @@ def test_rust_prime_cli_recommends_100m_threaded_prefix_default(
     assert payload["requested_threads"] == 8
 
 
+def test_rust_prime_cli_recommends_low_absolute_prefix_pi_range_default(
+    circle_prime_bin: Path,
+) -> None:
+    output = run_circle_prime(
+        circle_prime_bin,
+        "recommend",
+        "1000000000",
+        "2000000000",
+        "--count",
+        "--json",
+        "--threads",
+        "8",
+    )
+    payload = json.loads(output)
+    assert payload["count"] is True
+    assert payload["segment_size"] == 262144
+    assert payload["count_mode"] == "prefix-pi"
+    assert payload["threads"] == 2
+    assert payload["requested_threads"] == 8
+
+
 def test_rust_prime_cli_recommends_high_offset_count_defaults(
     circle_prime_bin: Path,
 ) -> None:

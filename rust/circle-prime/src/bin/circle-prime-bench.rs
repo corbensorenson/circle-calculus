@@ -8,11 +8,12 @@ use std::time::Instant;
 
 use circle_prime::{
     base_primes, control_primal_sieve_prime_count, control_simple_sieve_prime_count,
-    control_trial_division_prime_count, effective_parallel_thread_count, is_prime_u64,
-    next_prime_u64, prime_count_in_range, prime_count_in_range_bitpacked,
-    prime_count_in_range_hybrid_wheel30_marks, prime_count_in_range_hybrid_wheel30_marks_parallel,
-    prime_count_in_range_parallel, prime_count_in_range_parallel_balanced,
-    prime_count_in_range_parallel_dynamic, prime_count_in_range_prefix_pi,
+    control_trial_division_prime_count, effective_parallel_thread_count,
+    effective_prefix_pi_thread_count, is_prime_u64, next_prime_u64, prime_count_in_range,
+    prime_count_in_range_bitpacked, prime_count_in_range_hybrid_wheel30_marks,
+    prime_count_in_range_hybrid_wheel30_marks_parallel, prime_count_in_range_parallel,
+    prime_count_in_range_parallel_balanced, prime_count_in_range_parallel_dynamic,
+    prime_count_in_range_prefix_pi, prime_count_in_range_prefix_pi_parallel,
     prime_count_in_range_presieve13, prime_count_in_range_presieve13_parallel,
     prime_count_in_range_presieve17, prime_count_in_range_presieve17_parallel,
     prime_count_in_range_tracked_bytes, prime_count_in_range_wheel30,
@@ -79,9 +80,15 @@ impl CountMode {
         }
     }
 
-    fn effective_threads(self, general_effective_threads: usize) -> usize {
+    fn effective_threads(
+        self,
+        low: u64,
+        high: u64,
+        general_effective_threads: usize,
+        requested_threads: usize,
+    ) -> usize {
         match self {
-            Self::PrefixPi => 1,
+            Self::PrefixPi => effective_prefix_pi_thread_count(low, high, requested_threads),
             _ => general_effective_threads,
         }
     }
@@ -1091,12 +1098,12 @@ fn prime_count_in_range_default(
 ) -> Result<usize, circle_prime::RangeError> {
     let mode = CountMode::parse(recommended_count_mode(low, high, requested_threads))
         .expect("compiled count-mode default must be valid");
-    let worker_threads = mode.effective_threads(effective_parallel_thread_count(
+    let worker_threads = mode.effective_threads(
         low,
         high,
-        segment_size,
+        effective_parallel_thread_count(low, high, segment_size, requested_threads),
         requested_threads,
-    ));
+    );
     count_range_with_mode(low, high, segment_size, worker_threads, mode)
 }
 
@@ -1129,7 +1136,13 @@ fn count_range_with_mode(
                 prime_count_in_range_parallel_dynamic(low, high, segment_size, worker_threads)
             }
         }
-        CountMode::PrefixPi => prime_count_in_range_prefix_pi(low, high),
+        CountMode::PrefixPi => {
+            if worker_threads == 1 {
+                prime_count_in_range_prefix_pi(low, high)
+            } else {
+                prime_count_in_range_prefix_pi_parallel(low, high, worker_threads)
+            }
+        }
         CountMode::Presieve13 => {
             if worker_threads == 1 {
                 prime_count_in_range_presieve13(low, high, segment_size)

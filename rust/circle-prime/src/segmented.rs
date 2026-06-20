@@ -35,6 +35,8 @@ const DYNAMIC_PARALLEL_TARGET_BATCHES_PER_WORKER: u64 = 4;
 const PRIME_PI_PHI_SMALL_PRIME_COUNT: usize = 6;
 const PRIME_PI_PHI_SMALL_MODULUS: u64 = 30_030;
 const PREFIX_PI_DEFAULT_SPAN_LIMIT: u64 = 1_000_000_000;
+const PREFIX_PI_RANGE_DEFAULT_SPAN_FLOOR: u64 = 128_000_000;
+const PREFIX_PI_RANGE_DEFAULT_HIGH_LIMIT: u64 = 3_000_000_000;
 pub const DEFAULT_SEGMENT_SIZE: u64 = 1 << 18;
 include!(concat!(env!("OUT_DIR"), "/prime_engine_defaults.rs"));
 pub const HIGH_OFFSET_SEGMENT_SIZE: u64 = 1 << 20;
@@ -360,6 +362,10 @@ pub fn prime_pi_u64(n: u64) -> Result<usize, RangeError> {
     }
 
     let base = base_primes(n.isqrt())?;
+    prime_pi_u64_with_base(n, base)
+}
+
+fn prime_pi_u64_with_base(n: u64, base: Vec<u64>) -> Result<usize, RangeError> {
     let mut counter = PrimePiCounter::new(base);
     usize::try_from(counter.pi(n)).map_err(|_| RangeError::BaseLimitTooLarge)
 }
@@ -374,6 +380,45 @@ pub fn prime_count_in_range_prefix_pi(low: u64, high: u64) -> Result<usize, Rang
     let high_count = counter.pi(high - 1);
     let low_count = if low == 0 { 0 } else { counter.pi(low - 1) };
     usize::try_from(high_count - low_count).map_err(|_| RangeError::BaseLimitTooLarge)
+}
+
+pub fn effective_prefix_pi_thread_count(low: u64, high: u64, requested_threads: usize) -> usize {
+    if requested_threads == 0 {
+        return 0;
+    }
+    if low > 0
+        && high > low
+        && high - low >= PREFIX_PI_RANGE_DEFAULT_SPAN_FLOOR
+        && requested_threads > 1
+    {
+        requested_threads.min(2)
+    } else {
+        1
+    }
+}
+
+pub fn prime_count_in_range_prefix_pi_parallel(
+    low: u64,
+    high: u64,
+    threads: usize,
+) -> Result<usize, RangeError> {
+    if threads == 0 {
+        return Err(RangeError::ThreadCountZero);
+    }
+    if effective_prefix_pi_thread_count(low, high, threads) <= 1 {
+        return prime_count_in_range_prefix_pi(low, high);
+    }
+
+    let base = base_primes((high - 1).isqrt())?;
+    let low_base = base.clone();
+
+    thread::scope(|scope| {
+        let high_handle = scope.spawn(move || prime_pi_u64_with_base(high - 1, base));
+        let low_handle = scope.spawn(move || prime_pi_u64_with_base(low - 1, low_base));
+        let high_count = high_handle.join().map_err(|_| RangeError::WorkerPanic)??;
+        let low_count = low_handle.join().map_err(|_| RangeError::WorkerPanic)??;
+        Ok(high_count - low_count)
+    })
 }
 
 pub fn prime_count_in_range_bitpacked(
@@ -953,6 +998,12 @@ pub fn recommended_count_mode(low: u64, high: u64, requested_threads: usize) -> 
     } else if low == 0 && base_limit < 300_000 && span <= 128_000_000 {
         PARALLEL_MEDIUM_PREFIX_COUNT_MODE
     } else if low == 0 && base_limit < 300_000 && span <= PREFIX_PI_DEFAULT_SPAN_LIMIT {
+        "prefix-pi"
+    } else if low > 0
+        && base_limit < 100_000
+        && span >= PREFIX_PI_RANGE_DEFAULT_SPAN_FLOOR
+        && high <= PREFIX_PI_RANGE_DEFAULT_HIGH_LIMIT
+    {
         "prefix-pi"
     } else if requested_threads <= 1 {
         "segmented"
@@ -3184,6 +3235,30 @@ mod tests {
     }
 
     #[test]
+    fn parallel_prefix_pi_range_count_matches_serial_count() {
+        for (low, high, threads, expected_threads) in [
+            (0, 1_000_000_000, 8, 1),
+            (1_000_000, 2_000_000, 8, 1),
+            (1_000_000_000, 2_000_000_000, 8, 2),
+            (2_000_000_000, 3_000_000_000, 1, 1),
+        ] {
+            assert_eq!(
+                effective_prefix_pi_thread_count(low, high, threads),
+                expected_threads
+            );
+            assert_eq!(
+                prime_count_in_range_prefix_pi_parallel(low, high, threads).unwrap(),
+                prime_count_in_range_prefix_pi(low, high).unwrap(),
+                "range=[{low},{high})"
+            );
+        }
+        assert_eq!(
+            prime_count_in_range_prefix_pi_parallel(1_000, 2_000, 0),
+            Err(RangeError::ThreadCountZero)
+        );
+    }
+
+    #[test]
     fn high_u64_tiny_ranges_match_scalar_fallback() {
         let low = u64::MAX - 1_000;
         let high = u64::MAX;
@@ -3322,6 +3397,22 @@ mod tests {
         );
         assert_eq!(recommended_count_mode(0, 1_000_000_000, 8), "prefix-pi");
         assert_eq!(recommended_count_mode(0, 1_000_000_001, 8), "segmented");
+        assert_eq!(
+            recommended_count_mode(1_000_000_000, 2_000_000_000, 8),
+            "prefix-pi"
+        );
+        assert_eq!(
+            recommended_count_mode(2_000_000_000, 3_000_000_000, 8),
+            "prefix-pi"
+        );
+        assert_eq!(
+            recommended_count_mode(2_000_000_000, 3_000_000_001, 8),
+            "segmented"
+        );
+        assert_eq!(
+            recommended_count_mode(3_000_000_000, 4_000_000_000, 8),
+            "segmented"
+        );
         assert_eq!(
             recommended_count_mode(1_000_000_000_000, 1_000_010_000_000, 8),
             PARALLEL_VERY_HIGH_OFFSET_COUNT_MODE

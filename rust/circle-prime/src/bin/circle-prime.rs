@@ -3,16 +3,16 @@ use std::io::{self, BufRead, Write};
 use std::process;
 
 use circle_prime::{
-    effective_parallel_thread_count, inspect_horizon, is_prime_u64, next_prime_u64,
-    prime_count_in_range, prime_count_in_range_hybrid_wheel30_marks,
+    effective_parallel_thread_count, effective_prefix_pi_thread_count, inspect_horizon,
+    is_prime_u64, next_prime_u64, prime_count_in_range, prime_count_in_range_hybrid_wheel30_marks,
     prime_count_in_range_hybrid_wheel30_marks_parallel, prime_count_in_range_parallel,
     prime_count_in_range_parallel_balanced, prime_count_in_range_parallel_dynamic,
-    prime_count_in_range_prefix_pi, prime_count_in_range_presieve13,
-    prime_count_in_range_presieve13_parallel, prime_count_in_range_presieve17,
-    prime_count_in_range_presieve17_parallel, prime_count_in_range_wheel30_marks,
-    prime_count_in_range_wheel30_marks_parallel, prime_horizon_proof_contract_json,
-    prime_range_count_proof_contract_json, primes_in_range, recommended_count_mode,
-    recommended_count_segment_size, recommended_segment_size,
+    prime_count_in_range_prefix_pi, prime_count_in_range_prefix_pi_parallel,
+    prime_count_in_range_presieve13, prime_count_in_range_presieve13_parallel,
+    prime_count_in_range_presieve17, prime_count_in_range_presieve17_parallel,
+    prime_count_in_range_wheel30_marks, prime_count_in_range_wheel30_marks_parallel,
+    prime_horizon_proof_contract_json, prime_range_count_proof_contract_json, primes_in_range,
+    recommended_count_mode, recommended_count_segment_size, recommended_segment_size,
 };
 
 const MAX_INSPECT_N: u128 = 100_000;
@@ -59,9 +59,15 @@ impl CountMode {
         }
     }
 
-    fn effective_threads(self, general_effective_threads: usize) -> usize {
+    fn effective_threads(
+        self,
+        low: u64,
+        high: u64,
+        general_effective_threads: usize,
+        requested_threads: usize,
+    ) -> usize {
         match self {
-            Self::PrefixPi => 1,
+            Self::PrefixPi => effective_prefix_pi_thread_count(low, high, requested_threads),
             _ => general_effective_threads,
         }
     }
@@ -283,12 +289,12 @@ fn recommend_command(args: &[String]) -> Result<(), String> {
         CountMode::Segmented
     };
     let worker_threads = if count_only {
-        count_mode.effective_threads(effective_parallel_thread_count(
+        count_mode.effective_threads(
             low,
             high,
-            segment_size,
+            effective_parallel_thread_count(low, high, segment_size, threads),
             threads,
-        ))
+        )
     } else {
         threads
     };
@@ -380,12 +386,12 @@ fn range_command(args: &[String]) -> Result<(), String> {
         }
     });
     let worker_threads = if count_only {
-        count_mode.effective_threads(effective_parallel_thread_count(
+        count_mode.effective_threads(
             low,
             high,
-            segment_size,
+            effective_parallel_thread_count(low, high, segment_size, threads),
             threads,
-        ))
+        )
     } else {
         threads
     };
@@ -599,12 +605,12 @@ fn count_server_response(
             CountMode::parse(recommended_count_mode(low, high, requested_threads))
                 .expect("compiled count-mode default must be valid")
         });
-    let worker_threads = count_mode.effective_threads(effective_parallel_thread_count(
+    let worker_threads = count_mode.effective_threads(
         low,
         high,
-        segment_size,
+        effective_parallel_thread_count(low, high, segment_size, requested_threads),
         requested_threads,
-    ));
+    );
     let count = count_range_with_mode(low, high, segment_size, worker_threads, count_mode)
         .map_err(|err| format!("range sieve failed: {err:?}"))?;
     Ok(CountServerResponse {
@@ -647,7 +653,13 @@ fn count_range_with_mode(
                 prime_count_in_range_parallel_dynamic(low, high, segment_size, worker_threads)
             }
         }
-        CountMode::PrefixPi => prime_count_in_range_prefix_pi(low, high),
+        CountMode::PrefixPi => {
+            if worker_threads == 1 {
+                prime_count_in_range_prefix_pi(low, high)
+            } else {
+                prime_count_in_range_prefix_pi_parallel(low, high, worker_threads)
+            }
+        }
         CountMode::Presieve13 => {
             if worker_threads == 1 {
                 prime_count_in_range_presieve13(low, high, segment_size)

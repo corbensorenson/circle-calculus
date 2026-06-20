@@ -364,9 +364,11 @@ def test_prime_engine_report_summarizes_artifacts(tmp_path: Path) -> None:
         "\n".join(
             [
                 "kind,name,low,high,span,segment_size,result,rounds,best_ms,median_ms,rate_per_second,median_rate_per_second,threads,requested_threads,baseline,best_speedup,median_speedup",
+                "timing,circle_prime_default_count,0,1000000000,1000000000,262144,50847534,5,45.000,46.000,22222222222,21739130434,1,8,,,",
                 "timing,circle_prime_parallel_segmented_count_8t,0,1000000000,1000000000,131072,50847534,5,40.000,42.000,25000000000,23809523809,8,8,,,",
                 "timing,circle_prime_parallel_segmented_count_8t,0,1000000000,1000000000,196608,50847534,5,39.000,41.000,25641025641,24390243902,8,8,,,",
                 "timing,external_primesieve_count,0,1000000000,1000000000,0,50847534,5,18.000,19.000,55555555555,52631578947,8,8,,,",
+                "speedup,circle_prime_default_count,0,1000000000,1000000000,262144,50847534,5,45.000,46.000,22222222222,21739130434,1,8,external_primesieve_count,0.400,0.413",
                 "speedup,circle_prime_parallel_segmented_count_8t,0,1000000000,1000000000,131072,50847534,5,40.000,42.000,25000000000,23809523809,8,8,external_primesieve_count,0.450,0.452",
                 "speedup,circle_prime_parallel_segmented_count_8t,0,1000000000,1000000000,196608,50847534,5,39.000,41.000,25641025641,24390243902,8,8,external_primesieve_count,0.462,0.463",
             ]
@@ -377,7 +379,7 @@ def test_prime_engine_report_summarizes_artifacts(tmp_path: Path) -> None:
     external_throughput_metadata.write_text(
         json.dumps(
             {
-                "row_count": 5,
+                "row_count": 7,
                 "rounds": 5,
                 "required_external_tools": ["primesieve", "primecount"],
                 "requested_segment_sizes": [131072, 196608],
@@ -746,6 +748,8 @@ def test_prime_engine_report_summarizes_artifacts(tmp_path: Path) -> None:
     throughput = report["external_throughput"]
     assert throughput["available"] is True
     assert throughput["metadata"]["requested_segment_sizes"] == [131072, 196608]
+    assert throughput["default_by_range_baseline"][0]["name"] == "circle_prime_default_count"
+    assert throughput["default_by_range_baseline"][0]["median_circle_speedup"] == 0.413
     assert throughput["best_by_range_baseline"][0]["segment_size"] == 196608
     assert throughput["best_by_range_baseline"][0]["median_circle_speedup"] == 0.463
     high_offset_quick = report["external_high_offset_quick"]
@@ -923,6 +927,12 @@ def test_prime_engine_report_summarizes_artifacts(tmp_path: Path) -> None:
     assert "Requested Circle segment sizes: `1376256`, `1507328`." in markdown
     assert "Count mode candidate spread" in markdown
     assert "Throughput segment candidate spread" in markdown
+    assert "Adaptive default scorecard" in markdown
+    assert (
+        "| [0, 1000000000) | `external_primesieve_count` | "
+        "`circle_prime_default_count` | 262144 | 1/8 | "
+        "45.000 | 46.000 | 0.400 | 0.413 | unknown | baseline_faster |"
+    ) in markdown
     assert (
         "| [0, 1000000000) | `external_primesieve_count` | "
         "`circle_prime_parallel_segmented_count_8t` | 196608 | 8 | "

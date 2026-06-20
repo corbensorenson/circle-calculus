@@ -81,6 +81,13 @@ class Measurement:
     close: Callable[[], None] | None = None
 
 
+@dataclass(frozen=True)
+class CircleVariant:
+    segment_size: int
+    count_mode: str
+    threads: int | None = None
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(
         description="Benchmark Circle prime counts against external primesieve/primecount controls."
@@ -120,11 +127,12 @@ def main() -> int:
         "--circle-variant",
         action="append",
         default=[],
-        metavar="MODE:SEGMENT_SIZE",
+        metavar="MODE:SEGMENT_SIZE[:THREADS]",
         help=(
             "Exact Circle variant to benchmark. Repeat to avoid the default "
             "segment-size by count-mode cross product, e.g. "
-            "--circle-variant default:0 --circle-variant segmented:262144."
+            "--circle-variant default:0 --circle-variant segmented:262144. "
+            "Append :THREADS to override --circle-threads for that variant."
         ),
     )
     parser.add_argument(
@@ -203,10 +211,10 @@ def main() -> int:
             circle_count_modes,
         )
         segment_sizes = unique_preserving_order(
-            segment_size for segment_size, _ in circle_variants
+            variant.segment_size for variant in circle_variants
         )
         circle_count_modes = unique_preserving_order(
-            count_mode for _, count_mode in circle_variants
+            variant.count_mode for variant in circle_variants
         )
     except argparse.ArgumentTypeError as exc:
         parser.error(str(exc))
@@ -282,15 +290,16 @@ def main() -> int:
         else:
             circle_rows: list[ExternalBenchRow] = []
             seen_circle_variants: set[tuple[str, int, int]] = set()
-            for segment_size, count_mode in circle_variants:
+            for variant in circle_variants:
+                variant_threads = variant.threads or args.circle_threads
                 circle_row = measure_circle_prime(
                     circle_prime,
                     low,
                     high,
-                    segment_size,
-                    args.circle_threads,
+                    variant.segment_size,
+                    variant_threads,
                     args.rounds,
-                    count_mode,
+                    variant.count_mode,
                 )
                 variant_key = (circle_row.name, circle_row.segment_size, circle_row.threads)
                 if variant_key not in seen_circle_variants:
@@ -746,7 +755,7 @@ def measure_range_interleaved(
     primecount: str | None,
     low: int,
     high: int,
-    circle_variants: list[tuple[int, str]],
+    circle_variants: list[CircleVariant],
     circle_threads: int,
     external_threads: int,
     rounds: int,
@@ -754,14 +763,15 @@ def measure_range_interleaved(
 ) -> tuple[list[ExternalBenchRow], list[ExternalBenchSample]]:
     circle_measurements: list[Measurement] = []
     seen_circle_variants: set[tuple[str, int, int]] = set()
-    for segment_size, count_mode in circle_variants:
+    for variant in circle_variants:
+        variant_threads = variant.threads or circle_threads
         measurement = circle_prime_measurement(
             circle_prime,
             low,
             high,
-            segment_size,
-            circle_threads,
-            count_mode,
+            variant.segment_size,
+            variant_threads,
+            variant.count_mode,
         )
         variant_key = (measurement.name, measurement.segment_size, measurement.threads)
         if variant_key not in seen_circle_variants:
@@ -772,9 +782,9 @@ def measure_range_interleaved(
                 circle_prime,
                 low,
                 high,
-                segment_size,
-                circle_threads,
-                count_mode,
+                variant.segment_size,
+                variant_threads,
+                variant.count_mode,
             )
             server_variant_key = (
                 server_measurement.name,
@@ -1088,7 +1098,7 @@ def build_run_metadata(
     args: argparse.Namespace,
     segment_sizes: list[int] | None = None,
     circle_count_modes: list[str] | None = None,
-    circle_variants: list[tuple[int, str]] | None = None,
+    circle_variants: list[CircleVariant] | None = None,
     ranges: list[tuple[int, int]],
     started_at_utc: str,
     cargo: str | None,
@@ -1114,10 +1124,10 @@ def build_run_metadata(
             circle_count_modes,
         )
         segment_sizes = unique_preserving_order(
-            segment_size for segment_size, _ in circle_variants
+            variant.segment_size for variant in circle_variants
         )
         circle_count_modes = unique_preserving_order(
-            count_mode for _, count_mode in circle_variants
+            variant.count_mode for variant in circle_variants
         )
     return {
         "started_at_utc": started_at_utc,
@@ -1134,10 +1144,7 @@ def build_run_metadata(
         "requested_segment_size": args.segment_size,
         "requested_segment_sizes": segment_sizes,
         "circle_count_modes": circle_count_modes,
-        "circle_variants": [
-            {"segment_size": segment_size, "count_mode": count_mode}
-            for segment_size, count_mode in circle_variants
-        ],
+        "circle_variants": [circle_variant_metadata(variant) for variant in circle_variants],
         "thread_policy": {
             "circle_requested_threads": args.circle_threads,
             "external_requested_threads": args.external_threads,
@@ -1198,6 +1205,16 @@ def circle_prime_package_metadata(cargo: str | None) -> dict[str, str | None]:
     return {"name": None, "version": None}
 
 
+def circle_variant_metadata(variant: CircleVariant) -> dict[str, Any]:
+    metadata: dict[str, Any] = {
+        "segment_size": variant.segment_size,
+        "count_mode": variant.count_mode,
+    }
+    if variant.threads is not None:
+        metadata["threads"] = variant.threads
+    return metadata
+
+
 def external_tool_metadata(name: str, path: str | None, version_args: list[str]) -> dict[str, Any]:
     if path is None:
         return {"available": False, "path": None, "version": None}
@@ -1229,7 +1246,7 @@ def range_command_metadata(
     primesieve: str | None,
     primecount: str | None,
     ranges: list[tuple[int, int]],
-    circle_variants: list[tuple[int, str]],
+    circle_variants: list[CircleVariant],
     circle_threads: int,
     external_threads: int,
 ) -> list[dict[str, Any]]:
@@ -1238,28 +1255,27 @@ def range_command_metadata(
         stop = high - 1
         circle_variant_commands = [
             {
-                "segment_size": segment_size,
-                "count_mode": count_mode,
+                **circle_variant_metadata(variant),
                 "json_probe": circle_prime_command(
                     circle_prime,
                     low,
                     high,
-                    segment_size,
-                    circle_threads,
-                    count_mode,
+                    variant.segment_size,
+                    variant.threads or circle_threads,
+                    variant.count_mode,
                     json_output=True,
                 ),
                 "timing": circle_prime_command(
                     circle_prime,
                     low,
                     high,
-                    segment_size,
-                    circle_threads,
-                    count_mode,
+                    variant.segment_size,
+                    variant.threads or circle_threads,
+                    variant.count_mode,
                     json_output=False,
                 ),
             }
-            for segment_size, count_mode in circle_variants
+            for variant in circle_variants
         ]
         first_variant = circle_variant_commands[0]
         entry: dict[str, Any] = {
@@ -1378,30 +1394,44 @@ def parse_circle_variants(
     raw_variants: list[str] | None,
     segment_sizes: list[int],
     circle_count_modes: list[str],
-) -> list[tuple[int, str]]:
+) -> list[CircleVariant]:
     if not raw_variants:
         return [
-            (segment_size, count_mode)
+            CircleVariant(segment_size=segment_size, count_mode=count_mode)
             for segment_size in segment_sizes
             for count_mode in circle_count_modes
         ]
 
-    variants: list[tuple[int, str]] = []
-    seen: set[tuple[int, str]] = set()
+    variants: list[CircleVariant] = []
+    seen: set[CircleVariant] = set()
     for raw in raw_variants:
         for item in [part.strip() for part in raw.split(",") if part.strip()]:
             if ":" not in item:
                 raise argparse.ArgumentTypeError(
-                    f"Circle variant must be MODE:SEGMENT_SIZE, got {item!r}"
+                    f"Circle variant must be MODE:SEGMENT_SIZE[:THREADS], got {item!r}"
                 )
-            count_mode, segment_size_raw = item.split(":", 1)
+            parts = item.split(":")
+            if len(parts) not in {2, 3}:
+                raise argparse.ArgumentTypeError(
+                    f"Circle variant must be MODE:SEGMENT_SIZE[:THREADS], got {item!r}"
+                )
+            count_mode, segment_size_raw = parts[0], parts[1]
             if count_mode not in VALID_CIRCLE_COUNT_MODES:
                 expected = ", ".join(sorted(VALID_CIRCLE_COUNT_MODES))
                 raise argparse.ArgumentTypeError(
                     f"unknown Circle count mode {count_mode!r}; expected one of: {expected}"
                 )
             segment_size = parse_nonnegative_int(segment_size_raw, "segment size")
-            variant = (segment_size, count_mode)
+            threads = (
+                parse_positive_int(parts[2], "Circle variant threads")
+                if len(parts) == 3
+                else None
+            )
+            variant = CircleVariant(
+                segment_size=segment_size,
+                count_mode=count_mode,
+                threads=threads,
+            )
             if variant not in seen:
                 variants.append(variant)
                 seen.add(variant)
@@ -1427,6 +1457,13 @@ def parse_nonnegative_int(raw: str, label: str) -> int:
         raise argparse.ArgumentTypeError(f"{label} must be an integer: {raw!r}") from exc
     if value < 0:
         raise argparse.ArgumentTypeError(f"{label} must be nonnegative: {raw!r}")
+    return value
+
+
+def parse_positive_int(raw: str, label: str) -> int:
+    value = parse_nonnegative_int(raw, label)
+    if value == 0:
+        raise argparse.ArgumentTypeError(f"{label} must be positive: {raw!r}")
     return value
 
 

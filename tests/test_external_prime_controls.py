@@ -5,13 +5,13 @@ from types import SimpleNamespace
 
 from scripts import benchmark_prime_external_controls
 from scripts.benchmark_prime_external_controls import (
+    CircleVariant,
     ExternalBenchRow,
     Measurement,
     build_run_metadata,
     circle_measurement_name,
     circle_prime_command,
     circle_server_measurement_name,
-    parse_circle_variants,
     measure_interleaved,
     median,
     parse_circle_count_modes,
@@ -161,20 +161,20 @@ def test_circle_count_mode_parser_and_names() -> None:
 
 def test_circle_variant_parser_can_avoid_cross_product() -> None:
     assert parse_circle_variants([], [0, 131072], ["default", "segmented"]) == [
-        (0, "default"),
-        (0, "segmented"),
-        (131072, "default"),
-        (131072, "segmented"),
+        CircleVariant(segment_size=0, count_mode="default"),
+        CircleVariant(segment_size=0, count_mode="segmented"),
+        CircleVariant(segment_size=131072, count_mode="default"),
+        CircleVariant(segment_size=131072, count_mode="segmented"),
     ]
     assert parse_circle_variants(
-        ["default:0", "segmented:131072,segmented:196608", "prefix-pi:0"],
+        ["default:0", "segmented:131072,segmented:196608", "prefix-pi:0:2"],
         [0],
         ["segmented"],
     ) == [
-        (0, "default"),
-        (131072, "segmented"),
-        (196608, "segmented"),
-        (0, "prefix-pi"),
+        CircleVariant(segment_size=0, count_mode="default"),
+        CircleVariant(segment_size=131072, count_mode="segmented"),
+        CircleVariant(segment_size=196608, count_mode="segmented"),
+        CircleVariant(segment_size=0, count_mode="prefix-pi", threads=2),
     ]
 
 
@@ -421,7 +421,7 @@ def test_external_metadata_records_exact_circle_variants(monkeypatch) -> None:
         circle_variant=[
             "default:0",
             "segmented:131072,segmented:196608",
-            "prefix-pi:0",
+            "prefix-pi:0:1",
         ],
         circle_threads=8,
         external_threads=8,
@@ -446,15 +446,18 @@ def test_external_metadata_records_exact_circle_variants(monkeypatch) -> None:
         {"segment_size": 0, "count_mode": "default"},
         {"segment_size": 131072, "count_mode": "segmented"},
         {"segment_size": 196608, "count_mode": "segmented"},
-        {"segment_size": 0, "count_mode": "prefix-pi"},
+        {"segment_size": 0, "count_mode": "prefix-pi", "threads": 1},
     ]
     for command_set in metadata["range_commands"]:
         variants = command_set["circle_variants"]
-        assert [(variant["segment_size"], variant["count_mode"]) for variant in variants] == [
-            (0, "default"),
-            (131072, "segmented"),
-            (196608, "segmented"),
-            (0, "prefix-pi"),
+        assert [
+            (variant["segment_size"], variant["count_mode"], variant.get("threads"))
+            for variant in variants
+        ] == [
+            (0, "default", None),
+            (131072, "segmented", None),
+            (196608, "segmented", None),
+            (0, "prefix-pi", 1),
         ]
     variants = metadata["range_commands"][0]["circle_variants"]
     assert variants[0]["timing"] == [
@@ -472,8 +475,6 @@ def test_external_metadata_records_exact_circle_variants(monkeypatch) -> None:
         "0",
         "1000",
         "--count",
-        "--threads",
-        "8",
         "--count-mode",
         "prefix-pi",
     ]

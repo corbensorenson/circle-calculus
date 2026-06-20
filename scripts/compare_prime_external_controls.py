@@ -334,7 +334,7 @@ def row_selected(
     names: set[str] | None,
     baselines: set[str] | None,
 ) -> bool:
-    if names is not None and row.name not in names:
+    if names is not None and row.name not in names and row.comparison_name not in names:
         return False
     if baselines is not None and row.baseline not in baselines:
         return False
