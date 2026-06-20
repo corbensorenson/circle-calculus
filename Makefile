@@ -3,7 +3,14 @@ QUARTO := $(shell if command -v quarto >/dev/null 2>&1; then command -v quarto; 
 QUARTO_HOME ?= $(CURDIR)/.tools/quarto-home
 QUARTO_DENO_DIR ?= $(CURDIR)/.tools/quarto-deno
 QUARTO_ENV := HOME="$(QUARTO_HOME)" DENO_DIR="$(QUARTO_DENO_DIR)"
-TARGETED_ARGS :=
+TARGETED_ARGS ?=
+TARGETED_WRAPPER_ARGS := $(TARGETED_ARGS)
+ifneq ($(strip $(TARGETED_BASE)),)
+TARGETED_WRAPPER_ARGS += --base $(TARGETED_BASE)
+endif
+ifneq ($(strip $(TARGETED_FILES)),)
+TARGETED_WRAPPER_ARGS += --files $(TARGETED_FILES)
+endif
 CIRCLE_PRIME_THREADS ?= 8
 EXTERNAL_PRIME_THREADS ?= $(CIRCLE_PRIME_THREADS)
 CIRCLE_PRIME_SEGMENT_SIZES ?= 0,32768,65536,98304,131072,196608,262144,524288,1048576,1310720,1376256,1441792,1507328,1572864,2097152,2359296,2621440,3145728,4194304
@@ -159,13 +166,13 @@ check: lean sourcecheck
 sourcecheck: sidecarlean test manifest leannamecheck dictionary papermanifest paperlinks papersources researchmanifests capabilityshowcase circle-ai-contracts-ready claimlanguage phase4targets phase5targets phase6targets phase7targets phase8targets applicationguardrails glyphfixtures dimensioncheck nofake proofdepthaudit sitecheck
 
 targeted-check:
-	python scripts/targeted_check.py $(TARGETED_ARGS)
+	python scripts/targeted_check.py $(strip $(TARGETED_WRAPPER_ARGS))
 
 targeted-check-list:
-	python scripts/targeted_check.py $(TARGETED_ARGS) --list
+	python scripts/targeted_check.py $(strip $(TARGETED_WRAPPER_ARGS)) --list
 
 targeted-check-json:
-	@python scripts/targeted_check.py $(TARGETED_ARGS) --list --format json
+	@python scripts/targeted_check.py $(strip $(TARGETED_WRAPPER_ARGS)) --list --format json
 
 targeted-check-full:
 	python scripts/targeted_check.py --full
