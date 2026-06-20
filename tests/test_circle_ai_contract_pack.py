@@ -2186,6 +2186,11 @@ def test_generic_export_script_writes_json(tmp_path: Path) -> None:
     policy_schema_out = tmp_path / "circle_policy.schema.json"
     policy_report_schema_out = tmp_path / "circle_policy_report.schema.json"
     receipt_schema_out = tmp_path / "circle_receipt.schema.json"
+    runner_request_schema_out = tmp_path / "circle_runner_request.schema.json"
+    runner_request_validation_schema_out = (
+        tmp_path / "circle_runner_request_validation.schema.json"
+    )
+    runner_receipt_schema_out = tmp_path / "circle_runner_receipt.schema.json"
     subprocess.run(
         [
             sys.executable,
@@ -2198,6 +2203,12 @@ def test_generic_export_script_writes_json(tmp_path: Path) -> None:
             str(policy_report_schema_out),
             "--acceptance-receipt-schema-out",
             str(receipt_schema_out),
+            "--contract-runner-request-schema-out",
+            str(runner_request_schema_out),
+            "--contract-runner-request-validation-schema-out",
+            str(runner_request_validation_schema_out),
+            "--contract-runner-receipt-schema-out",
+            str(runner_receipt_schema_out),
         ],
         check=True,
     )
@@ -2206,12 +2217,20 @@ def test_generic_export_script_writes_json(tmp_path: Path) -> None:
     policy_schema = json.loads(policy_schema_out.read_text())
     policy_report_schema = json.loads(policy_report_schema_out.read_text())
     receipt_schema = json.loads(receipt_schema_out.read_text())
+    runner_request_schema = json.loads(runner_request_schema_out.read_text())
+    runner_request_validation_schema = json.loads(
+        runner_request_validation_schema_out.read_text()
+    )
+    runner_receipt_schema = json.loads(runner_receipt_schema_out.read_text())
     assert data["schema_id"] == "circle_calculus.ai_contract_pack.v0"
     assert len(data["contracts"]) == 9
     jsonschema.validate(data, schema)
     jsonschema.Draft202012Validator.check_schema(policy_schema)
     jsonschema.Draft202012Validator.check_schema(policy_report_schema)
     jsonschema.Draft202012Validator.check_schema(receipt_schema)
+    jsonschema.Draft202012Validator.check_schema(runner_request_schema)
+    jsonschema.Draft202012Validator.check_schema(runner_request_validation_schema)
+    jsonschema.Draft202012Validator.check_schema(runner_receipt_schema)
     subprocess.run(
         [
             sys.executable,

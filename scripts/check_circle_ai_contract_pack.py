@@ -15,6 +15,19 @@ import yaml
 
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_PACK = ROOT / "site" / "data" / "generated" / "circle_ai_contract_pack.json"
+DEFAULT_RUNNER_REQUEST_SCHEMA = (
+    ROOT / "site" / "data" / "generated" / "circle_ai_contract_request.schema.json"
+)
+DEFAULT_RUNNER_REQUEST_VALIDATION_SCHEMA = (
+    ROOT
+    / "site"
+    / "data"
+    / "generated"
+    / "circle_ai_contract_request_validation.schema.json"
+)
+DEFAULT_RUNNER_RECEIPT_SCHEMA = (
+    ROOT / "site" / "data" / "generated" / "circle_ai_contract_receipt.schema.json"
+)
 EXPECTED_SCHEMA_ID = "circle_calculus.ai_contract_pack.v0"
 EXPECTED_ACCEPTANCE_POLICY_SCHEMA_ID = "circle_calculus.ai_contract_acceptance_policy.v0"
 EXPECTED_ACCEPTANCE_POLICY_REPORT_SCHEMA_ID = (
@@ -1168,6 +1181,19 @@ def validate_schema_sidecar(pack: dict[str, Any], schema_path: Path) -> list[str
     return []
 
 
+def validate_json_schema_file(schema_path: Path, *, label: str) -> list[str]:
+    if not schema_path.exists():
+        return [f"{label} JSON Schema is missing: {schema_path}"]
+    try:
+        schema = json.loads(schema_path.read_text())
+        jsonschema.Draft202012Validator.check_schema(schema)
+    except jsonschema.SchemaError as exc:
+        return [f"{label} JSON Schema is invalid: {exc.message}"]
+    except json.JSONDecodeError as exc:
+        return [f"{label} JSON Schema is not valid JSON: {exc}"]
+    return []
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(
         description="Validate a generated Circle AI contract pack JSON artifact.",
@@ -1216,6 +1242,24 @@ def main() -> int:
         failures.append(f"JSON Schema sidecar is missing: {schema_path}")
     else:
         failures.extend(validate_schema_sidecar(pack, schema_path))
+    failures.extend(
+        validate_json_schema_file(
+            DEFAULT_RUNNER_REQUEST_SCHEMA,
+            label="contract-runner request",
+        )
+    )
+    failures.extend(
+        validate_json_schema_file(
+            DEFAULT_RUNNER_REQUEST_VALIDATION_SCHEMA,
+            label="contract-runner request validation",
+        )
+    )
+    failures.extend(
+        validate_json_schema_file(
+            DEFAULT_RUNNER_RECEIPT_SCHEMA,
+            label="contract-runner receipt",
+        )
+    )
     for kind in args.require_kind:
         contract = find_contract(pack, kind)
         if contract is None:
