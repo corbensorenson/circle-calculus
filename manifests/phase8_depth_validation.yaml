@@ -21,8 +21,52 @@ targets:
       - "docs/ROPE_CERTIFIER_QUICKSTART.md"
       - "docs/ROPE_REAL_PHASE_MARGIN_NOTES.md"
     dictionary_dependencies: ["COMMON-0076", "COMMON-0077", "COMMON-0080", "COMMON-0082", "COMMON-0085", "COMMON-0086", "COMMON-0087", "COMMON-0088", "COMMON-0089"]
-    next_action: "The real-phase RoPE spine now reaches AIRA-T0240: standard channel 0 is theorem-backed through 64k at margin 1/104219 and through 192k at margin 1/328459, with obstruction brackets at gap 710 and gap 103993. AIRA-T0208 packages the D19 bracket for every context satisfying 103993 < context <= 196608, and AIRA-T0216/AIRA-T0221 turn that range into the Python request classifier: margins at or below 1/328459 are proved, margins at or above 1/328458 are impossible, and the open gap remains unclaimed; AIRA-T0232 proves that gap has exact rational width 1/107884986222, AIRA-T0233 proves that every in-range request is in exactly one semantic branch, AIRA-T0234 transfers the proved branch to a conditional first-channel bank no-near-turn theorem, AIRA-T0235 packages that proved branch as a context-wide guarantee over every ordered unequal pair inside the requested context, AIRA-T0236 specializes the guarantee to the ordinary radian bank form with first frequency 1 and full turn 2*pi, AIRA-T0237 packages the in-range semantic classifier together with that radian first-channel consequence, and AIRA-T0238 proves the public 2/656917 undecided probe lies strictly inside the open gap. AIRA-T0239 adds the general Dirichlet finite-context witness: every turn ratio and nontrivial finite context has some positive in-context gap whose nearest-integer error is at most 1/context; AIRA-T0240 adds the direct ceiling consequence that any advertised finite-context margin strictly above 1/context is impossible. AIRA-T0214/AIRA-T0215 add the reusable exact weakest-gap report contract and the named 1/4099 report theorem; AIRA-T0222/AIRA-T0223 generalize exact reports to 1/d turn ratios; AIRA-T0224 through AIRA-T0226 extend exact reports to reduced natural-rational ratios when the certifier supplies a plus-or-minus-one modular-inverse gap witness; AIRA-T0227 proves that such a witness exists for every reduced natural-rational turn ratio in the full denominator context; AIRA-T0228 proves the exact full-denominator threshold, so margins above 1/denominator fail there; AIRA-T0229 gives the above-threshold witness; AIRA-T0230/AIRA-T0231 generalize the exact request threshold to any exact weakest-gap certificate. The generated D15/D16/D17/D18/D19 Lean source now uses compact uniform bands that store shared rational bounds once and attach them inside Lean before the existing rational-band proof bridge; generated coverage now proves a contiguous gap-chain certificate, and endpoint validity is checked on compact rows before reflection into expanded band validity. A larger D20 table was planner-audited but is not currently practical for normal local builds; next work should target broader channel-wise certificates, a full-bank transfer, faster native rational endpoint checking, finer generated-table chunking, or a continued-fraction lower-bound bridge."
-    frontier_note: "AIRA-T0139 through AIRA-T0141 provide the proved rational-band compression bridge, generated D15/D16/D17/D18/D19 certificates now compile for the 32k/64k/128k/160k/192k rows, and the generated source is compacted by uniform gap/cell bands with contiguous-coverage and compact-endpoint bridges. AIRA-T0216/AIRA-T0217 expose the D19 range as a request-level classifier, AIRA-T0232 theorem-backs the exact open-gap width field, AIRA-T0233 theorem-backs the in-range semantic trichotomy field, AIRA-T0238 theorem-backs the public undecided-probe open-gap field, AIRA-T0239 theorem-backs a general Dirichlet close-return witness for any finite context, and AIRA-T0240 theorem-backs the direct no-margin-above-1/context ceiling. The remaining frontier is broader channel-wise or full-bank certification plus endpoint/proof-check speed, generated-table scalability, and continued-fraction lower-bound depth."
+    next_action: >-
+      The real-phase RoPE spine now reaches AIRA-T0241: standard channel 0 is theorem-backed
+      through 64k at margin 1/104219 and through 192k at margin 1/328459, with obstruction
+      brackets at gap 710 and gap 103993. AIRA-T0208 packages the D19 bracket for every context
+      satisfying 103993 < context <= 196608, and AIRA-T0216/AIRA-T0221 turn that range into the
+      Python request classifier: margins at or below 1/328459 are proved, margins at or above
+      1/328458 are impossible, and the open gap remains unclaimed. AIRA-T0232 proves that gap has
+      exact rational width 1/107884986222, AIRA-T0233 proves that every in-range request is in
+      exactly one semantic branch, AIRA-T0234 transfers the proved branch to a conditional
+      first-channel bank no-near-turn theorem, AIRA-T0235 packages that proved branch as a
+      context-wide guarantee over every ordered unequal pair inside the requested context, AIRA-T0236
+      specializes the guarantee to the ordinary radian bank form with first frequency 1 and full turn
+      2*pi, AIRA-T0237 packages the in-range semantic classifier together with that radian
+      first-channel consequence, and AIRA-T0238 proves the public 2/656917 undecided probe lies
+      strictly inside the open gap. AIRA-T0239 adds the general Dirichlet finite-context witness:
+      every turn ratio and nontrivial finite context has some positive in-context gap whose
+      nearest-integer error is at most 1/context; AIRA-T0240 adds the direct ceiling consequence that
+      any advertised finite-context margin strictly above 1/context is impossible; AIRA-T0241 applies
+      that ceiling to exact weakest-gap report margins. AIRA-T0214/AIRA-T0215 add the reusable exact
+      weakest-gap report contract and the named 1/4099 report theorem; AIRA-T0222/AIRA-T0223
+      generalize exact reports to 1/d turn ratios; AIRA-T0224 through AIRA-T0226 extend exact reports
+      to reduced natural-rational ratios when the certifier supplies a plus-or-minus-one
+      modular-inverse gap witness; AIRA-T0227 proves that such a witness exists for every reduced
+      natural-rational turn ratio in the full denominator context; AIRA-T0228 proves the exact
+      full-denominator threshold, so margins above 1/denominator fail there; AIRA-T0229 gives the
+      above-threshold witness; AIRA-T0230/AIRA-T0231 generalize the exact request threshold to any
+      exact weakest-gap certificate. The generated D15/D16/D17/D18/D19 Lean source now uses compact
+      uniform bands that store shared rational bounds once and attach them inside Lean before the
+      existing rational-band proof bridge; generated coverage now proves a contiguous gap-chain
+      certificate, and endpoint validity is checked on compact rows before reflection into expanded
+      band validity. A larger D20 table was planner-audited but is not currently practical for
+      normal local builds; next work should target broader channel-wise certificates, a full-bank
+      transfer, faster native rational endpoint checking, finer generated-table chunking, or a
+      continued-fraction lower-bound bridge.
+    frontier_note: >-
+      AIRA-T0139 through AIRA-T0141 provide the proved rational-band compression bridge, generated
+      D15/D16/D17/D18/D19 certificates now compile for the 32k/64k/128k/160k/192k rows, and the
+      generated source is compacted by uniform gap/cell bands with contiguous-coverage and
+      compact-endpoint bridges. AIRA-T0216/AIRA-T0217 expose the D19 range as a request-level
+      classifier, AIRA-T0232 theorem-backs the exact open-gap width field, AIRA-T0233 theorem-backs
+      the in-range semantic trichotomy field, AIRA-T0238 theorem-backs the public undecided-probe
+      open-gap field, AIRA-T0239 theorem-backs a general Dirichlet close-return witness for any
+      finite context, AIRA-T0240 theorem-backs the direct no-margin-above-1/context ceiling, and
+      AIRA-T0241 theorem-backs the exact weakest-gap report ceiling. The remaining frontier is
+      broader channel-wise or full-bank certification plus endpoint/proof-check speed,
+      generated-table scalability, and continued-fraction lower-bound depth.
     guardrail: "Do not present numerical margin scans as Lean-proved real RoPE theorems."
 
   - id: P8-DEPTH-002

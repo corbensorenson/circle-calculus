@@ -43,7 +43,7 @@ What is theorem-backed now:
 - `AIRA-T0233` proves the in-range semantic trichotomy: every request is exactly one of proved, impossible, or undecided.
 - `AIRA-T0234` through `AIRA-T0237` transfer the proved branch to a conditional first-channel bank contract and ordinary radian-bank form.
 - `AIRA-T0238` proves the public probe margin `2/656917` lies inside the undecided open gap.
-- `AIRA-T0239` and `AIRA-T0240` give the Dirichlet guardrail: every nontrivial finite context has an in-context nearest-integer witness with error at most `1/context`, so no finite-context margin strictly above `1/context` can hold.
+- `AIRA-T0239` through `AIRA-T0241` give the Dirichlet guardrails: every nontrivial finite context has an in-context nearest-integer witness with error at most `1/context`, no finite-context margin strictly above `1/context` can hold, and any exact weakest-gap report margin is bounded by that same ceiling.
 
 This is a real theorem program, but it is still a one-channel frontier. It is not yet a full all-channel standard-RoPE bank theorem.
 
@@ -83,6 +83,7 @@ python scripts/circle_ai_contract_ready.py \
   --field d19_undecided_probe_margin_in_open_gap \
   --field real_phase_dirichlet_witness_guardrail \
   --field real_phase_margin_ceiling_guardrail \
+  --field real_phase_exact_weakest_margin_ceiling_guardrail \
   --include-recommendations
 ```
 
