@@ -129,6 +129,10 @@ The batch checker records its gate policy in
 `circle_ai_runner_check.json`. If any receipt violates `--require-status` or
 `--require-passed`, the report is still written with the receipt summaries and
 the command exits nonzero.
+By default it checks both `examples/circle_ai_requests/*.json` request files and
+`examples/circle_ai_model_configs/*.json` standard RoPE model configs. Model
+config examples are first converted into versioned Circle request JSON, then
+checked by the same receipt path.
 
 ## Receipt Statuses
 

@@ -1678,6 +1678,8 @@ def build_contract_runner_check_json_schema() -> dict[str, Any]:
     summary = {
         "type": "object",
         "required": [
+            "source_type",
+            "source_path",
             "request_path",
             "receipt_path",
             "kind",
@@ -1691,7 +1693,9 @@ def build_contract_runner_check_json_schema() -> dict[str, Any]:
             "receipt_content_fingerprint",
         ],
         "properties": {
-            "request_path": {"type": "string", "minLength": 1},
+            "source_type": {"enum": ["request", "model_config"]},
+            "source_path": {"type": "string", "minLength": 1},
+            "request_path": {"type": ["string", "null"]},
             "receipt_path": {"type": ["string", "null"]},
             "kind": {"enum": list(SUPPORTED_CONTRACT_KINDS)},
             "status": {"enum": list(STATUS_VALUES)},

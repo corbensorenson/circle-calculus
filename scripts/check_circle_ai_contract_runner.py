@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-"""Validate public Circle AI contract-runner request examples and receipts."""
+"""Validate public Circle AI contract-runner examples and receipts."""
 
 from __future__ import annotations
 
@@ -16,9 +16,11 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from circle_math.applications import (  # noqa: E402
+    build_contract_request,
     build_contract_request_validation_report,
     build_contract_runner_check_json_schema,
     build_contract_receipt_from_request,
+    build_rope_request_parameters_from_model_config,
     load_contract_pack,
     validate_contract_receipt,
     validate_contract_request,
@@ -30,6 +32,7 @@ from circle_math.applications.circle_ai_contract_runner import (  # noqa: E402
 
 
 DEFAULT_EXAMPLE_DIR = ROOT / "examples" / "circle_ai_requests"
+DEFAULT_MODEL_CONFIG_DIR = ROOT / "examples" / "circle_ai_model_configs"
 DEFAULT_PACK_PATH = ROOT / "site" / "data" / "generated" / "circle_ai_contract_pack.json"
 DEFAULT_REQUEST_SCHEMA = (
     ROOT / "site" / "data" / "generated" / "circle_ai_contract_request.schema.json"
@@ -63,6 +66,14 @@ def _request_paths(example_dir: Path) -> list[Path]:
     return paths
 
 
+def _model_config_paths(model_config_dir: Path | None) -> list[Path]:
+    if model_config_dir is None:
+        return []
+    if not model_config_dir.exists():
+        return []
+    return sorted(model_config_dir.glob("*.json"))
+
+
 def _display_path(path: Path) -> str:
     try:
         return str(path.relative_to(ROOT))
@@ -75,9 +86,56 @@ def _write_json(path: Path, payload: dict[str, Any]) -> None:
     path.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n")
 
 
+def _summary_from_receipt(
+    *,
+    source_type: str,
+    source_path: Path,
+    request_path: Path | None,
+    receipt_path: Path | None,
+    receipt: dict[str, Any],
+) -> dict[str, Any]:
+    return {
+        "source_type": source_type,
+        "source_path": _display_path(source_path),
+        "request_path": None if request_path is None else _display_path(request_path),
+        "receipt_path": None if receipt_path is None else _display_path(receipt_path),
+        "kind": receipt["kind"],
+        "status": receipt["status"],
+        "request_passed": receipt["request_passed"],
+        "theorem_count": receipt["proof_status"]["theorem_count"],
+        "recommendation_count": len(receipt["recommendations"]),
+        "validation_command_count": len(receipt["validation_commands"]),
+        "request_content_fingerprint": receipt["request_content_fingerprint"],
+        "normalized_request_fingerprint": receipt["normalized_request_fingerprint"],
+        "receipt_content_fingerprint": receipt["receipt_content_fingerprint"],
+    }
+
+
+def _append_gate_failures(
+    *,
+    path: Path,
+    summary: dict[str, Any],
+    failures: list[str],
+    required_statuses: tuple[str, ...],
+    require_passed: bool,
+) -> None:
+    if required_statuses and summary["status"] not in required_statuses:
+        failures.append(
+            f"{path}: receipt status {summary['status']!r} did not match "
+            "required status set: " + ", ".join(required_statuses)
+        )
+    if require_passed and summary["request_passed"] is not True:
+        failures.append(
+            f"{path}: receipt request_passed was not true "
+            f"(got {summary['request_passed']!r})"
+        )
+
+
 def check_runner_examples(
     *,
     example_dir: Path = DEFAULT_EXAMPLE_DIR,
+    model_config_dir: Path | None = DEFAULT_MODEL_CONFIG_DIR,
+    model_config_requested_margin: str | None = "1/328459",
     pack_path: Path = DEFAULT_PACK_PATH,
     request_schema_path: Path = DEFAULT_REQUEST_SCHEMA,
     request_validation_schema_path: Path = DEFAULT_REQUEST_VALIDATION_SCHEMA,
@@ -119,34 +177,67 @@ def check_runner_examples(
             if receipt_out_dir is not None:
                 receipt_path = receipt_out_dir / f"{path.stem.removesuffix('_request')}_receipt.json"
                 _write_json(receipt_path, receipt)
-            summary = {
-                "request_path": _display_path(path),
-                "receipt_path": (
-                    None if receipt_path is None else _display_path(receipt_path)
-                ),
-                "kind": receipt["kind"],
-                "status": receipt["status"],
-                "request_passed": receipt["request_passed"],
-                "theorem_count": receipt["proof_status"]["theorem_count"],
-                "recommendation_count": len(receipt["recommendations"]),
-                "validation_command_count": len(receipt["validation_commands"]),
-                "request_content_fingerprint": receipt["request_content_fingerprint"],
-                "normalized_request_fingerprint": receipt[
-                    "normalized_request_fingerprint"
-                ],
-                "receipt_content_fingerprint": receipt["receipt_content_fingerprint"],
-            }
+            summary = _summary_from_receipt(
+                source_type="request",
+                source_path=path,
+                request_path=path,
+                receipt_path=receipt_path,
+                receipt=receipt,
+            )
             summaries.append(summary)
-            if required_statuses and summary["status"] not in required_statuses:
-                failures.append(
-                    f"{path}: receipt status {summary['status']!r} did not match "
-                    "required status set: " + ", ".join(required_statuses)
-                )
-            if require_passed and summary["request_passed"] is not True:
-                failures.append(
-                    f"{path}: receipt request_passed was not true "
-                    f"(got {summary['request_passed']!r})"
-                )
+            _append_gate_failures(
+                path=path,
+                summary=summary,
+                failures=failures,
+                required_statuses=required_statuses,
+                require_passed=require_passed,
+            )
+        except (ValueError, jsonschema.ValidationError, jsonschema.SchemaError) as exc:
+            failures.append(f"{path}: {exc}")
+
+    for path in _model_config_paths(model_config_dir):
+        try:
+            config = _json(path)
+            parameters = build_rope_request_parameters_from_model_config(
+                config,
+                requested_margin=model_config_requested_margin,
+            )
+            request = build_contract_request("rope", parameters)
+            jsonschema.validate(request, request_schema)
+            validation_report = build_contract_request_validation_report(request)
+            jsonschema.validate(validation_report, request_validation_schema)
+            request_failures = validate_contract_request(request)
+            if request_failures:
+                failures.append(f"{path}: " + "; ".join(request_failures))
+                continue
+            receipt = build_contract_receipt_from_request(request, pack=pack)
+            receipt_failures = validate_contract_receipt(receipt)
+            if receipt_failures:
+                failures.append(f"{path}: " + "; ".join(receipt_failures))
+                continue
+            jsonschema.validate(receipt, receipt_schema)
+            request_path = None
+            receipt_path = None
+            if receipt_out_dir is not None:
+                request_path = receipt_out_dir / f"{path.stem}_request.json"
+                receipt_path = receipt_out_dir / f"{path.stem}_receipt.json"
+                _write_json(request_path, request)
+                _write_json(receipt_path, receipt)
+            summary = _summary_from_receipt(
+                source_type="model_config",
+                source_path=path,
+                request_path=request_path,
+                receipt_path=receipt_path,
+                receipt=receipt,
+            )
+            summaries.append(summary)
+            _append_gate_failures(
+                path=path,
+                summary=summary,
+                failures=failures,
+                required_statuses=required_statuses,
+                require_passed=require_passed,
+            )
         except (ValueError, jsonschema.ValidationError, jsonschema.SchemaError) as exc:
             failures.append(f"{path}: {exc}")
 
@@ -173,9 +264,23 @@ def check_runner_examples(
 
 def main() -> int:
     parser = argparse.ArgumentParser(
-        description="Validate Circle AI contract-runner request examples.",
+        description="Validate Circle AI contract-runner request/model-config examples.",
     )
     parser.add_argument("--example-dir", type=Path, default=DEFAULT_EXAMPLE_DIR)
+    parser.add_argument(
+        "--model-config-dir",
+        type=Path,
+        default=DEFAULT_MODEL_CONFIG_DIR,
+        help="Optional directory of standard RoPE model config JSON examples.",
+    )
+    parser.add_argument(
+        "--model-config-requested-margin",
+        default="1/328459",
+        help=(
+            "Requested real-phase margin to attach to model-config examples. "
+            "Use an empty string to omit the margin."
+        ),
+    )
     parser.add_argument("--pack", type=Path, default=DEFAULT_PACK_PATH)
     parser.add_argument(
         "--request-schema",
@@ -227,6 +332,12 @@ def main() -> int:
 
     report = check_runner_examples(
         example_dir=args.example_dir,
+        model_config_dir=args.model_config_dir,
+        model_config_requested_margin=(
+            args.model_config_requested_margin
+            if args.model_config_requested_margin
+            else None
+        ),
         pack_path=args.pack,
         request_schema_path=args.request_schema,
         request_validation_schema_path=args.request_validation_schema,
@@ -250,8 +361,9 @@ def main() -> int:
         )
         for summary in report["summaries"]:
             print(
-                "request="
-                f"{summary['request_path']} kind={summary['kind']} "
+                "source="
+                f"{summary['source_path']} type={summary['source_type']} "
+                f"request={summary['request_path']} kind={summary['kind']} "
                 f"status={summary['status']} "
                 f"passed={summary['request_passed']} "
                 f"theorems={summary['theorem_count']} "

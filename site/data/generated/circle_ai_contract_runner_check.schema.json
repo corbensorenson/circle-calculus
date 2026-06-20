@@ -89,8 +89,20 @@
             ]
           },
           "request_path": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "source_path": {
             "minLength": 1,
             "type": "string"
+          },
+          "source_type": {
+            "enum": [
+              "request",
+              "model_config"
+            ]
           },
           "status": {
             "enum": [
@@ -111,6 +123,8 @@
           }
         },
         "required": [
+          "source_type",
+          "source_path",
           "request_path",
           "receipt_path",
           "kind",
