@@ -191,6 +191,11 @@ def main() -> int:
         type=Path,
         help="Optional directory where validated receipt JSON files are written.",
     )
+    parser.add_argument(
+        "--report-out",
+        type=Path,
+        help="Optional path where the schema-validated batch check report is written.",
+    )
     args = parser.parse_args()
 
     report = check_runner_examples(
@@ -202,6 +207,8 @@ def main() -> int:
         runner_check_schema_path=args.runner_check_schema,
         receipt_out_dir=args.receipt_out_dir,
     )
+    if args.report_out is not None:
+        _write_json(args.report_out, report)
     if args.format == "json":
         print(json.dumps(report, indent=2, sort_keys=True))
     else:

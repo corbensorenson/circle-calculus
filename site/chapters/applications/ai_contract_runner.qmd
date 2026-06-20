@@ -192,8 +192,14 @@ For a directory of request files, write all generated receipt JSON files:
 ```bash
 python scripts/check_circle_ai_contract_runner.py \
   --example-dir examples/circle_ai_requests \
-  --receipt-out-dir reports/circle_ai_receipts
+  --receipt-out-dir reports/circle_ai_receipts \
+  --report-out reports/circle_ai_runner_check.json
 ```
+
+The report file uses schema id `circle_calculus.ai_contract_runner_check.v0` and
+records the request path, optional receipt path, status, theorem count,
+recommendation count, validation-command count, and fingerprints for each
+request.
 
 ## Receipt Reading Loop
 

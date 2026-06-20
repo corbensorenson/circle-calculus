@@ -88,3 +88,29 @@ def test_check_circle_ai_contract_runner_writes_receipts(tmp_path: Path) -> None
         assert receipt["schema_id"] == "circle_calculus.ai_contract_receipt.v0"
         assert len(receipt["receipt_content_fingerprint"]) == 64
         assert receipt["proof_status"]["all_theorem_ids_proved"] is True
+
+
+def test_check_circle_ai_contract_runner_writes_report_file(tmp_path: Path) -> None:
+    report_path = tmp_path / "runner_check_report.json"
+    receipt_dir = tmp_path / "receipts"
+
+    result = subprocess.run(
+        [
+            sys.executable,
+            "scripts/check_circle_ai_contract_runner.py",
+            "--receipt-out-dir",
+            str(receipt_dir),
+            "--report-out",
+            str(report_path),
+        ],
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+
+    assert "circle AI runner examples ok=True examples=4 failures=0" in result.stdout
+    payload = json.loads(report_path.read_text())
+    jsonschema.validate(payload, _runner_check_schema())
+    assert payload["ok"] is True
+    assert len(payload["summaries"]) == 4
+    assert all(summary["receipt_path"] for summary in payload["summaries"])

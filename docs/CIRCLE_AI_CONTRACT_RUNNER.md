@@ -108,7 +108,8 @@ Write receipt JSON files for a request directory:
 ```bash
 python scripts/check_circle_ai_contract_runner.py \
   --example-dir examples/circle_ai_requests \
-  --receipt-out-dir reports/circle_ai_receipts
+  --receipt-out-dir reports/circle_ai_receipts \
+  --report-out reports/circle_ai_runner_check.json
 ```
 
 ## Receipt Statuses
