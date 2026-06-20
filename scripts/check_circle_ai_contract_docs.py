@@ -41,6 +41,7 @@ DEFAULT_GUIDED_SUITE_DOCS = (
 DEFAULT_STRICT_RECEIPT_DOCS = (
     ROOT / "docs" / "AI_CONTRACT_SUITE.md",
     ROOT / "docs" / "CIRCLE_AI_CONTRACTS_INTEGRATION.md",
+    ROOT / "site" / "chapters" / "applications" / "rope_certifier.qmd",
     ROOT / "site" / "chapters" / "applications" / "ai_contract_suite.qmd",
 )
 CONTRACT_KIND_RE = re.compile(r"`([^`]+)`")
