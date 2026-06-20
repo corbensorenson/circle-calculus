@@ -43,6 +43,7 @@ The real-phase rows are numerical diagnostics unless the output is specifically 
 
 ## Source Trail
 
+- Results note: `docs/ROPE_CERTIFIER_RESULTS_NOTE.md`
 - Quickstart: `docs/ROPE_CERTIFIER_QUICKSTART.md`
 - Paper: `papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md`
 - Lean: `Circle/Applications/RoPECertifier.lean`

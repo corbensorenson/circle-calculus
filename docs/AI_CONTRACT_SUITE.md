@@ -2,6 +2,8 @@
 
 This document is the compact working entry point for the proof-carrying AI contracts. It is for using the contracts, not for reading every theorem.
 
+For the flagship RoPE contract's current findings, read `docs/ROPE_CERTIFIER_RESULTS_NOTE.md` before opening the full proof audit. It summarizes the exact discrete preset table, the one-channel D19 real-phase frontier, reproduction commands, and the non-claims.
+
 The guided suite starts with four flagship contracts:
 
 | Contract | Question | CLI | Living Book lesson |

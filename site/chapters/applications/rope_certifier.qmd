@@ -196,6 +196,8 @@ The main lesson uses only the proof families needed to read a report. The full a
 
 The short non-Lean entrypoint is [RoPE Certifier Quickstart](https://github.com/corbensorenson/circle-calculus/blob/main/docs/ROPE_CERTIFIER_QUICKSTART.md). It covers installation, presets, custom configs, text and JSON output, theorem ids, and limitations.
 
+For the shortest current findings summary, read the [RoPE Certifier Results Note](https://github.com/corbensorenson/circle-calculus/blob/main/docs/ROPE_CERTIFIER_RESULTS_NOTE.md). It is the compact bridge between the preset table, the D19 one-channel real-phase frontier, the reproduction commands, and the non-claims.
+
 ## Reproducible Results
 
 The paper sidecar generates the current preset results:

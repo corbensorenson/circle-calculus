@@ -2,6 +2,8 @@
 
 This quickstart is for ML engineers who want to inspect a RoPE-like positional configuration without reading Lean code first.
 
+For the shortest current findings summary, start with `docs/ROPE_CERTIFIER_RESULTS_NOTE.md`. This quickstart explains how to run the tool; the results note explains what the current preset table and D19 standard-channel frontier say.
+
 The certifier answers a narrow contract question:
 
 ```text
