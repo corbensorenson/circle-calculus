@@ -43,7 +43,9 @@ DEFAULT_EXTERNAL_HIGH_OFFSET_CONFIRMATION = (
 DEFAULT_TUNING = RESULTS_DIR / "prime_engine_tuning_latest.json"
 DEFAULT_OUTPUT_JSON = RESULTS_DIR / "prime_engine_default_calibration_latest.json"
 DEFAULT_OUTPUT_MD = RESULTS_DIR / "prime_engine_default_calibration_latest.md"
-DEFAULT_BASELINE_PRIORITY = "external_primesieve_count,external_primecount_pi_diff"
+DEFAULT_BASELINE_PRIORITY = (
+    "external_primesieve_count_server,external_primesieve_count,external_primecount_pi_diff"
+)
 SAMPLE_NOISY_MAX_OVER_MEDIAN = 1.5
 DEFAULT_MIN_ACTIONABLE_MEDIAN_DELTA_MS = 0.001
 

@@ -189,8 +189,8 @@ def test_build_default_updates_applies_confirmed_high_offset_confirmation() -> N
         low=1_000_000_000_000,
         high=1_000_010_000_000,
         source="external_high_offset_confirmation",
-        stability="noisy",
-        selected_segment_size=1_507_328,
+        stability="stable",
+        selected_segment_size=4_194_304,
         selected_count_mode="presieve17",
     )
     row["selected_effective_sample_stability"] = "stable"
@@ -201,17 +201,17 @@ def test_build_default_updates_applies_confirmed_high_offset_confirmation() -> N
     )
 
     assert skipped == []
-    assert updated["parallel_very_high_offset_segment_size"] == 1_507_328
+    assert updated["parallel_very_high_offset_segment_size"] == 4_194_304
     assert updated["parallel_very_high_offset_count_mode"] == "presieve17"
     assert changes == [
         {
             "key": "parallel_very_high_offset_segment_size",
             "old": 3_145_728,
-            "new": 1_507_328,
+            "new": 4_194_304,
             "low": 1_000_000_000_000,
             "high": 1_000_010_000_000,
             "source": "external_high_offset_confirmation",
-            "stability": "noisy",
+            "stability": "stable",
         },
         {
             "key": "parallel_very_high_offset_count_mode",
@@ -220,7 +220,7 @@ def test_build_default_updates_applies_confirmed_high_offset_confirmation() -> N
             "low": 1_000_000_000_000,
             "high": 1_000_010_000_000,
             "source": "external_high_offset_confirmation",
-            "stability": "noisy",
+            "stability": "stable",
         },
     ]
 

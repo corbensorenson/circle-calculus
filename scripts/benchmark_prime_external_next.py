@@ -355,7 +355,9 @@ def build_primesieve_next_server(args: argparse.Namespace) -> Path:
 
 def autodetect_primesieve_include_dir() -> Path | None:
     for directory in [
+        Path("/opt/homebrew/opt/primesieve/include"),
         Path("/opt/homebrew/include"),
+        Path("/usr/local/opt/primesieve/include"),
         Path("/usr/local/include"),
         Path("/usr/include"),
     ]:
@@ -371,7 +373,9 @@ def autodetect_primesieve_lib_dir() -> Path | None:
         "libprimesieve.a",
     ]
     for directory in [
+        Path("/opt/homebrew/opt/primesieve/lib"),
         Path("/opt/homebrew/lib"),
+        Path("/usr/local/opt/primesieve/lib"),
         Path("/usr/local/lib"),
         Path("/usr/lib"),
     ]:

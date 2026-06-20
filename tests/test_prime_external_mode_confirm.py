@@ -106,11 +106,20 @@ def test_fresh_sweep_command_forwards_segment_size_grid() -> None:
         Namespace(
             ranges="0:10000000",
             rounds=5,
+            warmup_rounds=1,
             circle_threads=8,
             external_threads=8,
             circle_count_modes="dynamic,segmented",
             segment_sizes="0,98304,196608",
-            require_tool=["primecount", "primesieve", "primesieve"],
+            circle_variant=["default:0,dynamic:98304"],
+            include_circle_server=True,
+            include_primesieve_count_server=True,
+            require_tool=[
+                "primecount",
+                "primesieve",
+                "primesieve",
+                "primesieve-library",
+            ],
         ),
         Path("out.csv"),
         Path("samples.csv"),
@@ -119,4 +128,10 @@ def test_fresh_sweep_command_forwards_segment_size_grid() -> None:
 
     assert "--segment-sizes" in command
     assert command[command.index("--segment-sizes") + 1] == "0,98304,196608"
-    assert command.count("--require-tool") == 2
+    assert "--warmup-rounds" in command
+    assert command[command.index("--warmup-rounds") + 1] == "1"
+    assert "--circle-variant" in command
+    assert command[command.index("--circle-variant") + 1] == "default:0,dynamic:98304"
+    assert "--include-circle-server" in command
+    assert "--include-primesieve-count-server" in command
+    assert command.count("--require-tool") == 3

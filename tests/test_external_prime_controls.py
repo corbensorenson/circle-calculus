@@ -18,6 +18,7 @@ from scripts.benchmark_prime_external_controls import (
     parse_circle_variants,
     parse_segment_size_list,
     primecount_command,
+    primesieve_count_server_measurement,
     primesieve_command,
     required_external_tools_missing,
     speedup_row,
@@ -274,11 +275,13 @@ def test_external_metadata_records_thread_policy_and_commands(monkeypatch) -> No
     )
     args = SimpleNamespace(
         rounds=5,
+        warmup_rounds=1,
         segment_size=131072,
         circle_threads=8,
         external_threads=4,
-        require_tool=["primesieve", "primecount"],
+        require_tool=["primesieve", "primecount", "primesieve-library"],
         include_circle_server=True,
+        include_primesieve_count_server=True,
     )
 
     metadata = build_run_metadata(
@@ -289,17 +292,29 @@ def test_external_metadata_records_thread_policy_and_commands(monkeypatch) -> No
         circle_prime=Path("target/release/circle-prime"),
         primesieve="/opt/bin/primesieve",
         primecount="/opt/bin/primecount",
+        primesieve_count_server=Path("target/prime-controls/primesieve-count-server"),
         row_count=6,
     )
 
     assert metadata["rounds"] == 5
+    assert metadata["warmup_rounds"] == 1
     assert metadata["row_count"] == 6
     assert metadata["interleaved"] is False
     assert metadata["include_circle_server"] is True
+    assert metadata["include_primesieve_count_server"] is True
     assert metadata["requested_segment_sizes"] == [131072]
     assert metadata["thread_policy"]["circle_requested_threads"] == 8
     assert metadata["thread_policy"]["external_requested_threads"] == 4
-    assert metadata["required_external_tools"] == ["primecount", "primesieve"]
+    assert metadata["required_external_tools"] == [
+        "primecount",
+        "primesieve",
+        "primesieve-library",
+    ]
+    assert metadata["tools"]["primesieve_count_server"]["available"] is True
+    assert (
+        metadata["tools"]["primesieve_count_server"]["method"]
+        == "primesieve_count_primes(LOW, HIGH-1)"
+    )
     assert metadata["ranges"][0] == {"low": 0, "high": 1000, "span": 1000}
     first_commands = metadata["range_commands"][0]
     assert first_commands["circle_timing"] == [
@@ -331,6 +346,9 @@ def test_external_metadata_records_thread_policy_and_commands(monkeypatch) -> No
         "/opt/bin/primecount",
         "999",
         "--threads=4",
+    ]
+    assert first_commands["primesieve_count_server"] == [
+        "target/prime-controls/primesieve-count-server"
     ]
     assert "primecount_low" not in first_commands
     assert metadata["range_commands"][1]["primecount_low"] == [
@@ -485,17 +503,59 @@ def test_required_external_tools_reports_only_missing_tools() -> None:
         ["primesieve", "primecount"],
         primesieve="/opt/bin/primesieve",
         primecount="/opt/bin/primecount",
+        primesieve_library=Path("target/prime-controls/primesieve-count-server"),
     ) == []
     assert required_external_tools_missing(
-        ["primesieve", "primecount", "primesieve"],
+        ["primesieve", "primecount", "primesieve", "primesieve-library"],
         primesieve="/opt/bin/primesieve",
         primecount=None,
-    ) == ["primecount"]
+        primesieve_library=None,
+    ) == ["primecount", "primesieve-library"]
     assert required_external_tools_missing(
-        ["primesieve", "primecount"],
+        ["primesieve", "primecount", "primesieve-library"],
         primesieve=None,
         primecount=None,
-    ) == ["primecount", "primesieve"]
+        primesieve_library=None,
+    ) == ["primecount", "primesieve", "primesieve-library"]
+
+
+def test_primesieve_count_server_measurement_uses_half_open_range(monkeypatch) -> None:
+    requests: list[tuple[int, int, int]] = []
+    closed = False
+
+    class FakePrimeRangeServerClient:
+        def __init__(self, command: list[str], label: str) -> None:
+            assert command == ["target/prime-controls/primesieve-count-server"]
+            assert label == "libprimesieve count helper"
+
+        def count(self, low: int, high: int, threads: int) -> int:
+            requests.append((low, high, threads))
+            return 168
+
+        def close(self) -> None:
+            nonlocal closed
+            closed = True
+
+    monkeypatch.setattr(
+        benchmark_prime_external_controls,
+        "PrimeRangeServerClient",
+        FakePrimeRangeServerClient,
+    )
+
+    measurement = primesieve_count_server_measurement(
+        Path("target/prime-controls/primesieve-count-server"),
+        10,
+        1000,
+        8,
+    )
+
+    assert measurement.name == "external_primesieve_count_server"
+    assert measurement.run_once() == 168
+    assert measurement.run_once() == 168
+    assert requests == [(10, 1000, 8), (10, 1000, 8)]
+    assert measurement.close is not None
+    measurement.close()
+    assert closed is True
 
 
 def test_interleaved_measurement_rotates_samples_and_summarizes_rows() -> None:
@@ -537,5 +597,53 @@ def test_interleaved_measurement_rotates_samples_and_summarizes_rows() -> None:
         "circle_prime_parallel_segmented_count_8t",
         "external_primesieve_count",
     ]
+    assert len(samples) == 4
+    assert {sample.round_index for sample in samples} == {0, 1}
+
+
+def test_interleaved_measurement_warmups_are_unrecorded() -> None:
+    calls: list[str] = []
+
+    def runner(name: str, result: int):
+        def run_once() -> int:
+            calls.append(name)
+            return result
+
+        return run_once
+
+    rows, samples = measure_interleaved(
+        [
+            Measurement(
+                name="circle_prime_parallel_segmented_count_8t",
+                low=0,
+                high=1000,
+                segment_size=32768,
+                threads=8,
+                requested_threads=8,
+                run_once=runner("circle", 168),
+            ),
+            Measurement(
+                name="external_primesieve_count",
+                low=0,
+                high=1000,
+                segment_size=0,
+                threads=8,
+                requested_threads=8,
+                run_once=runner("primesieve", 168),
+            ),
+        ],
+        rounds=2,
+        warmup_rounds=1,
+    )
+
+    assert calls == [
+        "circle",
+        "primesieve",
+        "circle",
+        "primesieve",
+        "primesieve",
+        "circle",
+    ]
+    assert [row.rounds for row in rows] == [2, 2]
     assert len(samples) == 4
     assert {sample.round_index for sample in samples} == {0, 1}

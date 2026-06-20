@@ -831,22 +831,37 @@ def summarize_external(
     ]
     all_summary = external_win_counts(speedups)
     cold_cli_summary = external_win_counts(
-        [row for row in speedups if not is_external_server_row(row)]
+        [
+            row
+            for row in speedups
+            if not is_circle_server_row(row) and not is_primesieve_count_server_baseline(row)
+        ]
     )
     server_summary = external_win_counts(
-        [row for row in speedups if is_external_server_row(row)]
+        [
+            row
+            for row in speedups
+            if is_circle_server_row(row) and not is_primesieve_count_server_baseline(row)
+        ]
+    )
+    external_server_summary = external_win_counts(
+        [row for row in speedups if is_primesieve_count_server_baseline(row)]
     )
     return {
         "speedups": speedups,
         **all_summary,
         "cold_cli": cold_cli_summary,
         "server": server_summary,
+        "external_server": external_server_summary,
         "metadata": summarize_external_metadata(metadata),
     }
 
 
 def external_win_counts(speedups: list[dict[str, Any]]) -> dict[str, int]:
     primesieve = [row for row in speedups if row["baseline"] == "external_primesieve_count"]
+    primesieve_count_server = [
+        row for row in speedups if row["baseline"] == "external_primesieve_count_server"
+    ]
     primecount = [row for row in speedups if row["baseline"] == "external_primecount_pi_diff"]
     return {
         "primesieve_wins": sum(1 for row in primesieve if row["circle_speedup"] >= 1.0),
@@ -859,11 +874,22 @@ def external_win_counts(speedups: list[dict[str, Any]]) -> dict[str, int]:
             1 for row in primecount if row["median_circle_speedup"] >= 1.0
         ),
         "primecount_rows": len(primecount),
+        "primesieve_count_server_wins": sum(
+            1 for row in primesieve_count_server if row["circle_speedup"] >= 1.0
+        ),
+        "primesieve_count_server_median_wins": sum(
+            1 for row in primesieve_count_server if row["median_circle_speedup"] >= 1.0
+        ),
+        "primesieve_count_server_rows": len(primesieve_count_server),
     }
 
 
-def is_external_server_row(row: dict[str, Any]) -> bool:
+def is_circle_server_row(row: dict[str, Any]) -> bool:
     return str(row.get("name", "")).startswith("circle_prime_server_")
+
+
+def is_primesieve_count_server_baseline(row: dict[str, Any]) -> bool:
+    return row.get("baseline") == "external_primesieve_count_server"
 
 
 def summarize_external_next(
@@ -1156,15 +1182,68 @@ def summarize_external_segment_sweep(
                 "candidates": ordered,
             }
         )
+    prefix_pi_thread_comparisons = summarize_prefix_pi_thread_comparisons(grouped)
 
     return {
         "available": bool(rows),
         "speedups": speedups,
         "best_by_range_baseline": best_by_range_baseline,
         "default_by_range_baseline": default_by_range_baseline,
+        "prefix_pi_thread_comparisons": prefix_pi_thread_comparisons,
         "candidate_spread": candidate_spread,
         "metadata": summarize_external_sweep_metadata(metadata),
     }
+
+
+def summarize_prefix_pi_thread_comparisons(
+    grouped: dict[tuple[int, int, str], list[dict[str, Any]]],
+) -> list[dict[str, Any]]:
+    comparisons = []
+    for (low, high, baseline), candidates in sorted(grouped.items()):
+        serial_candidates = [
+            row
+            for row in candidates
+            if row.get("count_mode") == "prefix-pi"
+            and row.get("circle_threads") == 1
+            and not is_adaptive_default_row(str(row["name"]))
+        ]
+        has_prefix_pi_serial = bool(serial_candidates)
+        default_candidates = [
+            row
+            for row in candidates
+            if is_adaptive_default_row(str(row["name"]))
+            and (row.get("circle_threads") or 0) > 1
+            and (
+                row.get("count_mode") == "prefix-pi"
+                or (row.get("count_mode") is None and has_prefix_pi_serial)
+            )
+        ]
+        if not serial_candidates or not default_candidates:
+            continue
+
+        serial = min(serial_candidates, key=lambda row: (row["median_ms"], row["name"]))
+        default = min(default_candidates, key=lambda row: (row["median_ms"], row["name"]))
+        thread_speedup = (
+            serial["median_ms"] / default["median_ms"]
+            if default["median_ms"] > 0.0
+            else None
+        )
+        comparisons.append(
+            {
+                "low": low,
+                "high": high,
+                "baseline": baseline,
+                "serial": serial,
+                "default": default,
+                "thread_speedup": thread_speedup,
+                "verdict": (
+                    "default_faster"
+                    if thread_speedup is not None and thread_speedup >= 1.0
+                    else "serial_faster"
+                ),
+            }
+        )
+    return comparisons
 
 
 def summarize_external_sweep_metadata(metadata: dict[str, Any] | None) -> dict[str, Any]:
@@ -1184,7 +1263,9 @@ def summarize_external_metadata(metadata: dict[str, Any] | None) -> dict[str, An
             "thread_policy": {},
             "ranges": [],
             "circle_count_modes": [],
+            "include_primesieve_count_server": False,
             "required_external_tools": [],
+            "warmup_rounds": 0,
         }
     tools = metadata.get("tools", {})
     return {
@@ -1192,9 +1273,13 @@ def summarize_external_metadata(metadata: dict[str, Any] | None) -> dict[str, An
         "started_at_utc": metadata.get("started_at_utc"),
         "finished_at_utc": metadata.get("finished_at_utc"),
         "rounds": metadata.get("rounds"),
+        "warmup_rounds": int(metadata.get("warmup_rounds") or 0),
         "row_count": metadata.get("row_count"),
         "interleaved": bool(metadata.get("interleaved")),
         "include_circle_server": bool(metadata.get("include_circle_server")),
+        "include_primesieve_count_server": bool(
+            metadata.get("include_primesieve_count_server")
+        ),
         "sample_output": metadata.get("sample_output"),
         "thread_policy": metadata.get("thread_policy", {}),
         "circle_count_modes": metadata.get("circle_count_modes", []),
@@ -1207,6 +1292,9 @@ def summarize_external_metadata(metadata: dict[str, Any] | None) -> dict[str, An
                 "available": bool(tool.get("available")),
                 "path": tool.get("path"),
                 "version": first_nonempty_line(tool.get("version")),
+                "source": tool.get("source"),
+                "method": tool.get("method"),
+                "error": tool.get("error"),
             }
             for name, tool in tools.items()
         },
@@ -1373,7 +1461,7 @@ def external_speedup_summary(
         "high": int(row["high"]),
         "span": int(row["span"]),
         "name": row["name"],
-        "count_mode": row.get("count_mode") or None,
+        "count_mode": infer_count_mode(row.get("name", ""), row.get("count_mode")),
         "segment_size": int(row["segment_size"]),
         "result": int(row["result"]),
         "rounds": int(row["rounds"]),
@@ -1817,6 +1905,8 @@ def render_markdown(report: dict[str, Any]) -> str:
             title="External Throughput",
             missing_message="No external throughput artifact was available.",
             default_label="Adaptive default scorecard:",
+            best_label="Best candidate scorecard:",
+            thread_comparison_label="Prefix-pi thread comparison:",
             spread_label="Throughput segment candidate spread:",
             include_circle_row=True,
         )
@@ -1931,9 +2021,18 @@ def render_external_markdown(summary: dict[str, Any]) -> list[str]:
     ]
     cold_summary = summary.get("cold_cli", summary)
     server_summary = summary.get("server", {})
+    external_server_summary = summary.get("external_server", {})
     lines.append(external_lane_summary_line("primesieve", "cold CLI", cold_summary))
     if server_summary.get("primesieve_rows", 0):
         lines.append(external_lane_summary_line("primesieve", "server", server_summary))
+    if external_server_summary.get("primesieve_count_server_rows", 0):
+        lines.append(
+            external_lane_summary_line(
+                "libprimesieve count server",
+                "external server",
+                external_server_summary,
+            )
+        )
     lines.append(external_lane_summary_line("primecount", "cold CLI", cold_summary))
     if server_summary.get("primecount_rows", 0):
         lines.append(external_lane_summary_line("primecount", "server", server_summary))
@@ -1973,7 +2072,12 @@ def external_lane_summary_line(
     lane_label: str,
     summary: dict[str, Any],
 ) -> str:
-    prefix = "primesieve" if baseline_label == "primesieve" else "primecount"
+    prefix_by_label = {
+        "primesieve": "primesieve",
+        "primecount": "primecount",
+        "libprimesieve count server": "primesieve_count_server",
+    }
+    prefix = prefix_by_label[baseline_label]
     wins = summary.get(f"{prefix}_wins", 0)
     rows = summary.get(f"{prefix}_rows", 0)
     median_wins = summary.get(f"{prefix}_median_wins", wins)
@@ -1992,6 +2096,18 @@ def render_external_metadata_markdown(metadata: dict[str, Any]) -> list[str]:
         path = tool.get("path") or "path unavailable"
         status = version if available else "not installed"
         lines.append(f"- `{name}`: {status} (`{path}`)")
+    primesieve_count_server = metadata.get("tools", {}).get("primesieve_count_server", {})
+    if primesieve_count_server:
+        path = primesieve_count_server.get("path") or "path unavailable"
+        method = primesieve_count_server.get("method") or "method unavailable"
+        if primesieve_count_server.get("available"):
+            lines.append(
+                "- `primesieve_count_server`: available "
+                f"(`{path}`); method `{method}`."
+            )
+        else:
+            status = primesieve_count_server.get("error") or "not built"
+            lines.append(f"- `primesieve_count_server`: {status} (`{path}`)")
     thread_policy = metadata.get("thread_policy", {})
     circle_threads = thread_policy.get("circle_requested_threads")
     external_threads = thread_policy.get("external_requested_threads")
@@ -2011,8 +2127,13 @@ def render_external_metadata_markdown(metadata: dict[str, Any]) -> list[str]:
         lines.append(f"- required external controls: {formatted}.")
     if metadata.get("interleaved"):
         lines.append("- timing policy: interleaved round-robin samples.")
+    warmup_rounds = int(metadata.get("warmup_rounds") or 0)
+    if warmup_rounds:
+        lines.append(f"- warmup: `{warmup_rounds}` unrecorded interleaved pass(es).")
     if metadata.get("include_circle_server"):
         lines.append("- Circle server rows: persistent `count-server` requests included.")
+    if metadata.get("include_primesieve_count_server"):
+        lines.append("- libprimesieve count-server rows included.")
     if metadata.get("sample_output"):
         lines.append(f"- per-round samples: `{metadata['sample_output']}`.")
     lines.append("")
@@ -2166,12 +2287,35 @@ def render_external_next_metadata_markdown(metadata: dict[str, Any]) -> list[str
     return lines
 
 
+def infer_count_mode(name: str, explicit: str | None) -> str | None:
+    explicit_mode = (explicit or "").strip()
+    if explicit_mode:
+        return explicit_mode
+
+    if "prefix_pi" in name:
+        return "prefix-pi"
+    return None
+
+
 def circle_row_label(row: dict[str, Any]) -> str:
     label = f"`{row['name']}`"
     count_mode = row.get("count_mode")
     if count_mode:
         label += f"<br>mode: `{count_mode}`"
     return label
+
+
+def external_candidate_identity(row: dict[str, Any]) -> tuple[Any, ...]:
+    return (
+        row.get("low"),
+        row.get("high"),
+        row.get("baseline"),
+        row.get("name"),
+        row.get("segment_size"),
+        row.get("circle_threads"),
+        row.get("circle_requested_threads"),
+        row.get("count_mode"),
+    )
 
 
 def is_adaptive_default_row(name: str) -> bool:
@@ -2230,6 +2374,8 @@ def render_external_segment_sweep_markdown(
     spread_label: str = "Segment candidate spread:",
     include_circle_row: bool = False,
     default_label: str | None = None,
+    best_label: str | None = None,
+    thread_comparison_label: str | None = None,
 ) -> list[str]:
     lines = [f"## {title}", ""]
     if not summary["available"]:
@@ -2274,10 +2420,44 @@ def render_external_segment_sweep_markdown(
                 + f"{row['circle_speedup']:.3f} | {row['median_circle_speedup']:.3f} | "
                 + f"{sample_stability_text(row)} | "
                 + f"{row['verdict']} |"
+        )
+        lines.append("")
+
+    if thread_comparison_label and summary.get("prefix_pi_thread_comparisons"):
+        lines.extend([thread_comparison_label, ""])
+        lines.extend(
+            [
+                "| Range | Baseline | Serial Row | Default Row | Serial ms | Default ms | Median Ratio | Verdict |",
+                "| --- | --- | --- | --- | ---: | ---: | ---: | --- |",
+            ]
+        )
+        for row in summary["prefix_pi_thread_comparisons"]:
+            serial = row["serial"]
+            default = row["default"]
+            ratio = row.get("thread_speedup")
+            ratio_text = "n/a" if ratio is None else f"{ratio:.3f}"
+            lines.append(
+                f"| [{row['low']}, {row['high']}) | `{row['baseline']}` | "
+                + f"{circle_row_label(serial)} ({thread_text(serial.get('circle_threads'), serial.get('circle_requested_threads'))}) | "
+                + f"{circle_row_label(default)} ({thread_text(default.get('circle_threads'), default.get('circle_requested_threads'))}) | "
+                + f"{serial['median_ms']:.3f} | {default['median_ms']:.3f} | "
+                + f"{ratio_text} | `{row['verdict']}` |"
             )
         lines.append("")
 
-    if summary["best_by_range_baseline"]:
+    best_rows = summary["best_by_range_baseline"]
+    if default_label and summary.get("default_by_range_baseline"):
+        default_identities = {
+            external_candidate_identity(row)
+            for row in summary["default_by_range_baseline"]
+        }
+        best_identities = {external_candidate_identity(row) for row in best_rows}
+        if default_identities == best_identities:
+            best_rows = []
+
+    if best_rows:
+        if best_label:
+            lines.extend([best_label, ""])
         if include_circle_row:
             lines.extend(
                 [
@@ -2292,7 +2472,7 @@ def render_external_segment_sweep_markdown(
                     "| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | --- | --- |",
                 ]
             )
-        for row in summary["best_by_range_baseline"]:
+        for row in best_rows:
             prefix = f"| [{row['low']}, {row['high']}) | `{row['baseline']}` | "
             if include_circle_row:
                 prefix += f"{circle_row_label(row)} | {row['segment_size']} | "

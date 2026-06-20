@@ -22,6 +22,9 @@ CIRCLE_PRIME_EXTERNAL_COMPARE_BASELINE ?= sidecars/PRIME_ENGINE/results/prime_en
 CIRCLE_PRIME_EXTERNAL_COMPARE_CANDIDATE ?= sidecars/PRIME_ENGINE/results/prime_engine_external_controls_candidate_latest.csv
 CIRCLE_PRIME_EXTERNAL_COMPARE_SAMPLES ?= sidecars/PRIME_ENGINE/results/prime_engine_external_controls_candidate_samples_latest.csv
 CIRCLE_PRIME_EXTERNAL_COMPARE_METADATA ?= sidecars/PRIME_ENGINE/results/prime_engine_external_controls_candidate_latest.json
+CIRCLE_PRIME_COMPETITIVE_SHORT_ROUNDS ?= 5
+CIRCLE_PRIME_COMPETITIVE_SHORT_WARMUP_ROUNDS ?= 1
+CIRCLE_PRIME_COMPETITIVE_SHORT_RANGES ?= 0:10000000,0:100000000,1000000000:2000000000,1000000000000:1000010000000
 CIRCLE_PRIME_EXTERNAL_THROUGHPUT_COMPARE_BASELINE ?= sidecars/PRIME_ENGINE/results/prime_engine_external_throughput_latest.csv
 CIRCLE_PRIME_EXTERNAL_THROUGHPUT_COMPARE_CANDIDATE ?= sidecars/PRIME_ENGINE/results/prime_engine_external_throughput_candidate_latest.csv
 CIRCLE_PRIME_EXTERNAL_THROUGHPUT_COMPARE_SAMPLES ?= sidecars/PRIME_ENGINE/results/prime_engine_external_throughput_candidate_samples_latest.csv
@@ -46,12 +49,21 @@ CIRCLE_PRIME_HIGH_OFFSET_TIGHT_COUNT_MODES ?= segmented,presieve13,presieve17
 CIRCLE_PRIME_HIGH_OFFSET_TIGHT_OUTPUT ?= sidecars/PRIME_ENGINE/results/prime_engine_high_offset_tight_latest.csv
 CIRCLE_PRIME_HIGH_OFFSET_TIGHT_SAMPLES ?= sidecars/PRIME_ENGINE/results/prime_engine_high_offset_tight_samples_latest.csv
 CIRCLE_PRIME_HIGH_OFFSET_TIGHT_METADATA ?= sidecars/PRIME_ENGINE/results/prime_engine_high_offset_tight_latest.json
+CIRCLE_PRIME_HIGH_OFFSET_THREAD_SWEEP_ROUNDS ?= 11
+CIRCLE_PRIME_HIGH_OFFSET_THREAD_SWEEP_WARMUP_ROUNDS ?= 2
+CIRCLE_PRIME_HIGH_OFFSET_THREAD_SWEEP_VARIANTS ?= presieve13:1507328:1,presieve13:1507328:2,presieve13:1507328:3,presieve13:1507328:4,presieve13:1507328:5,presieve13:1507328:6,presieve13:1507328:7,presieve13:1507328:8,presieve13:2097152:4,presieve13:3145728:3,presieve13:4194304:3,presieve17:1507328:7
+CIRCLE_PRIME_HIGH_OFFSET_THREAD_SWEEP_OUTPUT ?= sidecars/PRIME_ENGINE/results/prime_engine_high_offset_thread_sweep_latest.csv
+CIRCLE_PRIME_HIGH_OFFSET_THREAD_SWEEP_SAMPLES ?= sidecars/PRIME_ENGINE/results/prime_engine_high_offset_thread_sweep_samples_latest.csv
+CIRCLE_PRIME_HIGH_OFFSET_THREAD_SWEEP_METADATA ?= sidecars/PRIME_ENGINE/results/prime_engine_high_offset_thread_sweep_latest.json
 CIRCLE_PRIME_HIGH_OFFSET_HOT_COLD_ROUNDS ?= 7
 CIRCLE_PRIME_HIGH_OFFSET_HOT_COLD_OUTPUT ?= sidecars/PRIME_ENGINE/results/prime_engine_high_offset_hot_cold_latest.csv
-CIRCLE_PRIME_HIGH_OFFSET_CONFIRM_RUNS ?= 3
-CIRCLE_PRIME_HIGH_OFFSET_CONFIRM_ROUNDS ?= 5
+CIRCLE_PRIME_HIGH_OFFSET_CONFIRM_RUNS ?= 5
+CIRCLE_PRIME_HIGH_OFFSET_CONFIRM_ROUNDS ?= 9
+CIRCLE_PRIME_HIGH_OFFSET_CONFIRM_WARMUP_ROUNDS ?= 1
 CIRCLE_PRIME_HIGH_OFFSET_CONFIRM_MIN ?= 2
 CIRCLE_PRIME_HIGH_OFFSET_CONFIRM_FAIL ?=
+CIRCLE_PRIME_HIGH_OFFSET_CONFIRM_BASELINE_PRIORITY ?= external_primesieve_count_server,external_primesieve_count,external_primecount_pi_diff
+CIRCLE_PRIME_HIGH_OFFSET_CONFIRM_CIRCLE_VARIANTS ?= default:0,presieve13:1310720,presieve13:1441792,presieve13:1507328,presieve17:1507328,presieve17:4194304,balanced:1507328
 CIRCLE_PRIME_HIGH_OFFSET_CONFIRM_OUTPUT ?= sidecars/PRIME_ENGINE/results/prime_engine_high_offset_confirmation_latest.json
 CIRCLE_PRIME_HIGH_OFFSET_CONFIRM_MD ?= sidecars/PRIME_ENGINE/results/prime_engine_high_offset_confirmation_latest.md
 CIRCLE_PRIME_EXTERNAL_MODE_CONFIRM_RUNS ?= 3
@@ -110,7 +122,7 @@ ifneq ($(strip $(CIRCLE_PRIME_EXTERNAL_NEXT_COMPARE_BASELINES)),)
 CIRCLE_PRIME_EXTERNAL_NEXT_COMPARE_ARGS += --baselines $(CIRCLE_PRIME_EXTERNAL_NEXT_COMPARE_BASELINES)
 endif
 CIRCLE_PRIME_EXTERNAL_MODE_CONFIRM_ARGS := --runs $(CIRCLE_PRIME_EXTERNAL_MODE_CONFIRM_RUNS) --rounds 5 --ranges $(CIRCLE_PRIME_EXTERNAL_COMPARE_RANGES) --circle-threads $(CIRCLE_PRIME_THREADS) --external-threads $(EXTERNAL_PRIME_THREADS) --segment-sizes $(CIRCLE_PRIME_EXTERNAL_MODE_CONFIRM_SEGMENT_SIZES) --min-confirmations $(CIRCLE_PRIME_EXTERNAL_MODE_CONFIRM_MIN)
-CIRCLE_PRIME_HIGH_OFFSET_CONFIRM_ARGS := --runs $(CIRCLE_PRIME_HIGH_OFFSET_CONFIRM_RUNS) --rounds $(CIRCLE_PRIME_HIGH_OFFSET_CONFIRM_ROUNDS) --ranges $(CIRCLE_PRIME_HIGH_OFFSET_COMPARE_RANGES) --circle-threads $(CIRCLE_PRIME_THREADS) --external-threads $(EXTERNAL_PRIME_THREADS) --segment-sizes $(CIRCLE_PRIME_HIGH_OFFSET_QUICK_SEGMENT_SIZES) --circle-count-modes $(CIRCLE_PRIME_HIGH_OFFSET_QUICK_COUNT_MODES) --min-confirmations $(CIRCLE_PRIME_HIGH_OFFSET_CONFIRM_MIN) --output-json $(CIRCLE_PRIME_HIGH_OFFSET_CONFIRM_OUTPUT) --output-md $(CIRCLE_PRIME_HIGH_OFFSET_CONFIRM_MD)
+CIRCLE_PRIME_HIGH_OFFSET_CONFIRM_ARGS := --runs $(CIRCLE_PRIME_HIGH_OFFSET_CONFIRM_RUNS) --rounds $(CIRCLE_PRIME_HIGH_OFFSET_CONFIRM_ROUNDS) --warmup-rounds $(CIRCLE_PRIME_HIGH_OFFSET_CONFIRM_WARMUP_ROUNDS) --ranges $(CIRCLE_PRIME_HIGH_OFFSET_COMPARE_RANGES) --circle-threads $(CIRCLE_PRIME_THREADS) --external-threads $(EXTERNAL_PRIME_THREADS) --segment-sizes $(CIRCLE_PRIME_HIGH_OFFSET_QUICK_SEGMENT_SIZES) --circle-count-modes $(CIRCLE_PRIME_HIGH_OFFSET_QUICK_COUNT_MODES) --circle-variant $(CIRCLE_PRIME_HIGH_OFFSET_CONFIRM_CIRCLE_VARIANTS) --include-circle-server --include-primesieve-count-server --require-tool primesieve-library --baseline-priority $(CIRCLE_PRIME_HIGH_OFFSET_CONFIRM_BASELINE_PRIORITY) --min-confirmations $(CIRCLE_PRIME_HIGH_OFFSET_CONFIRM_MIN) --output-json $(CIRCLE_PRIME_HIGH_OFFSET_CONFIRM_OUTPUT) --output-md $(CIRCLE_PRIME_HIGH_OFFSET_CONFIRM_MD)
 ifneq ($(strip $(CIRCLE_PRIME_EXTERNAL_MODE_CONFIRM_FAIL)),)
 CIRCLE_PRIME_EXTERNAL_MODE_CONFIRM_ARGS += --fail-on-unconfirmed
 endif
@@ -124,7 +136,7 @@ ifneq ($(strip $(TARGETED_FILES)),)
 TARGETED_ARGS += --files $(TARGETED_FILES)
 endif
 
-.PHONY: check sourcecheck targeted-check targeted-check-list targeted-check-json targeted-check-full lean sidecarlean test manifest leannamecheck dictionary papermanifest paperlinks papersources researchmanifests capabilityshowcase claimlanguage phase4targets phase5targets phase6targets phase7targets phase8targets applicationguardrails glyphfixtures dimensioncheck dimensionindex dimensionimports dimensionmanifests dimensionpaperlinks nofake proofdepthaudit examples prime-engine-check prime-engine-benchmark prime-engine-benchmark-record prime-engine-benchmark-compare prime-engine-external-correctness prime-engine-external-controls prime-engine-external-controls-parallel prime-engine-external-controls-compare prime-engine-high-offset-quick prime-engine-high-offset-tight prime-engine-high-offset-hot-cold prime-engine-high-offset-confirm prime-engine-high-offset-compare prime-engine-external-next prime-engine-external-next-compare prime-engine-external-throughput prime-engine-external-throughput-compare prime-engine-external-segment-sweep prime-engine-external-mode-sweep prime-engine-external-mode-confirm prime-engine-calibrate-defaults prime-engine-calibrate-defaults-check prime-engine-tune prime-engine-tune-night prime-engine-report prime-engine-overnight prime-engine-overnight-improve circle-ai-contracts circle-ai-contracts-check circle-ai-contracts-ready recurrence-schedule-certify strided-candidate-fanout-certify cyclic-memory-certify multicoil-phase-feature-certify seed-rule-certify theseus-ai-contracts theseus-ai-feedback site-data sitenavcontract capabilitycontracts sitecheck quarto-dirs site-render site-render-check site-preview living-book-check
+.PHONY: check sourcecheck targeted-check targeted-check-list targeted-check-json targeted-check-full lean sidecarlean test manifest leannamecheck dictionary papermanifest paperlinks papersources researchmanifests capabilityshowcase claimlanguage phase4targets phase5targets phase6targets phase7targets phase8targets applicationguardrails glyphfixtures dimensioncheck dimensionindex dimensionimports dimensionmanifests dimensionpaperlinks nofake proofdepthaudit examples prime-engine-check prime-engine-benchmark prime-engine-benchmark-record prime-engine-benchmark-compare prime-engine-external-correctness prime-engine-external-controls prime-engine-external-controls-parallel prime-engine-external-controls-compare prime-engine-competitive-short prime-engine-high-offset-quick prime-engine-high-offset-tight prime-engine-high-offset-thread-sweep prime-engine-high-offset-hot-cold prime-engine-high-offset-confirm prime-engine-high-offset-compare prime-engine-external-next prime-engine-external-next-compare prime-engine-external-throughput prime-engine-external-throughput-compare prime-engine-external-segment-sweep prime-engine-external-mode-sweep prime-engine-external-mode-confirm prime-engine-calibrate-defaults prime-engine-calibrate-defaults-check prime-engine-tune prime-engine-tune-night prime-engine-report prime-engine-overnight prime-engine-overnight-improve circle-ai-contracts circle-ai-contracts-check circle-ai-contracts-ready recurrence-schedule-certify strided-candidate-fanout-certify cyclic-memory-certify multicoil-phase-feature-certify seed-rule-certify theseus-ai-contracts theseus-ai-feedback site-data sitenavcontract capabilitycontracts sitecheck quarto-dirs site-render site-render-check site-preview living-book-check
 
 check: lean sourcecheck
 
@@ -243,11 +255,15 @@ prime-engine-external-controls:
 	python scripts/benchmark_prime_external_controls.py --rounds 7 --interleaved --require-tool primesieve --require-tool primecount --circle-count-modes default --output sidecars/PRIME_ENGINE/results/prime_engine_external_controls_latest.csv --sample-output sidecars/PRIME_ENGINE/results/prime_engine_external_controls_samples_latest.csv --metadata-output sidecars/PRIME_ENGINE/results/prime_engine_external_controls_latest.json
 
 prime-engine-external-controls-parallel:
-	python scripts/benchmark_prime_external_controls.py --rounds 7 --interleaved --include-circle-server --require-tool primesieve --require-tool primecount --circle-threads $(CIRCLE_PRIME_THREADS) --external-threads $(EXTERNAL_PRIME_THREADS) --circle-count-modes default --output sidecars/PRIME_ENGINE/results/prime_engine_external_controls_parallel_latest.csv --sample-output sidecars/PRIME_ENGINE/results/prime_engine_external_controls_parallel_samples_latest.csv --metadata-output sidecars/PRIME_ENGINE/results/prime_engine_external_controls_parallel_latest.json
+	python scripts/benchmark_prime_external_controls.py --rounds 7 --interleaved --include-circle-server --include-primesieve-count-server --require-tool primesieve --require-tool primecount --circle-threads $(CIRCLE_PRIME_THREADS) --external-threads $(EXTERNAL_PRIME_THREADS) --circle-count-modes default --output sidecars/PRIME_ENGINE/results/prime_engine_external_controls_parallel_latest.csv --sample-output sidecars/PRIME_ENGINE/results/prime_engine_external_controls_parallel_samples_latest.csv --metadata-output sidecars/PRIME_ENGINE/results/prime_engine_external_controls_parallel_latest.json
 
 prime-engine-external-controls-compare:
 	python scripts/benchmark_prime_external_controls.py --ranges $(CIRCLE_PRIME_EXTERNAL_COMPARE_RANGES) --rounds $(CIRCLE_PRIME_EXTERNAL_COMPARE_ROUNDS) --interleaved --include-circle-server --require-tool primesieve --require-tool primecount --circle-threads $(CIRCLE_PRIME_THREADS) --external-threads $(EXTERNAL_PRIME_THREADS) --circle-count-modes default --output $(CIRCLE_PRIME_EXTERNAL_COMPARE_CANDIDATE) --sample-output $(CIRCLE_PRIME_EXTERNAL_COMPARE_SAMPLES) --metadata-output $(CIRCLE_PRIME_EXTERNAL_COMPARE_METADATA)
 	python scripts/compare_prime_external_controls.py $(CIRCLE_PRIME_EXTERNAL_COMPARE_CANDIDATE) $(CIRCLE_PRIME_EXTERNAL_COMPARE_ARGS)
+
+prime-engine-competitive-short:
+	python scripts/benchmark_prime_external_controls.py --ranges $(CIRCLE_PRIME_COMPETITIVE_SHORT_RANGES) --rounds $(CIRCLE_PRIME_COMPETITIVE_SHORT_ROUNDS) --warmup-rounds $(CIRCLE_PRIME_COMPETITIVE_SHORT_WARMUP_ROUNDS) --interleaved --include-circle-server --include-primesieve-count-server --require-tool primesieve --require-tool primecount --require-tool primesieve-library --circle-threads $(CIRCLE_PRIME_THREADS) --external-threads $(EXTERNAL_PRIME_THREADS) --circle-count-modes default --output sidecars/PRIME_ENGINE/results/prime_engine_external_controls_parallel_latest.csv --sample-output sidecars/PRIME_ENGINE/results/prime_engine_external_controls_parallel_samples_latest.csv --metadata-output sidecars/PRIME_ENGINE/results/prime_engine_external_controls_parallel_latest.json
+	$(MAKE) prime-engine-report
 
 prime-engine-high-offset-compare:
 	python scripts/benchmark_prime_external_controls.py --ranges $(CIRCLE_PRIME_HIGH_OFFSET_COMPARE_RANGES) --rounds $(CIRCLE_PRIME_HIGH_OFFSET_COMPARE_ROUNDS) --interleaved --require-tool primesieve --require-tool primecount --circle-threads $(CIRCLE_PRIME_THREADS) --external-threads $(EXTERNAL_PRIME_THREADS) --segment-sizes $(CIRCLE_PRIME_HIGH_OFFSET_COMPARE_SEGMENT_SIZES) --circle-count-modes $(CIRCLE_PRIME_HIGH_OFFSET_COMPARE_COUNT_MODES) --output $(CIRCLE_PRIME_HIGH_OFFSET_COMPARE_OUTPUT) --sample-output $(CIRCLE_PRIME_HIGH_OFFSET_COMPARE_SAMPLES) --metadata-output $(CIRCLE_PRIME_HIGH_OFFSET_COMPARE_METADATA)
@@ -257,6 +273,9 @@ prime-engine-high-offset-quick:
 
 prime-engine-high-offset-tight:
 	python scripts/benchmark_prime_external_controls.py --ranges $(CIRCLE_PRIME_HIGH_OFFSET_COMPARE_RANGES) --rounds $(CIRCLE_PRIME_HIGH_OFFSET_TIGHT_ROUNDS) --interleaved --require-tool primesieve --require-tool primecount --circle-threads $(CIRCLE_PRIME_THREADS) --external-threads $(EXTERNAL_PRIME_THREADS) --segment-sizes $(CIRCLE_PRIME_HIGH_OFFSET_TIGHT_SEGMENT_SIZES) --circle-count-modes $(CIRCLE_PRIME_HIGH_OFFSET_TIGHT_COUNT_MODES) --output $(CIRCLE_PRIME_HIGH_OFFSET_TIGHT_OUTPUT) --sample-output $(CIRCLE_PRIME_HIGH_OFFSET_TIGHT_SAMPLES) --metadata-output $(CIRCLE_PRIME_HIGH_OFFSET_TIGHT_METADATA)
+
+prime-engine-high-offset-thread-sweep:
+	python scripts/benchmark_prime_external_controls.py --ranges $(CIRCLE_PRIME_HIGH_OFFSET_COMPARE_RANGES) --rounds $(CIRCLE_PRIME_HIGH_OFFSET_THREAD_SWEEP_ROUNDS) --warmup-rounds $(CIRCLE_PRIME_HIGH_OFFSET_THREAD_SWEEP_WARMUP_ROUNDS) --interleaved --include-circle-server --include-primesieve-count-server --require-tool primesieve-library --circle-threads $(CIRCLE_PRIME_THREADS) --external-threads $(EXTERNAL_PRIME_THREADS) --circle-variant $(CIRCLE_PRIME_HIGH_OFFSET_THREAD_SWEEP_VARIANTS) --output $(CIRCLE_PRIME_HIGH_OFFSET_THREAD_SWEEP_OUTPUT) --sample-output $(CIRCLE_PRIME_HIGH_OFFSET_THREAD_SWEEP_SAMPLES) --metadata-output $(CIRCLE_PRIME_HIGH_OFFSET_THREAD_SWEEP_METADATA)
 
 prime-engine-high-offset-hot-cold:
 	mkdir -p sidecars/PRIME_ENGINE/results

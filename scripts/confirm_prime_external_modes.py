@@ -80,6 +80,12 @@ def main() -> int:
         help="Run this many fresh external mode sweeps before confirmation.",
     )
     parser.add_argument("--rounds", type=int, default=5)
+    parser.add_argument(
+        "--warmup-rounds",
+        type=int,
+        default=0,
+        help="Unrecorded warmup passes forwarded to fresh benchmark runs.",
+    )
     parser.add_argument("--ranges", default=DEFAULT_RANGES)
     parser.add_argument("--circle-threads", type=int, default=8)
     parser.add_argument("--external-threads", type=int, default=8)
@@ -93,8 +99,28 @@ def main() -> int:
         ),
     )
     parser.add_argument(
+        "--circle-variant",
+        action="append",
+        default=[],
+        metavar="MODE:SEGMENT_SIZE[:THREADS]",
+        help=(
+            "Exact Circle variant to benchmark in each fresh run. Repeat or "
+            "comma-separate values to avoid a noisy mode/segment cross product."
+        ),
+    )
+    parser.add_argument(
+        "--include-circle-server",
+        action="store_true",
+        help="Also benchmark persistent circle-prime count-server rows.",
+    )
+    parser.add_argument(
+        "--include-primesieve-count-server",
+        action="store_true",
+        help="Also benchmark the persistent libprimesieve count helper.",
+    )
+    parser.add_argument(
         "--require-tool",
-        choices=("primesieve", "primecount"),
+        choices=("primesieve", "primecount", "primesieve-library"),
         action="append",
         default=["primesieve", "primecount"],
     )
@@ -132,12 +158,18 @@ def main() -> int:
         parser.error("--runs must be nonnegative")
     if args.rounds <= 0:
         parser.error("--rounds must be positive")
+    if args.warmup_rounds < 0:
+        parser.error("--warmup-rounds must be nonnegative")
     if args.circle_threads <= 0:
         parser.error("--circle-threads must be positive")
     if args.external_threads < 0:
         parser.error("--external-threads must be nonnegative")
     if args.min_confirmations <= 0:
         parser.error("--min-confirmations must be positive")
+    if (
+        args.include_circle_server or args.include_primesieve_count_server
+    ) and args.rounds <= 0:
+        parser.error("--rounds must be positive")
     if args.metadata_input and len(args.metadata_input) != len(args.input):
         parser.error("--metadata-input must be repeated once per --input")
 
@@ -215,6 +247,8 @@ def fresh_sweep_command(
         args.ranges,
         "--rounds",
         str(args.rounds),
+        "--warmup-rounds",
+        str(args.warmup_rounds),
         "--interleaved",
         "--circle-threads",
         str(args.circle_threads),
@@ -231,6 +265,12 @@ def fresh_sweep_command(
         "--metadata-output",
         str(metadata_path),
     ]
+    for variant in getattr(args, "circle_variant", []) or []:
+        command.extend(["--circle-variant", variant])
+    if getattr(args, "include_circle_server", False):
+        command.append("--include-circle-server")
+    if getattr(args, "include_primesieve_count_server", False):
+        command.append("--include-primesieve-count-server")
     for tool in sorted(set(args.require_tool)):
         command.extend(["--require-tool", tool])
     return command
