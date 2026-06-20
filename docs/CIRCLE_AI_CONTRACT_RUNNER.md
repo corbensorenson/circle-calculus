@@ -50,6 +50,10 @@ Add `--format json` for a machine-readable receipt, `--json-out PATH` to write
 one to disk, and `--request-out PATH` to save the exact versioned request JSON
 used by the run.
 
+For CI gates, add `--require-status STATUS` and/or `--require-passed`. The
+runner still prints or writes the receipt, then exits nonzero if the emitted
+receipt does not match the required status or if `request_passed` is not `true`.
+
 For standard RoPE model configs, `--model-config` infers `head_dim` from
 `head_dim` or `hidden_size / num_attention_heads`, `base` from `rope_theta`
 when present, and `context` from `max_position_embeddings` or related context
@@ -79,7 +83,9 @@ Run it with:
 python scripts/circle_ai_certify.py request \
   --request-json path/to/request.json \
   --format json \
-  --json-out path/to/receipt.json
+  --json-out path/to/receipt.json \
+  --require-status proved \
+  --require-passed
 ```
 
 Preflight a request file without issuing a receipt:

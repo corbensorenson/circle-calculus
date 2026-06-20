@@ -24,6 +24,15 @@ from circle_math.applications import (  # noqa: E402
 )
 
 
+RECEIPT_STATUS_VALUES = (
+    "proved",
+    "impossible",
+    "undecided",
+    "numerical_only",
+    "outside_scope",
+)
+
+
 def parse_tokens(raw: str) -> tuple[int, ...]:
     if not raw.strip():
         return ()
@@ -66,6 +75,21 @@ def add_common_options(parser: argparse.ArgumentParser) -> None:
             "Optional generated contract-pack path. Defaults to building the "
             "pack in memory from repository sources."
         ),
+    )
+    parser.add_argument(
+        "--require-status",
+        action="append",
+        choices=RECEIPT_STATUS_VALUES,
+        default=[],
+        help=(
+            "Require the emitted receipt status to match this value. May be "
+            "passed more than once to allow a small set."
+        ),
+    )
+    parser.add_argument(
+        "--require-passed",
+        action="store_true",
+        help="Exit nonzero unless the emitted receipt has request_passed=true.",
     )
 
 
@@ -257,12 +281,33 @@ def write_json(path: Path, payload: dict[str, Any]) -> None:
     path.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
 
 
+def _receipt_gate_failures(receipt: dict[str, Any], args: argparse.Namespace) -> list[str]:
+    failures: list[str] = []
+    if args.require_status and receipt.get("status") not in set(args.require_status):
+        allowed = ", ".join(args.require_status)
+        failures.append(
+            f"receipt status {receipt.get('status')!r} did not match required "
+            f"status set: {allowed}"
+        )
+    if args.require_passed and receipt.get("request_passed") is not True:
+        failures.append(
+            "receipt request_passed was not true "
+            f"(got {receipt.get('request_passed')!r})"
+        )
+    return failures
+
+
 def main() -> int:
     args = parse_args()
     if args.kind == "request":
         if args.request_out is not None:
             write_json(args.request_out, _load_request_json(args.request_json))
         if args.validate_only:
+            if args.require_status or args.require_passed:
+                raise SystemExit(
+                    "--require-status and --require-passed require a receipt; "
+                    "omit --validate-only"
+                )
             report = _request_validation_report(args.request_json)
             if args.json_out is not None:
                 write_json(args.json_out, report)
@@ -300,7 +345,10 @@ def main() -> int:
     else:
         for line in receipt_summary_lines(receipt):
             print(line)
-    return 0
+    gate_failures = _receipt_gate_failures(receipt, args)
+    for failure in gate_failures:
+        print(f"receipt_gate_failure={failure}", file=sys.stderr)
+    return 0 if not gate_failures else 1
 
 
 if __name__ == "__main__":

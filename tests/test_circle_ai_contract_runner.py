@@ -723,6 +723,64 @@ def test_circle_ai_certify_cli_accepts_request_json(tmp_path: Path) -> None:
     )
 
 
+def test_circle_ai_certify_cli_receipt_gate_accepts_passing_receipt() -> None:
+    result = subprocess.run(
+        [
+            sys.executable,
+            str(SCRIPT),
+            "rope",
+            "--context",
+            "131072",
+            "--requested-margin",
+            "1/328459",
+            "--format",
+            "json",
+            "--require-status",
+            "proved",
+            "--require-passed",
+        ],
+        cwd=ROOT,
+        check=True,
+        text=True,
+        capture_output=True,
+    )
+
+    payload = json.loads(result.stdout)
+    assert payload["status"] == "proved"
+    assert payload["request_passed"] is True
+    assert result.stderr == ""
+
+
+def test_circle_ai_certify_cli_receipt_gate_rejects_failed_request() -> None:
+    result = subprocess.run(
+        [
+            sys.executable,
+            str(SCRIPT),
+            "rope",
+            "--context",
+            "1000",
+            "--requested-margin",
+            "1/999",
+            "--format",
+            "json",
+            "--require-status",
+            "impossible",
+            "--require-passed",
+        ],
+        cwd=ROOT,
+        check=False,
+        text=True,
+        capture_output=True,
+    )
+
+    payload = json.loads(result.stdout)
+    assert result.returncode == 1
+    assert payload["status"] == "impossible"
+    assert payload["request_passed"] is False
+    assert "receipt_gate_failure=" in result.stderr
+    assert "request_passed was not true" in result.stderr
+
+
 def test_circle_ai_certify_cli_validates_request_without_receipt(
     tmp_path: Path,
 ) -> None:
@@ -773,6 +831,48 @@ def test_circle_ai_certify_cli_validates_request_without_receipt(
         "failure_count": 0,
         "failures": [],
     }
+
+
+def test_circle_ai_certify_cli_validate_only_rejects_receipt_gate_options(
+    tmp_path: Path,
+) -> None:
+    request_path = tmp_path / "sparse_request.json"
+    request_path.write_text(
+        json.dumps(
+            {
+                "schema_id": "circle_calculus.ai_contract_request.v0",
+                "kind": "sparse-attention",
+                "parameters": {
+                    "context": 32,
+                    "strides": [5, 11, 17],
+                    "path_length": 16,
+                    "local_window": 9,
+                },
+            }
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+
+    result = subprocess.run(
+        [
+            sys.executable,
+            str(SCRIPT),
+            "request",
+            "--request-json",
+            str(request_path),
+            "--validate-only",
+            "--require-status",
+            "proved",
+        ],
+        cwd=ROOT,
+        check=False,
+        text=True,
+        capture_output=True,
+    )
+
+    assert result.returncode == 1
+    assert "require a receipt" in result.stderr
 
 
 def test_circle_ai_certify_cli_validate_only_rejects_bad_request(

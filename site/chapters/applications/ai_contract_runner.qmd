@@ -86,7 +86,9 @@ python scripts/circle_ai_certify.py rope \
   --requested-margin 1/328459 \
   --format json \
   --request-out reports/rope_request.json \
-  --json-out reports/rope_receipt.json
+  --json-out reports/rope_receipt.json \
+  --require-status proved \
+  --require-passed
 ```
 
 The importer reads `head_dim` or `hidden_size / num_attention_heads`, `rope_theta`
@@ -96,6 +98,8 @@ rejected because the current receipt does not prove scaled-RoPE semantics.
 The saved request is the exact versioned Circle request object used to produce
 the receipt, so downstream tools can pin it before rerunning or auditing the
 certificate.
+The `--require-*` flags are CI gates: the receipt is still printed or written,
+then the command exits nonzero if the requested status/pass policy is not met.
 
 Expected shape:
 
@@ -142,7 +146,8 @@ python scripts/circle_ai_certify.py sparse-attention \
   --local-window 4 \
   --format json \
   --request-out reports/sparse_attention_request.json \
-  --json-out reports/sparse_attention_receipt.json
+  --json-out reports/sparse_attention_receipt.json \
+  --require-status proved
 ```
 
 For a project that already stores configs as files, use the request schema:
