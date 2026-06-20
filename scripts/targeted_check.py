@@ -620,6 +620,17 @@ def plan_for_files(files: Iterable[str], *, full: bool = False) -> list[Check]:
                     elif "Transformer" in path:
                         contract_kind = "sparse_attention_coverage"
                 if contract_kind is not None:
+                    if contract_kind == "rope_position_distinguishability":
+                        add(
+                            checks,
+                            seen,
+                            "RoPE certifier tests",
+                            pytest("tests/test_rope_certifier.py"),
+                            (
+                                f"{path} changes RoPE proof metadata or theorem "
+                                "trails used by generated preset result sidecars"
+                            ),
+                        )
                     add_circle_ai_contract_kind_checks(
                         checks,
                         seen,

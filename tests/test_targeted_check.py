@@ -194,6 +194,7 @@ def test_application_lean_change_runs_local_lean_and_guardrails() -> None:
     assert ("lake", "env", "lean", "Circle/Applications/RoPECertifier.lean") not in commands
     assert ("lake", "build", "Circle.Applications.RoPECertifier") in commands
     assert ("lake", "build", "Circle") in commands
+    assert contains_command(commands, "pytest", "tests/test_rope_certifier.py")
     assert contains_command(commands, "scripts/check_manifest_lean_names.py")
     assert contains_command(commands, "scripts/check_application_guardrails.py")
     assert contains_command(commands, "scripts/check_proof_depth_audit.py", "--fail-on-review-required")
@@ -205,6 +206,7 @@ def test_rope_frontier_lean_change_runs_rope_contract_checks() -> None:
 
     assert ("lake", "build", "Circle.Applications.RoPEFrontier") in commands
     assert ("lake", "build", "Circle") in commands
+    assert contains_command(commands, "pytest", "tests/test_rope_certifier.py")
     assert contains_command(commands, "scripts/check_application_guardrails.py")
     assert_kind_contract_checks(commands, "rope_position_distinguishability")
     assert contains_command(
