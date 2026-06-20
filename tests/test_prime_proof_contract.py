@@ -6,8 +6,10 @@ from scripts.check_prime_proof_contract import (
     EXPECTED_LEAN_MODULE,
     EXPECTED_RUST_DOMAIN,
     EXPECTED_THEOREM_IDS,
+    LeanSourceIndex,
     check_contract_against_manifest,
     compare_contracts,
+    read_line_server_contract_field,
 )
 
 
@@ -42,6 +44,58 @@ def test_contract_matches_manifest() -> None:
     check_contract_against_manifest(contract(), manifest_by_id(), "test")
 
 
+def test_contract_matches_manifest_and_lean_source(tmp_path) -> None:
+    module_path = tmp_path / "Circle" / "Core" / "Horizon.lean"
+    module_path.parent.mkdir(parents=True)
+    module_path.write_text(
+        "\n".join(
+            [
+                "namespace Circle",
+                "theorem primitiveHorizonContained_iff_dvd := by trivial",
+                "theorem primeHorizon_iff_no_smaller_contained := by trivial",
+                "theorem primeHorizon_iff_no_sqrt_contained := by trivial",
+                "theorem primeHorizon_of_no_sqrt_contained := by trivial",
+                "theorem not_primeHorizon_has_sqrt_contained := by trivial",
+                "end Circle",
+                "",
+            ]
+        )
+    )
+
+    check_contract_against_manifest(
+        contract(),
+        manifest_by_id(),
+        "test",
+        LeanSourceIndex(tmp_path),
+    )
+
+
+def test_contract_rejects_missing_lean_declaration(tmp_path) -> None:
+    module_path = tmp_path / "Circle" / "Core" / "Horizon.lean"
+    module_path.parent.mkdir(parents=True)
+    module_path.write_text(
+        "\n".join(
+            [
+                "namespace Circle",
+                "theorem primitiveHorizonContained_iff_dvd := by trivial",
+                "theorem primeHorizon_iff_no_smaller_contained := by trivial",
+                "theorem primeHorizon_iff_no_sqrt_contained := by trivial",
+                "theorem primeHorizon_of_no_sqrt_contained := by trivial",
+                "end Circle",
+                "",
+            ]
+        )
+    )
+
+    with pytest.raises(AssertionError, match="Lean declaration missing"):
+        check_contract_against_manifest(
+            contract(),
+            manifest_by_id(),
+            "test",
+            LeanSourceIndex(tmp_path),
+        )
+
+
 def test_contract_rejects_manifest_lean_name_drift() -> None:
     manifest = manifest_by_id()
     manifest["CC-T0075"] = {
@@ -66,3 +120,26 @@ def test_compare_contracts_rejects_per_command_drift() -> None:
 
     with pytest.raises(AssertionError, match="differs from reference"):
         compare_contracts(contract(), actual, "range_count")
+
+
+def test_read_line_server_contract_field_reads_first_json_response(monkeypatch) -> None:
+    class Completed:
+        stdout = (
+            '{"count":168,"proof_contract":{"name":"prime_horizon_sqrt_containment"},'
+            '"count_proof_contract":{"name":"prime_horizon_range_count_spec"}}\n'
+        )
+
+    def fake_run(command, **kwargs):
+        assert command[-1] == "--json"
+        assert kwargs["input"] == "0 1000\nquit\n"
+        return Completed()
+
+    monkeypatch.setattr("scripts.check_prime_proof_contract.subprocess.run", fake_run)
+
+    assert read_line_server_contract_field(
+        ["circle-prime", "count-server", "--json"],
+        "0 1000\nquit\n",
+        "count_proof_contract",
+    ) == {
+        "name": "prime_horizon_range_count_spec"
+    }

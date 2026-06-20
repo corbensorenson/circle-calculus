@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 import subprocess
 import sys
 from pathlib import Path
@@ -39,14 +40,15 @@ def main() -> int:
     if not args.binary.exists():
         raise FileNotFoundError(f"circle-prime binary not found: {args.binary}")
     manifest = load_theorem_manifest(args.manifest)
+    lean_sources = LeanSourceIndex(ROOT)
     contracts = collect_cli_contracts(args.binary)
     reference = contracts[0]
     for label, contract in contracts:
         compare_contracts(reference[1], contract, label)
-        check_contract_against_manifest(contract, manifest, label)
+        check_contract_against_manifest(contract, manifest, label, lean_sources)
     count_contracts = collect_count_contracts(args.binary)
     for label, contract in count_contracts:
-        check_count_contract_against_manifest(contract, manifest, label)
+        check_count_contract_against_manifest(contract, manifest, label, lean_sources)
     print(
         "prime proof contract ok: "
         + ", ".join(f"{label}={contract['name']}" for label, contract in contracts)
@@ -65,6 +67,38 @@ def load_theorem_manifest(path: Path) -> dict[str, dict[str, Any]]:
     return {item["id"]: item for item in data.get("theorems", [])}
 
 
+class LeanSourceIndex:
+    def __init__(self, root: Path) -> None:
+        self.root = root
+        self._module_cache: dict[str, str] = {}
+
+    def assert_declaration_exists(self, module: str, lean_name: str, label: str) -> None:
+        source = self._source_for_module(module)
+        declaration = lean_name.rsplit(".", 1)[-1]
+        pattern = re.compile(
+            rf"^\s*(?:noncomputable\s+)?(?:theorem|lemma|def|abbrev|instance)\s+"
+            rf"{re.escape(declaration)}\b",
+            re.MULTILINE,
+        )
+        if pattern.search(source) is None:
+            path = self.module_path(module)
+            raise AssertionError(
+                f"{label} Lean declaration missing from {path}: {lean_name}"
+            )
+
+    def _source_for_module(self, module: str) -> str:
+        if module not in self._module_cache:
+            path = self.module_path(module)
+            self._module_cache[module] = path.read_text()
+        return self._module_cache[module]
+
+    def module_path(self, module: str) -> Path:
+        path = self.root / Path(*module.split(".")).with_suffix(".lean")
+        if not path.exists():
+            raise AssertionError(f"Lean module file missing for {module}: {path}")
+        return path
+
+
 def collect_cli_contracts(binary: Path) -> list[tuple[str, dict[str, Any]]]:
     probes = [
         ("test", [str(binary), "test", "97", "--json"]),
@@ -77,7 +111,38 @@ def collect_cli_contracts(binary: Path) -> list[tuple[str, dict[str, Any]]]:
         ),
         ("inspect", [str(binary), "inspect", "16", "--json"]),
     ]
-    return [(label, read_contract(command)) for label, command in probes]
+    contracts = [(label, read_contract(command)) for label, command in probes]
+    contracts.append(
+        (
+            "next_server",
+            read_line_server_contract_field(
+                [str(binary), "next-server", "--json"],
+                "100\nquit\n",
+                "proof_contract",
+            ),
+        )
+    )
+    contracts.append(
+        (
+            "count_server",
+            read_line_server_contract_field(
+                [
+                    str(binary),
+                    "count-server",
+                    "--segment-size",
+                    "65536",
+                    "--threads",
+                    "4",
+                    "--count-mode",
+                    "presieve13",
+                    "--json",
+                ],
+                "0 1000\nquit\n",
+                "proof_contract",
+            ),
+        )
+    )
+    return contracts
 
 
 def read_contract(command: list[str]) -> dict[str, Any]:
@@ -92,7 +157,31 @@ def collect_count_contracts(binary: Path) -> list[tuple[str, dict[str, Any]]]:
             [str(binary), "recommend", "0", "1000", "--count", "--json", "--threads", "4"],
         ),
     ]
-    return [(label, read_contract_field(command, "count_proof_contract")) for label, command in probes]
+    contracts = [
+        (label, read_contract_field(command, "count_proof_contract"))
+        for label, command in probes
+    ]
+    contracts.append(
+        (
+            "count_server",
+            read_line_server_contract_field(
+                [
+                    str(binary),
+                    "count-server",
+                    "--segment-size",
+                    "65536",
+                    "--threads",
+                    "4",
+                    "--count-mode",
+                    "presieve13",
+                    "--json",
+                ],
+                "0 1000\nquit\n",
+                "count_proof_contract",
+            ),
+        )
+    )
+    return contracts
 
 
 def read_contract_field(command: list[str], field: str) -> dict[str, Any]:
@@ -104,6 +193,27 @@ def read_contract_field(command: list[str], field: str) -> dict[str, Any]:
         capture_output=True,
     )
     payload = json.loads(completed.stdout)
+    contract = payload.get(field)
+    if not isinstance(contract, dict):
+        raise AssertionError(f"missing {field} in output from {' '.join(command)}")
+    return contract
+
+
+def read_line_server_contract_field(
+    command: list[str],
+    request: str,
+    field: str,
+) -> dict[str, Any]:
+    completed = subprocess.run(
+        command,
+        cwd=ROOT,
+        input=request,
+        check=True,
+        text=True,
+        capture_output=True,
+    )
+    first_line = completed.stdout.splitlines()[0]
+    payload = json.loads(first_line)
     contract = payload.get(field)
     if not isinstance(contract, dict):
         raise AssertionError(f"missing {field} in output from {' '.join(command)}")
@@ -126,6 +236,7 @@ def check_contract_against_manifest(
     contract: dict[str, Any],
     manifest_by_id: dict[str, dict[str, Any]],
     label: str,
+    lean_sources: LeanSourceIndex | None = None,
 ) -> None:
     if contract.get("name") != EXPECTED_CONTRACT_NAME:
         raise AssertionError(f"{label} proof_contract name changed: {contract.get('name')}")
@@ -167,12 +278,19 @@ def check_contract_against_manifest(
                 f"{label} theorem {theorem_id} lean_name mismatch: "
                 f"contract={lean_name}, manifest={theorem.get('lean_name')}"
             )
+        if lean_sources is not None:
+            lean_sources.assert_declaration_exists(
+                contract["lean_module"],
+                str(lean_name),
+                label,
+            )
 
 
 def check_count_contract_against_manifest(
     contract: dict[str, Any],
     manifest_by_id: dict[str, dict[str, Any]],
     label: str,
+    lean_sources: LeanSourceIndex | None = None,
 ) -> None:
     if contract.get("name") != EXPECTED_COUNT_CONTRACT_NAME:
         raise AssertionError(
@@ -215,6 +333,12 @@ def check_count_contract_against_manifest(
             raise AssertionError(
                 f"{label} theorem {theorem_id} lean_name mismatch: "
                 f"contract={lean_name}, manifest={theorem.get('lean_name')}"
+            )
+        if lean_sources is not None:
+            lean_sources.assert_declaration_exists(
+                contract["lean_module"],
+                str(lean_name),
+                label,
             )
 
 

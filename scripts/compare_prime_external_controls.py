@@ -45,7 +45,11 @@ class ExternalSpeedupRow:
 
     @property
     def comparison_name(self) -> str:
-        return "circle_prime_default_count" if is_adaptive_default_row(self.name) else self.name
+        if not is_adaptive_default_row(self.name):
+            return self.name
+        if is_server_row(self.name):
+            return "circle_prime_server_default_count"
+        return "circle_prime_default_count"
 
     @property
     def comparison_segment_size(self) -> int:
@@ -449,6 +453,10 @@ def render_count_mode(count_mode: str) -> str:
 
 def is_adaptive_default_row(name: str) -> bool:
     return "_default_count" in name
+
+
+def is_server_row(name: str) -> bool:
+    return name.startswith("circle_prime_server_")
 
 
 if __name__ == "__main__":

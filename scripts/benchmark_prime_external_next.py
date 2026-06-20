@@ -74,6 +74,7 @@ class NextMeasurement:
     requested_threads: int
     candidate_count: int
     run_once: Callable[[], int]
+    close: Callable[[], None] | None = None
 
 
 def main() -> int:
@@ -96,6 +97,11 @@ def main() -> int:
         type=int,
         default=0,
         help="Thread count for primesieve. Use 0 for primesieve's default/all cores.",
+    )
+    parser.add_argument(
+        "--include-circle-server",
+        action="store_true",
+        help="Also benchmark persistent circle-prime next-server requests.",
     )
     parser.add_argument("--output", type=Path)
     parser.add_argument("--sample-output", type=Path)
@@ -151,6 +157,7 @@ def main() -> int:
             batch_size=args.batch_size,
             external_threads=args.external_threads,
             rounds=args.rounds,
+            include_circle_server=args.include_circle_server,
         )
         rows.extend(start_rows)
         samples.extend(start_samples)
@@ -196,14 +203,29 @@ def measure_start_interleaved(
     batch_size: int,
     external_threads: int,
     rounds: int,
+    include_circle_server: bool = False,
 ) -> tuple[list[NextBenchRow], list[NextBenchSample]]:
-    circle = circle_next_measurement(circle_prime, start, batch_size)
+    measurements = [circle_next_measurement(circle_prime, start, batch_size)]
+    if include_circle_server:
+        measurements.append(circle_next_server_measurement(circle_prime, start, batch_size))
     baseline = primesieve_next_measurement(primesieve, start, batch_size, external_threads)
-    timing_rows, samples = measure_interleaved_next([circle, baseline], rounds)
-    circle_row = timing_rows[0]
-    baseline_row = timing_rows[1]
-    verify_next_prime(circle_row, baseline_row)
-    return [circle_row, baseline_row, speedup_row(circle_row, baseline_row)], samples
+    measurements.append(baseline)
+    try:
+        timing_rows, samples = measure_interleaved_next(measurements, rounds)
+    finally:
+        for measurement in measurements:
+            if measurement.close is not None:
+                measurement.close()
+
+    baseline_row = next(row for row in timing_rows if row.name == "external_primesieve_next_prime")
+    circle_rows = [row for row in timing_rows if row.name != "external_primesieve_next_prime"]
+    rows: list[NextBenchRow] = []
+    rows.extend(circle_rows)
+    rows.append(baseline_row)
+    for circle_row in circle_rows:
+        verify_next_prime(circle_row, baseline_row)
+        rows.append(speedup_row(circle_row, baseline_row))
+    return rows, samples
 
 
 def circle_next_measurement(binary: Path, start: int, batch_size: int) -> NextMeasurement:
@@ -243,6 +265,102 @@ def circle_next_measurement(binary: Path, start: int, batch_size: int) -> NextMe
         requested_threads=1,
         candidate_count=candidate_count,
         run_once=run_once,
+    )
+
+
+class NextServerClient:
+    def __init__(self, binary: Path) -> None:
+        self.process = subprocess.Popen(
+            [str(binary), "next-server"],
+            cwd=ROOT,
+            text=True,
+            stdin=subprocess.PIPE,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+        )
+        if self.process.stdin is None or self.process.stdout is None:
+            self.close()
+            raise RuntimeError("failed to open next-server pipes")
+
+    def next_prime(self, start: int) -> int:
+        assert self.process.stdin is not None
+        assert self.process.stdout is not None
+        self.process.stdin.write(f"{start}\n")
+        self.process.stdin.flush()
+        response = self.process.stdout.readline()
+        if response == "":
+            stderr = self._read_stderr()
+            raise RuntimeError(f"next-server exited without a response: {stderr}")
+        stripped = response.strip()
+        if stripped == "none":
+            raise ValueError(f"circle-prime next-server did not find a prime for {start}")
+        return parse_integer_output(stripped)
+
+    def close(self) -> None:
+        if self.process.poll() is not None:
+            return
+        try:
+            if self.process.stdin is not None:
+                self.process.stdin.write("quit\n")
+                self.process.stdin.flush()
+        except OSError:
+            pass
+        try:
+            self.process.wait(timeout=5)
+        except subprocess.TimeoutExpired:
+            self.process.kill()
+            self.process.wait(timeout=5)
+
+    def _read_stderr(self) -> str:
+        if self.process.stderr is None:
+            return ""
+        try:
+            return self.process.stderr.read()
+        except OSError:
+            return ""
+
+
+def circle_next_server_measurement(
+    binary: Path,
+    start: int,
+    batch_size: int,
+) -> NextMeasurement:
+    metadata_command = [str(binary), "next", str(start), "--json"]
+    metadata_completed = subprocess.run(
+        metadata_command,
+        cwd=ROOT,
+        check=True,
+        text=True,
+        capture_output=True,
+    )
+    metadata = json.loads(metadata_completed.stdout)
+    prime = metadata.get("prime")
+    if prime is None:
+        raise ValueError(f"circle-prime next did not find a u64 prime at or above {start}")
+    expected_prime = int(prime)
+    candidate_count = int(metadata["candidate_count"])
+    client = NextServerClient(binary)
+
+    def run_once() -> int:
+        result = 0
+        for _ in range(batch_size):
+            result = client.next_prime(start)
+            if result != expected_prime:
+                raise AssertionError(
+                    f"Circle next-server disagreed with JSON metadata for start={start}: "
+                    f"metadata {expected_prime}, server {result}"
+                )
+        return result
+
+    return NextMeasurement(
+        name="circle_prime_server_next_prime",
+        start=start,
+        batch_size=batch_size,
+        threads=1,
+        requested_threads=1,
+        candidate_count=candidate_count,
+        run_once=run_once,
+        close=client.close,
     )
 
 
@@ -459,6 +577,7 @@ def build_run_metadata(
         "row_count": row_count,
         "rounds": args.rounds,
         "batch_size": args.batch_size,
+        "include_circle_server": bool(getattr(args, "include_circle_server", False)),
         "starts": starts,
         "sample_output": str(args.sample_output) if args.sample_output is not None else None,
         "thread_policy": {
@@ -475,6 +594,7 @@ def build_run_metadata(
             {
                 "start": start,
                 "circle": [str(circle_binary), "next", str(start)],
+                "circle_server": [str(circle_binary), "next-server"],
                 "circle_json_probe": [str(circle_binary), "next", str(start), "--json"],
                 "primesieve": (
                     primesieve_next_command(primesieve, start, args.external_threads)

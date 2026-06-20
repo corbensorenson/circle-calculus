@@ -90,6 +90,14 @@ pub const SMALL_PRIME_HORIZONS: [u64; 12] = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29,
 const WHEEL30_FILTERED_SMALL_PRIME_HORIZONS: [u64; 9] = [7, 11, 13, 17, 19, 23, 29, 31, 37];
 const NEXT_PRIME_WHEEL30_RESIDUES: [u64; 8] = [1, 7, 11, 13, 17, 19, 23, 29];
 const NEXT_PRIME_WHEEL30_GAPS: [u64; 8] = [6, 4, 2, 4, 2, 4, 6, 2];
+const NEXT_PRIME_WHEEL30_DELTA_BY_RESIDUE: [u64; 30] = [
+    1, 0, 5, 4, 3, 2, 1, 0, 3, 2, 1, 0, 1, 0, 3, 2, 1, 0, 1, 0, 3, 2, 1, 0, 5, 4,
+    3, 2, 1, 0,
+];
+const NEXT_PRIME_WHEEL30_INDEX_BY_RESIDUE: [usize; 30] = [
+    0, 0, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 4, 4, 4, 4, 5, 5, 6, 6, 6, 6, 7, 7,
+    7, 7, 7, 7,
+];
 pub const ANGLE_BUNDLE_HORIZON_PRODUCTS: [u64; 1] = [
     433_601_713_048_867_373, // 41..79
 ];
@@ -315,20 +323,10 @@ pub fn next_prime_u64(start: u64) -> NextPrimeSearch {
 }
 
 fn first_wheel30_candidate_at_or_above(start: u64) -> Option<(u64, usize)> {
-    let residue = start % 30;
-    NEXT_PRIME_WHEEL30_RESIDUES
-        .iter()
-        .enumerate()
-        .filter_map(|(index, &candidate_residue)| {
-            let delta = if residue <= candidate_residue {
-                candidate_residue - residue
-            } else {
-                30 - residue + candidate_residue
-            };
-            let candidate = u128::from(start) + u128::from(delta);
-            (candidate <= u128::from(u64::MAX)).then_some((candidate as u64, index))
-        })
-        .min_by_key(|&(candidate, _)| candidate)
+    let residue = (start % 30) as usize;
+    let delta = NEXT_PRIME_WHEEL30_DELTA_BY_RESIDUE[residue];
+    let index = NEXT_PRIME_WHEEL30_INDEX_BY_RESIDUE[residue];
+    start.checked_add(delta).map(|candidate| (candidate, index))
 }
 
 fn is_wheel30_residue(n: u64) -> bool {
@@ -436,6 +434,40 @@ mod tests {
                 "n={n}"
             );
         }
+    }
+
+    #[test]
+    fn first_wheel30_candidate_lookup_matches_residue_table() {
+        for start in 0..300u64 {
+            let (candidate, index) = first_wheel30_candidate_at_or_above(start).unwrap();
+            assert!(candidate >= start, "start={start}");
+            assert!(is_wheel30_residue(candidate), "start={start}, candidate={candidate}");
+            assert_eq!(
+                candidate % 30,
+                NEXT_PRIME_WHEEL30_RESIDUES[index],
+                "start={start}"
+            );
+            assert!(
+                (start..candidate).all(|skipped| !is_wheel30_residue(skipped)),
+                "start={start}, candidate={candidate}"
+            );
+        }
+    }
+
+    #[test]
+    fn first_wheel30_candidate_lookup_handles_u64_ceiling() {
+        assert_eq!(
+            first_wheel30_candidate_at_or_above(u64::MAX),
+            None
+        );
+        assert_eq!(
+            first_wheel30_candidate_at_or_above(u64::MAX - 1),
+            None
+        );
+        assert_eq!(
+            first_wheel30_candidate_at_or_above(18_446_744_073_709_551_557),
+            Some((18_446_744_073_709_551_557, 2))
+        );
     }
 
     #[test]

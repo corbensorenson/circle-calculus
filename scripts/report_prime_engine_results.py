@@ -325,6 +325,18 @@ def build_report(
     default_calibration = read_json_optional(default_calibration_path)
 
     default_calibration_summary = summarize_default_calibration(default_calibration)
+    benchmark_summary = summarize_benchmark(
+        benchmark_rows,
+        high_offset_hot_cold_benchmark_rows,
+    )
+    external_summary = summarize_external(
+        external_rows,
+        external_metadata,
+        external_sample_rows,
+    )
+    benchmark_summary["high_offset_server_external"] = (
+        summarize_high_offset_server_external(benchmark_summary, external_summary)
+    )
     return {
         "generated_at_utc": generated_at_utc,
         "inputs": {
@@ -417,16 +429,9 @@ def build_report(
             ),
         },
         "missing_inputs": missing_inputs,
-        "benchmark": summarize_benchmark(
-            benchmark_rows,
-            high_offset_hot_cold_benchmark_rows,
-        ),
+        "benchmark": benchmark_summary,
         "external_correctness": summarize_external_correctness(external_correctness),
-        "external": summarize_external(
-            external_rows,
-            external_metadata,
-            external_sample_rows,
-        ),
+        "external": external_summary,
         "external_next": summarize_external_next(
             external_next_rows,
             external_next_metadata,
@@ -678,6 +683,48 @@ def summarize_high_offset_cold_hot_overhead(
     return [summary]
 
 
+def summarize_high_offset_server_external(
+    benchmark_summary: dict[str, Any],
+    external_summary: dict[str, Any],
+) -> list[dict[str, Any]]:
+    overhead_rows = benchmark_summary.get("high_offset_cold_hot_overhead") or []
+    if not overhead_rows:
+        return []
+    server = overhead_rows[0]
+    server_ms = server.get("hot_server_best_ms")
+    if server_ms is None or server_ms <= 0:
+        return []
+
+    rows = []
+    for speedup in external_summary.get("speedups", []):
+        if speedup.get("span") != server["workload"]:
+            continue
+        if speedup.get("result") != server["result"]:
+            continue
+        if speedup.get("low", 0) == 0:
+            continue
+        baseline_best_ms = speedup.get("baseline_best_ms")
+        if baseline_best_ms is None:
+            continue
+        rows.append(
+            {
+                "workload": server["workload"],
+                "result": server["result"],
+                "server_name": server["hot_server_name"],
+                "server_segment_size": server["hot_server_segment_size"],
+                "server_best_ms": server_ms,
+                "baseline": speedup["baseline"],
+                "baseline_best_ms": baseline_best_ms,
+                "baseline_median_ms": speedup.get("baseline_median_ms"),
+                "server_best_speedup": baseline_best_ms / server_ms,
+                "cold_cli_name": speedup["name"],
+                "cold_cli_best_ms": speedup["best_ms"],
+                "cold_cli_best_speedup": speedup["circle_speedup"],
+            }
+        )
+    return sorted(rows, key=lambda row: row["baseline"])
+
+
 def is_primary_count_row(name: str) -> bool:
     return (
         name in PRIMARY_COUNT_ROWS
@@ -782,10 +829,26 @@ def summarize_external(
         for row in rows
         if row.get("kind") == "speedup"
     ]
+    all_summary = external_win_counts(speedups)
+    cold_cli_summary = external_win_counts(
+        [row for row in speedups if not is_external_server_row(row)]
+    )
+    server_summary = external_win_counts(
+        [row for row in speedups if is_external_server_row(row)]
+    )
+    return {
+        "speedups": speedups,
+        **all_summary,
+        "cold_cli": cold_cli_summary,
+        "server": server_summary,
+        "metadata": summarize_external_metadata(metadata),
+    }
+
+
+def external_win_counts(speedups: list[dict[str, Any]]) -> dict[str, int]:
     primesieve = [row for row in speedups if row["baseline"] == "external_primesieve_count"]
     primecount = [row for row in speedups if row["baseline"] == "external_primecount_pi_diff"]
     return {
-        "speedups": speedups,
         "primesieve_wins": sum(1 for row in primesieve if row["circle_speedup"] >= 1.0),
         "primesieve_median_wins": sum(
             1 for row in primesieve if row["median_circle_speedup"] >= 1.0
@@ -796,8 +859,11 @@ def summarize_external(
             1 for row in primecount if row["median_circle_speedup"] >= 1.0
         ),
         "primecount_rows": len(primecount),
-        "metadata": summarize_external_metadata(metadata),
     }
+
+
+def is_external_server_row(row: dict[str, Any]) -> bool:
+    return str(row.get("name", "")).startswith("circle_prime_server_")
 
 
 def summarize_external_next(
@@ -812,6 +878,10 @@ def summarize_external_next(
         for row in rows
         if row.get("kind") == "speedup"
     ]
+    cold_cli_speedups = [
+        row for row in speedups if not is_external_next_server_row(row)
+    ]
+    server_speedups = [row for row in speedups if is_external_next_server_row(row)]
     return {
         "available": bool(rows),
         "speedups": speedups,
@@ -822,8 +892,26 @@ def summarize_external_next(
         "primesieve_median_wins": sum(
             1 for row in speedups if row["median_circle_speedup"] >= 1.0
         ),
+        "cold_cli": external_next_win_counts(cold_cli_speedups),
+        "server": external_next_win_counts(server_speedups),
         "metadata": summarize_external_next_metadata(metadata),
     }
+
+
+def external_next_win_counts(speedups: list[dict[str, Any]]) -> dict[str, int]:
+    return {
+        "primesieve_rows": len(speedups),
+        "primesieve_wins": sum(
+            1 for row in speedups if row["circle_speedup"] >= 1.0
+        ),
+        "primesieve_median_wins": sum(
+            1 for row in speedups if row["median_circle_speedup"] >= 1.0
+        ),
+    }
+
+
+def is_external_next_server_row(row: dict[str, Any]) -> bool:
+    return str(row.get("name", "")).startswith("circle_prime_server_")
 
 
 def external_next_speedup_summary(
@@ -968,6 +1056,7 @@ def summarize_external_next_metadata(metadata: dict[str, Any] | None) -> dict[st
         "rounds": metadata.get("rounds"),
         "row_count": metadata.get("row_count"),
         "batch_size": metadata.get("batch_size"),
+        "include_circle_server": bool(metadata.get("include_circle_server")),
         "sample_output": metadata.get("sample_output"),
         "thread_policy": metadata.get("thread_policy", {}),
         "starts": metadata.get("starts", []),
@@ -1064,6 +1153,7 @@ def summarize_external_metadata(metadata: dict[str, Any] | None) -> dict[str, An
         "rounds": metadata.get("rounds"),
         "row_count": metadata.get("row_count"),
         "interleaved": bool(metadata.get("interleaved")),
+        "include_circle_server": bool(metadata.get("include_circle_server")),
         "sample_output": metadata.get("sample_output"),
         "thread_policy": metadata.get("thread_policy", {}),
         "circle_count_modes": metadata.get("circle_count_modes", []),
@@ -1103,6 +1193,11 @@ def summarize_external_correctness(summary: dict[str, Any] | None) -> dict[str, 
         for check in summary.get("checks", [])
         if not bool(check.get("passes"))
     ]
+    count_server_failures = [
+        check
+        for check in summary.get("count_server_checks", [])
+        if not bool(check.get("passes"))
+    ]
     enumeration_failures = [
         check
         for check in summary.get("enumeration_checks", [])
@@ -1122,6 +1217,10 @@ def summarize_external_correctness(summary: dict[str, Any] | None) -> dict[str, 
         "count_check_count": int(
             summary.get("count_check_count") or len(summary.get("checks", []))
         ),
+        "count_server_check_count": int(
+            summary.get("count_server_check_count")
+            or len(summary.get("count_server_checks", []))
+        ),
         "enumeration_check_count": int(
             summary.get("enumeration_check_count")
             or len(summary.get("enumeration_checks", []))
@@ -1131,9 +1230,15 @@ def summarize_external_correctness(summary: dict[str, Any] | None) -> dict[str, 
         ),
         "failure_count": int(
             summary.get("failure_count")
-            or len(failures) + len(enumeration_failures) + len(next_failures)
+            or len(failures)
+            + len(count_server_failures)
+            + len(enumeration_failures)
+            + len(next_failures)
         ),
         "count_failure_count": int(summary.get("count_failure_count") or len(failures)),
+        "count_server_failure_count": int(
+            summary.get("count_server_failure_count") or len(count_server_failures)
+        ),
         "enumeration_failure_count": int(
             summary.get("enumeration_failure_count") or len(enumeration_failures)
         ),
@@ -1163,6 +1268,7 @@ def summarize_external_correctness(summary: dict[str, Any] | None) -> dict[str, 
             for name, tool in summary.get("tools", {}).items()
         },
         "failures": failures,
+        "count_server_failures": count_server_failures,
         "enumeration_failures": enumeration_failures,
     }
 
@@ -1693,11 +1799,13 @@ def render_external_correctness_markdown(summary: dict[str, Any]) -> list[str]:
     )
     if (
         summary.get("count_check_count")
+        or summary.get("count_server_check_count")
         or summary.get("enumeration_check_count")
         or summary.get("next_check_count")
     ):
         lines.append(
             f"Count checks: `{summary.get('count_check_count', 0)}`; "
+            f"count-server checks: `{summary.get('count_server_check_count', 0)}`; "
             f"enumeration checks: `{summary.get('enumeration_check_count', 0)}`; "
             f"next-prime checks: `{summary.get('next_check_count', 0)}`."
         )
@@ -1777,20 +1885,16 @@ def render_external_markdown(summary: dict[str, Any]) -> list[str]:
     lines = [
         "## External Controls",
         "",
-        (
-            f"- `primesieve`: Circle faster on {summary['primesieve_wins']}/"
-            f"{summary['primesieve_rows']} rows by best time; median faster on "
-            f"{summary.get('primesieve_median_wins', summary['primesieve_wins'])}/"
-            f"{summary['primesieve_rows']} rows."
-        ),
-        (
-            f"- `primecount`: Circle faster on {summary['primecount_wins']}/"
-            f"{summary['primecount_rows']} rows by best time; median faster on "
-            f"{summary.get('primecount_median_wins', summary['primecount_wins'])}/"
-            f"{summary['primecount_rows']} rows."
-        ),
-        "",
     ]
+    cold_summary = summary.get("cold_cli", summary)
+    server_summary = summary.get("server", {})
+    lines.append(external_lane_summary_line("primesieve", "cold CLI", cold_summary))
+    if server_summary.get("primesieve_rows", 0):
+        lines.append(external_lane_summary_line("primesieve", "server", server_summary))
+    lines.append(external_lane_summary_line("primecount", "cold CLI", cold_summary))
+    if server_summary.get("primecount_rows", 0):
+        lines.append(external_lane_summary_line("primecount", "server", server_summary))
+    lines.append("")
     metadata = summary.get("metadata", {})
     if metadata.get("available"):
         lines.extend(render_external_metadata_markdown(metadata))
@@ -1821,6 +1925,21 @@ def render_external_markdown(summary: dict[str, Any]) -> list[str]:
     return lines
 
 
+def external_lane_summary_line(
+    baseline_label: str,
+    lane_label: str,
+    summary: dict[str, Any],
+) -> str:
+    prefix = "primesieve" if baseline_label == "primesieve" else "primecount"
+    wins = summary.get(f"{prefix}_wins", 0)
+    rows = summary.get(f"{prefix}_rows", 0)
+    median_wins = summary.get(f"{prefix}_median_wins", wins)
+    return (
+        f"- `{baseline_label}` {lane_label}: Circle faster on {wins}/{rows} "
+        f"rows by best time; median faster on {median_wins}/{rows} rows."
+    )
+
+
 def render_external_metadata_markdown(metadata: dict[str, Any]) -> list[str]:
     lines = ["Tool metadata:"]
     for name in ["circle_prime", "primesieve", "primecount"]:
@@ -1849,6 +1968,8 @@ def render_external_metadata_markdown(metadata: dict[str, Any]) -> list[str]:
         lines.append(f"- required external controls: {formatted}.")
     if metadata.get("interleaved"):
         lines.append("- timing policy: interleaved round-robin samples.")
+    if metadata.get("include_circle_server"):
+        lines.append("- Circle server rows: persistent `count-server` requests included.")
     if metadata.get("sample_output"):
         lines.append(f"- per-round samples: `{metadata['sample_output']}`.")
     lines.append("")
@@ -1865,12 +1986,11 @@ def render_external_next_markdown(summary: dict[str, Any]) -> list[str]:
         lines.append("")
         return lines
 
-    lines.append(
-        f"- `primesieve --nth-prime`: Circle faster on "
-        f"{summary['primesieve_wins']}/{summary['primesieve_rows']} rows by best time; "
-        f"median faster on {summary['primesieve_median_wins']}/"
-        f"{summary['primesieve_rows']} rows."
-    )
+    cold_summary = summary.get("cold_cli", summary)
+    server_summary = summary.get("server", {})
+    lines.append(external_next_lane_summary_line("cold CLI", cold_summary))
+    if server_summary.get("primesieve_rows", 0):
+        lines.append(external_next_lane_summary_line("server", server_summary))
     lines.append("")
     metadata = summary.get("metadata", {})
     if metadata.get("available"):
@@ -1898,6 +2018,16 @@ def render_external_next_markdown(summary: dict[str, Any]) -> list[str]:
     return lines
 
 
+def external_next_lane_summary_line(lane_label: str, summary: dict[str, Any]) -> str:
+    return (
+        f"- `primesieve --nth-prime` {lane_label}: Circle faster on "
+        f"{summary.get('primesieve_wins', 0)}/{summary.get('primesieve_rows', 0)} "
+        "rows by best time; median faster on "
+        f"{summary.get('primesieve_median_wins', 0)}/"
+        f"{summary.get('primesieve_rows', 0)} rows."
+    )
+
+
 def render_external_next_metadata_markdown(metadata: dict[str, Any]) -> list[str]:
     lines = ["Tool metadata:"]
     for name in ["circle_prime", "primesieve"]:
@@ -1921,6 +2051,8 @@ def render_external_next_metadata_markdown(metadata: dict[str, Any]) -> list[str
         lines.append(f"- next-prime starts: {formatted}.")
     if metadata.get("batch_size") is not None:
         lines.append(f"- repeated searches per sample: `{metadata['batch_size']}`.")
+    if metadata.get("include_circle_server"):
+        lines.append("- Circle server rows: persistent `next-server` requests included.")
     required_tools = metadata.get("required_external_tools") or []
     if required_tools:
         formatted = ", ".join(f"`{tool}`" for tool in required_tools)
@@ -2293,6 +2425,25 @@ def render_benchmark_markdown(summary: dict[str, Any]) -> list[str]:
                 f"{format_optional_ms(row['cold_cli_extra_ms'])} | "
                 f"{format_optional_ms(row['cold_process_best_ms'])} | "
                 f"{format_optional_ratio(row['cold_process_over_hot'])} |"
+            )
+        lines.append("")
+    if summary.get("high_offset_server_external"):
+        lines.extend(
+            [
+                "High-offset server/external best-time comparison:",
+                "",
+                "| Workload | Server Row | Server ms | Baseline | Baseline Best ms | Server Speedup | Cold CLI ms | Cold CLI Speedup |",
+                "| ---: | --- | ---: | --- | ---: | ---: | ---: | ---: |",
+            ]
+        )
+        for row in summary["high_offset_server_external"]:
+            lines.append(
+                f"| {row['workload']} | {format_optional_code(row['server_name'])} | "
+                f"{row['server_best_ms']:.3f} | `{row['baseline']}` | "
+                f"{row['baseline_best_ms']:.3f} | "
+                f"{row['server_best_speedup']:.3f} | "
+                f"{row['cold_cli_best_ms']:.3f} | "
+                f"{row['cold_cli_best_speedup']:.3f} |"
             )
         lines.append("")
     if summary["materialized_generation"]:

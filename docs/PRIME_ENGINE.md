@@ -60,8 +60,11 @@ looks complete.
 `make prime-engine-check` compiles the Rust crate, exercises representative CLI
 classification/count commands, and runs
 `scripts/check_prime_proof_contract.py` so the JSON `proof_contract` emitted by
-the Rust CLI, plus the `count_proof_contract` emitted by count JSON, must match
-the proved theorem ids and Lean names in `manifests/theorem_manifest.yaml`.
+the Rust CLI, plus the `count_proof_contract` emitted by count JSON and
+`count-server --json`, must match the proved theorem ids and Lean names in
+`manifests/theorem_manifest.yaml`. The checker also resolves the claimed Lean
+module to its `.lean` file and verifies that every contracted Lean declaration
+is still present in source.
 
 ## Current Guarantees
 
@@ -79,13 +82,15 @@ the proved theorem ids and Lean names in `manifests/theorem_manifest.yaml`.
 - `CC-T0079`: `primeHorizonRangeCount low high` is the cardinality of the
   half-open interval filtered by prime horizons.
 - JSON output from `circle-prime inspect`, `circle-prime test`,
-  `circle-prime recommend --json`, and `circle-prime range --json` includes a
+  `circle-prime recommend --json`, `circle-prime range --json`, and
+  line-delimited `circle-prime next-server --json` includes a
   `proof_contract` object naming the Lean module and theorem ids behind the
   prime-horizon interpretation. This metadata is deliberately a contract link:
   Lean proves the horizon/divisibility equivalence, while Rust supplies exact
   `u64` arithmetic, sieving, and deterministic Miller-Rabin classification.
 - Count JSON from `circle-prime recommend --count --json` and
-  `circle-prime range ... --count --json` also includes
+  `circle-prime range ... --count --json`, plus line-delimited JSON from
+  `circle-prime count-server --json`, also includes
   `count_proof_contract`, which points at the finite half-open range-count spec
   proved in Lean. This does not prove each Rust optimization internally; it
   fixes the mathematical target every count mode must match.
@@ -488,17 +493,23 @@ tool's default, which both tools document as all available CPU cores. The
 Makefile targets use seven rounds to reduce single-sample timing noise. The
 harness performs one untimed Circle JSON probe for adaptive segment/thread
 metadata, then times plain count output so the Circle subprocess path is closer
-to the `primesieve`/`primecount` command-level controls. The Makefile external
-control targets request `--circle-count-modes default`, so the Circle rows omit
-`--count-mode` and track the current adaptive CLI default. These targets use
+to the `primesieve`/`primecount` command-level controls. The parallel Makefile
+target also passes `--include-circle-server`, so each range includes persistent
+`count-server` request rows beside the cold CLI rows. Treat the server rows as
+steady-state application throughput evidence; the cold CLI rows remain the
+command-vs-command comparison against `primesieve` and `primecount`.
+The Makefile external control targets request `--circle-count-modes default`,
+so the Circle rows omit `--count-mode` and track the current adaptive CLI
+default. These targets use
 interleaved timing: for each range, Circle variants and external baselines run
 in a rotated round-robin order, and the harness writes the per-round sample CSV
 alongside the summary CSV. This prevents a segment sweep from measuring all
 Circle candidates in one machine state and the external baseline in another.
 The CLI reports the actual worker count in JSON after capping by segment count.
 The JSON sidecar records local tool paths, version strings, requested thread
-policy, timing policy, ranges, and the exact per-range commands used for
-Circle, `primesieve`, and `primecount`. External-control CSV rows also include
+policy, timing policy, whether server rows were included, ranges, and the exact
+per-range commands used for Circle, `primesieve`, and `primecount`.
+External-control CSV rows also include
 the resolved Circle `count_mode`, so rows requested as `default` can still show
 the actual CLI-selected mode such as `segmented` or `balanced`.
 The CSV records both best-of-round and median-of-round timings/speedups; use
@@ -525,10 +536,12 @@ sidecars/PRIME_ENGINE/results/prime_engine_external_next_samples_latest.csv
 
 It benchmarks `circle-prime next START` against
 `primesieve 1 START-1 --nth-prime --quiet`, which gives the first prime at or
-above `START`. The default starts cover small search, the `2^32` boundary,
-`10^12`, and a near-`u64::MAX` scalar path. The CSV keeps next-prime fields
-separate from range-count fields: `start`, `batch_size`, resolved `result`,
-Circle `candidate_count`, and searches/sec. Use
+above `START`. The Makefile target also includes persistent `next-server`
+request rows beside the cold CLI rows, so the report separates command-level
+startup cost from steady-state search throughput. The default starts cover
+small search, the `2^32` boundary, `10^12`, and a near-`u64::MAX` scalar path.
+The CSV keeps next-prime fields separate from range-count fields: `start`,
+`batch_size`, resolved `result`, Circle `candidate_count`, and searches/sec. Use
 `CIRCLE_PRIME_EXTERNAL_NEXT_BATCH_SIZE` for repeated searches per timing sample;
 the Makefile default is `4` so command-level next-prime comparisons are less
 sensitive to launch jitter while still keeping the near-`2^64` `primesieve`
@@ -556,6 +569,13 @@ regression can be tolerated when best speedup stays close, and a best-speedup
 regression can be tolerated when median speedup stays close. This matters for
 command-level next-prime rows because sub-millisecond Circle startup jitter can
 move the best-time ratio even when the median result is stable.
+Rows that are already massively ahead also use an absolute-dominance floor:
+when both the accepted and candidate speedups for a checked metric are at least
+`CIRCLE_PRIME_EXTERNAL_NEXT_DOMINANT_SPEEDUP_FLOOR` (default `1000.0`), the
+ratio gate relaxes to `CIRCLE_PRIME_EXTERNAL_NEXT_DOMINANT_MIN_SPEEDUP_RATIO`
+(default `0.75`). This keeps near-`u64::MAX` server rows from failing because
+an 18,000x speedup measured lower than a 23,000x speedup in a short run, while
+still rejecting a collapse from thousands-x to merely marginally faster.
 
 `prime-engine-external-controls-compare` writes candidate artifacts without
 overwriting the accepted latest external-control run:
@@ -676,7 +696,9 @@ The report prefers this artifact for the high-offset cold/hot overhead table
 when it exists, so a quick run can show whether a change improved the engine or
 only moved process-startup noise. Treat the persistent server row as a
 hot-process application lane; the command-vs-command control remains the
-external `primesieve`/`primecount` scorecard.
+external `primesieve`/`primecount` scorecard. When both artifacts are present,
+the report also compares the fastest persistent server row directly against
+the external high-offset command controls by best time.
 
 `prime-engine-high-offset-tight` is the follow-up scorecard when the broad
 quick run keeps pointing at the same neighborhood. It narrows the sweep to
@@ -835,12 +857,13 @@ make prime-engine-apply-defaults-check
 Current external-control readout on this machine:
 
 - `primesieve` remains the serious range-counting bar. Prefix defaults now beat
-  it on the tracked true-prefix count rows, while the high-offset interval is
-  still slightly behind in median command-level runs. The comparison is
-  intentionally command-level and therefore noisy, but it records actual worker
-  counts. With `CIRCLE_PRIME_THREADS=8`, prefix-pi rows report `1/8` effective
-  Circle thread, and the high-offset interval currently caps to `7/8` under the
-  calibrated `1310720` threaded-count default.
+  it on the tracked true-prefix count rows. The high-offset cold CLI interval is
+  near parity in the current short command-level run and slightly ahead by
+  median, while the persistent `count-server` row is clearly ahead. The
+  comparison is intentionally command-level and therefore noisy, but it records
+  actual worker counts. With `CIRCLE_PRIME_THREADS=8`, prefix-pi rows report
+  `1/8` effective Circle thread, and the high-offset interval currently caps to
+  `7/8` under the calibrated `1507328` threaded-count default.
 - `primecount` remains the specialized prefix `pi(x)` bar, but Circle's
   `prefix-pi` default currently beats it on the tracked 10M and 100M command
   rows. Keep using external controls for confirmation because startup noise can
@@ -887,7 +910,10 @@ candidates, high-offset quick candidates, and external segment-sweep
 candidates, so tuner-favored segment sizes remain visible even when they do not
 win a particular run. External segment-sweep winners are ranked by median
 speedup when available, with best-speedup columns retained to show peak
-throughput and support older artifacts. It also compares median-selected tuned
+throughput and support older artifacts. The high-offset hot/cold summary keeps
+the persistent server lane separate from the cold CLI lane and derives a
+best-time server/external table when matching `primesieve` or `primecount` rows
+are available. It also compares median-selected tuned
 winners with current calibrated CLI defaults when calibration evidence is
 available, falling back to the default recommendations stored in the tuning
 artifact otherwise. Rows backed by current calibration mark stale stored tuning

@@ -83,6 +83,7 @@ fn run(args: Vec<String>) -> Result<(), String> {
         "inspect" => inspect_command(&args[1..]),
         "test" => test_command(&args[1..]),
         "next" => next_command(&args[1..]),
+        "next-server" => next_server_command(&args[1..]),
         "range" => range_command(&args[1..]),
         "count-server" => count_server_command(&args[1..]),
         "recommend" => recommend_command(&args[1..]),
@@ -106,6 +107,39 @@ fn next_command(args: &[String]) -> Result<(), String> {
         println!("{prime}");
     } else {
         println!("none");
+    }
+    Ok(())
+}
+
+fn next_server_command(args: &[String]) -> Result<(), String> {
+    let json = args.iter().any(|arg| arg == "--json");
+    let stdin = io::stdin();
+    let mut stdout = io::BufWriter::new(io::stdout().lock());
+    for line in stdin.lock().lines() {
+        let line = line.map_err(|err| format!("failed to read request: {err}"))?;
+        let request = line.trim();
+        if request.is_empty() {
+            continue;
+        }
+        if request == "quit" || request == "exit" {
+            break;
+        }
+        let start = request
+            .parse::<u64>()
+            .map_err(|_| "next-server request must be START fitting in u64".to_string())?;
+        let search = next_prime_u64(start);
+        if json {
+            writeln!(stdout, "{}", search.to_json())
+                .map_err(|err| format!("failed to write response: {err}"))?;
+        } else if let Some(prime) = search.prime {
+            writeln!(stdout, "{prime}")
+                .map_err(|err| format!("failed to write response: {err}"))?;
+        } else {
+            writeln!(stdout, "none").map_err(|err| format!("failed to write response: {err}"))?;
+        }
+        stdout
+            .flush()
+            .map_err(|err| format!("failed to flush response: {err}"))?;
     }
     Ok(())
 }
@@ -399,6 +433,7 @@ fn count_server_command(args: &[String]) -> Result<(), String> {
     let default_count_mode = optional_value(args, "--count-mode")
         .map(CountMode::parse)
         .transpose()?;
+    let json = args.iter().any(|arg| arg == "--json");
 
     let stdin = io::stdin();
     let mut stdout = io::BufWriter::new(io::stdout().lock());
@@ -411,13 +446,19 @@ fn count_server_command(args: &[String]) -> Result<(), String> {
         if request == "quit" || request == "exit" {
             break;
         }
-        let count = count_server_request(
+        let response = count_server_response(
             request,
             default_segment_size,
             default_threads,
             default_count_mode,
         )?;
-        writeln!(stdout, "{count}").map_err(|err| format!("failed to write response: {err}"))?;
+        if json {
+            writeln!(stdout, "{}", response.to_json())
+                .map_err(|err| format!("failed to write response: {err}"))?;
+        } else {
+            writeln!(stdout, "{}", response.count)
+                .map_err(|err| format!("failed to write response: {err}"))?;
+        }
         stdout
             .flush()
             .map_err(|err| format!("failed to flush response: {err}"))?;
@@ -425,12 +466,56 @@ fn count_server_command(args: &[String]) -> Result<(), String> {
     Ok(())
 }
 
+#[cfg(test)]
 fn count_server_request(
     request: &str,
     default_segment_size: Option<u64>,
     default_threads: usize,
     default_count_mode: Option<CountMode>,
 ) -> Result<usize, String> {
+    Ok(count_server_response(
+        request,
+        default_segment_size,
+        default_threads,
+        default_count_mode,
+    )?
+    .count)
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+struct CountServerResponse {
+    low: u64,
+    high: u64,
+    count: usize,
+    segment_size: u64,
+    threads: usize,
+    requested_threads: usize,
+    count_mode: CountMode,
+}
+
+impl CountServerResponse {
+    fn to_json(self) -> String {
+        format!(
+            "{{\"low\":{},\"high\":{},\"count\":{},\"segment_size\":{},\"threads\":{},\"requested_threads\":{},\"count_mode\":\"{}\",\"proof_contract\":{},\"count_proof_contract\":{}}}",
+            self.low,
+            self.high,
+            self.count,
+            self.segment_size,
+            self.threads,
+            self.requested_threads,
+            self.count_mode.as_str(),
+            prime_horizon_proof_contract_json(),
+            prime_range_count_proof_contract_json()
+        )
+    }
+}
+
+fn count_server_response(
+    request: &str,
+    default_segment_size: Option<u64>,
+    default_threads: usize,
+    default_count_mode: Option<CountMode>,
+) -> Result<CountServerResponse, String> {
     let fields = request.split_whitespace().collect::<Vec<_>>();
     if fields.len() < 2 || fields.len() > 5 {
         return Err(
@@ -481,8 +566,17 @@ fn count_server_request(
         segment_size,
         requested_threads,
     ));
-    count_range_with_mode(low, high, segment_size, worker_threads, count_mode)
-        .map_err(|err| format!("range sieve failed: {err:?}"))
+    let count = count_range_with_mode(low, high, segment_size, worker_threads, count_mode)
+        .map_err(|err| format!("range sieve failed: {err:?}"))?;
+    Ok(CountServerResponse {
+        low,
+        high,
+        count,
+        segment_size,
+        threads: worker_threads,
+        requested_threads,
+        count_mode,
+    })
 }
 
 fn count_range_with_mode(
@@ -586,11 +680,13 @@ fn usage() -> String {
         "  circle-prime inspect N [--json]",
         "  circle-prime test N [--json]",
         "  circle-prime next N [--json]",
+        "  circle-prime next-server [--json]",
         "  circle-prime recommend LOW HIGH [--count] [--json] [--threads N]",
         "  circle-prime range LOW HIGH [--count] [--json] [--segment-size N] [--threads N] [--count-mode MODE]",
-        "  circle-prime count-server [--segment-size N] [--threads N] [--count-mode MODE]",
+        "  circle-prime count-server [--segment-size N] [--threads N] [--count-mode MODE] [--json]",
         "",
-        "count-server reads LOW HIGH [SEGMENT_SIZE] [THREADS] [COUNT_MODE] lines from stdin and writes one count per line.",
+        "next-server reads START lines from stdin and writes one next prime, none, or JSON object per line.",
+        "count-server reads LOW HIGH [SEGMENT_SIZE] [THREADS] [COUNT_MODE] lines from stdin and writes one count or JSON object per line.",
         "count modes: segmented, balanced, dynamic, prefix-pi, presieve13, presieve17, wheel30-mark, hybrid-wheel30-mark",
     ]
     .join("\n")

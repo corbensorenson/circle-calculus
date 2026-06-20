@@ -8,6 +8,7 @@ from scripts.benchmark_prime_external_next import (
     NextBenchRow,
     NextMeasurement,
     build_run_metadata,
+    measure_start_interleaved,
     measure_interleaved_next,
     parse_starts,
     primesieve_next_command,
@@ -133,6 +134,53 @@ def test_next_speedup_row_uses_primesieve_baseline_time() -> None:
     assert row.candidate_count == 1
 
 
+def test_measure_start_interleaved_can_include_circle_server(monkeypatch) -> None:
+    def measurement(name: str, result: int) -> NextMeasurement:
+        return NextMeasurement(
+            name=name,
+            start=100,
+            batch_size=2,
+            threads=1,
+            requested_threads=1,
+            candidate_count=1 if name.startswith("circle_prime") else 0,
+            run_once=lambda: result,
+        )
+
+    monkeypatch.setattr(
+        next_bench,
+        "circle_next_measurement",
+        lambda circle_prime, start, batch_size: measurement("circle_prime_next_prime", 101),
+    )
+    monkeypatch.setattr(
+        next_bench,
+        "circle_next_server_measurement",
+        lambda circle_prime, start, batch_size: measurement(
+            "circle_prime_server_next_prime", 101
+        ),
+    )
+    monkeypatch.setattr(
+        next_bench,
+        "primesieve_next_measurement",
+        lambda primesieve, start, batch_size, external_threads: measurement(
+            "external_primesieve_next_prime", 101
+        ),
+    )
+
+    rows, samples = measure_start_interleaved(
+        circle_prime=Path("circle-prime"),
+        primesieve="primesieve",
+        start=100,
+        batch_size=2,
+        external_threads=8,
+        rounds=2,
+        include_circle_server=True,
+    )
+
+    speedup_names = [row.name for row in rows if row.kind == "speedup"]
+    assert speedup_names == ["circle_prime_next_prime", "circle_prime_server_next_prime"]
+    assert len(samples) == 6
+
+
 def test_next_metadata_records_commands_and_tools(monkeypatch) -> None:
     monkeypatch.setattr(
         next_bench,
@@ -159,6 +207,7 @@ def test_next_metadata_records_commands_and_tools(monkeypatch) -> None:
         sample_output=Path("samples.csv"),
         external_threads=8,
         require_tool=["primesieve"],
+        include_circle_server=True,
     )
 
     metadata = build_run_metadata(
@@ -173,6 +222,7 @@ def test_next_metadata_records_commands_and_tools(monkeypatch) -> None:
 
     assert metadata["rounds"] == 5
     assert metadata["batch_size"] == 2
+    assert metadata["include_circle_server"] is True
     assert metadata["row_count"] == 6
     assert metadata["starts"] == [97, 100]
     assert metadata["sample_output"] == "samples.csv"
@@ -182,6 +232,10 @@ def test_next_metadata_records_commands_and_tools(monkeypatch) -> None:
         "target/release/circle-prime",
         "next",
         "97",
+    ]
+    assert metadata["commands"][0]["circle_server"] == [
+        "target/release/circle-prime",
+        "next-server",
     ]
     assert metadata["commands"][0]["primesieve"] == [
         "/opt/bin/primesieve",

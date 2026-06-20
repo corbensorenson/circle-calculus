@@ -189,6 +189,60 @@ def test_run_next_checks_compares_against_primesieve_first_prime(monkeypatch) ->
     assert checks[0]["external_prime"] == 101
 
 
+def test_run_count_server_checks_compares_one_shot_and_external_counts(monkeypatch) -> None:
+    class FakeCountServerClient:
+        def __init__(self, binary: Path) -> None:
+            self.binary = binary
+            self.closed = False
+
+        def count(
+            self,
+            low: int,
+            high: int,
+            segment_size: int,
+            threads: int,
+            count_mode: str,
+        ) -> int:
+            assert (low, high, segment_size, threads, count_mode) == (
+                0,
+                1000,
+                64,
+                8,
+                "segmented",
+            )
+            return 168
+
+        def close(self) -> None:
+            self.closed = True
+
+    monkeypatch.setattr(correctness, "CountServerClient", FakeCountServerClient)
+
+    checks = correctness.run_count_server_checks(
+        circle_prime=Path("circle-prime"),
+        count_checks=[
+            {
+                "low": 0,
+                "high": 1000,
+                "span": 1000,
+                "count_mode": "segmented",
+                "segment_size": 64,
+                "threads": 8,
+                "requested_threads": 8,
+                "circle_count": 168,
+                "external_counts": {"primesieve": 168, "primecount": 168},
+                "matches": {"primesieve": True, "primecount": True},
+                "passes": True,
+            }
+        ],
+    )
+
+    assert len(checks) == 1
+    assert checks[0]["circle_count"] == 168
+    assert checks[0]["one_shot_circle_count"] == 168
+    assert checks[0]["matches_one_shot"] is True
+    assert checks[0]["passes"] is True
+
+
 def test_first_mismatch_reports_value_or_length_difference() -> None:
     assert correctness.first_mismatch([2, 3, 7], [2, 3, 5]) == {
         "index": 2,
@@ -234,6 +288,23 @@ def test_build_report_counts_failures() -> None:
                 "passes": False,
             }
         ],
+        count_server_checks=[
+            {
+                "low": 0,
+                "high": 1000,
+                "span": 1000,
+                "count_mode": "segmented",
+                "segment_size": 64,
+                "threads": 8,
+                "requested_threads": 8,
+                "circle_count": 168,
+                "one_shot_circle_count": 167,
+                "external_counts": {"primesieve": 168, "primecount": 168},
+                "matches": {"primesieve": True, "primecount": True},
+                "matches_one_shot": False,
+                "passes": False,
+            }
+        ],
         enumeration_checks=[
             {
                 "low": 0,
@@ -261,11 +332,13 @@ def test_build_report_counts_failures() -> None:
     )
 
     assert report["count_check_count"] == 1
+    assert report["count_server_check_count"] == 1
     assert report["enumeration_check_count"] == 1
     assert report["next_check_count"] == 1
-    assert report["check_count"] == 3
+    assert report["check_count"] == 4
     assert report["count_failure_count"] == 1
+    assert report["count_server_failure_count"] == 1
     assert report["enumeration_failure_count"] == 1
     assert report["next_failure_count"] == 1
-    assert report["failure_count"] == 3
+    assert report["failure_count"] == 4
     assert report["passes"] is False

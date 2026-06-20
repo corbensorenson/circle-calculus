@@ -157,6 +157,38 @@ def test_rust_prime_cli_finds_next_prime(circle_prime_bin: Path) -> None:
     assert_prime_horizon_proof_contract(payload["decision"])
 
 
+def test_rust_prime_cli_next_server_handles_repeated_requests(
+    circle_prime_bin: Path,
+) -> None:
+    completed = subprocess.run(
+        [str(circle_prime_bin), "next-server"],
+        cwd=ROOT,
+        input="90\n1000000\n",
+        text=True,
+        capture_output=True,
+        check=True,
+    )
+    assert completed.stdout.splitlines() == ["97", "1000003"]
+
+
+def test_rust_prime_cli_next_server_json_reports_proof_contract(
+    circle_prime_bin: Path,
+) -> None:
+    completed = subprocess.run(
+        [str(circle_prime_bin), "next-server", "--json"],
+        cwd=ROOT,
+        input="100\n",
+        text=True,
+        capture_output=True,
+        check=True,
+    )
+    payload = json.loads(completed.stdout)
+    assert payload["status"] == "found"
+    assert payload["prime"] == 101
+    assert_prime_horizon_proof_contract(payload)
+    assert_prime_horizon_proof_contract(payload["decision"])
+
+
 def test_rust_prime_cli_reports_no_next_prime_in_u64_domain(
     circle_prime_bin: Path,
 ) -> None:
@@ -198,6 +230,37 @@ def test_rust_prime_cli_count_server_handles_repeated_requests(
         check=True,
     )
     assert completed.stdout.splitlines() == ["168", "9592"]
+
+
+def test_rust_prime_cli_count_server_json_reports_proof_contracts(
+    circle_prime_bin: Path,
+) -> None:
+    completed = subprocess.run(
+        [
+            str(circle_prime_bin),
+            "count-server",
+            "--segment-size",
+            "65536",
+            "--threads",
+            "4",
+            "--count-mode",
+            "presieve13",
+            "--json",
+        ],
+        cwd=ROOT,
+        input="0 1000\n",
+        text=True,
+        capture_output=True,
+        check=True,
+    )
+    payload = json.loads(completed.stdout)
+    assert payload["count"] == 168
+    assert payload["segment_size"] == 65536
+    assert payload["threads"] == 1
+    assert payload["requested_threads"] == 4
+    assert payload["count_mode"] == "presieve13"
+    assert_prime_horizon_proof_contract(payload)
+    assert_prime_range_count_proof_contract(payload)
 
 
 def test_rust_prime_cli_counts_reference_range_in_parallel(circle_prime_bin: Path) -> None:

@@ -42,6 +42,9 @@ def test_prime_engine_report_summarizes_artifacts(tmp_path: Path) -> None:
                 "kind,name,low,high,span,segment_size,result,rounds,best_ms,median_ms,rate_per_second,median_rate_per_second,threads,requested_threads,baseline,best_speedup,median_speedup",
                 "timing,external_primesieve_count,0,10000000,10000000,0,664579,3,2.400,2.500,4166666666,4000000000,8,8,,,",
                 "speedup,circle_prime_parallel_segmented_count_8t,0,10000000,10000000,131072,664579,3,3.000,3.200,3333333333,3125000000,8,8,external_primesieve_count,0.800,0.781",
+                "speedup,circle_prime_server_parallel_segmented_count_8t,0,10000000,10000000,131072,664579,3,1.200,1.250,8333333333,8000000000,8,8,external_primesieve_count,2.000,2.000",
+                "timing,external_primesieve_count,1000000000000,1000010000000,10000000,0,361726,3,4.900,5.000,2040816326,2000000000,8,8,,,",
+                "speedup,circle_prime_parallel_segmented_count_4t,1000000000000,1000010000000,10000000,3145728,361726,3,7.000,7.500,1428571428,1333333333,4,8,external_primesieve_count,0.700,0.667",
                 "timing,external_primecount_pi_diff,1000000000000,1000010000000,10000000,0,361726,3,17.500,18.000,571428571,555555555,0,0,,,",
                 "speedup,circle_prime_parallel_segmented_count_4t,1000000000000,1000010000000,10000000,3145728,361726,3,7.000,7.500,1428571428,1333333333,4,8,external_primecount_pi_diff,2.500,2.400",
             ]
@@ -93,10 +96,12 @@ def test_prime_engine_report_summarizes_artifacts(tmp_path: Path) -> None:
                 "finished_at_utc": "2026-01-01T00:02:00Z",
                 "passes": True,
                 "count_check_count": 2,
+                "count_server_check_count": 1,
                 "enumeration_check_count": 2,
                 "next_check_count": 1,
-                "check_count": 5,
+                "check_count": 6,
                 "count_failure_count": 0,
+                "count_server_failure_count": 0,
                 "enumeration_failure_count": 0,
                 "next_failure_count": 0,
                 "failure_count": 0,
@@ -221,8 +226,10 @@ def test_prime_engine_report_summarizes_artifacts(tmp_path: Path) -> None:
             [
                 "kind,name,start,batch_size,result,candidate_count,rounds,best_ms,median_ms,searches_per_second,median_searches_per_second,threads,requested_threads,baseline,best_speedup,median_speedup",
                 "timing,circle_prime_next_prime,100,1,101,1,3,1.000,1.200,1000,833.333,1,1,,,",
+                "timing,circle_prime_server_next_prime,100,1,101,1,3,0.250,0.300,4000,3333.333,1,1,,,",
                 "timing,external_primesieve_next_prime,100,1,101,0,3,2.000,2.400,500,416.667,8,8,,,",
                 "speedup,circle_prime_next_prime,100,1,101,1,3,1.000,1.200,1000,833.333,1,1,external_primesieve_next_prime,2.000,2.000",
+                "speedup,circle_prime_server_next_prime,100,1,101,1,3,0.250,0.300,4000,3333.333,1,1,external_primesieve_next_prime,8.000,8.000",
             ]
         )
         + "\n"
@@ -236,6 +243,7 @@ def test_prime_engine_report_summarizes_artifacts(tmp_path: Path) -> None:
                 "row_count": 3,
                 "rounds": 3,
                 "batch_size": 1,
+                "include_circle_server": True,
                 "starts": [100],
                 "required_external_tools": ["primesieve"],
                 "sample_output": None,
@@ -614,10 +622,16 @@ def test_prime_engine_report_summarizes_artifacts(tmp_path: Path) -> None:
     )
 
     assert report["missing_inputs"] == []
-    assert report["external"]["primesieve_wins"] == 0
-    assert report["external"]["primesieve_median_wins"] == 0
+    assert report["external"]["primesieve_wins"] == 1
+    assert report["external"]["primesieve_median_wins"] == 1
+    assert report["external"]["cold_cli"]["primesieve_wins"] == 0
+    assert report["external"]["cold_cli"]["primesieve_rows"] == 2
+    assert report["external"]["server"]["primesieve_wins"] == 1
+    assert report["external"]["server"]["primesieve_rows"] == 1
     assert report["external"]["primecount_wins"] == 1
     assert report["external"]["primecount_median_wins"] == 1
+    assert report["external"]["cold_cli"]["primecount_wins"] == 1
+    assert report["external"]["server"]["primecount_rows"] == 0
     assert report["external"]["metadata"]["tools"]["primesieve"]["version"] == "primesieve 12.14"
     assert report["external"]["metadata"]["tools"]["primecount"]["version"] == "primecount 8.5"
     assert report["external"]["metadata"]["required_external_tools"] == [
@@ -627,8 +641,9 @@ def test_prime_engine_report_summarizes_artifacts(tmp_path: Path) -> None:
     assert report["external"]["metadata"]["circle_count_modes"] == ["segmented"]
     assert report["external_correctness"]["available"] is True
     assert report["external_correctness"]["passes"] is True
-    assert report["external_correctness"]["check_count"] == 5
+    assert report["external_correctness"]["check_count"] == 6
     assert report["external_correctness"]["count_check_count"] == 2
+    assert report["external_correctness"]["count_server_check_count"] == 1
     assert report["external_correctness"]["enumeration_check_count"] == 2
     assert report["external_correctness"]["next_check_count"] == 1
     assert report["external_correctness"]["failure_count"] == 0
@@ -639,9 +654,14 @@ def test_prime_engine_report_summarizes_artifacts(tmp_path: Path) -> None:
     ]
     external_next_summary = report["external_next"]
     assert external_next_summary["available"] is True
-    assert external_next_summary["primesieve_wins"] == 1
-    assert external_next_summary["primesieve_median_wins"] == 1
+    assert external_next_summary["primesieve_wins"] == 2
+    assert external_next_summary["primesieve_median_wins"] == 2
+    assert external_next_summary["cold_cli"]["primesieve_wins"] == 1
+    assert external_next_summary["cold_cli"]["primesieve_rows"] == 1
+    assert external_next_summary["server"]["primesieve_wins"] == 1
+    assert external_next_summary["server"]["primesieve_rows"] == 1
     assert external_next_summary["metadata"]["starts"] == [100]
+    assert external_next_summary["metadata"]["include_circle_server"] is True
     assert external_next_summary["speedups"][0]["start"] == 100
     assert external_next_summary["speedups"][0]["result"] == 101
     assert external_next_summary["speedups"][0]["candidate_count"] == 1
@@ -735,6 +755,14 @@ def test_prime_engine_report_summarizes_artifacts(tmp_path: Path) -> None:
     assert overhead["cold_cli_extra_ms"] == pytest.approx(2.35)
     assert overhead["cold_process_best_ms"] == 4.1
     assert overhead["cold_process_over_hot"] == pytest.approx(4.1 / 2.05)
+    server_external = report["benchmark"]["high_offset_server_external"]
+    assert [row["baseline"] for row in server_external] == [
+        "external_primecount_pi_diff",
+        "external_primesieve_count",
+    ]
+    assert server_external[0]["server_best_speedup"] == pytest.approx(17.5 / 2.45)
+    assert server_external[1]["server_best_speedup"] == pytest.approx(4.9 / 2.45)
+    assert server_external[1]["cold_cli_best_speedup"] == pytest.approx(0.7)
     spread = report["benchmark"]["primary_candidate_spread"]
     ten_m_candidates = [
         group for group in spread if group["scope"] == "prefix" and group["workload"] == 10000000
@@ -777,12 +805,18 @@ def test_prime_engine_report_summarizes_artifacts(tmp_path: Path) -> None:
     assert report["tuning"]["default_alignment"][1]["segment_size_aligned"] is False
 
     markdown = render_markdown(report)
-    assert "Circle faster on 0/1 rows" in markdown
+    assert "`primesieve` cold CLI: Circle faster on 0/2 rows" in markdown
+    assert "`primesieve` server: Circle faster on 1/1 rows" in markdown
+    assert "`primecount` cold CLI: Circle faster on 1/1 rows" in markdown
     assert "External Correctness" in markdown
-    assert "Status: `passed`; checks: `5`; failures: `0`." in markdown
-    assert "Count checks: `2`; enumeration checks: `2`; next-prime checks: `1`." in markdown
+    assert "Status: `passed`; checks: `6`; failures: `0`." in markdown
+    assert (
+        "Count checks: `2`; count-server checks: `1`; enumeration checks: `2`; "
+        "next-prime checks: `1`."
+    ) in markdown
     assert "External Next-Prime Search" in markdown
-    assert "`primesieve --nth-prime`: Circle faster on 1/1 rows" in markdown
+    assert "`primesieve --nth-prime` cold CLI: Circle faster on 1/1 rows" in markdown
+    assert "`primesieve --nth-prime` server: Circle faster on 1/1 rows" in markdown
     assert "| 100 | 101 | 1 | 1 | 1.000 | 2.000 | 2.000 | 2.000 | unknown | circle_faster |" in markdown
     assert "Largest checked high: `18446744073709551615`." in markdown
     assert "Circle count modes checked: `segmented`, `hybrid-wheel30-mark`." in markdown
@@ -793,6 +827,8 @@ def test_prime_engine_report_summarizes_artifacts(tmp_path: Path) -> None:
     assert "High-offset cold/hot overhead" in markdown
     assert "High-offset cold/hot overhead (source: `high_offset_hot_cold`)" in markdown
     assert "| 10000000 | `parallel_high_offset_presieve17_range_count_8t` | 2.050 | `hot_cli_count_server_parallel_high_offset_segmented_count_8t` | 2.450 | 1.20x | 0.56x | 4.400 | 2.15x | 2.350 | 4.100 | 2.00x |" in markdown
+    assert "High-offset server/external best-time comparison" in markdown
+    assert "| 10000000 | `hot_cli_count_server_parallel_high_offset_segmented_count_8t` | 2.450 | `external_primesieve_count` | 4.900 | 2.000 | 7.000 | 0.700 |" in markdown
     assert (
         "| 10000000 | `parallel_high_offset_default_range_count_8t` | "
         "3145728 | 3.400 | 361726 |"

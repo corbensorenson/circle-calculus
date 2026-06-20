@@ -78,6 +78,7 @@ class Measurement:
     requested_threads: int
     run_once: Callable[[], int]
     count_mode: str = ""
+    close: Callable[[], None] | None = None
 
 
 def main() -> int:
@@ -113,6 +114,14 @@ def main() -> int:
             "is segmented; use default to omit --count-mode and follow the "
             "current CLI adaptive default. Experimental modes include "
             "balanced, dynamic, prefix-pi, presieve13, presieve17, wheel30-mark, and hybrid-wheel30-mark."
+        ),
+    )
+    parser.add_argument(
+        "--include-circle-server",
+        action="store_true",
+        help=(
+            "Also benchmark persistent circle-prime count-server requests for "
+            "the same Circle variants. Requires --interleaved."
         ),
     )
     parser.add_argument(
@@ -170,6 +179,8 @@ def main() -> int:
         parser.error("--external-threads must be nonnegative")
     if args.sample_output is not None and not args.interleaved:
         parser.error("--sample-output requires --interleaved")
+    if args.include_circle_server and not args.interleaved:
+        parser.error("--include-circle-server requires --interleaved")
 
     ranges = parse_ranges(args.ranges)
     try:
@@ -243,6 +254,7 @@ def main() -> int:
                 circle_threads=args.circle_threads,
                 external_threads=args.external_threads,
                 rounds=args.rounds,
+                include_circle_server=args.include_circle_server,
             )
             rows.extend(range_rows)
             samples.extend(range_samples)
@@ -433,6 +445,123 @@ def circle_prime_measurement(
     )
 
 
+class CountServerClient:
+    def __init__(self, binary: Path) -> None:
+        self.process = subprocess.Popen(
+            [str(binary), "count-server"],
+            cwd=ROOT,
+            text=True,
+            stdin=subprocess.PIPE,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+        )
+        if self.process.stdin is None or self.process.stdout is None:
+            self.close()
+            raise RuntimeError("failed to open count-server pipes")
+
+    def count(
+        self,
+        low: int,
+        high: int,
+        segment_size: int,
+        threads: int,
+        count_mode: str,
+    ) -> int:
+        assert self.process.stdin is not None
+        assert self.process.stdout is not None
+        request = f"{low} {high} {segment_size} {threads} {count_mode}\n"
+        self.process.stdin.write(request)
+        self.process.stdin.flush()
+        response = self.process.stdout.readline()
+        if response == "":
+            stderr = self._read_stderr()
+            raise RuntimeError(f"count-server exited without a response: {stderr}")
+        return parse_integer_output(response)
+
+    def close(self) -> None:
+        if self.process.poll() is not None:
+            return
+        try:
+            if self.process.stdin is not None:
+                self.process.stdin.write("quit\n")
+                self.process.stdin.flush()
+        except OSError:
+            pass
+        try:
+            self.process.wait(timeout=5)
+        except subprocess.TimeoutExpired:
+            self.process.kill()
+            self.process.wait(timeout=5)
+
+    def _read_stderr(self) -> str:
+        if self.process.stderr is None:
+            return ""
+        try:
+            return self.process.stderr.read()
+        except OSError:
+            return ""
+
+
+def circle_prime_server_measurement(
+    binary: Path,
+    low: int,
+    high: int,
+    segment_size: int,
+    threads: int,
+    count_mode: str = "segmented",
+) -> Measurement:
+    metadata_command = circle_prime_command(
+        binary,
+        low,
+        high,
+        segment_size,
+        threads,
+        count_mode,
+        json_output=True,
+    )
+    metadata_completed = subprocess.run(
+        metadata_command,
+        cwd=ROOT,
+        check=True,
+        text=True,
+        capture_output=True,
+    )
+    metadata = json.loads(metadata_completed.stdout)
+    actual_segment_size = int(metadata["segment_size"])
+    actual_threads = int(metadata["threads"])
+    metadata_count = int(metadata["count"])
+    resolved_count_mode = str(metadata.get("count_mode", count_mode))
+    client = CountServerClient(binary)
+
+    def run_once() -> int:
+        count = client.count(
+            low,
+            high,
+            actual_segment_size,
+            threads,
+            resolved_count_mode,
+        )
+        if count != metadata_count:
+            raise AssertionError(
+                f"Circle count-server disagreed with JSON metadata for [{low},{high}): "
+                f"metadata {metadata_count}, server {count}"
+            )
+        return count
+
+    name = circle_server_measurement_name(count_mode, actual_threads)
+    return Measurement(
+        name=name,
+        low=low,
+        high=high,
+        segment_size=actual_segment_size,
+        threads=actual_threads,
+        requested_threads=threads,
+        run_once=run_once,
+        count_mode=resolved_count_mode,
+        close=client.close,
+    )
+
+
 def circle_prime_command(
     binary: Path,
     low: int,
@@ -466,6 +595,14 @@ def circle_measurement_name(count_mode: str, actual_threads: int) -> str:
     name = f"circle_prime_{suffix}_count"
     if actual_threads != 1:
         name = f"circle_prime_parallel_{suffix}_count_{actual_threads}t"
+    return name
+
+
+def circle_server_measurement_name(count_mode: str, actual_threads: int) -> str:
+    suffix = count_mode.replace("-", "_")
+    name = f"circle_prime_server_{suffix}_count"
+    if actual_threads != 1:
+        name = f"circle_prime_server_parallel_{suffix}_count_{actual_threads}t"
     return name
 
 
@@ -593,6 +730,7 @@ def measure_range_interleaved(
     circle_threads: int,
     external_threads: int,
     rounds: int,
+    include_circle_server: bool = False,
 ) -> tuple[list[ExternalBenchRow], list[ExternalBenchSample]]:
     circle_measurements: list[Measurement] = []
     seen_circle_variants: set[tuple[str, int, int]] = set()
@@ -610,6 +748,26 @@ def measure_range_interleaved(
             if variant_key not in seen_circle_variants:
                 circle_measurements.append(measurement)
                 seen_circle_variants.add(variant_key)
+            if include_circle_server:
+                server_measurement = circle_prime_server_measurement(
+                    circle_prime,
+                    low,
+                    high,
+                    segment_size,
+                    circle_threads,
+                    count_mode,
+                )
+                server_variant_key = (
+                    server_measurement.name,
+                    server_measurement.segment_size,
+                    server_measurement.threads,
+                )
+                if server_variant_key not in seen_circle_variants:
+                    circle_measurements.append(server_measurement)
+                    seen_circle_variants.add(server_variant_key)
+                else:
+                    if server_measurement.close is not None:
+                        server_measurement.close()
 
     baseline_measurements = []
     if primesieve is not None:
@@ -621,10 +779,13 @@ def measure_range_interleaved(
             primecount_measurement(primecount, low, high, external_threads)
         )
 
-    timing_rows, samples = measure_interleaved(
-        [*circle_measurements, *baseline_measurements],
-        rounds,
-    )
+    measurements = [*circle_measurements, *baseline_measurements]
+    try:
+        timing_rows, samples = measure_interleaved(measurements, rounds)
+    finally:
+        for measurement in measurements:
+            if measurement.close is not None:
+                measurement.close()
     circle_names = {measurement.name for measurement in circle_measurements}
     baseline_names = {measurement.name for measurement in baseline_measurements}
     circle_rows = [row for row in timing_rows if row.name in circle_names]
@@ -932,6 +1093,7 @@ def build_run_metadata(
         "row_count": row_count,
         "rounds": args.rounds,
         "interleaved": bool(getattr(args, "interleaved", False)),
+        "include_circle_server": bool(getattr(args, "include_circle_server", False)),
         "sample_output": (
             str(args.sample_output)
             if getattr(args, "sample_output", None) is not None
@@ -1073,6 +1235,7 @@ def range_command_metadata(
             "circle_json_probe": first_variant["json_probe"],
             "circle_timing": first_variant["timing"],
             "circle_variants": circle_variants,
+            "circle_count_server": [str(circle_prime), "count-server"],
         }
         if primesieve is not None:
             entry["primesieve"] = primesieve_command(primesieve, low, stop, external_threads)

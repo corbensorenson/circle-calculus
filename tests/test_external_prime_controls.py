@@ -10,6 +10,7 @@ from scripts.benchmark_prime_external_controls import (
     build_run_metadata,
     circle_measurement_name,
     circle_prime_command,
+    circle_server_measurement_name,
     measure_interleaved,
     median,
     parse_circle_count_modes,
@@ -146,6 +147,14 @@ def test_circle_count_mode_parser_and_names() -> None:
         circle_measurement_name("hybrid-wheel30-mark", 8)
         == "circle_prime_parallel_hybrid_wheel30_mark_count_8t"
     )
+    assert (
+        circle_server_measurement_name("default", 7)
+        == "circle_prime_server_parallel_default_count_7t"
+    )
+    assert (
+        circle_server_measurement_name("presieve13", 4)
+        == "circle_prime_server_parallel_presieve13_count_4t"
+    )
 
 
 def test_external_commands_can_request_threads() -> None:
@@ -248,6 +257,7 @@ def test_external_metadata_records_thread_policy_and_commands(monkeypatch) -> No
         circle_threads=8,
         external_threads=4,
         require_tool=["primesieve", "primecount"],
+        include_circle_server=True,
     )
 
     metadata = build_run_metadata(
@@ -264,6 +274,7 @@ def test_external_metadata_records_thread_policy_and_commands(monkeypatch) -> No
     assert metadata["rounds"] == 5
     assert metadata["row_count"] == 6
     assert metadata["interleaved"] is False
+    assert metadata["include_circle_server"] is True
     assert metadata["requested_segment_sizes"] == [131072]
     assert metadata["thread_policy"]["circle_requested_threads"] == 8
     assert metadata["thread_policy"]["external_requested_threads"] == 4
@@ -282,6 +293,10 @@ def test_external_metadata_records_thread_policy_and_commands(monkeypatch) -> No
         "8",
         "--count-mode",
         "segmented",
+    ]
+    assert first_commands["circle_count_server"] == [
+        "target/release/circle-prime",
+        "count-server",
     ]
     assert first_commands["primesieve"] == [
         "/opt/bin/primesieve",
@@ -318,6 +333,7 @@ def test_external_metadata_records_circle_sweep_commands(monkeypatch) -> None:
         circle_threads=8,
         external_threads=8,
         require_tool=[],
+        include_circle_server=False,
     )
 
     metadata = build_run_metadata(
@@ -332,6 +348,7 @@ def test_external_metadata_records_circle_sweep_commands(monkeypatch) -> None:
     )
 
     assert metadata["requested_segment_size"] == 0
+    assert metadata["include_circle_server"] is False
     assert metadata["requested_segment_sizes"] == [0, 98304, 131072]
     assert metadata["circle_count_modes"] == ["segmented", "hybrid-wheel30-mark"]
     variants = metadata["range_commands"][0]["circle_variants"]

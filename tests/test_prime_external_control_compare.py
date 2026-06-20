@@ -186,6 +186,77 @@ def test_adaptive_default_rows_compare_across_effective_thread_changes() -> None
     assert comparisons[0].median_speedup_ratio == 1.300 / 0.950
 
 
+def test_adaptive_server_default_rows_keep_separate_comparison_key() -> None:
+    cold_baseline = speedup_row(
+        name="circle_prime_parallel_default_count_7t",
+        low=1_000_000_000_000,
+        high=1_000_010_000_000,
+        segment_size=1_507_328,
+        result=361_726,
+        threads=7,
+        requested_threads=8,
+        best_speedup=0.980,
+        median_speedup=1.010,
+        count_mode="presieve17",
+    )
+    server_baseline = speedup_row(
+        name="circle_prime_server_parallel_default_count_7t",
+        low=1_000_000_000_000,
+        high=1_000_010_000_000,
+        segment_size=1_507_328,
+        result=361_726,
+        threads=7,
+        requested_threads=8,
+        best_speedup=2.400,
+        median_speedup=2.500,
+        count_mode="presieve17",
+    )
+    cold_candidate = speedup_row(
+        name="circle_prime_parallel_default_count_4t",
+        low=1_000_000_000_000,
+        high=1_000_010_000_000,
+        segment_size=3_145_728,
+        result=361_726,
+        threads=4,
+        requested_threads=8,
+        best_speedup=1.020,
+        median_speedup=1.030,
+        count_mode="presieve13",
+    )
+    server_candidate = speedup_row(
+        name="circle_prime_server_parallel_default_count_4t",
+        low=1_000_000_000_000,
+        high=1_000_010_000_000,
+        segment_size=3_145_728,
+        result=361_726,
+        threads=4,
+        requested_threads=8,
+        best_speedup=2.700,
+        median_speedup=2.800,
+        count_mode="presieve13",
+    )
+
+    comparisons = compare_speedup_rows(
+        baseline_rows={
+            cold_baseline.key: cold_baseline,
+            server_baseline.key: server_baseline,
+        },
+        candidate_rows={
+            cold_candidate.key: cold_candidate,
+            server_candidate.key: server_candidate,
+        },
+        baselines={"external_primesieve_count"},
+    )
+
+    assert [comparison.key[0] for comparison in comparisons] == [
+        "circle_prime_default_count",
+        "circle_prime_server_default_count",
+    ]
+    assert comparisons[0].baseline_median_speedup == 1.010
+    assert comparisons[1].baseline_median_speedup == 2.500
+    assert comparisons[1].candidate_median_speedup == 2.800
+
+
 def test_count_mode_change_can_be_a_strict_failure() -> None:
     comparisons = [
         ExternalComparison(

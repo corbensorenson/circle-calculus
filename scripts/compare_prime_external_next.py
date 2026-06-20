@@ -120,6 +120,25 @@ def main() -> int:
         ),
     )
     parser.add_argument(
+        "--dominant-speedup-floor",
+        type=float,
+        help=(
+            "When both baseline and candidate speedups for the checked metric "
+            "are at or above this floor, use --dominant-min-speedup-ratio "
+            "instead of the default ratio floor. This keeps thousands-x rows "
+            "from failing on ordinary short-run jitter while still catching "
+            "large collapses."
+        ),
+    )
+    parser.add_argument(
+        "--dominant-min-speedup-ratio",
+        type=float,
+        help=(
+            "Alternate minimum candidate/baseline ratio for rows selected by "
+            "--dominant-speedup-floor."
+        ),
+    )
+    parser.add_argument(
         "--require-any-median-speedup-at-least",
         type=float,
         help=(
@@ -151,6 +170,19 @@ def main() -> int:
         and args.best_regression_median_speedup_ratio_floor < 0.0
     ):
         parser.error("--best-regression-median-speedup-ratio-floor must be nonnegative")
+    if args.dominant_speedup_floor is not None and args.dominant_speedup_floor < 0.0:
+        parser.error("--dominant-speedup-floor must be nonnegative")
+    if (
+        args.dominant_min_speedup_ratio is not None
+        and args.dominant_min_speedup_ratio < 0.0
+    ):
+        parser.error("--dominant-min-speedup-ratio must be nonnegative")
+    if (args.dominant_speedup_floor is None) != (
+        args.dominant_min_speedup_ratio is None
+    ):
+        parser.error(
+            "--dominant-speedup-floor and --dominant-min-speedup-ratio must be used together"
+        )
 
     names = parse_csv_set(args.names, "--names")
     starts = parse_int_set(args.starts, "--starts")
@@ -175,6 +207,8 @@ def main() -> int:
         best_regression_median_speedup_ratio_floor=(
             args.best_regression_median_speedup_ratio_floor
         ),
+        dominant_speedup_floor=args.dominant_speedup_floor,
+        dominant_min_speedup_ratio=args.dominant_min_speedup_ratio,
         require_any_median_speedup_at_least=args.require_any_median_speedup_at_least,
     )
 
@@ -325,6 +359,8 @@ def comparison_failures(
     min_best_speedup_ratio: float,
     median_regression_best_speedup_ratio_floor: float | None = None,
     best_regression_median_speedup_ratio_floor: float | None = None,
+    dominant_speedup_floor: float | None = None,
+    dominant_min_speedup_ratio: float | None = None,
     require_any_median_speedup_at_least: float | None = None,
 ) -> list[str]:
     comparisons = list(comparisons)
@@ -342,12 +378,26 @@ def comparison_failures(
             )
         median_ratio = row.median_speedup_ratio
         best_ratio = row.best_speedup_ratio
+        median_speedup_ratio_floor = effective_speedup_ratio_floor(
+            default_ratio=min_median_speedup_ratio,
+            dominant_speedup_floor=dominant_speedup_floor,
+            dominant_min_speedup_ratio=dominant_min_speedup_ratio,
+            baseline_speedup=row.baseline_median_speedup,
+            candidate_speedup=row.candidate_median_speedup,
+        )
+        best_speedup_ratio_floor = effective_speedup_ratio_floor(
+            default_ratio=min_best_speedup_ratio,
+            dominant_speedup_floor=dominant_speedup_floor,
+            dominant_min_speedup_ratio=dominant_min_speedup_ratio,
+            baseline_speedup=row.baseline_best_speedup,
+            candidate_speedup=row.candidate_best_speedup,
+        )
         if median_ratio is None:
             failures.append(
                 f"{label} cannot compare median speedup ratio because baseline "
                 f"median_speedup={row.baseline_median_speedup:.3f}"
             )
-        elif median_ratio < min_median_speedup_ratio:
+        elif median_ratio < median_speedup_ratio_floor:
             best_floor_allows_median_drift = (
                 median_regression_best_speedup_ratio_floor is not None
                 and best_ratio is not None
@@ -356,14 +406,14 @@ def comparison_failures(
             if not best_floor_allows_median_drift:
                 failures.append(
                     f"{label} median speedup regressed: candidate/baseline="
-                    f"{median_ratio:.3f} < {min_median_speedup_ratio:.3f}"
+                    f"{median_ratio:.3f} < {median_speedup_ratio_floor:.3f}"
                 )
         if best_ratio is None:
             failures.append(
                 f"{label} cannot compare best speedup ratio because baseline "
                 f"best_speedup={row.baseline_best_speedup:.3f}"
             )
-        elif best_ratio < min_best_speedup_ratio:
+        elif best_ratio < best_speedup_ratio_floor:
             median_floor_allows_best_drift = (
                 best_regression_median_speedup_ratio_floor is not None
                 and median_ratio is not None
@@ -372,7 +422,7 @@ def comparison_failures(
             if not median_floor_allows_best_drift:
                 failures.append(
                     f"{label} best speedup regressed: candidate/baseline="
-                    f"{best_ratio:.3f} < {min_best_speedup_ratio:.3f}"
+                    f"{best_ratio:.3f} < {best_speedup_ratio_floor:.3f}"
                 )
 
     if require_any_median_speedup_at_least is not None and not any(
@@ -384,6 +434,24 @@ def comparison_failures(
             f"{require_any_median_speedup_at_least:.3f}"
         )
     return failures
+
+
+def effective_speedup_ratio_floor(
+    *,
+    default_ratio: float,
+    dominant_speedup_floor: float | None,
+    dominant_min_speedup_ratio: float | None,
+    baseline_speedup: float,
+    candidate_speedup: float,
+) -> float:
+    if (
+        dominant_speedup_floor is not None
+        and dominant_min_speedup_ratio is not None
+        and baseline_speedup >= dominant_speedup_floor
+        and candidate_speedup >= dominant_speedup_floor
+    ):
+        return min(default_ratio, dominant_min_speedup_ratio)
+    return default_ratio
 
 
 def render_comparison_table(comparisons: Iterable[NextComparison]) -> str:

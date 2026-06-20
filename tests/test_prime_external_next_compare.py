@@ -176,6 +176,65 @@ def test_next_best_regression_can_be_tolerated_when_median_speedup_stays_close()
     assert failures == []
 
 
+def test_next_dominant_speedup_rows_use_lower_ratio_floor() -> None:
+    comparisons = [
+        NextComparison(
+            key=speedup_row(
+                name="circle_prime_server_next_prime",
+                start=18_446_744_073_709_551_500,
+            ).key,
+            baseline_result=18_446_744_073_709_551_521,
+            candidate_result=18_446_744_073_709_551_521,
+            baseline_candidate_count=5,
+            candidate_candidate_count=5,
+            baseline_best_speedup=28_000.0,
+            candidate_best_speedup=24_600.0,
+            baseline_median_speedup=23_100.0,
+            candidate_median_speedup=18_800.0,
+        )
+    ]
+
+    failures = comparison_failures(
+        comparisons,
+        min_median_speedup_ratio=0.85,
+        min_best_speedup_ratio=0.85,
+        dominant_speedup_floor=1000.0,
+        dominant_min_speedup_ratio=0.75,
+    )
+
+    assert failures == []
+
+
+def test_next_dominant_speedup_floor_still_rejects_large_collapse() -> None:
+    comparisons = [
+        NextComparison(
+            key=speedup_row(
+                name="circle_prime_server_next_prime",
+                start=18_446_744_073_709_551_500,
+            ).key,
+            baseline_result=18_446_744_073_709_551_521,
+            candidate_result=18_446_744_073_709_551_521,
+            baseline_candidate_count=5,
+            candidate_candidate_count=5,
+            baseline_best_speedup=28_000.0,
+            candidate_best_speedup=1_100.0,
+            baseline_median_speedup=23_100.0,
+            candidate_median_speedup=1_100.0,
+        )
+    ]
+
+    failures = comparison_failures(
+        comparisons,
+        min_median_speedup_ratio=0.85,
+        min_best_speedup_ratio=0.85,
+        dominant_speedup_floor=1000.0,
+        dominant_min_speedup_ratio=0.75,
+    )
+
+    assert any("median speedup regressed" in failure for failure in failures)
+    assert any("best speedup regressed" in failure for failure in failures)
+
+
 def test_next_comparison_failures_can_require_serious_control_win() -> None:
     comparisons = [
         NextComparison(

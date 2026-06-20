@@ -13,6 +13,7 @@ if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
 from scripts.benchmark_prime_external_controls import (
+    CountServerClient,
     DEFAULT_CIRCLE_COUNT_MODES,
     ROOT,
     build_circle_prime,
@@ -184,6 +185,10 @@ def main() -> int:
         circle_threads=args.circle_threads,
         external_threads=args.external_threads,
     )
+    count_server_checks = run_count_server_checks(
+        circle_prime=circle_prime,
+        count_checks=checks,
+    )
     enumeration_checks = run_enumeration_checks(
         circle_prime=circle_prime,
         primesieve=primesieve,
@@ -211,6 +216,7 @@ def main() -> int:
         external_threads=args.external_threads,
         required_tools=required_tools,
         checks=checks,
+        count_server_checks=count_server_checks,
         enumeration_checks=enumeration_checks,
         next_checks=next_checks,
         missing_tools=[],
@@ -361,6 +367,50 @@ def external_range_counts(
         low_count = run_primecount(primecount, low - 1, external_threads) if low > 0 else 0
         counts["primecount"] = high_count - low_count
     return counts
+
+
+def run_count_server_checks(
+    *,
+    circle_prime: Path,
+    count_checks: list[dict[str, Any]],
+) -> list[dict[str, Any]]:
+    if not count_checks:
+        return []
+    client = CountServerClient(circle_prime)
+    server_checks = []
+    try:
+        for check in count_checks:
+            count = client.count(
+                int(check["low"]),
+                int(check["high"]),
+                int(check["segment_size"]),
+                int(check["requested_threads"]),
+                str(check["count_mode"]),
+            )
+            matches = {
+                name: count == expected
+                for name, expected in check["external_counts"].items()
+            }
+            server_checks.append(
+                {
+                    "low": check["low"],
+                    "high": check["high"],
+                    "span": check["span"],
+                    "count_mode": check["count_mode"],
+                    "segment_size": check["segment_size"],
+                    "threads": check["threads"],
+                    "requested_threads": check["requested_threads"],
+                    "circle_count": count,
+                    "one_shot_circle_count": check["circle_count"],
+                    "external_counts": check["external_counts"],
+                    "matches": matches,
+                    "matches_one_shot": count == check["circle_count"],
+                    "passes": count == check["circle_count"] and all(matches.values()),
+                }
+            )
+    finally:
+        client.close()
+    return server_checks
 
 
 def run_enumeration_checks(
@@ -567,6 +617,7 @@ def build_report(
     external_threads: int,
     required_tools: list[str],
     checks: list[dict[str, Any]],
+    count_server_checks: list[dict[str, Any]] | None = None,
     enumeration_checks: list[dict[str, Any]] | None = None,
     next_checks: list[dict[str, Any]] | None = None,
     missing_tools: list[str],
@@ -577,14 +628,24 @@ def build_report(
         next_starts = []
     if enumeration_checks is None:
         enumeration_checks = []
+    if count_server_checks is None:
+        count_server_checks = []
     if next_checks is None:
         next_checks = []
     count_failure_count = sum(1 for check in checks if not check["passes"])
+    count_server_failure_count = sum(
+        1 for check in count_server_checks if not check["passes"]
+    )
     enumeration_failure_count = sum(
         1 for check in enumeration_checks if not check["passes"]
     )
     next_failure_count = sum(1 for check in next_checks if not check["passes"])
-    failure_count = count_failure_count + enumeration_failure_count + next_failure_count
+    failure_count = (
+        count_failure_count
+        + count_server_failure_count
+        + enumeration_failure_count
+        + next_failure_count
+    )
     return {
         "started_at_utc": started_at_utc,
         "finished_at_utc": utc_now(),
@@ -608,15 +669,23 @@ def build_report(
             "primecount": external_tool_metadata("primecount", primecount, ["--version"]),
         },
         "count_check_count": len(checks),
+        "count_server_check_count": len(count_server_checks),
         "enumeration_check_count": len(enumeration_checks),
         "next_check_count": len(next_checks),
-        "check_count": len(checks) + len(enumeration_checks) + len(next_checks),
+        "check_count": (
+            len(checks)
+            + len(count_server_checks)
+            + len(enumeration_checks)
+            + len(next_checks)
+        ),
         "count_failure_count": count_failure_count,
+        "count_server_failure_count": count_server_failure_count,
         "enumeration_failure_count": enumeration_failure_count,
         "next_failure_count": next_failure_count,
         "failure_count": failure_count,
         "passes": not missing_tools and failure_count == 0,
         "checks": checks,
+        "count_server_checks": count_server_checks,
         "enumeration_checks": enumeration_checks,
         "next_checks": next_checks,
     }
