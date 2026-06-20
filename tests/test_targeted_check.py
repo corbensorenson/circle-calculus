@@ -280,6 +280,7 @@ def test_transformer_lean_change_runs_sparse_contract_checks() -> None:
 def test_flagship_kind_specific_changes_run_strict_receipt_checks() -> None:
     path_kinds = {
         "docs/ROPE_CERTIFIER_QUICKSTART.md": "rope_position_distinguishability",
+        "docs/ROPE_CERTIFIER_RESULTS_NOTE.md": "rope_position_distinguishability",
         "docs/KV_CACHE_CERTIFIER_QUICKSTART.md": "kv_cache_ring_buffer",
         "site/chapters/applications/sparse_attention_contract.qmd": (
             "sparse_attention_coverage"
@@ -568,6 +569,15 @@ def test_rope_review_packet_change_runs_rope_check_not_all_contracts() -> None:
     commands = commands_for(["docs/ROPE_CERTIFIER_REVIEW_PACKET.md"])
 
     assert_kind_contract_checks(commands, "rope_position_distinguishability")
+    assert contains_command(commands, "scripts/site/check_site_static_source_links.py")
+    assert not contains_command(commands, "make", "circle-ai-contracts-ready")
+
+
+def test_rope_results_note_change_runs_rope_check_not_all_contracts() -> None:
+    commands = commands_for(["docs/ROPE_CERTIFIER_RESULTS_NOTE.md"])
+
+    assert_kind_contract_checks(commands, "rope_position_distinguishability")
+    assert_strict_receipt_check(commands, "rope_position_distinguishability")
     assert contains_command(commands, "scripts/site/check_site_static_source_links.py")
     assert not contains_command(commands, "make", "circle-ai-contracts-ready")
 

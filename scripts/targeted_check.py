@@ -328,6 +328,7 @@ AI_CONTRACT_SHARED_SITE_PAGES = {
 AI_CONTRACT_DOC_KINDS = {
     "docs/ROPE_CERTIFIER_QUICKSTART.md": "rope_position_distinguishability",
     "docs/ROPE_CERTIFIER_REVIEW_PACKET.md": "rope_position_distinguishability",
+    "docs/ROPE_CERTIFIER_RESULTS_NOTE.md": "rope_position_distinguishability",
     "docs/KV_CACHE_CERTIFIER_QUICKSTART.md": "kv_cache_ring_buffer",
     "docs/SPARSE_ATTENTION_CERTIFIER_QUICKSTART.md": "sparse_attention_coverage",
     "docs/RECURRENCE_SCHEDULE_CERTIFIER_QUICKSTART.md": "recurrence_schedule",
