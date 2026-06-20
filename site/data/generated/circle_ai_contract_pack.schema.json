@@ -589,6 +589,8 @@
                 "d19_proved_first_channel_context_wide_contract",
                 "d19_proved_first_channel_radian_bank_form",
                 "d19_proved_first_channel_bank_tolerance_rule",
+                "real_phase_dirichlet_witness_guardrail",
+                "real_phase_margin_ceiling_guardrail",
                 "proof_layers"
               ],
               "type": "object"
@@ -1247,6 +1249,8 @@
                     "d19_proved_first_channel_context_wide_contract",
                     "d19_proved_first_channel_radian_bank_form",
                     "d19_proved_first_channel_bank_tolerance_rule",
+                    "real_phase_dirichlet_witness_guardrail",
+                    "real_phase_margin_ceiling_guardrail",
                     "proof_layers"
                   ],
                   "type": "object"
