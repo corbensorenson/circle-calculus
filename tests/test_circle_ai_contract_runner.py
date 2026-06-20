@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import hashlib
 import json
 import subprocess
 import sys
@@ -33,6 +34,32 @@ SCRIPT = ROOT / "scripts" / "circle_ai_certify.py"
 STANDARD_ROPE_MODEL_CONFIG = (
     ROOT / "examples" / "circle_ai_model_configs" / "standard_rope_config.json"
 )
+PROOF_LAYER_BUCKETS = (
+    "proved_fields",
+    "computed_fields",
+    "numerical_only_fields",
+    "unsupported_fields",
+)
+
+
+def _receipt_fingerprint(receipt: dict) -> str:
+    def strip(value):
+        if isinstance(value, dict):
+            return {
+                key: strip(child)
+                for key, child in value.items()
+                if key != "receipt_content_fingerprint"
+            }
+        if isinstance(value, list):
+            return [strip(child) for child in value]
+        return value
+
+    payload = json.dumps(
+        strip(receipt),
+        sort_keys=True,
+        separators=(",", ":"),
+    ).encode("utf-8")
+    return hashlib.sha256(payload).hexdigest()
 
 
 @pytest.fixture(scope="module")
@@ -215,6 +242,34 @@ def test_dispatcher_aliases_and_fingerprint_validation(contract_pack: dict) -> N
     failures = validate_contract_receipt(broken_normalized)
     assert any(
         "normalized_request_fingerprint drifted" in failure
+        for failure in failures
+    )
+
+
+def test_receipt_validator_requires_typed_proof_layer_buckets(
+    contract_pack: dict,
+) -> None:
+    receipt = build_rope_receipt(pack=contract_pack)
+
+    missing_bucket = json.loads(json.dumps(receipt))
+    del missing_bucket["proof_layers"]["unsupported_fields"]
+    missing_bucket["receipt_content_fingerprint"] = _receipt_fingerprint(
+        missing_bucket
+    )
+    failures = validate_contract_receipt(missing_bucket)
+    assert any(
+        "proof_layers.unsupported_fields must be a list" in failure
+        for failure in failures
+    )
+
+    bad_bucket_value = json.loads(json.dumps(receipt))
+    bad_bucket_value["proof_layers"]["computed_fields"] = ["ok", ""]
+    bad_bucket_value["receipt_content_fingerprint"] = _receipt_fingerprint(
+        bad_bucket_value
+    )
+    failures = validate_contract_receipt(bad_bucket_value)
+    assert any(
+        "proof_layers.computed_fields must contain non-empty strings" in failure
         for failure in failures
     )
 
@@ -498,8 +553,22 @@ def test_receipt_schema_exposes_runner_metadata() -> None:
     assert "validation_commands" in schema["required"]
     assert "request_content_fingerprint" in schema["required"]
     assert "normalized_request_fingerprint" in schema["required"]
+    assert schema["properties"]["proof_layers"]["required"] == list(PROOF_LAYER_BUCKETS)
     assert schema["properties"]["recommendations"]["minItems"] == 1
     assert schema["properties"]["validation_commands"]["minItems"] == 1
+
+
+def test_receipt_schema_rejects_missing_proof_layer_bucket(
+    contract_pack: dict,
+) -> None:
+    schema = build_contract_receipt_json_schema()
+    receipt = build_rope_receipt(pack=contract_pack)
+    del receipt["proof_layers"]["unsupported_fields"]
+    receipt["receipt_content_fingerprint"] = _receipt_fingerprint(receipt)
+
+    jsonschema.Draft202012Validator.check_schema(schema)
+    with pytest.raises(jsonschema.ValidationError):
+        jsonschema.validate(receipt, schema)
 
 
 def test_request_validation_report_schema_accepts_public_reports() -> None:

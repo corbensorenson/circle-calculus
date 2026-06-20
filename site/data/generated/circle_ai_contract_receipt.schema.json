@@ -35,6 +35,43 @@
       "type": "array"
     },
     "proof_layers": {
+      "additionalProperties": true,
+      "properties": {
+        "computed_fields": {
+          "items": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "numerical_only_fields": {
+          "items": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "proved_fields": {
+          "items": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "unsupported_fields": {
+          "items": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "proved_fields",
+        "computed_fields",
+        "numerical_only_fields",
+        "unsupported_fields"
+      ],
       "type": "object"
     },
     "proof_status": {

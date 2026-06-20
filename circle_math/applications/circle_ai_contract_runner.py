@@ -79,6 +79,12 @@ STATUS_VALUES = (
     "numerical_only",
     "outside_scope",
 )
+PROOF_LAYER_BUCKETS = (
+    "proved_fields",
+    "computed_fields",
+    "numerical_only_fields",
+    "unsupported_fields",
+)
 ROPE_DIRICHLET_GUARDRAIL_THEOREM_IDS = (
     "AIRA-T0239",
     "AIRA-T0240",
@@ -1347,6 +1353,18 @@ def validate_contract_receipt(receipt: Mapping[str, Any]) -> list[str]:
     evidence = receipt.get("evidence")
     if not isinstance(evidence, dict) or not evidence:
         failures.append("evidence must be a non-empty object")
+    proof_layers = receipt.get("proof_layers")
+    if not isinstance(proof_layers, dict):
+        failures.append("proof_layers must be an object")
+    else:
+        for bucket in PROOF_LAYER_BUCKETS:
+            fields = proof_layers.get(bucket)
+            if not isinstance(fields, list):
+                failures.append(f"proof_layers.{bucket} must be a list")
+            elif not all(isinstance(field, str) and field for field in fields):
+                failures.append(
+                    f"proof_layers.{bucket} must contain non-empty strings"
+                )
     proof_status = receipt.get("proof_status")
     if not isinstance(proof_status, dict):
         failures.append("proof_status must be an object")
@@ -1753,6 +1771,10 @@ def build_contract_runner_check_json_schema() -> dict[str, Any]:
 
 def build_contract_receipt_json_schema() -> dict[str, Any]:
     string_list = {"type": "array", "items": {"type": "string"}}
+    proof_layer_bucket = {
+        "type": "array",
+        "items": {"type": "string", "minLength": 1},
+    }
     return {
         "$schema": "https://json-schema.org/draft/2020-12/schema",
         "$id": "https://circle-calculus.local/schemas/circle_ai_contract_receipt.schema.json",
@@ -1818,7 +1840,14 @@ def build_contract_receipt_json_schema() -> dict[str, Any]:
                 },
                 "additionalProperties": True,
             },
-            "proof_layers": {"type": "object"},
+            "proof_layers": {
+                "type": "object",
+                "required": list(PROOF_LAYER_BUCKETS),
+                "properties": {
+                    bucket: proof_layer_bucket for bucket in PROOF_LAYER_BUCKETS
+                },
+                "additionalProperties": True,
+            },
             "recommendations": {
                 "type": "array",
                 "items": {"type": "object"},
