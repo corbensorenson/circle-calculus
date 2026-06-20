@@ -166,9 +166,11 @@ CONTRACT_ARTIFACTS = {
                 "--field d19_proved_first_channel_context_wide_contract "
                 "--field d19_proved_first_channel_radian_bank_form "
                 "--field d19_proved_first_channel_bank_tolerance_rule "
+                "--field d19_undecided_probe_margin_in_open_gap "
                 "--require-theorem AIRA-T0171 --require-theorem AIRA-T0172 "
                 "--require-theorem AIRA-T0234 --require-theorem AIRA-T0235 "
                 "--require-theorem AIRA-T0236 --require-theorem AIRA-T0237 "
+                "--require-theorem AIRA-T0238 "
                 "--require-recommendation ROPE-USE-D19-MARGIN-FRONTIER "
                 "--require-recommendation-evidence-field "
                 "ROPE-USE-D19-MARGIN-FRONTIER="
@@ -179,6 +181,9 @@ CONTRACT_ARTIFACTS = {
                 "--require-recommendation-evidence-field "
                 "ROPE-USE-D19-MARGIN-FRONTIER="
                 "d19_proved_first_channel_radian_bank_form "
+                "--require-recommendation-evidence-field "
+                "ROPE-USE-D19-MARGIN-FRONTIER="
+                "d19_undecided_probe_margin_in_open_gap "
                 "--require-recommendation-theorem "
                 "ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0234 "
                 "--require-recommendation-theorem "
@@ -187,6 +192,8 @@ CONTRACT_ARTIFACTS = {
                 "ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0236 "
                 "--require-recommendation-theorem "
                 "ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0237 "
+                "--require-recommendation-theorem "
+                "ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0238 "
                 "--require-recommendation-action-parameter "
                 "ROPE-USE-D19-MARGIN-FRONTIER=proved_branch_bank_transfer "
                 "--require-recommendation-action-parameter-path "
@@ -932,6 +939,7 @@ PACK_VALIDATION_COMMANDS = [
         "--field d19_proved_first_channel_context_wide_contract "
         "--field d19_proved_first_channel_radian_bank_form "
         "--field d19_proved_first_channel_bank_tolerance_rule "
+        "--field d19_undecided_probe_margin_in_open_gap "
         "--include-field-metadata --include-recommendations"
     ),
     (
@@ -946,9 +954,11 @@ PACK_VALIDATION_COMMANDS = [
         "--field d19_proved_first_channel_context_wide_contract "
         "--field d19_proved_first_channel_radian_bank_form "
         "--field d19_proved_first_channel_bank_tolerance_rule "
+        "--field d19_undecided_probe_margin_in_open_gap "
         "--require-theorem AIRA-T0171 --require-theorem AIRA-T0172 "
         "--require-theorem AIRA-T0234 --require-theorem AIRA-T0235 "
         "--require-theorem AIRA-T0236 --require-theorem AIRA-T0237 "
+        "--require-theorem AIRA-T0238 "
         "--require-recommendation ROPE-USE-D19-MARGIN-FRONTIER "
         "--require-recommendation-evidence-field "
         "ROPE-USE-D19-MARGIN-FRONTIER=d19_proved_first_channel_bank_transfer "
@@ -957,6 +967,8 @@ PACK_VALIDATION_COMMANDS = [
         "d19_proved_first_channel_context_wide_contract "
         "--require-recommendation-evidence-field "
         "ROPE-USE-D19-MARGIN-FRONTIER=d19_proved_first_channel_radian_bank_form "
+        "--require-recommendation-evidence-field "
+        "ROPE-USE-D19-MARGIN-FRONTIER=d19_undecided_probe_margin_in_open_gap "
         "--require-recommendation-theorem "
         "ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0234 "
         "--require-recommendation-theorem "
@@ -965,6 +977,8 @@ PACK_VALIDATION_COMMANDS = [
         "ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0236 "
         "--require-recommendation-theorem "
         "ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0237 "
+        "--require-recommendation-theorem "
+        "ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0238 "
         "--require-recommendation-action-parameter "
         "ROPE-USE-D19-MARGIN-FRONTIER=proved_branch_bank_transfer "
         "--require-recommendation-action-parameter-path "
@@ -1636,6 +1650,11 @@ FIELD_DESCRIPTION_OVERRIDES = {
     "d19_undecided_margin_open_gap": (
         "Boolean Lean-backed guard that the undecided D19 request margin lies "
         "strictly between the proved threshold and the impossible threshold."
+    ),
+    "d19_undecided_probe_margin_in_open_gap": (
+        "Boolean Lean-backed guard that the public D19 undecided probe margin "
+        "2/656917 lies strictly between the proved threshold and the "
+        "impossible threshold."
     ),
     "d19_undecided_margin_interval_width": (
         "Exact rational width of the D19 open interval between the proved "
@@ -2555,6 +2574,9 @@ def _generic_planner_recommendations(
                 "impossible_status": fields["d19_impossible_request_status"],
                 "undecided_margin": fields["d19_undecided_request_margin"],
                 "undecided_status": fields["d19_undecided_request_status"],
+                "undecided_probe_margin_in_open_gap": fields[
+                    "d19_undecided_probe_margin_in_open_gap"
+                ],
                 "undecided_interval": {
                     "lower_exclusive": fields[
                         "d19_undecided_margin_interval_lower_exclusive"
@@ -2622,6 +2644,7 @@ def _generic_planner_recommendations(
                             "AIRA-T0221",
                             "AIRA-T0232",
                             "AIRA-T0233",
+                            "AIRA-T0238",
                         ],
                         "meaning": (
                             "Lean identifies this as the open interval between "
@@ -2659,6 +2682,7 @@ def _generic_planner_recommendations(
                     "d19_undecided_request_margin",
                     "d19_undecided_request_status",
                     "d19_undecided_margin_open_gap",
+                    "d19_undecided_probe_margin_in_open_gap",
                     "d19_undecided_margin_interval_width",
                     "d19_undecided_request_relation",
                     "d19_margin_thresholds_ordered",
@@ -2687,6 +2711,7 @@ def _generic_planner_recommendations(
                     "AIRA-T0235",
                     "AIRA-T0236",
                     "AIRA-T0237",
+                    "AIRA-T0238",
                     "AIRA-T0230",
                     "AIRA-T0231",
                 ],
@@ -3268,6 +3293,11 @@ def _rope_position_contract() -> dict[str, Any]:
         "d19_undecided_margin_open_gap": (
             undecided_request.undecided_margin_open_gap
         ),
+        "d19_undecided_probe_margin_in_open_gap": (
+            undecided_request.requested_margin == "2/656917"
+            and undecided_request.undecided_margin_open_gap
+            and "AIRA-T0238" in undecided_request.theorem_ids
+        ),
         "d19_undecided_margin_interval_lower_exclusive": (
             undecided_request.undecided_margin_interval_lower_exclusive
         ),
@@ -3360,6 +3390,7 @@ def _rope_position_contract() -> dict[str, Any]:
             and undecided_request.request_status == "undecided_margin_gap"
             and not undecided_request.theorem_backed_classification
             and undecided_request.undecided_margin_open_gap
+            and fields["d19_undecided_probe_margin_in_open_gap"]
             and proved_request.margin_thresholds_ordered
             and proved_request.proved_impossible_branches_disjoint
             and impossible_request.proved_impossible_branches_disjoint

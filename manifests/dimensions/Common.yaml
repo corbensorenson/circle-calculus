@@ -6581,6 +6581,22 @@ theorems:
         - tests/test_circle_ai_contract_pack.py::test_generic_contract_pack_is_standalone_with_compatibility_aliases
         - tests/test_circle_ai_contract_consumer.py::test_consumer_exposes_rope_planner_recommendations
     blocker: ""
+  - id: AIRA-T0238
+    status: lean_proved
+    lean_name: Circle.Applications.ropeStandardChannel0D19_public_undecided_probe_margin_in_open_gap
+    informal_statement: "The public standard channel-0 D19 undecided probe margin 2/656917 lies strictly inside the open interval between the proved threshold 1/328459 and the obstruction threshold 1/328458."
+    formal_statement: "Circle.Applications.ropeStandardChannel0D19SeedMargin < ((2 : Real) / 656917) and ((2 : Real) / 656917) < ((1 : Real) / 328458)"
+    dictionary_dependencies: ["COMMON-0076", "COMMON-0077", "COMMON-0080", "COMMON-0082", "COMMON-0087", "COMMON-0088", "COMMON-0089"]
+    paper_refs: ["papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_rope_certifier.py::test_standard_channel0_d19_range_request_bracket_reports_undecided_gap
+        - tests/test_circle_ai_contract_pack.py::test_generic_contract_pack_is_standalone_with_compatibility_aliases
+        - tests/test_circle_ai_contract_consumer.py::test_consumer_exposes_rope_planner_recommendations
+    blocker: ""
   - id: AIT-T0001
     status: lean_proved
     lean_name: Circle.Applications.attentionReach_eq_div_gcd

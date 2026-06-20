@@ -350,4 +350,16 @@ theorem ropeStandardChannel0D19_request_margin_open_gap_width :
       (1 : ℝ) / 107884986222 := by
   norm_num [ropeStandardChannel0D19SeedMargin]
 
+/-- The public D19 undecided request probe lies inside the open gap.
+
+The Python contract pack uses `2/656917` as its deterministic undecided probe.
+This theorem checks that the probe is strictly between the proved threshold
+`1/328459` and the obstruction threshold `1/328458`. It does not prove the
+margin itself; it proves only that the example belongs to the deliberately
+undecided classifier region. -/
+theorem ropeStandardChannel0D19_public_undecided_probe_margin_in_open_gap :
+    ropeStandardChannel0D19SeedMargin < (2 : ℝ) / 656917 ∧
+      (2 : ℝ) / 656917 < (1 : ℝ) / 328458 := by
+  norm_num [ropeStandardChannel0D19SeedMargin]
+
 end Circle.Applications

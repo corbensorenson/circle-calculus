@@ -16025,6 +16025,12 @@
           "lean_name": "Circle.Applications.ropeStandardChannel0D19_contextRange_radianFirstChannel_request_semantic_trichotomy",
           "name": "Circle.Applications.ropeStandardChannel0D19_contextRange_radianFirstChannel_request_semantic_trichotomy",
           "status": "proved"
+        },
+        {
+          "id": "AIRA-T0238",
+          "lean_name": "Circle.Applications.ropeStandardChannel0D19_public_undecided_probe_margin_in_open_gap",
+          "name": "Circle.Applications.ropeStandardChannel0D19_public_undecided_probe_margin_in_open_gap",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -17350,6 +17356,12 @@
           "id": "AIRA-T0237",
           "lean_name": "Circle.Applications.ropeStandardChannel0D19_contextRange_radianFirstChannel_request_semantic_trichotomy",
           "name": "Circle.Applications.ropeStandardChannel0D19_contextRange_radianFirstChannel_request_semantic_trichotomy",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0238",
+          "lean_name": "Circle.Applications.ropeStandardChannel0D19_public_undecided_probe_margin_in_open_gap",
+          "name": "Circle.Applications.ropeStandardChannel0D19_public_undecided_probe_margin_in_open_gap",
           "status": "proved"
         }
       ],
@@ -19624,6 +19636,12 @@
           "lean_name": "Circle.Applications.ropeStandardChannel0D19_contextRange_radianFirstChannel_request_semantic_trichotomy",
           "name": "Circle.Applications.ropeStandardChannel0D19_contextRange_radianFirstChannel_request_semantic_trichotomy",
           "status": "proved"
+        },
+        {
+          "id": "AIRA-T0238",
+          "lean_name": "Circle.Applications.ropeStandardChannel0D19_public_undecided_probe_margin_in_open_gap",
+          "name": "Circle.Applications.ropeStandardChannel0D19_public_undecided_probe_margin_in_open_gap",
+          "status": "proved"
         }
       ],
       "used_by_widgets": []
@@ -21030,6 +21048,12 @@
           "id": "AIRA-T0237",
           "lean_name": "Circle.Applications.ropeStandardChannel0D19_contextRange_radianFirstChannel_request_semantic_trichotomy",
           "name": "Circle.Applications.ropeStandardChannel0D19_contextRange_radianFirstChannel_request_semantic_trichotomy",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0238",
+          "lean_name": "Circle.Applications.ropeStandardChannel0D19_public_undecided_probe_margin_in_open_gap",
+          "name": "Circle.Applications.ropeStandardChannel0D19_public_undecided_probe_margin_in_open_gap",
           "status": "proved"
         }
       ],
@@ -22463,6 +22487,12 @@
           "lean_name": "Circle.Applications.ropeStandardChannel0D19_contextRange_radianFirstChannel_request_semantic_trichotomy",
           "name": "Circle.Applications.ropeStandardChannel0D19_contextRange_radianFirstChannel_request_semantic_trichotomy",
           "status": "proved"
+        },
+        {
+          "id": "AIRA-T0238",
+          "lean_name": "Circle.Applications.ropeStandardChannel0D19_public_undecided_probe_margin_in_open_gap",
+          "name": "Circle.Applications.ropeStandardChannel0D19_public_undecided_probe_margin_in_open_gap",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -23482,6 +23512,12 @@
           "lean_name": "Circle.Applications.ropeStandardChannel0D19_contextRange_radianFirstChannel_request_semantic_trichotomy",
           "name": "Circle.Applications.ropeStandardChannel0D19_contextRange_radianFirstChannel_request_semantic_trichotomy",
           "status": "proved"
+        },
+        {
+          "id": "AIRA-T0238",
+          "lean_name": "Circle.Applications.ropeStandardChannel0D19_public_undecided_probe_margin_in_open_gap",
+          "name": "Circle.Applications.ropeStandardChannel0D19_public_undecided_probe_margin_in_open_gap",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -24298,6 +24334,12 @@
           "id": "AIRA-T0237",
           "lean_name": "Circle.Applications.ropeStandardChannel0D19_contextRange_radianFirstChannel_request_semantic_trichotomy",
           "name": "Circle.Applications.ropeStandardChannel0D19_contextRange_radianFirstChannel_request_semantic_trichotomy",
+          "status": "proved"
+        },
+        {
+          "id": "AIRA-T0238",
+          "lean_name": "Circle.Applications.ropeStandardChannel0D19_public_undecided_probe_margin_in_open_gap",
+          "name": "Circle.Applications.ropeStandardChannel0D19_public_undecided_probe_margin_in_open_gap",
           "status": "proved"
         }
       ],

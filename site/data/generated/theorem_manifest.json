@@ -13262,6 +13262,44 @@
       "blocker": "",
       "canonical_status": "proved",
       "dictionary_dependencies": [
+        "COMMON-0076",
+        "COMMON-0077",
+        "COMMON-0080",
+        "COMMON-0082",
+        "COMMON-0087",
+        "COMMON-0088",
+        "COMMON-0089"
+      ],
+      "formal_statement": "Circle.Applications.ropeStandardChannel0D19SeedMargin < ((2 : Real) / 656917) and ((2 : Real) / 656917) < ((1 : Real) / 328458)",
+      "id": "AIRA-T0238",
+      "imports_allowed": [
+        "Common"
+      ],
+      "informal_statement": "The public standard channel-0 D19 undecided probe margin 2/656917 lies strictly inside the open interval between the proved threshold 1/328459 and the obstruction threshold 1/328458.",
+      "lean_name": "Circle.Applications.ropeStandardChannel0D19_public_undecided_probe_margin_in_open_gap",
+      "lean_source": "Circle/Applications/RoPEFrontier.lean",
+      "lean_source_line": 360,
+      "original_status": "lean_proved",
+      "paper_refs": [
+        "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
+      ],
+      "source_manifest": "manifests/dimensions/Common.yaml",
+      "status": "lean_proved",
+      "used_by_papers": [],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": [
+          "tests/test_rope_certifier.py::test_standard_channel0_d19_range_request_bracket_reports_undecided_gap",
+          "tests/test_circle_ai_contract_pack.py::test_generic_contract_pack_is_standalone_with_compatibility_aliases",
+          "tests/test_circle_ai_contract_consumer.py::test_consumer_exposes_rope_planner_recommendations"
+        ]
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
         "COMMON-0028",
         "COMMON-0029"
       ],

@@ -721,6 +721,7 @@ def test_consumer_digest_exposes_rope_d19_request_classifier_fields() -> None:
     assert "AIRA-T0235" in digest["theorem_ids"]
     assert "AIRA-T0236" in digest["theorem_ids"]
     assert "AIRA-T0237" in digest["theorem_ids"]
+    assert "AIRA-T0238" in digest["theorem_ids"]
 
 
 def test_consumer_exposes_rope_planner_recommendations() -> None:
@@ -757,6 +758,7 @@ def test_consumer_exposes_rope_planner_recommendations() -> None:
     assert d19_frontier["impossible_margin_floor"] == "1/328458"
     assert d19_frontier["proved_status"] == "proved"
     assert d19_frontier["impossible_status"] == "impossible"
+    assert d19_frontier["undecided_probe_margin_in_open_gap"] is True
     assert d19_frontier["proved_branch_bank_transfer"] == {
         "applies": True,
         "bank_shape": "standard_channel0_first",
@@ -790,6 +792,7 @@ def test_consumer_exposes_rope_planner_recommendations() -> None:
         "AIRA-T0235",
         "AIRA-T0236",
         "AIRA-T0237",
+        "AIRA-T0238",
         "AIRA-T0230",
         "AIRA-T0231",
     ]
@@ -828,6 +831,7 @@ def test_consumer_exposes_top_level_planner_recommendation_index() -> None:
         "d19_undecided_request_margin",
         "d19_undecided_request_status",
         "d19_undecided_margin_open_gap",
+        "d19_undecided_probe_margin_in_open_gap",
         "d19_undecided_margin_interval_width",
         "d19_undecided_request_relation",
         "d19_margin_thresholds_ordered",
@@ -846,6 +850,7 @@ def test_consumer_exposes_top_level_planner_recommendation_index() -> None:
     assert "AIRA-T0235" in rope_frontier["theorem_ids"]
     assert "AIRA-T0236" in rope_frontier["theorem_ids"]
     assert "AIRA-T0237" in rope_frontier["theorem_ids"]
+    assert "AIRA-T0238" in rope_frontier["theorem_ids"]
     assert "docs/ROPE_CERTIFIER_QUICKSTART.md" in rope_frontier["quickstart_docs"]
     assert (
         "python scripts/circle_ai_contract_ready.py --kind rope_position_distinguishability"

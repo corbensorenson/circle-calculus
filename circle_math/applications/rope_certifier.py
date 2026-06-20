@@ -203,6 +203,7 @@ ROPE_REAL_PHASE_PRECURSOR_THEOREMS: tuple[str, ...] = (
     "AIRA-T0236",
     "AIRA-T0237",
     "AIRA-T0232",
+    "AIRA-T0238",
     "AIRA-T0222",
     "AIRA-T0223",
     "AIRA-T0224",
@@ -3632,6 +3633,7 @@ def certify_standard_channel0_d19_range_request_margin_bracket(
             "AIRA-T0221",
             "AIRA-T0233",
             "AIRA-T0232",
+            "AIRA-T0238",
         ),
         lean_declarations=(
             "Circle.Applications.ropeTurnRatioFiniteMargin_contextRange_request_bracket_of_obstruction",
@@ -3642,6 +3644,7 @@ def certify_standard_channel0_d19_range_request_margin_bracket(
             "Circle.Applications.ropeStandardChannel0D19_request_margin_trichotomy",
             "Circle.Applications.ropeStandardChannel0D19_contextRange_request_margin_semantic_trichotomy",
             "Circle.Applications.ropeStandardChannel0D19_request_margin_open_gap_width",
+            "Circle.Applications.ropeStandardChannel0D19_public_undecided_probe_margin_in_open_gap",
         ),
         explanation=explanation,
         claim_boundary=(

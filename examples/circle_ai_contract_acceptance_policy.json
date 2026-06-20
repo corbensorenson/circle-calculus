@@ -1,7 +1,7 @@
 {
   "contracts": [
     {
-      "expected_contract_fingerprint": "564436fb30003f8e11d912aae614cff85fa6d492f45bcbbe3ced23985be8f978",
+      "expected_contract_fingerprint": "c2d862b94e20fe2f1d5ce87a95dc22be66a33eff4c35c6905786cad017b814f8",
       "kind": "rope_position_distinguishability",
       "required_fields": [
         "preset",
@@ -16,6 +16,7 @@
         "d19_impossible_request_status",
         "d19_undecided_request_status",
         "d19_undecided_margin_open_gap",
+        "d19_undecided_probe_margin_in_open_gap",
         "d19_undecided_margin_interval_width",
         "d19_undecided_request_relation",
         "d19_margin_status_exhaustive",
@@ -80,6 +81,7 @@
           "d19_impossible_request_status",
           "d19_undecided_request_status",
           "d19_undecided_margin_open_gap",
+          "d19_undecided_probe_margin_in_open_gap",
           "d19_undecided_margin_interval_width",
           "d19_undecided_request_relation",
           "d19_margin_status_exhaustive",
@@ -113,7 +115,8 @@
           "AIRA-T0234",
           "AIRA-T0235",
           "AIRA-T0236",
-          "AIRA-T0237"
+          "AIRA-T0237",
+          "AIRA-T0238"
         ]
       },
       "required_theorem_ids": [
@@ -126,7 +129,8 @@
         "AIRA-T0234",
         "AIRA-T0235",
         "AIRA-T0236",
-        "AIRA-T0237"
+        "AIRA-T0237",
+        "AIRA-T0238"
       ]
     },
     {
@@ -361,7 +365,7 @@
       ]
     }
   ],
-  "expected_pack_fingerprint": "4dd5e504b32d4e514b5e248b752ec6703d0ae506dbf61e11f42021f9ed4ddf5e",
+  "expected_pack_fingerprint": "f8a38c26740d3b19926e19e5d864cd42aed5bd17bb2f24d65ab911892bf10366",
   "policy_id": "circle_ai_flagship_contracts_acceptance_v0",
   "policy_name": "Circle AI flagship contracts acceptance policy",
   "schema_id": "circle_calculus.ai_contract_acceptance_policy.v0"

@@ -592,6 +592,7 @@ def test_default_flagship_policy_matches_generated_contract_pack() -> None:
         "d19_impossible_request_status",
         "d19_undecided_request_status",
         "d19_undecided_margin_open_gap",
+        "d19_undecided_probe_margin_in_open_gap",
         "d19_undecided_margin_interval_width",
         "d19_undecided_request_relation",
         "d19_margin_status_exhaustive",
@@ -626,6 +627,7 @@ def test_default_flagship_policy_matches_generated_contract_pack() -> None:
         "d19_impossible_request_status",
         "d19_undecided_request_status",
         "d19_undecided_margin_open_gap",
+        "d19_undecided_probe_margin_in_open_gap",
         "d19_undecided_margin_interval_width",
         "d19_undecided_request_relation",
         "d19_margin_status_exhaustive",
@@ -648,6 +650,7 @@ def test_default_flagship_policy_matches_generated_contract_pack() -> None:
         "AIRA-T0235",
         "AIRA-T0236",
         "AIRA-T0237",
+        "AIRA-T0238",
     ]
     assert rope_receipt["required_recommendation_theorem_ids"][
         "ROPE-AUDIT-EXACT-INTEGER-PHASE-BANK"
@@ -670,6 +673,7 @@ def test_default_flagship_policy_matches_generated_contract_pack() -> None:
         "AIRA-T0235",
         "AIRA-T0236",
         "AIRA-T0237",
+        "AIRA-T0238",
     ]
     assert rope_receipt["required_recommendation_action_parameters"][
         "ROPE-AUDIT-EXACT-INTEGER-PHASE-BANK"
