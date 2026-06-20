@@ -75,6 +75,12 @@ examples/circle_ai_requests/sparse_attention_request.json
 examples/circle_ai_requests/recurrence_request.json
 ```
 
+Check all public request examples and their receipt schemas with:
+
+```bash
+python scripts/check_circle_ai_contract_runner.py
+```
+
 ## Receipt Statuses
 
 | Status | Meaning |
