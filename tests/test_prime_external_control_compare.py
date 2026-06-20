@@ -22,6 +22,7 @@ def speedup_row(
     best_speedup: float = 0.900,
     median_speedup: float = 0.950,
     count_mode: str = "segmented",
+    sample_stability: str = "stable",
 ) -> ExternalSpeedupRow:
     return ExternalSpeedupRow(
         name=name,
@@ -35,6 +36,7 @@ def speedup_row(
         best_speedup=best_speedup,
         median_speedup=median_speedup,
         count_mode=count_mode,
+        sample_stability=sample_stability,
     )
 
 
@@ -57,6 +59,7 @@ def test_compare_speedup_rows_matches_candidate_subset() -> None:
     assert comparisons[0].median_speedup_ratio == 0.970 / 0.950
     assert comparisons[0].baseline_count_mode == "segmented"
     assert comparisons[0].candidate_count_mode == "segmented"
+    assert comparisons[0].candidate_sample_stability == "stable"
     assert not comparison_failures(
         comparisons,
         min_median_speedup_ratio=0.95,
@@ -96,6 +99,47 @@ def test_compare_speedup_rows_can_allow_candidate_subset() -> None:
 
     assert len(comparisons) == 1
     assert comparisons[0].key == first.key
+
+
+def test_compare_speedup_rows_can_filter_by_range() -> None:
+    baseline_primary = speedup_row(
+        low=1_000_000_000_000,
+        high=1_000_010_000_000,
+        name="circle_prime_server_parallel_default_count_8t",
+        baseline="external_primesieve_count_server",
+        best_speedup=1.200,
+        median_speedup=1.100,
+    )
+    candidate_primary = speedup_row(
+        low=1_000_000_000_000,
+        high=1_000_010_000_000,
+        name="circle_prime_server_parallel_default_count_8t",
+        baseline="external_primesieve_count_server",
+        best_speedup=1.250,
+        median_speedup=1.150,
+    )
+    ignored_baseline = speedup_row(
+        low=1_500_000_000_000,
+        high=1_500_010_000_000,
+        name="circle_prime_server_parallel_default_count_8t",
+        baseline="external_primesieve_count_server",
+        best_speedup=1.010,
+        median_speedup=0.990,
+    )
+
+    comparisons = compare_speedup_rows(
+        baseline_rows={
+            baseline_primary.key: baseline_primary,
+            ignored_baseline.key: ignored_baseline,
+        },
+        candidate_rows={candidate_primary.key: candidate_primary},
+        names={"circle_prime_server_default_count"},
+        baselines={"external_primesieve_count_server"},
+        ranges={(1_000_000_000_000, 1_000_010_000_000)},
+    )
+
+    assert len(comparisons) == 1
+    assert comparisons[0].key[1:3] == (1_000_000_000_000, 1_000_010_000_000)
 
 
 def test_comparison_failures_detects_regressions_and_result_mismatch() -> None:
@@ -481,6 +525,34 @@ def test_comparison_failures_rejects_selected_row_below_required_win_floor() -> 
     ]
 
 
+def test_comparison_failures_can_require_stable_samples() -> None:
+    comparisons = [
+        ExternalComparison(
+            key=speedup_row().key,
+            baseline_result=664_579,
+            candidate_result=664_579,
+            baseline_best_speedup=0.900,
+            candidate_best_speedup=0.910,
+            baseline_median_speedup=0.950,
+            candidate_median_speedup=1.010,
+            candidate_sample_stability="noisy",
+        )
+    ]
+
+    failures = comparison_failures(
+        comparisons,
+        min_median_speedup_ratio=0.95,
+        min_best_speedup_ratio=0.90,
+        require_stable_samples=True,
+    )
+
+    assert failures == [
+        "circle_prime_default_count range=[0,10000000) segment=0 "
+        "threads=8 requested_threads=8 baseline=external_primesieve_count "
+        "sample stability is not stable: noisy"
+    ]
+
+
 def test_median_regression_can_be_tolerated_when_best_speedup_stays_close() -> None:
     comparisons = [
         ExternalComparison(
@@ -551,5 +623,5 @@ def test_zero_baseline_speedup_reports_na_without_crashing() -> None:
     assert any("cannot compare best speedup ratio" in failure for failure in failures)
     assert (
         ",0,0,0,no,8,8,external_primesieve_count,unknown,unknown,no,"
-        "0.000,0.100,n/a,0.000,0.100,n/a,match"
+        "unknown,unknown,0.000,0.100,n/a,0.000,0.100,n/a,match"
     ) in rendered

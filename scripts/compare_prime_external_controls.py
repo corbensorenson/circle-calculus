@@ -30,6 +30,7 @@ class ExternalSpeedupRow:
     best_speedup: float
     median_speedup: float
     count_mode: str = ""
+    sample_stability: str = ""
 
     @property
     def key(self) -> tuple[str, int, int, int, int, int, str]:
@@ -73,6 +74,8 @@ class ExternalComparison:
     candidate_segment_size: int = 0
     baseline_count_mode: str = ""
     candidate_count_mode: str = ""
+    baseline_sample_stability: str = ""
+    candidate_sample_stability: str = ""
 
     @property
     def result_matches(self) -> bool:
@@ -119,6 +122,10 @@ def main() -> int:
         help="Optional comma-separated external baseline row names.",
     )
     parser.add_argument(
+        "--ranges",
+        help="Optional comma-separated half-open LOW:HIGH ranges to compare.",
+    )
+    parser.add_argument(
         "--min-median-speedup-ratio",
         type=float,
         default=0.95,
@@ -159,6 +166,15 @@ def main() -> int:
         help=(
             "Fail when any compared row has candidate median_speedup below "
             "this threshold. Use with --names/--baselines for focused serious-control gates."
+        ),
+    )
+    parser.add_argument(
+        "--require-stable-samples",
+        action="store_true",
+        help=(
+            "Fail unless every compared candidate speedup row has stable "
+            "sample timing. Requires CSVs produced by a benchmark version that "
+            "emits sample_stability."
         ),
     )
     parser.add_argument(
@@ -207,6 +223,7 @@ def main() -> int:
 
     names = parse_csv_set(args.names, "--names")
     baselines = parse_csv_set(args.baselines, "--baselines")
+    ranges = parse_range_set(args.ranges, "--ranges")
     baseline_rows = read_speedup_rows(args.baseline)
     candidate_rows = read_speedup_rows(args.candidate)
     comparisons = compare_speedup_rows(
@@ -214,6 +231,7 @@ def main() -> int:
         candidate_rows=candidate_rows,
         names=names,
         baselines=baselines,
+        ranges=ranges,
         require_baseline_coverage=not args.allow_candidate_subset,
     )
     failures = comparison_failures(
@@ -225,6 +243,7 @@ def main() -> int:
         ),
         require_any_median_speedup_at_least=args.require_any_median_speedup_at_least,
         require_each_median_speedup_at_least=args.require_each_median_speedup_at_least,
+        require_stable_samples=args.require_stable_samples,
         fail_on_count_mode_change=args.fail_on_count_mode_change,
         fail_on_segment_size_change=args.fail_on_segment_size_change,
     )
@@ -246,6 +265,33 @@ def parse_csv_set(raw: str | None, label: str) -> set[str] | None:
     return values
 
 
+def parse_range_set(raw: str | None, label: str) -> set[tuple[int, int]] | None:
+    if raw is None:
+        return None
+    ranges = set()
+    for item in [part.strip() for part in raw.split(",") if part.strip()]:
+        pieces = item.split(":")
+        if len(pieces) != 2:
+            raise argparse.ArgumentTypeError(
+                f"{label} items must have LOW:HIGH form, got {item!r}"
+            )
+        try:
+            low = int(pieces[0])
+            high = int(pieces[1])
+        except ValueError as exc:
+            raise argparse.ArgumentTypeError(
+                f"{label} items must contain integer bounds, got {item!r}"
+            ) from exc
+        if low < 0 or high <= low:
+            raise argparse.ArgumentTypeError(
+                f"{label} items must satisfy 0 <= LOW < HIGH, got {item!r}"
+            )
+        ranges.add((low, high))
+    if not ranges:
+        raise argparse.ArgumentTypeError(f"{label} must include at least one range")
+    return ranges
+
+
 def read_speedup_rows(path: Path) -> dict[tuple[str, int, int, int, int, int, str], ExternalSpeedupRow]:
     with path.open(newline="") as handle:
         rows = csv.DictReader(handle)
@@ -262,6 +308,7 @@ def read_speedup_rows(path: Path) -> dict[tuple[str, int, int, int, int, int, st
                 best_speedup=float(row["best_speedup"]),
                 median_speedup=float(row["median_speedup"]),
                 count_mode=row.get("count_mode", ""),
+                sample_stability=row.get("sample_stability", ""),
             )
             for row in rows
             if row.get("kind") == "speedup"
@@ -275,13 +322,15 @@ def compare_speedup_rows(
     candidate_rows: dict[tuple[str, int, int, int, int, int, str], ExternalSpeedupRow],
     names: set[str] | None = None,
     baselines: set[str] | None = None,
+    ranges: set[tuple[int, int]] | None = None,
     require_baseline_coverage: bool = True,
 ) -> list[ExternalComparison]:
     if require_baseline_coverage:
         missing = [
             key
             for key, baseline_row in sorted(baseline_rows.items())
-            if row_selected(baseline_row, names, baselines) and key not in candidate_rows
+            if row_selected(baseline_row, names, baselines, ranges)
+            and key not in candidate_rows
         ]
         if missing:
             raise ValueError(
@@ -292,7 +341,7 @@ def compare_speedup_rows(
     comparisons = []
     for key in sorted(candidate_rows):
         candidate = candidate_rows[key]
-        if not row_selected(candidate, names, baselines):
+        if not row_selected(candidate, names, baselines, ranges):
             continue
         baseline = baseline_rows.get(key)
         if baseline is None:
@@ -316,6 +365,8 @@ def compare_speedup_rows(
                 candidate_segment_size=candidate.segment_size,
                 baseline_count_mode=baseline.count_mode,
                 candidate_count_mode=candidate.count_mode,
+                baseline_sample_stability=baseline.sample_stability,
+                candidate_sample_stability=candidate.sample_stability,
             )
         )
     if not comparisons:
@@ -324,6 +375,11 @@ def compare_speedup_rows(
             filters.append(f"names={','.join(sorted(names))}")
         if baselines:
             filters.append(f"baselines={','.join(sorted(baselines))}")
+        if ranges:
+            filters.append(
+                "ranges="
+                + ",".join(f"{low}:{high}" for low, high in sorted(ranges))
+            )
         suffix = f" for requested filters ({'; '.join(filters)})" if filters else ""
         raise ValueError(f"candidate CSV had no external speedup rows{suffix}")
     return comparisons
@@ -333,10 +389,13 @@ def row_selected(
     row: ExternalSpeedupRow,
     names: set[str] | None,
     baselines: set[str] | None,
+    ranges: set[tuple[int, int]] | None,
 ) -> bool:
     if names is not None and row.name not in names and row.comparison_name not in names:
         return False
     if baselines is not None and row.baseline not in baselines:
+        return False
+    if ranges is not None and (row.low, row.high) not in ranges:
         return False
     return True
 
@@ -358,6 +417,7 @@ def comparison_failures(
     median_regression_best_speedup_ratio_floor: float | None = None,
     require_any_median_speedup_at_least: float | None = None,
     require_each_median_speedup_at_least: float | None = None,
+    require_stable_samples: bool = False,
     fail_on_count_mode_change: bool = False,
     fail_on_segment_size_change: bool = False,
 ) -> list[str]:
@@ -384,6 +444,9 @@ def comparison_failures(
                 f"{label} segment_size changed: baseline={row.baseline_segment_size}, "
                 f"candidate={row.candidate_segment_size}"
             )
+        if require_stable_samples and row.candidate_sample_stability != "stable":
+            stability = row.candidate_sample_stability or "missing"
+            failures.append(f"{label} sample stability is not stable: {stability}")
         median_ratio = row.median_speedup_ratio
         best_ratio = row.best_speedup_ratio
         if median_ratio is None:
@@ -438,6 +501,7 @@ def render_comparison_table(comparisons: Iterable[ExternalComparison]) -> str:
         "name,low,high,comparison_segment_size,baseline_segment_size,"
         "candidate_segment_size,segment_size_changed,threads,requested_threads,baseline,"
         "baseline_count_mode,candidate_count_mode,count_mode_changed,"
+        "baseline_sample_stability,candidate_sample_stability,"
         "baseline_median_speedup,candidate_median_speedup,median_speedup_ratio,"
         "baseline_best_speedup,candidate_best_speedup,best_speedup_ratio,result"
     ]
@@ -454,6 +518,8 @@ def render_comparison_table(comparisons: Iterable[ExternalComparison]) -> str:
             f"{threads},{requested_threads},{baseline},"
             f"{render_count_mode(row.baseline_count_mode)},"
             f"{render_count_mode(row.candidate_count_mode)},{count_mode_changed},"
+            f"{render_sample_stability(row.baseline_sample_stability)},"
+            f"{render_sample_stability(row.candidate_sample_stability)},"
             f"{row.baseline_median_speedup:.3f},{row.candidate_median_speedup:.3f},"
             f"{median_ratio},{row.baseline_best_speedup:.3f},"
             f"{row.candidate_best_speedup:.3f},{best_ratio},{result}"
@@ -473,6 +539,10 @@ def render_ratio(ratio: float | None) -> str:
 
 def render_count_mode(count_mode: str) -> str:
     return count_mode or "unknown"
+
+
+def render_sample_stability(sample_stability: str) -> str:
+    return sample_stability or "unknown"
 
 
 def is_adaptive_default_row(name: str) -> bool:

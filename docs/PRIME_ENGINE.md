@@ -709,9 +709,11 @@ threaded `presieve13` count mode with a tuned high-offset segment size.
 
 `prime-engine-competitive-short` is the daytime orientation workflow. It runs
 external correctness, warmed persistent count controls, the high-offset
-hot-server scorecard, repeated high-offset confirmation, the focused next-prime
-comparison, default-calibration drift check, and the combined report. Use it
-when you need a current competitive read without starting the overnight tuner.
+hot-server scorecard, a focused hot-server win/stability gate against
+persistent `libprimesieve`, repeated high-offset confirmation, the focused
+next-prime comparison, default-calibration drift check, and the combined report.
+Use it when you need a current competitive read without starting the overnight
+tuner.
 
 `prime-engine-high-offset-quick` is the interactive scorecard for the remaining
 `primesieve` gap. It isolates `[1e12, 1e12 + 1e7)`, runs 13 interleaved rounds
@@ -747,6 +749,14 @@ hot-process application lane; the command-vs-command control remains the
 external `primesieve`/`primecount` scorecard. When both artifacts are present,
 the report also compares the fastest persistent server row directly against
 the external high-offset command controls by best time.
+
+`prime-engine-high-offset-hot-server-check` reads the hot-server scorecard and
+fails unless the selected adaptive `circle_prime_server_default_count` rows
+beat the persistent `libprimesieve` count helper by median speed and have
+stable samples. By default it checks `CIRCLE_PRIME_HIGH_OFFSET_COMPARE_RANGES`
+with a `1.0` floor; raise
+`CIRCLE_PRIME_HIGH_OFFSET_HOT_SERVER_MIN_MEDIAN_SPEEDUP` or widen the range list
+when a change needs to prove a larger margin.
 
 `prime-engine-high-offset-tight` is the follow-up scorecard when the broad
 quick run keeps pointing at the same neighborhood. It narrows the sweep to

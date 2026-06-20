@@ -23,7 +23,8 @@ write tuning CSV/JSON summaries.
 
 `make prime-engine-competitive-short` is the default orientation target for
 daytime iteration. It runs the external correctness matrix, warmed persistent
-count controls, the high-offset hot-server scorecard, repeated high-offset
+count controls, the high-offset hot-server scorecard, a focused hot-server
+win/stability gate against persistent `libprimesieve`, repeated high-offset
 confirmation, the focused next-prime comparison, default-calibration drift
 check, and the combined report. The control rows use interleaved samples,
 persistent Circle count-server rows, CLI `primesieve`/`primecount`, and a
@@ -44,6 +45,12 @@ timing loop on hot-server rows by default: `external_primesieve_count_server`
 for the external baseline and `circle-prime count-server` rows for Circle. The
 broader `prime-engine-competitive-short` target includes this gate and also
 refreshes CLI controls and next-prime evidence.
+
+`make prime-engine-high-offset-hot-server-check` reads the latest hot-server
+scorecard and fails unless the selected adaptive Circle server default rows
+beat the persistent `libprimesieve` count helper by median speed with stable
+samples. By default it checks the tracked high-offset comparison range with a
+parity-plus `1.0` median-speedup floor.
 
 Short-run sample stability ignores a single high outlier when there are at
 least five samples, but still marks repeated high samples as noisy. This keeps
