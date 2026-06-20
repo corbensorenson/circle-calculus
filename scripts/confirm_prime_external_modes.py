@@ -81,6 +81,16 @@ def main() -> int:
     )
     parser.add_argument("--rounds", type=int, default=5)
     parser.add_argument(
+        "--batch-size",
+        type=int,
+        default=1,
+        help=(
+            "Forwarded to fresh benchmark runs: repeat each identical count "
+            "request this many times inside one timed sample and use the "
+            "per-request average."
+        ),
+    )
+    parser.add_argument(
         "--warmup-rounds",
         type=int,
         default=0,
@@ -89,6 +99,13 @@ def main() -> int:
     parser.add_argument("--ranges", default=DEFAULT_RANGES)
     parser.add_argument("--circle-threads", type=int, default=8)
     parser.add_argument("--external-threads", type=int, default=8)
+    parser.add_argument(
+        "--external-baselines",
+        help=(
+            "Forwarded to fresh benchmark runs as --external-baselines. Use "
+            "external_primesieve_count_server for focused hot-server confirmation."
+        ),
+    )
     parser.add_argument("--circle-count-modes", default=DEFAULT_COUNT_MODES)
     parser.add_argument(
         "--segment-sizes",
@@ -112,6 +129,14 @@ def main() -> int:
         "--include-circle-server",
         action="store_true",
         help="Also benchmark persistent circle-prime count-server rows.",
+    )
+    parser.add_argument(
+        "--circle-server-only",
+        action="store_true",
+        help=(
+            "Forwarded to fresh benchmark runs: time only persistent Circle "
+            "count-server rows and skip cold Circle subprocess rows."
+        ),
     )
     parser.add_argument(
         "--include-primesieve-count-server",
@@ -158,6 +183,8 @@ def main() -> int:
         parser.error("--runs must be nonnegative")
     if args.rounds <= 0:
         parser.error("--rounds must be positive")
+    if args.batch_size <= 0:
+        parser.error("--batch-size must be positive")
     if args.warmup_rounds < 0:
         parser.error("--warmup-rounds must be nonnegative")
     if args.circle_threads <= 0:
@@ -202,6 +229,7 @@ def main() -> int:
         require_stable_samples=not args.allow_unstable,
         generated_at_utc=datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
         inputs=[str(path) for path in inputs],
+        batch_size=args.batch_size if args.runs else None,
     )
     args.output_json.parent.mkdir(parents=True, exist_ok=True)
     args.output_json.write_text(json.dumps(confirmation, indent=2, sort_keys=True) + "\n")
@@ -247,6 +275,8 @@ def fresh_sweep_command(
         args.ranges,
         "--rounds",
         str(args.rounds),
+        "--batch-size",
+        str(args.batch_size),
         "--warmup-rounds",
         str(args.warmup_rounds),
         "--interleaved",
@@ -254,21 +284,29 @@ def fresh_sweep_command(
         str(args.circle_threads),
         "--external-threads",
         str(args.external_threads),
-        "--circle-count-modes",
-        args.circle_count_modes,
-        "--segment-sizes",
-        args.segment_sizes,
-        "--output",
-        str(csv_path),
-        "--sample-output",
-        str(sample_path),
-        "--metadata-output",
-        str(metadata_path),
     ]
+    if getattr(args, "external_baselines", None):
+        command.extend(["--external-baselines", args.external_baselines])
+    command.extend(
+        [
+            "--circle-count-modes",
+            args.circle_count_modes,
+            "--segment-sizes",
+            args.segment_sizes,
+            "--output",
+            str(csv_path),
+            "--sample-output",
+            str(sample_path),
+            "--metadata-output",
+            str(metadata_path),
+        ]
+    )
     for variant in getattr(args, "circle_variant", []) or []:
         command.extend(["--circle-variant", variant])
     if getattr(args, "include_circle_server", False):
         command.append("--include-circle-server")
+    if getattr(args, "circle_server_only", False):
+        command.append("--circle-server-only")
     if getattr(args, "include_primesieve_count_server", False):
         command.append("--include-primesieve-count-server")
     for tool in sorted(set(args.require_tool)):
@@ -304,6 +342,7 @@ def build_confirmation(
     require_stable_samples: bool,
     generated_at_utc: str,
     inputs: list[str],
+    batch_size: int | None = None,
 ) -> dict[str, Any]:
     grouped: dict[tuple[int, int, str], list[dict[str, Any]]] = {}
     for row in recommendations:
@@ -325,6 +364,7 @@ def build_confirmation(
     return {
         "generated_at_utc": generated_at_utc,
         "inputs": inputs,
+        "batch_size": batch_size,
         "baseline_priority": baseline_priority,
         "min_confirmations": min_confirmations,
         "require_stable_samples": require_stable_samples,
@@ -392,12 +432,21 @@ def render_markdown(confirmation: dict[str, Any]) -> str:
         f"Generated: `{confirmation['generated_at_utc']}`",
         f"Minimum confirmations: `{confirmation['min_confirmations']}`",
         f"Require stable samples: `{confirmation['require_stable_samples']}`",
-        "",
-        f"- observed groups: `{confirmation['observed_group_count']}`",
-        f"- confirmed: `{confirmation['confirmed_count']}`",
-        f"- unconfirmed: `{confirmation['unconfirmed_count']}`",
-        "",
     ]
+    if confirmation.get("batch_size"):
+        lines.append(
+            "Fresh-run count requests per timed sample: "
+            f"`{confirmation['batch_size']}`"
+        )
+    lines.extend(
+        [
+            "",
+            f"- observed groups: `{confirmation['observed_group_count']}`",
+            f"- confirmed: `{confirmation['confirmed_count']}`",
+            f"- unconfirmed: `{confirmation['unconfirmed_count']}`",
+            "",
+        ]
+    )
     if confirmation["winners"]:
         lines.extend(
             [

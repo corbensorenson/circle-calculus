@@ -61,6 +61,7 @@ def test_prime_engine_report_summarizes_artifacts(tmp_path: Path) -> None:
                 "finished_at_utc": "2026-01-01T00:01:00Z",
                 "row_count": 6,
                 "rounds": 3,
+                "batch_size": 3,
                 "warmup_rounds": 1,
                 "required_external_tools": [
                     "primesieve",
@@ -623,6 +624,7 @@ def test_prime_engine_report_summarizes_artifacts(tmp_path: Path) -> None:
                 "generated_at_utc": "2026-01-01T00:03:00Z",
                 "min_confirmations": 2,
                 "require_stable_samples": True,
+                "batch_size": 3,
                 "observed_group_count": 1,
                 "confirmed_count": 1,
                 "unconfirmed_count": 0,
@@ -953,6 +955,10 @@ def test_prime_engine_report_summarizes_artifacts(tmp_path: Path) -> None:
     ) in markdown
     assert "requested threads: Circle `8`, external `8`" in markdown
     assert "warmup: `1` unrecorded interleaved pass(es)." in markdown
+    assert (
+        "repeated count requests per timed sample: `3` "
+        "(reported timings are per-request averages)."
+    ) in markdown
     assert "Circle count modes: `segmented`" in markdown
     assert (
         "required external controls: `primecount`, `primesieve`, `primesieve-library`"
@@ -962,6 +968,7 @@ def test_prime_engine_report_summarizes_artifacts(tmp_path: Path) -> None:
     assert "External Segment Sweep" in markdown
     assert "External Count Mode Sweep" in markdown
     assert "External Mode Confirmation" in markdown
+    assert "Fresh-run count requests per timed sample: `3`." in markdown
     assert "External Throughput" in markdown
     assert "High-Offset Quick Scorecard" in markdown
     assert "High-offset quick candidate spread" in markdown

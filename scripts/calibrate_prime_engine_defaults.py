@@ -273,19 +273,28 @@ def select_recommendations(
     tuning_sample_rows: list[dict[str, str]] | None = None,
     baseline_priority: list[str],
 ) -> list[dict[str, Any]]:
-    high_offset_confirmation_recommendations = select_external_recommendations(
-        [
-            (
-                "external_high_offset_confirmation",
-                external_high_offset_confirmation_rows or [],
-                external_high_offset_confirmation_sample_rows or [],
-            )
-        ],
-        baseline_priority,
+    high_offset_confirmation_recommendations = apply_mode_confirmation(
+        select_external_recommendations(
+            [
+                (
+                    "external_high_offset_confirmation",
+                    external_high_offset_confirmation_rows or [],
+                    external_high_offset_confirmation_sample_rows or [],
+                )
+            ],
+            baseline_priority,
+        ),
+        external_high_offset_confirmation,
+        selected_by="confirmed_external_high_offset",
     )
-    confirmation_ranges = {
-        (row["low"], row["high"], row["baseline"])
+    confirmed_high_offset_confirmation_recommendations = [
+        row
         for row in high_offset_confirmation_recommendations
+        if row.get("mode_confirmation_status") == "confirmed"
+    ]
+    confirmed_high_offset_confirmation_ranges = {
+        (row["low"], row["high"], row["baseline"])
+        for row in confirmed_high_offset_confirmation_recommendations
     }
     high_offset_tight_recommendations = select_external_recommendations(
         [
@@ -312,16 +321,18 @@ def select_recommendations(
         baseline_priority,
     )
     high_offset_recommendations = apply_mode_confirmation(
-        high_offset_confirmation_recommendations
+        confirmed_high_offset_confirmation_recommendations
         + [
             row
             for row in high_offset_tight_recommendations
-            if (row["low"], row["high"], row["baseline"]) not in confirmation_ranges
+            if (row["low"], row["high"], row["baseline"])
+            not in confirmed_high_offset_confirmation_ranges
         ]
         + [
             row
             for row in high_offset_quick_recommendations
-            if (row["low"], row["high"], row["baseline"]) not in confirmation_ranges
+            if (row["low"], row["high"], row["baseline"])
+            not in confirmed_high_offset_confirmation_ranges
             and (row["low"], row["high"], row["baseline"]) not in tight_ranges
         ],
         external_high_offset_confirmation,

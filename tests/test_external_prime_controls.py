@@ -1,26 +1,33 @@
 from __future__ import annotations
 
+import argparse
 from pathlib import Path
 from types import SimpleNamespace
+
+import pytest
 
 from scripts import benchmark_prime_external_controls
 from scripts.benchmark_prime_external_controls import (
     CircleVariant,
     ExternalBenchRow,
     Measurement,
+    any_external_baseline_available,
     build_run_metadata,
     circle_measurement_name,
     circle_prime_command,
     circle_server_measurement_name,
+    external_baseline_enabled,
     measure_interleaved,
     median,
     parse_circle_count_modes,
+    parse_external_baselines,
     parse_circle_variants,
     parse_segment_size_list,
     primecount_command,
     primesieve_count_server_measurement,
     primesieve_command,
     required_external_tools_missing,
+    selected_external_baselines_missing,
     speedup_row,
 )
 
@@ -275,6 +282,7 @@ def test_external_metadata_records_thread_policy_and_commands(monkeypatch) -> No
     )
     args = SimpleNamespace(
         rounds=5,
+        batch_size=3,
         warmup_rounds=1,
         segment_size=131072,
         circle_threads=8,
@@ -297,6 +305,7 @@ def test_external_metadata_records_thread_policy_and_commands(monkeypatch) -> No
     )
 
     assert metadata["rounds"] == 5
+    assert metadata["batch_size"] == 3
     assert metadata["warmup_rounds"] == 1
     assert metadata["row_count"] == 6
     assert metadata["interleaved"] is False
@@ -358,6 +367,51 @@ def test_external_metadata_records_thread_policy_and_commands(monkeypatch) -> No
     ]
 
 
+def test_external_baseline_selection_filters_metadata_commands(monkeypatch) -> None:
+    monkeypatch.setattr(
+        benchmark_prime_external_controls,
+        "circle_prime_package_metadata",
+        lambda cargo: {"name": "circle-prime", "version": "0.1.0"},
+    )
+    args = SimpleNamespace(
+        rounds=3,
+        batch_size=2,
+        warmup_rounds=0,
+        segment_size=0,
+        segment_sizes="0",
+        circle_count_modes="segmented",
+        circle_variant=None,
+        circle_threads=8,
+        external_threads=4,
+        require_tool=[],
+        include_circle_server=False,
+        include_primesieve_count_server=True,
+        external_baselines="external_primesieve_count_server",
+    )
+
+    metadata = build_run_metadata(
+        args=args,
+        ranges=[(100, 200)],
+        started_at_utc="2026-01-01T00:00:00Z",
+        cargo=None,
+        circle_prime=Path("target/release/circle-prime"),
+        primesieve="/opt/bin/primesieve",
+        primecount="/opt/bin/primecount",
+        primesieve_count_server=Path("target/prime-controls/primesieve-count-server"),
+        external_baselines={"external_primesieve_count_server"},
+        row_count=2,
+    )
+
+    assert metadata["external_baselines"] == ["external_primesieve_count_server"]
+    commands = metadata["range_commands"][0]
+    assert commands["primesieve_count_server"] == [
+        "target/prime-controls/primesieve-count-server"
+    ]
+    assert "primesieve" not in commands
+    assert "primecount_high" not in commands
+    assert "primecount_low" not in commands
+
+
 def test_external_metadata_records_circle_sweep_commands(monkeypatch) -> None:
     monkeypatch.setattr(
         benchmark_prime_external_controls,
@@ -366,6 +420,7 @@ def test_external_metadata_records_circle_sweep_commands(monkeypatch) -> None:
     )
     args = SimpleNamespace(
         rounds=3,
+        batch_size=1,
         segment_size=0,
         segment_sizes="0,98304,131072",
         circle_count_modes="segmented,hybrid-wheel30-mark",
@@ -433,6 +488,7 @@ def test_external_metadata_records_exact_circle_variants(monkeypatch) -> None:
     )
     args = SimpleNamespace(
         rounds=3,
+        batch_size=1,
         segment_size=0,
         segment_sizes=None,
         circle_count_modes="segmented",
@@ -647,3 +703,75 @@ def test_interleaved_measurement_warmups_are_unrecorded() -> None:
     assert [row.rounds for row in rows] == [2, 2]
     assert len(samples) == 4
     assert {sample.round_index for sample in samples} == {0, 1}
+
+
+def test_interleaved_measurement_batches_and_reports_per_request_samples() -> None:
+    calls: list[str] = []
+
+    def run_once() -> int:
+        calls.append("circle")
+        return 168
+
+    rows, samples = measure_interleaved(
+        [
+            Measurement(
+                name="circle_prime_parallel_segmented_count_8t",
+                low=0,
+                high=1000,
+                segment_size=32768,
+                threads=8,
+                requested_threads=8,
+                run_once=run_once,
+            )
+        ],
+        rounds=2,
+        batch_size=3,
+        warmup_rounds=1,
+    )
+
+    assert calls == ["circle"] * 9
+    assert len(samples) == 2
+    assert rows[0].rounds == 2
+    assert rows[0].result == 168
+    assert all(sample.result == 168 for sample in samples)
+
+
+def test_parse_external_baselines_validates_and_deduplicates() -> None:
+    assert parse_external_baselines(None) is None
+    assert parse_external_baselines(
+        "external_primesieve_count_server, external_primesieve_count_server"
+    ) == {"external_primesieve_count_server"}
+    assert parse_external_baselines(
+        "external_primesieve_count,external_primecount_pi_diff"
+    ) == {"external_primesieve_count", "external_primecount_pi_diff"}
+
+    with pytest.raises(argparse.ArgumentTypeError):
+        parse_external_baselines("external_unknown")
+
+
+def test_external_baseline_availability_helpers_are_explicit() -> None:
+    selected = {"external_primecount_pi_diff", "external_primesieve_count_server"}
+
+    assert selected_external_baselines_missing(
+        selected,
+        primesieve="/opt/bin/primesieve",
+        primecount=None,
+        primesieve_library=None,
+    ) == ["external_primecount_pi_diff", "external_primesieve_count_server"]
+    assert any_external_baseline_available(
+        {"external_primesieve_count"},
+        primesieve="/opt/bin/primesieve",
+        primecount=None,
+        primesieve_library=None,
+    )
+    assert not any_external_baseline_available(
+        {"external_primesieve_count_server"},
+        primesieve="/opt/bin/primesieve",
+        primecount="/opt/bin/primecount",
+        primesieve_library=None,
+    )
+    assert external_baseline_enabled(None, "external_primesieve_count")
+    assert not external_baseline_enabled(
+        {"external_primesieve_count_server"},
+        "external_primesieve_count",
+    )

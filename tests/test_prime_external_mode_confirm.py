@@ -52,6 +52,7 @@ def test_build_confirmation_requires_repeated_stable_winner() -> None:
         require_stable_samples=True,
         generated_at_utc="2026-01-01T00:00:00Z",
         inputs=["run1.csv", "run2.csv", "run3.csv"],
+        batch_size=3,
     )
 
     assert confirmation["confirmed_count"] == 1
@@ -61,7 +62,9 @@ def test_build_confirmation_requires_repeated_stable_winner() -> None:
     assert row["count_mode"] == "dynamic"
     assert row["confirmation_count"] == 2
     assert row["stable_observed_count"] == 3
-    assert "External Mode Confirmation" in render_markdown(confirmation)
+    markdown = render_markdown(confirmation)
+    assert "External Mode Confirmation" in markdown
+    assert "Fresh-run count requests per timed sample: `3`" in markdown
 
 
 def test_build_confirmation_rejects_noisy_repeat_by_default() -> None:
@@ -106,9 +109,11 @@ def test_fresh_sweep_command_forwards_segment_size_grid() -> None:
         Namespace(
             ranges="0:10000000",
             rounds=5,
+            batch_size=3,
             warmup_rounds=1,
             circle_threads=8,
             external_threads=8,
+            external_baselines="external_primesieve_count_server",
             circle_count_modes="dynamic,segmented",
             segment_sizes="0,98304,196608",
             circle_variant=["default:0,dynamic:98304"],
@@ -128,8 +133,15 @@ def test_fresh_sweep_command_forwards_segment_size_grid() -> None:
 
     assert "--segment-sizes" in command
     assert command[command.index("--segment-sizes") + 1] == "0,98304,196608"
+    assert "--batch-size" in command
+    assert command[command.index("--batch-size") + 1] == "3"
     assert "--warmup-rounds" in command
     assert command[command.index("--warmup-rounds") + 1] == "1"
+    assert "--external-baselines" in command
+    assert (
+        command[command.index("--external-baselines") + 1]
+        == "external_primesieve_count_server"
+    )
     assert "--circle-variant" in command
     assert command[command.index("--circle-variant") + 1] == "default:0,dynamic:98304"
     assert "--include-circle-server" in command

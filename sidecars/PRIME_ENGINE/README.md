@@ -24,22 +24,25 @@ write tuning CSV/JSON summaries.
 `make prime-engine-competitive-short` is the default orientation target for
 daytime iteration. It uses interleaved samples, persistent Circle count-server
 rows, CLI `primesieve`/`primecount`, and a persistent `libprimesieve` count
-helper when the local headers/library are available. Overnight targets are
-optional regression/tuning jobs, not the primary way to learn whether Circle is
-competitive.
+helper when the local headers/library are available. It batches a few repeated
+count requests inside each timed sample and reports per-request timings, which
+keeps short runs useful for sub-10 ms rows without turning them into overnight
+jobs. Overnight targets are optional regression/tuning jobs, not the primary
+way to learn whether Circle is competitive.
 
 `make prime-engine-high-offset-confirm` is the stricter short gate for the
 remaining hard count lane near `1e12`. It runs warmed repeated confirmations
 against the persistent `libprimesieve` count helper and exact Circle variants
-that have been near the front of prior sweeps, so default changes require a
-repeatable win rather than a one-run median.
+that have been near the front of prior sweeps. Fresh confirmation runs also
+batch repeated count requests and report per-request timings, so default changes
+require a repeatable win rather than a one-run median.
 
 `make prime-engine-high-offset-thread-sweep` is a narrower diagnostic for that
 same lane. It fixes the high-offset range and sweeps exact Circle
 mode/segment/thread variants against the persistent `libprimesieve` count
-helper. Use it when Circle is near parity and you need a quick read on whether
-thread count or segment geometry, rather than sieve semantics, is driving the
-gap.
+helper with the same batched timing policy. Use it when Circle is near parity
+and you need a quick read on whether thread count or segment geometry, rather
+than sieve semantics, is driving the gap.
 
 `controls/primesieve_next_server.c` is a small benchmark helper for the
 next-prime scorecard. The Python harness compiles it into `target/` and uses it

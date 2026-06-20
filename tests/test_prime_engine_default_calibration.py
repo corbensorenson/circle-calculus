@@ -320,6 +320,66 @@ def test_high_offset_confirmation_rows_precede_tight_rows() -> None:
     assert selected[0]["median_ms"] == 4.8
 
 
+def test_unconfirmed_high_offset_confirmation_does_not_precede_tight_rows() -> None:
+    low = 1_000_000_000_000
+    high = 1_000_010_000_000
+
+    selected = select_recommendations(
+        external_rows=[],
+        external_high_offset_tight_rows=[
+            speedup_row(
+                low=low,
+                high=high,
+                name="circle_prime_parallel_presieve13_count_3t",
+                segment_size=4_194_304,
+                threads=3,
+                requested_threads=8,
+                best_ms="4.7",
+                median_ms="4.9",
+            )
+        ],
+        external_high_offset_confirmation_rows=[
+            speedup_row(
+                low=low,
+                high=high,
+                name="circle_prime_parallel_balanced_count_7t",
+                segment_size=1_507_328,
+                threads=7,
+                requested_threads=8,
+                best_ms="2.0",
+                median_ms="2.1",
+            )
+        ],
+        external_high_offset_confirmation={
+            "min_confirmations": 2,
+            "require_stable_samples": True,
+            "winners": [
+                {
+                    "low": low,
+                    "high": high,
+                    "baseline": "external_primesieve_count",
+                    "count_mode": "balanced",
+                    "segment_size": 1_507_328,
+                    "threads": 7,
+                    "requested_threads": 8,
+                    "confirmation_count": 0,
+                    "observed_count": 2,
+                    "stable_observed_count": 0,
+                    "status": "unconfirmed",
+                }
+            ],
+        },
+        tuning_summary=None,
+        baseline_priority=["external_primesieve_count"],
+    )
+
+    assert len(selected) == 1
+    assert selected[0]["source"] == "external_high_offset_tight"
+    assert selected[0]["count_mode"] == "presieve13"
+    assert selected[0]["segment_size"] == 4_194_304
+    assert selected[0]["mode_confirmation_status"] == "unconfirmed"
+
+
 def test_confirmed_high_offset_quick_overrides_latest_median_pick() -> None:
     low = 1_000_000_000_000
     high = 1_000_010_000_000

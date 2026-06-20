@@ -1266,6 +1266,7 @@ def summarize_external_metadata(metadata: dict[str, Any] | None) -> dict[str, An
             "include_primesieve_count_server": False,
             "required_external_tools": [],
             "warmup_rounds": 0,
+            "batch_size": 1,
         }
     tools = metadata.get("tools", {})
     return {
@@ -1273,6 +1274,7 @@ def summarize_external_metadata(metadata: dict[str, Any] | None) -> dict[str, An
         "started_at_utc": metadata.get("started_at_utc"),
         "finished_at_utc": metadata.get("finished_at_utc"),
         "rounds": metadata.get("rounds"),
+        "batch_size": int(metadata.get("batch_size") or 1),
         "warmup_rounds": int(metadata.get("warmup_rounds") or 0),
         "row_count": metadata.get("row_count"),
         "interleaved": bool(metadata.get("interleaved")),
@@ -1822,6 +1824,7 @@ def summarize_external_mode_confirmation(summary: dict[str, Any] | None) -> dict
         "generated_at_utc": summary.get("generated_at_utc"),
         "min_confirmations": summary.get("min_confirmations"),
         "require_stable_samples": summary.get("require_stable_samples"),
+        "batch_size": summary.get("batch_size"),
         "observed_group_count": summary.get("observed_group_count", 0),
         "confirmed_count": summary.get("confirmed_count", 0),
         "unconfirmed_count": summary.get("unconfirmed_count", 0),
@@ -2130,6 +2133,12 @@ def render_external_metadata_markdown(metadata: dict[str, Any]) -> list[str]:
     warmup_rounds = int(metadata.get("warmup_rounds") or 0)
     if warmup_rounds:
         lines.append(f"- warmup: `{warmup_rounds}` unrecorded interleaved pass(es).")
+    batch_size = int(metadata.get("batch_size") or 1)
+    if batch_size > 1:
+        lines.append(
+            f"- repeated count requests per timed sample: `{batch_size}` "
+            "(reported timings are per-request averages)."
+        )
     if metadata.get("include_circle_server"):
         lines.append("- Circle server rows: persistent `count-server` requests included.")
     if metadata.get("include_primesieve_count_server"):
@@ -2343,6 +2352,11 @@ def render_external_mode_confirmation_markdown(
         lines.append(
             f"Minimum confirmations: `{summary['min_confirmations']}`; "
             f"requires stable samples: `{summary.get('require_stable_samples')}`."
+        )
+    if summary.get("batch_size"):
+        lines.append(
+            "Fresh-run count requests per timed sample: "
+            f"`{summary['batch_size']}`."
         )
     lines.append("")
     if summary["winners"]:

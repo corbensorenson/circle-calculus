@@ -28,6 +28,11 @@ VALID_CIRCLE_COUNT_MODES = {
     "wheel30-mark",
     "hybrid-wheel30-mark",
 }
+VALID_EXTERNAL_BASELINES = {
+    "external_primesieve_count",
+    "external_primecount_pi_diff",
+    "external_primesieve_count_server",
+}
 PRIMESIEVE_COUNT_SERVER_SOURCE = (
     ROOT / "sidecars" / "PRIME_ENGINE" / "controls" / "primesieve_count_server.c"
 )
@@ -99,6 +104,16 @@ def main() -> int:
     parser.add_argument("--ranges", default=DEFAULT_RANGES)
     parser.add_argument("--rounds", type=int, default=3)
     parser.add_argument(
+        "--batch-size",
+        type=int,
+        default=1,
+        help=(
+            "Repeat each identical count request this many times inside one "
+            "timed sample and report per-request average milliseconds. This "
+            "keeps short runs useful for sub-10 ms persistent-server comparisons."
+        ),
+    )
+    parser.add_argument(
         "--warmup-rounds",
         type=int,
         default=0,
@@ -158,6 +173,15 @@ def main() -> int:
         ),
     )
     parser.add_argument(
+        "--circle-server-only",
+        action="store_true",
+        help=(
+            "With --include-circle-server, time only persistent Circle "
+            "count-server rows and skip cold circle-prime range subprocess rows. "
+            "Use for focused hot-server comparisons."
+        ),
+    )
+    parser.add_argument(
         "--include-primesieve-count-server",
         action="store_true",
         help=(
@@ -172,6 +196,15 @@ def main() -> int:
         help=(
             "Thread count for external controls. Use 0 to keep each tool's "
             "default; primesieve and primecount default to all available cores."
+        ),
+    )
+    parser.add_argument(
+        "--external-baselines",
+        help=(
+            "Comma-separated external timing rows to include. Defaults to the "
+            "legacy behavior: installed primesieve/primecount CLIs plus the "
+            "libprimesieve count server when requested. Use "
+            "external_primesieve_count_server for focused hot-server comparisons."
         ),
     )
     parser.add_argument("--output", type=Path)
@@ -227,6 +260,8 @@ def main() -> int:
 
     if args.rounds <= 0:
         parser.error("--rounds must be positive")
+    if args.batch_size <= 0:
+        parser.error("--batch-size must be positive")
     if args.warmup_rounds < 0:
         parser.error("--warmup-rounds must be nonnegative")
     if args.segment_size < 0:
@@ -239,6 +274,8 @@ def main() -> int:
         parser.error("--sample-output requires --interleaved")
     if args.include_circle_server and not args.interleaved:
         parser.error("--include-circle-server requires --interleaved")
+    if args.circle_server_only and not args.include_circle_server:
+        parser.error("--circle-server-only requires --include-circle-server")
     if (
         args.include_primesieve_count_server or "primesieve-library" in args.require_tool
     ) and not args.interleaved:
@@ -253,6 +290,7 @@ def main() -> int:
             segment_sizes,
             circle_count_modes,
         )
+        external_baselines = parse_external_baselines(args.external_baselines)
         segment_sizes = unique_preserving_order(
             variant.segment_size for variant in circle_variants
         )
@@ -267,6 +305,10 @@ def main() -> int:
     include_primesieve_count_server = (
         args.include_primesieve_count_server
         or "primesieve-library" in args.require_tool
+        or external_baseline_enabled(
+            external_baselines,
+            "external_primesieve_count_server",
+        )
     )
     primesieve_count_server: Path | None = None
     primesieve_count_server_error: str | None = None
@@ -308,9 +350,45 @@ def main() -> int:
             "install with `brew install primesieve primecount`"
         )
 
-    if primesieve is None and primecount is None and primesieve_count_server is None:
+    missing_selected_baselines = selected_external_baselines_missing(
+        external_baselines,
+        primesieve=primesieve,
+        primecount=primecount,
+        primesieve_library=primesieve_count_server,
+    )
+    if missing_selected_baselines:
         metadata = build_run_metadata(
             args=args,
+            segment_sizes=segment_sizes,
+            circle_count_modes=circle_count_modes,
+            circle_variants=circle_variants,
+            external_baselines=external_baselines,
+            ranges=ranges,
+            started_at_utc=started_at_utc,
+            cargo=None,
+            circle_prime=None,
+            primesieve=primesieve,
+            primecount=primecount,
+            primesieve_count_server=primesieve_count_server,
+            primesieve_count_server_error=primesieve_count_server_error,
+            row_count=0,
+        )
+        emit_metadata(metadata, args.metadata_output)
+        baselines = ", ".join(missing_selected_baselines)
+        raise RuntimeError(f"selected external baseline(s) unavailable: {baselines}")
+
+    if not any_external_baseline_available(
+        external_baselines,
+        primesieve=primesieve,
+        primecount=primecount,
+        primesieve_library=primesieve_count_server,
+    ):
+        metadata = build_run_metadata(
+            args=args,
+            segment_sizes=segment_sizes,
+            circle_count_modes=circle_count_modes,
+            circle_variants=circle_variants,
+            external_baselines=external_baselines,
             ranges=ranges,
             started_at_utc=started_at_utc,
             cargo=None,
@@ -344,12 +422,15 @@ def main() -> int:
                 primecount=primecount,
                 low=low,
                 high=high,
+                external_baselines=external_baselines,
                 circle_variants=circle_variants,
                 circle_threads=args.circle_threads,
                 external_threads=args.external_threads,
                 rounds=args.rounds,
+                batch_size=args.batch_size,
                 warmup_rounds=args.warmup_rounds,
                 include_circle_server=args.include_circle_server,
+                circle_server_only=args.circle_server_only,
                 primesieve_count_server=primesieve_count_server,
             )
             rows.extend(range_rows)
@@ -366,6 +447,7 @@ def main() -> int:
                     variant.segment_size,
                     variant_threads,
                     args.rounds,
+                    args.batch_size,
                     variant.count_mode,
                 )
                 variant_key = (circle_row.name, circle_row.segment_size, circle_row.threads)
@@ -374,25 +456,55 @@ def main() -> int:
                     seen_circle_variants.add(variant_key)
             rows.extend(circle_rows)
 
-            if primesieve is not None:
-                row = measure_primesieve(primesieve, low, high, args.rounds, args.external_threads)
+            if (
+                external_baseline_enabled(
+                    external_baselines,
+                    "external_primesieve_count",
+                )
+                and primesieve is not None
+            ):
+                row = measure_primesieve(
+                    primesieve,
+                    low,
+                    high,
+                    args.rounds,
+                    args.batch_size,
+                    args.external_threads,
+                )
                 rows.append(row)
                 for circle_row in circle_rows:
                     verify_count(circle_row, row)
                     rows.append(speedup_row(circle_row, row))
 
-            if primecount is not None:
-                row = measure_primecount(primecount, low, high, args.rounds, args.external_threads)
+            if (
+                external_baseline_enabled(
+                    external_baselines,
+                    "external_primecount_pi_diff",
+                )
+                and primecount is not None
+            ):
+                row = measure_primecount(
+                    primecount,
+                    low,
+                    high,
+                    args.rounds,
+                    args.batch_size,
+                    args.external_threads,
+                )
                 rows.append(row)
                 for circle_row in circle_rows:
                     verify_count(circle_row, row)
                     rows.append(speedup_row(circle_row, row))
-            if primesieve_count_server is not None:
+            if external_baseline_enabled(
+                external_baselines,
+                "external_primesieve_count_server",
+            ) and primesieve_count_server is not None:
                 row = measure_primesieve_count_server(
                     primesieve_count_server,
                     low,
                     high,
                     args.rounds,
+                    args.batch_size,
                     args.external_threads,
                 )
                 rows.append(row)
@@ -407,6 +519,7 @@ def main() -> int:
         segment_sizes=segment_sizes,
         circle_count_modes=circle_count_modes,
         circle_variants=circle_variants,
+        external_baselines=external_baselines,
         ranges=ranges,
         started_at_utc=started_at_utc,
         cargo=cargo,
@@ -428,6 +541,7 @@ def measure_circle_prime(
     segment_size: int,
     threads: int,
     rounds: int,
+    batch_size: int = 1,
     count_mode: str = "segmented",
 ) -> ExternalBenchRow:
     metadata_command = circle_prime_command(
@@ -478,6 +592,7 @@ def measure_circle_prime(
         segment_size,
         rounds,
         run_once,
+        batch_size=batch_size,
         threads=actual_threads,
         requested_threads=threads,
     )
@@ -722,6 +837,7 @@ def measure_primesieve(
     low: int,
     high: int,
     rounds: int,
+    batch_size: int,
     threads: int,
 ) -> ExternalBenchRow:
     stop = high - 1
@@ -746,6 +862,7 @@ def measure_primesieve(
         0,
         rounds,
         run_once,
+        batch_size=batch_size,
         threads=threads,
         requested_threads=threads,
     )
@@ -788,6 +905,7 @@ def measure_primecount(
     low: int,
     high: int,
     rounds: int,
+    batch_size: int,
     threads: int,
 ) -> ExternalBenchRow:
     def run_once() -> int:
@@ -802,6 +920,7 @@ def measure_primecount(
         0,
         rounds,
         run_once,
+        batch_size=batch_size,
         threads=threads,
         requested_threads=threads,
     )
@@ -884,6 +1003,7 @@ def measure_primesieve_count_server(
     low: int,
     high: int,
     rounds: int,
+    batch_size: int,
     threads: int,
 ) -> ExternalBenchRow:
     measurement = primesieve_count_server_measurement(binary, low, high, threads)
@@ -895,6 +1015,7 @@ def measure_primesieve_count_server(
             0,
             rounds,
             measurement.run_once,
+            batch_size=batch_size,
             threads=measurement.threads,
             requested_threads=measurement.requested_threads,
         )
@@ -950,29 +1071,33 @@ def measure_range_interleaved(
     primesieve_count_server: Path | None,
     low: int,
     high: int,
+    external_baselines: set[str] | None,
     circle_variants: list[CircleVariant],
     circle_threads: int,
     external_threads: int,
     rounds: int,
+    batch_size: int,
     warmup_rounds: int = 0,
     include_circle_server: bool = False,
+    circle_server_only: bool = False,
 ) -> tuple[list[ExternalBenchRow], list[ExternalBenchSample]]:
     circle_measurements: list[Measurement] = []
     seen_circle_variants: set[tuple[str, int, int]] = set()
     for variant in circle_variants:
         variant_threads = variant.threads or circle_threads
-        measurement = circle_prime_measurement(
-            circle_prime,
-            low,
-            high,
-            variant.segment_size,
-            variant_threads,
-            variant.count_mode,
-        )
-        variant_key = (measurement.name, measurement.segment_size, measurement.threads)
-        if variant_key not in seen_circle_variants:
-            circle_measurements.append(measurement)
-            seen_circle_variants.add(variant_key)
+        if not circle_server_only:
+            measurement = circle_prime_measurement(
+                circle_prime,
+                low,
+                high,
+                variant.segment_size,
+                variant_threads,
+                variant.count_mode,
+            )
+            variant_key = (measurement.name, measurement.segment_size, measurement.threads)
+            if variant_key not in seen_circle_variants:
+                circle_measurements.append(measurement)
+                seen_circle_variants.add(variant_key)
         if include_circle_server:
             server_measurement = circle_prime_server_measurement(
                 circle_prime,
@@ -995,15 +1120,27 @@ def measure_range_interleaved(
                     server_measurement.close()
 
     baseline_measurements = []
-    if primesieve is not None:
+    if (
+        external_baseline_enabled(external_baselines, "external_primesieve_count")
+        and primesieve is not None
+    ):
         baseline_measurements.append(
             primesieve_measurement(primesieve, low, high, external_threads)
         )
-    if primecount is not None:
+    if (
+        external_baseline_enabled(external_baselines, "external_primecount_pi_diff")
+        and primecount is not None
+    ):
         baseline_measurements.append(
             primecount_measurement(primecount, low, high, external_threads)
         )
-    if primesieve_count_server is not None:
+    if (
+        external_baseline_enabled(
+            external_baselines,
+            "external_primesieve_count_server",
+        )
+        and primesieve_count_server is not None
+    ):
         baseline_measurements.append(
             primesieve_count_server_measurement(
                 primesieve_count_server,
@@ -1018,6 +1155,7 @@ def measure_range_interleaved(
         timing_rows, samples = measure_interleaved(
             measurements,
             rounds,
+            batch_size=batch_size,
             warmup_rounds=warmup_rounds,
         )
     finally:
@@ -1043,17 +1181,20 @@ def measure_interleaved(
     measurements: list[Measurement],
     rounds: int,
     *,
+    batch_size: int = 1,
     warmup_rounds: int = 0,
 ) -> tuple[list[ExternalBenchRow], list[ExternalBenchSample]]:
     if not measurements:
         return [], []
+    if batch_size <= 0:
+        raise ValueError("batch_size must be positive")
     timings: dict[str, list[float]] = {measurement_key(m): [] for m in measurements}
     results: dict[str, int] = {}
     samples: list[ExternalBenchSample] = []
     for warmup_index in range(warmup_rounds):
         for measurement in rotated(measurements, warmup_index):
             key = measurement_key(measurement)
-            result = measurement.run_once()
+            result = run_batch(measurement, batch_size)
             expected = results.setdefault(key, result)
             if result != expected:
                 raise AssertionError(
@@ -1064,8 +1205,8 @@ def measure_interleaved(
         for measurement in order:
             key = measurement_key(measurement)
             start = time.perf_counter()
-            result = measurement.run_once()
-            elapsed = time.perf_counter() - start
+            result = run_batch(measurement, batch_size)
+            elapsed = (time.perf_counter() - start) / batch_size
             expected = results.setdefault(key, result)
             if result != expected:
                 raise AssertionError(f"{measurement.name} result changed between rounds")
@@ -1078,6 +1219,17 @@ def measure_interleaved(
         row = timing_row_from_samples(measurement, results[key], rounds, timings[key])
         rows.append(row)
     return rows, samples
+
+
+def run_batch(measurement: Measurement, batch_size: int) -> int:
+    result = measurement.run_once()
+    for _ in range(1, batch_size):
+        repeated = measurement.run_once()
+        if repeated != result:
+            raise AssertionError(
+                f"{measurement.name} result changed inside a timed batch"
+            )
+    return result
 
 
 def rotated(values: list[Measurement], offset: int) -> list[Measurement]:
@@ -1182,15 +1334,22 @@ def measure(
     rounds: int,
     run_once,
     *,
+    batch_size: int = 1,
     threads: int,
     requested_threads: int,
 ) -> ExternalBenchRow:
+    if batch_size <= 0:
+        raise ValueError("batch_size must be positive")
     expected = None
     timings: list[float] = []
     for _ in range(rounds):
         start = time.perf_counter()
         result = run_once()
-        elapsed = time.perf_counter() - start
+        for _ in range(1, batch_size):
+            repeated = run_once()
+            if repeated != result:
+                raise AssertionError(f"{name} result changed inside a timed batch")
+        elapsed = (time.perf_counter() - start) / batch_size
         if expected is None:
             expected = result
         elif result != expected:
@@ -1319,6 +1478,7 @@ def build_run_metadata(
     segment_sizes: list[int] | None = None,
     circle_count_modes: list[str] | None = None,
     circle_variants: list[CircleVariant] | None = None,
+    external_baselines: set[str] | None = None,
     ranges: list[tuple[int, int]],
     started_at_utc: str,
     cargo: str | None,
@@ -1351,14 +1511,18 @@ def build_run_metadata(
         circle_count_modes = unique_preserving_order(
             variant.count_mode for variant in circle_variants
         )
+    if external_baselines is None and hasattr(args, "external_baselines"):
+        external_baselines = parse_external_baselines(args.external_baselines)
     return {
         "started_at_utc": started_at_utc,
         "finished_at_utc": utc_now(),
         "row_count": row_count,
         "rounds": args.rounds,
+        "batch_size": int(getattr(args, "batch_size", 1)),
         "warmup_rounds": int(getattr(args, "warmup_rounds", 0)),
         "interleaved": bool(getattr(args, "interleaved", False)),
         "include_circle_server": bool(getattr(args, "include_circle_server", False)),
+        "circle_server_only": bool(getattr(args, "circle_server_only", False)),
         "include_primesieve_count_server": bool(
             getattr(args, "include_primesieve_count_server", False)
             or "primesieve-library" in getattr(args, "require_tool", [])
@@ -1372,6 +1536,9 @@ def build_run_metadata(
         "requested_segment_sizes": segment_sizes,
         "circle_count_modes": circle_count_modes,
         "circle_variants": [circle_variant_metadata(variant) for variant in circle_variants],
+        "external_baselines": (
+            sorted(external_baselines) if external_baselines is not None else None
+        ),
         "thread_policy": {
             "circle_requested_threads": args.circle_threads,
             "external_requested_threads": args.external_threads,
@@ -1402,6 +1569,7 @@ def build_run_metadata(
             primesieve_count_server,
             ranges,
             circle_variants,
+            external_baselines,
             args.circle_threads,
             args.external_threads,
         ),
@@ -1566,6 +1734,7 @@ def range_command_metadata(
     primesieve_count_server: Path | None,
     ranges: list[tuple[int, int]],
     circle_variants: list[CircleVariant],
+    external_baselines: set[str] | None,
     circle_threads: int,
     external_threads: int,
 ) -> list[dict[str, Any]]:
@@ -1605,9 +1774,15 @@ def range_command_metadata(
             "circle_variants": circle_variant_commands,
             "circle_count_server": [str(circle_prime), "count-server"],
         }
-        if primesieve is not None:
+        if (
+            external_baseline_enabled(external_baselines, "external_primesieve_count")
+            and primesieve is not None
+        ):
             entry["primesieve"] = primesieve_command(primesieve, low, stop, external_threads)
-        if primecount is not None:
+        if (
+            external_baseline_enabled(external_baselines, "external_primecount_pi_diff")
+            and primecount is not None
+        ):
             entry["primecount_high"] = primecount_command(primecount, stop, external_threads)
             if low > 0:
                 entry["primecount_low"] = primecount_command(
@@ -1615,7 +1790,13 @@ def range_command_metadata(
                     low - 1,
                     external_threads,
                 )
-        if primesieve_count_server is not None:
+        if (
+            external_baseline_enabled(
+                external_baselines,
+                "external_primesieve_count_server",
+            )
+            and primesieve_count_server is not None
+        ):
             entry["primesieve_count_server"] = [str(primesieve_count_server)]
         commands.append(entry)
     return commands
@@ -1634,6 +1815,66 @@ def required_external_tools_missing(
         "primesieve-library": primesieve_library is not None,
     }
     return sorted({tool for tool in required_tools if not available[tool]})
+
+
+def selected_external_baselines_missing(
+    selected_baselines: set[str] | None,
+    *,
+    primesieve: str | None,
+    primecount: str | None,
+    primesieve_library: Path | None,
+) -> list[str]:
+    if selected_baselines is None:
+        return []
+    available = {
+        "external_primesieve_count": primesieve is not None,
+        "external_primecount_pi_diff": primecount is not None,
+        "external_primesieve_count_server": primesieve_library is not None,
+    }
+    return sorted(
+        baseline
+        for baseline in selected_baselines
+        if not available[baseline]
+    )
+
+
+def any_external_baseline_available(
+    selected_baselines: set[str] | None,
+    *,
+    primesieve: str | None,
+    primecount: str | None,
+    primesieve_library: Path | None,
+) -> bool:
+    return (
+        (
+            external_baseline_enabled(
+                selected_baselines,
+                "external_primesieve_count",
+            )
+            and primesieve is not None
+        )
+        or (
+            external_baseline_enabled(
+                selected_baselines,
+                "external_primecount_pi_diff",
+            )
+            and primecount is not None
+        )
+        or (
+            external_baseline_enabled(
+                selected_baselines,
+                "external_primesieve_count_server",
+            )
+            and primesieve_library is not None
+        )
+    )
+
+
+def external_baseline_enabled(
+    selected_baselines: set[str] | None,
+    baseline: str,
+) -> bool:
+    return selected_baselines is None or baseline in selected_baselines
 
 
 def utc_now() -> str:
@@ -1710,6 +1951,22 @@ def parse_circle_count_modes(raw: str) -> list[str]:
             seen.add(item)
     if not values:
         raise argparse.ArgumentTypeError("at least one Circle count mode is required")
+    return values
+
+
+def parse_external_baselines(raw: str | None) -> set[str] | None:
+    if raw is None:
+        return None
+    values: set[str] = set()
+    for item in [part.strip() for part in raw.split(",") if part.strip()]:
+        if item not in VALID_EXTERNAL_BASELINES:
+            expected = ", ".join(sorted(VALID_EXTERNAL_BASELINES))
+            raise argparse.ArgumentTypeError(
+                f"unknown external baseline {item!r}; expected one of: {expected}"
+            )
+        values.add(item)
+    if not values:
+        raise argparse.ArgumentTypeError("at least one external baseline is required")
     return values
 
 

@@ -1,6 +1,8 @@
 use std::env;
 use std::io::{self, BufRead, Write};
 use std::process;
+use std::sync::mpsc;
+use std::thread::{self, JoinHandle};
 
 use circle_prime::{
     effective_parallel_thread_count, effective_prefix_pi_thread_count, inspect_horizon,
@@ -16,6 +18,7 @@ use circle_prime::{
 };
 
 const MAX_INSPECT_N: u128 = 100_000;
+const SERVER_POOL_STATIC_BASE_LIMIT: u64 = 1_100_000;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 enum CountMode {
@@ -70,6 +73,17 @@ impl CountMode {
             Self::PrefixPi => effective_prefix_pi_thread_count(low, high, requested_threads),
             _ => general_effective_threads,
         }
+    }
+
+    fn supports_server_worker_pool(self) -> bool {
+        matches!(
+            self,
+            Self::Segmented
+                | Self::Presieve13
+                | Self::Presieve17
+                | Self::Wheel30Marks
+                | Self::HybridWheel30Marks
+        )
     }
 }
 
@@ -481,21 +495,33 @@ fn count_server_command(args: &[String]) -> Result<(), String> {
     let json = args.iter().any(|arg| arg == "--json");
 
     let stdin = io::stdin();
+    let mut reader = stdin.lock();
     let mut stdout = io::BufWriter::new(io::stdout().lock());
-    for line in stdin.lock().lines() {
-        let line = line.map_err(|err| format!("failed to read request: {err}"))?;
-        let request = line.trim();
+    let mut buffer = Vec::with_capacity(96);
+    let mut worker_pool = CountServerWorkerPool::new();
+    loop {
+        buffer.clear();
+        let bytes_read = reader
+            .read_until(b'\n', &mut buffer)
+            .map_err(|err| format!("failed to read request: {err}"))?;
+        if bytes_read == 0 {
+            break;
+        }
+        let request_bytes = trim_ascii_bytes(&buffer);
+        let request = std::str::from_utf8(request_bytes)
+            .map_err(|_| "count-server request must be valid UTF-8".to_string())?;
         if request.is_empty() {
             continue;
         }
         if request == "quit" || request == "exit" {
             break;
         }
-        let response = count_server_response(
+        let response = count_server_response_with_pool(
             request,
             default_segment_size,
             default_threads,
             default_count_mode,
+            Some(&mut worker_pool),
         )?;
         if json {
             writeln!(stdout, "{}", response.to_json())
@@ -555,27 +581,58 @@ impl CountServerResponse {
     }
 }
 
+#[cfg(test)]
 fn count_server_response(
     request: &str,
     default_segment_size: Option<u64>,
     default_threads: usize,
     default_count_mode: Option<CountMode>,
 ) -> Result<CountServerResponse, String> {
-    let fields = request.split_whitespace().collect::<Vec<_>>();
-    if fields.len() < 2 || fields.len() > 5 {
+    count_server_response_with_pool(
+        request,
+        default_segment_size,
+        default_threads,
+        default_count_mode,
+        None,
+    )
+}
+
+fn count_server_response_with_pool(
+    request: &str,
+    default_segment_size: Option<u64>,
+    default_threads: usize,
+    default_count_mode: Option<CountMode>,
+    mut worker_pool: Option<&mut CountServerWorkerPool>,
+) -> Result<CountServerResponse, String> {
+    let mut fields = request.split_whitespace();
+    let Some(low_field) = fields.next() else {
+        return Err(
+            "count-server request must be LOW HIGH [SEGMENT_SIZE] [THREADS] [COUNT_MODE]"
+                .to_string(),
+        );
+    };
+    let Some(high_field) = fields.next() else {
+        return Err(
+            "count-server request must be LOW HIGH [SEGMENT_SIZE] [THREADS] [COUNT_MODE]"
+                .to_string(),
+        );
+    };
+    let segment_size_field = fields.next();
+    let threads_field = fields.next();
+    let count_mode_field = fields.next();
+    if fields.next().is_some() {
         return Err(
             "count-server request must be LOW HIGH [SEGMENT_SIZE] [THREADS] [COUNT_MODE]"
                 .to_string(),
         );
     }
-    let low = fields[0]
+    let low = low_field
         .parse::<u64>()
         .map_err(|_| "LOW must fit in u64".to_string())?;
-    let high = fields[1]
+    let high = high_field
         .parse::<u64>()
         .map_err(|_| "HIGH must fit in u64".to_string())?;
-    let requested_threads = fields
-        .get(3)
+    let requested_threads = threads_field
         .map(|value| {
             value
                 .parse::<usize>()
@@ -586,8 +643,7 @@ fn count_server_response(
     if requested_threads == 0 {
         return Err("THREADS must be greater than zero".to_string());
     }
-    let segment_size = fields
-        .get(2)
+    let segment_size = segment_size_field
         .map(|value| {
             value
                 .parse::<u64>()
@@ -596,8 +652,7 @@ fn count_server_response(
         .transpose()?
         .or(default_segment_size)
         .unwrap_or_else(|| recommended_count_segment_size(low, high, requested_threads));
-    let count_mode = fields
-        .get(4)
+    let count_mode = count_mode_field
         .map(|value| CountMode::parse(value))
         .transpose()?
         .or(default_count_mode)
@@ -611,8 +666,25 @@ fn count_server_response(
         effective_parallel_thread_count(low, high, segment_size, requested_threads),
         requested_threads,
     );
-    let count = count_range_with_mode(low, high, segment_size, worker_threads, count_mode)
-        .map_err(|err| format!("range sieve failed: {err:?}"))?;
+    let count = if let Some(pool) = worker_pool.as_mut() {
+        match count_range_with_server_pool(
+            pool,
+            low,
+            high,
+            segment_size,
+            worker_threads,
+            count_mode,
+        )
+        .map_err(|err| format!("range sieve failed: {err:?}"))?
+        {
+            Some(count) => count,
+            None => count_range_with_mode(low, high, segment_size, worker_threads, count_mode)
+                .map_err(|err| format!("range sieve failed: {err:?}"))?,
+        }
+    } else {
+        count_range_with_mode(low, high, segment_size, worker_threads, count_mode)
+            .map_err(|err| format!("range sieve failed: {err:?}"))?
+    };
     Ok(CountServerResponse {
         low,
         high,
@@ -622,6 +694,143 @@ fn count_server_response(
         requested_threads,
         count_mode,
     })
+}
+
+struct CountServerWorkerPool {
+    senders: Vec<mpsc::Sender<CountServerWorkerCommand>>,
+    handles: Vec<JoinHandle<()>>,
+}
+
+impl CountServerWorkerPool {
+    fn new() -> Self {
+        Self {
+            senders: Vec::new(),
+            handles: Vec::new(),
+        }
+    }
+
+    fn count_chunks(
+        &mut self,
+        chunks: &[(u64, u64)],
+        segment_size: u64,
+        count_mode: CountMode,
+    ) -> Result<usize, circle_prime::RangeError> {
+        self.ensure_worker_count(chunks.len());
+        let (result_sender, result_receiver) = mpsc::channel();
+        for (worker_index, &(low, high)) in chunks.iter().enumerate() {
+            self.senders[worker_index]
+                .send(CountServerWorkerCommand::Count {
+                    low,
+                    high,
+                    segment_size,
+                    count_mode,
+                    result_sender: result_sender.clone(),
+                })
+                .map_err(|_| circle_prime::RangeError::WorkerPanic)?;
+        }
+        drop(result_sender);
+
+        let mut total = 0usize;
+        for _ in chunks {
+            total += result_receiver
+                .recv()
+                .map_err(|_| circle_prime::RangeError::WorkerPanic)??;
+        }
+        Ok(total)
+    }
+
+    fn ensure_worker_count(&mut self, worker_count: usize) {
+        while self.senders.len() < worker_count {
+            let (sender, receiver) = mpsc::channel();
+            let handle = thread::spawn(move || count_server_worker_loop(receiver));
+            self.senders.push(sender);
+            self.handles.push(handle);
+        }
+    }
+}
+
+impl Drop for CountServerWorkerPool {
+    fn drop(&mut self) {
+        for sender in &self.senders {
+            let _ = sender.send(CountServerWorkerCommand::Stop);
+        }
+        while let Some(handle) = self.handles.pop() {
+            let _ = handle.join();
+        }
+    }
+}
+
+enum CountServerWorkerCommand {
+    Count {
+        low: u64,
+        high: u64,
+        segment_size: u64,
+        count_mode: CountMode,
+        result_sender: mpsc::Sender<Result<usize, circle_prime::RangeError>>,
+    },
+    Stop,
+}
+
+fn count_server_worker_loop(receiver: mpsc::Receiver<CountServerWorkerCommand>) {
+    while let Ok(command) = receiver.recv() {
+        match command {
+            CountServerWorkerCommand::Count {
+                low,
+                high,
+                segment_size,
+                count_mode,
+                result_sender,
+            } => {
+                let result = count_range_with_mode(low, high, segment_size, 1, count_mode);
+                let _ = result_sender.send(result);
+            }
+            CountServerWorkerCommand::Stop => break,
+        }
+    }
+}
+
+fn count_range_with_server_pool(
+    pool: &mut CountServerWorkerPool,
+    low: u64,
+    high: u64,
+    segment_size: u64,
+    worker_threads: usize,
+    mode: CountMode,
+) -> Result<Option<usize>, circle_prime::RangeError> {
+    if worker_threads <= 1
+        || high <= low
+        || segment_size == 0
+        || (high - 1).isqrt() > SERVER_POOL_STATIC_BASE_LIMIT
+        || !mode.supports_server_worker_pool()
+    {
+        return Ok(None);
+    }
+
+    let chunks = split_range_evenly(low, high, worker_threads);
+    if chunks.len() <= 1 {
+        return Ok(None);
+    }
+    pool.count_chunks(&chunks, segment_size, mode).map(Some)
+}
+
+fn split_range_evenly(low: u64, high: u64, parts: usize) -> Vec<(u64, u64)> {
+    if high <= low {
+        return Vec::new();
+    }
+
+    let span = high - low;
+    let parts_u64 = u64::try_from(parts).unwrap_or(u64::MAX).min(span).max(1);
+    let base_width = span / parts_u64;
+    let remainder = span % parts_u64;
+    let mut chunks = Vec::with_capacity(parts_u64 as usize);
+    let mut chunk_low = low;
+    for index in 0..parts_u64 {
+        let width = base_width + u64::from(index < remainder);
+        let chunk_high = chunk_low + width;
+        chunks.push((chunk_low, chunk_high));
+        chunk_low = chunk_high;
+    }
+    chunks
 }
 
 fn count_range_with_mode(
@@ -761,6 +970,31 @@ mod tests {
             count_server_request("0 100000 65536 4 presieve13", None, 1, None).unwrap(),
             9592
         );
+    }
+
+    #[test]
+    fn count_server_request_trims_and_rejects_extra_fields() {
+        assert_eq!(
+            count_server_request(" \t0 1000\r\n", None, 1, Some(CountMode::Segmented)).unwrap(),
+            168
+        );
+        assert!(count_server_request("0", None, 1, None).is_err());
+        assert!(count_server_request("0 1000 64 1 segmented extra", None, 1, None).is_err());
+    }
+
+    #[test]
+    fn count_server_worker_pool_matches_direct_parallel_count() {
+        let mut pool = CountServerWorkerPool::new();
+        let request = "0 1000000 65536 4 presieve13";
+        let pooled = count_server_response_with_pool(request, None, 1, None, Some(&mut pool))
+            .expect("pooled count-server request should succeed");
+        let direct = count_server_response(request, None, 1, None)
+            .expect("direct count-server request should succeed");
+
+        assert_eq!(pooled.count, direct.count);
+        assert_eq!(pooled.segment_size, direct.segment_size);
+        assert_eq!(pooled.threads, direct.threads);
+        assert_eq!(pooled.count_mode, direct.count_mode);
     }
 
     #[test]
