@@ -27,6 +27,7 @@ from scripts.benchmark_prime_external_controls import (
     primesieve_count_server_measurement,
     primesieve_command,
     required_external_tools_missing,
+    sample_metric_fields,
     selected_external_baselines_missing,
     speedup_row,
 )
@@ -272,6 +273,75 @@ def test_external_rows_record_median_speedup() -> None:
     assert row.median_speedup == "2.000"
     assert row.median_ms == 3.0
     assert row.count_mode == "balanced"
+
+
+def test_sample_metric_fields_ignore_one_high_outlier_for_stability() -> None:
+    metrics = sample_metric_fields([0.001, 0.00101, 0.00102, 0.00103, 0.009])
+
+    assert metrics["sample_count"] == 5
+    assert metrics["sample_stability"] == "stable"
+    assert metrics["sample_noise_ms"] == "1.030000"
+    assert metrics["sample_max_ms"] == "9.000000"
+    assert metrics["sample_noise_over_median"] == "1.009804"
+    assert metrics["sample_max_over_median"] == "8.823529"
+    assert metrics["sample_ignored_single_high_outlier"] == "true"
+
+
+def test_speedup_row_combines_sample_stability_with_baseline() -> None:
+    circle = ExternalBenchRow(
+        kind="timing",
+        name="circle_prime_parallel_segmented_count_8t",
+        low=0,
+        high=1000,
+        span=1000,
+        segment_size=32768,
+        result=168,
+        rounds=5,
+        best_ms=2.0,
+        median_ms=3.0,
+        rate_per_second=500000.0,
+        median_rate_per_second=333333.3,
+        threads=8,
+        requested_threads=8,
+        baseline="",
+        best_speedup="",
+        median_speedup="",
+        count_mode="segmented",
+        sample_count=5,
+        sample_noise_ms="3.000000",
+        sample_max_ms="4.000000",
+        sample_noise_over_median="1.000000",
+        sample_max_over_median="1.333333",
+        sample_ignored_single_high_outlier="true",
+        sample_stability="stable",
+    )
+    baseline = ExternalBenchRow(
+        kind="timing",
+        name="external_primesieve_count",
+        low=0,
+        high=1000,
+        span=1000,
+        segment_size=0,
+        result=168,
+        rounds=5,
+        best_ms=1.0,
+        median_ms=6.0,
+        rate_per_second=1000000.0,
+        median_rate_per_second=166666.7,
+        threads=8,
+        requested_threads=8,
+        baseline="",
+        best_speedup="",
+        median_speedup="",
+        sample_stability="noisy",
+    )
+
+    row = speedup_row(circle, baseline)
+
+    assert row.sample_count == 5
+    assert row.sample_noise_ms == "3.000000"
+    assert row.sample_ignored_single_high_outlier == "true"
+    assert row.sample_stability == "noisy"
 
 
 def test_external_metadata_records_thread_policy_and_commands(monkeypatch) -> None:

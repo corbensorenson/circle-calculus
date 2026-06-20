@@ -37,6 +37,8 @@ PRIMESIEVE_COUNT_SERVER_SOURCE = (
     ROOT / "sidecars" / "PRIME_ENGINE" / "controls" / "primesieve_count_server.c"
 )
 PRIMESIEVE_COUNT_SERVER_BINARY = ROOT / "target" / "prime-controls" / "primesieve-count-server"
+SAMPLE_NOISY_MAX_OVER_MEDIAN = 1.5
+SAMPLE_ROBUST_NOISE_MIN_COUNT = 5
 
 
 @dataclass(frozen=True)
@@ -59,6 +61,13 @@ class ExternalBenchRow:
     best_speedup: str
     median_speedup: str
     count_mode: str = ""
+    sample_count: int = 0
+    sample_noise_ms: str = ""
+    sample_max_ms: str = ""
+    sample_noise_over_median: str = ""
+    sample_max_over_median: str = ""
+    sample_ignored_single_high_outlier: str = ""
+    sample_stability: str = ""
 
 
 @dataclass(frozen=True)
@@ -1298,6 +1307,7 @@ def timing_row_from_samples(
         best_speedup="",
         median_speedup="",
         count_mode=measurement.count_mode,
+        **sample_metric_fields(timings),
     )
 
 
@@ -1380,6 +1390,7 @@ def measure(
         baseline="",
         best_speedup="",
         median_speedup="",
+        **sample_metric_fields(timings),
     )
 
 
@@ -1413,7 +1424,64 @@ def speedup_row(circle_row: ExternalBenchRow, baseline: ExternalBenchRow) -> Ext
         best_speedup=f"{speedup:.3f}",
         median_speedup=f"{median_speedup:.3f}",
         count_mode=circle_row.count_mode,
+        **speedup_sample_metric_fields(circle_row, baseline),
     )
+
+
+def sample_metric_fields(timings: list[float]) -> dict[str, Any]:
+    ordered_ms = sorted(value * 1000.0 for value in timings)
+    if not ordered_ms:
+        return {}
+    median_ms = median(ordered_ms)
+    max_ms = ordered_ms[-1]
+    noise_ms = (
+        ordered_ms[-2]
+        if len(ordered_ms) >= SAMPLE_ROBUST_NOISE_MIN_COUNT
+        else max_ms
+    )
+    max_over_median = max_ms / median_ms if median_ms > 0 else float("inf")
+    noise_over_median = noise_ms / median_ms if median_ms > 0 else float("inf")
+    return {
+        "sample_count": len(ordered_ms),
+        "sample_noise_ms": noise_ms,
+        "sample_max_ms": max_ms,
+        "sample_noise_over_median": noise_over_median,
+        "sample_max_over_median": max_over_median,
+        "sample_ignored_single_high_outlier": (
+            "true" if len(ordered_ms) >= SAMPLE_ROBUST_NOISE_MIN_COUNT else "false"
+        ),
+        "sample_stability": (
+            "noisy"
+            if noise_over_median > SAMPLE_NOISY_MAX_OVER_MEDIAN
+            else "stable"
+        ),
+    }
+
+
+def speedup_sample_metric_fields(
+    circle_row: ExternalBenchRow,
+    baseline_row: ExternalBenchRow,
+) -> dict[str, Any]:
+    return {
+        "sample_count": circle_row.sample_count,
+        "sample_noise_ms": circle_row.sample_noise_ms,
+        "sample_max_ms": circle_row.sample_max_ms,
+        "sample_noise_over_median": circle_row.sample_noise_over_median,
+        "sample_max_over_median": circle_row.sample_max_over_median,
+        "sample_ignored_single_high_outlier": circle_row.sample_ignored_single_high_outlier,
+        "sample_stability": combined_sample_stability(
+            circle_row.sample_stability,
+            baseline_row.sample_stability,
+        ),
+    }
+
+
+def combined_sample_stability(circle_stability: str, baseline_stability: str) -> str:
+    if not circle_stability and not baseline_stability:
+        return ""
+    if circle_stability == "stable" and baseline_stability == "stable":
+        return "stable"
+    return "noisy"
 
 
 def median(values: list[float]) -> float:
@@ -1424,6 +1492,73 @@ def median(values: list[float]) -> float:
     if len(ordered) % 2 == 1:
         return ordered[middle]
     return (ordered[middle - 1] + ordered[middle]) / 2.0
+
+
+def sample_metric_fields(timings: list[float]) -> dict[str, Any]:
+    if not timings:
+        return {
+            "sample_count": 0,
+            "sample_noise_ms": "",
+            "sample_max_ms": "",
+            "sample_noise_over_median": "",
+            "sample_max_over_median": "",
+            "sample_ignored_single_high_outlier": "",
+            "sample_stability": "",
+        }
+    ordered_ms = sorted(timing * 1000.0 for timing in timings)
+    median_ms = median(ordered_ms)
+    max_ms = ordered_ms[-1]
+    noise_ms = (
+        ordered_ms[-2]
+        if len(ordered_ms) >= SAMPLE_ROBUST_NOISE_MIN_COUNT
+        else max_ms
+    )
+    max_over_median = max_ms / median_ms if median_ms > 0 else None
+    noise_over_median = noise_ms / median_ms if median_ms > 0 else None
+    ignored_single_high_outlier = len(ordered_ms) >= SAMPLE_ROBUST_NOISE_MIN_COUNT
+    stability = (
+        "noisy"
+        if noise_over_median is not None
+        and noise_over_median > SAMPLE_NOISY_MAX_OVER_MEDIAN
+        else "stable"
+    )
+    return {
+        "sample_count": len(ordered_ms),
+        "sample_noise_ms": f"{noise_ms:.6f}",
+        "sample_max_ms": f"{max_ms:.6f}",
+        "sample_noise_over_median": (
+            f"{noise_over_median:.6f}" if noise_over_median is not None else ""
+        ),
+        "sample_max_over_median": (
+            f"{max_over_median:.6f}" if max_over_median is not None else ""
+        ),
+        "sample_ignored_single_high_outlier": (
+            "true" if ignored_single_high_outlier else "false"
+        ),
+        "sample_stability": stability,
+    }
+
+
+def speedup_sample_metric_fields(
+    circle_row: ExternalBenchRow,
+    baseline: ExternalBenchRow,
+) -> dict[str, Any]:
+    stability = (
+        "noisy"
+        if "noisy" in {circle_row.sample_stability, baseline.sample_stability}
+        else circle_row.sample_stability or baseline.sample_stability
+    )
+    return {
+        "sample_count": circle_row.sample_count,
+        "sample_noise_ms": circle_row.sample_noise_ms,
+        "sample_max_ms": circle_row.sample_max_ms,
+        "sample_noise_over_median": circle_row.sample_noise_over_median,
+        "sample_max_over_median": circle_row.sample_max_over_median,
+        "sample_ignored_single_high_outlier": (
+            circle_row.sample_ignored_single_high_outlier
+        ),
+        "sample_stability": stability,
+    }
 
 
 def verify_count(expected: ExternalBenchRow, actual: ExternalBenchRow) -> None:
