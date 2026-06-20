@@ -1,6 +1,6 @@
 # Prime Engine Default Calibration
 
-Generated: `2026-06-20T06:27:52Z`
+Generated: `2026-06-20T06:37:31Z`
 Tolerance: `0.050` median slowdown over selected row.
 Minimum actionable median delta: `0.001000` ms.
 
