@@ -255,6 +255,21 @@ def test_request_api_reports_malformed_requests() -> None:
         "kind": "rope",
         "parameters": {"requested_margin": "not-a-fraction"},
     }
+    invalid_sparse_stride = {
+        "schema_id": "circle_calculus.ai_contract_request.v0",
+        "kind": "sparse-attention",
+        "parameters": {
+            "context": 32,
+            "strides": [5, 0],
+            "path_length": 16,
+            "local_window": 9,
+        },
+    }
+    typo_parameter = {
+        "schema_id": "circle_calculus.ai_contract_request.v0",
+        "kind": "recurrence",
+        "parameters": {"shift_presses": 3},
+    }
 
     assert "parameters must be an object" in validate_contract_request(
         missing_parameters
@@ -264,17 +279,27 @@ def test_request_api_reports_malformed_requests() -> None:
         "supported Circle AI contract kind" in failure
         for failure in validate_contract_request(unsupported)
     )
+    assert any(
+        "missing required keys" in failure
+        for failure in validate_contract_request(missing_kv_parameters)
+    )
+    assert any(
+        "parse as a Fraction" in failure
+        for failure in validate_contract_request(invalid_rope_margin)
+    )
+    assert any(
+        "positive integers" in failure
+        for failure in validate_contract_request(invalid_sparse_stride)
+    )
+    assert any(
+        "unsupported keys" in failure
+        for failure in validate_contract_request(typo_parameter)
+    )
     with pytest.raises(ValueError, match="invalid Circle AI contract request"):
         build_contract_receipt_from_request(unsupported)
-    with pytest.raises(
-        ValueError,
-        match="invalid Circle AI contract request parameters",
-    ):
+    with pytest.raises(ValueError, match="invalid Circle AI contract request"):
         build_contract_receipt_from_request(missing_kv_parameters)
-    with pytest.raises(
-        ValueError,
-        match="invalid Circle AI contract request parameters",
-    ):
+    with pytest.raises(ValueError, match="invalid Circle AI contract request"):
         build_contract_receipt_from_request(invalid_rope_margin)
 
 

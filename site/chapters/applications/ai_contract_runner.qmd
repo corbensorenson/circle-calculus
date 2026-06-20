@@ -228,6 +228,8 @@ site/data/generated/circle_ai_contract_receipt.schema.json
 The request schema is contract-specific: it accepts defaults for RoPE and
 recurrence, requires the core KV-cache and sparse-attention fields, and rejects
 unknown parameter names before a receipt is issued.
+The Python `validate_contract_request(request)` helper applies the same public
+checks for downstream code that does not invoke JSON Schema directly.
 
 ## What This Does Not Prove
 

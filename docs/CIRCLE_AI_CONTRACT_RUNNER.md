@@ -153,6 +153,10 @@ requests may rely on defaults, while KV-cache and sparse-attention requests must
 include their required fields. Unknown parameter keys are rejected so typoed
 configs fail before a receipt is issued.
 
+`validate_contract_request(request)` applies the same contract-specific checks
+inside Python, including required fields, unknown keys, numeric ranges, and
+RoPE margin parsing.
+
 ## Non-Claims
 
 The runner proves finite contract fields only. It does not prove model quality,

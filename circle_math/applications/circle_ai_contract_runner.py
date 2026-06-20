@@ -845,6 +845,194 @@ def build_contract_receipt(
     raise ValueError(f"unsupported contract kind: {kind}")
 
 
+def _is_int(value: Any) -> bool:
+    return isinstance(value, int) and not isinstance(value, bool)
+
+
+def _is_number(value: Any) -> bool:
+    return isinstance(value, (int, float)) and not isinstance(value, bool)
+
+
+def _require_allowed_keys(
+    parameters: Mapping[str, Any],
+    *,
+    allowed: set[str],
+    failures: list[str],
+) -> None:
+    extra = sorted(str(key) for key in parameters if key not in allowed)
+    if extra:
+        failures.append("parameters contains unsupported keys: " + ", ".join(extra))
+
+
+def _require_keys(
+    parameters: Mapping[str, Any],
+    *,
+    required: set[str],
+    failures: list[str],
+) -> None:
+    missing = sorted(key for key in required if key not in parameters)
+    if missing:
+        failures.append("parameters is missing required keys: " + ", ".join(missing))
+
+
+def _require_positive_int(
+    parameters: Mapping[str, Any],
+    key: str,
+    failures: list[str],
+) -> None:
+    if key in parameters and (not _is_int(parameters[key]) or parameters[key] <= 0):
+        failures.append(f"parameters.{key} must be a positive integer")
+
+
+def _require_nonnegative_int(
+    parameters: Mapping[str, Any],
+    key: str,
+    failures: list[str],
+) -> None:
+    if key in parameters and (not _is_int(parameters[key]) or parameters[key] < 0):
+        failures.append(f"parameters.{key} must be a nonnegative integer")
+
+
+def _require_positive_number(
+    parameters: Mapping[str, Any],
+    key: str,
+    failures: list[str],
+) -> None:
+    if key in parameters and (not _is_number(parameters[key]) or parameters[key] <= 0):
+        failures.append(f"parameters.{key} must be a positive number")
+
+
+def _require_nonnegative_number(
+    parameters: Mapping[str, Any],
+    key: str,
+    failures: list[str],
+) -> None:
+    if key in parameters and (not _is_number(parameters[key]) or parameters[key] < 0):
+        failures.append(f"parameters.{key} must be a nonnegative number")
+
+
+def _require_int_sequence(
+    parameters: Mapping[str, Any],
+    key: str,
+    failures: list[str],
+    *,
+    positive: bool = False,
+    nonempty: bool = False,
+) -> None:
+    if key not in parameters:
+        return
+    value = parameters[key]
+    if (
+        isinstance(value, (str, bytes))
+        or not isinstance(value, Sequence)
+        or any(not _is_int(item) for item in value)
+    ):
+        failures.append(f"parameters.{key} must be an integer array")
+        return
+    if nonempty and not value:
+        failures.append(f"parameters.{key} must be non-empty")
+    if positive and any(item <= 0 for item in value):
+        failures.append(f"parameters.{key} must contain positive integers")
+
+
+def _validate_request_parameters(
+    *,
+    canonical: str,
+    parameters: Mapping[str, Any],
+) -> list[str]:
+    failures: list[str] = []
+    if canonical == "rope_position_distinguishability":
+        allowed = {
+            "head_dim",
+            "base",
+            "context",
+            "tolerance",
+            "discretization",
+            "requested_margin",
+        }
+        _require_allowed_keys(parameters, allowed=allowed, failures=failures)
+        _require_positive_int(parameters, "head_dim", failures)
+        _require_positive_number(parameters, "base", failures)
+        _require_positive_int(parameters, "context", failures)
+        _require_nonnegative_number(parameters, "tolerance", failures)
+        if "discretization" in parameters and parameters["discretization"] not in {
+            "round",
+            "floor",
+            "ceil",
+        }:
+            failures.append("parameters.discretization must be round, floor, or ceil")
+        margin = parameters.get("requested_margin")
+        if margin is not None:
+            if not isinstance(margin, (str, Fraction)):
+                failures.append("parameters.requested_margin must be a string or null")
+            else:
+                try:
+                    parse_fraction(margin)
+                except (ValueError, ZeroDivisionError):
+                    failures.append("parameters.requested_margin must parse as a Fraction")
+    elif canonical == "kv_cache_ring_buffer":
+        allowed = {
+            "cache_size",
+            "current",
+            "token",
+            "batch_tokens",
+            "sink_size",
+            "request_id",
+        }
+        _require_allowed_keys(parameters, allowed=allowed, failures=failures)
+        _require_keys(
+            parameters,
+            required={"cache_size", "current", "token"},
+            failures=failures,
+        )
+        _require_positive_int(parameters, "cache_size", failures)
+        _require_nonnegative_int(parameters, "current", failures)
+        _require_nonnegative_int(parameters, "token", failures)
+        _require_int_sequence(parameters, "batch_tokens", failures)
+        _require_nonnegative_int(parameters, "sink_size", failures)
+        if "request_id" in parameters and (
+            not isinstance(parameters["request_id"], str) or not parameters["request_id"]
+        ):
+            failures.append("parameters.request_id must be a non-empty string")
+    elif canonical == "sparse_attention_coverage":
+        allowed = {"context", "strides", "path_length", "local_window"}
+        _require_allowed_keys(parameters, allowed=allowed, failures=failures)
+        _require_keys(
+            parameters,
+            required={"context", "strides", "path_length", "local_window"},
+            failures=failures,
+        )
+        _require_positive_int(parameters, "context", failures)
+        _require_int_sequence(
+            parameters,
+            "strides",
+            failures,
+            positive=True,
+            nonempty=True,
+        )
+        _require_nonnegative_int(parameters, "path_length", failures)
+        _require_nonnegative_int(parameters, "local_window", failures)
+    elif canonical == "recurrence_schedule":
+        allowed = {
+            "loop_period",
+            "sample_index",
+            "max_loops",
+            "token_count",
+            "selected_block_start",
+            "selected_block_width",
+            "shift_passes",
+        }
+        _require_allowed_keys(parameters, allowed=allowed, failures=failures)
+        _require_positive_int(parameters, "loop_period", failures)
+        _require_nonnegative_int(parameters, "sample_index", failures)
+        _require_nonnegative_int(parameters, "max_loops", failures)
+        _require_positive_int(parameters, "token_count", failures)
+        _require_nonnegative_int(parameters, "selected_block_start", failures)
+        _require_nonnegative_int(parameters, "selected_block_width", failures)
+        _require_nonnegative_int(parameters, "shift_passes", failures)
+    return failures
+
+
 def validate_contract_request(request: Mapping[str, Any]) -> list[str]:
     """Return request-shape failures for the public runner request object."""
 
@@ -852,13 +1040,20 @@ def validate_contract_request(request: Mapping[str, Any]) -> list[str]:
     if request.get("schema_id") != REQUEST_SCHEMA_ID:
         failures.append(f"schema_id must be {REQUEST_SCHEMA_ID!r}")
     kind = request.get("kind")
+    canonical: str | None = None
     if not isinstance(kind, str) or not kind:
         failures.append("kind must be a non-empty string")
     elif kind not in KIND_ALIASES:
         failures.append("kind must be a supported Circle AI contract kind or alias")
+    else:
+        canonical = KIND_ALIASES[kind]
     parameters = request.get("parameters")
     if not isinstance(parameters, Mapping):
         failures.append("parameters must be an object")
+    elif canonical is not None:
+        failures.extend(
+            _validate_request_parameters(canonical=canonical, parameters=parameters)
+        )
     return failures
 
 
