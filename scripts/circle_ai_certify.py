@@ -9,6 +9,8 @@ import sys
 from pathlib import Path
 from typing import Any
 
+import jsonschema
+
 ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
@@ -18,9 +20,13 @@ from circle_math.applications import (  # noqa: E402
     build_contract_receipt_from_request,
     build_contract_request,
     build_contract_request_validation_report,
+    build_contract_request_validation_json_schema,
     build_rope_request_parameters_from_model_config,
     load_contract_pack,
     receipt_summary_lines,
+)
+from circle_math.applications.circle_ai_contract_runner import (  # noqa: E402
+    REQUEST_VALIDATION_SCHEMA_PATH,
 )
 
 
@@ -31,6 +37,7 @@ RECEIPT_STATUS_VALUES = (
     "numerical_only",
     "outside_scope",
 )
+DEFAULT_REQUEST_VALIDATION_SCHEMA = ROOT / REQUEST_VALIDATION_SCHEMA_PATH
 
 
 def parse_tokens(raw: str) -> tuple[int, ...]:
@@ -120,6 +127,16 @@ def parse_args() -> argparse.Namespace:
         "--validate-only",
         action="store_true",
         help="Validate the request file and exit without issuing a receipt.",
+    )
+    request.add_argument(
+        "--request-validation-schema",
+        type=Path,
+        default=DEFAULT_REQUEST_VALIDATION_SCHEMA,
+        help=(
+            "Generated JSON Schema used to validate validate-only reports. "
+            "Defaults to "
+            "site/data/generated/circle_ai_contract_request_validation.schema.json."
+        ),
     )
 
     rope = subparsers.add_parser(
@@ -227,6 +244,20 @@ def _request_validation_report(path: Path) -> dict[str, Any]:
     return build_contract_request_validation_report(_load_request_json(path))
 
 
+def _validate_request_validation_report(
+    report: dict[str, Any],
+    schema_path: Path,
+) -> None:
+    schema = _load_json_object(schema_path, label="request validation schema")
+    jsonschema.Draft202012Validator.check_schema(schema)
+    jsonschema.validate(report, schema)
+    generated_schema = build_contract_request_validation_json_schema()
+    if schema != generated_schema:
+        raise jsonschema.SchemaError(
+            "request validation schema drifted from application builder"
+        )
+
+
 def _parameters_from_args(args: argparse.Namespace) -> dict[str, Any]:
     if args.kind == "rope":
         if args.model_config is not None:
@@ -309,6 +340,10 @@ def main() -> int:
                     "omit --validate-only"
                 )
             report = _request_validation_report(args.request_json)
+            _validate_request_validation_report(
+                report,
+                args.request_validation_schema,
+            )
             if args.json_out is not None:
                 write_json(args.json_out, report)
             if args.format == "json":

@@ -927,6 +927,7 @@ def test_circle_ai_certify_cli_validates_request_without_receipt(
     tmp_path: Path,
 ) -> None:
     request_path = tmp_path / "sparse_request.json"
+    report_path = tmp_path / "request_validation_report.json"
     request_path.write_text(
         json.dumps(
             {
@@ -954,6 +955,8 @@ def test_circle_ai_certify_cli_validates_request_without_receipt(
             "--validate-only",
             "--format",
             "json",
+            "--json-out",
+            str(report_path),
             "--pack",
             str(tmp_path / "missing_contract_pack.json"),
         ],
@@ -964,6 +967,7 @@ def test_circle_ai_certify_cli_validates_request_without_receipt(
     )
 
     payload = json.loads(result.stdout)
+    assert json.loads(report_path.read_text()) == payload
     assert payload == {
         "schema_id": "circle_calculus.ai_contract_request_validation.v0",
         "request_schema_id": "circle_calculus.ai_contract_request.v0",

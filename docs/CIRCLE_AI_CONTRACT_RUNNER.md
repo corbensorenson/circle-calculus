@@ -96,8 +96,13 @@ Preflight a request file without issuing a receipt:
 python scripts/circle_ai_certify.py request \
   --request-json path/to/request.json \
   --validate-only \
-  --format json
+  --format json \
+  --json-out reports/request_validation.json
 ```
+
+The validate-only report is checked against
+`site/data/generated/circle_ai_contract_request_validation.schema.json` before it
+is printed or written.
 
 Copyable starting points live under:
 
