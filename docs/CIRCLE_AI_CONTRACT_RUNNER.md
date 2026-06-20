@@ -134,6 +134,20 @@ By default it checks both `examples/circle_ai_requests/*.json` request files and
 config examples are first converted into versioned Circle request JSON, then
 checked by the same receipt path.
 
+Validate a saved receipt file that another project has already produced:
+
+```bash
+python scripts/check_circle_ai_receipt.py reports/rope_receipt.json \
+  --require-status proved \
+  --require-passed
+```
+
+This checker validates the receipt JSON Schema, the in-process receipt shape,
+the receipt fingerprint, the loaded contract-pack fingerprint, the contract
+fingerprint, theorem-id membership in the loaded contract, and optional status
+or pass gates. It is the smallest CI-facing command for downstream projects that
+want to reject stale or tampered Circle AI receipts without running Lean.
+
 ## Receipt Statuses
 
 | Status | Meaning |

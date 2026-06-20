@@ -218,6 +218,20 @@ status or pass condition, the checker still writes the report and exits nonzero.
 By default the batch includes both request-file examples and standard RoPE
 model-config examples.
 
+Validate a receipt file after it has been handed to another project:
+
+```bash
+python scripts/check_circle_ai_receipt.py reports/rope_receipt.json \
+  --require-status proved \
+  --require-passed
+```
+
+This is the smallest downstream CI check. It validates the receipt JSON Schema,
+the in-process receipt shape, the receipt fingerprint, the loaded contract-pack
+fingerprint, the contract fingerprint, theorem-id membership in the loaded
+contract, and the optional status/pass gates. It does not run Lean; it verifies
+that the receipt still points at the public contract pack it claims to use.
+
 ## Receipt Reading Loop
 
 Read every receipt in this order:
