@@ -11,10 +11,12 @@ use circle_prime::{
     prime_count_in_range_parallel_balanced, prime_count_in_range_parallel_dynamic,
     prime_count_in_range_prefix_pi, prime_count_in_range_prefix_pi_parallel,
     prime_count_in_range_presieve13, prime_count_in_range_presieve13_parallel,
-    prime_count_in_range_presieve17, prime_count_in_range_presieve17_parallel,
+    prime_count_in_range_presieve13_with_scratch, prime_count_in_range_presieve17,
+    prime_count_in_range_presieve17_parallel, prime_count_in_range_presieve17_with_scratch,
     prime_count_in_range_wheel30_marks, prime_count_in_range_wheel30_marks_parallel,
     prime_horizon_proof_contract_json, prime_range_count_proof_contract_json, primes_in_range,
     recommended_count_mode, recommended_count_segment_size, recommended_segment_size,
+    PrimeCountScratch,
 };
 
 const MAX_INSPECT_N: u128 = 100_000;
@@ -772,6 +774,7 @@ enum CountServerWorkerCommand {
 }
 
 fn count_server_worker_loop(receiver: mpsc::Receiver<CountServerWorkerCommand>) {
+    let mut scratch = PrimeCountScratch::new();
     while let Ok(command) = receiver.recv() {
         match command {
             CountServerWorkerCommand::Count {
@@ -781,7 +784,14 @@ fn count_server_worker_loop(receiver: mpsc::Receiver<CountServerWorkerCommand>) 
                 count_mode,
                 result_sender,
             } => {
-                let result = count_range_with_mode(low, high, segment_size, 1, count_mode);
+                let result = count_range_with_mode_scratch(
+                    low,
+                    high,
+                    segment_size,
+                    1,
+                    count_mode,
+                    &mut scratch,
+                );
                 let _ = result_sender.send(result);
             }
             CountServerWorkerCommand::Stop => break,
@@ -902,6 +912,25 @@ fn count_range_with_mode(
                 )
             }
         }
+    }
+}
+
+fn count_range_with_mode_scratch(
+    low: u64,
+    high: u64,
+    segment_size: u64,
+    worker_threads: usize,
+    mode: CountMode,
+    scratch: &mut PrimeCountScratch,
+) -> Result<usize, circle_prime::RangeError> {
+    match mode {
+        CountMode::Presieve13 if worker_threads == 1 => {
+            prime_count_in_range_presieve13_with_scratch(low, high, segment_size, scratch)
+        }
+        CountMode::Presieve17 if worker_threads == 1 => {
+            prime_count_in_range_presieve17_with_scratch(low, high, segment_size, scratch)
+        }
+        _ => count_range_with_mode(low, high, segment_size, worker_threads, mode),
     }
 }
 
