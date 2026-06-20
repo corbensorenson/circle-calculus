@@ -117,6 +117,7 @@ future sharper theorem.
 from circle_math.applications import (
     build_contract_receipt,
     build_contract_receipt_from_request,
+    build_contract_request_validation_report,
     validate_contract_request,
 )
 
@@ -147,6 +148,7 @@ request = {
     },
 }
 assert validate_contract_request(request) == []
+assert build_contract_request_validation_report(request)["ok"] is True
 receipt = build_contract_receipt_from_request(request)
 ```
 

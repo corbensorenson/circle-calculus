@@ -40,6 +40,7 @@ from .rope_certifier import (
 
 REQUEST_SCHEMA_ID = "circle_calculus.ai_contract_request.v0"
 RECEIPT_SCHEMA_ID = "circle_calculus.ai_contract_receipt.v0"
+REQUEST_VALIDATION_SCHEMA_ID = "circle_calculus.ai_contract_request_validation.v0"
 REQUEST_SCHEMA_PATH = "site/data/generated/circle_ai_contract_request.schema.json"
 RECEIPT_SCHEMA_PATH = "site/data/generated/circle_ai_contract_receipt.schema.json"
 
@@ -1055,6 +1056,28 @@ def validate_contract_request(request: Mapping[str, Any]) -> list[str]:
             _validate_request_parameters(canonical=canonical, parameters=parameters)
         )
     return failures
+
+
+def build_contract_request_validation_report(request: Mapping[str, Any]) -> dict[str, Any]:
+    """Return a stable validation report for a versioned public request object."""
+
+    failures = validate_contract_request(request)
+    kind = request.get("kind")
+    canonical_kind = None
+    if isinstance(kind, str):
+        try:
+            canonical_kind = canonical_contract_kind(kind)
+        except ValueError:
+            canonical_kind = None
+    return {
+        "schema_id": REQUEST_VALIDATION_SCHEMA_ID,
+        "request_schema_id": REQUEST_SCHEMA_ID,
+        "ok": not failures,
+        "kind": kind,
+        "canonical_kind": canonical_kind,
+        "failure_count": len(failures),
+        "failures": failures,
+    }
 
 
 def build_contract_receipt_from_request(

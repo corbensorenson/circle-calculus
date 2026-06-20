@@ -16,10 +16,9 @@ if str(ROOT) not in sys.path:
 from circle_math.applications import (  # noqa: E402
     build_contract_receipt,
     build_contract_receipt_from_request,
-    canonical_contract_kind,
+    build_contract_request_validation_report,
     load_contract_pack,
     receipt_summary_lines,
-    validate_contract_request,
 )
 
 
@@ -179,24 +178,7 @@ def _receipt_from_request_json(
 
 
 def _request_validation_report(path: Path) -> dict[str, Any]:
-    payload = _load_request_json(path)
-    failures = validate_contract_request(payload)
-    kind = payload.get("kind")
-    canonical_kind = None
-    if isinstance(kind, str):
-        try:
-            canonical_kind = canonical_contract_kind(kind)
-        except ValueError:
-            canonical_kind = None
-    return {
-        "schema_id": "circle_calculus.ai_contract_request_validation.v0",
-        "request_schema_id": "circle_calculus.ai_contract_request.v0",
-        "ok": not failures,
-        "kind": kind,
-        "canonical_kind": canonical_kind,
-        "failure_count": len(failures),
-        "failures": failures,
-    }
+    return build_contract_request_validation_report(_load_request_json(path))
 
 
 def _parameters_from_args(args: argparse.Namespace) -> dict[str, Any]:

@@ -13,6 +13,7 @@ from circle_math.applications import (
     build_contract_receipt_json_schema,
     build_contract_receipt_from_request,
     build_contract_request_json_schema,
+    build_contract_request_validation_report,
     build_kv_cache_receipt,
     build_recurrence_receipt,
     build_rope_receipt,
@@ -295,6 +296,15 @@ def test_request_api_reports_malformed_requests() -> None:
         "unsupported keys" in failure
         for failure in validate_contract_request(typo_parameter)
     )
+    assert build_contract_request_validation_report(typo_parameter) == {
+        "schema_id": "circle_calculus.ai_contract_request_validation.v0",
+        "request_schema_id": "circle_calculus.ai_contract_request.v0",
+        "ok": False,
+        "kind": "recurrence",
+        "canonical_kind": "recurrence_schedule",
+        "failure_count": 1,
+        "failures": ["parameters contains unsupported keys: shift_presses"],
+    }
     with pytest.raises(ValueError, match="invalid Circle AI contract request"):
         build_contract_receipt_from_request(unsupported)
     with pytest.raises(ValueError, match="invalid Circle AI contract request"):
