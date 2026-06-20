@@ -55,6 +55,13 @@ write one to disk.
 request can have `status = proved` and `request_passed = false`, because the
 failure itself is theorem-backed.
 
+For RoPE receipts, `real_phase_dirichlet_guardrail` is a theorem-backed
+finite-context ceiling. When `context > 1`, theorem ids `AIRA-T0239` through
+`AIRA-T0241` justify the `1/context` guardrail: a requested real-phase margin
+strictly above `1/context` is impossible. A margin at or below that ceiling is
+not automatically proved by this field; it still needs a D19-style certificate or
+future sharper theorem.
+
 ## Python API
 
 ```python

@@ -45,6 +45,17 @@ def test_rope_receipt_classifies_d19_margin_request(contract_pack: dict) -> None
     assert classifier["request_status"] == "proved"
     assert classifier["theorem_backed_classification"] is True
     assert "AIRA-T0238" in receipt["proof_status"]["theorem_ids"]
+    guardrail = receipt["evidence"]["real_phase_dirichlet_guardrail"]
+    assert guardrail["applies"] is True
+    assert guardrail["inv_context_margin"] == "1/131072"
+    assert guardrail["requested_margin_relation_to_ceiling"] == (
+        "below_dirichlet_ceiling"
+    )
+    assert guardrail["requested_margin_exceeds_ceiling"] is False
+    assert "AIRA-T0240" in receipt["proof_status"]["theorem_ids"]
+    assert "real_phase_dirichlet_guardrail" in receipt["proof_layers"][
+        "proved_fields"
+    ]
     assert receipt["proof_status"]["all_theorem_ids_proved"] is True
     assert "real_phase_numerical_worst_gap" in receipt["proof_layers"][
         "numerical_only_fields"
@@ -82,6 +93,21 @@ def test_rope_receipt_distinguishes_impossible_and_undecided_margins(
         "request_status"
     ] == "undecided_margin_gap"
     assert validate_contract_receipt(undecided) == []
+
+    above_ceiling = build_rope_receipt(
+        context=1000,
+        requested_margin="1/999",
+        pack=contract_pack,
+    )
+    assert above_ceiling["status"] == "impossible"
+    assert above_ceiling["request_passed"] is False
+    guardrail = above_ceiling["evidence"]["real_phase_dirichlet_guardrail"]
+    assert guardrail["requested_margin_relation_to_ceiling"] == (
+        "above_dirichlet_ceiling"
+    )
+    assert guardrail["requested_margin_exceeds_ceiling"] is True
+    assert "AIRA-T0240" in guardrail["theorem_ids"]
+    assert above_ceiling["proof_status"]["all_theorem_ids_proved"] is True
 
 
 def test_kv_sparse_and_recurrence_receipts_preserve_family_semantics(

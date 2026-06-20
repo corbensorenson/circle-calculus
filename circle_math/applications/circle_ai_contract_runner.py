@@ -71,6 +71,11 @@ STATUS_VALUES = (
     "numerical_only",
     "outside_scope",
 )
+ROPE_DIRICHLET_GUARDRAIL_THEOREM_IDS = (
+    "AIRA-T0239",
+    "AIRA-T0240",
+    "AIRA-T0241",
+)
 
 
 def canonical_contract_kind(kind: str) -> str:
@@ -320,6 +325,83 @@ def _d19_status_to_receipt_status(status: str) -> str:
     return "numerical_only"
 
 
+def _margin_relation_to_inv_context(
+    *,
+    margin: Fraction | None,
+    inv_context_margin: Fraction,
+) -> str | None:
+    if margin is None:
+        return None
+    if margin < inv_context_margin:
+        return "below_dirichlet_ceiling"
+    if margin == inv_context_margin:
+        return "at_dirichlet_ceiling"
+    return "above_dirichlet_ceiling"
+
+
+def _rope_dirichlet_guardrail(
+    *,
+    context: int,
+    requested_margin: Fraction | None,
+) -> dict[str, Any]:
+    """Return the theorem-backed finite-context ``1/context`` ceiling guardrail."""
+
+    if context <= 1:
+        return {
+            "applies": False,
+            "context": context,
+            "inv_context_margin": None,
+            "requested_margin": (
+                str(requested_margin) if requested_margin is not None else None
+            ),
+            "requested_margin_relation_to_ceiling": None,
+            "requested_margin_exceeds_ceiling": None,
+            "requested_margin_at_or_below_ceiling": None,
+            "theorem_backed": False,
+            "theorem_ids": [],
+            "claim": (
+                "The Dirichlet finite-context guardrail applies only when "
+                "context > 1."
+            ),
+            "non_claim": (
+                "This does not classify a nontrivial real-phase margin request."
+            ),
+        }
+
+    inv_context_margin = Fraction(1, context)
+    relation = _margin_relation_to_inv_context(
+        margin=requested_margin,
+        inv_context_margin=inv_context_margin,
+    )
+    return {
+        "applies": True,
+        "context": context,
+        "inv_context_margin": str(inv_context_margin),
+        "requested_margin": (
+            str(requested_margin) if requested_margin is not None else None
+        ),
+        "requested_margin_relation_to_ceiling": relation,
+        "requested_margin_exceeds_ceiling": (
+            None if requested_margin is None else requested_margin > inv_context_margin
+        ),
+        "requested_margin_at_or_below_ceiling": (
+            None if requested_margin is None else requested_margin <= inv_context_margin
+        ),
+        "theorem_backed": True,
+        "theorem_ids": list(ROPE_DIRICHLET_GUARDRAIL_THEOREM_IDS),
+        "claim": (
+            "For any turn ratio and context > 1, there is an in-context "
+            "nearest-integer witness with error at most 1/context; therefore "
+            "any advertised finite-context margin strictly larger than "
+            "1/context is impossible."
+        ),
+        "non_claim": (
+            "This does not prove that a requested margin at or below 1/context "
+            "holds; it is an upper-bound guardrail."
+        ),
+    }
+
+
 def build_rope_receipt(
     *,
     head_dim: int = 128,
@@ -384,6 +466,13 @@ def build_rope_receipt(
             for layer in certificate["proof_layers"]
         ],
     }
+    dirichlet_guardrail = _rope_dirichlet_guardrail(
+        context=context,
+        requested_margin=margin,
+    )
+    evidence["real_phase_dirichlet_guardrail"] = dirichlet_guardrail
+    if dirichlet_guardrail["applies"]:
+        theorem_ids.extend(dirichlet_guardrail["theorem_ids"])
     status = "proved"
     request_passed: bool | None = bool(certificate["exact_discrete"]["pass_exact"])
     d19_receipt_status: str | None = None
@@ -402,6 +491,9 @@ def build_rope_receipt(
             request_passed = False
         elif status in {"undecided", "outside_scope"}:
             request_passed = None
+    if dirichlet_guardrail["requested_margin_exceeds_ceiling"] is True:
+        status = "impossible"
+        request_passed = False
     proof_layers = {
         "proved_fields": [
             "exact_discrete_pass",
@@ -423,6 +515,12 @@ def build_rope_receipt(
             "model quality or useful context-length improvement",
         ],
     }
+    if dirichlet_guardrail["applies"]:
+        proof_layers["proved_fields"].append("real_phase_dirichlet_guardrail")
+    else:
+        proof_layers["unsupported_fields"].append(
+            "real_phase_dirichlet_guardrail requires context > 1"
+        )
     if d19_receipt_status in {"proved", "impossible", "undecided"}:
         proof_layers["proved_fields"].append(
             "standard_channel0_d19_request_classifier"
@@ -861,6 +959,16 @@ def receipt_summary_lines(receipt: Mapping[str, Any]) -> list[str]:
                 f"theorem_backed={classifier['theorem_backed_classification']} "
                 f"margin={classifier['requested_margin']} "
                 f"context={classifier['requested_context']}"
+            )
+        guardrail = evidence.get("real_phase_dirichlet_guardrail")
+        if isinstance(guardrail, dict):
+            lines.append(
+                "rope_dirichlet_guardrail="
+                f"applies={guardrail['applies']} "
+                f"inv_context_margin={guardrail['inv_context_margin']} "
+                "requested_relation="
+                f"{guardrail['requested_margin_relation_to_ceiling']} "
+                f"exceeds_ceiling={guardrail['requested_margin_exceeds_ceiling']}"
             )
     elif kind == "kv_cache_ring_buffer":
         window = evidence["window_certificate"]
