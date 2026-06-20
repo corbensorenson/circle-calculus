@@ -103,12 +103,17 @@ margin     = 1 / 328459
 
 The conditional bank bridge says that if a finite real-phase bank contains that channel and the inspected context and margin are within a seed, then the all-channel near-turn condition is ruled out under the stated tolerance scaling. The bracket theorems package the useful engineering reading: the sharp `1/104219` margin reaches 64k, and the lower `1/328459` margin reaches 192k.
 
+The same lane also proves a useful ceiling. For any nontrivial finite context, Dirichlet-style approximation gives some inspected positive gap whose nearest-integer error is at most `1/context`; therefore a requested margin strictly above that scale is impossible, and any exact weakest-gap report must also sit below that ceiling. That is a guardrail, not a positive margin proof.
+
 Representative proof cards:
 
 <div class="theorem-box" data-theorem-id="AIRA-T0059"></div>
 <div class="theorem-box" data-theorem-id="AIRA-T0214"></div>
 <div class="theorem-box" data-theorem-id="AIRA-T0208"></div>
 <div class="theorem-box" data-theorem-id="AIRA-T0217"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0239"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0240"></div>
+<div class="theorem-box" data-theorem-id="AIRA-T0241"></div>
 
 <p>Full theorem audit: <a href="ai_contract_ladder_audit.qmd">AI Contract Ladder Proof Audit</a> and <a href="rope_certifier_audit.qmd">RoPE Proof Audit</a>.</p>
 
