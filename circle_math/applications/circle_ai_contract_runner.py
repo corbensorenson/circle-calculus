@@ -43,6 +43,7 @@ REQUEST_SCHEMA_ID = "circle_calculus.ai_contract_request.v0"
 RECEIPT_SCHEMA_ID = "circle_calculus.ai_contract_receipt.v0"
 REQUEST_VALIDATION_SCHEMA_ID = "circle_calculus.ai_contract_request_validation.v0"
 RUNNER_CHECK_SCHEMA_ID = "circle_calculus.ai_contract_runner_check.v0"
+RECEIPT_FILE_CHECK_SCHEMA_ID = "circle_calculus.ai_contract_receipt_file_check.v0"
 REQUEST_SCHEMA_PATH = "site/data/generated/circle_ai_contract_request.schema.json"
 REQUEST_VALIDATION_SCHEMA_PATH = (
     "site/data/generated/circle_ai_contract_request_validation.schema.json"
@@ -50,6 +51,9 @@ REQUEST_VALIDATION_SCHEMA_PATH = (
 RECEIPT_SCHEMA_PATH = "site/data/generated/circle_ai_contract_receipt.schema.json"
 RUNNER_CHECK_SCHEMA_PATH = (
     "site/data/generated/circle_ai_contract_runner_check.schema.json"
+)
+RECEIPT_FILE_CHECK_SCHEMA_PATH = (
+    "site/data/generated/circle_ai_contract_receipt_file_check.schema.json"
 )
 
 SUPPORTED_CONTRACT_KINDS = (
@@ -1854,6 +1858,75 @@ def build_contract_runner_check_json_schema() -> dict[str, Any]:
             "schema_id": {"const": RUNNER_CHECK_SCHEMA_ID},
             "ok": {"type": "boolean"},
             "example_count": {"type": "integer", "minimum": 0},
+            "failure_count": {"type": "integer", "minimum": 0},
+            "failures": string_list,
+            "gate_policy": gate_policy,
+            "summaries": {"type": "array", "items": summary},
+        },
+        "additionalProperties": False,
+    }
+
+
+def build_contract_receipt_file_check_json_schema() -> dict[str, Any]:
+    string_list = {"type": "array", "items": {"type": "string"}}
+    fingerprint = {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+    gate_policy = {
+        "type": "object",
+        "required": ["allowed_statuses", "require_passed"],
+        "properties": {
+            "allowed_statuses": {
+                "type": "array",
+                "items": {"enum": list(STATUS_VALUES)},
+            },
+            "require_passed": {"type": "boolean"},
+        },
+        "additionalProperties": False,
+    }
+    summary = {
+        "type": "object",
+        "required": [
+            "path",
+            "kind",
+            "contract_id",
+            "status",
+            "request_passed",
+            "theorem_count",
+            "receipt_content_fingerprint",
+            "failure_count",
+        ],
+        "properties": {
+            "path": {"type": "string", "minLength": 1},
+            "kind": {"enum": list(SUPPORTED_CONTRACT_KINDS)},
+            "contract_id": {"type": "string", "minLength": 1},
+            "status": {"enum": list(STATUS_VALUES)},
+            "request_passed": {"type": ["boolean", "null"]},
+            "theorem_count": {"type": "integer", "minimum": 0},
+            "receipt_content_fingerprint": fingerprint,
+            "failure_count": {"type": "integer", "minimum": 0},
+        },
+        "additionalProperties": False,
+    }
+    return {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "$id": (
+            "https://circle-calculus.local/schemas/"
+            "circle_ai_contract_receipt_file_check.schema.json"
+        ),
+        "title": "Circle AI Contract Receipt File Check Report",
+        "type": "object",
+        "required": [
+            "schema_id",
+            "ok",
+            "receipt_count",
+            "failure_count",
+            "failures",
+            "gate_policy",
+            "summaries",
+        ],
+        "properties": {
+            "schema_id": {"const": RECEIPT_FILE_CHECK_SCHEMA_ID},
+            "ok": {"type": "boolean"},
+            "receipt_count": {"type": "integer", "minimum": 0},
             "failure_count": {"type": "integer", "minimum": 0},
             "failures": string_list,
             "gate_policy": gate_policy,

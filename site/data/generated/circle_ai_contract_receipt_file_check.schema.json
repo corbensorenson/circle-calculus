@@ -1,0 +1,125 @@
+{
+  "$id": "https://circle-calculus.local/schemas/circle_ai_contract_receipt_file_check.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "failure_count": {
+      "minimum": 0,
+      "type": "integer"
+    },
+    "failures": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "gate_policy": {
+      "additionalProperties": false,
+      "properties": {
+        "allowed_statuses": {
+          "items": {
+            "enum": [
+              "proved",
+              "impossible",
+              "undecided",
+              "numerical_only",
+              "outside_scope"
+            ]
+          },
+          "type": "array"
+        },
+        "require_passed": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "allowed_statuses",
+        "require_passed"
+      ],
+      "type": "object"
+    },
+    "ok": {
+      "type": "boolean"
+    },
+    "receipt_count": {
+      "minimum": 0,
+      "type": "integer"
+    },
+    "schema_id": {
+      "const": "circle_calculus.ai_contract_receipt_file_check.v0"
+    },
+    "summaries": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "contract_id": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "failure_count": {
+            "minimum": 0,
+            "type": "integer"
+          },
+          "kind": {
+            "enum": [
+              "rope_position_distinguishability",
+              "kv_cache_ring_buffer",
+              "sparse_attention_coverage",
+              "recurrence_schedule"
+            ]
+          },
+          "path": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "receipt_content_fingerprint": {
+            "pattern": "^[0-9a-f]{64}$",
+            "type": "string"
+          },
+          "request_passed": {
+            "type": [
+              "boolean",
+              "null"
+            ]
+          },
+          "status": {
+            "enum": [
+              "proved",
+              "impossible",
+              "undecided",
+              "numerical_only",
+              "outside_scope"
+            ]
+          },
+          "theorem_count": {
+            "minimum": 0,
+            "type": "integer"
+          }
+        },
+        "required": [
+          "path",
+          "kind",
+          "contract_id",
+          "status",
+          "request_passed",
+          "theorem_count",
+          "receipt_content_fingerprint",
+          "failure_count"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    }
+  },
+  "required": [
+    "schema_id",
+    "ok",
+    "receipt_count",
+    "failure_count",
+    "failures",
+    "gate_policy",
+    "summaries"
+  ],
+  "title": "Circle AI Contract Receipt File Check Report",
+  "type": "object"
+}

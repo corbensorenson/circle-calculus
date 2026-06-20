@@ -6,7 +6,13 @@ import subprocess
 import sys
 from pathlib import Path
 
-from circle_math.applications import build_rope_receipt, load_contract_pack
+import jsonschema
+
+from circle_math.applications import (
+    build_contract_receipt_file_check_json_schema,
+    build_rope_receipt,
+    load_contract_pack,
+)
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -68,6 +74,9 @@ def test_check_circle_ai_receipt_accepts_saved_receipt(tmp_path: Path) -> None:
     )
 
     payload = json.loads(result.stdout)
+    schema = build_contract_receipt_file_check_json_schema()
+    jsonschema.Draft202012Validator.check_schema(schema)
+    jsonschema.validate(payload, schema)
     assert payload["schema_id"] == "circle_calculus.ai_contract_receipt_file_check.v0"
     assert payload["ok"] is True
     assert payload["receipt_count"] == 1
@@ -101,6 +110,7 @@ def test_check_circle_ai_receipt_rejects_status_gate(tmp_path: Path) -> None:
     )
 
     payload = json.loads(result.stdout)
+    jsonschema.validate(payload, build_contract_receipt_file_check_json_schema())
     assert result.returncode == 1
     assert payload["ok"] is False
     assert payload["failure_count"] == 1
@@ -135,6 +145,7 @@ def test_check_circle_ai_receipt_rejects_stale_pack_fingerprint(
     )
 
     payload = json.loads(result.stdout)
+    jsonschema.validate(payload, build_contract_receipt_file_check_json_schema())
     assert result.returncode == 1
     assert payload["ok"] is False
     assert "does not match loaded contract pack" in payload["failures"][0]

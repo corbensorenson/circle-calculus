@@ -23,12 +23,14 @@ from .circle_ai_contract_consumer import (
 )
 from .circle_ai_contract_runner import (
     RECEIPT_SCHEMA_ID as CIRCLE_AI_CONTRACT_RECEIPT_SCHEMA_ID,
+    RECEIPT_FILE_CHECK_SCHEMA_ID as CIRCLE_AI_CONTRACT_RECEIPT_FILE_CHECK_SCHEMA_ID,
     REQUEST_SCHEMA_ID as CIRCLE_AI_CONTRACT_REQUEST_SCHEMA_ID,
     REQUEST_VALIDATION_SCHEMA_ID as CIRCLE_AI_CONTRACT_REQUEST_VALIDATION_SCHEMA_ID,
     RUNNER_CHECK_SCHEMA_ID as CIRCLE_AI_CONTRACT_RUNNER_CHECK_SCHEMA_ID,
     SUPPORTED_CONTRACT_KINDS as CIRCLE_AI_RUNNER_CONTRACT_KINDS,
     build_contract_receipt,
     build_contract_receipt_from_request,
+    build_contract_receipt_file_check_json_schema,
     build_contract_request,
     build_contract_runner_check_json_schema,
     build_contract_request_validation_report,
@@ -478,6 +480,7 @@ from .rope_certifier import (
 __all__ = [
     "CIRCLE_AI_CONTRACT_PACK_SCHEMA_ID",
     "CIRCLE_AI_CONTRACT_RECEIPT_SCHEMA_ID",
+    "CIRCLE_AI_CONTRACT_RECEIPT_FILE_CHECK_SCHEMA_ID",
     "CIRCLE_AI_CONTRACT_REQUEST_SCHEMA_ID",
     "CIRCLE_AI_CONTRACT_REQUEST_VALIDATION_SCHEMA_ID",
     "CIRCLE_AI_CONTRACT_RUNNER_CHECK_SCHEMA_ID",
@@ -485,6 +488,7 @@ __all__ = [
     "build_circle_ai_contract_pack",
     "build_contract_receipt",
     "build_contract_receipt_from_request",
+    "build_contract_receipt_file_check_json_schema",
     "build_contract_request",
     "build_contract_runner_check_json_schema",
     "build_contract_request_validation_report",

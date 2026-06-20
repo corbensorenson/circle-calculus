@@ -237,6 +237,7 @@ site/data/generated/circle_ai_contract_request.schema.json
 site/data/generated/circle_ai_contract_request_validation.schema.json
 site/data/generated/circle_ai_contract_receipt.schema.json
 site/data/generated/circle_ai_contract_runner_check.schema.json
+site/data/generated/circle_ai_contract_receipt_file_check.schema.json
 ```
 
 The request schema has contract-specific parameter shapes. RoPE and recurrence

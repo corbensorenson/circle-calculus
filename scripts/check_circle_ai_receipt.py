@@ -16,6 +16,7 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from circle_math.applications import (  # noqa: E402
+    CIRCLE_AI_CONTRACT_RECEIPT_FILE_CHECK_SCHEMA_ID,
     load_contract_pack,
     validate_contract_receipt_against_pack,
 )
@@ -24,7 +25,7 @@ from circle_math.applications.circle_ai_contract_runner import (  # noqa: E402
 )
 
 
-CHECK_SCHEMA_ID = "circle_calculus.ai_contract_receipt_file_check.v0"
+CHECK_SCHEMA_ID = CIRCLE_AI_CONTRACT_RECEIPT_FILE_CHECK_SCHEMA_ID
 DEFAULT_PACK_PATH = ROOT / "site" / "data" / "generated" / "circle_ai_contract_pack.json"
 DEFAULT_RECEIPT_SCHEMA = (
     ROOT / "site" / "data" / "generated" / "circle_ai_contract_receipt.schema.json"

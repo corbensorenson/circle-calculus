@@ -25,6 +25,7 @@ site/data/generated/circle_ai_contract_request.schema.json
 site/data/generated/circle_ai_contract_request_validation.schema.json
 site/data/generated/circle_ai_contract_receipt.schema.json
 site/data/generated/circle_ai_contract_runner_check.schema.json
+site/data/generated/circle_ai_contract_receipt_file_check.schema.json
 ```
 
 The schema id is:
@@ -354,7 +355,9 @@ The parameterized runner sidecars
 `site/data/generated/circle_ai_contract_request_validation.schema.json`,
 `site/data/generated/circle_ai_contract_receipt.schema.json`, and
 `site/data/generated/circle_ai_contract_runner_check.schema.json` cover the
-config-to-receipt flow and the batch example-check report.
+config-to-receipt flow and the batch example-check report;
+`site/data/generated/circle_ai_contract_receipt_file_check.schema.json` covers
+saved-receipt verification reports.
 The default policy covers the four flagship contracts: RoPE, KV-cache, sparse
 attention, and recurrence schedules.
 Use `python scripts/circle_ai_contract_ready.py --print-refreshed-policy` after

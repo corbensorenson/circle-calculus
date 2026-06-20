@@ -18,6 +18,7 @@ from circle_math.applications.circle_ai_contracts import (
     build_downstream_rejection_report_json_schema,
 )
 from circle_math.applications.circle_ai_contract_runner import (
+    build_contract_receipt_file_check_json_schema,
     build_contract_runner_check_json_schema,
 )
 from circle_math.applications.circle_ai_contract_consumer import (
@@ -2195,6 +2196,7 @@ def test_generic_export_script_writes_json(tmp_path: Path) -> None:
     )
     runner_receipt_schema_out = tmp_path / "circle_runner_receipt.schema.json"
     runner_check_schema_out = tmp_path / "circle_runner_check.schema.json"
+    receipt_file_check_schema_out = tmp_path / "circle_receipt_file_check.schema.json"
     subprocess.run(
         [
             sys.executable,
@@ -2215,6 +2217,8 @@ def test_generic_export_script_writes_json(tmp_path: Path) -> None:
             str(runner_receipt_schema_out),
             "--contract-runner-check-schema-out",
             str(runner_check_schema_out),
+            "--contract-receipt-file-check-schema-out",
+            str(receipt_file_check_schema_out),
         ],
         check=True,
     )
@@ -2229,6 +2233,7 @@ def test_generic_export_script_writes_json(tmp_path: Path) -> None:
     )
     runner_receipt_schema = json.loads(runner_receipt_schema_out.read_text())
     runner_check_schema = json.loads(runner_check_schema_out.read_text())
+    receipt_file_check_schema = json.loads(receipt_file_check_schema_out.read_text())
     assert data["schema_id"] == "circle_calculus.ai_contract_pack.v0"
     assert len(data["contracts"]) == 9
     jsonschema.validate(data, schema)
@@ -2239,7 +2244,9 @@ def test_generic_export_script_writes_json(tmp_path: Path) -> None:
     jsonschema.Draft202012Validator.check_schema(runner_request_validation_schema)
     jsonschema.Draft202012Validator.check_schema(runner_receipt_schema)
     jsonschema.Draft202012Validator.check_schema(runner_check_schema)
+    jsonschema.Draft202012Validator.check_schema(receipt_file_check_schema)
     assert runner_check_schema == build_contract_runner_check_json_schema()
+    assert receipt_file_check_schema == build_contract_receipt_file_check_json_schema()
     subprocess.run(
         [
             sys.executable,

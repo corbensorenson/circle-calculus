@@ -31,6 +31,13 @@ DEFAULT_RUNNER_RECEIPT_SCHEMA = (
 DEFAULT_RUNNER_CHECK_SCHEMA = (
     ROOT / "site" / "data" / "generated" / "circle_ai_contract_runner_check.schema.json"
 )
+DEFAULT_RECEIPT_FILE_CHECK_SCHEMA = (
+    ROOT
+    / "site"
+    / "data"
+    / "generated"
+    / "circle_ai_contract_receipt_file_check.schema.json"
+)
 EXPECTED_SCHEMA_ID = "circle_calculus.ai_contract_pack.v0"
 EXPECTED_ACCEPTANCE_POLICY_SCHEMA_ID = "circle_calculus.ai_contract_acceptance_policy.v0"
 EXPECTED_ACCEPTANCE_POLICY_REPORT_SCHEMA_ID = (
@@ -1267,6 +1274,12 @@ def main() -> int:
         validate_json_schema_file(
             DEFAULT_RUNNER_CHECK_SCHEMA,
             label="contract-runner check report",
+        )
+    )
+    failures.extend(
+        validate_json_schema_file(
+            DEFAULT_RECEIPT_FILE_CHECK_SCHEMA,
+            label="contract receipt-file check report",
         )
     )
     for kind in args.require_kind:
