@@ -566,7 +566,6 @@ Raise `CIRCLE_PRIME_EXTERNAL_NEXT_PRIMECOUNT_MAX_START` only for explicit
 primecount stress probes. Lower
 `CIRCLE_PRIME_EXTERNAL_NEXT_PRIMESIEVE_LIBRARY_MAX_START` only if the
 near-`u64::MAX` libprimesieve helper row is too slow for a local quick run.
-experiments; the default cap is intentionally short-run oriented.
 
 `prime-engine-external-next-compare` writes candidate artifacts without
 overwriting the accepted latest next-prime control run:
@@ -584,7 +583,15 @@ It then compares candidate next-prime speedup rows against
 `2^32`, `10^12`, and near-`u64::MAX` behavior under regression control while
 leaving startup-dominated tiny starts as report evidence. Override
 `CIRCLE_PRIME_EXTERNAL_NEXT_COMPARE_STARTS` when a focused experiment should
-gate a different subset.
+gate a different subset. The broad default drift gate checks
+`CIRCLE_PRIME_EXTERNAL_NEXT_COMPARE_BASELINES` (default
+`external_primesieve_next_prime,external_primesieve_generate_next_server`);
+`primecount` rows remain measured and reported, but the default regression gate
+does not fail on `primecount pi+nth-prime` timing jitter. The Makefile target
+then runs a stricter selected-row check requiring
+`circle_prime_server_next_prime` to keep median speedup at or above
+`CIRCLE_PRIME_EXTERNAL_NEXT_SERVER_LIB_MEDIAN_FLOOR` (default `1.0`) against
+the direct `external_primesieve_generate_next_server` library control.
 The next-prime comparator uses symmetric noise floors: a median-speedup
 regression can be tolerated when best speedup stays close, and a best-speedup
 regression can be tolerated when median speedup stays close. This matters for

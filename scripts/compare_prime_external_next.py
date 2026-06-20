@@ -147,6 +147,15 @@ def main() -> int:
         ),
     )
     parser.add_argument(
+        "--require-each-median-speedup-at-least",
+        type=float,
+        help=(
+            "Fail unless every compared row has candidate median_speedup at or "
+            "above this threshold. Use with --names/--baselines/--starts for "
+            "targeted serious-control win gates."
+        ),
+    )
+    parser.add_argument(
         "--allow-candidate-subset",
         action="store_true",
         help=(
@@ -177,6 +186,11 @@ def main() -> int:
         and args.dominant_min_speedup_ratio < 0.0
     ):
         parser.error("--dominant-min-speedup-ratio must be nonnegative")
+    if (
+        args.require_each_median_speedup_at_least is not None
+        and args.require_each_median_speedup_at_least < 0.0
+    ):
+        parser.error("--require-each-median-speedup-at-least must be nonnegative")
     if (args.dominant_speedup_floor is None) != (
         args.dominant_min_speedup_ratio is None
     ):
@@ -210,6 +224,7 @@ def main() -> int:
         dominant_speedup_floor=args.dominant_speedup_floor,
         dominant_min_speedup_ratio=args.dominant_min_speedup_ratio,
         require_any_median_speedup_at_least=args.require_any_median_speedup_at_least,
+        require_each_median_speedup_at_least=args.require_each_median_speedup_at_least,
     )
 
     print(render_comparison_table(comparisons))
@@ -362,6 +377,7 @@ def comparison_failures(
     dominant_speedup_floor: float | None = None,
     dominant_min_speedup_ratio: float | None = None,
     require_any_median_speedup_at_least: float | None = None,
+    require_each_median_speedup_at_least: float | None = None,
 ) -> list[str]:
     comparisons = list(comparisons)
     failures = []
@@ -424,6 +440,15 @@ def comparison_failures(
                     f"{label} best speedup regressed: candidate/baseline="
                     f"{best_ratio:.3f} < {best_speedup_ratio_floor:.3f}"
                 )
+        if (
+            require_each_median_speedup_at_least is not None
+            and row.candidate_median_speedup < require_each_median_speedup_at_least
+        ):
+            failures.append(
+                f"{label} median speedup below required floor: "
+                f"{row.candidate_median_speedup:.3f} < "
+                f"{require_each_median_speedup_at_least:.3f}"
+            )
 
     if require_any_median_speedup_at_least is not None and not any(
         row.candidate_median_speedup >= require_any_median_speedup_at_least

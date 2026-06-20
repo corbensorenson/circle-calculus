@@ -260,6 +260,83 @@ def test_next_comparison_failures_can_require_serious_control_win() -> None:
     assert failures == ["no compared row met required candidate median speedup 1.000"]
 
 
+def test_next_comparison_failures_can_require_every_selected_row_to_win() -> None:
+    comparisons = [
+        NextComparison(
+            key=speedup_row(
+                name="circle_prime_server_next_prime",
+                baseline="external_primesieve_generate_next_server",
+                start=4_294_967_000,
+            ).key,
+            baseline_result=4_294_967_029,
+            candidate_result=4_294_967_029,
+            baseline_candidate_count=8,
+            candidate_candidate_count=8,
+            baseline_best_speedup=2.0,
+            candidate_best_speedup=2.1,
+            baseline_median_speedup=2.4,
+            candidate_median_speedup=2.2,
+        ),
+        NextComparison(
+            key=speedup_row(
+                name="circle_prime_server_next_prime",
+                baseline="external_primesieve_generate_next_server",
+                start=1_000_000_000_000,
+            ).key,
+            baseline_result=1_000_000_000_039,
+            candidate_result=1_000_000_000_039,
+            baseline_candidate_count=12,
+            candidate_candidate_count=12,
+            baseline_best_speedup=10.0,
+            candidate_best_speedup=9.5,
+            baseline_median_speedup=10.5,
+            candidate_median_speedup=10.1,
+        ),
+    ]
+
+    failures = comparison_failures(
+        comparisons,
+        min_median_speedup_ratio=0.85,
+        min_best_speedup_ratio=0.85,
+        require_each_median_speedup_at_least=1.0,
+    )
+
+    assert failures == []
+
+
+def test_next_comparison_failures_rejects_selected_row_below_required_win_floor() -> None:
+    comparisons = [
+        NextComparison(
+            key=speedup_row(
+                name="circle_prime_server_next_prime",
+                baseline="external_primesieve_generate_next_server",
+                start=1_000_000,
+            ).key,
+            baseline_result=1_000_003,
+            candidate_result=1_000_003,
+            baseline_candidate_count=2,
+            candidate_candidate_count=2,
+            baseline_best_speedup=0.9,
+            candidate_best_speedup=0.95,
+            baseline_median_speedup=0.95,
+            candidate_median_speedup=0.98,
+        )
+    ]
+
+    failures = comparison_failures(
+        comparisons,
+        min_median_speedup_ratio=0.85,
+        min_best_speedup_ratio=0.85,
+        require_each_median_speedup_at_least=1.0,
+    )
+
+    assert failures == [
+        "circle_prime_server_next_prime start=1000000 batch_size=1 threads=1 "
+        "requested_threads=1 baseline=external_primesieve_generate_next_server "
+        "median speedup below required floor: 0.980 < 1.000"
+    ]
+
+
 def test_render_next_comparison_table_marks_result_status() -> None:
     rendered = render_comparison_table(
         [
