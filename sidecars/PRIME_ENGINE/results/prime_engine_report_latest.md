@@ -1,6 +1,6 @@
 # Prime Engine Report
 
-Generated: `2026-06-20T06:37:31Z`
+Generated: `2026-06-20T06:52:14Z`
 
 ## External Correctness
 
@@ -207,12 +207,12 @@ High-offset hot-server candidate spread:
 ## High-Offset Confirmation
 
 Observed groups: `1`; confirmed: `0`; unconfirmed: `1`.
-Minimum confirmations: `3`; requires stable samples: `True`.
+Minimum confirmations: `2`; requires stable samples: `True`.
 Fresh-run count requests per timed sample: `20`.
 
 | Range | Baseline | Mode | Segment | Threads | Confirmations | Stable Runs | Median ms Values | Status |
 | --- | --- | --- | ---: | ---: | ---: | ---: | --- | --- |
-| [1000000000000, 1000010000000) | `external_primesieve_count_server` | `presieve13` | 1441792 | 7/8 | 1/3 | 1/5 | 1.797, 1.630 | `unconfirmed` |
+| [1000000000000, 1000010000000) | `external_primesieve_count_server` | `presieve13` | 1310720 | 8 | 0/2 | 0/3 | 2.337, 2.668, 2.001 | `unconfirmed` |
 
 ## External Count Mode Sweep
 
@@ -382,7 +382,7 @@ Tolerance: `0.050` median slowdown.
 | [0, 1000000) | `tuning` | `n/a` | `prefix-pi` | `prefix-pi` | 131072 | 262144 | 1 -> 1 | 0.000 | unknown | 1.506x | `within_tolerance` |
 | [0, 10000000) | `external_mode_sweep` | `external_primesieve_count` | `prefix-pi` | `prefix-pi` | 65536 | 65536 | 1/8 -> 1/8 | 2.664 | noisy<br>C n=5, robust/med=1.10, max/med=1.29<br>B n=15, robust/med=2.28, max/med=7.25<br>mode unconfirmed 0/2 | 1.000x | `aligned` |
 | [0, 100000000) | `external_mode_sweep` | `external_primesieve_count` | `prefix-pi` | `prefix-pi` | 196608 | 196608 | 1/8 -> 1/8 | 3.195 | stable<br>C n=5, robust/med=1.05, max/med=1.33<br>B n=15, robust/med=1.25, max/med=1.54<br>mode unconfirmed 0/2 | 1.000x | `aligned` |
-| [1000000000000, 1000010000000) | `external_high_offset_tight` | `external_primesieve_count` | `presieve13` | `presieve13` | 4194304 | 1310720 | 3/8 -> 8 | 4.957 | stable<br>C n=7, robust/med=1.03, max/med=1.21<br>B n=7, robust/med=1.02, max/med=1.89<br>mode missing 0/3 | 1.050x | `unconfirmed_mode_drift` |
+| [1000000000000, 1000010000000) | `external_high_offset_tight` | `external_primesieve_count` | `presieve13` | `presieve13` | 4194304 | 1310720 | 3/8 -> 8 | 4.957 | stable<br>C n=7, robust/med=1.03, max/med=1.21<br>B n=7, robust/med=1.02, max/med=1.89<br>mode missing 0/2 | 1.050x | `unconfirmed_mode_drift` |
 
 ## Release Benchmark
 

@@ -7,6 +7,7 @@ from scripts.confirm_prime_external_modes import (
     build_confirmation,
     fresh_sweep_command,
     render_markdown,
+    run_fresh_sweeps,
 )
 
 
@@ -173,3 +174,47 @@ def test_fresh_sweep_command_forwards_segment_size_grid() -> None:
     assert "--circle-server-only" in command
     assert "--include-primesieve-count-server" in command
     assert command.count("--require-tool") == 3
+
+
+def test_run_fresh_sweeps_runs_each_requested_sweep_once(
+    monkeypatch, tmp_path: Path
+) -> None:
+    calls: list[list[str]] = []
+
+    def fake_run(command: list[str], **kwargs: object) -> object:
+        calls.append(command)
+        assert kwargs["check"] is True
+        return object()
+
+    monkeypatch.setattr("scripts.confirm_prime_external_modes.subprocess.run", fake_run)
+    args = Namespace(
+        output_dir=tmp_path,
+        run_prefix="confirm_probe",
+        runs=2,
+        ranges="1000000000000:1000010000000",
+        rounds=3,
+        batch_size=20,
+        warmup_rounds=1,
+        circle_threads=8,
+        external_threads=8,
+        external_baselines="external_primesieve_count_server",
+        circle_count_modes="segmented,presieve13,presieve17",
+        segment_sizes="0",
+        circle_variant=["default:0"],
+        include_circle_server=True,
+        circle_server_only=True,
+        include_primesieve_count_server=True,
+        require_tool=["primesieve-library"],
+    )
+
+    csv_paths, metadata_paths = run_fresh_sweeps(args)
+
+    assert len(calls) == 2
+    assert [path.name for path in csv_paths] == [
+        "confirm_probe_01.csv",
+        "confirm_probe_02.csv",
+    ]
+    assert [path.name for path in metadata_paths] == [
+        "confirm_probe_01.json",
+        "confirm_probe_02.json",
+    ]

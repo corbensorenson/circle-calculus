@@ -256,7 +256,7 @@ def run_fresh_sweeps(args: argparse.Namespace) -> tuple[list[Path], list[Path]]:
         sample_path = args.output_dir / f"{run_label}_samples.csv"
         metadata_path = args.output_dir / f"{run_label}.json"
         command = fresh_sweep_command(args, csv_path, sample_path, metadata_path)
-        print("+ " + " ".join(command))
+        print("+ " + " ".join(command), flush=True)
         subprocess.run(command, cwd=ROOT, check=True)
         csv_paths.append(csv_path)
         metadata_paths.append(metadata_path)

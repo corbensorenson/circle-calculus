@@ -14,6 +14,8 @@ from scripts.benchmark_prime_external_controls import (
     any_external_baseline_available,
     build_run_metadata,
     circle_measurement_name,
+    count_server_command,
+    count_server_request,
     circle_prime_command,
     circle_server_measurement_name,
     external_baseline_enabled,
@@ -134,6 +136,42 @@ def test_circle_prime_command_default_mode_omits_count_mode_flag() -> None:
         "--threads",
         "8",
     ]
+
+
+def test_count_server_default_command_and_request_use_server_defaults() -> None:
+    assert count_server_command(
+        Path("circle-prime"),
+        default_threads=8,
+        default_count_mode="default",
+    ) == ["circle-prime", "count-server", "--threads", "8"]
+    assert (
+        count_server_request(
+            1_000_000_000_000,
+            1_000_010_000_000,
+            1_310_720,
+            8,
+            "presieve13",
+            use_request_defaults=True,
+        )
+        == "1000000000000 1000010000000\n"
+    )
+
+
+def test_count_server_explicit_request_keeps_variant_fields() -> None:
+    assert count_server_command(Path("circle-prime")) == [
+        "circle-prime",
+        "count-server",
+    ]
+    assert (
+        count_server_request(
+            1_000_000_000_000,
+            1_000_010_000_000,
+            1_310_720,
+            8,
+            "presieve13",
+        )
+        == "1000000000000 1000010000000 1310720 8 presieve13\n"
+    )
 
 
 def test_circle_count_mode_parser_and_names() -> None:

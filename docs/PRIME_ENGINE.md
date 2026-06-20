@@ -782,18 +782,22 @@ default-calibration script now treats this artifact as the preferred high-offset
 evidence for the tracked `[1e12, 1e12 + 1e7)` lane when it exists, falling back
 to the broader quick artifact only for uncovered ranges.
 
-`prime-engine-high-offset-confirm` repeats the focused quick candidate set and
-writes:
+`prime-engine-high-offset-confirm` repeats the adaptive default hot-server row
+against persistent `libprimesieve` and writes:
 
 ```text
 sidecars/PRIME_ENGINE/results/prime_engine_high_offset_confirmation_latest.json
 sidecars/PRIME_ENGINE/results/prime_engine_high_offset_confirmation_latest.md
 ```
 
-Calibration reads this confirmation file when present. A confirmed repeated
-winner can override the latest quick median pick; an unconfirmed or noisy
-winner stays visible as drift evidence but is not promoted by
-`prime-engine-apply-defaults` unless the explicit noisy override is used.
+By default it runs three warmed confirmation sweeps, requires two stable median
+wins, and times only persistent server requests for `circle_prime_server_default_count`
+versus `external_primesieve_count_server`. This keeps the daytime confirmation
+target short while still requiring a repeatable default-lane win. Calibration
+reads this confirmation file when present. A confirmed repeated winner can
+override the latest quick median pick; an unconfirmed or noisy winner stays
+visible as drift evidence but is not promoted by `prime-engine-apply-defaults`
+unless the explicit noisy override is used.
 
 `prime-engine-high-offset-compare` is the broader confirmation target for the
 same gap. It isolates `[1e12, 1e12 + 1e7)`, sweeps the larger high-offset

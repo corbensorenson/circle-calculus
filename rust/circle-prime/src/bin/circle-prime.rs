@@ -500,6 +500,7 @@ fn count_server_command(args: &[String]) -> Result<(), String> {
     let mut stdout = io::BufWriter::new(io::stdout().lock());
     let mut buffer = Vec::with_capacity(96);
     let mut worker_pool = CountServerWorkerPool::new();
+    let mut plan_cache = None;
     loop {
         buffer.clear();
         let bytes_read = reader
@@ -523,6 +524,7 @@ fn count_server_command(args: &[String]) -> Result<(), String> {
             default_threads,
             default_count_mode,
             Some(&mut worker_pool),
+            Some(&mut plan_cache),
         )?;
         if json {
             writeln!(stdout, "{}", response.to_json())
@@ -582,6 +584,40 @@ impl CountServerResponse {
     }
 }
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+struct CountServerPlan {
+    segment_size: u64,
+    worker_threads: usize,
+    count_mode: CountMode,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+struct CountServerPlanCache {
+    low: u64,
+    high: u64,
+    requested_threads: usize,
+    default_segment_size: Option<u64>,
+    default_count_mode: Option<CountMode>,
+    plan: CountServerPlan,
+}
+
+impl CountServerPlanCache {
+    fn matches(
+        self,
+        low: u64,
+        high: u64,
+        requested_threads: usize,
+        default_segment_size: Option<u64>,
+        default_count_mode: Option<CountMode>,
+    ) -> bool {
+        self.low == low
+            && self.high == high
+            && self.requested_threads == requested_threads
+            && self.default_segment_size == default_segment_size
+            && self.default_count_mode == default_count_mode
+    }
+}
+
 #[cfg(test)]
 fn count_server_response(
     request: &str,
@@ -595,6 +631,7 @@ fn count_server_response(
         default_threads,
         default_count_mode,
         None,
+        None,
     )
 }
 
@@ -604,6 +641,7 @@ fn count_server_response_with_pool(
     default_threads: usize,
     default_count_mode: Option<CountMode>,
     mut worker_pool: Option<&mut CountServerWorkerPool>,
+    mut plan_cache: Option<&mut Option<CountServerPlanCache>>,
 ) -> Result<CountServerResponse, String> {
     let mut fields = request.split_whitespace();
     let Some(low_field) = fields.next() else {
@@ -644,18 +682,142 @@ fn count_server_response_with_pool(
     if requested_threads == 0 {
         return Err("THREADS must be greater than zero".to_string());
     }
-    let segment_size = segment_size_field
+    let explicit_segment_size = segment_size_field
         .map(|value| {
             value
                 .parse::<u64>()
                 .map_err(|_| "SEGMENT_SIZE must fit in u64".to_string())
         })
-        .transpose()?
+        .transpose()?;
+    let explicit_count_mode = count_mode_field
+        .map(|value| CountMode::parse(value))
+        .transpose()?;
+    let plan = if explicit_segment_size.is_none() && explicit_count_mode.is_none() {
+        count_server_cached_plan(
+            low,
+            high,
+            requested_threads,
+            default_segment_size,
+            default_count_mode,
+            plan_cache.as_deref_mut(),
+        )
+    } else {
+        resolve_count_server_plan(
+            low,
+            high,
+            requested_threads,
+            explicit_segment_size,
+            default_segment_size,
+            explicit_count_mode,
+            default_count_mode,
+        )
+    };
+    let count = if let Some(pool) = worker_pool.as_mut() {
+        match count_range_with_server_pool(
+            pool,
+            low,
+            high,
+            plan.segment_size,
+            plan.worker_threads,
+            plan.count_mode,
+        )
+        .map_err(|err| format!("range sieve failed: {err:?}"))?
+        {
+            Some(count) => count,
+            None => count_range_with_mode(
+                low,
+                high,
+                plan.segment_size,
+                plan.worker_threads,
+                plan.count_mode,
+            )
+            .map_err(|err| format!("range sieve failed: {err:?}"))?,
+        }
+    } else {
+        count_range_with_mode(
+            low,
+            high,
+            plan.segment_size,
+            plan.worker_threads,
+            plan.count_mode,
+        )
+        .map_err(|err| format!("range sieve failed: {err:?}"))?
+    };
+    Ok(CountServerResponse {
+        low,
+        high,
+        count,
+        segment_size: plan.segment_size,
+        threads: plan.worker_threads,
+        requested_threads,
+        count_mode: plan.count_mode,
+    })
+}
+
+fn count_server_cached_plan(
+    low: u64,
+    high: u64,
+    requested_threads: usize,
+    default_segment_size: Option<u64>,
+    default_count_mode: Option<CountMode>,
+    plan_cache: Option<&mut Option<CountServerPlanCache>>,
+) -> CountServerPlan {
+    if let Some(cache_slot) = plan_cache {
+        if let Some(cache) = *cache_slot {
+            if cache.matches(
+                low,
+                high,
+                requested_threads,
+                default_segment_size,
+                default_count_mode,
+            ) {
+                return cache.plan;
+            }
+        }
+        let plan = resolve_count_server_plan(
+            low,
+            high,
+            requested_threads,
+            None,
+            default_segment_size,
+            None,
+            default_count_mode,
+        );
+        *cache_slot = Some(CountServerPlanCache {
+            low,
+            high,
+            requested_threads,
+            default_segment_size,
+            default_count_mode,
+            plan,
+        });
+        return plan;
+    }
+
+    resolve_count_server_plan(
+        low,
+        high,
+        requested_threads,
+        None,
+        default_segment_size,
+        None,
+        default_count_mode,
+    )
+}
+
+fn resolve_count_server_plan(
+    low: u64,
+    high: u64,
+    requested_threads: usize,
+    explicit_segment_size: Option<u64>,
+    default_segment_size: Option<u64>,
+    explicit_count_mode: Option<CountMode>,
+    default_count_mode: Option<CountMode>,
+) -> CountServerPlan {
+    let segment_size = explicit_segment_size
         .or(default_segment_size)
         .unwrap_or_else(|| recommended_count_segment_size(low, high, requested_threads));
-    let count_mode = count_mode_field
-        .map(|value| CountMode::parse(value))
-        .transpose()?
+    let count_mode = explicit_count_mode
         .or(default_count_mode)
         .unwrap_or_else(|| {
             CountMode::parse(recommended_count_mode(low, high, requested_threads))
@@ -667,34 +829,11 @@ fn count_server_response_with_pool(
         effective_parallel_thread_count(low, high, segment_size, requested_threads),
         requested_threads,
     );
-    let count = if let Some(pool) = worker_pool.as_mut() {
-        match count_range_with_server_pool(
-            pool,
-            low,
-            high,
-            segment_size,
-            worker_threads,
-            count_mode,
-        )
-        .map_err(|err| format!("range sieve failed: {err:?}"))?
-        {
-            Some(count) => count,
-            None => count_range_with_mode(low, high, segment_size, worker_threads, count_mode)
-                .map_err(|err| format!("range sieve failed: {err:?}"))?,
-        }
-    } else {
-        count_range_with_mode(low, high, segment_size, worker_threads, count_mode)
-            .map_err(|err| format!("range sieve failed: {err:?}"))?
-    };
-    Ok(CountServerResponse {
-        low,
-        high,
-        count,
+    CountServerPlan {
         segment_size,
-        threads: worker_threads,
-        requested_threads,
+        worker_threads,
         count_mode,
-    })
+    }
 }
 
 struct CountServerWorkerPool {
@@ -1022,7 +1161,7 @@ mod tests {
     fn count_server_worker_pool_matches_direct_parallel_count() {
         let mut pool = CountServerWorkerPool::new();
         let request = "0 1000000 65536 4 presieve13";
-        let pooled = count_server_response_with_pool(request, None, 1, None, Some(&mut pool))
+        let pooled = count_server_response_with_pool(request, None, 1, None, Some(&mut pool), None)
             .expect("pooled count-server request should succeed");
         let direct = count_server_response(request, None, 1, None)
             .expect("direct count-server request should succeed");
@@ -1031,6 +1170,40 @@ mod tests {
         assert_eq!(pooled.segment_size, direct.segment_size);
         assert_eq!(pooled.threads, direct.threads);
         assert_eq!(pooled.count_mode, direct.count_mode);
+    }
+
+    #[test]
+    fn count_server_caches_repeated_adaptive_default_plan() {
+        let mut pool = CountServerWorkerPool::new();
+        let mut plan_cache = None;
+        let request = "1000000000000 1000010000000";
+        let first = count_server_response_with_pool(
+            request,
+            None,
+            8,
+            None,
+            Some(&mut pool),
+            Some(&mut plan_cache),
+        )
+        .expect("first adaptive request should succeed");
+        let cached_plan = plan_cache.expect("adaptive request should populate plan cache");
+        let second = count_server_response_with_pool(
+            request,
+            None,
+            8,
+            None,
+            Some(&mut pool),
+            Some(&mut plan_cache),
+        )
+        .expect("second adaptive request should succeed");
+
+        assert_eq!(first.count, second.count);
+        assert_eq!(first.segment_size, second.segment_size);
+        assert_eq!(first.threads, second.threads);
+        assert_eq!(first.count_mode, second.count_mode);
+        assert_eq!(Some(cached_plan), plan_cache);
+        assert_eq!(first.segment_size, cached_plan.plan.segment_size);
+        assert_eq!(first.count_mode, cached_plan.plan.count_mode);
     }
 
     #[test]

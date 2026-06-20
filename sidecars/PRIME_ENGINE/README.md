@@ -40,14 +40,14 @@ competitive.
 
 `make prime-engine-high-offset-confirm` is the stricter short gate for the
 remaining hard count lane near `1e12`. It runs warmed repeated confirmations
-against the persistent `libprimesieve` count helper and exact Circle variants
-that have been near the front of prior sweeps. Fresh confirmation runs also
-batch repeated count requests and report per-request timings, so default changes
-require a repeatable win rather than a one-run median. This target focuses the
-timing loop on hot-server rows by default: `external_primesieve_count_server`
-for the external baseline and `circle-prime count-server` rows for Circle. The
-broader `prime-engine-competitive-short` target includes this gate and also
-refreshes CLI controls and next-prime evidence.
+against the persistent `libprimesieve` count helper and the adaptive Circle
+server default row. Fresh confirmation runs also batch repeated count requests
+and report per-request timings, so default changes require a repeatable win
+rather than a one-run median. This target focuses the timing loop on
+`circle_prime_server_default_count` versus `external_primesieve_count_server`
+by default and requires two stable median wins across three runs. The broader
+`prime-engine-competitive-short` target includes this gate and also refreshes
+CLI controls, candidate spreads, and next-prime evidence.
 
 `make prime-engine-high-offset-hot-server-check` reads the latest hot-server
 scorecard and fails unless the selected adaptive Circle server default rows

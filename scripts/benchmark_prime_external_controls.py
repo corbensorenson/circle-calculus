@@ -681,9 +681,21 @@ def circle_prime_measurement(
 
 
 class CountServerClient:
-    def __init__(self, binary: Path) -> None:
+    def __init__(
+        self,
+        binary: Path,
+        *,
+        default_segment_size: int = 0,
+        default_threads: int = 1,
+        default_count_mode: str = "default",
+    ) -> None:
         self.process = subprocess.Popen(
-            [str(binary), "count-server"],
+            count_server_command(
+                binary,
+                default_segment_size=default_segment_size,
+                default_threads=default_threads,
+                default_count_mode=default_count_mode,
+            ),
             cwd=ROOT,
             text=True,
             stdin=subprocess.PIPE,
@@ -701,10 +713,19 @@ class CountServerClient:
         segment_size: int,
         threads: int,
         count_mode: str,
+        *,
+        use_request_defaults: bool = False,
     ) -> int:
         assert self.process.stdin is not None
         assert self.process.stdout is not None
-        request = f"{low} {high} {segment_size} {threads} {count_mode}\n"
+        request = count_server_request(
+            low,
+            high,
+            segment_size,
+            threads,
+            count_mode,
+            use_request_defaults=use_request_defaults,
+        )
         self.process.stdin.write(request)
         self.process.stdin.flush()
         response = self.process.stdout.readline()
@@ -766,7 +787,13 @@ def circle_prime_server_measurement(
     actual_threads = int(metadata["threads"])
     metadata_count = int(metadata["count"])
     resolved_count_mode = str(metadata.get("count_mode", count_mode))
-    client = CountServerClient(binary)
+    use_request_defaults = count_mode == "default"
+    client = CountServerClient(
+        binary,
+        default_segment_size=segment_size if use_request_defaults else 0,
+        default_threads=threads if use_request_defaults else 1,
+        default_count_mode=count_mode if use_request_defaults else "default",
+    )
 
     def run_once() -> int:
         count = client.count(
@@ -775,6 +802,7 @@ def circle_prime_server_measurement(
             actual_segment_size,
             threads,
             resolved_count_mode,
+            use_request_defaults=use_request_defaults,
         )
         if count != metadata_count:
             raise AssertionError(
@@ -795,6 +823,37 @@ def circle_prime_server_measurement(
         count_mode=resolved_count_mode,
         close=client.close,
     )
+
+
+def count_server_command(
+    binary: Path,
+    *,
+    default_segment_size: int = 0,
+    default_threads: int = 1,
+    default_count_mode: str = "default",
+) -> list[str]:
+    command = [str(binary), "count-server"]
+    if default_segment_size > 0:
+        command.extend(["--segment-size", str(default_segment_size)])
+    if default_threads != 1:
+        command.extend(["--threads", str(default_threads)])
+    if default_count_mode != "default":
+        command.extend(["--count-mode", default_count_mode])
+    return command
+
+
+def count_server_request(
+    low: int,
+    high: int,
+    segment_size: int,
+    threads: int,
+    count_mode: str,
+    *,
+    use_request_defaults: bool = False,
+) -> str:
+    if use_request_defaults:
+        return f"{low} {high}\n"
+    return f"{low} {high} {segment_size} {threads} {count_mode}\n"
 
 
 def circle_prime_command(
