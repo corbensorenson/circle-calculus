@@ -210,6 +210,16 @@ def test_request_api_reports_malformed_requests() -> None:
         "kind": "unknown",
         "parameters": {},
     }
+    missing_kv_parameters = {
+        "schema_id": "circle_calculus.ai_contract_request.v0",
+        "kind": "kv-cache",
+        "parameters": {},
+    }
+    invalid_rope_margin = {
+        "schema_id": "circle_calculus.ai_contract_request.v0",
+        "kind": "rope",
+        "parameters": {"requested_margin": "not-a-fraction"},
+    }
 
     assert "parameters must be an object" in validate_contract_request(
         missing_parameters
@@ -221,6 +231,16 @@ def test_request_api_reports_malformed_requests() -> None:
     )
     with pytest.raises(ValueError, match="invalid Circle AI contract request"):
         build_contract_receipt_from_request(unsupported)
+    with pytest.raises(
+        ValueError,
+        match="invalid Circle AI contract request parameters",
+    ):
+        build_contract_receipt_from_request(missing_kv_parameters)
+    with pytest.raises(
+        ValueError,
+        match="invalid Circle AI contract request parameters",
+    ):
+        build_contract_receipt_from_request(invalid_rope_margin)
 
 
 def test_request_schema_accepts_public_aliases() -> None:

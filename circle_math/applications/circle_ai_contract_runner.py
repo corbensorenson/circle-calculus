@@ -869,7 +869,21 @@ def build_contract_receipt_from_request(
     kind = str(request["kind"])
     parameters = request["parameters"]
     assert isinstance(parameters, Mapping)
-    return build_contract_receipt(kind, parameters, pack=pack)
+    try:
+        return build_contract_receipt(kind, parameters, pack=pack)
+    except TypeError as exc:
+        raise ValueError(
+            "invalid Circle AI contract request parameters: " + str(exc)
+        ) from exc
+    except ValueError as exc:
+        message = str(exc)
+        if message.startswith(
+            ("invalid Circle AI contract pack", "invalid Circle AI contract receipt")
+        ):
+            raise
+        raise ValueError(
+            "invalid Circle AI contract request parameters: " + message
+        ) from exc
 
 
 def validate_contract_receipt(receipt: Mapping[str, Any]) -> list[str]:
