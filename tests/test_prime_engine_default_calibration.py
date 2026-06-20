@@ -6,6 +6,8 @@ from scripts.calibrate_prime_engine_defaults import (
     build_calibration,
     read_external_mode_confirmation_input_rows,
     render_markdown,
+    sample_spread_text,
+    sample_stats,
     select_recommendations,
 )
 
@@ -104,6 +106,24 @@ def test_build_calibration_marks_default_drift_over_tolerance() -> None:
     assert row["status"] == "drift"
     assert row["default_over_selected"] == 3.4 / 3.0
     assert "Default Calibration" in render_markdown(calibration)
+
+
+def test_calibration_sample_stats_ignore_one_high_outlier_for_stability() -> None:
+    stats = sample_stats([1.0, 1.01, 1.02, 1.03, 9.0])
+
+    assert stats["stability"] == "stable"
+    assert stats["ignored_single_high_outlier"] is True
+    assert stats["noise_over_median"] == 1.03 / 1.02
+    assert stats["max_over_median"] == 9.0 / 1.02
+    assert sample_spread_text(stats) == "n=5, robust/med=1.01, max/med=8.82"
+
+
+def test_calibration_sample_stats_keep_repeated_high_samples_noisy() -> None:
+    stats = sample_stats([1.0, 1.01, 1.02, 4.0, 9.0])
+
+    assert stats["stability"] == "noisy"
+    assert stats["ignored_single_high_outlier"] is True
+    assert stats["noise_over_median"] == 4.0 / 1.02
 
 
 def test_select_recommendations_uses_external_mode_sweep_candidates() -> None:

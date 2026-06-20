@@ -5,7 +5,13 @@ from pathlib import Path
 
 import pytest
 
-from scripts.report_prime_engine_results import build_report, circle_row_label, render_markdown
+from scripts.report_prime_engine_results import (
+    build_report,
+    circle_row_label,
+    render_markdown,
+    sample_spread_text,
+    sample_stats,
+)
 
 
 def test_prime_engine_report_summarizes_artifacts(tmp_path: Path) -> None:
@@ -1023,6 +1029,24 @@ def test_prime_engine_report_summarizes_artifacts(tmp_path: Path) -> None:
         "| [0, 1000000) | `segmented` | `segmented` | 16384 | 262144 | "
         "2/2 | 2/2 | `tuning_artifact` | 0.250 | no |"
     ) in markdown
+
+
+def test_report_sample_stats_ignore_one_high_outlier_for_stability() -> None:
+    stats = sample_stats([1.0, 1.01, 1.02, 1.03, 9.0])
+
+    assert stats["stability"] == "stable"
+    assert stats["ignored_single_high_outlier"] is True
+    assert stats["noise_over_median"] == pytest.approx(1.03 / 1.02)
+    assert stats["max_over_median"] == pytest.approx(9.0 / 1.02)
+    assert sample_spread_text(stats) == "n=5, robust/med=1.01, max/med=8.82"
+
+
+def test_report_sample_stats_keep_repeated_high_samples_noisy() -> None:
+    stats = sample_stats([1.0, 1.01, 1.02, 4.0, 9.0])
+
+    assert stats["stability"] == "noisy"
+    assert stats["ignored_single_high_outlier"] is True
+    assert stats["noise_over_median"] == pytest.approx(4.0 / 1.02)
 
 
 def test_circle_row_label_includes_resolved_count_mode() -> None:

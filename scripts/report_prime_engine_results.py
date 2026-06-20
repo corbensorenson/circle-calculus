@@ -62,6 +62,7 @@ DEFAULT_DEFAULT_CALIBRATION = RESULTS_DIR / "prime_engine_default_calibration_la
 DEFAULT_OUTPUT_MD = RESULTS_DIR / "prime_engine_report_latest.md"
 DEFAULT_OUTPUT_JSON = RESULTS_DIR / "prime_engine_report_latest.json"
 SAMPLE_NOISY_MAX_OVER_MEDIAN = 1.5
+SAMPLE_ROBUST_NOISE_MIN_COUNT = 5
 
 
 PRIMARY_COUNT_ROWS = {
@@ -1514,16 +1515,25 @@ def sample_stats(values: list[float]) -> dict[str, Any]:
     min_ms = ordered[0]
     max_ms = ordered[-1]
     max_over_median = max_ms / median_ms if median_ms > 0 else None
+    noise_ms = (
+        ordered[-2]
+        if len(ordered) >= SAMPLE_ROBUST_NOISE_MIN_COUNT
+        else max_ms
+    )
+    noise_over_median = noise_ms / median_ms if median_ms > 0 else None
     return {
         "sample_count": len(ordered),
         "min_ms": min_ms,
         "median_ms": median_ms,
         "max_ms": max_ms,
         "max_over_median": max_over_median,
+        "noise_ms": noise_ms,
+        "noise_over_median": noise_over_median,
+        "ignored_single_high_outlier": len(ordered) >= SAMPLE_ROBUST_NOISE_MIN_COUNT,
         "stability": (
             "noisy"
-            if max_over_median is not None
-            and max_over_median > SAMPLE_NOISY_MAX_OVER_MEDIAN
+            if noise_over_median is not None
+            and noise_over_median > SAMPLE_NOISY_MAX_OVER_MEDIAN
             else "stable"
         ),
     }
@@ -2552,9 +2562,12 @@ def sample_stability_text(row: dict[str, Any]) -> str:
 
 def sample_spread_text(stats: dict[str, Any]) -> str:
     ratio = stats.get("max_over_median")
+    noise_ratio = stats.get("noise_over_median")
     count = stats.get("sample_count")
     if ratio is None:
         return f"n={count}"
+    if stats.get("ignored_single_high_outlier") and noise_ratio is not None:
+        return f"n={count}, robust/med={noise_ratio:.2f}, max/med={ratio:.2f}"
     return f"n={count}, max/med={ratio:.2f}"
 
 

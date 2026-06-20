@@ -35,7 +35,16 @@ remaining hard count lane near `1e12`. It runs warmed repeated confirmations
 against the persistent `libprimesieve` count helper and exact Circle variants
 that have been near the front of prior sweeps. Fresh confirmation runs also
 batch repeated count requests and report per-request timings, so default changes
-require a repeatable win rather than a one-run median.
+require a repeatable win rather than a one-run median. This target focuses the
+timing loop on hot-server rows by default: `external_primesieve_count_server`
+for the external baseline and `circle-prime count-server` rows for Circle. The
+broader `prime-engine-competitive-short` target remains the place to compare
+against CLI `primesieve` and `primecount` in the same run.
+
+Short-run sample stability ignores a single high outlier when there are at
+least five samples, but still marks repeated high samples as noisy. This keeps
+sub-10 ms server comparisons from being decided by one scheduler spike while
+preserving a conservative confirmation threshold.
 
 `make prime-engine-high-offset-thread-sweep` is a narrower diagnostic for that
 same lane. It fixes the high-offset range and sweeps exact Circle
