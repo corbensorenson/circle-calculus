@@ -38,6 +38,7 @@ def test_check_circle_ai_contract_runner_emits_json_report() -> None:
     assert payload["ok"] is True
     assert payload["example_count"] == 4
     assert payload["failure_count"] == 0
+    assert payload["failures"] == []
     assert all(
         len(summary["request_content_fingerprint"]) == 64
         for summary in payload["summaries"]

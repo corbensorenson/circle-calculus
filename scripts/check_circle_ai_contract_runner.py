@@ -16,6 +16,7 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from circle_math.applications import (  # noqa: E402
+    build_contract_request_validation_report,
     build_contract_receipt_from_request,
     load_contract_pack,
     validate_contract_receipt,
@@ -27,6 +28,13 @@ DEFAULT_EXAMPLE_DIR = ROOT / "examples" / "circle_ai_requests"
 DEFAULT_PACK_PATH = ROOT / "site" / "data" / "generated" / "circle_ai_contract_pack.json"
 DEFAULT_REQUEST_SCHEMA = (
     ROOT / "site" / "data" / "generated" / "circle_ai_contract_request.schema.json"
+)
+DEFAULT_REQUEST_VALIDATION_SCHEMA = (
+    ROOT
+    / "site"
+    / "data"
+    / "generated"
+    / "circle_ai_contract_request_validation.schema.json"
 )
 DEFAULT_RECEIPT_SCHEMA = (
     ROOT / "site" / "data" / "generated" / "circle_ai_contract_receipt.schema.json"
@@ -52,11 +60,14 @@ def check_runner_examples(
     example_dir: Path = DEFAULT_EXAMPLE_DIR,
     pack_path: Path = DEFAULT_PACK_PATH,
     request_schema_path: Path = DEFAULT_REQUEST_SCHEMA,
+    request_validation_schema_path: Path = DEFAULT_REQUEST_VALIDATION_SCHEMA,
     receipt_schema_path: Path = DEFAULT_RECEIPT_SCHEMA,
 ) -> dict[str, Any]:
     request_schema = _json(request_schema_path)
+    request_validation_schema = _json(request_validation_schema_path)
     receipt_schema = _json(receipt_schema_path)
     jsonschema.Draft202012Validator.check_schema(request_schema)
+    jsonschema.Draft202012Validator.check_schema(request_validation_schema)
     jsonschema.Draft202012Validator.check_schema(receipt_schema)
     pack = load_contract_pack(pack_path)
     summaries: list[dict[str, Any]] = []
@@ -66,6 +77,8 @@ def check_runner_examples(
         try:
             request = _json(path)
             jsonschema.validate(request, request_schema)
+            validation_report = build_contract_request_validation_report(request)
+            jsonschema.validate(validation_report, request_validation_schema)
             request_failures = validate_contract_request(request)
             if request_failures:
                 failures.append(f"{path}: " + "; ".join(request_failures))
@@ -125,6 +138,11 @@ def main() -> int:
         type=Path,
         default=DEFAULT_RECEIPT_SCHEMA,
     )
+    parser.add_argument(
+        "--request-validation-schema",
+        type=Path,
+        default=DEFAULT_REQUEST_VALIDATION_SCHEMA,
+    )
     parser.add_argument("--format", choices=("text", "json"), default="text")
     args = parser.parse_args()
 
@@ -132,6 +150,7 @@ def main() -> int:
         example_dir=args.example_dir,
         pack_path=args.pack,
         request_schema_path=args.request_schema,
+        request_validation_schema_path=args.request_validation_schema,
         receipt_schema_path=args.receipt_schema,
     )
     if args.format == "json":

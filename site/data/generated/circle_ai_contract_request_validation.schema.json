@@ -1,0 +1,56 @@
+{
+  "$id": "https://circle-calculus.local/schemas/circle_ai_contract_request_validation.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "canonical_kind": {
+      "enum": [
+        "rope_position_distinguishability",
+        "kv_cache_ring_buffer",
+        "sparse_attention_coverage",
+        "recurrence_schedule",
+        null
+      ],
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "failure_count": {
+      "minimum": 0,
+      "type": "integer"
+    },
+    "failures": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "kind": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "ok": {
+      "type": "boolean"
+    },
+    "request_schema_id": {
+      "const": "circle_calculus.ai_contract_request.v0"
+    },
+    "schema_id": {
+      "const": "circle_calculus.ai_contract_request_validation.v0"
+    }
+  },
+  "required": [
+    "schema_id",
+    "request_schema_id",
+    "ok",
+    "kind",
+    "canonical_kind",
+    "failure_count",
+    "failures"
+  ],
+  "title": "Circle AI Contract Request Validation Report",
+  "type": "object"
+}

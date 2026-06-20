@@ -14,6 +14,7 @@ from circle_math.applications import (
     build_contract_receipt_from_request,
     build_contract_request_json_schema,
     build_contract_request_validation_report,
+    build_contract_request_validation_json_schema,
     build_kv_cache_receipt,
     build_recurrence_receipt,
     build_rope_receipt,
@@ -305,6 +306,15 @@ def test_request_api_reports_malformed_requests() -> None:
         "failure_count": 1,
         "failures": ["parameters contains unsupported keys: shift_presses"],
     }
+    non_string_kind_report = build_contract_request_validation_report(
+        {
+            "schema_id": "circle_calculus.ai_contract_request.v0",
+            "kind": 12,
+            "parameters": {},
+        }
+    )
+    assert non_string_kind_report["kind"] is None
+    assert non_string_kind_report["canonical_kind"] is None
     with pytest.raises(ValueError, match="invalid Circle AI contract request"):
         build_contract_receipt_from_request(unsupported)
     with pytest.raises(ValueError, match="invalid Circle AI contract request"):
@@ -402,6 +412,35 @@ def test_receipt_schema_exposes_runner_metadata() -> None:
     assert "normalized_request_fingerprint" in schema["required"]
     assert schema["properties"]["recommendations"]["minItems"] == 1
     assert schema["properties"]["validation_commands"]["minItems"] == 1
+
+
+def test_request_validation_report_schema_accepts_public_reports() -> None:
+    schema = build_contract_request_validation_json_schema()
+    good_report = build_contract_request_validation_report(
+        {
+            "schema_id": "circle_calculus.ai_contract_request.v0",
+            "kind": "rope",
+            "parameters": {},
+        }
+    )
+    bad_report = build_contract_request_validation_report(
+        {
+            "schema_id": "circle_calculus.ai_contract_request.v0",
+            "kind": "sparse-attention",
+            "parameters": {
+                "context": 32,
+                "strides": [5, 0],
+                "path_length": 16,
+                "local_window": 9,
+            },
+        }
+    )
+
+    jsonschema.Draft202012Validator.check_schema(schema)
+    jsonschema.validate(good_report, schema)
+    jsonschema.validate(bad_report, schema)
+    assert good_report["ok"] is True
+    assert bad_report["ok"] is False
 
 
 def test_circle_ai_certify_cli_emits_json_receipt() -> None:

@@ -24,8 +24,10 @@ from circle_math.applications.circle_ai_contracts import (
 from circle_math.applications.circle_ai_contract_runner import (
     RECEIPT_SCHEMA_PATH as CONTRACT_RUNNER_RECEIPT_SCHEMA_PATH,
     REQUEST_SCHEMA_PATH as CONTRACT_RUNNER_REQUEST_SCHEMA_PATH,
+    REQUEST_VALIDATION_SCHEMA_PATH as CONTRACT_RUNNER_REQUEST_VALIDATION_SCHEMA_PATH,
     build_contract_receipt_json_schema,
     build_contract_request_json_schema,
+    build_contract_request_validation_json_schema,
 )
 
 
@@ -37,6 +39,9 @@ DEFAULT_DOWNSTREAM_REJECTION_REPORT_SCHEMA_OUT = (
     ROOT / DOWNSTREAM_REJECTION_REPORT_SCHEMA_PATH
 )
 DEFAULT_CONTRACT_RUNNER_REQUEST_SCHEMA_OUT = ROOT / CONTRACT_RUNNER_REQUEST_SCHEMA_PATH
+DEFAULT_CONTRACT_RUNNER_REQUEST_VALIDATION_SCHEMA_OUT = (
+    ROOT / CONTRACT_RUNNER_REQUEST_VALIDATION_SCHEMA_PATH
+)
 DEFAULT_CONTRACT_RUNNER_RECEIPT_SCHEMA_OUT = ROOT / CONTRACT_RUNNER_RECEIPT_SCHEMA_PATH
 
 
@@ -105,6 +110,15 @@ def main() -> int:
             "Defaults to site/data/generated/circle_ai_contract_receipt.schema.json."
         ),
     )
+    parser.add_argument(
+        "--contract-runner-request-validation-schema-out",
+        default=str(DEFAULT_CONTRACT_RUNNER_REQUEST_VALIDATION_SCHEMA_OUT),
+        help=(
+            "Output JSON Schema path for contract-runner request validation "
+            "reports. Defaults to "
+            "site/data/generated/circle_ai_contract_request_validation.schema.json."
+        ),
+    )
     args = parser.parse_args()
 
     out = Path(args.out)
@@ -131,6 +145,11 @@ def main() -> int:
     runner_receipt_schema_out = Path(args.contract_runner_receipt_schema_out)
     if not runner_receipt_schema_out.is_absolute():
         runner_receipt_schema_out = ROOT / runner_receipt_schema_out
+    runner_request_validation_schema_out = Path(
+        args.contract_runner_request_validation_schema_out
+    )
+    if not runner_request_validation_schema_out.is_absolute():
+        runner_request_validation_schema_out = ROOT / runner_request_validation_schema_out
     out.parent.mkdir(parents=True, exist_ok=True)
     schema_out.parent.mkdir(parents=True, exist_ok=True)
     policy_schema_out.parent.mkdir(parents=True, exist_ok=True)
@@ -139,6 +158,7 @@ def main() -> int:
     rejection_report_schema_out.parent.mkdir(parents=True, exist_ok=True)
     runner_request_schema_out.parent.mkdir(parents=True, exist_ok=True)
     runner_receipt_schema_out.parent.mkdir(parents=True, exist_ok=True)
+    runner_request_validation_schema_out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(json.dumps(build_contract_pack(), indent=2, sort_keys=True) + "\n")
     schema_out.write_text(
         json.dumps(build_contract_pack_json_schema(), indent=2, sort_keys=True) + "\n"
@@ -169,6 +189,14 @@ def main() -> int:
     )
     runner_request_schema_out.write_text(
         json.dumps(build_contract_request_json_schema(), indent=2, sort_keys=True)
+        + "\n"
+    )
+    runner_request_validation_schema_out.write_text(
+        json.dumps(
+            build_contract_request_validation_json_schema(),
+            indent=2,
+            sort_keys=True,
+        )
         + "\n"
     )
     runner_receipt_schema_out.write_text(
@@ -206,6 +234,14 @@ def main() -> int:
     except ValueError:
         display_runner_request_schema_path = runner_request_schema_out
     try:
+        display_runner_request_validation_schema_path = (
+            runner_request_validation_schema_out.relative_to(ROOT)
+        )
+    except ValueError:
+        display_runner_request_validation_schema_path = (
+            runner_request_validation_schema_out
+        )
+    try:
         display_runner_receipt_schema_path = runner_receipt_schema_out.relative_to(ROOT)
     except ValueError:
         display_runner_receipt_schema_path = runner_receipt_schema_out
@@ -216,6 +252,7 @@ def main() -> int:
     print(f"wrote {display_receipt_schema_path}")
     print(f"wrote {display_rejection_report_schema_path}")
     print(f"wrote {display_runner_request_schema_path}")
+    print(f"wrote {display_runner_request_validation_schema_path}")
     print(f"wrote {display_runner_receipt_schema_path}")
     return 0
 

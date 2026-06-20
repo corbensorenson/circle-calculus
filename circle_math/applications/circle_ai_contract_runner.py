@@ -42,6 +42,9 @@ REQUEST_SCHEMA_ID = "circle_calculus.ai_contract_request.v0"
 RECEIPT_SCHEMA_ID = "circle_calculus.ai_contract_receipt.v0"
 REQUEST_VALIDATION_SCHEMA_ID = "circle_calculus.ai_contract_request_validation.v0"
 REQUEST_SCHEMA_PATH = "site/data/generated/circle_ai_contract_request.schema.json"
+REQUEST_VALIDATION_SCHEMA_PATH = (
+    "site/data/generated/circle_ai_contract_request_validation.schema.json"
+)
 RECEIPT_SCHEMA_PATH = "site/data/generated/circle_ai_contract_receipt.schema.json"
 
 SUPPORTED_CONTRACT_KINDS = (
@@ -1062,9 +1065,10 @@ def build_contract_request_validation_report(request: Mapping[str, Any]) -> dict
     """Return a stable validation report for a versioned public request object."""
 
     failures = validate_contract_request(request)
-    kind = request.get("kind")
+    raw_kind = request.get("kind")
+    kind = raw_kind if isinstance(raw_kind, str) else None
     canonical_kind = None
-    if isinstance(kind, str):
+    if kind is not None:
         try:
             canonical_kind = canonical_contract_kind(kind)
         except ValueError:
@@ -1451,6 +1455,41 @@ def build_contract_request_json_schema() -> dict[str, Any]:
             },
         ],
         "additionalProperties": True,
+    }
+
+
+def build_contract_request_validation_json_schema() -> dict[str, Any]:
+    string_list = {"type": "array", "items": {"type": "string"}}
+    return {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "$id": (
+            "https://circle-calculus.local/schemas/"
+            "circle_ai_contract_request_validation.schema.json"
+        ),
+        "title": "Circle AI Contract Request Validation Report",
+        "type": "object",
+        "required": [
+            "schema_id",
+            "request_schema_id",
+            "ok",
+            "kind",
+            "canonical_kind",
+            "failure_count",
+            "failures",
+        ],
+        "properties": {
+            "schema_id": {"const": REQUEST_VALIDATION_SCHEMA_ID},
+            "request_schema_id": {"const": REQUEST_SCHEMA_ID},
+            "ok": {"type": "boolean"},
+            "kind": {"type": ["string", "null"]},
+            "canonical_kind": {
+                "type": ["string", "null"],
+                "enum": [*SUPPORTED_CONTRACT_KINDS, None],
+            },
+            "failure_count": {"type": "integer", "minimum": 0},
+            "failures": string_list,
+        },
+        "additionalProperties": False,
     }
 
 

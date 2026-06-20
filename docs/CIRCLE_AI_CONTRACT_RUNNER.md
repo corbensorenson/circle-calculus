@@ -162,6 +162,7 @@ and written to:
 
 ```text
 site/data/generated/circle_ai_contract_request.schema.json
+site/data/generated/circle_ai_contract_request_validation.schema.json
 site/data/generated/circle_ai_contract_receipt.schema.json
 ```
 
