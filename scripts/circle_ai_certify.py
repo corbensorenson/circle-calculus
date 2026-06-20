@@ -14,6 +14,7 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from circle_math.applications import (  # noqa: E402
+    CIRCLE_AI_CONTRACT_REQUEST_SCHEMA_ID,
     build_contract_receipt,
     load_contract_pack,
     receipt_summary_lines,
@@ -65,6 +66,21 @@ def parse_args() -> argparse.Namespace:
         ),
     )
     subparsers = parser.add_subparsers(dest="kind", required=True)
+
+    request = subparsers.add_parser(
+        "request",
+        help=(
+            "Certify a versioned Circle AI contract request JSON object with "
+            "schema_id, kind, and parameters."
+        ),
+    )
+    add_common_options(request)
+    request.add_argument(
+        "--request-json",
+        required=True,
+        type=Path,
+        help="Path to a circle_calculus.ai_contract_request.v0 JSON request.",
+    )
 
     rope = subparsers.add_parser(
         "rope",
@@ -135,6 +151,26 @@ def _pack_from_args(args: argparse.Namespace) -> dict[str, Any] | None:
     return load_contract_pack(path)
 
 
+def _load_request_json(path: Path) -> tuple[str, dict[str, Any]]:
+    if not path.is_absolute():
+        path = ROOT / path
+    payload = json.loads(path.read_text(encoding="utf-8"))
+    if not isinstance(payload, dict):
+        raise SystemExit("request JSON must be an object")
+    if payload.get("schema_id") != CIRCLE_AI_CONTRACT_REQUEST_SCHEMA_ID:
+        raise SystemExit(
+            "request JSON schema_id must be "
+            f"{CIRCLE_AI_CONTRACT_REQUEST_SCHEMA_ID!r}"
+        )
+    kind = payload.get("kind")
+    if not isinstance(kind, str) or not kind:
+        raise SystemExit("request JSON kind must be a non-empty string")
+    parameters = payload.get("parameters")
+    if not isinstance(parameters, dict):
+        raise SystemExit("request JSON parameters must be an object")
+    return kind, parameters
+
+
 def _parameters_from_args(args: argparse.Namespace) -> dict[str, Any]:
     if args.kind == "rope":
         return {
@@ -181,9 +217,14 @@ def write_json(path: Path, payload: dict[str, Any]) -> None:
 
 def main() -> int:
     args = parse_args()
+    if args.kind == "request":
+        kind, parameters = _load_request_json(args.request_json)
+    else:
+        kind = args.kind
+        parameters = _parameters_from_args(args)
     receipt = build_contract_receipt(
-        args.kind,
-        _parameters_from_args(args),
+        kind,
+        parameters,
         pack=_pack_from_args(args),
     )
     if args.json_out is not None:

@@ -41,6 +41,30 @@ python scripts/circle_ai_certify.py recurrence
 Add `--format json` for a machine-readable receipt, or `--json-out PATH` to
 write one to disk.
 
+External projects can also use the versioned request schema directly:
+
+```json
+{
+  "schema_id": "circle_calculus.ai_contract_request.v0",
+  "kind": "rope_position_distinguishability",
+  "parameters": {
+    "head_dim": 128,
+    "base": 10000.0,
+    "context": 131072,
+    "requested_margin": "1/328459"
+  }
+}
+```
+
+Run it with:
+
+```bash
+python scripts/circle_ai_certify.py request \
+  --request-json path/to/request.json \
+  --format json \
+  --json-out path/to/receipt.json
+```
+
 ## Receipt Statuses
 
 | Status | Meaning |

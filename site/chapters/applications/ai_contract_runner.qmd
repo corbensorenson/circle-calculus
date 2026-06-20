@@ -56,6 +56,12 @@ cannot upgrade a numerical scan, benchmark, widget, or engineering guess into a
 formal theorem.
 :::
 
+::: {.warning-box}
+The runner is not proof by itself. It is an executable reference surface
+separate from Lean proof status, and it does not make performance claims,
+model-quality claims, or real-data usefulness claims.
+:::
+
 ## First Run
 
 Start with the RoPE flagship contract:
@@ -113,6 +119,30 @@ python scripts/circle_ai_certify.py sparse-attention \
   --local-window 4 \
   --format json \
   --json-out reports/sparse_attention_receipt.json
+```
+
+For a project that already stores configs as files, use the request schema:
+
+```json
+{
+  "schema_id": "circle_calculus.ai_contract_request.v0",
+  "kind": "rope_position_distinguishability",
+  "parameters": {
+    "head_dim": 128,
+    "base": 10000.0,
+    "context": 131072,
+    "requested_margin": "1/328459"
+  }
+}
+```
+
+Then run:
+
+```bash
+python scripts/circle_ai_certify.py request \
+  --request-json reports/rope_request.json \
+  --format json \
+  --json-out reports/rope_receipt.json
 ```
 
 ## Receipt Reading Loop

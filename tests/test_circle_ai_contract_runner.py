@@ -204,3 +204,48 @@ def test_circle_ai_certify_cli_emits_json_receipt() -> None:
     assert payload["evidence"]["standard_channel0_d19_request_classifier"][
         "request_status"
     ] == "proved"
+
+
+def test_circle_ai_certify_cli_accepts_request_json(tmp_path: Path) -> None:
+    request_path = tmp_path / "rope_request.json"
+    request_path.write_text(
+        json.dumps(
+            {
+                "schema_id": "circle_calculus.ai_contract_request.v0",
+                "kind": "rope_position_distinguishability",
+                "parameters": {
+                    "head_dim": 128,
+                    "base": 10000.0,
+                    "context": 1000,
+                    "requested_margin": "1/999",
+                },
+            }
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+
+    result = subprocess.run(
+        [
+            sys.executable,
+            str(SCRIPT),
+            "request",
+            "--request-json",
+            str(request_path),
+            "--format",
+            "json",
+        ],
+        cwd=ROOT,
+        check=True,
+        text=True,
+        capture_output=True,
+    )
+
+    payload = json.loads(result.stdout)
+    assert payload["kind"] == "rope_position_distinguishability"
+    assert payload["status"] == "impossible"
+    assert payload["request_passed"] is False
+    guardrail = payload["evidence"]["real_phase_dirichlet_guardrail"]
+    assert guardrail["requested_margin_relation_to_ceiling"] == (
+        "above_dirichlet_ceiling"
+    )
