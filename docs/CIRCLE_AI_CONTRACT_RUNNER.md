@@ -118,8 +118,15 @@ Write receipt JSON files for a request directory:
 python scripts/check_circle_ai_contract_runner.py \
   --example-dir examples/circle_ai_requests \
   --receipt-out-dir reports/circle_ai_receipts \
-  --report-out reports/circle_ai_runner_check.json
+  --report-out reports/circle_ai_runner_check.json \
+  --require-status proved \
+  --require-passed
 ```
+
+The batch checker records its gate policy in
+`circle_ai_runner_check.json`. If any receipt violates `--require-status` or
+`--require-passed`, the report is still written with the receipt summaries and
+the command exits nonzero.
 
 ## Receipt Statuses
 

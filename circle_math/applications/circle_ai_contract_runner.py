@@ -1705,6 +1705,18 @@ def build_contract_runner_check_json_schema() -> dict[str, Any]:
         },
         "additionalProperties": False,
     }
+    gate_policy = {
+        "type": "object",
+        "required": ["allowed_statuses", "require_passed"],
+        "properties": {
+            "allowed_statuses": {
+                "type": "array",
+                "items": {"enum": list(STATUS_VALUES)},
+            },
+            "require_passed": {"type": "boolean"},
+        },
+        "additionalProperties": False,
+    }
     return {
         "$schema": "https://json-schema.org/draft/2020-12/schema",
         "$id": (
@@ -1719,6 +1731,7 @@ def build_contract_runner_check_json_schema() -> dict[str, Any]:
             "example_count",
             "failure_count",
             "failures",
+            "gate_policy",
             "summaries",
         ],
         "properties": {
@@ -1727,6 +1740,7 @@ def build_contract_runner_check_json_schema() -> dict[str, Any]:
             "example_count": {"type": "integer", "minimum": 0},
             "failure_count": {"type": "integer", "minimum": 0},
             "failures": string_list,
+            "gate_policy": gate_policy,
             "summaries": {"type": "array", "items": summary},
         },
         "additionalProperties": False,

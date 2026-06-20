@@ -17,6 +17,31 @@
       },
       "type": "array"
     },
+    "gate_policy": {
+      "additionalProperties": false,
+      "properties": {
+        "allowed_statuses": {
+          "items": {
+            "enum": [
+              "proved",
+              "impossible",
+              "undecided",
+              "numerical_only",
+              "outside_scope"
+            ]
+          },
+          "type": "array"
+        },
+        "require_passed": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "allowed_statuses",
+        "require_passed"
+      ],
+      "type": "object"
+    },
     "ok": {
       "type": "boolean"
     },
@@ -109,6 +134,7 @@
     "example_count",
     "failure_count",
     "failures",
+    "gate_policy",
     "summaries"
   ],
   "title": "Circle AI Contract Runner Check Report",

@@ -204,13 +204,17 @@ For a directory of request files, write all generated receipt JSON files:
 python scripts/check_circle_ai_contract_runner.py \
   --example-dir examples/circle_ai_requests \
   --receipt-out-dir reports/circle_ai_receipts \
-  --report-out reports/circle_ai_runner_check.json
+  --report-out reports/circle_ai_runner_check.json \
+  --require-status proved \
+  --require-passed
 ```
 
 The report file uses schema id `circle_calculus.ai_contract_runner_check.v0` and
 records the request path, optional receipt path, status, theorem count,
 recommendation count, validation-command count, and fingerprints for each
 request.
+It also records the batch gate policy. If a receipt violates the required
+status or pass condition, the checker still writes the report and exits nonzero.
 
 ## Receipt Reading Loop
 

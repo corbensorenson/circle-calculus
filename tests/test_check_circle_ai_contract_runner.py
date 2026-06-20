@@ -55,6 +55,10 @@ def test_check_circle_ai_contract_runner_emits_json_report() -> None:
     assert payload["example_count"] == 4
     assert payload["failure_count"] == 0
     assert payload["failures"] == []
+    assert payload["gate_policy"] == {
+        "allowed_statuses": [],
+        "require_passed": False,
+    }
     assert all(
         len(summary["request_content_fingerprint"]) == 64
         for summary in payload["summaries"]
@@ -114,3 +118,55 @@ def test_check_circle_ai_contract_runner_writes_report_file(tmp_path: Path) -> N
     assert payload["ok"] is True
     assert len(payload["summaries"]) == 4
     assert all(summary["receipt_path"] for summary in payload["summaries"])
+
+
+def test_check_circle_ai_contract_runner_accepts_batch_gate() -> None:
+    result = subprocess.run(
+        [
+            sys.executable,
+            "scripts/check_circle_ai_contract_runner.py",
+            "--require-status",
+            "proved",
+            "--require-passed",
+            "--format",
+            "json",
+        ],
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+
+    payload = json.loads(result.stdout)
+    jsonschema.validate(payload, _runner_check_schema())
+    assert payload["ok"] is True
+    assert payload["gate_policy"] == {
+        "allowed_statuses": ["proved"],
+        "require_passed": True,
+    }
+
+
+def test_check_circle_ai_contract_runner_rejects_batch_gate() -> None:
+    result = subprocess.run(
+        [
+            sys.executable,
+            "scripts/check_circle_ai_contract_runner.py",
+            "--require-status",
+            "impossible",
+            "--format",
+            "json",
+        ],
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+
+    payload = json.loads(result.stdout)
+    jsonschema.validate(payload, _runner_check_schema())
+    assert result.returncode == 1
+    assert payload["ok"] is False
+    assert payload["gate_policy"] == {
+        "allowed_statuses": ["impossible"],
+        "require_passed": False,
+    }
+    assert payload["failure_count"] == 4
+    assert all("did not match required status set" in failure for failure in payload["failures"])

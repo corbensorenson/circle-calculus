@@ -25,6 +25,7 @@ from circle_math.applications import (  # noqa: E402
 )
 from circle_math.applications.circle_ai_contract_runner import (  # noqa: E402
     RUNNER_CHECK_SCHEMA_ID,
+    STATUS_VALUES,
 )
 
 
@@ -83,6 +84,8 @@ def check_runner_examples(
     receipt_schema_path: Path = DEFAULT_RECEIPT_SCHEMA,
     runner_check_schema_path: Path = DEFAULT_RUNNER_CHECK_SCHEMA,
     receipt_out_dir: Path | None = None,
+    required_statuses: tuple[str, ...] = (),
+    require_passed: bool = False,
 ) -> dict[str, Any]:
     request_schema = _json(request_schema_path)
     request_validation_schema = _json(request_validation_schema_path)
@@ -116,29 +119,34 @@ def check_runner_examples(
             if receipt_out_dir is not None:
                 receipt_path = receipt_out_dir / f"{path.stem.removesuffix('_request')}_receipt.json"
                 _write_json(receipt_path, receipt)
-            summaries.append(
-                {
-                    "request_path": _display_path(path),
-                    "receipt_path": (
-                        None if receipt_path is None else _display_path(receipt_path)
-                    ),
-                    "kind": receipt["kind"],
-                    "status": receipt["status"],
-                    "request_passed": receipt["request_passed"],
-                    "theorem_count": receipt["proof_status"]["theorem_count"],
-                    "recommendation_count": len(receipt["recommendations"]),
-                    "validation_command_count": len(receipt["validation_commands"]),
-                    "request_content_fingerprint": receipt[
-                        "request_content_fingerprint"
-                    ],
-                    "normalized_request_fingerprint": receipt[
-                        "normalized_request_fingerprint"
-                    ],
-                    "receipt_content_fingerprint": receipt[
-                        "receipt_content_fingerprint"
-                    ],
-                }
-            )
+            summary = {
+                "request_path": _display_path(path),
+                "receipt_path": (
+                    None if receipt_path is None else _display_path(receipt_path)
+                ),
+                "kind": receipt["kind"],
+                "status": receipt["status"],
+                "request_passed": receipt["request_passed"],
+                "theorem_count": receipt["proof_status"]["theorem_count"],
+                "recommendation_count": len(receipt["recommendations"]),
+                "validation_command_count": len(receipt["validation_commands"]),
+                "request_content_fingerprint": receipt["request_content_fingerprint"],
+                "normalized_request_fingerprint": receipt[
+                    "normalized_request_fingerprint"
+                ],
+                "receipt_content_fingerprint": receipt["receipt_content_fingerprint"],
+            }
+            summaries.append(summary)
+            if required_statuses and summary["status"] not in required_statuses:
+                failures.append(
+                    f"{path}: receipt status {summary['status']!r} did not match "
+                    "required status set: " + ", ".join(required_statuses)
+                )
+            if require_passed and summary["request_passed"] is not True:
+                failures.append(
+                    f"{path}: receipt request_passed was not true "
+                    f"(got {summary['request_passed']!r})"
+                )
         except (ValueError, jsonschema.ValidationError, jsonschema.SchemaError) as exc:
             failures.append(f"{path}: {exc}")
 
@@ -148,6 +156,10 @@ def check_runner_examples(
         "example_count": len(summaries),
         "failure_count": len(failures),
         "failures": failures,
+        "gate_policy": {
+            "allowed_statuses": list(required_statuses),
+            "require_passed": require_passed,
+        },
         "summaries": summaries,
     }
     jsonschema.validate(report, runner_check_schema)
@@ -196,6 +208,21 @@ def main() -> int:
         type=Path,
         help="Optional path where the schema-validated batch check report is written.",
     )
+    parser.add_argument(
+        "--require-status",
+        action="append",
+        choices=STATUS_VALUES,
+        default=[],
+        help=(
+            "Require every emitted receipt status to match this value. May be "
+            "passed more than once."
+        ),
+    )
+    parser.add_argument(
+        "--require-passed",
+        action="store_true",
+        help="Exit nonzero unless every emitted receipt has request_passed=true.",
+    )
     args = parser.parse_args()
 
     report = check_runner_examples(
@@ -206,6 +233,8 @@ def main() -> int:
         receipt_schema_path=args.receipt_schema,
         runner_check_schema_path=args.runner_check_schema,
         receipt_out_dir=args.receipt_out_dir,
+        required_statuses=tuple(args.require_status),
+        require_passed=args.require_passed,
     )
     if args.report_out is not None:
         _write_json(args.report_out, report)
@@ -215,7 +244,9 @@ def main() -> int:
         print(
             "circle AI runner examples "
             f"ok={report['ok']} examples={report['example_count']} "
-            f"failures={report['failure_count']}"
+            f"failures={report['failure_count']} "
+            f"required_statuses={report['gate_policy']['allowed_statuses']} "
+            f"require_passed={report['gate_policy']['require_passed']}"
         )
         for summary in report["summaries"]:
             print(
