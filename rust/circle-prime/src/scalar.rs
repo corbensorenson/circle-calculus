@@ -88,15 +88,14 @@ pub const PRIME_RANGE_COUNT_LEAN_NAMES: [&str; 2] = [
 ];
 pub const SMALL_PRIME_HORIZONS: [u64; 12] = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37];
 const WHEEL30_FILTERED_SMALL_PRIME_HORIZONS: [u64; 9] = [7, 11, 13, 17, 19, 23, 29, 31, 37];
+#[cfg(test)]
 const NEXT_PRIME_WHEEL30_RESIDUES: [u64; 8] = [1, 7, 11, 13, 17, 19, 23, 29];
 const NEXT_PRIME_WHEEL30_GAPS: [u64; 8] = [6, 4, 2, 4, 2, 4, 6, 2];
 const NEXT_PRIME_WHEEL30_DELTA_BY_RESIDUE: [u64; 30] = [
-    1, 0, 5, 4, 3, 2, 1, 0, 3, 2, 1, 0, 1, 0, 3, 2, 1, 0, 1, 0, 3, 2, 1, 0, 5, 4,
-    3, 2, 1, 0,
+    1, 0, 5, 4, 3, 2, 1, 0, 3, 2, 1, 0, 1, 0, 3, 2, 1, 0, 1, 0, 3, 2, 1, 0, 5, 4, 3, 2, 1, 0,
 ];
 const NEXT_PRIME_WHEEL30_INDEX_BY_RESIDUE: [usize; 30] = [
-    0, 0, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 4, 4, 4, 4, 5, 5, 6, 6, 6, 6, 7, 7,
-    7, 7, 7, 7,
+    0, 0, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 4, 4, 4, 4, 5, 5, 6, 6, 6, 6, 7, 7, 7, 7, 7, 7,
 ];
 pub const ANGLE_BUNDLE_HORIZON_PRODUCTS: [u64; 1] = [
     433_601_713_048_867_373, // 41..79
@@ -441,7 +440,10 @@ mod tests {
         for start in 0..300u64 {
             let (candidate, index) = first_wheel30_candidate_at_or_above(start).unwrap();
             assert!(candidate >= start, "start={start}");
-            assert!(is_wheel30_residue(candidate), "start={start}, candidate={candidate}");
+            assert!(
+                is_wheel30_residue(candidate),
+                "start={start}, candidate={candidate}"
+            );
             assert_eq!(
                 candidate % 30,
                 NEXT_PRIME_WHEEL30_RESIDUES[index],
@@ -456,17 +458,11 @@ mod tests {
 
     #[test]
     fn first_wheel30_candidate_lookup_handles_u64_ceiling() {
-        assert_eq!(
-            first_wheel30_candidate_at_or_above(u64::MAX),
-            None
-        );
-        assert_eq!(
-            first_wheel30_candidate_at_or_above(u64::MAX - 1),
-            None
-        );
+        assert_eq!(first_wheel30_candidate_at_or_above(u64::MAX), None);
+        assert_eq!(first_wheel30_candidate_at_or_above(u64::MAX - 1), None);
         assert_eq!(
             first_wheel30_candidate_at_or_above(18_446_744_073_709_551_557),
-            Some((18_446_744_073_709_551_557, 2))
+            Some((18_446_744_073_709_551_557, 4))
         );
     }
 
