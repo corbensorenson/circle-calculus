@@ -3,6 +3,7 @@ import Mathlib.Data.Int.GCD
 import Mathlib.Data.Int.Cast.Basic
 import Mathlib.Algebra.Order.Archimedean.Real.Basic
 import Mathlib.Analysis.Real.Pi.Bounds
+import Mathlib.NumberTheory.DiophantineApproximation.Basic
 import Mathlib.Data.Real.Basic
 import Mathlib.Algebra.Order.BigOperators.Group.Finset
 import Mathlib.Data.Finset.Range
@@ -1404,6 +1405,33 @@ target later. -/
 def ropeTurnRatioFiniteMargin (turnRatio margin : ℝ) (context : Nat) : Prop :=
   ∀ gap : Nat, 0 < gap → gap < context → ∀ turns : Int,
     margin ≤ ropeTurnRatioError turnRatio gap turns
+
+/-- Dirichlet's approximation theorem gives a finite-context near-integer
+witness for every turn ratio.
+
+For any nontrivial inspected context, some positive gap below that context has
+nearest-integer error at most `1 / context`. This is an upper-bound guardrail
+for future RoPE margin claims: it does not prove a certified margin, but it
+shows that overly aggressive finite-context margins must confront a concrete
+near-return witness. -/
+theorem exists_ropeTurnRatioError_le_inv_context
+    (turnRatio : ℝ) {context : Nat} (hcontext : 1 < context) :
+    ∃ gap : Nat, 0 < gap ∧ gap < context ∧
+      ∃ turns : Int, ropeTurnRatioError turnRatio gap turns ≤ (1 : ℝ) / context := by
+  have hcontext_pos : 0 < context := Nat.zero_lt_of_lt hcontext
+  have hone_le_context : 1 ≤ context := le_of_lt hcontext
+  have hn_pos : 0 < context - 1 := Nat.sub_pos_of_lt hcontext
+  rcases Real.exists_nat_abs_mul_sub_round_le turnRatio hn_pos with
+    ⟨gap, hgap_pos, hgap_le, herror⟩
+  refine ⟨gap, hgap_pos, ?_, round ((gap : ℝ) * turnRatio), ?_⟩
+  · have hsub_lt : context - 1 < context :=
+      Nat.sub_lt hcontext_pos (by norm_num)
+    exact lt_of_le_of_lt hgap_le hsub_lt
+  · have hden : ((context - 1 : Nat) : ℝ) + 1 = (context : ℝ) := by
+      have hnat : context - 1 + 1 = context :=
+        Nat.sub_add_cancel hone_le_context
+      exact_mod_cast hnat
+    simpa [ropeTurnRatioError, hden] using herror
 
 /-- One near-integer witness obstructs a finite-context turn-ratio margin.
 

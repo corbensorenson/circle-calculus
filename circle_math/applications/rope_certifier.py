@@ -204,6 +204,7 @@ ROPE_REAL_PHASE_PRECURSOR_THEOREMS: tuple[str, ...] = (
     "AIRA-T0237",
     "AIRA-T0232",
     "AIRA-T0238",
+    "AIRA-T0239",
     "AIRA-T0222",
     "AIRA-T0223",
     "AIRA-T0224",
@@ -265,6 +266,7 @@ ROPE_REAL_PHASE_PRECURSOR_LEAN_DECLARATIONS: tuple[str, ...] = (
     "Circle.Applications.ropeStandardChannel0D19_proved_request_firstChannel_bank_noNearTurn_onContext",
     "Circle.Applications.ropeStandardChannel0D19_proved_request_radianFirstChannel_bank_noNearTurn_onContext",
     "Circle.Applications.ropeStandardChannel0D19_contextRange_radianFirstChannel_request_semantic_trichotomy",
+    "Circle.Applications.exists_ropeTurnRatioError_le_inv_context",
     "Circle.Applications.ropeTurnRatioOneOverNat_gapOneNearestIntegerMargin",
     "Circle.Applications.ropeTurnRatioOneOverNat_exactWeakestGapMargin_report",
     "Circle.Applications.ropeTurnRatioGapNearestIntegerMargin_le_error",
@@ -4086,8 +4088,9 @@ def certificate_summary_lines(certificate: RoPEPositionCertificate) -> tuple[str
         "no-near-turn iff, finite-certificate bank bridge, context-range obstruction "
         "bridge, request-level D19 classifier bridge, classifier threshold "
         "ordering, branch-disjointness, open-gap, exhaustive-status, and exact-width guards, "
+        "finite-context Dirichlet upper-bound guardrail, "
         "plus band-endpoint and band-list compression bridge precursors only; "
-        "not a Diophantine proof)",
+        "not a positive Diophantine margin proof)",
         f"theorem_ids={','.join(certificate.theorem_ids)}",
         certificate.claim_boundary,
     )

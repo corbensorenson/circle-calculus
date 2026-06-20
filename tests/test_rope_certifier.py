@@ -16,6 +16,7 @@ from circle_math.applications import (
     ROPE_ONE_OVER_NAT_EXACT_MARGIN_THEOREMS,
     ROPE_RATIONAL_PRESET_4099_NAME,
     ROPE_RATIONAL_PRESET_4099_THEOREMS,
+    ROPE_REAL_PHASE_PRECURSOR_LEAN_DECLARATIONS,
     ROPE_REAL_PHASE_PRECURSOR_THEOREMS,
     ROPE_STANDARD_CHANNEL0_INTERVAL_COMPRESSION_THEOREMS,
     ROPE_STANDARD_CHANNEL0_INTERVAL_SEED_NAME,
@@ -200,6 +201,15 @@ def test_real_phase_nat_turn_error_matches_endpoint_precursor_shape() -> None:
     assert "AIRA-T0237" in ROPE_REAL_PHASE_PRECURSOR_THEOREMS
     assert "AIRA-T0232" in ROPE_REAL_PHASE_PRECURSOR_THEOREMS
     assert "AIRA-T0238" in ROPE_REAL_PHASE_PRECURSOR_THEOREMS
+    assert "AIRA-T0239" in ROPE_REAL_PHASE_PRECURSOR_THEOREMS
+
+
+def test_real_phase_precursor_theorem_inventory_includes_dirichlet_guardrail() -> None:
+    assert "AIRA-T0239" in ROPE_REAL_PHASE_PRECURSOR_THEOREMS
+    assert (
+        "Circle.Applications.exists_ropeTurnRatioError_le_inv_context"
+        in ROPE_REAL_PHASE_PRECURSOR_LEAN_DECLARATIONS
+    )
 
 
 def test_rope_quickstart_precursor_line_matches_certifier_constant() -> None:
