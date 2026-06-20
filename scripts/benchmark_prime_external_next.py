@@ -79,7 +79,9 @@ class NextMeasurement:
 
 def main() -> int:
     parser = argparse.ArgumentParser(
-        description="Benchmark Circle next-prime search against primesieve --nth-prime."
+        description=(
+            "Benchmark Circle next-prime search against external next-prime controls."
+        )
     )
     parser.add_argument("--starts", default=DEFAULT_STARTS)
     parser.add_argument("--rounds", type=int, default=5)
@@ -96,7 +98,25 @@ def main() -> int:
         "--external-threads",
         type=int,
         default=0,
-        help="Thread count for primesieve. Use 0 for primesieve's default/all cores.",
+        help=(
+            "Thread count for external controls. Use 0 for the tool default/all cores "
+            "where supported."
+        ),
+    )
+    parser.add_argument(
+        "--include-primecount",
+        action="store_true",
+        help=(
+            "Also benchmark primecount as pi(START-1) followed by --nth-prime. "
+            "This is capped by --primecount-max-start because near-u64 pi(x) is "
+            "not a short-run next-prime control."
+        ),
+    )
+    parser.add_argument(
+        "--primecount-max-start",
+        type=int,
+        default=1_000_000_000_000,
+        help="Largest START value eligible for the optional primecount next-prime control.",
     )
     parser.add_argument(
         "--include-circle-server",
@@ -108,7 +128,7 @@ def main() -> int:
     parser.add_argument("--metadata-output", type=Path)
     parser.add_argument(
         "--require-tool",
-        choices=("primesieve",),
+        choices=("primesieve", "primecount"),
         action="append",
         default=[],
         help="Fail if the named external next-prime control is unavailable.",
@@ -121,11 +141,38 @@ def main() -> int:
         parser.error("--batch-size must be positive")
     if args.external_threads < 0:
         parser.error("--external-threads must be nonnegative")
+    if args.primecount_max_start < 0:
+        parser.error("--primecount-max-start must be nonnegative")
 
     starts = parse_starts(args.starts)
     started_at_utc = utc_now()
     primesieve = shutil.which("primesieve")
-    if primesieve is None:
+    include_primecount = args.include_primecount or "primecount" in args.require_tool
+    primecount = shutil.which("primecount") if include_primecount else None
+    missing_required = [
+        tool
+        for tool, path in [("primesieve", primesieve), ("primecount", primecount)]
+        if tool in args.require_tool and path is None
+    ]
+    if missing_required:
+        metadata = build_run_metadata(
+            args=args,
+            starts=starts,
+            started_at_utc=started_at_utc,
+            cargo=None,
+            circle_prime=None,
+            primesieve=primesieve,
+            primecount=primecount,
+            row_count=0,
+        )
+        emit_metadata(metadata, args.metadata_output)
+        message = (
+            "required external next-prime control unavailable: "
+            + ", ".join(missing_required)
+            + "; install with `brew install primesieve primecount`"
+        )
+        raise RuntimeError(message)
+    if primesieve is None and primecount is None:
         metadata = build_run_metadata(
             args=args,
             starts=starts,
@@ -133,16 +180,15 @@ def main() -> int:
             cargo=None,
             circle_prime=None,
             primesieve=None,
+            primecount=None,
             row_count=0,
         )
         emit_metadata(metadata, args.metadata_output)
-        message = (
-            "required external next-prime control unavailable: primesieve; "
-            "install with `brew install primesieve`"
+        print(
+            "no external next-prime controls available; install `primesieve` "
+            "or run with `--include-primecount` after installing `primecount`",
+            file=sys.stderr,
         )
-        if args.require_tool:
-            raise RuntimeError(message)
-        print(message, file=sys.stderr)
         return 0
 
     cargo = require_cargo()
@@ -153,11 +199,13 @@ def main() -> int:
         start_rows, start_samples = measure_start_interleaved(
             circle_prime=circle_prime,
             primesieve=primesieve,
+            primecount=primecount,
             start=start,
             batch_size=args.batch_size,
             external_threads=args.external_threads,
             rounds=args.rounds,
             include_circle_server=args.include_circle_server,
+            primecount_max_start=args.primecount_max_start,
         )
         rows.extend(start_rows)
         samples.extend(start_samples)
@@ -171,6 +219,7 @@ def main() -> int:
         cargo=cargo,
         circle_prime=circle_prime,
         primesieve=primesieve,
+        primecount=primecount,
         row_count=len(rows),
     )
     emit_metadata(metadata, args.metadata_output)
@@ -198,18 +247,28 @@ def parse_starts(raw: str) -> list[int]:
 def measure_start_interleaved(
     *,
     circle_prime: Path,
-    primesieve: str,
+    primesieve: str | None,
+    primecount: str | None,
     start: int,
     batch_size: int,
     external_threads: int,
     rounds: int,
     include_circle_server: bool = False,
+    primecount_max_start: int = 1_000_000_000_000,
 ) -> tuple[list[NextBenchRow], list[NextBenchSample]]:
     measurements = [circle_next_measurement(circle_prime, start, batch_size)]
     if include_circle_server:
         measurements.append(circle_next_server_measurement(circle_prime, start, batch_size))
-    baseline = primesieve_next_measurement(primesieve, start, batch_size, external_threads)
-    measurements.append(baseline)
+    if primesieve is not None:
+        measurements.append(
+            primesieve_next_measurement(primesieve, start, batch_size, external_threads)
+        )
+    if primecount is not None and start <= primecount_max_start:
+        measurements.append(
+            primecount_next_measurement(primecount, start, batch_size, external_threads)
+        )
+    if not any(measurement.name.startswith("external_") for measurement in measurements):
+        raise ValueError(f"no external next-prime control selected for start={start}")
     try:
         timing_rows, samples = measure_interleaved_next(measurements, rounds)
     finally:
@@ -217,14 +276,15 @@ def measure_start_interleaved(
             if measurement.close is not None:
                 measurement.close()
 
-    baseline_row = next(row for row in timing_rows if row.name == "external_primesieve_next_prime")
-    circle_rows = [row for row in timing_rows if row.name != "external_primesieve_next_prime"]
+    baseline_rows = [row for row in timing_rows if row.name.startswith("external_")]
+    circle_rows = [row for row in timing_rows if not row.name.startswith("external_")]
     rows: list[NextBenchRow] = []
     rows.extend(circle_rows)
-    rows.append(baseline_row)
+    rows.extend(baseline_rows)
     for circle_row in circle_rows:
-        verify_next_prime(circle_row, baseline_row)
-        rows.append(speedup_row(circle_row, baseline_row))
+        for baseline_row in baseline_rows:
+            verify_next_prime(circle_row, baseline_row)
+            rows.append(speedup_row(circle_row, baseline_row))
     return rows, samples
 
 
@@ -396,12 +456,82 @@ def primesieve_next_measurement(
     )
 
 
+def primecount_next_measurement(
+    binary: str,
+    start: int,
+    batch_size: int,
+    threads: int,
+) -> NextMeasurement:
+    expected_prime = run_primecount_next_prime(binary, start, threads)
+
+    def run_once() -> int:
+        result = 0
+        for _ in range(batch_size):
+            result = run_primecount_next_prime(binary, start, threads)
+            if result != expected_prime:
+                raise AssertionError(
+                    f"primecount next-prime result changed for start={start}: "
+                    f"expected {expected_prime}, got {result}"
+                )
+        return result
+
+    return NextMeasurement(
+        name="external_primecount_next_prime",
+        start=start,
+        batch_size=batch_size,
+        threads=threads,
+        requested_threads=threads,
+        candidate_count=0,
+        run_once=run_once,
+    )
+
+
 def primesieve_next_command(binary: str, start: int, threads: int) -> list[str]:
     predecessor = max(start - 1, 1)
     command = [binary, "1", str(predecessor), "--nth-prime", "--quiet"]
     if threads > 0:
         command.append(f"--threads={threads}")
     return command
+
+
+def primecount_pi_command(binary: str, start: int, threads: int) -> list[str] | None:
+    if start <= 2:
+        return None
+    command = [binary, str(start - 1)]
+    if threads > 0:
+        command.append(f"--threads={threads}")
+    return command
+
+
+def primecount_nth_prime_command(binary: str, nth: int, threads: int) -> list[str]:
+    command = [binary, str(nth), "--nth-prime"]
+    if threads > 0:
+        command.append(f"--threads={threads}")
+    return command
+
+
+def run_primecount_next_prime(binary: str, start: int, threads: int) -> int:
+    pi_command = primecount_pi_command(binary, start, threads)
+    if pi_command is None:
+        pi_before_start = 0
+    else:
+        completed = subprocess.run(
+            pi_command,
+            cwd=ROOT,
+            check=True,
+            text=True,
+            capture_output=True,
+        )
+        pi_before_start = parse_integer_output(completed.stdout)
+
+    completed = subprocess.run(
+        primecount_nth_prime_command(binary, pi_before_start + 1, threads),
+        cwd=ROOT,
+        check=True,
+        text=True,
+        capture_output=True,
+    )
+    return parse_integer_output(completed.stdout)
 
 
 def measure_interleaved_next(
@@ -568,6 +698,7 @@ def build_run_metadata(
     cargo: str | None,
     circle_prime: Path | None,
     primesieve: str | None,
+    primecount: str | None,
     row_count: int,
 ) -> dict[str, Any]:
     circle_binary = circle_prime or ROOT / "target" / "release" / "circle-prime"
@@ -578,6 +709,10 @@ def build_run_metadata(
         "rounds": args.rounds,
         "batch_size": args.batch_size,
         "include_circle_server": bool(getattr(args, "include_circle_server", False)),
+        "include_primecount": bool(
+            getattr(args, "include_primecount", False) or "primecount" in args.require_tool
+        ),
+        "primecount_max_start": int(getattr(args, "primecount_max_start", 0)),
         "starts": starts,
         "sample_output": str(args.sample_output) if args.sample_output is not None else None,
         "thread_policy": {
@@ -589,6 +724,7 @@ def build_run_metadata(
         "tools": {
             "circle_prime": circle_prime_metadata(cargo, circle_prime),
             "primesieve": external_tool_metadata("primesieve", primesieve, ["--version"]),
+            "primecount": external_tool_metadata("primecount", primecount, ["--version"]),
         },
         "commands": [
             {
@@ -599,6 +735,21 @@ def build_run_metadata(
                 "primesieve": (
                     primesieve_next_command(primesieve, start, args.external_threads)
                     if primesieve is not None
+                    else None
+                ),
+                "primecount_pi": (
+                    primecount_pi_command(primecount, start, args.external_threads)
+                    if primecount is not None and start <= args.primecount_max_start
+                    else None
+                ),
+                "primecount_nth_prime": (
+                    [str(primecount), "pi(START-1)+1", "--nth-prime"]
+                    + (
+                        [f"--threads={args.external_threads}"]
+                        if args.external_threads > 0
+                        else []
+                    )
+                    if primecount is not None and start <= args.primecount_max_start
                     else None
                 ),
             }

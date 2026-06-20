@@ -882,31 +882,52 @@ def summarize_external_next(
         row for row in speedups if not is_external_next_server_row(row)
     ]
     server_speedups = [row for row in speedups if is_external_next_server_row(row)]
+    counts = external_next_win_counts(speedups)
     return {
         "available": bool(rows),
         "speedups": speedups,
-        "primesieve_rows": len(speedups),
-        "primesieve_wins": sum(
-            1 for row in speedups if row["circle_speedup"] >= 1.0
-        ),
-        "primesieve_median_wins": sum(
-            1 for row in speedups if row["median_circle_speedup"] >= 1.0
-        ),
+        "baseline_rows": counts["baseline_rows"],
+        "baseline_wins": counts["baseline_wins"],
+        "baseline_median_wins": counts["baseline_median_wins"],
+        "by_baseline": counts["by_baseline"],
+        "primesieve_rows": counts["primesieve_rows"],
+        "primesieve_wins": counts["primesieve_wins"],
+        "primesieve_median_wins": counts["primesieve_median_wins"],
         "cold_cli": external_next_win_counts(cold_cli_speedups),
         "server": external_next_win_counts(server_speedups),
         "metadata": summarize_external_next_metadata(metadata),
     }
 
 
-def external_next_win_counts(speedups: list[dict[str, Any]]) -> dict[str, int]:
+def external_next_win_counts(speedups: list[dict[str, Any]]) -> dict[str, Any]:
+    by_baseline: dict[str, dict[str, int]] = {}
+    for row in speedups:
+        baseline = row["baseline"]
+        counts = by_baseline.setdefault(
+            baseline,
+            {
+                "rows": 0,
+                "wins": 0,
+                "median_wins": 0,
+            },
+        )
+        counts["rows"] += 1
+        counts["wins"] += int(row["circle_speedup"] >= 1.0)
+        counts["median_wins"] += int(row["median_circle_speedup"] >= 1.0)
+    primesieve = by_baseline.get(
+        "external_primesieve_next_prime",
+        {"rows": 0, "wins": 0, "median_wins": 0},
+    )
     return {
-        "primesieve_rows": len(speedups),
-        "primesieve_wins": sum(
-            1 for row in speedups if row["circle_speedup"] >= 1.0
-        ),
-        "primesieve_median_wins": sum(
+        "baseline_rows": len(speedups),
+        "baseline_wins": sum(1 for row in speedups if row["circle_speedup"] >= 1.0),
+        "baseline_median_wins": sum(
             1 for row in speedups if row["median_circle_speedup"] >= 1.0
         ),
+        "by_baseline": by_baseline,
+        "primesieve_rows": primesieve["rows"],
+        "primesieve_wins": primesieve["wins"],
+        "primesieve_median_wins": primesieve["median_wins"],
     }
 
 
@@ -1046,6 +1067,8 @@ def summarize_external_next_metadata(metadata: dict[str, Any] | None) -> dict[st
             "thread_policy": {},
             "starts": [],
             "batch_size": None,
+            "include_primecount": False,
+            "primecount_max_start": None,
             "required_external_tools": [],
         }
     tools = metadata.get("tools", {})
@@ -1057,6 +1080,8 @@ def summarize_external_next_metadata(metadata: dict[str, Any] | None) -> dict[st
         "row_count": metadata.get("row_count"),
         "batch_size": metadata.get("batch_size"),
         "include_circle_server": bool(metadata.get("include_circle_server")),
+        "include_primecount": bool(metadata.get("include_primecount")),
+        "primecount_max_start": metadata.get("primecount_max_start"),
         "sample_output": metadata.get("sample_output"),
         "thread_policy": metadata.get("thread_policy", {}),
         "starts": metadata.get("starts", []),
@@ -1988,9 +2013,9 @@ def render_external_next_markdown(summary: dict[str, Any]) -> list[str]:
 
     cold_summary = summary.get("cold_cli", summary)
     server_summary = summary.get("server", {})
-    lines.append(external_next_lane_summary_line("cold CLI", cold_summary))
-    if server_summary.get("primesieve_rows", 0):
-        lines.append(external_next_lane_summary_line("server", server_summary))
+    lines.extend(external_next_lane_summary_lines("cold CLI", cold_summary))
+    if server_summary.get("baseline_rows", 0):
+        lines.extend(external_next_lane_summary_lines("server", server_summary))
     lines.append("")
     metadata = summary.get("metadata", {})
     if metadata.get("available"):
@@ -1998,8 +2023,8 @@ def render_external_next_markdown(summary: dict[str, Any]) -> list[str]:
     if summary["speedups"]:
         lines.extend(
             [
-                "| Start | Prime | Candidates | Batch | Circle ms | Baseline ms | Best Speedup | Median Speedup | Samples | Verdict |",
-                "| ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- | --- |",
+                "| Start | Baseline | Prime | Candidates | Batch | Circle ms | Baseline ms | Best Speedup | Median Speedup | Samples | Verdict |",
+                "| ---: | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- | --- |",
             ]
         )
         for row in summary["speedups"]:
@@ -2009,7 +2034,8 @@ def render_external_next_markdown(summary: dict[str, Any]) -> list[str]:
                 else f"{row['baseline_best_ms']:.3f}"
             )
             lines.append(
-                f"| {row['start']} | {row['result']} | {row['candidate_count']} | "
+                f"| {row['start']} | `{external_next_baseline_label(row['baseline'])}` | "
+                f"{row['result']} | {row['candidate_count']} | "
                 f"{row['batch_size']} | {row['best_ms']:.3f} | {baseline_ms} | "
                 f"{row['circle_speedup']:.3f} | {row['median_circle_speedup']:.3f} | "
                 f"{sample_stability_text(row)} | {row['verdict']} |"
@@ -2018,20 +2044,47 @@ def render_external_next_markdown(summary: dict[str, Any]) -> list[str]:
     return lines
 
 
-def external_next_lane_summary_line(lane_label: str, summary: dict[str, Any]) -> str:
-    return (
-        f"- `primesieve --nth-prime` {lane_label}: Circle faster on "
-        f"{summary.get('primesieve_wins', 0)}/{summary.get('primesieve_rows', 0)} "
-        "rows by best time; median faster on "
-        f"{summary.get('primesieve_median_wins', 0)}/"
-        f"{summary.get('primesieve_rows', 0)} rows."
-    )
+def external_next_lane_summary_lines(
+    lane_label: str,
+    summary: dict[str, Any],
+) -> list[str]:
+    by_baseline = summary.get("by_baseline") or {}
+    if not by_baseline:
+        return []
+    lines = []
+    for baseline in sorted(by_baseline, key=external_next_baseline_sort_key):
+        counts = by_baseline[baseline]
+        rows = counts.get("rows", 0)
+        lines.append(
+            f"- `{external_next_baseline_label(baseline)}` {lane_label}: "
+            f"Circle faster on {counts.get('wins', 0)}/{rows} rows by best time; "
+            f"median faster on {counts.get('median_wins', 0)}/{rows} rows."
+        )
+    return lines
+
+
+def external_next_baseline_sort_key(baseline: str) -> tuple[int, str]:
+    order = {
+        "external_primesieve_next_prime": 0,
+        "external_primecount_next_prime": 1,
+    }
+    return (order.get(baseline, 99), baseline)
+
+
+def external_next_baseline_label(baseline: str) -> str:
+    labels = {
+        "external_primesieve_next_prime": "primesieve --nth-prime",
+        "external_primecount_next_prime": "primecount pi+nth-prime",
+    }
+    return labels.get(baseline, baseline)
 
 
 def render_external_next_metadata_markdown(metadata: dict[str, Any]) -> list[str]:
     lines = ["Tool metadata:"]
-    for name in ["circle_prime", "primesieve"]:
+    for name in ["circle_prime", "primesieve", "primecount"]:
         tool = metadata.get("tools", {}).get(name, {})
+        if not tool and name == "primecount":
+            continue
         available = tool.get("available")
         version = tool.get("version") or "version unavailable"
         path = tool.get("path") or "path unavailable"
@@ -2053,6 +2106,15 @@ def render_external_next_metadata_markdown(metadata: dict[str, Any]) -> list[str
         lines.append(f"- repeated searches per sample: `{metadata['batch_size']}`.")
     if metadata.get("include_circle_server"):
         lines.append("- Circle server rows: persistent `next-server` requests included.")
+    if metadata.get("include_primecount"):
+        cap = metadata.get("primecount_max_start")
+        if cap is None:
+            lines.append("- `primecount` next-prime rows included where available.")
+        else:
+            lines.append(
+                "- `primecount` next-prime rows included for starts at or below "
+                f"`{cap}`."
+            )
     required_tools = metadata.get("required_external_tools") or []
     if required_tools:
         formatted = ", ".join(f"`{tool}`" for tool in required_tools)

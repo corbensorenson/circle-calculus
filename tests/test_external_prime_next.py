@@ -11,6 +11,8 @@ from scripts.benchmark_prime_external_next import (
     measure_start_interleaved,
     measure_interleaved_next,
     parse_starts,
+    primecount_nth_prime_command,
+    primecount_pi_command,
     primesieve_next_command,
     speedup_row,
 )
@@ -39,6 +41,26 @@ def test_primesieve_next_command_uses_predecessor_for_inclusive_start() -> None:
         "1",
         "--nth-prime",
         "--quiet",
+    ]
+
+
+def test_primecount_next_commands_use_pi_then_nth_prime() -> None:
+    assert primecount_pi_command("primecount", 97, 8) == [
+        "primecount",
+        "96",
+        "--threads=8",
+    ]
+    assert primecount_pi_command("primecount", 2, 8) is None
+    assert primecount_nth_prime_command("primecount", 26, 8) == [
+        "primecount",
+        "26",
+        "--nth-prime",
+        "--threads=8",
+    ]
+    assert primecount_nth_prime_command("primecount", 1, 0) == [
+        "primecount",
+        "1",
+        "--nth-prime",
     ]
 
 
@@ -169,6 +191,7 @@ def test_measure_start_interleaved_can_include_circle_server(monkeypatch) -> Non
     rows, samples = measure_start_interleaved(
         circle_prime=Path("circle-prime"),
         primesieve="primesieve",
+        primecount=None,
         start=100,
         batch_size=2,
         external_threads=8,
@@ -206,8 +229,10 @@ def test_next_metadata_records_commands_and_tools(monkeypatch) -> None:
         batch_size=2,
         sample_output=Path("samples.csv"),
         external_threads=8,
-        require_tool=["primesieve"],
+        require_tool=["primesieve", "primecount"],
         include_circle_server=True,
+        include_primecount=True,
+        primecount_max_start=1_000_000_000_000,
     )
 
     metadata = build_run_metadata(
@@ -217,16 +242,19 @@ def test_next_metadata_records_commands_and_tools(monkeypatch) -> None:
         cargo=None,
         circle_prime=Path("target/release/circle-prime"),
         primesieve="/opt/bin/primesieve",
+        primecount="/opt/bin/primecount",
         row_count=6,
     )
 
     assert metadata["rounds"] == 5
     assert metadata["batch_size"] == 2
     assert metadata["include_circle_server"] is True
+    assert metadata["include_primecount"] is True
+    assert metadata["primecount_max_start"] == 1_000_000_000_000
     assert metadata["row_count"] == 6
     assert metadata["starts"] == [97, 100]
     assert metadata["sample_output"] == "samples.csv"
-    assert metadata["required_external_tools"] == ["primesieve"]
+    assert metadata["required_external_tools"] == ["primecount", "primesieve"]
     assert metadata["thread_policy"]["external_requested_threads"] == 8
     assert metadata["commands"][0]["circle"] == [
         "target/release/circle-prime",
@@ -243,5 +271,16 @@ def test_next_metadata_records_commands_and_tools(monkeypatch) -> None:
         "96",
         "--nth-prime",
         "--quiet",
+        "--threads=8",
+    ]
+    assert metadata["commands"][0]["primecount_pi"] == [
+        "/opt/bin/primecount",
+        "96",
+        "--threads=8",
+    ]
+    assert metadata["commands"][0]["primecount_nth_prime"] == [
+        "/opt/bin/primecount",
+        "pi(START-1)+1",
+        "--nth-prime",
         "--threads=8",
     ]

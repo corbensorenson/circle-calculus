@@ -1,6 +1,6 @@
 # Prime Engine Report
 
-Generated: `2026-06-20T00:43:24Z`
+Generated: `2026-06-20T01:04:41Z`
 
 ## External Correctness
 
@@ -16,7 +16,7 @@ Largest checked high: `18446744073709551615`.
 
 ## External Controls
 
-- `primesieve` cold CLI: Circle faster on 2/3 rows by best time; median faster on 2/3 rows.
+- `primesieve` cold CLI: Circle faster on 3/3 rows by best time; median faster on 2/3 rows.
 - `primesieve` server: Circle faster on 3/3 rows by best time; median faster on 3/3 rows.
 - `primecount` cold CLI: Circle faster on 3/3 rows by best time; median faster on 3/3 rows.
 - `primecount` server: Circle faster on 3/3 rows by best time; median faster on 3/3 rows.
@@ -34,46 +34,58 @@ Tool metadata:
 
 | Range | Circle Row | Baseline | Best Speedup | Median Speedup | Samples | Verdict |
 | --- | --- | --- | ---: | ---: | --- | --- |
-| [0, 10000000) | `circle_prime_default_count`<br>mode: `prefix-pi` (threads: 1/8) | `external_primesieve_count` (threads: 8) | 1.143 | 1.118 | noisy<br>C n=7, max/med=1.19<br>B n=7, max/med=1.74 | circle_faster |
-| [0, 10000000) | `circle_prime_server_default_count`<br>mode: `prefix-pi` (threads: 1/8) | `external_primesieve_count` (threads: 8) | 31.411 | 30.214 | noisy<br>C n=7, max/med=1.75<br>B n=7, max/med=1.74 | circle_faster |
-| [0, 10000000) | `circle_prime_default_count`<br>mode: `prefix-pi` (threads: 1/8) | `external_primecount_pi_diff` (threads: 8) | 1.695 | 1.728 | noisy<br>C n=7, max/med=1.19<br>B n=7, max/med=1.89 | circle_faster |
-| [0, 10000000) | `circle_prime_server_default_count`<br>mode: `prefix-pi` (threads: 1/8) | `external_primecount_pi_diff` (threads: 8) | 46.562 | 46.670 | noisy<br>C n=7, max/med=1.75<br>B n=7, max/med=1.89 | circle_faster |
-| [0, 100000000) | `circle_prime_default_count`<br>mode: `prefix-pi` (threads: 1/8) | `external_primesieve_count` (threads: 8) | 1.539 | 1.500 | stable<br>C n=7, max/med=1.06<br>B n=7, max/med=1.02 | circle_faster |
-| [0, 100000000) | `circle_prime_server_default_count`<br>mode: `prefix-pi` (threads: 1/8) | `external_primesieve_count` (threads: 8) | 12.099 | 11.654 | stable<br>C n=7, max/med=1.19<br>B n=7, max/med=1.02 | circle_faster |
-| [0, 100000000) | `circle_prime_default_count`<br>mode: `prefix-pi` (threads: 1/8) | `external_primecount_pi_diff` (threads: 8) | 1.520 | 1.477 | stable<br>C n=7, max/med=1.06<br>B n=7, max/med=1.09 | circle_faster |
-| [0, 100000000) | `circle_prime_server_default_count`<br>mode: `prefix-pi` (threads: 1/8) | `external_primecount_pi_diff` (threads: 8) | 11.947 | 11.473 | stable<br>C n=7, max/med=1.19<br>B n=7, max/med=1.09 | circle_faster |
-| [1000000000000, 1000010000000) | `circle_prime_parallel_default_count_7t`<br>mode: `presieve17` (threads: 7/8) | `external_primesieve_count` (threads: 8) | 0.990 | 0.975 | stable<br>C n=7, max/med=1.12<br>B n=7, max/med=1.05 | baseline_faster |
-| [1000000000000, 1000010000000) | `circle_prime_server_parallel_default_count_7t`<br>mode: `presieve17` (threads: 7/8) | `external_primesieve_count` (threads: 8) | 2.293 | 2.160 | stable<br>C n=7, max/med=1.05<br>B n=7, max/med=1.05 | circle_faster |
-| [1000000000000, 1000010000000) | `circle_prime_parallel_default_count_7t`<br>mode: `presieve17` (threads: 7/8) | `external_primecount_pi_diff` (threads: 8) | 4.710 | 6.029 | stable<br>C n=7, max/med=1.12<br>B n=7, max/med=1.45 | circle_faster |
-| [1000000000000, 1000010000000) | `circle_prime_server_parallel_default_count_7t`<br>mode: `presieve17` (threads: 7/8) | `external_primecount_pi_diff` (threads: 8) | 10.914 | 13.351 | stable<br>C n=7, max/med=1.05<br>B n=7, max/med=1.45 | circle_faster |
+| [0, 10000000) | `circle_prime_default_count`<br>mode: `prefix-pi` (threads: 1/8) | `external_primesieve_count` (threads: 8) | 1.067 | 1.146 | stable<br>C n=7, max/med=1.20<br>B n=7, max/med=1.10 | circle_faster |
+| [0, 10000000) | `circle_prime_server_default_count`<br>mode: `prefix-pi` (threads: 1/8) | `external_primesieve_count` (threads: 8) | 31.182 | 26.621 | stable<br>C n=7, max/med=1.40<br>B n=7, max/med=1.10 | circle_faster |
+| [0, 10000000) | `circle_prime_default_count`<br>mode: `prefix-pi` (threads: 1/8) | `external_primecount_pi_diff` (threads: 8) | 1.631 | 1.675 | stable<br>C n=7, max/med=1.20<br>B n=7, max/med=1.13 | circle_faster |
+| [0, 10000000) | `circle_prime_server_default_count`<br>mode: `prefix-pi` (threads: 1/8) | `external_primecount_pi_diff` (threads: 8) | 47.670 | 38.923 | stable<br>C n=7, max/med=1.40<br>B n=7, max/med=1.13 | circle_faster |
+| [0, 100000000) | `circle_prime_default_count`<br>mode: `prefix-pi` (threads: 1/8) | `external_primesieve_count` (threads: 8) | 1.463 | 1.539 | stable<br>C n=7, max/med=1.01<br>B n=7, max/med=1.27 | circle_faster |
+| [0, 100000000) | `circle_prime_server_default_count`<br>mode: `prefix-pi` (threads: 1/8) | `external_primesieve_count` (threads: 8) | 11.137 | 10.247 | stable<br>C n=7, max/med=1.31<br>B n=7, max/med=1.27 | circle_faster |
+| [0, 100000000) | `circle_prime_default_count`<br>mode: `prefix-pi` (threads: 1/8) | `external_primecount_pi_diff` (threads: 8) | 1.530 | 1.623 | stable<br>C n=7, max/med=1.01<br>B n=7, max/med=1.16 | circle_faster |
+| [0, 100000000) | `circle_prime_server_default_count`<br>mode: `prefix-pi` (threads: 1/8) | `external_primecount_pi_diff` (threads: 8) | 11.646 | 10.806 | stable<br>C n=7, max/med=1.31<br>B n=7, max/med=1.16 | circle_faster |
+| [1000000000000, 1000010000000) | `circle_prime_parallel_default_count_7t`<br>mode: `presieve17` (threads: 7/8) | `external_primesieve_count` (threads: 8) | 1.023 | 0.940 | stable<br>C n=7, max/med=1.06<br>B n=7, max/med=1.06 | baseline_faster |
+| [1000000000000, 1000010000000) | `circle_prime_server_parallel_default_count_7t`<br>mode: `presieve17` (threads: 7/8) | `external_primesieve_count` (threads: 8) | 2.440 | 2.121 | stable<br>C n=7, max/med=1.47<br>B n=7, max/med=1.06 | circle_faster |
+| [1000000000000, 1000010000000) | `circle_prime_parallel_default_count_7t`<br>mode: `presieve17` (threads: 7/8) | `external_primecount_pi_diff` (threads: 8) | 5.197 | 5.272 | stable<br>C n=7, max/med=1.06<br>B n=7, max/med=1.18 | circle_faster |
+| [1000000000000, 1000010000000) | `circle_prime_server_parallel_default_count_7t`<br>mode: `presieve17` (threads: 7/8) | `external_primecount_pi_diff` (threads: 8) | 12.389 | 11.897 | stable<br>C n=7, max/med=1.47<br>B n=7, max/med=1.18 | circle_faster |
 
 ## External Next-Prime Search
 
-- `primesieve --nth-prime` cold CLI: Circle faster on 5/5 rows by best time; median faster on 5/5 rows.
+- `primesieve --nth-prime` cold CLI: Circle faster on 4/5 rows by best time; median faster on 5/5 rows.
+- `primecount pi+nth-prime` cold CLI: Circle faster on 4/4 rows by best time; median faster on 4/4 rows.
 - `primesieve --nth-prime` server: Circle faster on 5/5 rows by best time; median faster on 5/5 rows.
+- `primecount pi+nth-prime` server: Circle faster on 4/4 rows by best time; median faster on 4/4 rows.
 
 Tool metadata:
 - `circle_prime`: 0.1.0 (`/Users/corbensorenson/Documents/circle math/target/release/circle-prime`)
 - `primesieve`: primesieve 12.14, <https://github.com/kimwalisch/primesieve> (`/opt/homebrew/bin/primesieve`)
+- `primecount`: primecount 8.5, <https://github.com/kimwalisch/primecount> (`/opt/homebrew/bin/primecount`)
 - requested threads: Circle `1`, external `8` (`0` means tool default/all cores).
 - next-prime starts: `90`, `1000000`, `4294967000`, `1000000000000`, `18446744073709551500`.
 - repeated searches per sample: `4`.
 - Circle server rows: persistent `next-server` requests included.
-- required external controls: `primesieve`.
+- `primecount` next-prime rows included for starts at or below `1000000000000`.
+- required external controls: `primecount`, `primesieve`.
 - per-round samples: `sidecars/PRIME_ENGINE/results/prime_engine_external_next_samples_latest.csv`.
 
-| Start | Prime | Candidates | Batch | Circle ms | Baseline ms | Best Speedup | Median Speedup | Samples | Verdict |
-| ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- | --- |
-| 90 | 97 | 2 | 4 | 8.323 | 8.427 | 1.012 | 1.055 | stable<br>C n=5, max/med=1.06<br>B n=5, max/med=1.07 | circle_faster |
-| 90 | 97 | 2 | 4 | 0.067 | 8.427 | 125.862 | 115.821 | stable<br>C n=5, max/med=1.29<br>B n=5, max/med=1.07 | circle_faster |
-| 1000000 | 1000003 | 2 | 4 | 8.303 | 8.475 | 1.021 | 1.099 | stable<br>C n=5, max/med=1.14<br>B n=5, max/med=1.03 | circle_faster |
-| 1000000 | 1000003 | 2 | 4 | 0.065 | 8.475 | 129.469 | 126.064 | stable<br>C n=5, max/med=1.17<br>B n=5, max/med=1.03 | circle_faster |
-| 4294967000 | 4294967029 | 8 | 4 | 8.226 | 8.971 | 1.090 | 1.093 | stable<br>C n=5, max/med=1.04<br>B n=5, max/med=1.06 | circle_faster |
-| 4294967000 | 4294967029 | 8 | 4 | 0.079 | 8.971 | 113.852 | 104.027 | stable<br>C n=5, max/med=1.37<br>B n=5, max/med=1.06 | circle_faster |
-| 1000000000000 | 1000000000039 | 12 | 4 | 8.320 | 10.053 | 1.208 | 1.165 | stable<br>C n=5, max/med=1.01<br>B n=5, max/med=1.15 | circle_faster |
-| 1000000000000 | 1000000000039 | 12 | 4 | 0.091 | 10.053 | 110.370 | 103.516 | stable<br>C n=5, max/med=1.16<br>B n=5, max/med=1.15 | circle_faster |
-| 18446744073709551500 | 18446744073709551521 | 5 | 4 | 8.247 | 3546.476 | 430.058 | 383.506 | stable<br>C n=5, max/med=1.07<br>B n=5, max/med=1.04 | circle_faster |
-| 18446744073709551500 | 18446744073709551521 | 5 | 4 | 0.127 | 3546.476 | 28007.707 | 23109.177 | noisy<br>C n=5, max/med=1.76<br>B n=5, max/med=1.04 | circle_faster |
+| Start | Baseline | Prime | Candidates | Batch | Circle ms | Baseline ms | Best Speedup | Median Speedup | Samples | Verdict |
+| ---: | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- | --- |
+| 90 | `primesieve --nth-prime` | 97 | 2 | 4 | 8.569 | 8.606 | 1.004 | 1.204 | stable<br>C n=5, max/med=1.06<br>B n=5, max/med=1.04 | circle_faster |
+| 90 | `primecount pi+nth-prime` | 97 | 2 | 4 | 8.569 | 29.777 | 3.475 | 3.746 | stable<br>C n=5, max/med=1.06<br>B n=5, max/med=1.10 | circle_faster |
+| 90 | `primesieve --nth-prime` | 97 | 2 | 4 | 0.066 | 8.606 | 130.981 | 152.929 | stable<br>C n=5, max/med=1.35<br>B n=5, max/med=1.04 | circle_faster |
+| 90 | `primecount pi+nth-prime` | 97 | 2 | 4 | 0.066 | 29.777 | 453.175 | 475.962 | stable<br>C n=5, max/med=1.35<br>B n=5, max/med=1.10 | circle_faster |
+| 1000000 | `primesieve --nth-prime` | 1000003 | 2 | 4 | 8.850 | 8.714 | 0.985 | 1.030 | stable<br>C n=5, max/med=1.10<br>B n=5, max/med=1.04 | circle_faster |
+| 1000000 | `primecount pi+nth-prime` | 1000003 | 2 | 4 | 8.850 | 31.296 | 3.536 | 3.678 | stable<br>C n=5, max/med=1.10<br>B n=5, max/med=1.03 | circle_faster |
+| 1000000 | `primesieve --nth-prime` | 1000003 | 2 | 4 | 0.071 | 8.714 | 122.660 | 119.909 | stable<br>C n=5, max/med=1.28<br>B n=5, max/med=1.04 | circle_faster |
+| 1000000 | `primecount pi+nth-prime` | 1000003 | 2 | 4 | 0.071 | 31.296 | 440.536 | 428.071 | stable<br>C n=5, max/med=1.28<br>B n=5, max/med=1.03 | circle_faster |
+| 4294967000 | `primesieve --nth-prime` | 4294967029 | 8 | 4 | 8.316 | 8.532 | 1.026 | 1.076 | stable<br>C n=5, max/med=1.07<br>B n=5, max/med=1.06 | circle_faster |
+| 4294967000 | `primecount pi+nth-prime` | 4294967029 | 8 | 4 | 8.316 | 37.049 | 4.455 | 4.315 | stable<br>C n=5, max/med=1.07<br>B n=5, max/med=1.07 | circle_faster |
+| 4294967000 | `primesieve --nth-prime` | 4294967029 | 8 | 4 | 0.073 | 8.532 | 116.279 | 118.639 | stable<br>C n=5, max/med=1.21<br>B n=5, max/med=1.06 | circle_faster |
+| 4294967000 | `primecount pi+nth-prime` | 4294967029 | 8 | 4 | 0.073 | 37.049 | 504.930 | 475.645 | stable<br>C n=5, max/med=1.21<br>B n=5, max/med=1.07 | circle_faster |
+| 1000000000000 | `primesieve --nth-prime` | 1000000000039 | 12 | 4 | 8.152 | 10.032 | 1.231 | 1.178 | stable<br>C n=5, max/med=1.11<br>B n=5, max/med=1.02 | circle_faster |
+| 1000000000000 | `primecount pi+nth-prime` | 1000000000039 | 12 | 4 | 8.152 | 91.059 | 11.170 | 10.881 | noisy<br>C n=5, max/med=1.11<br>B n=5, max/med=1.55 | circle_faster |
+| 1000000000000 | `primesieve --nth-prime` | 1000000000039 | 12 | 4 | 0.085 | 10.032 | 118.251 | 83.121 | stable<br>C n=5, max/med=1.06<br>B n=5, max/med=1.02 | circle_faster |
+| 1000000000000 | `primecount pi+nth-prime` | 1000000000039 | 12 | 4 | 0.085 | 91.059 | 1073.396 | 767.770 | noisy<br>C n=5, max/med=1.06<br>B n=5, max/med=1.55 | circle_faster |
+| 18446744073709551500 | `primesieve --nth-prime` | 18446744073709551521 | 5 | 4 | 8.284 | 3554.088 | 429.037 | 406.438 | noisy<br>C n=5, max/med=1.50<br>B n=5, max/med=1.02 | circle_faster |
+| 18446744073709551500 | `primesieve --nth-prime` | 18446744073709551521 | 5 | 4 | 0.138 | 3554.088 | 25777.613 | 23339.982 | noisy<br>C n=5, max/med=1.62<br>B n=5, max/med=1.02 | circle_faster |
 
 ## High-Offset Quick Scorecard
 
@@ -373,10 +385,10 @@ High-offset server/external best-time comparison:
 
 | Workload | Server Row | Server ms | Baseline | Baseline Best ms | Server Speedup | Cold CLI ms | Cold CLI Speedup |
 | ---: | --- | ---: | --- | ---: | ---: | ---: | ---: |
-| 10000000 | `hot_cli_count_server_parallel_high_offset_presieve13_count_8t` | 1.909 | `external_primecount_pi_diff` | 22.052 | 11.551 | 4.682 | 4.710 |
-| 10000000 | `hot_cli_count_server_parallel_high_offset_presieve13_count_8t` | 1.909 | `external_primecount_pi_diff` | 22.052 | 11.551 | 2.020 | 10.914 |
-| 10000000 | `hot_cli_count_server_parallel_high_offset_presieve13_count_8t` | 1.909 | `external_primesieve_count` | 4.634 | 2.427 | 4.682 | 0.990 |
-| 10000000 | `hot_cli_count_server_parallel_high_offset_presieve13_count_8t` | 1.909 | `external_primesieve_count` | 4.634 | 2.427 | 2.020 | 2.293 |
+| 10000000 | `hot_cli_count_server_parallel_high_offset_presieve13_count_8t` | 1.909 | `external_primecount_pi_diff` | 22.759 | 11.922 | 4.380 | 5.197 |
+| 10000000 | `hot_cli_count_server_parallel_high_offset_presieve13_count_8t` | 1.909 | `external_primecount_pi_diff` | 22.759 | 11.922 | 1.837 | 12.389 |
+| 10000000 | `hot_cli_count_server_parallel_high_offset_presieve13_count_8t` | 1.909 | `external_primesieve_count` | 4.482 | 2.348 | 4.380 | 1.023 |
+| 10000000 | `hot_cli_count_server_parallel_high_offset_presieve13_count_8t` | 1.909 | `external_primesieve_count` | 4.482 | 2.348 | 1.837 | 2.440 |
 
 Materialized generation rows:
 

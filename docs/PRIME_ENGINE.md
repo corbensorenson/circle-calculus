@@ -263,14 +263,13 @@ Current CPU findings:
   without first zeroing newly grown memory. This is a small but measurable win
   on the current prefix and high-offset count rows because every byte is
   overwritten before marking begins.
-- A build-time `u32` base-prime table covers horizons through `1100000` as a
-  generated Rust static slice. The public helper widens it into the `u64`
-  vector consumed by the sieve setup code; odd-only byte generation remains the
-  fallback for larger common command-level limits. A borrowed `u64` static-table
-  variant was tested but rejected after the external-control comparator showed
-  worse relative speedups against `primesieve`/`primecount`. The release
-  benchmark emits `base_prime_generation` rows so this setup cost remains
-  visible alongside range-count hot loops.
+- A build-time `u64` base-prime table covers horizons through `1100000` as a
+  generated Rust static slice. The same table backs fast small `pi(n)` lookups
+  and borrowed sieve setup, avoiding the previous duplicate generated `u32`
+  and `u64` tables in the cold CLI binary. Odd-only byte generation remains the
+  fallback for larger common command-level limits. The release benchmark emits
+  `base_prime_generation` rows so this setup cost remains visible alongside
+  range-count hot loops.
 - Adaptive segment sizing is a measured win for high-offset interval searches:
   around `10^12`, large segments reduce repeated cursor scans over tens of
   thousands of base primes.
@@ -313,9 +312,10 @@ Current CPU findings:
   defaults file now carries both segment-size and count-mode slots per tuned
   range; mode slots start conservatively and are promoted only when stable
   external-control calibration evidence favors another algorithm.
-  Very-high-offset small-span threaded counts use the `1310720` default with
-  `presieve13` because the latest focused command-level probes favored that
-  path over the previous dynamic odd-byte default.
+  Very-high-offset small-span threaded counts use the `1507328` default with
+  `presieve17`; focused short probes keep nearby balanced and presieve segment
+  choices as evidence lanes rather than default promotions because their wins
+  have been noisy run-to-run.
 - The release benchmark also includes `[10^12, 10^12 + 10M)` high-offset rows:
   one conservative single-thread row, one explicit segmented count-threaded
   row, hot-loop `parallel_high_offset_*_range_count_8t` rows covering the
@@ -536,16 +536,24 @@ sidecars/PRIME_ENGINE/results/prime_engine_external_next_samples_latest.csv
 
 It benchmarks `circle-prime next START` against
 `primesieve 1 START-1 --nth-prime --quiet`, which gives the first prime at or
-above `START`. The Makefile target also includes persistent `next-server`
-request rows beside the cold CLI rows, so the report separates command-level
-startup cost from steady-state search throughput. The default starts cover
-small search, the `2^32` boundary, `10^12`, and a near-`u64::MAX` scalar path.
+above `START`. The Makefile target also includes a `primecount` control for
+starts at or below `CIRCLE_PRIME_EXTERNAL_NEXT_PRIMECOUNT_MAX_START` (default
+`1000000000000`): it computes `pi(START-1)` and then asks `primecount
+--nth-prime` for the next index. That keeps `primecount` as a serious second
+control where it is short-run friendly without letting near-`u64::MAX`
+`pi(x)` dominate the routine next-prime benchmark. The Makefile target also
+includes persistent `next-server` request rows beside the cold CLI rows, so the
+report separates command-level startup cost from steady-state search
+throughput. The default starts cover small search, the `2^32` boundary,
+`10^12`, and a near-`u64::MAX` scalar path.
 The CSV keeps next-prime fields separate from range-count fields: `start`,
 `batch_size`, resolved `result`, Circle `candidate_count`, and searches/sec. Use
 `CIRCLE_PRIME_EXTERNAL_NEXT_BATCH_SIZE` for repeated searches per timing sample;
 the Makefile default is `4` so command-level next-prime comparisons are less
 sensitive to launch jitter while still keeping the near-`2^64` `primesieve`
 row short enough for routine regression gates. Use `1` for quick local probes.
+Raise `CIRCLE_PRIME_EXTERNAL_NEXT_PRIMECOUNT_MAX_START` only for explicit
+experiments; the default cap is intentionally short-run oriented.
 
 `prime-engine-external-next-compare` writes candidate artifacts without
 overwriting the accepted latest next-prime control run:

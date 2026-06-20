@@ -228,8 +228,11 @@ def test_prime_engine_report_summarizes_artifacts(tmp_path: Path) -> None:
                 "timing,circle_prime_next_prime,100,1,101,1,3,1.000,1.200,1000,833.333,1,1,,,",
                 "timing,circle_prime_server_next_prime,100,1,101,1,3,0.250,0.300,4000,3333.333,1,1,,,",
                 "timing,external_primesieve_next_prime,100,1,101,0,3,2.000,2.400,500,416.667,8,8,,,",
+                "timing,external_primecount_next_prime,100,1,101,0,3,4.000,4.800,250,208.333,8,8,,,",
                 "speedup,circle_prime_next_prime,100,1,101,1,3,1.000,1.200,1000,833.333,1,1,external_primesieve_next_prime,2.000,2.000",
                 "speedup,circle_prime_server_next_prime,100,1,101,1,3,0.250,0.300,4000,3333.333,1,1,external_primesieve_next_prime,8.000,8.000",
+                "speedup,circle_prime_next_prime,100,1,101,1,3,1.000,1.200,1000,833.333,1,1,external_primecount_next_prime,4.000,4.000",
+                "speedup,circle_prime_server_next_prime,100,1,101,1,3,0.250,0.300,4000,3333.333,1,1,external_primecount_next_prime,16.000,16.000",
             ]
         )
         + "\n"
@@ -244,8 +247,10 @@ def test_prime_engine_report_summarizes_artifacts(tmp_path: Path) -> None:
                 "rounds": 3,
                 "batch_size": 1,
                 "include_circle_server": True,
+                "include_primecount": True,
+                "primecount_max_start": 1000000000000,
                 "starts": [100],
-                "required_external_tools": ["primesieve"],
+                "required_external_tools": ["primesieve", "primecount"],
                 "sample_output": None,
                 "thread_policy": {
                     "circle_requested_threads": 1,
@@ -257,14 +262,19 @@ def test_prime_engine_report_summarizes_artifacts(tmp_path: Path) -> None:
                         "path": "/tmp/circle-prime",
                         "version": "0.1.0",
                     },
-                    "primesieve": {
-                        "available": True,
-                        "path": "/usr/local/bin/primesieve",
-                        "version": "primesieve 12.14",
+                        "primesieve": {
+                            "available": True,
+                            "path": "/usr/local/bin/primesieve",
+                            "version": "primesieve 12.14",
+                        },
+                        "primecount": {
+                            "available": True,
+                            "path": "/usr/local/bin/primecount",
+                            "version": "primecount 8.5",
+                        },
                     },
-                },
-            }
-        )
+                }
+            )
         + "\n"
     )
     external_mode_sweep = tmp_path / "external-mode-sweep.csv"
@@ -660,8 +670,16 @@ def test_prime_engine_report_summarizes_artifacts(tmp_path: Path) -> None:
     assert external_next_summary["cold_cli"]["primesieve_rows"] == 1
     assert external_next_summary["server"]["primesieve_wins"] == 1
     assert external_next_summary["server"]["primesieve_rows"] == 1
+    assert external_next_summary["cold_cli"]["by_baseline"]["external_primecount_next_prime"][
+        "wins"
+    ] == 1
+    assert external_next_summary["server"]["by_baseline"]["external_primecount_next_prime"][
+        "wins"
+    ] == 1
     assert external_next_summary["metadata"]["starts"] == [100]
     assert external_next_summary["metadata"]["include_circle_server"] is True
+    assert external_next_summary["metadata"]["include_primecount"] is True
+    assert external_next_summary["metadata"]["primecount_max_start"] == 1000000000000
     assert external_next_summary["speedups"][0]["start"] == 100
     assert external_next_summary["speedups"][0]["result"] == 101
     assert external_next_summary["speedups"][0]["candidate_count"] == 1
@@ -817,7 +835,16 @@ def test_prime_engine_report_summarizes_artifacts(tmp_path: Path) -> None:
     assert "External Next-Prime Search" in markdown
     assert "`primesieve --nth-prime` cold CLI: Circle faster on 1/1 rows" in markdown
     assert "`primesieve --nth-prime` server: Circle faster on 1/1 rows" in markdown
-    assert "| 100 | 101 | 1 | 1 | 1.000 | 2.000 | 2.000 | 2.000 | unknown | circle_faster |" in markdown
+    assert "`primecount pi+nth-prime` cold CLI: Circle faster on 1/1 rows" in markdown
+    assert "`primecount pi+nth-prime` server: Circle faster on 1/1 rows" in markdown
+    assert (
+        "| 100 | `primesieve --nth-prime` | 101 | 1 | 1 | 1.000 | 2.000 | "
+        "2.000 | 2.000 | unknown | circle_faster |"
+    ) in markdown
+    assert (
+        "| 100 | `primecount pi+nth-prime` | 101 | 1 | 1 | 1.000 | 4.000 | "
+        "4.000 | 4.000 | unknown | circle_faster |"
+    ) in markdown
     assert "Largest checked high: `18446744073709551615`." in markdown
     assert "Circle count modes checked: `segmented`, `hybrid-wheel30-mark`." in markdown
     assert "`parallel_high_offset_default_range_count_8t`" in markdown

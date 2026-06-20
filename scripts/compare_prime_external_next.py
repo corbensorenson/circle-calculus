@@ -71,7 +71,7 @@ def main() -> int:
     parser = argparse.ArgumentParser(
         description=(
             "Compare Circle external next-prime speedup rows against a baseline "
-            "CSV and fail on result mismatches or primesieve speedup regressions."
+            "CSV and fail on result mismatches or external-control speedup regressions."
         )
     )
     parser.add_argument(

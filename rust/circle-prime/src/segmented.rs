@@ -36,7 +36,6 @@ const PRIME_PI_PHI_SMALL_PRIME_COUNT: usize = 6;
 const PRIME_PI_PHI_SMALL_MODULUS: u64 = 30_030;
 pub const DEFAULT_SEGMENT_SIZE: u64 = 1 << 18;
 include!(concat!(env!("OUT_DIR"), "/prime_engine_defaults.rs"));
-include!(concat!(env!("OUT_DIR"), "/base_primes_upto_1100000_u32.rs"));
 include!(concat!(env!("OUT_DIR"), "/base_primes_upto_1100000_u64.rs"));
 pub const HIGH_OFFSET_SEGMENT_SIZE: u64 = 1 << 20;
 pub const VERY_HIGH_OFFSET_SEGMENT_SIZE: u64 = 1 << 22;
@@ -267,7 +266,7 @@ impl PrimePiCounter {
 }
 
 fn static_base_prime_pi(n: u64) -> u64 {
-    STATIC_BASE_PRIMES_U32.partition_point(|&prime| u64::from(prime) <= n) as u64
+    STATIC_BASE_PRIMES_U64.partition_point(|&prime| prime <= n) as u64
 }
 
 fn prime_pi_phi_small(x: u64) -> u64 {
