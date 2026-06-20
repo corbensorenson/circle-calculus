@@ -40,6 +40,7 @@ def _write_receipt(path: Path, receipt: dict) -> None:
 
 def test_check_circle_ai_receipt_accepts_saved_receipt(tmp_path: Path) -> None:
     receipt_path = tmp_path / "rope_receipt.json"
+    report_path = tmp_path / "receipt_check_report.json"
     receipt = build_rope_receipt(
         context=131072,
         requested_margin="1/328459",
@@ -55,6 +56,8 @@ def test_check_circle_ai_receipt_accepts_saved_receipt(tmp_path: Path) -> None:
             "--require-status",
             "proved",
             "--require-passed",
+            "--report-out",
+            str(report_path),
             "--format",
             "json",
         ],
@@ -69,6 +72,7 @@ def test_check_circle_ai_receipt_accepts_saved_receipt(tmp_path: Path) -> None:
     assert payload["ok"] is True
     assert payload["receipt_count"] == 1
     assert payload["summaries"][0]["kind"] == "rope_position_distinguishability"
+    assert json.loads(report_path.read_text()) == payload
 
 
 def test_check_circle_ai_receipt_rejects_status_gate(tmp_path: Path) -> None:

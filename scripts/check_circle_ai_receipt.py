@@ -45,6 +45,11 @@ def _display_path(path: Path) -> str:
         return str(path)
 
 
+def _write_json(path: Path, payload: dict[str, Any]) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n")
+
+
 def _gate_failures(
     *,
     receipt: dict[str, Any],
@@ -151,6 +156,11 @@ def main() -> int:
     parser.add_argument("--receipt-schema", type=Path, default=DEFAULT_RECEIPT_SCHEMA)
     parser.add_argument("--format", choices=("text", "json"), default="text")
     parser.add_argument(
+        "--report-out",
+        type=Path,
+        help="Optional path where the receipt-file validation report is written.",
+    )
+    parser.add_argument(
         "--require-status",
         action="append",
         choices=STATUS_VALUES,
@@ -174,6 +184,8 @@ def main() -> int:
         required_statuses=tuple(args.require_status),
         require_passed=args.require_passed,
     )
+    if args.report_out is not None:
+        _write_json(args.report_out, report)
     if args.format == "json":
         print(json.dumps(report, indent=2, sort_keys=True))
     else:
