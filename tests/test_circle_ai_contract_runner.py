@@ -25,6 +25,7 @@ from circle_math.applications import (
     build_sparse_attention_receipt,
     validate_contract_request,
     validate_contract_receipt,
+    validate_contract_receipt_against_pack,
 )
 from circle_math.applications.circle_ai_contracts import build_contract_pack
 
@@ -270,6 +271,28 @@ def test_receipt_validator_requires_typed_proof_layer_buckets(
     failures = validate_contract_receipt(bad_bucket_value)
     assert any(
         "proof_layers.computed_fields must contain non-empty strings" in failure
+        for failure in failures
+    )
+
+
+def test_receipt_pack_validator_rejects_stale_support_fingerprints(
+    contract_pack: dict,
+) -> None:
+    receipt = build_rope_receipt(
+        context=131072,
+        requested_margin="1/328459",
+        pack=contract_pack,
+    )
+
+    assert validate_contract_receipt_against_pack(receipt, contract_pack) == []
+
+    stale = json.loads(json.dumps(receipt))
+    stale["support"]["contract_pack_fingerprint"] = "0" * 64
+    stale["receipt_content_fingerprint"] = _receipt_fingerprint(stale)
+    failures = validate_contract_receipt_against_pack(stale, contract_pack)
+    assert any(
+        "support.contract_pack_fingerprint does not match loaded contract pack"
+        in failure
         for failure in failures
     )
 

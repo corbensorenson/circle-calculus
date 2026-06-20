@@ -45,6 +45,7 @@ from .circle_ai_contract_runner import (
     receipt_summary_lines,
     validate_contract_request,
     validate_contract_receipt,
+    validate_contract_receipt_against_pack,
 )
 from .coil_data import (
     PeriodBenchmarkResult,
@@ -500,6 +501,7 @@ __all__ = [
     "receipt_summary_lines",
     "validate_contract_request",
     "validate_contract_receipt",
+    "validate_contract_receipt_against_pack",
     "PeriodBenchmarkResult",
     "PeriodFixtureCaseResult",
     "AIBackendParityResult",

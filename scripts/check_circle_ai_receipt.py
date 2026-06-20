@@ -17,10 +17,7 @@ if str(ROOT) not in sys.path:
 
 from circle_math.applications import (  # noqa: E402
     load_contract_pack,
-    validate_contract_receipt,
-)
-from circle_math.applications.circle_ai_contract_consumer import (  # noqa: E402
-    find_contract,
+    validate_contract_receipt_against_pack,
 )
 from circle_math.applications.circle_ai_contract_runner import (  # noqa: E402
     STATUS_VALUES,
@@ -46,88 +43,6 @@ def _display_path(path: Path) -> str:
         return str(path.relative_to(ROOT))
     except ValueError:
         return str(path)
-
-
-def _as_string_set(value: Any) -> set[str]:
-    if not isinstance(value, list):
-        return set()
-    return {item for item in value if isinstance(item, str)}
-
-
-def _receipt_pack_failures(
-    *,
-    receipt: dict[str, Any],
-    pack: dict[str, Any],
-) -> list[str]:
-    failures: list[str] = []
-    support = receipt.get("support")
-    if not isinstance(support, dict):
-        return ["support must be an object before pack checks can run"]
-
-    pack_fingerprint = pack.get("pack_content_fingerprint")
-    if support.get("contract_pack_fingerprint") != pack_fingerprint:
-        failures.append(
-            "support.contract_pack_fingerprint does not match loaded contract pack"
-        )
-
-    kind = receipt.get("kind")
-    contract = find_contract(pack, str(kind)) if isinstance(kind, str) else None
-    if contract is None:
-        failures.append("receipt kind is not present in the loaded contract pack")
-        return failures
-
-    contract_id = contract.get("id")
-    if receipt.get("contract_id") != contract_id:
-        failures.append("contract_id does not match loaded contract record")
-    if support.get("contract_id") != contract_id:
-        failures.append("support.contract_id does not match loaded contract record")
-
-    contract_fingerprint = contract.get("content_fingerprint")
-    if support.get("contract_content_fingerprint") != contract_fingerprint:
-        failures.append(
-            "support.contract_content_fingerprint does not match loaded contract"
-        )
-
-    fingerprint_index = pack.get("contract_fingerprint_index")
-    index_entry = (
-        fingerprint_index.get(kind)
-        if isinstance(fingerprint_index, dict) and isinstance(kind, str)
-        else None
-    )
-    if not isinstance(index_entry, dict):
-        failures.append("loaded contract pack is missing a fingerprint-index entry")
-    else:
-        if index_entry.get("id") != contract_id:
-            failures.append("contract fingerprint index id disagrees with contract")
-        if index_entry.get("content_fingerprint") != contract_fingerprint:
-            failures.append(
-                "contract fingerprint index content hash disagrees with contract"
-            )
-
-    proof_status = receipt.get("proof_status")
-    receipt_theorem_ids = (
-        _as_string_set(proof_status.get("theorem_ids"))
-        if isinstance(proof_status, dict)
-        else set()
-    )
-    contract_theorem_ids = _as_string_set(contract.get("theorem_ids"))
-    missing_from_contract = sorted(receipt_theorem_ids - contract_theorem_ids)
-    if missing_from_contract:
-        failures.append(
-            "receipt theorem ids are not in loaded contract: "
-            + ",".join(missing_from_contract)
-        )
-
-    contract_proof_status = contract.get("proof_status")
-    contract_all_proved = (
-        isinstance(contract_proof_status, dict)
-        and contract_proof_status.get("all_theorem_ids_resolved") is True
-        and contract_proof_status.get("all_theorem_ids_proved") is True
-    )
-    if receipt.get("status") in {"proved", "impossible"} and not contract_all_proved:
-        failures.append("proved/impossible receipt requires proved contract theorems")
-
-    return failures
 
 
 def _gate_failures(
@@ -170,8 +85,9 @@ def check_receipt_files(
         try:
             receipt = _json_object(path)
             jsonschema.validate(receipt, receipt_schema)
-            path_failures.extend(validate_contract_receipt(receipt))
-            path_failures.extend(_receipt_pack_failures(receipt=receipt, pack=pack))
+            path_failures.extend(
+                validate_contract_receipt_against_pack(receipt, pack)
+            )
             path_failures.extend(
                 _gate_failures(
                     receipt=receipt,

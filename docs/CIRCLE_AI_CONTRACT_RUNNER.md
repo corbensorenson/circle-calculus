@@ -178,6 +178,8 @@ from circle_math.applications import (
     build_contract_request,
     build_contract_request_validation_report,
     validate_contract_request,
+    validate_contract_receipt_against_pack,
+    load_contract_pack,
 )
 
 request = build_contract_request(
@@ -200,6 +202,10 @@ assert receipt["request_content_fingerprint"]
 assert receipt["normalized_request_fingerprint"]
 assert receipt["recommendations"]
 assert receipt["validation_commands"]
+assert validate_contract_receipt_against_pack(
+    receipt,
+    load_contract_pack("site/data/generated/circle_ai_contract_pack.json"),
+) == []
 
 request = {
     "schema_id": "circle_calculus.ai_contract_request.v0",

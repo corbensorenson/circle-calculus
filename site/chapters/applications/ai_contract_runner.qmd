@@ -256,7 +256,9 @@ from circle_math.applications import (
     build_contract_receipt_from_request,
     build_contract_request,
     build_contract_request_validation_report,
+    load_contract_pack,
     validate_contract_request,
+    validate_contract_receipt_against_pack,
 )
 
 request = build_contract_request(
@@ -274,6 +276,11 @@ receipt = build_contract_receipt(
     request["kind"],
     request["parameters"],
 )
+
+assert validate_contract_receipt_against_pack(
+    receipt,
+    load_contract_pack("site/data/generated/circle_ai_contract_pack.json"),
+) == []
 ```
 
 The request-file object can be used directly from Python:
