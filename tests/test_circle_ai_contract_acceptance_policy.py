@@ -600,6 +600,7 @@ def test_default_flagship_policy_matches_generated_contract_pack() -> None:
         "d19_proved_first_channel_pair_scope",
         "d19_proved_first_channel_context_wide_contract",
         "d19_proved_first_channel_bank_shape",
+        "d19_proved_first_channel_radian_bank_form",
         "d19_proved_first_channel_bank_tolerance_rule",
     ]
     assert rope_receipt["required_recommendation_ids"] == [
@@ -633,6 +634,7 @@ def test_default_flagship_policy_matches_generated_contract_pack() -> None:
         "d19_proved_first_channel_pair_scope",
         "d19_proved_first_channel_context_wide_contract",
         "d19_proved_first_channel_bank_shape",
+        "d19_proved_first_channel_radian_bank_form",
         "d19_proved_first_channel_bank_tolerance_rule",
     ]
     assert rope_receipt["required_theorem_ids"] == [
@@ -705,6 +707,7 @@ def test_default_flagship_policy_matches_generated_contract_pack() -> None:
         "proved_branch_bank_transfer.applies",
         "proved_branch_bank_transfer.bank_shape",
         "proved_branch_bank_transfer.context_wide_contract",
+        "proved_branch_bank_transfer.radian_bank_form",
         "proved_branch_bank_transfer.theorem_ids",
     ]
     kv_receipt = report["receipts"][1]

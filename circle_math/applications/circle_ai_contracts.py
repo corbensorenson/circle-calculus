@@ -164,6 +164,7 @@ CONTRACT_ARTIFACTS = {
                 "--field d19_proved_first_channel_bank_shape "
                 "--field d19_proved_first_channel_pair_scope "
                 "--field d19_proved_first_channel_context_wide_contract "
+                "--field d19_proved_first_channel_radian_bank_form "
                 "--field d19_proved_first_channel_bank_tolerance_rule "
                 "--require-theorem AIRA-T0171 --require-theorem AIRA-T0172 "
                 "--require-theorem AIRA-T0234 --require-theorem AIRA-T0235 "
@@ -175,6 +176,9 @@ CONTRACT_ARTIFACTS = {
                 "--require-recommendation-evidence-field "
                 "ROPE-USE-D19-MARGIN-FRONTIER="
                 "d19_proved_first_channel_context_wide_contract "
+                "--require-recommendation-evidence-field "
+                "ROPE-USE-D19-MARGIN-FRONTIER="
+                "d19_proved_first_channel_radian_bank_form "
                 "--require-recommendation-theorem "
                 "ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0234 "
                 "--require-recommendation-theorem "
@@ -189,6 +193,9 @@ CONTRACT_ARTIFACTS = {
                 "--require-recommendation-action-parameter-path "
                 "ROPE-USE-D19-MARGIN-FRONTIER="
                 "proved_branch_bank_transfer.context_wide_contract "
+                "--require-recommendation-action-parameter-path "
+                "ROPE-USE-D19-MARGIN-FRONTIER="
+                "proved_branch_bank_transfer.radian_bank_form "
                 "--require-recommendation-action-parameter-path "
                 "ROPE-USE-D19-MARGIN-FRONTIER="
                 "proved_branch_bank_transfer.theorem_ids"
@@ -566,6 +573,7 @@ MINIMUM_FIELDS_BY_KIND = {
         "d19_proved_first_channel_bank_shape",
         "d19_proved_first_channel_pair_scope",
         "d19_proved_first_channel_context_wide_contract",
+        "d19_proved_first_channel_radian_bank_form",
         "d19_proved_first_channel_bank_tolerance_rule",
         "proof_layers",
     ),
@@ -920,6 +928,7 @@ PACK_VALIDATION_COMMANDS = [
         "--field d19_proved_first_channel_bank_shape "
         "--field d19_proved_first_channel_pair_scope "
         "--field d19_proved_first_channel_context_wide_contract "
+        "--field d19_proved_first_channel_radian_bank_form "
         "--field d19_proved_first_channel_bank_tolerance_rule "
         "--include-field-metadata --include-recommendations"
     ),
@@ -933,6 +942,7 @@ PACK_VALIDATION_COMMANDS = [
         "--field d19_proved_first_channel_bank_shape "
         "--field d19_proved_first_channel_pair_scope "
         "--field d19_proved_first_channel_context_wide_contract "
+        "--field d19_proved_first_channel_radian_bank_form "
         "--field d19_proved_first_channel_bank_tolerance_rule "
         "--require-theorem AIRA-T0171 --require-theorem AIRA-T0172 "
         "--require-theorem AIRA-T0234 --require-theorem AIRA-T0235 "
@@ -943,6 +953,8 @@ PACK_VALIDATION_COMMANDS = [
         "--require-recommendation-evidence-field "
         "ROPE-USE-D19-MARGIN-FRONTIER="
         "d19_proved_first_channel_context_wide_contract "
+        "--require-recommendation-evidence-field "
+        "ROPE-USE-D19-MARGIN-FRONTIER=d19_proved_first_channel_radian_bank_form "
         "--require-recommendation-theorem "
         "ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0234 "
         "--require-recommendation-theorem "
@@ -956,6 +968,8 @@ PACK_VALIDATION_COMMANDS = [
         "--require-recommendation-action-parameter-path "
         "ROPE-USE-D19-MARGIN-FRONTIER="
         "proved_branch_bank_transfer.context_wide_contract "
+        "--require-recommendation-action-parameter-path "
+        "ROPE-USE-D19-MARGIN-FRONTIER=proved_branch_bank_transfer.radian_bank_form "
         "--require-recommendation-action-parameter-path "
         "ROPE-USE-D19-MARGIN-FRONTIER=proved_branch_bank_transfer.theorem_ids"
     ),
@@ -1526,6 +1540,11 @@ FIELD_DESCRIPTION_OVERRIDES = {
         "Boolean check that the D19 proved-branch first-channel bank transfer "
         "is packaged as a context-wide guarantee over every ordered unequal "
         "pair inside the requested context."
+    ),
+    "d19_proved_first_channel_radian_bank_form": (
+        "Boolean check that the D19 context-wide first-channel guarantee is "
+        "available in the ordinary radian bank form with first frequency 1 "
+        "and full turn 2*pi."
     ),
     "d19_proved_first_channel_pair_scope": (
         "The ordered-pair scope covered by the D19 first-channel context-wide "
@@ -2552,6 +2571,9 @@ def _generic_planner_recommendations(
                     "context_wide_contract": fields[
                         "d19_proved_first_channel_context_wide_contract"
                     ],
+                    "radian_bank_form": fields[
+                        "d19_proved_first_channel_radian_bank_form"
+                    ],
                     "tolerance_rule": fields[
                         "d19_proved_first_channel_bank_tolerance_rule"
                     ],
@@ -2642,6 +2664,7 @@ def _generic_planner_recommendations(
                     "d19_proved_first_channel_bank_shape",
                     "d19_proved_first_channel_pair_scope",
                     "d19_proved_first_channel_context_wide_contract",
+                    "d19_proved_first_channel_radian_bank_form",
                     "d19_proved_first_channel_bank_tolerance_rule",
                 ],
                 "theorem_ids": [
@@ -3283,6 +3306,11 @@ def _rope_position_contract() -> dict[str, Any]:
         ),
         "d19_proved_first_channel_context_wide_contract": (
             first_channel_bank.context_wide_first_channel_contract
+        ),
+        "d19_proved_first_channel_radian_bank_form": (
+            first_channel_bank.pass_certificate
+            and first_channel_bank.bank_shape == "standard_channel0_first"
+            and "AIRA-T0236" in first_channel_bank.theorem_ids
         ),
         "d19_proved_first_channel_bank_tolerance_rule": (
             first_channel_bank.tolerance_rule

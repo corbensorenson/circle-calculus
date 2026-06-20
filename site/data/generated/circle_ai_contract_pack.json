@@ -71,7 +71,7 @@
       "id": "CC-AI-CONTRACT-RECURRENCE-001"
     },
     "rope_position_distinguishability": {
-      "content_fingerprint": "09ecb23e6f141f7ac246a8f166af1c98e8e482f53f5ba73443c738cb4dccf978",
+      "content_fingerprint": "1dcc4a7720f22a005ff0eefa7d9d42ec0e68590caea8e8468425d2c26629b414",
       "content_fingerprint_algorithm": "sha256-json-v1",
       "id": "CC-AI-CONTRACT-ROPE-001"
     },
@@ -1206,6 +1206,11 @@
           "proof_role": "theorem_backed_check",
           "value_kind": "string"
         },
+        "d19_proved_first_channel_radian_bank_form": {
+          "description": "Boolean check that the D19 context-wide first-channel guarantee is available in the ordinary radian bank form with first frequency 1 and full turn 2*pi.",
+          "proof_role": "theorem_backed_check",
+          "value_kind": "boolean"
+        },
         "d19_proved_impossible_branches_disjoint": {
           "description": "Required `rope_position_distinguishability` evidence field for `d19 proved impossible branches disjoint`. Read it with the contract's theorem ids, proof_status block, and non-claim boundary.",
           "proof_role": "theorem_backed_check",
@@ -2001,6 +2006,7 @@
         "d19_proved_first_channel_bank_shape",
         "d19_proved_first_channel_pair_scope",
         "d19_proved_first_channel_context_wide_contract",
+        "d19_proved_first_channel_radian_bank_form",
         "d19_proved_first_channel_bank_tolerance_rule",
         "proof_layers"
       ],
@@ -2180,6 +2186,7 @@
           "d19_proved_first_channel_bank_shape",
           "d19_proved_first_channel_pair_scope",
           "d19_proved_first_channel_context_wide_contract",
+          "d19_proved_first_channel_radian_bank_form",
           "d19_proved_first_channel_bank_tolerance_rule",
           "proof_layers"
         ],
@@ -2190,7 +2197,7 @@
         "unproved_theorem_ids": [],
         "unresolved_theorem_ids": []
       },
-      "content_fingerprint": "09ecb23e6f141f7ac246a8f166af1c98e8e482f53f5ba73443c738cb4dccf978",
+      "content_fingerprint": "1dcc4a7720f22a005ff0eefa7d9d42ec0e68590caea8e8468425d2c26629b414",
       "content_fingerprint_algorithm": "sha256-json-v1",
       "contract_passed": true,
       "dictionary_ids": [
@@ -2222,6 +2229,7 @@
         "d19_proved_first_channel_bank_transfer": true,
         "d19_proved_first_channel_context_wide_contract": true,
         "d19_proved_first_channel_pair_scope": "all ordered unequal pairs left < right < requested_context",
+        "d19_proved_first_channel_radian_bank_form": true,
         "d19_proved_impossible_branches_disjoint": true,
         "d19_proved_margin": "1/328459",
         "d19_proved_request_margin": "1/328459",
@@ -2382,6 +2390,7 @@
             "d19_proved_first_channel_bank_shape",
             "d19_proved_first_channel_pair_scope",
             "d19_proved_first_channel_context_wide_contract",
+            "d19_proved_first_channel_radian_bank_form",
             "d19_proved_first_channel_bank_tolerance_rule"
           ],
           "id": "ROPE-USE-D19-MARGIN-FRONTIER",
@@ -2393,6 +2402,7 @@
             "bank_shape": "standard_channel0_first",
             "context_wide_contract": true,
             "pair_scope": "all ordered unequal pairs left < right < requested_context",
+            "radian_bank_form": true,
             "theorem_ids": [
               "AIRA-T0171",
               "AIRA-T0172",
@@ -2904,7 +2914,7 @@
       "validation_commands": [
         "python scripts/rope_certify.py --preset llama_style_10000_4k --format json",
         "python scripts/circle_ai_contract_ready.py --kind rope_position_distinguishability",
-        "python scripts/circle_ai_contract_ready.py --kind rope_position_distinguishability --receipt --format json --field d19_proved_request_status --field d19_impossible_request_status --field d19_undecided_request_status --field d19_proved_first_channel_bank_transfer --field d19_proved_first_channel_bank_shape --field d19_proved_first_channel_pair_scope --field d19_proved_first_channel_context_wide_contract --field d19_proved_first_channel_bank_tolerance_rule --require-theorem AIRA-T0171 --require-theorem AIRA-T0172 --require-theorem AIRA-T0234 --require-theorem AIRA-T0235 --require-theorem AIRA-T0236 --require-recommendation ROPE-USE-D19-MARGIN-FRONTIER --require-recommendation-evidence-field ROPE-USE-D19-MARGIN-FRONTIER=d19_proved_first_channel_bank_transfer --require-recommendation-evidence-field ROPE-USE-D19-MARGIN-FRONTIER=d19_proved_first_channel_context_wide_contract --require-recommendation-theorem ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0234 --require-recommendation-theorem ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0235 --require-recommendation-theorem ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0236 --require-recommendation-action-parameter ROPE-USE-D19-MARGIN-FRONTIER=proved_branch_bank_transfer --require-recommendation-action-parameter-path ROPE-USE-D19-MARGIN-FRONTIER=proved_branch_bank_transfer.applies --require-recommendation-action-parameter-path ROPE-USE-D19-MARGIN-FRONTIER=proved_branch_bank_transfer.context_wide_contract --require-recommendation-action-parameter-path ROPE-USE-D19-MARGIN-FRONTIER=proved_branch_bank_transfer.theorem_ids",
+        "python scripts/circle_ai_contract_ready.py --kind rope_position_distinguishability --receipt --format json --field d19_proved_request_status --field d19_impossible_request_status --field d19_undecided_request_status --field d19_proved_first_channel_bank_transfer --field d19_proved_first_channel_bank_shape --field d19_proved_first_channel_pair_scope --field d19_proved_first_channel_context_wide_contract --field d19_proved_first_channel_radian_bank_form --field d19_proved_first_channel_bank_tolerance_rule --require-theorem AIRA-T0171 --require-theorem AIRA-T0172 --require-theorem AIRA-T0234 --require-theorem AIRA-T0235 --require-theorem AIRA-T0236 --require-recommendation ROPE-USE-D19-MARGIN-FRONTIER --require-recommendation-evidence-field ROPE-USE-D19-MARGIN-FRONTIER=d19_proved_first_channel_bank_transfer --require-recommendation-evidence-field ROPE-USE-D19-MARGIN-FRONTIER=d19_proved_first_channel_context_wide_contract --require-recommendation-evidence-field ROPE-USE-D19-MARGIN-FRONTIER=d19_proved_first_channel_radian_bank_form --require-recommendation-theorem ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0234 --require-recommendation-theorem ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0235 --require-recommendation-theorem ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0236 --require-recommendation-action-parameter ROPE-USE-D19-MARGIN-FRONTIER=proved_branch_bank_transfer --require-recommendation-action-parameter-path ROPE-USE-D19-MARGIN-FRONTIER=proved_branch_bank_transfer.applies --require-recommendation-action-parameter-path ROPE-USE-D19-MARGIN-FRONTIER=proved_branch_bank_transfer.context_wide_contract --require-recommendation-action-parameter-path ROPE-USE-D19-MARGIN-FRONTIER=proved_branch_bank_transfer.radian_bank_form --require-recommendation-action-parameter-path ROPE-USE-D19-MARGIN-FRONTIER=proved_branch_bank_transfer.theorem_ids",
         "python -m pytest tests/test_rope_certifier.py -q"
       ]
     },
@@ -7814,7 +7824,7 @@
       "schema_id": "circle_calculus.theseus_hive_ai_contracts.v0"
     }
   },
-  "pack_content_fingerprint": "3b091f346d2f2f2742beb30327585eee17892b66875e946cd3617e496cc0f16e",
+  "pack_content_fingerprint": "c6bcbcdead67ea9d9d19b673d6df43247eea56d7db16238cb22c3bd84ab6b6df",
   "planner_recommendation_index": {
     "FANOUT-AUDIT-DUPLICATE-COLLAPSED-BUDGET": {
       "action_kind": "audit_duplicate_collapsed_candidate_budget",
@@ -8356,7 +8366,7 @@
       "validation_commands": [
         "python scripts/rope_certify.py --preset llama_style_10000_4k --format json",
         "python scripts/circle_ai_contract_ready.py --kind rope_position_distinguishability",
-        "python scripts/circle_ai_contract_ready.py --kind rope_position_distinguishability --receipt --format json --field d19_proved_request_status --field d19_impossible_request_status --field d19_undecided_request_status --field d19_proved_first_channel_bank_transfer --field d19_proved_first_channel_bank_shape --field d19_proved_first_channel_pair_scope --field d19_proved_first_channel_context_wide_contract --field d19_proved_first_channel_bank_tolerance_rule --require-theorem AIRA-T0171 --require-theorem AIRA-T0172 --require-theorem AIRA-T0234 --require-theorem AIRA-T0235 --require-theorem AIRA-T0236 --require-recommendation ROPE-USE-D19-MARGIN-FRONTIER --require-recommendation-evidence-field ROPE-USE-D19-MARGIN-FRONTIER=d19_proved_first_channel_bank_transfer --require-recommendation-evidence-field ROPE-USE-D19-MARGIN-FRONTIER=d19_proved_first_channel_context_wide_contract --require-recommendation-theorem ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0234 --require-recommendation-theorem ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0235 --require-recommendation-theorem ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0236 --require-recommendation-action-parameter ROPE-USE-D19-MARGIN-FRONTIER=proved_branch_bank_transfer --require-recommendation-action-parameter-path ROPE-USE-D19-MARGIN-FRONTIER=proved_branch_bank_transfer.applies --require-recommendation-action-parameter-path ROPE-USE-D19-MARGIN-FRONTIER=proved_branch_bank_transfer.context_wide_contract --require-recommendation-action-parameter-path ROPE-USE-D19-MARGIN-FRONTIER=proved_branch_bank_transfer.theorem_ids",
+        "python scripts/circle_ai_contract_ready.py --kind rope_position_distinguishability --receipt --format json --field d19_proved_request_status --field d19_impossible_request_status --field d19_undecided_request_status --field d19_proved_first_channel_bank_transfer --field d19_proved_first_channel_bank_shape --field d19_proved_first_channel_pair_scope --field d19_proved_first_channel_context_wide_contract --field d19_proved_first_channel_radian_bank_form --field d19_proved_first_channel_bank_tolerance_rule --require-theorem AIRA-T0171 --require-theorem AIRA-T0172 --require-theorem AIRA-T0234 --require-theorem AIRA-T0235 --require-theorem AIRA-T0236 --require-recommendation ROPE-USE-D19-MARGIN-FRONTIER --require-recommendation-evidence-field ROPE-USE-D19-MARGIN-FRONTIER=d19_proved_first_channel_bank_transfer --require-recommendation-evidence-field ROPE-USE-D19-MARGIN-FRONTIER=d19_proved_first_channel_context_wide_contract --require-recommendation-evidence-field ROPE-USE-D19-MARGIN-FRONTIER=d19_proved_first_channel_radian_bank_form --require-recommendation-theorem ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0234 --require-recommendation-theorem ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0235 --require-recommendation-theorem ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0236 --require-recommendation-action-parameter ROPE-USE-D19-MARGIN-FRONTIER=proved_branch_bank_transfer --require-recommendation-action-parameter-path ROPE-USE-D19-MARGIN-FRONTIER=proved_branch_bank_transfer.applies --require-recommendation-action-parameter-path ROPE-USE-D19-MARGIN-FRONTIER=proved_branch_bank_transfer.context_wide_contract --require-recommendation-action-parameter-path ROPE-USE-D19-MARGIN-FRONTIER=proved_branch_bank_transfer.radian_bank_form --require-recommendation-action-parameter-path ROPE-USE-D19-MARGIN-FRONTIER=proved_branch_bank_transfer.theorem_ids",
         "python -m pytest tests/test_rope_certifier.py -q"
       ]
     },
@@ -8387,6 +8397,7 @@
         "d19_proved_first_channel_bank_shape",
         "d19_proved_first_channel_pair_scope",
         "d19_proved_first_channel_context_wide_contract",
+        "d19_proved_first_channel_radian_bank_form",
         "d19_proved_first_channel_bank_tolerance_rule"
       ],
       "id": "ROPE-USE-D19-MARGIN-FRONTIER",
@@ -8422,7 +8433,7 @@
       "validation_commands": [
         "python scripts/rope_certify.py --preset llama_style_10000_4k --format json",
         "python scripts/circle_ai_contract_ready.py --kind rope_position_distinguishability",
-        "python scripts/circle_ai_contract_ready.py --kind rope_position_distinguishability --receipt --format json --field d19_proved_request_status --field d19_impossible_request_status --field d19_undecided_request_status --field d19_proved_first_channel_bank_transfer --field d19_proved_first_channel_bank_shape --field d19_proved_first_channel_pair_scope --field d19_proved_first_channel_context_wide_contract --field d19_proved_first_channel_bank_tolerance_rule --require-theorem AIRA-T0171 --require-theorem AIRA-T0172 --require-theorem AIRA-T0234 --require-theorem AIRA-T0235 --require-theorem AIRA-T0236 --require-recommendation ROPE-USE-D19-MARGIN-FRONTIER --require-recommendation-evidence-field ROPE-USE-D19-MARGIN-FRONTIER=d19_proved_first_channel_bank_transfer --require-recommendation-evidence-field ROPE-USE-D19-MARGIN-FRONTIER=d19_proved_first_channel_context_wide_contract --require-recommendation-theorem ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0234 --require-recommendation-theorem ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0235 --require-recommendation-theorem ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0236 --require-recommendation-action-parameter ROPE-USE-D19-MARGIN-FRONTIER=proved_branch_bank_transfer --require-recommendation-action-parameter-path ROPE-USE-D19-MARGIN-FRONTIER=proved_branch_bank_transfer.applies --require-recommendation-action-parameter-path ROPE-USE-D19-MARGIN-FRONTIER=proved_branch_bank_transfer.context_wide_contract --require-recommendation-action-parameter-path ROPE-USE-D19-MARGIN-FRONTIER=proved_branch_bank_transfer.theorem_ids",
+        "python scripts/circle_ai_contract_ready.py --kind rope_position_distinguishability --receipt --format json --field d19_proved_request_status --field d19_impossible_request_status --field d19_undecided_request_status --field d19_proved_first_channel_bank_transfer --field d19_proved_first_channel_bank_shape --field d19_proved_first_channel_pair_scope --field d19_proved_first_channel_context_wide_contract --field d19_proved_first_channel_radian_bank_form --field d19_proved_first_channel_bank_tolerance_rule --require-theorem AIRA-T0171 --require-theorem AIRA-T0172 --require-theorem AIRA-T0234 --require-theorem AIRA-T0235 --require-theorem AIRA-T0236 --require-recommendation ROPE-USE-D19-MARGIN-FRONTIER --require-recommendation-evidence-field ROPE-USE-D19-MARGIN-FRONTIER=d19_proved_first_channel_bank_transfer --require-recommendation-evidence-field ROPE-USE-D19-MARGIN-FRONTIER=d19_proved_first_channel_context_wide_contract --require-recommendation-evidence-field ROPE-USE-D19-MARGIN-FRONTIER=d19_proved_first_channel_radian_bank_form --require-recommendation-theorem ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0234 --require-recommendation-theorem ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0235 --require-recommendation-theorem ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0236 --require-recommendation-action-parameter ROPE-USE-D19-MARGIN-FRONTIER=proved_branch_bank_transfer --require-recommendation-action-parameter-path ROPE-USE-D19-MARGIN-FRONTIER=proved_branch_bank_transfer.applies --require-recommendation-action-parameter-path ROPE-USE-D19-MARGIN-FRONTIER=proved_branch_bank_transfer.context_wide_contract --require-recommendation-action-parameter-path ROPE-USE-D19-MARGIN-FRONTIER=proved_branch_bank_transfer.radian_bank_form --require-recommendation-action-parameter-path ROPE-USE-D19-MARGIN-FRONTIER=proved_branch_bank_transfer.theorem_ids",
         "python -m pytest tests/test_rope_certifier.py -q"
       ]
     },
@@ -8731,8 +8742,8 @@
     "python scripts/circle_ai_contract_ready.py --action-plan --recommendation ROPE-USE-D19-MARGIN-FRONTIER --include-values --format json",
     "python scripts/example_consume_circle_ai_contract_pack.py --planner --planner-kind rope_position_distinguishability --planner-recommendation ROPE-USE-D19-MARGIN-FRONTIER --planner-include-values",
     "python scripts/circle_ai_contract_ready.py --kind seed_rule_exact_regeneration --action-plan --include-values --format json",
-    "python scripts/circle_ai_contract_ready.py --kind rope_position_distinguishability --digest --format json --field d19_proved_request_status --field d19_impossible_request_status --field d19_undecided_request_status --field d19_proved_first_channel_bank_transfer --field d19_proved_first_channel_bank_shape --field d19_proved_first_channel_pair_scope --field d19_proved_first_channel_context_wide_contract --field d19_proved_first_channel_bank_tolerance_rule --include-field-metadata --include-recommendations",
-    "python scripts/circle_ai_contract_ready.py --kind rope_position_distinguishability --receipt --format json --field d19_proved_request_status --field d19_impossible_request_status --field d19_undecided_request_status --field d19_proved_first_channel_bank_transfer --field d19_proved_first_channel_bank_shape --field d19_proved_first_channel_pair_scope --field d19_proved_first_channel_context_wide_contract --field d19_proved_first_channel_bank_tolerance_rule --require-theorem AIRA-T0171 --require-theorem AIRA-T0172 --require-theorem AIRA-T0234 --require-theorem AIRA-T0235 --require-theorem AIRA-T0236 --require-recommendation ROPE-USE-D19-MARGIN-FRONTIER --require-recommendation-evidence-field ROPE-USE-D19-MARGIN-FRONTIER=d19_proved_first_channel_bank_transfer --require-recommendation-evidence-field ROPE-USE-D19-MARGIN-FRONTIER=d19_proved_first_channel_context_wide_contract --require-recommendation-theorem ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0234 --require-recommendation-theorem ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0235 --require-recommendation-theorem ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0236 --require-recommendation-action-parameter ROPE-USE-D19-MARGIN-FRONTIER=proved_branch_bank_transfer --require-recommendation-action-parameter-path ROPE-USE-D19-MARGIN-FRONTIER=proved_branch_bank_transfer.applies --require-recommendation-action-parameter-path ROPE-USE-D19-MARGIN-FRONTIER=proved_branch_bank_transfer.context_wide_contract --require-recommendation-action-parameter-path ROPE-USE-D19-MARGIN-FRONTIER=proved_branch_bank_transfer.theorem_ids",
+    "python scripts/circle_ai_contract_ready.py --kind rope_position_distinguishability --digest --format json --field d19_proved_request_status --field d19_impossible_request_status --field d19_undecided_request_status --field d19_proved_first_channel_bank_transfer --field d19_proved_first_channel_bank_shape --field d19_proved_first_channel_pair_scope --field d19_proved_first_channel_context_wide_contract --field d19_proved_first_channel_radian_bank_form --field d19_proved_first_channel_bank_tolerance_rule --include-field-metadata --include-recommendations",
+    "python scripts/circle_ai_contract_ready.py --kind rope_position_distinguishability --receipt --format json --field d19_proved_request_status --field d19_impossible_request_status --field d19_undecided_request_status --field d19_proved_first_channel_bank_transfer --field d19_proved_first_channel_bank_shape --field d19_proved_first_channel_pair_scope --field d19_proved_first_channel_context_wide_contract --field d19_proved_first_channel_radian_bank_form --field d19_proved_first_channel_bank_tolerance_rule --require-theorem AIRA-T0171 --require-theorem AIRA-T0172 --require-theorem AIRA-T0234 --require-theorem AIRA-T0235 --require-theorem AIRA-T0236 --require-recommendation ROPE-USE-D19-MARGIN-FRONTIER --require-recommendation-evidence-field ROPE-USE-D19-MARGIN-FRONTIER=d19_proved_first_channel_bank_transfer --require-recommendation-evidence-field ROPE-USE-D19-MARGIN-FRONTIER=d19_proved_first_channel_context_wide_contract --require-recommendation-evidence-field ROPE-USE-D19-MARGIN-FRONTIER=d19_proved_first_channel_radian_bank_form --require-recommendation-theorem ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0234 --require-recommendation-theorem ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0235 --require-recommendation-theorem ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0236 --require-recommendation-action-parameter ROPE-USE-D19-MARGIN-FRONTIER=proved_branch_bank_transfer --require-recommendation-action-parameter-path ROPE-USE-D19-MARGIN-FRONTIER=proved_branch_bank_transfer.applies --require-recommendation-action-parameter-path ROPE-USE-D19-MARGIN-FRONTIER=proved_branch_bank_transfer.context_wide_contract --require-recommendation-action-parameter-path ROPE-USE-D19-MARGIN-FRONTIER=proved_branch_bank_transfer.radian_bank_form --require-recommendation-action-parameter-path ROPE-USE-D19-MARGIN-FRONTIER=proved_branch_bank_transfer.theorem_ids",
     "python scripts/circle_ai_contract_ready.py --kind sparse_attention_coverage",
     "python scripts/circle_ai_contract_ready.py --kind kv_cache_ring_buffer --digest --field stale_probe_first_stale_token --include-recommendations",
     "python scripts/circle_ai_contract_ready.py --kind kv_cache_ring_buffer --receipt --format json --field stale_probe_first_stale_token --field sink_tokens_retained_by_policy --field sink_window_exact_policy --field sink_window_tokens_distinct --field sink_prefix_disjoint_from_live_window --field sink_tokens_outside_ordinary_rolling_window --require-theorem AIM-T0103 --require-theorem AIM-T0104 --require-theorem AIM-T0149 --require-recommendation KV-DROP-STALE-REQUEST-TOKEN --require-recommendation KV-USE-SINK-ROLLING-WINDOW-REQUEST --require-recommendation-evidence-field KV-DROP-STALE-REQUEST-TOKEN=stale_probe_first_stale_token --require-recommendation-evidence-field KV-USE-SINK-ROLLING-WINDOW-REQUEST=sink_tokens_retained_by_policy --require-recommendation-evidence-field KV-USE-SINK-ROLLING-WINDOW-REQUEST=sink_tokens_outside_ordinary_rolling_window --require-recommendation-theorem KV-DROP-STALE-REQUEST-TOKEN=AIM-T0103 --require-recommendation-theorem KV-USE-SINK-ROLLING-WINDOW-REQUEST=AIM-T0149 --require-recommendation-action-parameter KV-DROP-STALE-REQUEST-TOKEN=target_token --require-recommendation-action-parameter KV-USE-SINK-ROLLING-WINDOW-REQUEST=sink_size --require-recommendation-action-parameter-path KV-DROP-STALE-REQUEST-TOKEN=target_token --require-recommendation-action-parameter-path KV-USE-SINK-ROLLING-WINDOW-REQUEST=sink_size --require-recommendation-action-parameter-path KV-USE-SINK-ROLLING-WINDOW-REQUEST=request_token_count --require-recommendation-action-parameter-path KV-USE-SINK-ROLLING-WINDOW-REQUEST=request_token_count_bound --require-recommendation-action-parameter-path KV-USE-SINK-ROLLING-WINDOW-REQUEST=cache_size --require-recommendation-action-parameter-path KV-USE-SINK-ROLLING-WINDOW-REQUEST=current",

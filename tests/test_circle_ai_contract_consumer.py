@@ -761,6 +761,7 @@ def test_consumer_exposes_rope_planner_recommendations() -> None:
         "bank_shape": "standard_channel0_first",
         "pair_scope": "all ordered unequal pairs left < right < requested_context",
         "context_wide_contract": True,
+        "radian_bank_form": True,
         "tolerance_rule": (
             "Lean conclusion applies when tolerance < fullTurn * requestedMargin."
         ),

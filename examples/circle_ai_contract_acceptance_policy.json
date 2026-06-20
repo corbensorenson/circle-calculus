@@ -1,7 +1,7 @@
 {
   "contracts": [
     {
-      "expected_contract_fingerprint": "09ecb23e6f141f7ac246a8f166af1c98e8e482f53f5ba73443c738cb4dccf978",
+      "expected_contract_fingerprint": "1dcc4a7720f22a005ff0eefa7d9d42ec0e68590caea8e8468425d2c26629b414",
       "kind": "rope_position_distinguishability",
       "required_fields": [
         "preset",
@@ -24,6 +24,7 @@
         "d19_proved_first_channel_pair_scope",
         "d19_proved_first_channel_context_wide_contract",
         "d19_proved_first_channel_bank_shape",
+        "d19_proved_first_channel_radian_bank_form",
         "d19_proved_first_channel_bank_tolerance_rule"
       ],
       "required_recommendation_action_parameter_paths": {
@@ -44,6 +45,7 @@
           "proved_branch_bank_transfer.applies",
           "proved_branch_bank_transfer.bank_shape",
           "proved_branch_bank_transfer.context_wide_contract",
+          "proved_branch_bank_transfer.radian_bank_form",
           "proved_branch_bank_transfer.theorem_ids"
         ]
       },
@@ -86,6 +88,7 @@
           "d19_proved_first_channel_pair_scope",
           "d19_proved_first_channel_context_wide_contract",
           "d19_proved_first_channel_bank_shape",
+          "d19_proved_first_channel_radian_bank_form",
           "d19_proved_first_channel_bank_tolerance_rule"
         ]
       },
@@ -356,7 +359,7 @@
       ]
     }
   ],
-  "expected_pack_fingerprint": "3b091f346d2f2f2742beb30327585eee17892b66875e946cd3617e496cc0f16e",
+  "expected_pack_fingerprint": "c6bcbcdead67ea9d9d19b673d6df43247eea56d7db16238cb22c3bd84ab6b6df",
   "policy_id": "circle_ai_flagship_contracts_acceptance_v0",
   "policy_name": "Circle AI flagship contracts acceptance policy",
   "schema_id": "circle_calculus.ai_contract_acceptance_policy.v0"

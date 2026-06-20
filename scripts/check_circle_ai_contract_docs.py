@@ -85,6 +85,7 @@ STRICT_ROPE_RECEIPT_TOKENS = (
     "--field d19_proved_first_channel_bank_shape",
     "--field d19_proved_first_channel_pair_scope",
     "--field d19_proved_first_channel_context_wide_contract",
+    "--field d19_proved_first_channel_radian_bank_form",
     "--field d19_proved_first_channel_bank_tolerance_rule",
     "--require-theorem AIRA-T0171",
     "--require-theorem AIRA-T0172",
@@ -99,6 +100,10 @@ STRICT_ROPE_RECEIPT_TOKENS = (
     (
         "--require-recommendation-evidence-field "
         "ROPE-USE-D19-MARGIN-FRONTIER=d19_proved_first_channel_context_wide_contract"
+    ),
+    (
+        "--require-recommendation-evidence-field "
+        "ROPE-USE-D19-MARGIN-FRONTIER=d19_proved_first_channel_radian_bank_form"
     ),
     (
         "--require-recommendation-theorem "
@@ -124,6 +129,10 @@ STRICT_ROPE_RECEIPT_TOKENS = (
         "--require-recommendation-action-parameter-path "
         "ROPE-USE-D19-MARGIN-FRONTIER="
         "proved_branch_bank_transfer.context_wide_contract"
+    ),
+    (
+        "--require-recommendation-action-parameter-path "
+        "ROPE-USE-D19-MARGIN-FRONTIER=proved_branch_bank_transfer.radian_bank_form"
     ),
     (
         "--require-recommendation-action-parameter-path "

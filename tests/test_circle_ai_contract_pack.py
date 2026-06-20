@@ -276,6 +276,7 @@ def test_generic_contract_pack_is_standalone_with_compatibility_aliases() -> Non
         "--field d19_proved_first_channel_bank_transfer "
         "--field d19_proved_first_channel_bank_shape --field d19_proved_first_channel_pair_scope "
         "--field d19_proved_first_channel_context_wide_contract "
+        "--field d19_proved_first_channel_radian_bank_form "
         "--field d19_proved_first_channel_bank_tolerance_rule "
         "--include-field-metadata --include-recommendations"
         in pack["validation_commands"]
@@ -289,6 +290,7 @@ def test_generic_contract_pack_is_standalone_with_compatibility_aliases() -> Non
         "--field d19_proved_first_channel_bank_transfer "
         "--field d19_proved_first_channel_bank_shape --field d19_proved_first_channel_pair_scope "
         "--field d19_proved_first_channel_context_wide_contract "
+        "--field d19_proved_first_channel_radian_bank_form "
         "--field d19_proved_first_channel_bank_tolerance_rule "
         "--require-theorem AIRA-T0171 --require-theorem AIRA-T0172 "
         "--require-theorem AIRA-T0234 --require-theorem AIRA-T0235 "
@@ -299,6 +301,8 @@ def test_generic_contract_pack_is_standalone_with_compatibility_aliases() -> Non
         "--require-recommendation-evidence-field "
         "ROPE-USE-D19-MARGIN-FRONTIER="
         "d19_proved_first_channel_context_wide_contract "
+        "--require-recommendation-evidence-field "
+        "ROPE-USE-D19-MARGIN-FRONTIER=d19_proved_first_channel_radian_bank_form "
         "--require-recommendation-theorem "
         "ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0234 "
         "--require-recommendation-theorem "
@@ -312,6 +316,8 @@ def test_generic_contract_pack_is_standalone_with_compatibility_aliases() -> Non
         "--require-recommendation-action-parameter-path "
         "ROPE-USE-D19-MARGIN-FRONTIER="
         "proved_branch_bank_transfer.context_wide_contract "
+        "--require-recommendation-action-parameter-path "
+        "ROPE-USE-D19-MARGIN-FRONTIER=proved_branch_bank_transfer.radian_bank_form "
         "--require-recommendation-action-parameter-path "
         "ROPE-USE-D19-MARGIN-FRONTIER=proved_branch_bank_transfer.theorem_ids"
         in pack["validation_commands"]
@@ -685,6 +691,7 @@ def test_generic_contract_pack_is_standalone_with_compatibility_aliases() -> Non
         "--field d19_proved_first_channel_bank_transfer "
         "--field d19_proved_first_channel_bank_shape --field d19_proved_first_channel_pair_scope "
         "--field d19_proved_first_channel_context_wide_contract "
+        "--field d19_proved_first_channel_radian_bank_form "
         "--field d19_proved_first_channel_bank_tolerance_rule "
         "--require-theorem AIRA-T0171 --require-theorem AIRA-T0172 "
         "--require-theorem AIRA-T0234 --require-theorem AIRA-T0235 "
@@ -696,6 +703,8 @@ def test_generic_contract_pack_is_standalone_with_compatibility_aliases() -> Non
         "--require-recommendation-evidence-field "
         "ROPE-USE-D19-MARGIN-FRONTIER="
         "d19_proved_first_channel_context_wide_contract "
+        "--require-recommendation-evidence-field "
+        "ROPE-USE-D19-MARGIN-FRONTIER=d19_proved_first_channel_radian_bank_form "
         "--require-recommendation-theorem "
         "ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0234 "
         "--require-recommendation-theorem "
@@ -710,6 +719,8 @@ def test_generic_contract_pack_is_standalone_with_compatibility_aliases() -> Non
         "--require-recommendation-action-parameter-path "
         "ROPE-USE-D19-MARGIN-FRONTIER="
         "proved_branch_bank_transfer.context_wide_contract "
+        "--require-recommendation-action-parameter-path "
+        "ROPE-USE-D19-MARGIN-FRONTIER=proved_branch_bank_transfer.radian_bank_form "
         "--require-recommendation-action-parameter-path "
         "ROPE-USE-D19-MARGIN-FRONTIER="
         "proved_branch_bank_transfer.theorem_ids"
@@ -766,6 +777,7 @@ def test_generic_contract_pack_is_standalone_with_compatibility_aliases() -> Non
         "bank_shape": "standard_channel0_first",
         "pair_scope": "all ordered unequal pairs left < right < requested_context",
         "context_wide_contract": True,
+        "radian_bank_form": True,
         "tolerance_rule": (
             "Lean conclusion applies when tolerance < fullTurn * requestedMargin."
         ),

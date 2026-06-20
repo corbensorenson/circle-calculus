@@ -125,6 +125,8 @@ def test_contract_ready_cli_emits_json_digest_fields() -> None:
             "--field",
             "d19_proved_first_channel_context_wide_contract",
             "--field",
+            "d19_proved_first_channel_radian_bank_form",
+            "--field",
             "d19_proved_first_channel_bank_tolerance_rule",
         ],
         check=True,
@@ -145,6 +147,7 @@ def test_contract_ready_cli_emits_json_digest_fields() -> None:
             "all ordered unequal pairs left < right < requested_context"
         ),
         "d19_proved_first_channel_context_wide_contract": True,
+        "d19_proved_first_channel_radian_bank_form": True,
         "d19_proved_first_channel_bank_tolerance_rule": (
             "Lean conclusion applies when tolerance < fullTurn * requestedMargin."
         ),
@@ -182,6 +185,8 @@ def test_contract_ready_cli_emits_rope_digest_recommendations() -> None:
             "--field",
             "d19_proved_first_channel_context_wide_contract",
             "--field",
+            "d19_proved_first_channel_radian_bank_form",
+            "--field",
             "d19_proved_first_channel_bank_tolerance_rule",
             "--include-recommendations",
         ],
@@ -201,6 +206,7 @@ def test_contract_ready_cli_emits_rope_digest_recommendations() -> None:
             "all ordered unequal pairs left < right < requested_context"
         ),
         "d19_proved_first_channel_context_wide_contract": True,
+        "d19_proved_first_channel_radian_bank_form": True,
         "d19_proved_first_channel_bank_tolerance_rule": (
             "Lean conclusion applies when tolerance < fullTurn * requestedMargin."
         ),
@@ -476,6 +482,8 @@ def test_contract_ready_cli_emits_rope_bank_transfer_receipt() -> None:
             "--field",
             "d19_proved_first_channel_context_wide_contract",
             "--field",
+            "d19_proved_first_channel_radian_bank_form",
+            "--field",
             "d19_proved_first_channel_bank_tolerance_rule",
             "--require-theorem",
             "AIRA-T0171",
@@ -499,6 +507,11 @@ def test_contract_ready_cli_emits_rope_bank_transfer_receipt() -> None:
                 "ROPE-USE-D19-MARGIN-FRONTIER="
                 "d19_proved_first_channel_context_wide_contract"
             ),
+            "--require-recommendation-evidence-field",
+            (
+                "ROPE-USE-D19-MARGIN-FRONTIER="
+                "d19_proved_first_channel_radian_bank_form"
+            ),
             "--require-recommendation-theorem",
             "ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0234",
             "--require-recommendation-theorem",
@@ -513,6 +526,11 @@ def test_contract_ready_cli_emits_rope_bank_transfer_receipt() -> None:
             (
                 "ROPE-USE-D19-MARGIN-FRONTIER="
                 "proved_branch_bank_transfer.context_wide_contract"
+            ),
+            "--require-recommendation-action-parameter-path",
+            (
+                "ROPE-USE-D19-MARGIN-FRONTIER="
+                "proved_branch_bank_transfer.radian_bank_form"
             ),
             "--require-recommendation-action-parameter-path",
             "ROPE-USE-D19-MARGIN-FRONTIER=proved_branch_bank_transfer.theorem_ids",
@@ -542,6 +560,7 @@ def test_contract_ready_cli_emits_rope_bank_transfer_receipt() -> None:
             "all ordered unequal pairs left < right < requested_context"
         ),
         "d19_proved_first_channel_context_wide_contract": True,
+        "d19_proved_first_channel_radian_bank_form": True,
         "d19_proved_first_channel_bank_tolerance_rule": (
             "Lean conclusion applies when tolerance < fullTurn * requestedMargin."
         ),
@@ -553,6 +572,7 @@ def test_contract_ready_cli_emits_rope_bank_transfer_receipt() -> None:
         "ROPE-USE-D19-MARGIN-FRONTIER": [
             "d19_proved_first_channel_bank_transfer",
             "d19_proved_first_channel_context_wide_contract",
+            "d19_proved_first_channel_radian_bank_form",
         ],
     }
     assert payload["required_recommendation_theorem_ids"] == {
@@ -569,6 +589,7 @@ def test_contract_ready_cli_emits_rope_bank_transfer_receipt() -> None:
         "ROPE-USE-D19-MARGIN-FRONTIER": [
             "proved_branch_bank_transfer.applies",
             "proved_branch_bank_transfer.context_wide_contract",
+            "proved_branch_bank_transfer.radian_bank_form",
             "proved_branch_bank_transfer.theorem_ids",
         ],
     }
@@ -578,6 +599,7 @@ def test_contract_ready_cli_emits_rope_bank_transfer_receipt() -> None:
         "bank_shape": "standard_channel0_first",
         "pair_scope": "all ordered unequal pairs left < right < requested_context",
         "context_wide_contract": True,
+        "radian_bank_form": True,
         "tolerance_rule": (
             "Lean conclusion applies when tolerance < fullTurn * requestedMargin."
         ),
