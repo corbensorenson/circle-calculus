@@ -526,6 +526,7 @@ def ai_contract_impact(files: Iterable[str], *, full: bool = False) -> tuple[str
             or path in AI_CONTRACT_SHARED_SITE_PAGES
             or path.startswith("site/data/generated/circle_ai_contract_pack")
             or path.startswith("examples/circle_ai_requests/")
+            or path.startswith("examples/circle_ai_model_configs/")
             or path.startswith("sidecars/PAPER_AI_")
             or "circle_ai_contract" in path
         ):
@@ -738,6 +739,13 @@ def plan_for_files(files: Iterable[str], *, full: bool = False) -> list[Check]:
                 checks,
                 seen,
                 f"{path} changed a public AI contract request example",
+            )
+
+        if path.startswith("examples/circle_ai_model_configs/"):
+            add_circle_ai_contract_checks(
+                checks,
+                seen,
+                f"{path} changed a public AI model config example",
             )
 
         if path == "pyproject.toml" or path.startswith(".github/workflows/"):

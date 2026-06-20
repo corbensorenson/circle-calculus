@@ -24,7 +24,7 @@ python scripts/circle_ai_certify.py rope \
   --requested-margin 1/328459
 
 python scripts/circle_ai_certify.py rope \
-  --model-config path/to/config.json \
+  --model-config examples/circle_ai_model_configs/standard_rope_config.json \
   --requested-margin 1/328459 \
   --format json \
   --request-out reports/rope_request.json \
@@ -61,6 +61,8 @@ fields. Explicit `--head-dim`, `--base`, `--context`, `--tolerance`, and
 `--discretization` flags override inferred values. Non-default `rope_scaling`
 metadata is rejected rather than treated as proved by the current standard-RoPE
 contract.
+The copyable fixture is
+`examples/circle_ai_model_configs/standard_rope_config.json`.
 
 External projects can also use the versioned request schema directly:
 

@@ -736,6 +736,21 @@ def test_contract_request_example_change_runs_request_example_gate() -> None:
     assert contains_command(commands, "pytest", "tests/test_circle_ai_contract_pack.py")
 
 
+def test_contract_model_config_example_change_runs_request_example_gate() -> None:
+    commands = commands_for(
+        ["examples/circle_ai_model_configs/standard_rope_config.json"]
+    )
+
+    assert contains_command(commands, "make", "circle-ai-contracts-ready")
+    assert contains_command(
+        commands,
+        "pytest",
+        "tests/test_circle_ai_contract_request_examples.py",
+    )
+    assert contains_command(commands, "scripts/check_circle_ai_contract_runner.py")
+    assert contains_command(commands, "pytest", "tests/test_circle_ai_contract_pack.py")
+
+
 def test_theseus_compatibility_source_change_runs_public_and_compatibility_checks() -> None:
     commands = commands_for(["circle_math/applications/theseus_hive_contracts.py"])
 

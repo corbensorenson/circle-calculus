@@ -30,6 +30,9 @@ from circle_math.applications.circle_ai_contracts import build_contract_pack
 
 ROOT = Path(__file__).resolve().parents[1]
 SCRIPT = ROOT / "scripts" / "circle_ai_certify.py"
+STANDARD_ROPE_MODEL_CONFIG = (
+    ROOT / "examples" / "circle_ai_model_configs" / "standard_rope_config.json"
+)
 
 
 @pytest.fixture(scope="module")
@@ -642,6 +645,47 @@ def test_circle_ai_certify_cli_imports_standard_rope_model_config(
     saved_request = json.loads(request_path.read_text())
     assert saved_request == payload["request"]
     assert validate_contract_request(saved_request) == []
+
+
+def test_circle_ai_certify_cli_imports_checked_in_model_config(
+    tmp_path: Path,
+) -> None:
+    request_path = tmp_path / "request.json"
+    receipt_path = tmp_path / "receipt.json"
+
+    result = subprocess.run(
+        [
+            sys.executable,
+            str(SCRIPT),
+            "rope",
+            "--model-config",
+            str(STANDARD_ROPE_MODEL_CONFIG),
+            "--requested-margin",
+            "1/328459",
+            "--request-out",
+            str(request_path),
+            "--json-out",
+            str(receipt_path),
+            "--require-status",
+            "proved",
+            "--require-passed",
+            "--format",
+            "json",
+        ],
+        cwd=ROOT,
+        check=True,
+        text=True,
+        capture_output=True,
+    )
+
+    payload = json.loads(result.stdout)
+    saved_request = json.loads(request_path.read_text())
+    saved_receipt = json.loads(receipt_path.read_text())
+    assert payload == saved_receipt
+    assert saved_request == saved_receipt["request"]
+    assert saved_receipt["normalized_request"]["head_dim"] == 128
+    assert saved_receipt["normalized_request"]["base"] == 10000.0
+    assert saved_receipt["normalized_request"]["context_length"] == 131072
 
 
 def test_circle_ai_certify_cli_rejects_scaled_rope_model_config(

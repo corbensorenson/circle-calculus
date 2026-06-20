@@ -30,7 +30,7 @@ For standard RoPE model configs, the same runner can infer parameters from a
 
 ```bash
 python scripts/circle_ai_certify.py rope \
-  --model-config path/to/config.json \
+  --model-config examples/circle_ai_model_configs/standard_rope_config.json \
   --requested-margin 1/328459 \
   --format json \
   --request-out reports/rope_request.json \
