@@ -55,6 +55,18 @@ def _request_paths(example_dir: Path) -> list[Path]:
     return paths
 
 
+def _display_path(path: Path) -> str:
+    try:
+        return str(path.relative_to(ROOT))
+    except ValueError:
+        return str(path)
+
+
+def _write_json(path: Path, payload: dict[str, Any]) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n")
+
+
 def check_runner_examples(
     *,
     example_dir: Path = DEFAULT_EXAMPLE_DIR,
@@ -62,6 +74,7 @@ def check_runner_examples(
     request_schema_path: Path = DEFAULT_REQUEST_SCHEMA,
     request_validation_schema_path: Path = DEFAULT_REQUEST_VALIDATION_SCHEMA,
     receipt_schema_path: Path = DEFAULT_RECEIPT_SCHEMA,
+    receipt_out_dir: Path | None = None,
 ) -> dict[str, Any]:
     request_schema = _json(request_schema_path)
     request_validation_schema = _json(request_validation_schema_path)
@@ -89,9 +102,16 @@ def check_runner_examples(
                 failures.append(f"{path}: " + "; ".join(receipt_failures))
                 continue
             jsonschema.validate(receipt, receipt_schema)
+            receipt_path = None
+            if receipt_out_dir is not None:
+                receipt_path = receipt_out_dir / f"{path.stem.removesuffix('_request')}_receipt.json"
+                _write_json(receipt_path, receipt)
             summaries.append(
                 {
-                    "request_path": str(path.relative_to(ROOT)),
+                    "request_path": _display_path(path),
+                    "receipt_path": (
+                        None if receipt_path is None else _display_path(receipt_path)
+                    ),
                     "kind": receipt["kind"],
                     "status": receipt["status"],
                     "request_passed": receipt["request_passed"],
@@ -144,6 +164,11 @@ def main() -> int:
         default=DEFAULT_REQUEST_VALIDATION_SCHEMA,
     )
     parser.add_argument("--format", choices=("text", "json"), default="text")
+    parser.add_argument(
+        "--receipt-out-dir",
+        type=Path,
+        help="Optional directory where validated receipt JSON files are written.",
+    )
     args = parser.parse_args()
 
     report = check_runner_examples(
@@ -152,6 +177,7 @@ def main() -> int:
         request_schema_path=args.request_schema,
         request_validation_schema_path=args.request_validation_schema,
         receipt_schema_path=args.receipt_schema,
+        receipt_out_dir=args.receipt_out_dir,
     )
     if args.format == "json":
         print(json.dumps(report, indent=2, sort_keys=True))
@@ -168,7 +194,8 @@ def main() -> int:
                 f"status={summary['status']} "
                 f"passed={summary['request_passed']} "
                 f"theorems={summary['theorem_count']} "
-                f"recommendations={summary['recommendation_count']}"
+                f"recommendations={summary['recommendation_count']} "
+                f"receipt={summary['receipt_path']}"
             )
         for failure in report["failures"]:
             print(f"failure={failure}", file=sys.stderr)

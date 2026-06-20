@@ -90,6 +90,14 @@ Check all public request examples and their receipt schemas with:
 python scripts/check_circle_ai_contract_runner.py
 ```
 
+Write receipt JSON files for a request directory:
+
+```bash
+python scripts/check_circle_ai_contract_runner.py \
+  --example-dir examples/circle_ai_requests \
+  --receipt-out-dir reports/circle_ai_receipts
+```
+
 ## Receipt Statuses
 
 | Status | Meaning |

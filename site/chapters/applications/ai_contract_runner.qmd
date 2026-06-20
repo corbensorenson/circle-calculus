@@ -172,6 +172,14 @@ Check those examples and their generated receipts with:
 python scripts/check_circle_ai_contract_runner.py
 ```
 
+For a directory of request files, write all generated receipt JSON files:
+
+```bash
+python scripts/check_circle_ai_contract_runner.py \
+  --example-dir examples/circle_ai_requests \
+  --receipt-out-dir reports/circle_ai_receipts
+```
+
 ## Receipt Reading Loop
 
 Read every receipt in this order:
