@@ -32,6 +32,9 @@ def defaults_fixture() -> dict[str, object]:
         "parallel_small_prefix_segment_size": 65_536,
         "parallel_medium_prefix_count_mode": "segmented",
         "parallel_medium_prefix_segment_size": 131_072,
+        "parallel_lower_high_offset_base_limit": 5_000_000,
+        "parallel_lower_high_offset_count_mode": "presieve13",
+        "parallel_lower_high_offset_min_base_limit": 1_200_000,
         "parallel_very_high_offset_count_mode": "segmented",
         "parallel_very_high_offset_segment_size": 3_145_728,
     }

@@ -120,6 +120,8 @@ fn write_prime_engine_defaults(out_dir: &PathBuf) {
     let small = json_u64(&defaults, "parallel_small_prefix_segment_size");
     let medium = json_u64(&defaults, "parallel_medium_prefix_segment_size");
     let lower_high_base_limit = json_u64(&defaults, "parallel_lower_high_offset_base_limit");
+    let lower_high_min_base_limit =
+        json_u64(&defaults, "parallel_lower_high_offset_min_base_limit");
     let very_high = json_u64(&defaults, "parallel_very_high_offset_segment_size");
     let tiny_mode = json_count_mode(&defaults, "parallel_tiny_prefix_count_mode");
     let small_mode = json_count_mode(&defaults, "parallel_small_prefix_count_mode");
@@ -130,6 +132,7 @@ fn write_prime_engine_defaults(out_dir: &PathBuf) {
         "\
 pub const PARALLEL_LOWER_HIGH_OFFSET_BASE_LIMIT: u64 = {lower_high_base_limit};
 pub const PARALLEL_LOWER_HIGH_OFFSET_COUNT_MODE: &str = \"{lower_high_mode}\";
+pub const PARALLEL_LOWER_HIGH_OFFSET_MIN_BASE_LIMIT: u64 = {lower_high_min_base_limit};
 pub const PARALLEL_TINY_PREFIX_COUNT_MODE: &str = \"{tiny_mode}\";
 pub const PARALLEL_TINY_PREFIX_SEGMENT_SIZE: u64 = {tiny};
 pub const PARALLEL_SMALL_PREFIX_COUNT_MODE: &str = \"{small_mode}\";
