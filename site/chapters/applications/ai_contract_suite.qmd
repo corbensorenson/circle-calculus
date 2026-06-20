@@ -89,12 +89,23 @@ Start with the contract pack before reading individual theorem trails:
 
 ```bash
 make circle-ai-contracts-ready
-python scripts/circle_ai_contract_ready.py --list-kinds
+python scripts/circle_ai_contract_ready.py
 python scripts/circle_ai_contract_ready.py --kind rope_position_distinguishability
 python scripts/circle_ai_contract_ready.py --kind sparse_attention_coverage --digest --field first_uncovered_lag --include-recommendations
 ```
 
-Read the output in this order:
+The no-argument readiness command is the table of contents for the public
+contract pack. It should say that all nine exported contract families are ready
+before you drill into a single one:
+
+```text
+circle AI contract readiness summary ok: contracts=9 ready=9 not_ready=0 ...
+kind=rope_position_distinguishability ... ready=True ... proof_proved=True ...
+kind=kv_cache_ring_buffer ... ready=True ... proof_proved=True ...
+kind=sparse_attention_coverage ... ready=True ... proof_proved=True ...
+```
+
+Read each readiness line in this order:
 
 | Field | Meaning | Stop If |
 | --- | --- | --- |
@@ -141,6 +152,7 @@ For a single contract kind, the consumer CLI performs the pack validation first,
 
 ```bash
 make circle-ai-contracts-ready
+python scripts/circle_ai_contract_ready.py
 python scripts/circle_ai_contract_ready.py --kind sparse_attention_coverage
 python scripts/circle_ai_contract_ready.py --kind sparse_attention_coverage --format json
 python scripts/circle_ai_contract_ready.py --list-kinds
