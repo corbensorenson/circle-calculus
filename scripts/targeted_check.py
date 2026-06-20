@@ -592,6 +592,17 @@ def plan_for_files(files: Iterable[str], *, full: bool = False) -> list[Check]:
             module = lean_module_name(path)
             if module is not None:
                 add(checks, seen, f"Lean module build: {module}", ("lake", "build", module), f"{path} changed")
+                if module != "Circle":
+                    add(
+                        checks,
+                        seen,
+                        "Lean aggregate build: Circle",
+                        ("lake", "build", "Circle"),
+                        (
+                            f"{path} changed; manifest Lean-name checks import "
+                            "the aggregate Circle module"
+                        ),
+                    )
             else:
                 add(checks, seen, f"Lean file: {path}", ("lake", "env", "lean", path), f"{path} changed")
             add(checks, seen, "fake-proof guard", py("scripts/check_no_fake_proofs.py"), f"{path} changed")

@@ -92,7 +92,7 @@ The AI contract scope is one of:
 
 The mapping is conservative:
 
-- `Circle/**/*.lean` builds the corresponding Lean module to refresh declaration artifacts, then runs fake-proof checks and manifest Lean-name checks. It does not also run a separate file-level Lean elaboration when the module name is known, because the module build is the useful local proof artifact and duplicate elaboration is too expensive for large application files.
+- `Circle/**/*.lean` builds the corresponding Lean module to refresh declaration artifacts, then rebuilds the aggregate `Circle` module before fake-proof checks and manifest Lean-name checks. The aggregate build is intentional: `scripts/check_manifest_lean_names.py` imports `Circle`, so a newly added declaration can otherwise typecheck in its local module while the manifest check sees a stale aggregate import. The runner does not also run a separate file-level Lean elaboration when the module name is known, because the module build is the useful local proof artifact and duplicate elaboration is too expensive for large application files.
 - application Lean files also run application guardrails and proof-depth audit.
   Contract-backed application Lean files such as `RoPECertifier.lean`,
   `RoPEFrontier.lean`, `RoPEGeneratedCertificates.lean`, and
