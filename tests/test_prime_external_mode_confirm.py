@@ -20,6 +20,7 @@ def recommendation(
     threads: int = 8,
     requested_threads: int = 8,
     median_ms: float = 3.0,
+    median_speedup: float = 1.1,
     stability: str = "stable",
     source: str = "run",
 ) -> dict[str, object]:
@@ -36,6 +37,8 @@ def recommendation(
         "requested_threads": requested_threads,
         "best_ms": median_ms * 0.95,
         "median_ms": median_ms,
+        "circle_speedup": median_speedup,
+        "median_circle_speedup": median_speedup,
         "sample_stability": stability,
     }
 
@@ -84,6 +87,25 @@ def test_build_confirmation_rejects_noisy_repeat_by_default() -> None:
     assert row["status"] == "unconfirmed"
     assert row["confirmation_count"] == 0
     assert row["stable_observed_count"] == 0
+
+
+def test_build_confirmation_rejects_stable_rows_that_do_not_beat_baseline() -> None:
+    confirmation = build_confirmation(
+        [
+            recommendation(source="run1", median_speedup=0.995),
+            recommendation(source="run2", median_speedup=1.0),
+        ],
+        baseline_priority=["external_primesieve_count"],
+        min_confirmations=2,
+        require_stable_samples=True,
+        generated_at_utc="2026-01-01T00:00:00Z",
+        inputs=["run1.csv", "run2.csv"],
+    )
+
+    row = confirmation["winners"][0]
+    assert row["status"] == "unconfirmed"
+    assert row["confirmation_count"] == 0
+    assert row["stable_observed_count"] == 2
 
 
 def test_build_confirmation_can_allow_unstable_for_exploration() -> None:

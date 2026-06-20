@@ -386,7 +386,10 @@ def confirm_group(
     eligible = [
         row
         for row in rows
-        if (not require_stable_samples) or row.get("sample_stability") == "stable"
+        if row_is_confirmation_eligible(
+            row,
+            require_stable_samples=require_stable_samples,
+        )
     ]
     counter = Counter(winner_key(row) for row in eligible)
     if counter:
@@ -423,6 +426,23 @@ def winner_key(row: dict[str, Any]) -> tuple[str, int, int, int]:
         int(row["threads"]),
         int(row["requested_threads"]),
     )
+
+
+def row_is_confirmation_eligible(
+    row: dict[str, Any],
+    *,
+    require_stable_samples: bool,
+) -> bool:
+    if require_stable_samples and row.get("sample_stability") != "stable":
+        return False
+    return median_speedup_beats_baseline(row)
+
+
+def median_speedup_beats_baseline(row: dict[str, Any]) -> bool:
+    raw = row.get("median_circle_speedup", row.get("median_speedup"))
+    if raw is None or raw == "":
+        return False
+    return float(raw) > 1.0
 
 
 def render_markdown(confirmation: dict[str, Any]) -> str:
