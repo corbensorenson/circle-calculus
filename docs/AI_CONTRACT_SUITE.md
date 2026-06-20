@@ -24,6 +24,35 @@ engineering object
 
 These contracts are useful because they expose finite failure modes before training or deployment: collisions, stale reads, uncovered lags, duplicate candidate collapse, and exact count boundaries. They do not prove model quality.
 
+## First 10 Minutes
+
+Start here if you want to use the suite rather than audit every theorem:
+
+```bash
+make circle-ai-contracts-ready
+python scripts/circle_ai_contract_ready.py --list-kinds
+python scripts/circle_ai_contract_ready.py --kind rope_position_distinguishability
+python scripts/circle_ai_contract_ready.py \
+  --kind sparse_attention_coverage \
+  --digest \
+  --field first_uncovered_lag \
+  --include-recommendations
+```
+
+Read the common readiness fields this way:
+
+| Field | Meaning |
+| --- | --- |
+| `ready=True` | The generated contract record has the required schema, source links, theorem ids, dictionary ids, CLI entrypoints, and non-claims. |
+| `proof_proved=True` | The theorem ids cited by the record resolve to proved manifest entries and compiled Lean declarations under the project checks. |
+| `missing_fields=0` | The contract exposes the deterministic fields that downstream consumers are expected to pin or inspect. |
+| `unresolved=0` and `unproved=0` | The contract does not cite missing or unproved theorem ids in its readiness surface. |
+| `recommendations=N` | The record includes theorem-linked planner advice. Treat recommendations as finite contract guidance, not as model-quality claims. |
+
+For a textbook explanation, open the matching Living Book lesson. For a CI
+integration, pin the generated pack fingerprint and require the specific fields,
+theorem ids, and recommendations that your downstream tool depends on.
+
 The KV-cache contract intentionally includes both a passing retained read and a failing stale-read probe, so downstream consumers can test the success and rejection boundaries from the same theorem-backed schema.
 The RoPE contract likewise includes D19 standard-channel request-classifier probes that mark `1/328459` as proved, `1/328458` as impossible, and `2/656917` as the deliberate `undecided_margin_gap` at context `131072`; Lean now also proves the exact undecided interval width `1/107884986222`. This is a one-channel frontier rather than a full all-channel real-RoPE theorem.
 
@@ -68,6 +97,13 @@ a downstream project pins a contract. The older
 `site/data/generated/theseus_hive_ai_contracts.json` file is a compatibility
 view for the optional private Theseus-Hive transfer lane, not the public center
 of the suite.
+
+Most users only need the short readiness commands above. The longer examples
+below are audit and CI receipt commands for maintainers and downstream
+integration tests.
+
+<details>
+<summary>Audit and CI receipt command examples</summary>
 
 For one contract kind, downstream tools can use the readiness CLI:
 
@@ -138,6 +174,8 @@ python scripts/circle_ai_contract_ready.py --kind recurrence_schedule --receipt 
 python scripts/circle_ai_contract_ready.py --kind recurrence_schedule --digest --field periodic_shift_required_steps_invariant --field periodic_shift_active_at_step_invariant
 python scripts/circle_ai_contract_ready.py --kind seed_rule_exact_regeneration --digest --field storage_saving --include-recommendations
 ```
+
+</details>
 
 Use `--recommendation RECOMMENDATION_ID` with `--action-plan` when a downstream
 planner needs one theorem-linked action rather than the whole generated plan.
