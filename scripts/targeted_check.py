@@ -262,6 +262,13 @@ def add_circle_ai_contract_checks(checks: list[Check], seen: set[tuple[str, ...]
         pytest("tests/test_downstream_ci_accept_circle_ai_contracts.py"),
         reason,
     )
+    add(
+        checks,
+        seen,
+        "Circle AI contract runner tests",
+        pytest("tests/test_circle_ai_contract_runner.py"),
+        reason,
+    )
 
 
 AI_CONTRACT_DIGEST_FIELDS = {
