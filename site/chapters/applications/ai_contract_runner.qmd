@@ -46,6 +46,8 @@ contract receipt
         |
         +--> evidence fields
         +--> theorem ids
+        +--> recommendations
+        +--> validation commands
         +--> proof-status summary
         +--> non-claims
 ```
@@ -164,7 +166,9 @@ Read every receipt in this order:
 4. `evidence`: the family-specific certificate fields;
 5. `proof_status.theorem_ids`: the proof trail;
 6. `proof_layers`: proved versus computed versus numerical-only fields;
-7. `not_claimed`: what the receipt deliberately does not prove.
+7. `recommendations` and `validation_commands`: how a downstream tool should
+   act on and recheck the receipt;
+8. `not_claimed`: what the receipt deliberately does not prove.
 
 ## Python API
 

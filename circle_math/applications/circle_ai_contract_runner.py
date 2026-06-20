@@ -301,6 +301,8 @@ def _base_receipt(
         "evidence": dict(evidence),
         "proof_status": proof_status,
         "proof_layers": dict(proof_layers),
+        "recommendations": list(support["planner_recommendations"]),
+        "validation_commands": list(support["validation_commands"]),
         "support": support,
         "not_claimed": list(_unique_strings(not_claimed)),
         "content_fingerprint_algorithm": FINGERPRINT_ALGORITHM,
@@ -949,6 +951,16 @@ def validate_contract_receipt(receipt: Mapping[str, Any]) -> list[str]:
             failures.append("support.contract_pack_fingerprint must be present")
         if not support.get("contract_content_fingerprint"):
             failures.append("support.contract_content_fingerprint must be present")
+    recommendations = receipt.get("recommendations")
+    if not isinstance(recommendations, list) or not recommendations:
+        failures.append("recommendations must be a non-empty list")
+    elif not all(isinstance(recommendation, dict) for recommendation in recommendations):
+        failures.append("recommendations must contain objects")
+    validation_commands = receipt.get("validation_commands")
+    if not isinstance(validation_commands, list) or not validation_commands:
+        failures.append("validation_commands must be a non-empty list")
+    elif not all(isinstance(command, str) and command for command in validation_commands):
+        failures.append("validation_commands must contain non-empty strings")
     if not isinstance(receipt.get("not_claimed"), list) or not receipt.get(
         "not_claimed"
     ):
@@ -981,6 +993,11 @@ def receipt_summary_lines(receipt: Mapping[str, Any]) -> list[str]:
             f"ready={support['ready_for_downstream_fixture_use']} "
             f"pack_fingerprint={str(support['contract_pack_fingerprint'])[:12]} "
             f"contract_fingerprint={str(support['contract_content_fingerprint'])[:12]}"
+        ),
+        (
+            "runner_metadata="
+            f"recommendations={len(receipt['recommendations'])} "
+            f"validation_commands={len(receipt['validation_commands'])}"
         ),
     ]
     evidence = receipt["evidence"]
@@ -1105,6 +1122,8 @@ def build_contract_receipt_json_schema() -> dict[str, Any]:
             "evidence",
             "proof_status",
             "proof_layers",
+            "recommendations",
+            "validation_commands",
             "support",
             "not_claimed",
             "content_fingerprint_algorithm",
@@ -1141,6 +1160,16 @@ def build_contract_receipt_json_schema() -> dict[str, Any]:
                 "additionalProperties": True,
             },
             "proof_layers": {"type": "object"},
+            "recommendations": {
+                "type": "array",
+                "items": {"type": "object"},
+                "minItems": 1,
+            },
+            "validation_commands": {
+                "type": "array",
+                "items": {"type": "string", "minLength": 1},
+                "minItems": 1,
+            },
             "support": {"type": "object"},
             "not_claimed": string_list,
             "content_fingerprint_algorithm": {"const": FINGERPRINT_ALGORITHM},

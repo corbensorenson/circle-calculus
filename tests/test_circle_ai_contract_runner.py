@@ -9,6 +9,7 @@ import pytest
 
 from circle_math.applications import (
     build_contract_receipt,
+    build_contract_receipt_json_schema,
     build_contract_receipt_from_request,
     build_contract_request_json_schema,
     build_kv_cache_receipt,
@@ -60,6 +61,10 @@ def test_rope_receipt_classifies_d19_margin_request(contract_pack: dict) -> None
         "proved_fields"
     ]
     assert receipt["proof_status"]["all_theorem_ids_proved"] is True
+    assert receipt["recommendations"]
+    assert receipt["recommendations"] == receipt["support"]["planner_recommendations"]
+    assert receipt["validation_commands"]
+    assert receipt["validation_commands"] == receipt["support"]["validation_commands"]
     assert "real_phase_numerical_worst_gap" in receipt["proof_layers"][
         "numerical_only_fields"
     ]
@@ -175,6 +180,12 @@ def test_dispatcher_aliases_and_fingerprint_validation(contract_pack: dict) -> N
     failures = validate_contract_receipt(broken)
     assert any("drifted" in failure for failure in failures)
 
+    missing_metadata = dict(receipt)
+    missing_metadata["recommendations"] = []
+    missing_metadata["receipt_content_fingerprint"] = "0" * 64
+    failures = validate_contract_receipt(missing_metadata)
+    assert any("recommendations must be a non-empty list" in failure for failure in failures)
+
 
 def test_request_api_validates_and_builds_receipts(contract_pack: dict) -> None:
     request = {
@@ -252,6 +263,15 @@ def test_request_schema_accepts_public_aliases() -> None:
     assert "rope" in schema["properties"]["kind"]["enum"]
     assert "rope_position_distinguishability" in schema["properties"]["kind"]["enum"]
     assert schema["properties"]["parameters"]["type"] == "object"
+
+
+def test_receipt_schema_exposes_runner_metadata() -> None:
+    schema = build_contract_receipt_json_schema()
+
+    assert "recommendations" in schema["required"]
+    assert "validation_commands" in schema["required"]
+    assert schema["properties"]["recommendations"]["minItems"] == 1
+    assert schema["properties"]["validation_commands"]["minItems"] == 1
 
 
 def test_circle_ai_certify_cli_emits_json_receipt() -> None:

@@ -7,6 +7,7 @@ It takes a user configuration and emits a text or JSON receipt with:
 - theorem ids used by the receipt,
 - proof-status summary from the generated contract pack,
 - evidence fields from the relevant Python certifier,
+- top-level planner recommendations and validation commands,
 - explicit proved, computed, numerical-only, unsupported, and non-claim labels,
 - pack and receipt fingerprints.
 
@@ -115,6 +116,8 @@ receipt = build_contract_receipt(
 )
 assert receipt["schema_id"] == "circle_calculus.ai_contract_receipt.v0"
 assert receipt["proof_status"]["all_theorem_ids_proved"] is True
+assert receipt["recommendations"]
+assert receipt["validation_commands"]
 
 request = {
     "schema_id": "circle_calculus.ai_contract_request.v0",
