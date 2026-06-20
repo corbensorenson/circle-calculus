@@ -83,6 +83,20 @@ Use this page as the guided entrance to the contract lane, then open the focused
 
 Each focused lesson follows the same reading shape: concept, finite circular object, worked example, theorem ids, executable certificate, and exact non-claims. Use the audit pages only when you want the full theorem-card trail.
 
+## Contract Anatomy
+
+Read the flagship contracts as four worked examples of the same method:
+
+| Contract | Concept | Picture To Keep In Mind | First Example | Theorem / Certificate | What It Does Not Prove |
+| --- | --- | --- | --- | --- | --- |
+| RoPE position distinguishability | positions become phases in a finite declared bank | clock hands that should not all return to the same phase inside the context | `python scripts/rope_certify.py --preset llama_style_10000_4k` | integer-bank collision theorems plus D19 real-phase margin fields | language-model quality, useful context length, or all-channel standard-RoPE separation |
+| KV-cache ring buffer | a token has a slot residue and a freshness time boundary | a circular cache with old writes overwritten by later tokens in the same slot | `python scripts/kv_cache_certify.py --cache-size 16 --current 31 --token 20 --batch-tokens 20,24,29,31 --sink-size 4` | retained-window, stale-member, and sink-window request certificates | paging performance, memory savings, retrieval quality, or implementation correctness |
+| Sparse-attention coverage | local windows and stride coils cover some positive lags and miss others | a finite context with highlighted reached lags and explicit gaps | `python scripts/stride_family_certify.py --context 120 --strides 7,13 --path-length 3 --local-window 4` | covered/uncovered partitions, gap witnesses, repair windows, and budget fields | attention quality, runtime speed, or optimal sparse layout design |
+| Looped recurrence schedules | repeated passes have loop phase, active work, exit, and shift invariants | a cyclic schedule where active tokens shrink and whole-period shifts reuse the same pattern | `python scripts/recurrence_schedule_certify.py` | active/inactive work accounting, exit boundaries, post-period extension, and shift invariants | reasoning ability, training benefit, or recursive-transformer model quality |
+
+That table is the textbook view. The JSON pack and audit pages are the machine
+view of the same material.
+
 ## First 10 Minutes
 
 Start with the contract pack before reading individual theorem trails:
@@ -530,15 +544,6 @@ It is an artifact-consumption gate, not a model-quality or deployment-safety
 proof.
 
 </details>
-
-## Suite Table
-
-| Contract | Circular Address Space | Repeated Action | Certificate |
-| --- | --- | --- | --- |
-| RoPE certifier | positions modulo declared phase periods | position gap | collision, distinguishability, count, and bounded real-phase seed fields |
-| KV-cache ring buffer | token slot modulo cache size | token write step | retained-window, next-overwrite, stale-member, live-window coverage, and optional sink-window policy fields |
-| Sparse attention coverage | positive lags in a finite context | local window plus stride-family steps | covered lags, gap witnesses, budget shortfalls, no-zero and no-collision fields |
-| Looped recurrence schedule | token index and loop step | repeated block pass | required depth, exit step, active/inactive work counts, total active-token work, saved-work accounting, post-period boundary fields, and whole-period shift invariants |
 
 ## Example
 
