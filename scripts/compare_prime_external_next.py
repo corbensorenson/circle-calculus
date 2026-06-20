@@ -29,6 +29,7 @@ class NextSpeedupRow:
     baseline: str
     best_speedup: float
     median_speedup: float
+    sample_stability: str = ""
 
     @property
     def key(self) -> tuple[str, int, int, int, int, str]:
@@ -53,6 +54,8 @@ class NextComparison:
     candidate_best_speedup: float
     baseline_median_speedup: float
     candidate_median_speedup: float
+    baseline_sample_stability: str = ""
+    candidate_sample_stability: str = ""
 
     @property
     def result_matches(self) -> bool:
@@ -156,6 +159,15 @@ def main() -> int:
         ),
     )
     parser.add_argument(
+        "--require-stable-samples",
+        action="store_true",
+        help=(
+            "Fail unless every compared candidate speedup row has stable "
+            "sample timing. Requires CSVs produced by a benchmark version that "
+            "emits sample_stability."
+        ),
+    )
+    parser.add_argument(
         "--allow-candidate-subset",
         action="store_true",
         help=(
@@ -225,6 +237,7 @@ def main() -> int:
         dominant_min_speedup_ratio=args.dominant_min_speedup_ratio,
         require_any_median_speedup_at_least=args.require_any_median_speedup_at_least,
         require_each_median_speedup_at_least=args.require_each_median_speedup_at_least,
+        require_stable_samples=args.require_stable_samples,
     )
 
     print(render_comparison_table(comparisons))
@@ -275,6 +288,7 @@ def read_speedup_rows(path: Path) -> dict[tuple[str, int, int, int, int, str], N
                 baseline=row["baseline"],
                 best_speedup=float(row["best_speedup"]),
                 median_speedup=float(row["median_speedup"]),
+                sample_stability=row.get("sample_stability", ""),
             )
             for row in rows
             if row.get("kind") == "speedup"
@@ -328,6 +342,8 @@ def compare_speedup_rows(
                 candidate_best_speedup=candidate.best_speedup,
                 baseline_median_speedup=baseline.median_speedup,
                 candidate_median_speedup=candidate.median_speedup,
+                baseline_sample_stability=baseline.sample_stability,
+                candidate_sample_stability=candidate.sample_stability,
             )
         )
     if not comparisons:
@@ -378,6 +394,7 @@ def comparison_failures(
     dominant_min_speedup_ratio: float | None = None,
     require_any_median_speedup_at_least: float | None = None,
     require_each_median_speedup_at_least: float | None = None,
+    require_stable_samples: bool = False,
 ) -> list[str]:
     comparisons = list(comparisons)
     failures = []
@@ -392,6 +409,9 @@ def comparison_failures(
                 f"{label} result changed: baseline={row.baseline_result}, "
                 f"candidate={row.candidate_result}"
             )
+        if require_stable_samples and row.candidate_sample_stability != "stable":
+            stability = row.candidate_sample_stability or "missing"
+            failures.append(f"{label} sample stability is not stable: {stability}")
         median_ratio = row.median_speedup_ratio
         best_ratio = row.best_speedup_ratio
         median_speedup_ratio_floor = effective_speedup_ratio_floor(
@@ -484,7 +504,8 @@ def render_comparison_table(comparisons: Iterable[NextComparison]) -> str:
         "name,start,batch_size,threads,requested_threads,baseline,"
         "baseline_candidate_count,candidate_candidate_count,"
         "baseline_median_speedup,candidate_median_speedup,median_speedup_ratio,"
-        "baseline_best_speedup,candidate_best_speedup,best_speedup_ratio,result"
+        "baseline_best_speedup,candidate_best_speedup,best_speedup_ratio,"
+        "sample_stability,result"
     ]
     for row in comparisons:
         name, start, batch_size, threads, requested_threads, baseline = row.key
@@ -495,7 +516,7 @@ def render_comparison_table(comparisons: Iterable[NextComparison]) -> str:
             f"{row.baseline_median_speedup:.3f},{row.candidate_median_speedup:.3f},"
             f"{render_ratio(row.median_speedup_ratio)},"
             f"{row.baseline_best_speedup:.3f},{row.candidate_best_speedup:.3f},"
-            f"{render_ratio(row.best_speedup_ratio)},{result}"
+            f"{render_ratio(row.best_speedup_ratio)},{row.candidate_sample_stability},{result}"
         )
     return "\n".join(lines)
 

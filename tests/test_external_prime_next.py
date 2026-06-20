@@ -131,6 +131,8 @@ def test_next_interleaved_measurement_rotates_and_summarizes_samples() -> None:
     ]
     assert rows[0].result == 101
     assert rows[0].candidate_count == 1
+    assert rows[0].sample_count == 2
+    assert rows[0].sample_stability in {"stable", "noisy"}
     assert len(samples) == 4
     assert {sample.round_index for sample in samples} == {0, 1}
 
@@ -180,6 +182,7 @@ def test_next_speedup_row_uses_primesieve_baseline_time() -> None:
     assert row.best_speedup == "4.000"
     assert row.median_speedup == "3.000"
     assert row.candidate_count == 1
+    assert row.sample_count == 0
 
 
 def test_measure_start_interleaved_can_include_circle_server(monkeypatch) -> None:

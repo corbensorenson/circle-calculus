@@ -1,6 +1,6 @@
 # Prime Engine Report
 
-Generated: `2026-06-20T04:21:09Z`
+Generated: `2026-06-20T05:00:01Z`
 
 ## External Correctness
 
@@ -66,11 +66,11 @@ Tool metadata:
 
 ## External Next-Prime Search
 
-- `libprimesieve generate_n_primes server` cold CLI: Circle faster on 1/5 rows by best time; median faster on 1/5 rows.
-- `primesieve --nth-prime` cold CLI: Circle faster on 5/5 rows by best time; median faster on 4/5 rows.
+- `libprimesieve generate_n_primes server` cold CLI: Circle faster on 0/4 rows by best time; median faster on 0/4 rows.
+- `primesieve --nth-prime` cold CLI: Circle faster on 4/4 rows by best time; median faster on 3/4 rows.
 - `primecount pi+nth-prime` cold CLI: Circle faster on 4/4 rows by best time; median faster on 4/4 rows.
-- `libprimesieve generate_n_primes server` server: Circle faster on 4/5 rows by best time; median faster on 5/5 rows.
-- `primesieve --nth-prime` server: Circle faster on 5/5 rows by best time; median faster on 5/5 rows.
+- `libprimesieve generate_n_primes server` server: Circle faster on 4/4 rows by best time; median faster on 4/4 rows.
+- `primesieve --nth-prime` server: Circle faster on 4/4 rows by best time; median faster on 4/4 rows.
 - `primecount pi+nth-prime` server: Circle faster on 4/4 rows by best time; median faster on 4/4 rows.
 
 Tool metadata:
@@ -78,9 +78,9 @@ Tool metadata:
 - `primesieve`: primesieve 12.14, <https://github.com/kimwalisch/primesieve> (`/opt/homebrew/bin/primesieve`)
 - `primecount`: primecount 8.5, <https://github.com/kimwalisch/primecount> (`/opt/homebrew/bin/primecount`)
 - `primesieve_library_server`: available (`/Users/corbensorenson/Documents/circle math/target/prime-controls/primesieve-next-server`); method `primesieve_generate_n_primes(1, START, UINT64_PRIMES)`.
-- requested threads: Circle `1`, external `8` (`0` means tool default/all cores).
-- next-prime starts: `90`, `1000000`, `4294967000`, `1000000000000`, `18446744073709551500`.
-- repeated searches per sample: `4`.
+- requested threads: Circle `1`, external `0` (`0` means tool default/all cores).
+- next-prime starts: `90`, `1000000`, `4294967000`, `1000000000000`.
+- repeated searches per sample: `17`.
 - Circle server rows: persistent `next-server` requests included.
 - `primecount` next-prime rows included for starts at or below `1000000000000`.
 - libprimesieve next-prime helper rows included for starts at or below `18446744073709551615`.
@@ -89,34 +89,30 @@ Tool metadata:
 
 | Start | Baseline | Prime | Candidates | Batch | Circle ms | Baseline ms | Best Speedup | Median Speedup | Samples | Verdict |
 | ---: | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- | --- |
-| 90 | `primesieve --nth-prime` | 97 | 2 | 4 | 9.247 | 11.451 | 1.238 | 1.192 | noisy<br>C n=5, robust/med=1.45, max/med=7.41<br>B n=5, robust/med=1.57, max/med=2.14 | circle_faster |
-| 90 | `libprimesieve generate_n_primes server` | 97 | 2 | 4 | 9.247 | 0.029 | 0.003 | 0.007 | noisy<br>C n=5, robust/med=1.45, max/med=7.41<br>B n=5, robust/med=1.83, max/med=1259.77 | baseline_faster |
-| 90 | `primecount pi+nth-prime` | 97 | 2 | 4 | 9.247 | 34.849 | 3.769 | 3.744 | stable<br>C n=5, robust/med=1.45, max/med=7.41<br>B n=5, robust/med=1.24, max/med=1.60 | circle_faster |
-| 90 | `primesieve --nth-prime` | 97 | 2 | 4 | 0.038 | 11.451 | 302.348 | 265.011 | noisy<br>C n=5, robust/med=1.14, max/med=1.95<br>B n=5, robust/med=1.57, max/med=2.14 | circle_faster |
-| 90 | `libprimesieve generate_n_primes server` | 97 | 2 | 4 | 0.038 | 0.029 | 0.773 | 1.505 | noisy<br>C n=5, robust/med=1.14, max/med=1.95<br>B n=5, robust/med=1.83, max/med=1259.77 | circle_faster |
-| 90 | `primecount pi+nth-prime` | 97 | 2 | 4 | 0.038 | 34.849 | 920.097 | 832.540 | stable<br>C n=5, robust/med=1.14, max/med=1.95<br>B n=5, robust/med=1.24, max/med=1.60 | circle_faster |
-| 1000000 | `primesieve --nth-prime` | 1000003 | 2 | 4 | 8.470 | 8.905 | 1.051 | 0.960 | stable<br>C n=5, robust/med=1.00, max/med=1.26<br>B n=5, robust/med=1.02, max/med=1.25 | baseline_faster |
-| 1000000 | `libprimesieve generate_n_primes server` | 1000003 | 2 | 4 | 8.470 | 0.066 | 0.008 | 0.007 | stable<br>C n=5, robust/med=1.00, max/med=1.26<br>B n=5, robust/med=1.12, max/med=1.98 | baseline_faster |
-| 1000000 | `primecount pi+nth-prime` | 1000003 | 2 | 4 | 8.470 | 30.095 | 3.553 | 3.061 | stable<br>C n=5, robust/med=1.00, max/med=1.26<br>B n=5, robust/med=1.04, max/med=1.86 | circle_faster |
-| 1000000 | `primesieve --nth-prime` | 1000003 | 2 | 4 | 0.036 | 8.905 | 246.229 | 252.291 | stable<br>C n=5, robust/med=1.11, max/med=2.33<br>B n=5, robust/med=1.02, max/med=1.25 | circle_faster |
-| 1000000 | `libprimesieve generate_n_primes server` | 1000003 | 2 | 4 | 0.036 | 0.066 | 1.829 | 1.814 | stable<br>C n=5, robust/med=1.11, max/med=2.33<br>B n=5, robust/med=1.12, max/med=1.98 | circle_faster |
-| 1000000 | `primecount pi+nth-prime` | 1000003 | 2 | 4 | 0.036 | 30.095 | 832.109 | 804.663 | stable<br>C n=5, robust/med=1.11, max/med=2.33<br>B n=5, robust/med=1.04, max/med=1.86 | circle_faster |
-| 4294967000 | `primesieve --nth-prime` | 4294967029 | 8 | 4 | 7.998 | 8.665 | 1.083 | 1.074 | stable<br>C n=5, robust/med=1.00, max/med=1.02<br>B n=5, robust/med=1.07, max/med=1.08 | circle_faster |
-| 4294967000 | `libprimesieve generate_n_primes server` | 4294967029 | 8 | 4 | 7.998 | 0.149 | 0.019 | 0.021 | stable<br>C n=5, robust/med=1.00, max/med=1.02<br>B n=5, robust/med=1.12, max/med=1.29 | baseline_faster |
-| 4294967000 | `primecount pi+nth-prime` | 4294967029 | 8 | 4 | 7.998 | 34.818 | 4.353 | 4.258 | stable<br>C n=5, robust/med=1.00, max/med=1.02<br>B n=5, robust/med=1.00, max/med=1.05 | circle_faster |
-| 4294967000 | `primesieve --nth-prime` | 4294967029 | 8 | 4 | 0.037 | 8.665 | 233.131 | 236.047 | stable<br>C n=5, robust/med=1.04, max/med=1.11<br>B n=5, robust/med=1.07, max/med=1.08 | circle_faster |
-| 4294967000 | `libprimesieve generate_n_primes server` | 4294967029 | 8 | 4 | 0.037 | 0.149 | 4.019 | 4.520 | stable<br>C n=5, robust/med=1.04, max/med=1.11<br>B n=5, robust/med=1.12, max/med=1.29 | circle_faster |
-| 4294967000 | `primecount pi+nth-prime` | 4294967029 | 8 | 4 | 0.037 | 34.818 | 936.795 | 935.343 | stable<br>C n=5, robust/med=1.04, max/med=1.11<br>B n=5, robust/med=1.00, max/med=1.05 | circle_faster |
-| 1000000000000 | `primesieve --nth-prime` | 1000000000039 | 12 | 4 | 8.374 | 9.569 | 1.143 | 1.196 | stable<br>C n=5, robust/med=1.32, max/med=1.41<br>B n=5, robust/med=1.28, max/med=1.42 | circle_faster |
-| 1000000000000 | `libprimesieve generate_n_primes server` | 1000000000039 | 12 | 4 | 8.374 | 1.165 | 0.139 | 0.139 | stable<br>C n=5, robust/med=1.32, max/med=1.41<br>B n=5, robust/med=1.08, max/med=4.14 | baseline_faster |
-| 1000000000000 | `primecount pi+nth-prime` | 1000000000039 | 12 | 4 | 8.374 | 83.627 | 9.986 | 20.566 | stable<br>C n=5, robust/med=1.32, max/med=1.41<br>B n=5, robust/med=1.02, max/med=1.06 | circle_faster |
-| 1000000000000 | `primesieve --nth-prime` | 1000000000039 | 12 | 4 | 0.051 | 9.569 | 186.720 | 142.841 | stable<br>C n=5, robust/med=1.01, max/med=1.02<br>B n=5, robust/med=1.28, max/med=1.42 | circle_faster |
-| 1000000000000 | `libprimesieve generate_n_primes server` | 1000000000039 | 12 | 4 | 0.051 | 1.165 | 22.730 | 16.587 | stable<br>C n=5, robust/med=1.01, max/med=1.02<br>B n=5, robust/med=1.08, max/med=4.14 | circle_faster |
-| 1000000000000 | `primecount pi+nth-prime` | 1000000000039 | 12 | 4 | 0.051 | 83.627 | 1631.751 | 2455.649 | stable<br>C n=5, robust/med=1.01, max/med=1.02<br>B n=5, robust/med=1.02, max/med=1.06 | circle_faster |
-| 18446744073709551500 | `primesieve --nth-prime` | 18446744073709551521 | 5 | 4 | 9.010 | 3633.063 | 403.209 | 387.492 | stable<br>C n=5, robust/med=1.01, max/med=2.50<br>B n=5, robust/med=1.03, max/med=1.10 | circle_faster |
-| 18446744073709551500 | `libprimesieve generate_n_primes server` | 18446744073709551521 | 5 | 4 | 9.010 | 3628.255 | 402.675 | 381.667 | stable<br>C n=5, robust/med=1.01, max/med=2.50<br>B n=5, robust/med=1.00, max/med=1.03 | circle_faster |
-| 18446744073709551500 | `primesieve --nth-prime` | 18446744073709551521 | 5 | 4 | 0.099 | 3633.063 | 36589.685 | 36213.393 | stable<br>C n=5, robust/med=1.36, max/med=1.39<br>B n=5, robust/med=1.03, max/med=1.10 | circle_faster |
-| 18446744073709551500 | `libprimesieve generate_n_primes server` | 18446744073709551521 | 5 | 4 | 0.099 | 3628.255 | 36541.259 | 35669.033 | stable<br>C n=5, robust/med=1.36, max/med=1.39<br>B n=5, robust/med=1.00, max/med=1.03 | circle_faster |
+| 90 | `primesieve --nth-prime` | 97 | 2 | 17 | 34.141 | 34.931 | 1.023 | 0.877 | stable<br>C n=7, robust/med=1.33, max/med=1.57<br>B n=7, robust/med=1.40, max/med=1.92 | baseline_faster |
+| 90 | `libprimesieve generate_n_primes server` | 97 | 2 | 17 | 34.141 | 0.058 | 0.002 | 0.002 | stable<br>C n=7, robust/med=1.33, max/med=1.57<br>B n=7, robust/med=1.06, max/med=1.44 | baseline_faster |
+| 90 | `primecount pi+nth-prime` | 97 | 2 | 17 | 34.141 | 116.884 | 3.424 | 3.438 | stable<br>C n=7, robust/med=1.33, max/med=1.57<br>B n=7, robust/med=1.03, max/med=1.19 | circle_faster |
+| 90 | `primesieve --nth-prime` | 97 | 2 | 17 | 0.051 | 34.931 | 682.139 | 553.653 | stable<br>C n=7, robust/med=1.50, max/med=2.31<br>B n=7, robust/med=1.40, max/med=1.92 | circle_faster |
+| 90 | `libprimesieve generate_n_primes server` | 97 | 2 | 17 | 0.051 | 0.058 | 1.138 | 1.107 | stable<br>C n=7, robust/med=1.50, max/med=2.31<br>B n=7, robust/med=1.06, max/med=1.44 | circle_faster |
+| 90 | `primecount pi+nth-prime` | 97 | 2 | 17 | 0.051 | 116.884 | 2282.529 | 2170.656 | stable<br>C n=7, robust/med=1.50, max/med=2.31<br>B n=7, robust/med=1.03, max/med=1.19 | circle_faster |
+| 1000000 | `primesieve --nth-prime` | 1000003 | 2 | 17 | 33.827 | 35.197 | 1.040 | 1.120 | noisy<br>C n=7, robust/med=1.15, max/med=1.80<br>B n=7, robust/med=1.62, max/med=2.02 | circle_faster |
+| 1000000 | `libprimesieve generate_n_primes server` | 1000003 | 2 | 17 | 33.827 | 0.074 | 0.002 | 0.003 | stable<br>C n=7, robust/med=1.15, max/med=1.80<br>B n=7, robust/med=1.15, max/med=1.25 | baseline_faster |
+| 1000000 | `primecount pi+nth-prime` | 1000003 | 2 | 17 | 33.827 | 118.728 | 3.510 | 3.584 | stable<br>C n=7, robust/med=1.15, max/med=1.80<br>B n=7, robust/med=1.39, max/med=1.40 | circle_faster |
+| 1000000 | `primesieve --nth-prime` | 1000003 | 2 | 17 | 0.066 | 35.197 | 530.598 | 509.484 | noisy<br>C n=7, robust/med=1.04, max/med=1.14<br>B n=7, robust/med=1.62, max/med=2.02 | circle_faster |
+| 1000000 | `libprimesieve generate_n_primes server` | 1000003 | 2 | 17 | 0.066 | 0.074 | 1.123 | 1.169 | stable<br>C n=7, robust/med=1.04, max/med=1.14<br>B n=7, robust/med=1.15, max/med=1.25 | circle_faster |
+| 1000000 | `primecount pi+nth-prime` | 1000003 | 2 | 17 | 0.066 | 118.728 | 1789.858 | 1629.979 | stable<br>C n=7, robust/med=1.04, max/med=1.14<br>B n=7, robust/med=1.39, max/med=1.40 | circle_faster |
+| 4294967000 | `primesieve --nth-prime` | 4294967029 | 8 | 17 | 33.116 | 36.153 | 1.092 | 1.122 | noisy<br>C n=7, robust/med=1.03, max/med=1.18<br>B n=7, robust/med=1.50, max/med=1.56 | circle_faster |
+| 4294967000 | `libprimesieve generate_n_primes server` | 4294967029 | 8 | 17 | 33.116 | 0.473 | 0.014 | 0.015 | stable<br>C n=7, robust/med=1.03, max/med=1.18<br>B n=7, robust/med=1.01, max/med=1.49 | baseline_faster |
+| 4294967000 | `primecount pi+nth-prime` | 4294967029 | 8 | 17 | 33.116 | 145.885 | 4.405 | 4.930 | stable<br>C n=7, robust/med=1.03, max/med=1.18<br>B n=7, robust/med=1.16, max/med=1.47 | circle_faster |
+| 4294967000 | `primesieve --nth-prime` | 4294967029 | 8 | 17 | 0.080 | 36.153 | 451.201 | 460.735 | noisy<br>C n=7, robust/med=1.07, max/med=1.49<br>B n=7, robust/med=1.50, max/med=1.56 | circle_faster |
+| 4294967000 | `libprimesieve generate_n_primes server` | 4294967029 | 8 | 17 | 0.080 | 0.473 | 5.900 | 6.126 | stable<br>C n=7, robust/med=1.07, max/med=1.49<br>B n=7, robust/med=1.01, max/med=1.49 | circle_faster |
+| 4294967000 | `primecount pi+nth-prime` | 4294967029 | 8 | 17 | 0.080 | 145.885 | 1820.713 | 2025.089 | stable<br>C n=7, robust/med=1.07, max/med=1.49<br>B n=7, robust/med=1.16, max/med=1.47 | circle_faster |
+| 1000000000000 | `primesieve --nth-prime` | 1000000000039 | 12 | 17 | 36.149 | 41.780 | 1.156 | 1.081 | stable<br>C n=7, robust/med=1.40, max/med=2.55<br>B n=7, robust/med=1.37, max/med=1.61 | circle_faster |
+| 1000000000000 | `libprimesieve generate_n_primes server` | 1000000000039 | 12 | 17 | 36.149 | 4.561 | 0.126 | 0.072 | stable<br>C n=7, robust/med=1.40, max/med=2.55<br>B n=7, robust/med=1.07, max/med=1.75 | baseline_faster |
+| 1000000000000 | `primecount pi+nth-prime` | 1000000000039 | 12 | 17 | 36.149 | 506.695 | 14.017 | 9.819 | noisy<br>C n=7, robust/med=1.40, max/med=2.55<br>B n=7, robust/med=1.52, max/med=1.65 | circle_faster |
+| 1000000000000 | `primesieve --nth-prime` | 1000000000039 | 12 | 17 | 0.148 | 41.780 | 283.018 | 444.268 | stable<br>C n=7, robust/med=1.16, max/med=2.20<br>B n=7, robust/med=1.37, max/med=1.61 | circle_faster |
+| 1000000000000 | `libprimesieve generate_n_primes server` | 1000000000039 | 12 | 17 | 0.148 | 4.561 | 30.894 | 29.607 | stable<br>C n=7, robust/med=1.16, max/med=2.20<br>B n=7, robust/med=1.07, max/med=1.75 | circle_faster |
+| 1000000000000 | `primecount pi+nth-prime` | 1000000000039 | 12 | 17 | 0.148 | 506.695 | 3432.313 | 4035.533 | noisy<br>C n=7, robust/med=1.16, max/med=2.20<br>B n=7, robust/med=1.52, max/med=1.65 | circle_faster |
 
 ## High-Offset Quick Scorecard
 
@@ -174,11 +170,10 @@ High-offset tight candidate spread:
 
 Observed groups: `1`; confirmed: `0`; unconfirmed: `1`.
 Minimum confirmations: `2`; requires stable samples: `True`.
-Fresh-run count requests per timed sample: `7`.
 
 | Range | Baseline | Mode | Segment | Threads | Confirmations | Stable Runs | Median ms Values | Status |
 | --- | --- | --- | ---: | ---: | ---: | ---: | --- | --- |
-| [1000000000000, 1000010000000) | `external_primesieve_count_server` | `presieve17` | 1507328 | 7 | 1/2 | 1/3 | 1.987, 1.889, 2.248 | `unconfirmed` |
+| [1000000000000, 1000010000000) | `external_primesieve_count_server` | `presieve17` | 1507328 | 7 | 1/2 | 1/3 | 1.811, 1.805 | `unconfirmed` |
 
 ## External Count Mode Sweep
 

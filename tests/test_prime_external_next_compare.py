@@ -21,6 +21,7 @@ def speedup_row(
     baseline: str = "external_primesieve_next_prime",
     best_speedup: float = 1.2,
     median_speedup: float = 1.1,
+    sample_stability: str = "stable",
 ) -> NextSpeedupRow:
     return NextSpeedupRow(
         name=name,
@@ -33,6 +34,7 @@ def speedup_row(
         baseline=baseline,
         best_speedup=best_speedup,
         median_speedup=median_speedup,
+        sample_stability=sample_stability,
     )
 
 
@@ -49,6 +51,7 @@ def test_compare_next_speedup_rows_matches_selected_starts() -> None:
 
     assert len(comparisons) == 1
     assert comparisons[0].median_speedup_ratio == 1.15 / 1.1
+    assert comparisons[0].candidate_sample_stability == "stable"
     assert not comparison_failures(
         comparisons,
         min_median_speedup_ratio=0.85,
@@ -337,6 +340,36 @@ def test_next_comparison_failures_rejects_selected_row_below_required_win_floor(
     ]
 
 
+def test_next_comparison_failures_can_require_stable_samples() -> None:
+    comparisons = [
+        NextComparison(
+            key=speedup_row(name="circle_prime_server_next_prime").key,
+            baseline_result=1_000_000_000_039,
+            candidate_result=1_000_000_000_039,
+            baseline_candidate_count=12,
+            candidate_candidate_count=12,
+            baseline_best_speedup=1.2,
+            candidate_best_speedup=1.1,
+            baseline_median_speedup=1.1,
+            candidate_median_speedup=1.0,
+            candidate_sample_stability="noisy",
+        )
+    ]
+
+    failures = comparison_failures(
+        comparisons,
+        min_median_speedup_ratio=0.85,
+        min_best_speedup_ratio=0.85,
+        require_stable_samples=True,
+    )
+
+    assert failures == [
+        "circle_prime_server_next_prime start=1000000000000 batch_size=1 "
+        "threads=1 requested_threads=1 baseline=external_primesieve_next_prime "
+        "sample stability is not stable: noisy"
+    ]
+
+
 def test_render_next_comparison_table_marks_result_status() -> None:
     rendered = render_comparison_table(
         [
@@ -355,4 +388,4 @@ def test_render_next_comparison_table_marks_result_status() -> None:
     )
 
     assert "circle_prime_next_prime,1000000000000,1,1,1,external_primesieve_next_prime" in rendered
-    assert ",12,12,1.100,1.000,0.909,1.200,1.100,0.917,match" in rendered
+    assert ",12,12,1.100,1.000,0.909,1.200,1.100,0.917,,match" in rendered

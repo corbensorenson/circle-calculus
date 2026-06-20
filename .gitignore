@@ -6,6 +6,7 @@ dist/
 target/
 sidecars/PRIME_ENGINE/results/*.csv
 sidecars/PRIME_ENGINE/results/*.json
+sidecars/PRIME_ENGINE/results/*_candidate.md
 *.egg-info/
 __pycache__/
 .pytest_cache/

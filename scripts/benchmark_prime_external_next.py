@@ -24,6 +24,7 @@ from scripts.benchmark_prime_external_controls import (
     parse_integer_output,
     require_cargo,
     rotated,
+    sample_metric_fields,
     utc_now,
 )
 
@@ -53,6 +54,13 @@ class NextBenchRow:
     baseline: str
     best_speedup: str
     median_speedup: str
+    sample_count: int = 0
+    sample_noise_ms: str = ""
+    sample_max_ms: str = ""
+    sample_noise_over_median: str = ""
+    sample_max_over_median: str = ""
+    sample_ignored_single_high_outlier: str = ""
+    sample_stability: str = ""
 
 
 @dataclass(frozen=True)
@@ -867,6 +875,7 @@ def timing_row_from_samples(
         baseline="",
         best_speedup="",
         median_speedup="",
+        **sample_metric_fields(timings),
     )
 
 
@@ -892,7 +901,30 @@ def speedup_row(circle_row: NextBenchRow, baseline: NextBenchRow) -> NextBenchRo
         baseline=baseline.name,
         best_speedup=f"{best_speedup:.3f}",
         median_speedup=f"{median_speedup:.3f}",
+        **next_speedup_sample_metric_fields(circle_row, baseline),
     )
+
+
+def next_speedup_sample_metric_fields(
+    circle_row: NextBenchRow,
+    baseline: NextBenchRow,
+) -> dict[str, Any]:
+    stability = (
+        "noisy"
+        if "noisy" in {circle_row.sample_stability, baseline.sample_stability}
+        else circle_row.sample_stability or baseline.sample_stability
+    )
+    return {
+        "sample_count": circle_row.sample_count,
+        "sample_noise_ms": circle_row.sample_noise_ms,
+        "sample_max_ms": circle_row.sample_max_ms,
+        "sample_noise_over_median": circle_row.sample_noise_over_median,
+        "sample_max_over_median": circle_row.sample_max_over_median,
+        "sample_ignored_single_high_outlier": (
+            circle_row.sample_ignored_single_high_outlier
+        ),
+        "sample_stability": stability,
+    }
 
 
 def verify_next_prime(circle_row: NextBenchRow, baseline: NextBenchRow) -> None:

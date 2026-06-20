@@ -246,13 +246,13 @@ def test_prime_engine_report_summarizes_artifacts(tmp_path: Path) -> None:
     external_next.write_text(
         "\n".join(
             [
-                "kind,name,start,batch_size,result,candidate_count,rounds,best_ms,median_ms,searches_per_second,median_searches_per_second,threads,requested_threads,baseline,best_speedup,median_speedup",
+                "kind,name,start,batch_size,result,candidate_count,rounds,best_ms,median_ms,searches_per_second,median_searches_per_second,threads,requested_threads,baseline,best_speedup,median_speedup,sample_count,sample_noise_ms,sample_max_ms,sample_noise_over_median,sample_max_over_median,sample_ignored_single_high_outlier,sample_stability",
                 "timing,circle_prime_next_prime,100,1,101,1,3,1.000,1.200,1000,833.333,1,1,,,",
                 "timing,circle_prime_server_next_prime,100,1,101,1,3,0.250,0.300,4000,3333.333,1,1,,,",
                 "timing,external_primesieve_generate_next_server,100,1,101,0,3,0.500,0.600,2000,1666.667,1,1,,,",
                 "timing,external_primesieve_next_prime,100,1,101,0,3,2.000,2.400,500,416.667,8,8,,,",
                 "timing,external_primecount_next_prime,100,1,101,0,3,4.000,4.800,250,208.333,8,8,,,",
-                "speedup,circle_prime_next_prime,100,1,101,1,3,1.000,1.200,1000,833.333,1,1,external_primesieve_generate_next_server,0.500,0.500",
+                "speedup,circle_prime_next_prime,100,1,101,1,3,1.000,1.200,1000,833.333,1,1,external_primesieve_generate_next_server,0.500,0.500,3,1.300000,1.500000,1.083333,1.250000,false,stable",
                 "speedup,circle_prime_server_next_prime,100,1,101,1,3,0.250,0.300,4000,3333.333,1,1,external_primesieve_generate_next_server,2.000,2.000",
                 "speedup,circle_prime_next_prime,100,1,101,1,3,1.000,1.200,1000,833.333,1,1,external_primesieve_next_prime,2.000,2.000",
                 "speedup,circle_prime_server_next_prime,100,1,101,1,3,0.250,0.300,4000,3333.333,1,1,external_primesieve_next_prime,8.000,8.000",
@@ -750,6 +750,7 @@ def test_prime_engine_report_summarizes_artifacts(tmp_path: Path) -> None:
         "external_primesieve_generate_next_server"
     )
     assert external_next_summary["speedups"][0]["circle_speedup"] == 0.5
+    assert external_next_summary["speedups"][0]["sample_stability"] == "stable"
     assert report["default_calibration"]["available"] is True
     assert report["default_calibration"]["within_tolerance_count"] == 1
     assert report["default_calibration"]["noisy_drift_count"] == 0
@@ -922,7 +923,7 @@ def test_prime_engine_report_summarizes_artifacts(tmp_path: Path) -> None:
     assert "`primecount pi+nth-prime` server: Circle faster on 1/1 rows" in markdown
     assert (
         "| 100 | `libprimesieve generate_n_primes server` | 101 | 1 | 1 | "
-        "1.000 | 0.500 | 0.500 | 0.500 | unknown | baseline_faster |"
+        "1.000 | 0.500 | 0.500 | 0.500 | stable | baseline_faster |"
     ) in markdown
     assert (
         "| 100 | `primesieve --nth-prime` | 101 | 1 | 1 | 1.000 | 2.000 | "

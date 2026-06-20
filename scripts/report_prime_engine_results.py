@@ -991,6 +991,8 @@ def external_next_speedup_summary(
         else None
     )
     sample_stability = combined_sample_stability(circle_sample, baseline_sample)
+    if sample_stability == "unknown":
+        sample_stability = row.get("sample_stability") or sample_stability
     return {
         "start": int(row["start"]),
         "batch_size": int(row["batch_size"]),
