@@ -1428,62 +1428,6 @@ def speedup_row(circle_row: ExternalBenchRow, baseline: ExternalBenchRow) -> Ext
     )
 
 
-def sample_metric_fields(timings: list[float]) -> dict[str, Any]:
-    ordered_ms = sorted(value * 1000.0 for value in timings)
-    if not ordered_ms:
-        return {}
-    median_ms = median(ordered_ms)
-    max_ms = ordered_ms[-1]
-    noise_ms = (
-        ordered_ms[-2]
-        if len(ordered_ms) >= SAMPLE_ROBUST_NOISE_MIN_COUNT
-        else max_ms
-    )
-    max_over_median = max_ms / median_ms if median_ms > 0 else float("inf")
-    noise_over_median = noise_ms / median_ms if median_ms > 0 else float("inf")
-    return {
-        "sample_count": len(ordered_ms),
-        "sample_noise_ms": noise_ms,
-        "sample_max_ms": max_ms,
-        "sample_noise_over_median": noise_over_median,
-        "sample_max_over_median": max_over_median,
-        "sample_ignored_single_high_outlier": (
-            "true" if len(ordered_ms) >= SAMPLE_ROBUST_NOISE_MIN_COUNT else "false"
-        ),
-        "sample_stability": (
-            "noisy"
-            if noise_over_median > SAMPLE_NOISY_MAX_OVER_MEDIAN
-            else "stable"
-        ),
-    }
-
-
-def speedup_sample_metric_fields(
-    circle_row: ExternalBenchRow,
-    baseline_row: ExternalBenchRow,
-) -> dict[str, Any]:
-    return {
-        "sample_count": circle_row.sample_count,
-        "sample_noise_ms": circle_row.sample_noise_ms,
-        "sample_max_ms": circle_row.sample_max_ms,
-        "sample_noise_over_median": circle_row.sample_noise_over_median,
-        "sample_max_over_median": circle_row.sample_max_over_median,
-        "sample_ignored_single_high_outlier": circle_row.sample_ignored_single_high_outlier,
-        "sample_stability": combined_sample_stability(
-            circle_row.sample_stability,
-            baseline_row.sample_stability,
-        ),
-    }
-
-
-def combined_sample_stability(circle_stability: str, baseline_stability: str) -> str:
-    if not circle_stability and not baseline_stability:
-        return ""
-    if circle_stability == "stable" and baseline_stability == "stable":
-        return "stable"
-    return "noisy"
-
-
 def median(values: list[float]) -> float:
     if not values:
         raise ValueError("cannot compute median of empty values")
