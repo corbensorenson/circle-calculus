@@ -28,6 +28,7 @@ printf '1000000000000 1000010000000\n' | cargo run -p circle-prime -- count-serv
 cargo run --release -p circle-prime --bin circle-prime-bench -- --rounds 3
 cargo run --release -p circle-prime --bin circle-prime-tune -- --rounds 3
 make prime-engine-check
+make prime-engine-proof-contract
 make prime-engine-competitive-short
 make prime-engine-benchmark
 make prime-engine-benchmark-record
@@ -67,6 +68,11 @@ the Rust CLI, plus the `count_proof_contract` emitted by count JSON and
 `manifests/theorem_manifest.yaml`. The checker also resolves the claimed Lean
 module to its `.lean` file and verifies that every contracted Lean declaration
 is still present in source.
+
+`make prime-engine-proof-contract` runs that proof-contract gate by itself
+without formatting, unit tests, or external controls. Use it when a change
+touches the Rust JSON contract surface, theorem ids, Lean declaration names, or
+the short competitive workflow.
 
 ## Current Guarantees
 
@@ -369,6 +375,7 @@ Use the Makefile targets for repeatable local checks:
 
 ```bash
 make prime-engine-check
+make prime-engine-proof-contract
 make prime-engine-benchmark
 make prime-engine-benchmark-record
 make prime-engine-external-correctness
@@ -382,8 +389,14 @@ make prime-engine-report
 ```
 
 `prime-engine-check` runs `cargo fmt --all --check`, `cargo test -p
-circle-prime`, and CLI smoke checks for scalar primality and the known
-`pi(1,000,000)` count.
+circle-prime`, CLI smoke checks for scalar primality and the known
+`pi(1,000,000)` count, and the prime proof-contract checker.
+
+`prime-engine-proof-contract` is the fast proof-backbone gate used by the short
+competitive workflow. It builds the debug `circle-prime` binary and checks
+`test`, `next`, `range`, `recommend`, `inspect`, `next-server`, and
+`count-server` JSON proof contracts against the theorem manifest and the
+corresponding Lean declarations.
 
 `prime-engine-benchmark` runs the same checks plus the release benchmark. The
 benchmark gate parses emitted speedup rows and requires the fastest Circle
@@ -708,12 +721,12 @@ high-offset default: probes above the cutoff, and high-offset intervals such as
 threaded `presieve13` count mode with a tuned high-offset segment size.
 
 `prime-engine-competitive-short` is the daytime orientation workflow. It runs
-external correctness, warmed persistent count controls, the high-offset
-hot-server scorecard, a focused hot-server win/stability gate against
-persistent `libprimesieve`, repeated high-offset confirmation, the focused
-next-prime comparison, default-calibration drift check, and the combined report.
-Use it when you need a current competitive read without starting the overnight
-tuner.
+external correctness, the prime proof-contract gate, warmed persistent count
+controls, the high-offset hot-server scorecard, a focused hot-server
+win/stability gate against persistent `libprimesieve`, repeated high-offset
+confirmation, the focused next-prime comparison, default-calibration drift
+check, and the combined report. Use it when you need a current competitive read
+without starting the overnight tuner.
 
 `prime-engine-high-offset-quick` is the interactive scorecard for the remaining
 `primesieve` gap. It isolates `[1e12, 1e12 + 1e7)`, runs 13 interleaved rounds

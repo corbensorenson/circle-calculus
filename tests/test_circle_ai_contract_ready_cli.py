@@ -2095,6 +2095,18 @@ def test_contract_ready_make_target_checks_flagship_kinds() -> None:
         "d19_proved_request_status"
     ) in result.stdout
     assert "d19_proved_first_channel_bank_transfer" in result.stdout
+    assert "d19_proved_first_channel_radian_bank_form" in result.stdout
+    assert "d19_undecided_probe_margin_in_open_gap" in result.stdout
+    assert "real_phase_dirichlet_witness_guardrail" in result.stdout
+    assert "real_phase_margin_ceiling_guardrail" in result.stdout
+    assert "--require-theorem AIRA-T0238" in result.stdout
+    assert "--require-theorem AIRA-T0239" in result.stdout
+    assert "--require-theorem AIRA-T0240" in result.stdout
+    assert "ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0240" in result.stdout
+    assert (
+        "ROPE-USE-D19-MARGIN-FRONTIER=proved_branch_bank_transfer.radian_bank_form"
+        in result.stdout
+    )
     assert "ROPE-AUDIT-EXACT-INTEGER-PHASE-BANK" in result.stdout
     assert "ROPE-USE-D19-MARGIN-FRONTIER" in result.stdout
     assert "circle AI contract readiness ok: kv_cache_ring_buffer" in result.stdout
