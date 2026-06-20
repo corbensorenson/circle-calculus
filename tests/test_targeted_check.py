@@ -449,6 +449,7 @@ def test_generic_contract_pack_change_runs_pack_tests() -> None:
         "pytest",
         "tests/test_downstream_ci_accept_circle_ai_contracts.py",
     )
+    assert contains_command(commands, "scripts/check_circle_ai_contract_runner.py")
     assert contains_command(commands, "make", "circle-ai-contracts-ready")
     assert not contains_command(commands, "pytest", "tests/test_stride_family_certifier_cli.py")
     assert ("make", "check") not in commands
@@ -475,6 +476,7 @@ def test_generic_contract_exporter_change_runs_pack_tests_not_sparse_tests() -> 
         "pytest",
         "tests/test_downstream_ci_accept_circle_ai_contracts.py",
     )
+    assert contains_command(commands, "scripts/check_circle_ai_contract_runner.py")
 
 
 def test_standalone_downstream_ci_example_change_runs_standalone_tests() -> None:
@@ -730,6 +732,7 @@ def test_contract_request_example_change_runs_request_example_gate() -> None:
         "pytest",
         "tests/test_circle_ai_contract_request_examples.py",
     )
+    assert contains_command(commands, "scripts/check_circle_ai_contract_runner.py")
     assert contains_command(commands, "pytest", "tests/test_circle_ai_contract_pack.py")
 
 

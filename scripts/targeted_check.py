@@ -273,6 +273,13 @@ def add_circle_ai_contract_checks(checks: list[Check], seen: set[tuple[str, ...]
     add(
         checks,
         seen,
+        "Circle AI contract runner example check",
+        py("scripts/check_circle_ai_contract_runner.py"),
+        reason,
+    )
+    add(
+        checks,
+        seen,
         "Circle AI request example tests",
         pytest("tests/test_circle_ai_contract_request_examples.py"),
         reason,
