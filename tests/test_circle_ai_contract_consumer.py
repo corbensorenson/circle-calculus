@@ -838,6 +838,7 @@ def test_consumer_exposes_top_level_planner_recommendation_index() -> None:
         "d19_proved_first_channel_bank_shape",
         "d19_proved_first_channel_pair_scope",
         "d19_proved_first_channel_context_wide_contract",
+        "d19_proved_first_channel_radian_bank_form",
         "d19_proved_first_channel_bank_tolerance_rule",
     ]
     assert "AIRA-T0216" in rope_frontier["theorem_ids"]

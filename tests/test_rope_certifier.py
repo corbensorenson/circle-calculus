@@ -201,6 +201,16 @@ def test_real_phase_nat_turn_error_matches_endpoint_precursor_shape() -> None:
     assert "AIRA-T0232" in ROPE_REAL_PHASE_PRECURSOR_THEOREMS
 
 
+def test_rope_quickstart_precursor_line_matches_certifier_constant() -> None:
+    docs = Path("docs/ROPE_CERTIFIER_QUICKSTART.md").read_text()
+    expected = (
+        "real_phase_formal_precursors="
+        f"{','.join(ROPE_REAL_PHASE_PRECURSOR_THEOREMS)}"
+    )
+
+    assert docs.count(expected) >= 2
+
+
 def test_real_phase_turn_separation_rules_out_smaller_near_turn() -> None:
     turns = range(-3, 4)
     kwargs = {

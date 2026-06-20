@@ -760,6 +760,16 @@ def plan_for_files(files: Iterable[str], *, full: bool = False) -> list[Check]:
             contract_doc_kind = AI_CONTRACT_DOC_KINDS.get(path)
             if contract_doc_kind is not None:
                 add_circle_ai_contract_kind_checks(checks, seen, f"{path} documents {contract_doc_kind}", contract_doc_kind)
+            if path == "docs/ROPE_CERTIFIER_QUICKSTART.md":
+                add(
+                    checks,
+                    seen,
+                    "RoPE quickstart precursor drift test",
+                    pytest(
+                        "tests/test_rope_certifier.py::test_rope_quickstart_precursor_line_matches_certifier_constant"
+                    ),
+                    f"{path} includes generated theorem-id trails",
+                )
             if path in {"docs/AI_CONTRACT_SUITE.md", "docs/CIRCLE_AI_CONTRACTS_INTEGRATION.md"}:
                 add(checks, seen, "Circle AI contract docs", py("scripts/check_circle_ai_contract_docs.py"), f"{path} documents the public contract pack")
                 add_circle_ai_contract_checks(checks, seen, f"{path} documents the public contract pack")
