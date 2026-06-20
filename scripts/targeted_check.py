@@ -228,6 +228,7 @@ def add_site_checks(checks: list[Check], seen: set[tuple[str, ...]], reason: str
     add(checks, seen, "site manifest links", py("scripts/site/check_site_manifest_links.py"), reason)
     add(checks, seen, "site dictionary links", py("scripts/site/check_site_dictionary_links.py"), reason)
     add(checks, seen, "site theorem status", py("scripts/site/check_site_theorem_status.py"), reason)
+    add(checks, seen, "site scaffold contract", py("scripts/site/check_site_scaffold_contract.py"), reason)
     add(checks, seen, "site source links", py("scripts/site/check_site_source_links.py"), reason)
     add(checks, seen, "site static source links", py("scripts/site/check_site_static_source_links.py"), reason)
     add(checks, seen, "site backlinks", py("scripts/site/check_site_data_backlinks.py"), reason)

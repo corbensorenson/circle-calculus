@@ -655,6 +655,7 @@ def test_flagship_contract_lesson_change_runs_contract_pack_checks() -> None:
     commands = commands_for(["site/chapters/applications/sparse_attention_contract.qmd"])
 
     assert contains_command(commands, "scripts/site/check_site_manifest_links.py")
+    assert contains_command(commands, "scripts/site/check_site_scaffold_contract.py")
     assert_kind_contract_checks(commands, "sparse_attention_coverage")
     assert not contains_command(commands, "pytest", "tests/test_circle_ai_contract_pack.py")
     assert not contains_command(commands, "pytest", "tests/test_circle_ai_contract_consumer.py")
