@@ -1,0 +1,165 @@
+---
+title: "AI Contract Runner"
+---
+
+This lesson is the practical entry point for using Circle Calculus on an AI
+configuration you provide. The contract pack is the curated public fixture set.
+The runner is the parameterized tool that turns your values into a theorem-linked
+receipt.
+
+::: {.lesson-goal}
+
+## Goal
+
+Take one AI component, name its finite circular object, run the contract runner,
+and read the receipt without confusing formal proof, executable computation, and
+numerical support.
+
+:::
+
+## Concept
+
+The runner follows one pattern:
+
+```text
+user config
+  -> finite circular contract
+  -> Python certificate fields
+  -> theorem ids from the contract pack
+  -> text / JSON receipt
+  -> explicit non-claims
+```
+
+The receipt is not a new proof source. Lean remains the formal proof source, and
+the theorem manifests plus generated contract pack remain the status source.
+
+## Picture
+
+```text
+RoPE / KV-cache / sparse attention / recurrence schedule
+        |
+        v
+python scripts/circle_ai_certify.py ...
+        |
+        v
+contract receipt
+        |
+        +--> evidence fields
+        +--> theorem ids
+        +--> proof-status summary
+        +--> non-claims
+```
+
+::: {.warning-box}
+A JSON receipt can say that a finite structural field is theorem-backed. It
+cannot upgrade a numerical scan, benchmark, widget, or engineering guess into a
+formal theorem.
+:::
+
+## First Run
+
+Start with the RoPE flagship contract:
+
+```bash
+python scripts/circle_ai_certify.py rope \
+  --head-dim 128 \
+  --base 10000 \
+  --context 131072 \
+  --requested-margin 1/328459
+```
+
+Expected shape:
+
+```text
+circle_ai_contract_receipt=proved kind=rope_position_distinguishability ...
+proof_status=theorems=... resolved=True proved=True ...
+rope_exact_discrete=pass=True ...
+rope_d19_request=status=proved theorem_backed=True ...
+not_claimed=...
+```
+
+Read that as:
+
+| Field | Meaning |
+| --- | --- |
+| `status=proved` | the requested D19 channel-0 margin branch is theorem-backed in the proved range |
+| `request_passed=True` | the requested margin is accepted by the current theorem-backed classifier |
+| `rope_exact_discrete` | exact integer-period phase-bank result for the declared discretization model |
+| `rope_real_phase_scan` | numerical diagnostic only |
+| `not_claimed` | boundary that prevents model-quality or full all-channel real-RoPE overclaims |
+
+## Four Runner Surfaces
+
+| Surface | Command | What The Receipt Checks |
+| --- | --- | --- |
+| RoPE | `python scripts/circle_ai_certify.py rope --head-dim 128 --base 10000 --context 131072 --requested-margin 1/328459` | exact integer-bank pass/fail plus optional D19 real-phase request classification |
+| KV-cache | `python scripts/circle_ai_certify.py kv-cache --cache-size 16 --current 31 --token 20 --batch-tokens 20,24,29,31 --sink-size 4` | retained-window, stale-member, live-window, and optional sink-plus-rolling-window request facts |
+| Sparse attention | `python scripts/circle_ai_certify.py sparse-attention --context 120 --strides 7,13 --path-length 3 --local-window 4` | covered lags, uncovered gaps, repair windows, and candidate-budget fields |
+| Recurrence | `python scripts/circle_ai_certify.py recurrence` | finite loop budget, active work, inactive work, exit step, and whole-period shift invariants |
+
+Use `--format json` when another project will consume the result:
+
+```bash
+python scripts/circle_ai_certify.py sparse-attention \
+  --context 120 \
+  --strides 7,13 \
+  --path-length 3 \
+  --local-window 4 \
+  --format json \
+  --json-out reports/sparse_attention_receipt.json
+```
+
+## Receipt Reading Loop
+
+Read every receipt in this order:
+
+1. `kind`: which contract family was used;
+2. `normalized_request`: what parameters the tool actually checked;
+3. `status` and `request_passed`: whether the request was accepted, rejected, undecided, numerical-only, or outside scope;
+4. `evidence`: the family-specific certificate fields;
+5. `proof_status.theorem_ids`: the proof trail;
+6. `proof_layers`: proved versus computed versus numerical-only fields;
+7. `not_claimed`: what the receipt deliberately does not prove.
+
+## Python API
+
+```python
+from circle_math.applications import build_contract_receipt
+
+receipt = build_contract_receipt(
+    "kv-cache",
+    {
+        "cache_size": 16,
+        "current": 31,
+        "token": 20,
+        "batch_tokens": (20, 24, 29, 31),
+        "sink_size": 4,
+    },
+)
+```
+
+That returns the same schema as the CLI:
+
+```text
+circle_calculus.ai_contract_receipt.v0
+```
+
+The generated request and receipt schemas live at:
+
+```text
+site/data/generated/circle_ai_contract_request.schema.json
+site/data/generated/circle_ai_contract_receipt.schema.json
+```
+
+## What This Does Not Prove
+
+The runner does not prove better language-model quality, better reasoning,
+training improvement, deployment safety, runtime speed, memory savings, or
+implementation correctness. Its value is narrower: it exposes finite circular
+failure modes and theorem-backed contract fields before those claims drift into
+ordinary AI prose.
+
+<div class="book-navigation">
+<a href="ai_contract_suite.qmd">Previous: AI Contract Suite</a>
+<a href="rope_certifier.qmd">Next: RoPE Certifier</a>
+</div>

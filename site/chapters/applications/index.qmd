@@ -33,6 +33,7 @@ The claim is *not* that circular language automatically improves every domain. I
 - [RoPE certifier](rope_certifier.qmd) — the flagship applied demo: proof-carrying position-distinguishability certificates for exact discretized rotary phase banks and the current bounded standard-channel frontier.
 - [AI contract ladder](ai_contract_ladder.qmd) — guided sequence from RoPE phase certificates to KV-cache freshness, sparse-attention coverage, recurrence schedules, and circulant mixer guarantees.
 - [AI contract suite](ai_contract_suite.qmd) — compact working entry point for RoPE, KV-cache, sparse-attention, recurrence, and the public contract-pack certificates.
+- [AI contract runner](ai_contract_runner.qmd) — parameterized CLI and Python API for turning your RoPE, KV-cache, sparse-attention, or recurrence config into a theorem-linked receipt.
 - [KV-cache ring buffer](kv_cache_ring_buffer.qmd) — proof-carrying finite slot and retained-window certificates for ring-buffer cache indexing.
 - [Sparse attention coverage](sparse_attention_contract.qmd) — proof-carrying finite coverage, gap-witness, and candidate-budget certificates for local-window plus stride-family sparse plans.
 - [Looped recurrence contracts](looped_recurrence_contracts.qmd) — guided finite recurrence-budget, exit-certificate, token-route, middle-block, and multi-resolution schedule contracts.
@@ -72,7 +73,7 @@ Start with the page whose domain you care about, not with the theorem index. Eac
 concept -> finite circular object -> example -> theorem card -> code/certificate -> non-claim
 ```
 
-If you want to audit the application theorem cards directly, use the [Application Proof Audit](application_proof_audit.qmd). If you are here for AI, start with the [RoPE certifier](rope_certifier.qmd), then walk the [AI Contract Ladder](ai_contract_ladder.qmd).
+If you want to audit the application theorem cards directly, use the [Application Proof Audit](application_proof_audit.qmd). If you are here for AI, start with the [AI Contract Suite](ai_contract_suite.qmd), run your own parameters through the [AI Contract Runner](ai_contract_runner.qmd), then walk the [AI Contract Ladder](ai_contract_ladder.qmd).
 
 <div class="book-navigation">
 <a href="../phase2/proof_carrying_glyphs.qmd">Previous: Proof-Carrying Glyphs</a>

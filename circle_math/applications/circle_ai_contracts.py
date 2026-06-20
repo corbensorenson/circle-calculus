@@ -150,17 +150,33 @@ CONTRACT_ARTIFACTS = {
         "quickstart_docs": [
             "docs/ROPE_CERTIFIER_QUICKSTART.md",
             "docs/ROPE_CERTIFIER_RESULTS_NOTE.md",
+            "docs/CIRCLE_AI_CONTRACT_RUNNER.md",
         ],
         "living_book_pages": [
+            "site/chapters/applications/ai_contract_runner.qmd",
             "site/chapters/applications/rope_certifier.qmd",
             "site/chapters/applications/rope_certifier_audit.qmd",
         ],
         "entrypoints": [
             "python scripts/rope_certify.py --preset llama_style_10000_4k",
             "python scripts/rope_certify.py --preset llama_style_10000_4k --format json",
+            (
+                "python scripts/circle_ai_certify.py rope --head-dim 128 "
+                "--base 10000 --context 131072 --requested-margin 1/328459"
+            ),
+            (
+                "python scripts/circle_ai_certify.py rope --head-dim 128 "
+                "--base 10000 --context 131072 --requested-margin 1/328459 "
+                "--format json"
+            ),
         ],
         "validation_commands": [
             "python scripts/rope_certify.py --preset llama_style_10000_4k --format json",
+            (
+                "python scripts/circle_ai_certify.py rope --head-dim 128 "
+                "--base 10000 --context 131072 --requested-margin 1/328459 "
+                "--format json"
+            ),
             "python scripts/circle_ai_contract_ready.py --kind rope_position_distinguishability",
             (
                 "python scripts/circle_ai_contract_ready.py --kind "
@@ -241,17 +257,35 @@ CONTRACT_ARTIFACTS = {
     },
     "kv_cache_ring_buffer": {
         "source_paper": "papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md",
-        "quickstart_docs": ["docs/KV_CACHE_CERTIFIER_QUICKSTART.md"],
+        "quickstart_docs": [
+            "docs/KV_CACHE_CERTIFIER_QUICKSTART.md",
+            "docs/CIRCLE_AI_CONTRACT_RUNNER.md",
+        ],
         "living_book_pages": [
+            "site/chapters/applications/ai_contract_runner.qmd",
             "site/chapters/applications/kv_cache_ring_buffer.qmd",
             "site/chapters/applications/kv_cache_ring_buffer_audit.qmd",
         ],
         "entrypoints": [
             "python scripts/kv_cache_certify.py --cache-size 16 --current 31 --token 20 --batch-tokens 20,24,29,31 --sink-size 4",
             "python scripts/kv_cache_certify.py --cache-size 16 --current 31 --token 20 --batch-tokens 20,24,29,31 --sink-size 4 --format json",
+            (
+                "python scripts/circle_ai_certify.py kv-cache --cache-size 16 "
+                "--current 31 --token 20 --batch-tokens 20,24,29,31 --sink-size 4"
+            ),
+            (
+                "python scripts/circle_ai_certify.py kv-cache --cache-size 16 "
+                "--current 31 --token 20 --batch-tokens 20,24,29,31 "
+                "--sink-size 4 --format json"
+            ),
         ],
         "validation_commands": [
             "python scripts/kv_cache_certify.py --cache-size 16 --current 31 --token 20 --batch-tokens 20,24,29,31 --sink-size 4 --format json",
+            (
+                "python scripts/circle_ai_certify.py kv-cache --cache-size 16 "
+                "--current 31 --token 20 --batch-tokens 20,24,29,31 "
+                "--sink-size 4 --format json"
+            ),
             "python scripts/circle_ai_contract_ready.py --kind kv_cache_ring_buffer",
             (
                 "python scripts/circle_ai_contract_ready.py --kind "
@@ -300,17 +334,35 @@ CONTRACT_ARTIFACTS = {
     },
     "sparse_attention_coverage": {
         "source_paper": "papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md",
-        "quickstart_docs": ["docs/SPARSE_ATTENTION_CERTIFIER_QUICKSTART.md"],
+        "quickstart_docs": [
+            "docs/SPARSE_ATTENTION_CERTIFIER_QUICKSTART.md",
+            "docs/CIRCLE_AI_CONTRACT_RUNNER.md",
+        ],
         "living_book_pages": [
+            "site/chapters/applications/ai_contract_runner.qmd",
             "site/chapters/applications/sparse_attention_contract.qmd",
             "site/chapters/applications/sparse_attention_audit.qmd",
         ],
         "entrypoints": [
             "python scripts/stride_family_certify.py --context 120 --strides 7,13 --path-length 3 --local-window 4",
             "python scripts/stride_family_certify.py --context 120 --strides 7,13 --path-length 3 --local-window 4 --format json",
+            (
+                "python scripts/circle_ai_certify.py sparse-attention "
+                "--context 120 --strides 7,13 --path-length 3 --local-window 4"
+            ),
+            (
+                "python scripts/circle_ai_certify.py sparse-attention "
+                "--context 120 --strides 7,13 --path-length 3 --local-window 4 "
+                "--format json"
+            ),
         ],
         "validation_commands": [
             "python scripts/stride_family_certify.py --context 120 --strides 7,13 --path-length 3 --local-window 4 --format json",
+            (
+                "python scripts/circle_ai_certify.py sparse-attention "
+                "--context 120 --strides 7,13 --path-length 3 --local-window 4 "
+                "--format json"
+            ),
             "python scripts/circle_ai_contract_ready.py --kind sparse_attention_coverage",
             (
                 "python scripts/circle_ai_contract_ready.py --kind "
@@ -379,15 +431,22 @@ CONTRACT_ARTIFACTS = {
         "quickstart_docs": [
             "docs/RECURRENCE_SCHEDULE_CERTIFIER_QUICKSTART.md",
             "docs/AI_CONTRACT_SUITE.md",
+            "docs/CIRCLE_AI_CONTRACT_RUNNER.md",
         ],
-        "living_book_pages": ["site/chapters/applications/looped_recurrence_contracts.qmd"],
+        "living_book_pages": [
+            "site/chapters/applications/ai_contract_runner.qmd",
+            "site/chapters/applications/looped_recurrence_contracts.qmd",
+        ],
         "entrypoints": [
             "python scripts/recurrence_schedule_certify.py",
             "python scripts/recurrence_schedule_certify.py --format json",
+            "python scripts/circle_ai_certify.py recurrence",
+            "python scripts/circle_ai_certify.py recurrence --format json",
             "python scripts/export_circle_ai_contracts.py",
         ],
         "validation_commands": [
             "python scripts/recurrence_schedule_certify.py --format json",
+            "python scripts/circle_ai_certify.py recurrence --format json",
             "python scripts/circle_ai_contract_ready.py --kind recurrence_schedule",
             (
                 "python scripts/circle_ai_contract_ready.py --kind "

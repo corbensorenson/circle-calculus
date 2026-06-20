@@ -1,0 +1,130 @@
+{
+  "$id": "https://circle-calculus.local/schemas/circle_ai_contract_receipt.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": true,
+  "properties": {
+    "content_fingerprint_algorithm": {
+      "const": "sha256-json-v1"
+    },
+    "contract_id": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "evidence": {
+      "type": "object"
+    },
+    "kind": {
+      "enum": [
+        "rope_position_distinguishability",
+        "kv_cache_ring_buffer",
+        "sparse_attention_coverage",
+        "recurrence_schedule"
+      ]
+    },
+    "normalized_request": {
+      "type": "object"
+    },
+    "not_claimed": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "proof_layers": {
+      "type": "object"
+    },
+    "proof_status": {
+      "additionalProperties": true,
+      "properties": {
+        "all_theorem_ids_proved": {
+          "type": "boolean"
+        },
+        "all_theorem_ids_resolved": {
+          "type": "boolean"
+        },
+        "theorem_count": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "theorem_ids": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "unproved_theorem_ids": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "unresolved_theorem_ids": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "theorem_ids",
+        "theorem_count",
+        "all_theorem_ids_resolved",
+        "all_theorem_ids_proved",
+        "unresolved_theorem_ids",
+        "unproved_theorem_ids"
+      ],
+      "type": "object"
+    },
+    "receipt_content_fingerprint": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "request": {
+      "type": "object"
+    },
+    "request_passed": {
+      "type": [
+        "boolean",
+        "null"
+      ]
+    },
+    "request_schema_id": {
+      "const": "circle_calculus.ai_contract_request.v0"
+    },
+    "schema_id": {
+      "const": "circle_calculus.ai_contract_receipt.v0"
+    },
+    "status": {
+      "enum": [
+        "proved",
+        "impossible",
+        "undecided",
+        "numerical_only",
+        "outside_scope"
+      ]
+    },
+    "support": {
+      "type": "object"
+    }
+  },
+  "required": [
+    "schema_id",
+    "request_schema_id",
+    "contract_pack_schema_id",
+    "kind",
+    "contract_id",
+    "status",
+    "request_passed",
+    "request",
+    "normalized_request",
+    "evidence",
+    "proof_status",
+    "proof_layers",
+    "support",
+    "not_claimed",
+    "content_fingerprint_algorithm",
+    "receipt_content_fingerprint"
+  ],
+  "title": "Circle AI Contract Receipt",
+  "type": "object"
+}

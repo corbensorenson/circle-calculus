@@ -140,6 +140,8 @@ website:
             text: AI Contract Ladder
           - href: chapters/applications/ai_contract_suite.qmd
             text: AI Contract Suite
+          - href: chapters/applications/ai_contract_runner.qmd
+            text: AI Contract Runner
           - href: chapters/applications/kv_cache_ring_buffer.qmd
             text: KV-Cache Ring Buffer
           - href: chapters/applications/sparse_attention_contract.qmd

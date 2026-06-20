@@ -1,7 +1,7 @@
 {
   "contracts": [
     {
-      "expected_contract_fingerprint": "9d627a7b70cb2447dada8355a65a48bf2d90db0055664cc41127204ab4193918",
+      "expected_contract_fingerprint": "22eb488ab06f5bb59e6b85f3a83169877644314fbc7f630f9f9554f73f1110a5",
       "kind": "rope_position_distinguishability",
       "required_fields": [
         "preset",
@@ -146,7 +146,7 @@
       ]
     },
     {
-      "expected_contract_fingerprint": "89d20fb1753aba81590cbdb4e409b5b55577cc81d00c3318a9f23c293120a33c",
+      "expected_contract_fingerprint": "21824e6aa4564a226c4a65c69818a3c572128a3e5d833aa2f5471e1235fefd8f",
       "kind": "kv_cache_ring_buffer",
       "required_fields": [
         "stale_probe_first_stale_token",
@@ -220,7 +220,7 @@
       ]
     },
     {
-      "expected_contract_fingerprint": "d28f3828ae2780bac707ba07af533b8bc71c3be5d1057213dc5e8293a1e2ed4a",
+      "expected_contract_fingerprint": "c23809cef9b821b1e4f9cabf53fcac724a0757bf3f86594e1d12710fe0cd9ec1",
       "kind": "sparse_attention_coverage",
       "required_fields": [
         "first_uncovered_lag",
@@ -285,7 +285,7 @@
       ]
     },
     {
-      "expected_contract_fingerprint": "59e0234bb0ffcb4b63fa83ce5e5ce226216b9a28073183624178cf03ea2f6f52",
+      "expected_contract_fingerprint": "571edd5dce4f7b64441806de323295218a3e2293b3b540dd4772ba34b9371515",
       "kind": "recurrence_schedule",
       "required_fields": [
         "periodic_shift_required_steps_invariant",
@@ -377,7 +377,7 @@
       ]
     }
   ],
-  "expected_pack_fingerprint": "8c52b35599a228ec7e87e335e0012495cecb3f7da9cce505841fe11cb6c1a217",
+  "expected_pack_fingerprint": "c294e169fc6a33c31223c57cc0ef957107d55dc3682e0cb6864665d0a9e53e15",
   "policy_id": "circle_ai_flagship_contracts_acceptance_v0",
   "policy_name": "Circle AI flagship contracts acceptance policy",
   "schema_id": "circle_calculus.ai_contract_acceptance_policy.v0"

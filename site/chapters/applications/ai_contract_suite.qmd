@@ -79,7 +79,8 @@ Use this page as the guided entrance to the contract lane, then open the focused
 | 2 | [KV-cache ring buffer](kv_cache_ring_buffer.qmd) | how residue plus overwrite boundary gives freshness and stale-read certificates | `python scripts/circle_ai_contract_ready.py --kind kv_cache_ring_buffer` |
 | 3 | [Sparse attention coverage](sparse_attention_contract.qmd) | how local windows and stride families expose covered lags, gaps, and repair targets | `python scripts/circle_ai_contract_ready.py --kind sparse_attention_coverage` |
 | 4 | [Looped recurrence contracts](looped_recurrence_contracts.qmd) | how recurrence schedules expose finite work, exit, and index-reuse contracts | `python scripts/circle_ai_contract_ready.py --kind recurrence_schedule` |
-| 5 | [AI contract pack audit](ai_contract_pack_audit.qmd) | how another project consumes the public JSON pack without reading Lean files | `python scripts/circle_ai_contract_ready.py --fingerprints` |
+| 5 | [AI contract runner](ai_contract_runner.qmd) | how to run the same contract shape on your own parameters and get a text/JSON receipt | `python scripts/circle_ai_certify.py rope --head-dim 128 --base 10000 --context 131072 --requested-margin 1/328459` |
+| 6 | [AI contract pack audit](ai_contract_pack_audit.qmd) | how another project consumes the public JSON pack without reading Lean files | `python scripts/circle_ai_contract_ready.py --fingerprints` |
 
 Each focused lesson follows the same reading shape: concept, finite circular object, worked example, theorem ids, executable certificate, and exact non-claims. Use the audit pages only when you want the full theorem-card trail.
 
@@ -156,6 +157,25 @@ contract.proof_status.all_theorem_ids_proved
 ```
 
 If either readiness field is false, the consumer should reject the fixture before adding private metrics or benchmark rows. The readiness index is the quick path for external tools; the fingerprint index is the stable audit-log surface; the full contract record is the detailed evidence trail.
+
+## Run Your Own Config
+
+Use the unified runner when you want a receipt for parameters that are not one
+of the public fixture rows:
+
+```bash
+python scripts/circle_ai_certify.py rope \
+  --head-dim 128 \
+  --base 10000 \
+  --context 131072 \
+  --requested-margin 1/328459 \
+  --format json
+```
+
+The receipt schema is `circle_calculus.ai_contract_receipt.v0`. Its core fields
+are `normalized_request`, `evidence`, `proof_status`, `proof_layers`, `support`,
+and `not_claimed`. Read the [AI Contract Runner](ai_contract_runner.qmd) lesson
+before wiring the JSON into another project.
 
 `make circle-ai-contracts-check` validates the generated JSON artifact itself: schema id, required contract keys, minimum fields, theorem ids, proof-status metadata, dictionary ids, source paths, quickstart docs, Living Book pages, and Python entrypoint paths.
 
