@@ -61,6 +61,8 @@ def test_rope_receipt_classifies_d19_margin_request(contract_pack: dict) -> None
         "proved_fields"
     ]
     assert receipt["proof_status"]["all_theorem_ids_proved"] is True
+    assert len(receipt["request_content_fingerprint"]) == 64
+    assert len(receipt["normalized_request_fingerprint"]) == 64
     assert receipt["recommendations"]
     assert receipt["recommendations"] == receipt["support"]["planner_recommendations"]
     assert receipt["validation_commands"]
@@ -186,6 +188,27 @@ def test_dispatcher_aliases_and_fingerprint_validation(contract_pack: dict) -> N
     failures = validate_contract_receipt(missing_metadata)
     assert any("recommendations must be a non-empty list" in failure for failure in failures)
 
+    broken_request = dict(receipt)
+    broken_request["request"] = {
+        **receipt["request"],
+        "parameters": {**receipt["request"]["parameters"], "context": 10},
+    }
+    broken_request["receipt_content_fingerprint"] = "0" * 64
+    failures = validate_contract_receipt(broken_request)
+    assert any("request_content_fingerprint drifted" in failure for failure in failures)
+
+    broken_normalized = dict(receipt)
+    broken_normalized["normalized_request"] = {
+        **receipt["normalized_request"],
+        "sequence_length": 10,
+    }
+    broken_normalized["receipt_content_fingerprint"] = "0" * 64
+    failures = validate_contract_receipt(broken_normalized)
+    assert any(
+        "normalized_request_fingerprint drifted" in failure
+        for failure in failures
+    )
+
 
 def test_request_api_validates_and_builds_receipts(contract_pack: dict) -> None:
     request = {
@@ -270,6 +293,8 @@ def test_receipt_schema_exposes_runner_metadata() -> None:
 
     assert "recommendations" in schema["required"]
     assert "validation_commands" in schema["required"]
+    assert "request_content_fingerprint" in schema["required"]
+    assert "normalized_request_fingerprint" in schema["required"]
     assert schema["properties"]["recommendations"]["minItems"] == 1
     assert schema["properties"]["validation_commands"]["minItems"] == 1
 

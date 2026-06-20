@@ -9,7 +9,7 @@ It takes a user configuration and emits a text or JSON receipt with:
 - evidence fields from the relevant Python certifier,
 - top-level planner recommendations and validation commands,
 - explicit proved, computed, numerical-only, unsupported, and non-claim labels,
-- pack and receipt fingerprints.
+- request, normalized-request, pack, contract, and receipt fingerprints.
 
 The runner does not re-run Lean. Lean remains the formal proof source, and the
 generated contract pack remains the public proof-status index.
@@ -116,6 +116,8 @@ receipt = build_contract_receipt(
 )
 assert receipt["schema_id"] == "circle_calculus.ai_contract_receipt.v0"
 assert receipt["proof_status"]["all_theorem_ids_proved"] is True
+assert receipt["request_content_fingerprint"]
+assert receipt["normalized_request_fingerprint"]
 assert receipt["recommendations"]
 assert receipt["validation_commands"]
 

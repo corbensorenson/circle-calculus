@@ -284,6 +284,12 @@ def _base_receipt(
         support=support,
         pack=pack_dict,
     )
+    request_object = {
+        "schema_id": REQUEST_SCHEMA_ID,
+        "kind": canonical,
+        "parameters": dict(request_parameters),
+    }
+    normalized_object = dict(normalized_parameters)
     receipt = {
         "schema_id": RECEIPT_SCHEMA_ID,
         "request_schema_id": REQUEST_SCHEMA_ID,
@@ -292,12 +298,10 @@ def _base_receipt(
         "contract_id": support["contract_id"],
         "status": status,
         "request_passed": request_passed,
-        "request": {
-            "schema_id": REQUEST_SCHEMA_ID,
-            "kind": canonical,
-            "parameters": dict(request_parameters),
-        },
-        "normalized_request": dict(normalized_parameters),
+        "request": request_object,
+        "request_content_fingerprint": _json_fingerprint(request_object),
+        "normalized_request": normalized_object,
+        "normalized_request_fingerprint": _json_fingerprint(normalized_object),
         "evidence": dict(evidence),
         "proof_status": proof_status,
         "proof_layers": dict(proof_layers),
@@ -918,9 +922,27 @@ def validate_contract_receipt(receipt: Mapping[str, Any]) -> list[str]:
         failures.append("request must be an object")
     elif request.get("schema_id") != REQUEST_SCHEMA_ID:
         failures.append("request.schema_id must match request_schema_id")
+    request_fingerprint = receipt.get("request_content_fingerprint")
+    if not isinstance(request_fingerprint, str) or len(request_fingerprint) != 64:
+        failures.append("request_content_fingerprint must be a sha256 hex string")
+    elif any(char not in "0123456789abcdef" for char in request_fingerprint):
+        failures.append("request_content_fingerprint must be lowercase hex")
+    elif isinstance(request, dict) and request_fingerprint != _json_fingerprint(request):
+        failures.append("request_content_fingerprint drifted from request content")
     normalized = receipt.get("normalized_request")
     if not isinstance(normalized, dict) or not normalized:
         failures.append("normalized_request must be a non-empty object")
+    normalized_fingerprint = receipt.get("normalized_request_fingerprint")
+    if not isinstance(normalized_fingerprint, str) or len(normalized_fingerprint) != 64:
+        failures.append("normalized_request_fingerprint must be a sha256 hex string")
+    elif any(char not in "0123456789abcdef" for char in normalized_fingerprint):
+        failures.append("normalized_request_fingerprint must be lowercase hex")
+    elif isinstance(normalized, dict) and normalized_fingerprint != _json_fingerprint(
+        normalized
+    ):
+        failures.append(
+            "normalized_request_fingerprint drifted from normalized_request content"
+        )
     evidence = receipt.get("evidence")
     if not isinstance(evidence, dict) or not evidence:
         failures.append("evidence must be a non-empty object")
@@ -993,6 +1015,11 @@ def receipt_summary_lines(receipt: Mapping[str, Any]) -> list[str]:
             f"ready={support['ready_for_downstream_fixture_use']} "
             f"pack_fingerprint={str(support['contract_pack_fingerprint'])[:12]} "
             f"contract_fingerprint={str(support['contract_content_fingerprint'])[:12]}"
+        ),
+        (
+            "request_fingerprints="
+            f"request={str(receipt['request_content_fingerprint'])[:12]} "
+            f"normalized={str(receipt['normalized_request_fingerprint'])[:12]}"
         ),
         (
             "runner_metadata="
@@ -1118,7 +1145,9 @@ def build_contract_receipt_json_schema() -> dict[str, Any]:
             "status",
             "request_passed",
             "request",
+            "request_content_fingerprint",
             "normalized_request",
+            "normalized_request_fingerprint",
             "evidence",
             "proof_status",
             "proof_layers",
@@ -1137,7 +1166,15 @@ def build_contract_receipt_json_schema() -> dict[str, Any]:
             "status": {"enum": list(STATUS_VALUES)},
             "request_passed": {"type": ["boolean", "null"]},
             "request": {"type": "object"},
+            "request_content_fingerprint": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$",
+            },
             "normalized_request": {"type": "object"},
+            "normalized_request_fingerprint": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$",
+            },
             "evidence": {"type": "object"},
             "proof_status": {
                 "type": "object",

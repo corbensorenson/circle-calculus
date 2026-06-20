@@ -24,6 +24,10 @@
     "normalized_request": {
       "type": "object"
     },
+    "normalized_request_fingerprint": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
     "not_claimed": {
       "items": {
         "type": "string"
@@ -89,6 +93,10 @@
     "request": {
       "type": "object"
     },
+    "request_content_fingerprint": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
     "request_passed": {
       "type": [
         "boolean",
@@ -131,7 +139,9 @@
     "status",
     "request_passed",
     "request",
+    "request_content_fingerprint",
     "normalized_request",
+    "normalized_request_fingerprint",
     "evidence",
     "proof_status",
     "proof_layers",
