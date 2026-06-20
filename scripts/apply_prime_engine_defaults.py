@@ -157,7 +157,13 @@ def build_default_updates(
         confirmation_status = row.get("selected_mode_confirmation_status")
         if (
             would_change
-            and str(source) in {"external_mode_sweep", "external_high_offset_quick"}
+            and str(source)
+            in {
+                "external_mode_sweep",
+                "external_high_offset_quick",
+                "external_high_offset_tight",
+                "external_high_offset_confirmation",
+            }
             and confirmation_status not in (None, "confirmed")
         ):
             skipped.append(

@@ -156,6 +156,75 @@ def test_build_default_updates_skips_unconfirmed_high_offset_recommendation() ->
     ]
 
 
+def test_build_default_updates_skips_unconfirmed_high_offset_tight_recommendation() -> None:
+    defaults = defaults_fixture()
+
+    row = calibration_row(
+        low=1_000_000_000_000,
+        high=1_000_010_000_000,
+        source="external_high_offset_tight",
+        stability="stable",
+        selected_segment_size=1_507_328,
+        selected_count_mode="presieve17",
+    )
+    row["selected_mode_confirmation_status"] = "unconfirmed"
+    updated, changes, skipped = build_default_updates(
+        {"recommendations": [row]},
+        defaults,
+    )
+
+    assert updated == defaults
+    assert changes == []
+    assert skipped == [
+        "refusing unconfirmed external recommendation for "
+        "parallel_very_high_offset_segment_size/"
+        "parallel_very_high_offset_count_mode: unconfirmed"
+    ]
+
+
+def test_build_default_updates_applies_confirmed_high_offset_confirmation() -> None:
+    defaults = defaults_fixture()
+
+    row = calibration_row(
+        low=1_000_000_000_000,
+        high=1_000_010_000_000,
+        source="external_high_offset_confirmation",
+        stability="noisy",
+        selected_segment_size=1_507_328,
+        selected_count_mode="presieve17",
+    )
+    row["selected_effective_sample_stability"] = "stable"
+    row["selected_mode_confirmation_status"] = "confirmed"
+    updated, changes, skipped = build_default_updates(
+        {"recommendations": [row]},
+        defaults,
+    )
+
+    assert skipped == []
+    assert updated["parallel_very_high_offset_segment_size"] == 1_507_328
+    assert updated["parallel_very_high_offset_count_mode"] == "presieve17"
+    assert changes == [
+        {
+            "key": "parallel_very_high_offset_segment_size",
+            "old": 3_145_728,
+            "new": 1_507_328,
+            "low": 1_000_000_000_000,
+            "high": 1_000_010_000_000,
+            "source": "external_high_offset_confirmation",
+            "stability": "noisy",
+        },
+        {
+            "key": "parallel_very_high_offset_count_mode",
+            "old": "segmented",
+            "new": "presieve17",
+            "low": 1_000_000_000_000,
+            "high": 1_000_010_000_000,
+            "source": "external_high_offset_confirmation",
+            "stability": "noisy",
+        },
+    ]
+
+
 def test_build_default_updates_allows_tuning_fallback_without_sample_stability() -> None:
     defaults = defaults_fixture()
     defaults["parallel_tiny_prefix_segment_size"] = 32_768

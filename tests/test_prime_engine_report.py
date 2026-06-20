@@ -444,7 +444,9 @@ def test_prime_engine_report_summarizes_artifacts(tmp_path: Path) -> None:
                 "timing,parallel_high_offset_default_range_count_8t,10000000,1376256,361726,7,2.200,4545454545,,",
                 "timing,parallel_high_offset_presieve17_range_count_8t,10000000,1376256,361726,7,2.050,4878048780,,",
                 "timing,hot_cli_count_server_parallel_high_offset_default_range_count_8t,10000000,1376256,361726,7,2.600,3846153846,,",
-                "timing,hot_cli_count_server_parallel_high_offset_presieve17_count_8t,10000000,1376256,361726,7,2.500,4000000000,,",
+                "timing,hot_cli_count_server_parallel_high_offset_segmented_count_8t,10000000,1376256,361726,7,2.450,4081632653,,",
+                "timing,hot_cli_count_server_parallel_high_offset_presieve13_count_8t,10000000,1376256,361726,7,2.500,4000000000,,",
+                "timing,hot_cli_count_server_parallel_high_offset_presieve17_count_8t,10000000,1376256,361726,7,2.550,3921568627,,",
                 "timing,cold_cli_parallel_high_offset_default_range_count_8t,10000000,1376256,361726,7,4.400,2272727273,,",
                 "timing,cold_process_parallel_high_offset_segmented_range_count_8t,10000000,1376256,361726,7,4.100,2439024390,,",
             ]
@@ -720,18 +722,19 @@ def test_prime_engine_report_summarizes_artifacts(tmp_path: Path) -> None:
         "high_offset_hot_cold"
     )
     overhead = report["benchmark"]["high_offset_cold_hot_overhead"][0]
-    assert overhead["hot_best_ms"] == 2.2
+    assert overhead["hot_name"] == "parallel_high_offset_presieve17_range_count_8t"
+    assert overhead["hot_best_ms"] == 2.05
     assert overhead["hot_server_name"] == (
-        "hot_cli_count_server_parallel_high_offset_presieve17_count_8t"
+        "hot_cli_count_server_parallel_high_offset_segmented_count_8t"
     )
-    assert overhead["hot_server_best_ms"] == 2.5
-    assert overhead["hot_server_over_hot"] == pytest.approx(2.5 / 2.2)
-    assert overhead["hot_server_over_cold_cli"] == pytest.approx(2.5 / 4.4)
+    assert overhead["hot_server_best_ms"] == 2.45
+    assert overhead["hot_server_over_hot"] == pytest.approx(2.45 / 2.05)
+    assert overhead["hot_server_over_cold_cli"] == pytest.approx(2.45 / 4.4)
     assert overhead["cold_cli_best_ms"] == 4.4
-    assert overhead["cold_cli_over_hot"] == pytest.approx(2.0)
-    assert overhead["cold_cli_extra_ms"] == pytest.approx(2.2)
+    assert overhead["cold_cli_over_hot"] == pytest.approx(4.4 / 2.05)
+    assert overhead["cold_cli_extra_ms"] == pytest.approx(2.35)
     assert overhead["cold_process_best_ms"] == 4.1
-    assert overhead["cold_process_over_hot"] == pytest.approx(4.1 / 2.2)
+    assert overhead["cold_process_over_hot"] == pytest.approx(4.1 / 2.05)
     spread = report["benchmark"]["primary_candidate_spread"]
     ten_m_candidates = [
         group for group in spread if group["scope"] == "prefix" and group["workload"] == 10000000
@@ -789,7 +792,7 @@ def test_prime_engine_report_summarizes_artifacts(tmp_path: Path) -> None:
     assert "High-offset hot/cold rows" in markdown
     assert "High-offset cold/hot overhead" in markdown
     assert "High-offset cold/hot overhead (source: `high_offset_hot_cold`)" in markdown
-    assert "| 10000000 | `parallel_high_offset_default_range_count_8t` | 2.200 | `hot_cli_count_server_parallel_high_offset_presieve17_count_8t` | 2.500 | 1.14x | 0.57x | 4.400 | 2.00x | 2.200 | 4.100 | 1.86x |" in markdown
+    assert "| 10000000 | `parallel_high_offset_presieve17_range_count_8t` | 2.050 | `hot_cli_count_server_parallel_high_offset_segmented_count_8t` | 2.450 | 1.20x | 0.56x | 4.400 | 2.15x | 2.350 | 4.100 | 2.00x |" in markdown
     assert (
         "| 10000000 | `parallel_high_offset_default_range_count_8t` | "
         "3145728 | 3.400 | 361726 |"

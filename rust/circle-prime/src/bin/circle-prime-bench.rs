@@ -962,6 +962,24 @@ fn bench_cold_process_counts(rounds: usize) -> Vec<BenchRow> {
         rounds,
     ));
     rows.push(measure_count_server_prime_count(
+        "hot_cli_count_server_parallel_high_offset_segmented_count_8t",
+        HIGH_OFFSET_LOW,
+        HIGH_OFFSET_HIGH,
+        high_offset_segment_size,
+        8,
+        Some("segmented"),
+        rounds,
+    ));
+    rows.push(measure_count_server_prime_count(
+        "hot_cli_count_server_parallel_high_offset_presieve13_count_8t",
+        HIGH_OFFSET_LOW,
+        HIGH_OFFSET_HIGH,
+        high_offset_segment_size,
+        8,
+        Some("presieve13"),
+        rounds,
+    ));
+    rows.push(measure_count_server_prime_count(
         "hot_cli_count_server_parallel_high_offset_presieve17_count_8t",
         HIGH_OFFSET_LOW,
         HIGH_OFFSET_HIGH,

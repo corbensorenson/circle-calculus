@@ -276,9 +276,10 @@ Current CPU findings:
   artifact for the high-offset cold/hot overhead table when present. The same
   artifact now includes persistent `count-server` CLI rows, which keep the
   Circle binary loaded and time repeated stdin/stdout count requests. The report
-  calls out the fastest server row so candidate modes such as `presieve17` are
-  visible without a broad external sweep. Use it after small hot-path changes
-  before spending time on broader external sweeps.
+  calls out the fastest server row so candidate modes such as `segmented`,
+  `presieve13`, and `presieve17` are visible without a broad external sweep.
+  Use it after small hot-path changes before spending time on broader external
+  sweeps.
 - The scalar `u64` primality lane uses the 7-base deterministic Miller-Rabin
   set instead of the first 12 prime bases. That is both the stronger documented
   `u64` coverage and a measured speedup for random candidate batches.
@@ -312,11 +313,13 @@ Current CPU findings:
   path over the previous dynamic odd-byte default.
 - The release benchmark also includes `[10^12, 10^12 + 10M)` high-offset rows:
   one conservative single-thread row, one explicit segmented count-threaded
-  row, a hot-loop `parallel_high_offset_default_range_count_8t` row that
-  follows the compiled adaptive count-mode default, and experimental lanes.
-  This keeps cursor-initialization, mode-default, and high-offset
+  row, hot-loop `parallel_high_offset_*_range_count_8t` rows covering the
+  compiled adaptive count-mode default and explicit modes, and experimental
+  lanes. This keeps cursor-initialization, mode-default, and high-offset
   segment-default regressions visible without relying only on the
-  external-control script.
+  external-control script. The hot/cold report selects the fastest eligible
+  hot row and fastest count-server row from the artifact so mode wins are not
+  hidden behind a hardcoded default.
 - A work-balanced prefix splitter using an `x^(3/2)` sieve-work estimate is
   kept as an experimental benchmark row. It was correct and helped some 100M
   rows, but it lost the current 1B rows, so the CLI default still uses equal
@@ -662,7 +665,8 @@ current controls.
 `prime-engine-high-offset-hot-cold` is the shorter diagnostic target for code
 changes that should affect the Rust engine before they affect command-vs-command
 scorecards. It runs only the in-process high-offset rows plus persistent
-`count-server` candidate rows, cold process, and cold CLI rows, writing:
+`count-server` candidate rows for the default, segmented, presieve13, and
+presieve17 lanes, cold process, and cold CLI rows, writing:
 
 ```text
 sidecars/PRIME_ENGINE/results/prime_engine_high_offset_hot_cold_latest.csv
@@ -676,9 +680,14 @@ external `primesieve`/`primecount` scorecard.
 
 `prime-engine-high-offset-tight` is the follow-up scorecard when the broad
 quick run keeps pointing at the same neighborhood. It narrows the sweep to
-`1376256,1441792,1507328,4194304`, keeps the same three count modes, and runs
-17 interleaved rounds. Use it to decide whether an apparent `primesieve` win is
-worth a confirmation run without paying for the broader candidate grid.
+`1310720,1376256,1441792,1507328,4194304`, keeps the same three count modes,
+and runs 17 interleaved rounds. The grid includes the current default segment
+size so calibration can compare the compiled default directly against the
+tight winner. Use it to decide whether an apparent `primesieve` win is worth a
+confirmation run without paying for the broader candidate grid. The
+default-calibration script now treats this artifact as the preferred high-offset
+evidence for the tracked `[1e12, 1e12 + 1e7)` lane when it exists, falling back
+to the broader quick artifact only for uncovered ranges.
 
 `prime-engine-high-offset-confirm` repeats the focused quick candidate set and
 writes:
@@ -781,16 +790,17 @@ It reads the latest high-offset quick scorecard, repeated high-offset
 confirmation artifact, external segment sweep, external count-mode sweep,
 repeated mode-confirmation artifact, and in-process tuner summary as one
 evidence pool, preferring `primesieve` rows over `primecount` rows because
-`primesieve` is the stronger range-counting control. The high-offset quick
+`primesieve` is the stronger range-counting control. The high-offset tight
 scorecard gets first priority for the tracked `[1e12, 1e12+1e7)` lane because it
-varies both segment size and count mode around that hot range. Confirmed
-repeated high-offset winners override a single latest high-offset quick pick
-when the current evidence still contains matching candidate rows. Confirmed
-repeated mode winners override a single latest mode sweep for the remaining
-ranges when the current sweep still contains matching candidate evidence.
-Unconfirmed winners are recorded as `unconfirmed_mode_drift` rather than
-promoted. If no external sweep exists for a tuned range, calibration falls back
-to the in-process tuner summary. The script
+is the short focused comparison used to judge the current `primesieve` gap; the
+broader quick scorecard fills in ranges not covered by tight. Confirmed
+repeated high-offset winners override a single latest high-offset pick when the
+current evidence still contains matching candidate rows. Confirmed repeated
+mode winners override a single latest mode sweep for the remaining ranges when
+the current sweep still contains matching candidate evidence. Unconfirmed
+winners are recorded as `unconfirmed_mode_drift` rather than promoted. If no
+external sweep exists for a tuned range, calibration falls back to the
+in-process tuner summary. The script
 then probes the release `circle-prime recommend --count --json` CLI for the
 current adaptive default and records whether that default mode/segment/thread
 combination is exactly aligned, within the configured median-slowdown tolerance,

@@ -31,6 +31,12 @@ DEFAULT_EXTERNAL_HIGH_OFFSET_QUICK = (
 DEFAULT_EXTERNAL_HIGH_OFFSET_QUICK_METADATA = (
     RESULTS_DIR / "prime_engine_high_offset_quick_latest.json"
 )
+DEFAULT_EXTERNAL_HIGH_OFFSET_TIGHT = (
+    RESULTS_DIR / "prime_engine_high_offset_tight_latest.csv"
+)
+DEFAULT_EXTERNAL_HIGH_OFFSET_TIGHT_METADATA = (
+    RESULTS_DIR / "prime_engine_high_offset_tight_latest.json"
+)
 DEFAULT_EXTERNAL_HIGH_OFFSET_CONFIRMATION = (
     RESULTS_DIR / "prime_engine_high_offset_confirmation_latest.json"
 )
@@ -83,6 +89,16 @@ def main() -> int:
         "--external-high-offset-quick-metadata",
         type=Path,
         default=DEFAULT_EXTERNAL_HIGH_OFFSET_QUICK_METADATA,
+    )
+    parser.add_argument(
+        "--external-high-offset-tight",
+        type=Path,
+        default=DEFAULT_EXTERNAL_HIGH_OFFSET_TIGHT,
+    )
+    parser.add_argument(
+        "--external-high-offset-tight-metadata",
+        type=Path,
+        default=DEFAULT_EXTERNAL_HIGH_OFFSET_TIGHT_METADATA,
     )
     parser.add_argument(
         "--external-high-offset-confirmation",
@@ -155,9 +171,20 @@ def main() -> int:
     external_high_offset_sample_rows = read_sample_rows_from_metadata(
         external_high_offset_metadata
     )
+    external_high_offset_tight_rows = read_csv_optional(args.external_high_offset_tight)
+    external_high_offset_tight_metadata = read_json_optional(
+        args.external_high_offset_tight_metadata
+    )
+    external_high_offset_tight_sample_rows = read_sample_rows_from_metadata(
+        external_high_offset_tight_metadata
+    )
     external_high_offset_confirmation = read_json_optional(
         args.external_high_offset_confirmation
     )
+    (
+        external_high_offset_confirmation_rows,
+        external_high_offset_confirmation_sample_rows,
+    ) = read_external_mode_confirmation_input_rows(external_high_offset_confirmation)
     tuning_summary = read_json_optional(args.tuning)
     tuning_sample_rows = read_tuning_sample_rows(args.tuning, tuning_summary)
     recommendations = select_recommendations(
@@ -168,6 +195,10 @@ def main() -> int:
         external_mode_confirmation=external_mode_confirmation,
         external_high_offset_rows=external_high_offset_rows,
         external_high_offset_sample_rows=external_high_offset_sample_rows,
+        external_high_offset_tight_rows=external_high_offset_tight_rows,
+        external_high_offset_tight_sample_rows=external_high_offset_tight_sample_rows,
+        external_high_offset_confirmation_rows=external_high_offset_confirmation_rows,
+        external_high_offset_confirmation_sample_rows=external_high_offset_confirmation_sample_rows,
         external_high_offset_confirmation=external_high_offset_confirmation,
         tuning_summary=tuning_summary,
         tuning_sample_rows=tuning_sample_rows,
@@ -181,6 +212,7 @@ def main() -> int:
         external_mode_metadata=external_mode_metadata,
         external_mode_confirmation=external_mode_confirmation,
         external_high_offset_metadata=external_high_offset_metadata,
+        external_high_offset_tight_metadata=external_high_offset_tight_metadata,
         external_high_offset_confirmation=external_high_offset_confirmation,
         tuning_summary=tuning_summary,
         baseline_priority=baseline_priority,
@@ -196,6 +228,10 @@ def main() -> int:
             "external_high_offset_quick": str(args.external_high_offset_quick),
             "external_high_offset_quick_metadata": str(
                 args.external_high_offset_quick_metadata
+            ),
+            "external_high_offset_tight": str(args.external_high_offset_tight),
+            "external_high_offset_tight_metadata": str(
+                args.external_high_offset_tight_metadata
             ),
             "external_high_offset_confirmation": str(
                 args.external_high_offset_confirmation
@@ -226,22 +262,66 @@ def select_recommendations(
     external_mode_confirmation: dict[str, Any] | None = None,
     external_high_offset_rows: list[dict[str, str]] | None = None,
     external_high_offset_sample_rows: list[dict[str, str]] | None = None,
+    external_high_offset_tight_rows: list[dict[str, str]] | None = None,
+    external_high_offset_tight_sample_rows: list[dict[str, str]] | None = None,
+    external_high_offset_confirmation_rows: list[dict[str, str]] | None = None,
+    external_high_offset_confirmation_sample_rows: list[dict[str, str]] | None = None,
     external_high_offset_confirmation: dict[str, Any] | None = None,
     tuning_summary: dict[str, Any] | None,
     tuning_sample_rows: list[dict[str, str]] | None = None,
     baseline_priority: list[str],
 ) -> list[dict[str, Any]]:
+    high_offset_confirmation_recommendations = select_external_recommendations(
+        [
+            (
+                "external_high_offset_confirmation",
+                external_high_offset_confirmation_rows or [],
+                external_high_offset_confirmation_sample_rows or [],
+            )
+        ],
+        baseline_priority,
+    )
+    confirmation_ranges = {
+        (row["low"], row["high"], row["baseline"])
+        for row in high_offset_confirmation_recommendations
+    }
+    high_offset_tight_recommendations = select_external_recommendations(
+        [
+            (
+                "external_high_offset_tight",
+                external_high_offset_tight_rows or [],
+                external_high_offset_tight_sample_rows or [],
+            )
+        ],
+        baseline_priority,
+    )
+    tight_ranges = {
+        (row["low"], row["high"], row["baseline"])
+        for row in high_offset_tight_recommendations
+    }
+    high_offset_quick_recommendations = select_external_recommendations(
+        [
+            (
+                "external_high_offset_quick",
+                external_high_offset_rows or [],
+                external_high_offset_sample_rows or [],
+            )
+        ],
+        baseline_priority,
+    )
     high_offset_recommendations = apply_mode_confirmation(
-        select_external_recommendations(
-            [
-                (
-                    "external_high_offset_quick",
-                    external_high_offset_rows or [],
-                    external_high_offset_sample_rows or [],
-                )
-            ],
-            baseline_priority,
-        ),
+        high_offset_confirmation_recommendations
+        + [
+            row
+            for row in high_offset_tight_recommendations
+            if (row["low"], row["high"], row["baseline"]) not in confirmation_ranges
+        ]
+        + [
+            row
+            for row in high_offset_quick_recommendations
+            if (row["low"], row["high"], row["baseline"]) not in confirmation_ranges
+            and (row["low"], row["high"], row["baseline"]) not in tight_ranges
+        ],
         external_high_offset_confirmation,
         selected_by="confirmed_external_high_offset",
     )
@@ -522,6 +602,7 @@ def build_calibration(
     external_mode_metadata: dict[str, Any] | None = None,
     external_mode_confirmation: dict[str, Any] | None = None,
     external_high_offset_metadata: dict[str, Any] | None = None,
+    external_high_offset_tight_metadata: dict[str, Any] | None = None,
     external_high_offset_confirmation: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     calibrated = []
@@ -554,6 +635,9 @@ def build_calibration(
         ),
         "external_high_offset_quick": summarize_external_sweep_metadata(
             external_high_offset_metadata
+        ),
+        "external_high_offset_tight": summarize_external_sweep_metadata(
+            external_high_offset_tight_metadata
         ),
         "external_high_offset_confirmation": summarize_external_mode_confirmation(
             external_high_offset_confirmation
@@ -705,7 +789,13 @@ def calibrate_recommendation(
     )
     unconfirmed_mode_drift = (
         not within_tolerance
-        and row["source"] in {"external_mode_sweep", "external_high_offset_quick"}
+        and row["source"]
+        in {
+            "external_mode_sweep",
+            "external_high_offset_quick",
+            "external_high_offset_tight",
+            "external_high_offset_confirmation",
+        }
         and row.get("selected_mode_confirmation_status") not in (None, "confirmed")
     )
     row.update(

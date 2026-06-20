@@ -36,7 +36,7 @@ CIRCLE_PRIME_HIGH_OFFSET_QUICK_OUTPUT ?= sidecars/PRIME_ENGINE/results/prime_eng
 CIRCLE_PRIME_HIGH_OFFSET_QUICK_SAMPLES ?= sidecars/PRIME_ENGINE/results/prime_engine_high_offset_quick_samples_latest.csv
 CIRCLE_PRIME_HIGH_OFFSET_QUICK_METADATA ?= sidecars/PRIME_ENGINE/results/prime_engine_high_offset_quick_latest.json
 CIRCLE_PRIME_HIGH_OFFSET_TIGHT_ROUNDS ?= 17
-CIRCLE_PRIME_HIGH_OFFSET_TIGHT_SEGMENT_SIZES ?= 1376256,1441792,1507328,4194304
+CIRCLE_PRIME_HIGH_OFFSET_TIGHT_SEGMENT_SIZES ?= 1310720,1376256,1441792,1507328,4194304
 CIRCLE_PRIME_HIGH_OFFSET_TIGHT_COUNT_MODES ?= segmented,presieve13,presieve17
 CIRCLE_PRIME_HIGH_OFFSET_TIGHT_OUTPUT ?= sidecars/PRIME_ENGINE/results/prime_engine_high_offset_tight_latest.csv
 CIRCLE_PRIME_HIGH_OFFSET_TIGHT_SAMPLES ?= sidecars/PRIME_ENGINE/results/prime_engine_high_offset_tight_samples_latest.csv
@@ -270,11 +270,11 @@ prime-engine-external-mode-confirm:
 
 prime-engine-calibrate-defaults:
 	cargo build --release -p circle-prime --bin circle-prime
-	python scripts/calibrate_prime_engine_defaults.py --external-high-offset-quick $(CIRCLE_PRIME_HIGH_OFFSET_QUICK_OUTPUT) --external-high-offset-quick-metadata $(CIRCLE_PRIME_HIGH_OFFSET_QUICK_METADATA) --external-high-offset-confirmation $(CIRCLE_PRIME_HIGH_OFFSET_CONFIRM_OUTPUT)
+	python scripts/calibrate_prime_engine_defaults.py --external-high-offset-quick $(CIRCLE_PRIME_HIGH_OFFSET_QUICK_OUTPUT) --external-high-offset-quick-metadata $(CIRCLE_PRIME_HIGH_OFFSET_QUICK_METADATA) --external-high-offset-tight $(CIRCLE_PRIME_HIGH_OFFSET_TIGHT_OUTPUT) --external-high-offset-tight-metadata $(CIRCLE_PRIME_HIGH_OFFSET_TIGHT_METADATA) --external-high-offset-confirmation $(CIRCLE_PRIME_HIGH_OFFSET_CONFIRM_OUTPUT)
 
 prime-engine-calibrate-defaults-check:
 	cargo build --release -p circle-prime --bin circle-prime
-	python scripts/calibrate_prime_engine_defaults.py --external-high-offset-quick $(CIRCLE_PRIME_HIGH_OFFSET_QUICK_OUTPUT) --external-high-offset-quick-metadata $(CIRCLE_PRIME_HIGH_OFFSET_QUICK_METADATA) --external-high-offset-confirmation $(CIRCLE_PRIME_HIGH_OFFSET_CONFIRM_OUTPUT) --fail-on-drift
+	python scripts/calibrate_prime_engine_defaults.py --external-high-offset-quick $(CIRCLE_PRIME_HIGH_OFFSET_QUICK_OUTPUT) --external-high-offset-quick-metadata $(CIRCLE_PRIME_HIGH_OFFSET_QUICK_METADATA) --external-high-offset-tight $(CIRCLE_PRIME_HIGH_OFFSET_TIGHT_OUTPUT) --external-high-offset-tight-metadata $(CIRCLE_PRIME_HIGH_OFFSET_TIGHT_METADATA) --external-high-offset-confirmation $(CIRCLE_PRIME_HIGH_OFFSET_CONFIRM_OUTPUT) --fail-on-drift
 
 prime-engine-apply-defaults:
 	python scripts/apply_prime_engine_defaults.py

@@ -612,7 +612,17 @@ def summarize_high_offset_cold_hot_overhead(
         for row in [*high_offset_rows, *cold_process_counts]
         if row.get("scope") == "high_offset"
     }
-    hot = rows_by_name.get("parallel_high_offset_default_range_count_8t")
+    hot_candidates = [
+        row
+        for row in rows_by_name.values()
+        if row["name"].startswith("parallel_high_offset_")
+        and row["name"].endswith("_range_count_8t")
+    ]
+    hot = min(
+        hot_candidates,
+        key=lambda row: float(row["best_ms"]),
+        default=None,
+    )
     hot_server_candidates = [
         row
         for row in rows_by_name.values()
