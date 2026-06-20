@@ -591,6 +591,7 @@
                 "d19_proved_first_channel_bank_tolerance_rule",
                 "real_phase_dirichlet_witness_guardrail",
                 "real_phase_margin_ceiling_guardrail",
+                "real_phase_exact_weakest_margin_ceiling_guardrail",
                 "proof_layers"
               ],
               "type": "object"
@@ -1251,6 +1252,7 @@
                     "d19_proved_first_channel_bank_tolerance_rule",
                     "real_phase_dirichlet_witness_guardrail",
                     "real_phase_margin_ceiling_guardrail",
+                    "real_phase_exact_weakest_margin_ceiling_guardrail",
                     "proof_layers"
                   ],
                   "type": "object"

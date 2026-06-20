@@ -7,6 +7,7 @@ target/
 sidecars/PRIME_ENGINE/results/*.csv
 sidecars/PRIME_ENGINE/results/*.json
 sidecars/PRIME_ENGINE/results/*_candidate.md
+sidecars/PRIME_ENGINE/results/*_candidate_confirmation_latest.md
 *.egg-info/
 __pycache__/
 .pytest_cache/

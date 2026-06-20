@@ -553,6 +553,42 @@ def test_comparison_failures_can_require_stable_samples() -> None:
     ]
 
 
+def test_noisy_samples_can_be_allowed_for_material_median_win() -> None:
+    comparisons = [
+        ExternalComparison(
+            key=speedup_row().key,
+            baseline_result=664_579,
+            candidate_result=664_579,
+            baseline_best_speedup=1.0,
+            candidate_best_speedup=2.0,
+            baseline_median_speedup=1.0,
+            candidate_median_speedup=2.0,
+            candidate_sample_stability="noisy",
+        )
+    ]
+
+    assert (
+        comparison_failures(
+            comparisons,
+            min_median_speedup_ratio=0.95,
+            min_best_speedup_ratio=0.90,
+            require_stable_samples=True,
+            allow_noisy_when_median_speedup_at_least=1.5,
+        )
+        == []
+    )
+    assert any(
+        "sample stability is not stable" in failure
+        for failure in comparison_failures(
+            comparisons,
+            min_median_speedup_ratio=0.95,
+            min_best_speedup_ratio=0.90,
+            require_stable_samples=True,
+            allow_noisy_when_median_speedup_at_least=2.5,
+        )
+    )
+
+
 def test_median_regression_can_be_tolerated_when_best_speedup_stays_close() -> None:
     comparisons = [
         ExternalComparison(

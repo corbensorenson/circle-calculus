@@ -20,6 +20,10 @@ DEFAULT_EXTERNAL_NEXT = RESULTS_DIR / "prime_engine_external_next_latest.csv"
 DEFAULT_EXTERNAL_NEXT_METADATA = (
     RESULTS_DIR / "prime_engine_external_next_latest.json"
 )
+DEFAULT_EXTERNAL_NEXT_SERVER = RESULTS_DIR / "prime_engine_external_next_server_latest.csv"
+DEFAULT_EXTERNAL_NEXT_SERVER_METADATA = (
+    RESULTS_DIR / "prime_engine_external_next_server_latest.json"
+)
 DEFAULT_EXTERNAL_THROUGHPUT = (
     RESULTS_DIR / "prime_engine_external_throughput_latest.csv"
 )
@@ -60,6 +64,9 @@ DEFAULT_EXTERNAL_HIGH_OFFSET_HOT_SERVER_METADATA = (
 DEFAULT_EXTERNAL_HIGH_OFFSET_CONFIRMATION = (
     RESULTS_DIR / "prime_engine_high_offset_confirmation_latest.json"
 )
+DEFAULT_EXTERNAL_HIGH_OFFSET_CANDIDATE_CONFIRMATION = (
+    RESULTS_DIR / "prime_engine_high_offset_candidate_confirmation_latest.json"
+)
 DEFAULT_HIGH_OFFSET_HOT_COLD_BENCHMARK = (
     RESULTS_DIR / "prime_engine_high_offset_hot_cold_latest.csv"
 )
@@ -69,6 +76,7 @@ DEFAULT_OUTPUT_MD = RESULTS_DIR / "prime_engine_report_latest.md"
 DEFAULT_OUTPUT_JSON = RESULTS_DIR / "prime_engine_report_latest.json"
 SAMPLE_NOISY_MAX_OVER_MEDIAN = 1.5
 SAMPLE_ROBUST_NOISE_MIN_COUNT = 5
+HIGH_OFFSET_PROMOTION_MIN_GAIN_RATIO = 1.05
 
 
 PRIMARY_COUNT_ROWS = {
@@ -141,6 +149,16 @@ def main() -> int:
         default=DEFAULT_EXTERNAL_NEXT_METADATA,
     )
     parser.add_argument(
+        "--external-next-server",
+        type=Path,
+        default=DEFAULT_EXTERNAL_NEXT_SERVER,
+    )
+    parser.add_argument(
+        "--external-next-server-metadata",
+        type=Path,
+        default=DEFAULT_EXTERNAL_NEXT_SERVER_METADATA,
+    )
+    parser.add_argument(
         "--external-throughput-metadata",
         type=Path,
         default=DEFAULT_EXTERNAL_THROUGHPUT_METADATA,
@@ -206,6 +224,11 @@ def main() -> int:
         default=DEFAULT_EXTERNAL_HIGH_OFFSET_CONFIRMATION,
     )
     parser.add_argument(
+        "--external-high-offset-candidate-confirmation",
+        type=Path,
+        default=DEFAULT_EXTERNAL_HIGH_OFFSET_CANDIDATE_CONFIRMATION,
+    )
+    parser.add_argument(
         "--high-offset-hot-cold-benchmark",
         type=Path,
         default=DEFAULT_HIGH_OFFSET_HOT_COLD_BENCHMARK,
@@ -232,6 +255,8 @@ def main() -> int:
         external_correctness_path=args.external_correctness,
         external_next_path=args.external_next,
         external_next_metadata_path=args.external_next_metadata,
+        external_next_server_path=args.external_next_server,
+        external_next_server_metadata_path=args.external_next_server_metadata,
         external_throughput_path=args.external_throughput,
         external_throughput_metadata_path=args.external_throughput_metadata,
         external_segment_sweep_path=args.external_segment_sweep,
@@ -248,6 +273,9 @@ def main() -> int:
             args.external_high_offset_hot_server_metadata
         ),
         external_high_offset_confirmation_path=args.external_high_offset_confirmation,
+        external_high_offset_candidate_confirmation_path=(
+            args.external_high_offset_candidate_confirmation
+        ),
         high_offset_hot_cold_benchmark_path=args.high_offset_hot_cold_benchmark,
         tuning_path=args.tuning,
         default_calibration_path=args.default_calibration,
@@ -275,6 +303,8 @@ def build_report(
     external_correctness_path: Path | None = None,
     external_next_path: Path | None = None,
     external_next_metadata_path: Path | None = None,
+    external_next_server_path: Path | None = None,
+    external_next_server_metadata_path: Path | None = None,
     external_throughput_path: Path | None = None,
     external_throughput_metadata_path: Path | None = None,
     external_segment_sweep_path: Path | None = None,
@@ -289,6 +319,7 @@ def build_report(
     external_high_offset_hot_server_path: Path | None = None,
     external_high_offset_hot_server_metadata_path: Path | None = None,
     external_high_offset_confirmation_path: Path | None = None,
+    external_high_offset_candidate_confirmation_path: Path | None = None,
     high_offset_hot_cold_benchmark_path: Path | None = None,
     default_calibration_path: Path | None = None,
     generated_at_utc: str,
@@ -306,6 +337,11 @@ def build_report(
     external_next_rows = read_csv_optional(external_next_path)
     external_next_metadata = read_json_optional(external_next_metadata_path)
     external_next_sample_rows = read_sample_rows_from_metadata(external_next_metadata)
+    external_next_server_rows = read_csv_optional(external_next_server_path)
+    external_next_server_metadata = read_json_optional(external_next_server_metadata_path)
+    external_next_server_sample_rows = read_sample_rows_from_metadata(
+        external_next_server_metadata
+    )
     external_throughput_rows = read_csv_optional(external_throughput_path)
     external_throughput_metadata = read_json_optional(external_throughput_metadata_path)
     external_throughput_sample_rows = read_sample_rows_from_metadata(
@@ -350,6 +386,9 @@ def build_report(
     external_high_offset_confirmation = read_json_optional(
         external_high_offset_confirmation_path
     )
+    external_high_offset_candidate_confirmation = read_json_optional(
+        external_high_offset_candidate_confirmation_path
+    )
     high_offset_hot_cold_benchmark_rows = read_csv_optional(
         high_offset_hot_cold_benchmark_path
     )
@@ -368,6 +407,22 @@ def build_report(
     )
     benchmark_summary["high_offset_server_external"] = (
         summarize_high_offset_server_external(benchmark_summary, external_summary)
+    )
+    external_high_offset_hot_server_summary = summarize_external_segment_sweep(
+        external_high_offset_hot_server_rows,
+        external_high_offset_hot_server_metadata,
+        external_high_offset_hot_server_sample_rows,
+    )
+    external_high_offset_confirmation_summary = summarize_external_mode_confirmation(
+        external_high_offset_confirmation
+    )
+    external_high_offset_candidate_confirmation_summary = (
+        summarize_external_mode_confirmation(external_high_offset_candidate_confirmation)
+    )
+    external_high_offset_promotion_readout = summarize_high_offset_promotion_readout(
+        external_high_offset_hot_server_summary,
+        external_high_offset_confirmation_summary,
+        external_high_offset_candidate_confirmation_summary,
     )
     return {
         "generated_at_utc": generated_at_utc,
@@ -393,6 +448,16 @@ def build_report(
             "external_next_metadata": (
                 str(external_next_metadata_path)
                 if external_next_metadata_path is not None
+                else None
+            ),
+            "external_next_server": (
+                str(external_next_server_path)
+                if external_next_server_path is not None
+                else None
+            ),
+            "external_next_server_metadata": (
+                str(external_next_server_metadata_path)
+                if external_next_server_metadata_path is not None
                 else None
             ),
             "external_throughput_metadata": (
@@ -460,6 +525,11 @@ def build_report(
                 if external_high_offset_confirmation_path is not None
                 else None
             ),
+            "external_high_offset_candidate_confirmation": (
+                str(external_high_offset_candidate_confirmation_path)
+                if external_high_offset_candidate_confirmation_path is not None
+                else None
+            ),
             "high_offset_hot_cold_benchmark": (
                 str(high_offset_hot_cold_benchmark_path)
                 if high_offset_hot_cold_benchmark_path is not None
@@ -478,6 +548,11 @@ def build_report(
             external_next_rows,
             external_next_metadata,
             external_next_sample_rows,
+        ),
+        "external_next_server": summarize_external_next(
+            external_next_server_rows,
+            external_next_server_metadata,
+            external_next_server_sample_rows,
         ),
         "external_throughput": summarize_external_segment_sweep(
             external_throughput_rows,
@@ -507,13 +582,11 @@ def build_report(
             external_high_offset_tight_metadata,
             external_high_offset_tight_sample_rows,
         ),
-        "external_high_offset_hot_server": summarize_external_segment_sweep(
-            external_high_offset_hot_server_rows,
-            external_high_offset_hot_server_metadata,
-            external_high_offset_hot_server_sample_rows,
-        ),
-        "external_high_offset_confirmation": summarize_external_mode_confirmation(
-            external_high_offset_confirmation
+        "external_high_offset_hot_server": external_high_offset_hot_server_summary,
+        "external_high_offset_promotion_readout": external_high_offset_promotion_readout,
+        "external_high_offset_confirmation": external_high_offset_confirmation_summary,
+        "external_high_offset_candidate_confirmation": (
+            external_high_offset_candidate_confirmation_summary
         ),
         "tuning": summarize_tuning(tuning_summary, default_calibration_summary),
         "default_calibration": default_calibration_summary,
@@ -1142,6 +1215,7 @@ def summarize_external_next_metadata(metadata: dict[str, Any] | None) -> dict[st
             "thread_policy": {},
             "starts": [],
             "batch_size": None,
+            "server_only": False,
             "include_primecount": False,
             "primecount_max_start": None,
             "include_primesieve_library_server": False,
@@ -1156,6 +1230,7 @@ def summarize_external_next_metadata(metadata: dict[str, Any] | None) -> dict[st
         "rounds": metadata.get("rounds"),
         "row_count": metadata.get("row_count"),
         "batch_size": metadata.get("batch_size"),
+        "server_only": bool(metadata.get("server_only")),
         "include_circle_server": bool(metadata.get("include_circle_server")),
         "include_primecount": bool(metadata.get("include_primecount")),
         "primecount_max_start": metadata.get("primecount_max_start"),
@@ -1242,6 +1317,180 @@ def summarize_external_segment_sweep(
         "candidate_spread": candidate_spread,
         "metadata": summarize_external_sweep_metadata(metadata),
     }
+
+
+def summarize_high_offset_promotion_readout(
+    hot_server_summary: dict[str, Any],
+    default_confirmation: dict[str, Any],
+    candidate_confirmation: dict[str, Any],
+) -> dict[str, Any]:
+    if not hot_server_summary.get("available"):
+        return {"available": False, "rows": []}
+
+    default_rows = {
+        range_baseline_key(row): row
+        for row in hot_server_summary.get("default_by_range_baseline", [])
+    }
+    hot_server_finished_at = hot_server_summary.get("metadata", {}).get("finished_at_utc")
+    candidate_confirmation_generated_at = candidate_confirmation.get("generated_at_utc")
+    candidate_confirmation_freshness = confirmation_freshness(
+        candidate_confirmation_generated_at,
+        hot_server_finished_at,
+    )
+    default_confirmations = confirmation_rows_by_range_and_identity(default_confirmation)
+    candidate_confirmations = confirmation_rows_by_range_and_identity(candidate_confirmation)
+    rows = []
+    for best in hot_server_summary.get("best_by_range_baseline", []):
+        key = range_baseline_key(best)
+        default = default_rows.get(key)
+        if default is None:
+            continue
+
+        best_identity = hot_server_row_identity(best)
+        default_identity = hot_server_row_identity(default)
+        candidate_confirmation_row = candidate_confirmations.get((key, best_identity))
+        default_confirmation_row = default_confirmations.get((key, default_identity))
+        candidate_status = confirmation_status(candidate_confirmation_row)
+        default_status = confirmation_status(default_confirmation_row)
+        default_median_speedup = default.get("median_circle_speedup")
+        best_median_speedup = best.get("median_circle_speedup")
+        median_gain = ratio_or_none_any(best_median_speedup, default_median_speedup)
+        action = high_offset_promotion_action(
+            best_is_default=best_identity == default_identity,
+            best_median_speedup=best_median_speedup,
+            median_gain_over_default=median_gain,
+            candidate_status=candidate_status,
+            candidate_confirmation_freshness=candidate_confirmation_freshness,
+        )
+        rows.append(
+            {
+                "low": best["low"],
+                "high": best["high"],
+                "baseline": best["baseline"],
+                "default": default,
+                "best": best,
+                "best_is_default": best_identity == default_identity,
+                "median_gain_over_default": median_gain,
+                "default_confirmation_status": default_status,
+                "candidate_confirmation_status": candidate_status,
+                "candidate_confirmation_freshness": candidate_confirmation_freshness,
+                "action": action,
+            }
+        )
+
+    return {
+        "available": bool(rows),
+        "candidate_confirmation_generated_at_utc": candidate_confirmation_generated_at,
+        "hot_server_finished_at_utc": hot_server_finished_at,
+        "candidate_confirmation_freshness": candidate_confirmation_freshness,
+        "rows": rows,
+    }
+
+
+def range_baseline_key(row: dict[str, Any]) -> tuple[int, int, str]:
+    return (int(row["low"]), int(row["high"]), str(row["baseline"]))
+
+
+def hot_server_row_identity(row: dict[str, Any]) -> tuple[str, int, int | None, int | None]:
+    return (
+        str(row.get("count_mode") or ""),
+        int(row.get("segment_size") or 0),
+        parse_identity_int(row.get("circle_threads")),
+        parse_identity_int(row.get("circle_requested_threads")),
+    )
+
+
+def confirmation_row_identity(row: dict[str, Any]) -> tuple[str, int, int | None, int | None]:
+    return (
+        str(row.get("count_mode") or ""),
+        int(row.get("segment_size") or 0),
+        parse_identity_int(row.get("threads")),
+        parse_identity_int(row.get("requested_threads")),
+    )
+
+
+def parse_identity_int(value: Any) -> int | None:
+    if value is None or value == "":
+        return None
+    return int(value)
+
+
+def confirmation_rows_by_range_and_identity(
+    summary: dict[str, Any],
+) -> dict[tuple[tuple[int, int, str], tuple[str, int, int | None, int | None]], dict[str, Any]]:
+    rows = {}
+    if not summary.get("available"):
+        return rows
+    source_rows = summary.get("identity_summaries") or summary.get("winners", [])
+    for row in source_rows:
+        key = (int(row["low"]), int(row["high"]), str(row["baseline"]))
+        rows[(key, confirmation_row_identity(row))] = row
+    return rows
+
+
+def confirmation_status(row: dict[str, Any] | None) -> str:
+    if row is None:
+        return "missing"
+    return str(row.get("status") or "missing")
+
+
+def confirmation_freshness(
+    confirmation_generated_at: Any,
+    benchmark_finished_at: Any,
+) -> str:
+    confirmation_time = parse_utc_timestamp(confirmation_generated_at)
+    benchmark_time = parse_utc_timestamp(benchmark_finished_at)
+    if confirmation_time is None or benchmark_time is None:
+        return "unknown"
+    if confirmation_time < benchmark_time:
+        return "stale"
+    return "fresh"
+
+
+def parse_utc_timestamp(value: Any) -> datetime | None:
+    if not isinstance(value, str) or not value:
+        return None
+    for fmt in ("%Y-%m-%dT%H:%M:%SZ", "%Y%m%dT%H%M%SZ"):
+        try:
+            return datetime.strptime(value, fmt).replace(tzinfo=timezone.utc)
+        except ValueError:
+            continue
+    return None
+
+
+def ratio_or_none_any(numerator: Any, denominator: Any) -> float | None:
+    if numerator is None or denominator is None:
+        return None
+    denominator = float(denominator)
+    if denominator == 0.0:
+        return None
+    return float(numerator) / denominator
+
+
+def high_offset_promotion_action(
+    *,
+    best_is_default: bool,
+    best_median_speedup: Any,
+    median_gain_over_default: float | None,
+    candidate_status: str,
+    candidate_confirmation_freshness: str,
+) -> str:
+    if best_is_default:
+        return "keep_default"
+    if best_median_speedup is None or float(best_median_speedup) < 1.0:
+        return "reject_candidate"
+    if candidate_status != "confirmed":
+        return "hold_unconfirmed_candidate"
+    if candidate_confirmation_freshness == "stale":
+        return "hold_stale_candidate_confirmation"
+    if candidate_confirmation_freshness != "fresh":
+        return "hold_unfresh_candidate_confirmation"
+    if (
+        median_gain_over_default is None
+        or median_gain_over_default < HIGH_OFFSET_PROMOTION_MIN_GAIN_RATIO
+    ):
+        return "hold_small_gain_candidate"
+    return "trial_candidate_default"
 
 
 def summarize_prefix_pi_thread_comparisons(
@@ -1876,7 +2125,7 @@ def summarize_default_calibration(summary: dict[str, Any] | None) -> dict[str, A
 
 def summarize_external_mode_confirmation(summary: dict[str, Any] | None) -> dict[str, Any]:
     if summary is None:
-        return {"available": False, "winners": []}
+        return {"available": False, "winners": [], "identity_summaries": []}
     return {
         "available": True,
         "generated_at_utc": summary.get("generated_at_utc"),
@@ -1887,23 +2136,31 @@ def summarize_external_mode_confirmation(summary: dict[str, Any] | None) -> dict
         "confirmed_count": summary.get("confirmed_count", 0),
         "unconfirmed_count": summary.get("unconfirmed_count", 0),
         "winners": [
-            {
-                "low": int(row["low"]),
-                "high": int(row["high"]),
-                "baseline": row.get("baseline"),
-                "count_mode": row.get("count_mode"),
-                "segment_size": int(row["segment_size"]),
-                "threads": int(row["threads"]),
-                "requested_threads": int(row["requested_threads"]),
-                "confirmation_count": int(row["confirmation_count"]),
-                "observed_count": int(row["observed_count"]),
-                "stable_observed_count": int(row["stable_observed_count"]),
-                "status": row.get("status"),
-                "median_ms_values": [
-                    float(value) for value in row.get("median_ms_values", [])
-                ],
-            }
-            for row in summary.get("winners", [])
+            confirmation_row_summary(row) for row in summary.get("winners", [])
+        ],
+        "identity_summaries": [
+            confirmation_row_summary(row)
+            for row in summary.get("identity_summaries", [])
+        ],
+    }
+
+
+def confirmation_row_summary(row: dict[str, Any]) -> dict[str, Any]:
+    return {
+        "low": int(row["low"]),
+        "high": int(row["high"]),
+        "baseline": row.get("baseline"),
+        "count_mode": row.get("count_mode"),
+        "segment_size": int(row["segment_size"]),
+        "threads": int(row["threads"]),
+        "requested_threads": int(row["requested_threads"]),
+        "confirmation_count": int(row["confirmation_count"]),
+        "observed_count": int(row["observed_count"]),
+        "stable_observed_count": int(row["stable_observed_count"]),
+        "status": row.get("status"),
+        "median_ms_values": [float(value) for value in row.get("median_ms_values", [])],
+        "median_speedup_values": [
+            float(value) for value in row.get("median_speedup_values", [])
         ],
     }
 
@@ -1925,6 +2182,13 @@ def render_markdown(report: dict[str, Any]) -> str:
     lines.extend(render_external_correctness_markdown(report["external_correctness"]))
     lines.extend(render_external_markdown(report["external"]))
     lines.extend(render_external_next_markdown(report["external_next"]))
+    lines.extend(
+        render_external_next_markdown(
+            report["external_next_server"],
+            title="External Next-Prime Server-Only Search",
+            missing_message="No server-only next-prime benchmark artifact was available.",
+        )
+    )
     lines.extend(
         render_external_segment_sweep_markdown(
             report["external_high_offset_quick"],
@@ -1955,10 +2219,25 @@ def render_markdown(report: dict[str, Any]) -> str:
         )
     )
     lines.extend(
+        render_high_offset_promotion_readout_markdown(
+            report["external_high_offset_promotion_readout"]
+        )
+    )
+    lines.extend(
         render_external_mode_confirmation_markdown(
             report["external_high_offset_confirmation"],
             title="High-Offset Confirmation",
             missing_message="No repeated high-offset confirmation artifact was available.",
+        )
+    )
+    lines.extend(
+        render_external_mode_confirmation_markdown(
+            report["external_high_offset_candidate_confirmation"],
+            title="High-Offset Candidate Confirmation",
+            missing_message=(
+                "No repeated high-offset candidate confirmation artifact was "
+                "available."
+            ),
         )
     )
     lines.extend(
@@ -2218,13 +2497,18 @@ def render_external_metadata_markdown(metadata: dict[str, Any]) -> list[str]:
     return lines
 
 
-def render_external_next_markdown(summary: dict[str, Any]) -> list[str]:
+def render_external_next_markdown(
+    summary: dict[str, Any],
+    *,
+    title: str = "External Next-Prime Search",
+    missing_message: str = "No external next-prime benchmark artifact was available.",
+) -> list[str]:
     lines = [
-        "## External Next-Prime Search",
+        f"## {title}",
         "",
     ]
     if not summary["available"]:
-        lines.append("No external next-prime benchmark artifact was available.")
+        lines.append(missing_message)
         lines.append("")
         return lines
 
@@ -2300,10 +2584,13 @@ def external_next_baseline_label(baseline: str) -> str:
 
 def render_external_next_metadata_markdown(metadata: dict[str, Any]) -> list[str]:
     lines = ["Tool metadata:"]
-    for name in ["circle_prime", "primesieve", "primecount"]:
+    tool_names = ["circle_prime"]
+    if not metadata.get("server_only"):
+        tool_names.append("primesieve")
+    if metadata.get("include_primecount"):
+        tool_names.append("primecount")
+    for name in tool_names:
         tool = metadata.get("tools", {}).get(name, {})
-        if not tool and name == "primecount":
-            continue
         available = tool.get("available")
         version = tool.get("version") or "version unavailable"
         path = tool.get("path") or "path unavailable"
@@ -2335,6 +2622,11 @@ def render_external_next_metadata_markdown(metadata: dict[str, Any]) -> list[str
         lines.append(f"- next-prime starts: {formatted}.")
     if metadata.get("batch_size") is not None:
         lines.append(f"- repeated searches per sample: `{metadata['batch_size']}`.")
+    if metadata.get("server_only"):
+        lines.append(
+            "- server-only mode: cold CLI rows skipped; persistent Circle "
+            "`next-server` is compared directly with persistent `libprimesieve`."
+        )
     if metadata.get("include_circle_server"):
         lines.append("- Circle server rows: persistent `next-server` requests included.")
     if metadata.get("include_primecount"):
@@ -2431,22 +2723,76 @@ def render_external_mode_confirmation_markdown(
     if summary["winners"]:
         lines.extend(
             [
-                "| Range | Baseline | Mode | Segment | Threads | Confirmations | Stable Runs | Median ms Values | Status |",
-                "| --- | --- | --- | ---: | ---: | ---: | ---: | --- | --- |",
+                "| Range | Baseline | Mode | Segment | Threads | Confirmations | Stable Runs | Median ms Values | Median Speedups | Status |",
+                "| --- | --- | --- | ---: | ---: | ---: | ---: | --- | ---: | --- |",
             ]
         )
         for row in summary["winners"]:
             medians = ", ".join(f"{value:.3f}" for value in row["median_ms_values"])
+            speedups = ", ".join(
+                f"{value:.3f}" for value in row.get("median_speedup_values", [])
+            )
+            speedups = speedups or "-"
             lines.append(
                 f"| [{row['low']}, {row['high']}) | `{row['baseline']}` | "
                 f"`{row['count_mode']}` | {row['segment_size']} | "
                 f"{thread_text(row.get('threads'), row.get('requested_threads'))} | "
                 f"{row['confirmation_count']}/{summary['min_confirmations']} | "
                 f"{row['stable_observed_count']}/{row['observed_count']} | "
-                f"{medians} | `{row['status']}` |"
+                f"{medians} | {speedups} | `{row['status']}` |"
             )
         lines.append("")
     return lines
+
+
+def render_high_offset_promotion_readout_markdown(summary: dict[str, Any]) -> list[str]:
+    lines = ["## High-Offset Promotion Readout", ""]
+    if not summary.get("available"):
+        lines.append("No high-offset promotion readout was available.")
+        lines.append("")
+        return lines
+
+    lines.append(
+        "Confirmed non-default candidates require at least "
+        f"`{HIGH_OFFSET_PROMOTION_MIN_GAIN_RATIO:.3f}x` median gain over the "
+        "current adaptive default and fresh candidate-confirmation evidence "
+        "before this readout marks them as trial-ready."
+    )
+    lines.append("")
+
+    lines.extend(
+        [
+            "| Range | Baseline | Default | Default Median Speedup | Best Candidate | Candidate Median Speedup | vs Default | Default Confirm | Candidate Confirm | Candidate Freshness | Action |",
+            "| --- | --- | --- | ---: | --- | ---: | ---: | --- | --- | --- | --- |",
+        ]
+    )
+    for row in summary["rows"]:
+        default = row["default"]
+        best = row["best"]
+        gain = row.get("median_gain_over_default")
+        gain_text = "-" if gain is None else f"{gain:.3f}x"
+        lines.append(
+            f"| [{row['low']}, {row['high']}) | `{row['baseline']}` | "
+            + f"{mode_segment_thread_text(default)} | "
+            + f"{default['median_circle_speedup']:.3f} | "
+            + f"{mode_segment_thread_text(best)} | "
+            + f"{best['median_circle_speedup']:.3f} | "
+            + f"{gain_text} | "
+            + f"`{row['default_confirmation_status']}` | "
+            + f"`{row['candidate_confirmation_status']}` | "
+            + f"`{row['candidate_confirmation_freshness']}` | "
+            + f"`{row['action']}` |"
+        )
+    lines.append("")
+    return lines
+
+
+def mode_segment_thread_text(row: dict[str, Any]) -> str:
+    return (
+        f"`{row.get('count_mode') or 'segmented'}` "
+        f"{row['segment_size']} "
+        f"({thread_text(row.get('circle_threads'), row.get('circle_requested_threads'))})"
+    )
 
 
 def render_external_segment_sweep_markdown(

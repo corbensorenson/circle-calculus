@@ -2381,6 +2381,33 @@ theorem ropeTurnRatioGapNearestIntegerMargin_le_error
       (margin := ropeTurnRatioGapNearestIntegerMargin turnRatio gap)).1
       hfloor_ceil turns
 
+/-- An exact weakest-gap margin report is bounded above by the Dirichlet scale.
+
+This is the report-facing version of the finite-context Dirichlet guardrail:
+if a certifier claims an exact weakest nearest-integer gap margin over a
+nontrivial context, then that exact scalar margin cannot exceed `1 / context`.
+The theorem constrains the report object itself, not only an abstract requested
+finite-margin predicate. -/
+theorem ropeTurnRatioExactWeakestGapMargin_le_inv_context
+    {turnRatio margin : ℝ} {context witnessGap : Nat}
+    (hcontext : 1 < context)
+    (hcert :
+      ropeTurnRatioExactWeakestGapMargin turnRatio margin context witnessGap) :
+    margin ≤ (1 : ℝ) / context := by
+  rcases exists_ropeTurnRatioError_le_inv_context turnRatio hcontext with
+    ⟨gap, hgap_pos, hgap_context, turns, herror⟩
+  have hnearest_le_inv :
+      ropeTurnRatioGapNearestIntegerMargin turnRatio gap ≤ (1 : ℝ) / context :=
+    le_trans
+      (ropeTurnRatioGapNearestIntegerMargin_le_error
+        (turnRatio := turnRatio) (gap := gap) (turns := turns))
+      herror
+  have hgap_mem : gap ∈ List.range context := List.mem_range.mpr hgap_context
+  have hmargin_le_gap :
+      margin ≤ ropeTurnRatioGapNearestIntegerMargin turnRatio gap :=
+    hcert.2.2.2 gap hgap_mem hgap_pos
+  exact le_trans hmargin_le_gap hnearest_le_inv
+
 /- A natural-rational turn-ratio gap has exact error `1 / denominator` when
 its numerator product is one more than an integer number of denominators.
 

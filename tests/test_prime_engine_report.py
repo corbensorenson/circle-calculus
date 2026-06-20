@@ -8,6 +8,7 @@ import pytest
 from scripts.report_prime_engine_results import (
     build_report,
     circle_row_label,
+    high_offset_promotion_action,
     render_markdown,
     sample_spread_text,
     sample_stats,
@@ -691,7 +692,74 @@ def test_prime_engine_report_summarizes_artifacts(tmp_path: Path) -> None:
                         "stable_observed_count": 3,
                         "status": "confirmed",
                         "median_ms_values": [3.1, 3.2],
+                        "median_speedup_values": [1.1, 1.2],
                     }
+                ],
+            }
+        )
+        + "\n"
+    )
+    high_offset_candidate_confirmation = (
+        tmp_path / "high-offset-candidate-confirmation.json"
+    )
+    high_offset_candidate_confirmation.write_text(
+        json.dumps(
+            {
+                "generated_at_utc": "2026-01-01T00:04:00Z",
+                "min_confirmations": 2,
+                "require_stable_samples": True,
+                "batch_size": 20,
+                "observed_group_count": 1,
+                "confirmed_count": 1,
+                "unconfirmed_count": 0,
+                "winners": [
+                    {
+                        "low": 1000000000000,
+                        "high": 1000010000000,
+                        "baseline": "external_primesieve_count_server",
+                        "count_mode": "presieve13",
+                        "segment_size": 1310720,
+                        "threads": 8,
+                        "requested_threads": 8,
+                        "confirmation_count": 2,
+                        "observed_count": 3,
+                        "stable_observed_count": 2,
+                        "status": "confirmed",
+                        "median_ms_values": [1.55, 1.87],
+                        "median_speedup_values": [1.24, 1.08],
+                    }
+                ],
+                "identity_summaries": [
+                    {
+                        "low": 1000000000000,
+                        "high": 1000010000000,
+                        "baseline": "external_primesieve_count_server",
+                        "count_mode": "presieve13",
+                        "segment_size": 1310720,
+                        "threads": 8,
+                        "requested_threads": 8,
+                        "confirmation_count": 2,
+                        "observed_count": 3,
+                        "stable_observed_count": 2,
+                        "status": "confirmed",
+                        "median_ms_values": [1.55, 1.87, 1.92],
+                        "median_speedup_values": [1.24, 1.08, 1.03],
+                    },
+                    {
+                        "low": 1000000000000,
+                        "high": 1000010000000,
+                        "baseline": "external_primesieve_count_server",
+                        "count_mode": "presieve17",
+                        "segment_size": 1310720,
+                        "threads": 8,
+                        "requested_threads": 8,
+                        "confirmation_count": 1,
+                        "observed_count": 3,
+                        "stable_observed_count": 1,
+                        "status": "unconfirmed",
+                        "median_ms_values": [1.80, 1.86, 1.84],
+                        "median_speedup_values": [1.17, 1.13, 1.14],
+                    },
                 ],
             }
         )
@@ -719,6 +787,9 @@ def test_prime_engine_report_summarizes_artifacts(tmp_path: Path) -> None:
         external_high_offset_hot_server_path=external_high_offset_hot_server,
         external_high_offset_hot_server_metadata_path=(
             external_high_offset_hot_server_metadata
+        ),
+        external_high_offset_candidate_confirmation_path=(
+            high_offset_candidate_confirmation
         ),
         high_offset_hot_cold_benchmark_path=high_offset_hot_cold,
         tuning_path=tuning,
@@ -815,6 +886,14 @@ def test_prime_engine_report_summarizes_artifacts(tmp_path: Path) -> None:
     assert report["external_mode_confirmation"]["winners"][0]["count_mode"] == (
         "hybrid-wheel30-mark"
     )
+    assert report["external_high_offset_candidate_confirmation"]["available"] is True
+    assert report["external_high_offset_candidate_confirmation"]["confirmed_count"] == 1
+    assert report["external_high_offset_candidate_confirmation"]["winners"][0][
+        "count_mode"
+    ] == "presieve13"
+    assert report["external_high_offset_candidate_confirmation"]["winners"][0][
+        "median_speedup_values"
+    ] == [1.24, 1.08]
     assert mode_sweep["best_by_range_baseline"][0]["name"] == (
         "circle_prime_parallel_hybrid_wheel30_mark_count_8t"
     )
@@ -865,6 +944,16 @@ def test_prime_engine_report_summarizes_artifacts(tmp_path: Path) -> None:
     assert high_offset_hot_server["default_by_range_baseline"][0]["name"] == (
         "circle_prime_server_parallel_default_count_8t"
     )
+    promotion = report["external_high_offset_promotion_readout"]
+    assert promotion["available"] is True
+    assert promotion["rows"][0]["default"]["count_mode"] == "presieve13"
+    assert promotion["rows"][0]["best"]["count_mode"] == "presieve17"
+    assert promotion["rows"][0]["median_gain_over_default"] == pytest.approx(
+        1.167 / 1.105
+    )
+    assert promotion["rows"][0]["candidate_confirmation_status"] == "unconfirmed"
+    assert promotion["rows"][0]["candidate_confirmation_freshness"] == "unknown"
+    assert promotion["rows"][0]["action"] == "hold_unconfirmed_candidate"
     fastest = report["benchmark"]["fastest_primary_counts"]
     materialized = report["benchmark"]["materialized_generation"]
     assert materialized[0]["name"] == "enumerate_range_primes"
@@ -972,12 +1061,25 @@ def test_prime_engine_report_summarizes_artifacts(tmp_path: Path) -> None:
         "next-prime checks: `1`."
     ) in markdown
     assert "External Next-Prime Search" in markdown
+    assert "High-Offset Candidate Confirmation" in markdown
+    assert (
+        "| [1000000000000, 1000010000000) | "
+        "`external_primesieve_count_server` | `presieve13` | 1310720 | "
+        "8 | 2/2 | 2/3 | 1.550, 1.870 | 1.240, 1.080 | `confirmed` |"
+    ) in markdown
     assert (
         "`libprimesieve generate_n_primes server` cold CLI: "
         "Circle faster on 0/1 rows"
     ) in markdown
     assert (
         "`libprimesieve generate_n_primes server` server: Circle faster on 1/1 rows"
+    ) in markdown
+    assert "High-Offset Promotion Readout" in markdown
+    assert (
+        "| [1000000000000, 1000010000000) | "
+        "`external_primesieve_count_server` | `presieve13` 1310720 (8) | "
+        "1.105 | `presieve17` 1310720 (8) | 1.167 | 1.056x | `missing` | "
+        "`unconfirmed` | `unknown` | `hold_unconfirmed_candidate` |"
     ) in markdown
     assert "`primesieve --nth-prime` cold CLI: Circle faster on 1/1 rows" in markdown
     assert "`primesieve --nth-prime` server: Circle faster on 1/1 rows" in markdown
@@ -998,6 +1100,7 @@ def test_prime_engine_report_summarizes_artifacts(tmp_path: Path) -> None:
     assert "Largest checked high: `18446744073709551615`." in markdown
     assert "Circle count modes checked: `segmented`, `hybrid-wheel30-mark`." in markdown
     assert "`parallel_high_offset_default_range_count_8t`" in markdown
+
     assert "Cold process count rows" in markdown
     assert "High-offset benchmark rows" in markdown
     assert "High-offset hot/cold rows" in markdown
@@ -1075,7 +1178,7 @@ def test_prime_engine_report_summarizes_artifacts(tmp_path: Path) -> None:
     assert "Requested Circle segment sizes: `131072`, `196608`, `262144`." in markdown
     assert "| [0, 10000000) | `external_primesieve_count` | `circle_prime_parallel_hybrid_wheel30_mark_count_8t` | 65536 | 8 | 3.000 | 3.100 | 0.800 | 0.806 | unknown | baseline_faster |" in markdown
     assert "| [0, 10000000) | `external_primesieve_count` | `circle_prime_parallel_segmented_count_8t` | 65536 | 8 | 3.300 | 3.500 | 0.727 | 0.714 | unknown |" in markdown
-    assert "| [0, 10000000) | `external_primesieve_count` | `hybrid-wheel30-mark` | 65536 | 8 | 2/2 | 3/3 | 3.100, 3.200 | `confirmed` |" in markdown
+    assert "| [0, 10000000) | `external_primesieve_count` | `hybrid-wheel30-mark` | 65536 | 8 | 2/2 | 3/3 | 3.100, 3.200 | 1.100, 1.200 | `confirmed` |" in markdown
     assert "| [0, 10000000) | `external_primesieve_count` | 32768 | 8 | 3.100 | 3.100 | 0.774 | 0.806 | unknown | baseline_faster |" in markdown
     assert "| [0, 10000000) | `external_primecount_pi_diff` | 32768 | 8 | 3.100 | 3.100 | 1.129 | 1.161 | unknown | circle_faster |" in markdown
     assert "Experimental count lanes" in markdown
@@ -1097,6 +1200,45 @@ def test_prime_engine_report_summarizes_artifacts(tmp_path: Path) -> None:
         "| [0, 1000000) | `segmented` | `segmented` | 16384 | 262144 | "
         "2/2 | 2/2 | `tuning_artifact` | 0.250 | no |"
     ) in markdown
+
+
+def test_high_offset_promotion_action_rejects_stale_confirmed_candidate() -> None:
+    assert (
+        high_offset_promotion_action(
+            best_is_default=False,
+            best_median_speedup=1.2,
+            median_gain_over_default=1.05,
+            candidate_status="confirmed",
+            candidate_confirmation_freshness="stale",
+        )
+        == "hold_stale_candidate_confirmation"
+    )
+
+
+def test_high_offset_promotion_action_requires_known_fresh_confirmation() -> None:
+    assert (
+        high_offset_promotion_action(
+            best_is_default=False,
+            best_median_speedup=1.2,
+            median_gain_over_default=1.05,
+            candidate_status="confirmed",
+            candidate_confirmation_freshness="unknown",
+        )
+        == "hold_unfresh_candidate_confirmation"
+    )
+
+
+def test_high_offset_promotion_action_allows_fresh_confirmed_material_gain() -> None:
+    assert (
+        high_offset_promotion_action(
+            best_is_default=False,
+            best_median_speedup=1.2,
+            median_gain_over_default=1.05,
+            candidate_status="confirmed",
+            candidate_confirmation_freshness="fresh",
+        )
+        == "trial_candidate_default"
+    )
 
 
 def test_report_sample_stats_ignore_one_high_outlier_for_stability() -> None:

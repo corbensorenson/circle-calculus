@@ -142,10 +142,13 @@ the short competitive workflow.
   for the exact `pi(high - 1) - pi(low - 1)` difference when the requested
   thread count allows it.
   Very-high-offset threaded counts with small spans use a tuned `1310720`
-  segment default and the threaded `segmented` count mode. Focused hot-server
-  confirmation kept this lane ahead of persistent `libprimesieve` across the
-  tracked high-offset range set more reliably than the faster but noisier
-  pre-sieve candidates. Other ranges keep the conservative segmented default.
+  segment default and an adaptive count-mode split. The tracked lower and
+  middle high-offset band now uses `presieve13`; ranges whose base-prime
+  horizon reaches the upper tracked band at `5000000` switch back to
+  `segmented`. The split follows the short hot-server scorecard and repeated
+  confirmation while avoiding upper-boundary churn unless a candidate clears
+  the stricter promotion gate. Other ranges keep the conservative segmented
+  default.
   The threaded-count values live in
   `rust/circle-prime/prime_engine_defaults.json`; Cargo's build script renders
   them into Rust constants, and the CLI tests read the same JSON.
@@ -519,7 +522,11 @@ to the `primesieve`/`primecount` command-level controls. The parallel Makefile
 target also passes `--include-circle-server`, so each range includes persistent
 `count-server` request rows beside the cold CLI rows. Treat the server rows as
 steady-state application throughput evidence; the cold CLI rows remain the
-command-vs-command comparison against `primesieve` and `primecount`.
+command-vs-command comparison against `primesieve` and `primecount`. When a
+timed sample repeats the same persistent count request, the harness sends
+`repeat COUNT ...` to both Circle `count-server` and the `libprimesieve` count
+helper, then reads one response line per requested count and reports the
+per-request average.
 The Makefile external control targets request `--circle-count-modes default`,
 so the Circle rows omit `--count-mode` and track the current adaptive CLI
 default. These targets use
@@ -576,11 +583,13 @@ The Makefile target includes persistent `next-server` Circle request rows
 beside the cold CLI rows, so the report separates command-level startup cost
 from steady-state search throughput. The libprimesieve helper is also
 persistent, which makes it the right comparison for judging Circle's persistent
-server path. Persistent server rows send the repeated `batch_size` requests in
-one stdin write per timing sample and then read one response line per request;
-that keeps Circle and the libprimesieve helper on the same line-server footing
-while reducing Python round-trip noise. The default starts cover small search,
-the `2^32` boundary, `10^12`, and a near-`u64::MAX` scalar path.
+server path. Persistent server rows send repeated searches as `START COUNT` in
+one stdin line per timing sample and then read one response line per requested
+search; both the Circle `next-server` and the `libprimesieve` helper support
+this batched line protocol. That keeps Circle and the libprimesieve helper on
+the same line-server footing while reducing Python round-trip and per-line
+flush noise. The default starts cover small search, the `2^32` boundary,
+`10^12`, and a near-`u64::MAX` scalar path.
 The CSV keeps next-prime fields separate from range-count fields: `start`,
 `batch_size`, resolved `result`, Circle `candidate_count`, and searches/sec. Use
 `CIRCLE_PRIME_EXTERNAL_NEXT_BATCH_SIZE` for repeated searches per timing sample;
@@ -591,6 +600,35 @@ Raise `CIRCLE_PRIME_EXTERNAL_NEXT_PRIMECOUNT_MAX_START` only for explicit
 primecount stress probes. Lower
 `CIRCLE_PRIME_EXTERNAL_NEXT_PRIMESIEVE_LIBRARY_MAX_START` only if the
 near-`u64::MAX` libprimesieve helper row is too slow for a local quick run.
+
+`prime-engine-external-next-server` is the fast server-throughput gate for
+next-prime search. It writes:
+
+```text
+sidecars/PRIME_ENGINE/results/prime_engine_external_next_server_latest.csv
+sidecars/PRIME_ENGINE/results/prime_engine_external_next_server_latest.json
+sidecars/PRIME_ENGINE/results/prime_engine_external_next_server_samples_latest.csv
+```
+
+It runs `scripts/benchmark_prime_external_next.py --server-only`, which skips
+cold Circle and `primesieve` subprocess rows and compares persistent Circle
+`next-server` requests directly with the persistent `libprimesieve` helper. The
+default starts are `90`, `1000000`, `4294967000`, and `1000000000000`; the
+default batch size is `50` repeated searches per timed sample, sent as one
+`START COUNT` request, with `9` rounds.
+The target then runs `scripts/compare_prime_external_next.py` against the same
+artifact twice: every selected row must beat
+`external_primesieve_generate_next_server` by median speed
+(`CIRCLE_PRIME_EXTERNAL_NEXT_SERVER_MIN_MEDIAN_SPEEDUP`, default `1.0`), and the
+non-tiny material rows `1000000`, `4294967000`, and `1000000000000` must clear
+`CIRCLE_PRIME_EXTERNAL_NEXT_SERVER_MATERIAL_MIN_MEDIAN_SPEEDUP` (default
+`1.05`). The artifact still records sample-stability diagnostics, and
+`CIRCLE_PRIME_EXTERNAL_NEXT_SERVER_REQUIRE_STABLE_SAMPLES=1` can make that flag
+fatal for a stricter run, but the default gate is median-throughput based
+because sub-millisecond server rows can trip the generic noise classifier while
+still showing a clear repeated-request win. This is the short high-signal gate
+for the hot-process next-prime lane; keep the broader
+`prime-engine-external-next` target for cold CLI and near-`u64::MAX` evidence.
 
 `prime-engine-external-next-compare` writes candidate artifacts without
 overwriting the accepted latest next-prime control run:
@@ -725,9 +763,10 @@ threaded `segmented` count mode with a tuned high-offset segment size.
 external correctness, the prime proof-contract gate, warmed persistent count
 controls, the high-offset hot-server scorecard, a focused hot-server
 win/stability gate against persistent `libprimesieve`, repeated high-offset
-confirmation, the focused next-prime comparison, default-calibration drift
-check, and the combined report. Use it when you need a current competitive read
-without starting the overnight tuner.
+default confirmation, fresh high-offset candidate confirmation, the focused
+next-prime comparison, default-calibration drift check, and the combined
+report. Use it when you need a current competitive read without starting the
+overnight tuner.
 
 `prime-engine-high-offset-quick` is the interactive scorecard for the remaining
 `primesieve` gap. It isolates `[1e12, 1e12 + 1e7)`, runs 13 interleaved rounds
@@ -767,11 +806,34 @@ the external high-offset command controls by best time.
 `prime-engine-high-offset-hot-server-check` reads the hot-server scorecard and
 fails unless the selected adaptive `circle_prime_server_default_count` rows
 beat the persistent `libprimesieve` count helper by median speed and have
-stable samples. By default it checks
+stable samples, unless a noisy row already clears
+`CIRCLE_PRIME_HIGH_OFFSET_HOT_SERVER_NOISY_MEDIAN_BYPASS` (default `1.5`) by
+median speed. By default it checks
 `CIRCLE_PRIME_HIGH_OFFSET_HOT_SERVER_CHECK_RANGES`, which follows the full
 `CIRCLE_PRIME_HIGH_OFFSET_HOT_SERVER_RANGES` set, with a `1.0` floor; raise
-`CIRCLE_PRIME_HIGH_OFFSET_HOT_SERVER_MIN_MEDIAN_SPEEDUP` or override the check
-range list when a change needs to prove a larger margin.
+`CIRCLE_PRIME_HIGH_OFFSET_HOT_SERVER_MIN_MEDIAN_SPEEDUP`,
+`CIRCLE_PRIME_HIGH_OFFSET_HOT_SERVER_NOISY_MEDIAN_BYPASS`, or override the
+check range list when a change needs to prove a larger margin.
+
+`prime-engine-high-offset-candidate-confirm` is the short scout for candidate
+defaults that look faster in the hot-server spread. It repeats exact
+hot-server variants for `default:0`, `segmented:1310720:8`,
+`presieve13:1310720:8`, `presieve17:1310720:8`, and
+`segmented:1507328:8` against persistent `libprimesieve`, writing:
+
+```text
+sidecars/PRIME_ENGINE/results/prime_engine_high_offset_candidate_confirmation_latest.json
+sidecars/PRIME_ENGINE/results/prime_engine_high_offset_candidate_confirmation_latest.md
+```
+
+Use this target before changing adaptive defaults. A candidate winner is
+evidence to investigate, not a promotion by itself; the adaptive default still
+has to pass `prime-engine-high-offset-hot-server-check`. The confirmation JSON
+also records per-identity evidence for each exact candidate in the scout grid.
+The combined report's promotion readout requires a confirmed non-default
+candidate to beat the current adaptive default by at least `1.050x` median speed
+and have candidate-confirmation evidence that is at least as fresh as the
+hot-server scorecard before marking it as trial-ready.
 
 `prime-engine-high-offset-tight` is the follow-up scorecard when the broad
 quick run keeps pointing at the same neighborhood. It narrows the sweep to
@@ -802,6 +864,15 @@ reads this confirmation file when present. A confirmed repeated winner can
 override the latest quick median pick; an unconfirmed or noisy winner stays
 visible as drift evidence but is not promoted by `prime-engine-apply-defaults`
 unless the explicit noisy override is used.
+The current adaptive split passes the hot-server check across the full tracked
+range set. The latest stricter confirmation confirmed the lower and upper edge
+defaults and left the two middle rows unconfirmed under the stable-sample
+threshold, even though the latest hot-server gate kept them ahead of
+`libprimesieve`. Treat the promotion readout as a candidate scout, not an
+automatic flip switch: boundary candidates need repeated A/B confirmation plus
+a passing post-promotion hot-server gate before another default change. If the
+candidate-confirmation artifact predates the latest hot-server scorecard, the
+promotion readout holds the candidate as stale evidence.
 
 `prime-engine-high-offset-compare` is the broader confirmation target for the
 same gap. It isolates `[1e12, 1e12 + 1e7)`, sweeps the larger high-offset
@@ -958,15 +1029,23 @@ Current external-control readout on this machine:
   it on the tracked small true-prefix count rows, `pi(1e9)`, and the tracked
   `[1e9, 2e9)` broad low-absolute count row. The high-offset cold CLI interval
   still loses in the current short command-level run. The dedicated hot-server
-  scorecard and confirmation show the persistent Circle `count-server` default
-  ahead across the tracked high-offset range set, but the mixed top-level
-  external-control run can still lose the single `[1e12, 1e12 + 1e7)` server
-  row on median. Treat that as the current thin-margin lane, not as a settled
-  win. The comparison is intentionally command-level and therefore noisy, but
-  it records actual worker counts. With `CIRCLE_PRIME_THREADS=8`, true-prefix
-  `prefix-pi` rows report `1/8` effective Circle thread, broad non-prefix
-  `prefix-pi` rows can report `2/8`, and the high-offset interval currently
-  uses `8/8` under the calibrated `1310720` threaded-count default.
+  scorecard now has the adaptive persistent Circle `count-server` default ahead
+  of persistent `libprimesieve` on all tracked high-offset rows, with median
+  speedups of about `1.006`, `1.210`, `1.896`, and `3.973` for
+  `[1e12, 1e12 + 1e7)`, `[1.5e12, 1.5e12 + 1e7)`,
+  `[1e13, 1e13 + 1e7)`, and `[1e14, 1e14 + 1e7)`. The stricter repeated
+  confirmation currently confirms the lower and upper edge default identities;
+  the middle rows are above parity in the hot-server gate but still noisy
+  enough that they should be treated as watch items. Candidate rows remain
+  evidence rather than defaults until they clear repeated A/B confirmation and
+  the hot-server gate after promotion. Treat the
+  high-offset lane as competitive in a hot persistent process, not as a settled
+  command-level win. The comparison is intentionally command-level and
+  therefore noisy, but it records actual worker counts. With
+  `CIRCLE_PRIME_THREADS=8`, true-prefix `prefix-pi` rows report `1/8`
+  effective Circle thread, broad non-prefix `prefix-pi` rows can report `2/8`,
+  and the high-offset interval currently uses `8/8` under the calibrated
+  `1310720` threaded-count default.
 - `primecount` remains the specialized prefix `pi(x)` bar, but Circle's
   `prefix-pi` default currently beats it on the tracked 10M and 100M command
   rows. Keep using external controls for confirmation because startup noise can

@@ -153,16 +153,19 @@ fn next_server_command(args: &[String]) -> Result<(), String> {
         if request == b"quit" || request == b"exit" {
             break;
         }
-        let start = parse_u64_ascii(request)?;
-        let search = next_prime_u64(start);
-        if json {
-            writeln!(stdout, "{}", search.to_json())
-                .map_err(|err| format!("failed to write response: {err}"))?;
-        } else if let Some(prime) = search.prime {
-            writeln!(stdout, "{prime}")
-                .map_err(|err| format!("failed to write response: {err}"))?;
-        } else {
-            writeln!(stdout, "none").map_err(|err| format!("failed to write response: {err}"))?;
+        let (start, repetitions) = parse_next_server_request_ascii(request)?;
+        for _ in 0..repetitions {
+            let search = next_prime_u64(start);
+            if json {
+                writeln!(stdout, "{}", search.to_json())
+                    .map_err(|err| format!("failed to write response: {err}"))?;
+            } else if let Some(prime) = search.prime {
+                writeln!(stdout, "{prime}")
+                    .map_err(|err| format!("failed to write response: {err}"))?;
+            } else {
+                writeln!(stdout, "none")
+                    .map_err(|err| format!("failed to write response: {err}"))?;
+            }
         }
         stdout
             .flush()
@@ -202,6 +205,35 @@ fn parse_u64_ascii(bytes: &[u8]) -> Result<u64, String> {
             .ok_or_else(|| "next-server request must be START fitting in u64".to_string())?;
     }
     Ok(value)
+}
+
+fn parse_next_server_request_ascii(bytes: &[u8]) -> Result<(u64, usize), String> {
+    let mut parts = bytes
+        .split(|byte| matches!(byte, b' ' | b'\t'))
+        .filter(|part| !part.is_empty());
+    let start = parse_u64_ascii(
+        parts
+            .next()
+            .ok_or_else(|| "next-server request must include START".to_string())?,
+    )?;
+    let repetitions = match parts.next() {
+        Some(raw) if !raw.is_empty() => {
+            let repetitions = parse_u64_ascii(raw)?;
+            usize::try_from(repetitions)
+                .map_err(|_| "next-server COUNT must fit in usize".to_string())?
+        }
+        Some(_) => {
+            return Err("next-server request COUNT must be positive".to_string());
+        }
+        None => 1,
+    };
+    if parts.next().is_some() {
+        return Err("next-server request must be START or START COUNT".to_string());
+    }
+    if repetitions == 0 {
+        return Err("next-server request COUNT must be positive".to_string());
+    }
+    Ok((start, repetitions))
 }
 
 fn inspect_command(args: &[String]) -> Result<(), String> {
@@ -518,20 +550,23 @@ fn count_server_command(args: &[String]) -> Result<(), String> {
         if request == "quit" || request == "exit" {
             break;
         }
-        let response = count_server_response_with_pool(
-            request,
-            default_segment_size,
-            default_threads,
-            default_count_mode,
-            Some(&mut worker_pool),
-            Some(&mut plan_cache),
-        )?;
-        if json {
-            writeln!(stdout, "{}", response.to_json())
-                .map_err(|err| format!("failed to write response: {err}"))?;
-        } else {
-            writeln!(stdout, "{}", response.count)
-                .map_err(|err| format!("failed to write response: {err}"))?;
+        let (inner_request, repetitions) = count_server_repeated_request(request)?;
+        for _ in 0..repetitions {
+            let response = count_server_response_with_pool(
+                &inner_request,
+                default_segment_size,
+                default_threads,
+                default_count_mode,
+                Some(&mut worker_pool),
+                Some(&mut plan_cache),
+            )?;
+            if json {
+                writeln!(stdout, "{}", response.to_json())
+                    .map_err(|err| format!("failed to write response: {err}"))?;
+            } else {
+                writeln!(stdout, "{}", response.count)
+                    .map_err(|err| format!("failed to write response: {err}"))?;
+            }
         }
         stdout
             .flush()
@@ -752,6 +787,27 @@ fn count_server_response_with_pool(
         requested_threads,
         count_mode: plan.count_mode,
     })
+}
+
+fn count_server_repeated_request(request: &str) -> Result<(String, usize), String> {
+    let mut fields = request.split_whitespace();
+    if fields.next() != Some("repeat") {
+        return Ok((request.to_string(), 1));
+    }
+    let Some(count_field) = fields.next() else {
+        return Err("repeat request must be: repeat COUNT LOW HIGH ...".to_string());
+    };
+    let repetitions = count_field
+        .parse::<usize>()
+        .map_err(|_| "repeat COUNT must fit in usize".to_string())?;
+    if repetitions == 0 {
+        return Err("repeat COUNT must be positive".to_string());
+    }
+    let inner_fields = fields.collect::<Vec<_>>();
+    if inner_fields.is_empty() {
+        return Err("repeat request must include an inner count-server request".to_string());
+    }
+    Ok((inner_fields.join(" "), repetitions))
 }
 
 fn count_server_cached_plan(
@@ -1120,8 +1176,8 @@ fn usage() -> String {
         "  circle-prime range LOW HIGH [--count] [--json] [--segment-size N] [--threads N] [--count-mode MODE]",
         "  circle-prime count-server [--segment-size N] [--threads N] [--count-mode MODE] [--json]",
         "",
-        "next-server reads START lines from stdin and writes one next prime, none, or JSON object per line.",
-        "count-server reads LOW HIGH [SEGMENT_SIZE] [THREADS] [COUNT_MODE] lines from stdin and writes one count or JSON object per line.",
+        "next-server reads START or START COUNT lines from stdin and writes one next prime, none, or JSON object per requested search.",
+        "count-server reads LOW HIGH [SEGMENT_SIZE] [THREADS] [COUNT_MODE] or repeat COUNT LOW HIGH ... lines from stdin and writes one count or JSON object per requested count.",
         "count modes: segmented, balanced, dynamic, prefix-pi, presieve13, presieve17, wheel30-mark, hybrid-wheel30-mark",
     ]
     .join("\n")
@@ -1155,6 +1211,12 @@ mod tests {
         );
         assert!(count_server_request("0", None, 1, None).is_err());
         assert!(count_server_request("0 1000 64 1 segmented extra", None, 1, None).is_err());
+        assert_eq!(
+            count_server_repeated_request("repeat 3 0 1000 64 1 segmented").unwrap(),
+            ("0 1000 64 1 segmented".to_string(), 3)
+        );
+        assert!(count_server_repeated_request("repeat 0 0 1000").is_err());
+        assert!(count_server_repeated_request("repeat 3").is_err());
     }
 
     #[test]
@@ -1259,8 +1321,16 @@ mod tests {
         assert_eq!(trim_ascii_bytes(b" \t90\r\n"), b"90");
         assert_eq!(parse_u64_ascii(trim_ascii_bytes(b" \t90\r\n")).unwrap(), 90);
         assert_eq!(parse_u64_ascii(b"18446744073709551615").unwrap(), u64::MAX);
+        assert_eq!(parse_next_server_request_ascii(b"90").unwrap(), (90, 1));
+        assert_eq!(parse_next_server_request_ascii(b"90 50").unwrap(), (90, 50));
+        assert_eq!(
+            parse_next_server_request_ascii(b"90   50").unwrap(),
+            (90, 50)
+        );
         assert!(parse_u64_ascii(b"").is_err());
         assert!(parse_u64_ascii(b"12x").is_err());
         assert!(parse_u64_ascii(b"18446744073709551616").is_err());
+        assert!(parse_next_server_request_ascii(b"90 0").is_err());
+        assert!(parse_next_server_request_ascii(b"90 50 extra").is_err());
     }
 }

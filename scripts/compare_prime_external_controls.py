@@ -178,6 +178,14 @@ def main() -> int:
         ),
     )
     parser.add_argument(
+        "--allow-noisy-when-median-speedup-at-least",
+        type=float,
+        help=(
+            "When --require-stable-samples is set, do not fail a noisy row whose "
+            "candidate median_speedup is at or above this material-win floor."
+        ),
+    )
+    parser.add_argument(
         "--allow-candidate-subset",
         action="store_true",
         help=(
@@ -220,6 +228,11 @@ def main() -> int:
         and args.require_each_median_speedup_at_least < 0.0
     ):
         parser.error("--require-each-median-speedup-at-least must be nonnegative")
+    if (
+        args.allow_noisy_when_median_speedup_at_least is not None
+        and args.allow_noisy_when_median_speedup_at_least < 0.0
+    ):
+        parser.error("--allow-noisy-when-median-speedup-at-least must be nonnegative")
 
     names = parse_csv_set(args.names, "--names")
     baselines = parse_csv_set(args.baselines, "--baselines")
@@ -244,6 +257,9 @@ def main() -> int:
         require_any_median_speedup_at_least=args.require_any_median_speedup_at_least,
         require_each_median_speedup_at_least=args.require_each_median_speedup_at_least,
         require_stable_samples=args.require_stable_samples,
+        allow_noisy_when_median_speedup_at_least=(
+            args.allow_noisy_when_median_speedup_at_least
+        ),
         fail_on_count_mode_change=args.fail_on_count_mode_change,
         fail_on_segment_size_change=args.fail_on_segment_size_change,
     )
@@ -418,6 +434,7 @@ def comparison_failures(
     require_any_median_speedup_at_least: float | None = None,
     require_each_median_speedup_at_least: float | None = None,
     require_stable_samples: bool = False,
+    allow_noisy_when_median_speedup_at_least: float | None = None,
     fail_on_count_mode_change: bool = False,
     fail_on_segment_size_change: bool = False,
 ) -> list[str]:
@@ -444,7 +461,14 @@ def comparison_failures(
                 f"{label} segment_size changed: baseline={row.baseline_segment_size}, "
                 f"candidate={row.candidate_segment_size}"
             )
-        if require_stable_samples and row.candidate_sample_stability != "stable":
+        if (
+            require_stable_samples
+            and row.candidate_sample_stability != "stable"
+            and (
+                allow_noisy_when_median_speedup_at_least is None
+                or row.candidate_median_speedup < allow_noisy_when_median_speedup_at_least
+            )
+        ):
             stability = row.candidate_sample_stability or "missing"
             failures.append(f"{label} sample stability is not stable: {stability}")
         median_ratio = row.median_speedup_ratio

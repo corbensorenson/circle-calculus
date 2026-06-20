@@ -1127,7 +1127,9 @@ pub fn recommended_count_segment_size(low: u64, high: u64, requested_threads: us
 
     let span = high - low;
     let base_limit = (high - 1).isqrt();
-    if base_limit >= 1_000_000 && span <= 16_000_000 {
+    if base_limit >= PARALLEL_UPPER_HIGH_OFFSET_MIN_BASE_LIMIT && span <= 16_000_000 {
+        PARALLEL_UPPER_HIGH_OFFSET_SEGMENT_SIZE
+    } else if base_limit >= 1_000_000 && span <= 16_000_000 {
         PARALLEL_VERY_HIGH_OFFSET_SEGMENT_SIZE
     } else if base_limit < 300_000 && span <= 2_000_000 {
         PARALLEL_TINY_PREFIX_SEGMENT_SIZE
@@ -1164,10 +1166,16 @@ pub fn recommended_count_mode(low: u64, high: u64, requested_threads: usize) -> 
     } else if requested_threads <= 1 {
         "segmented"
     } else if base_limit >= 1_000_000 && span <= 16_000_000 {
-        if base_limit >= PARALLEL_LOWER_HIGH_OFFSET_MIN_BASE_LIMIT
+        if base_limit >= PARALLEL_EDGE_HIGH_OFFSET_MIN_BASE_LIMIT
+            && base_limit < PARALLEL_LOWER_HIGH_OFFSET_MIN_BASE_LIMIT
+        {
+            PARALLEL_EDGE_HIGH_OFFSET_COUNT_MODE
+        } else if base_limit >= PARALLEL_LOWER_HIGH_OFFSET_MIN_BASE_LIMIT
             && base_limit < PARALLEL_LOWER_HIGH_OFFSET_BASE_LIMIT
         {
             PARALLEL_LOWER_HIGH_OFFSET_COUNT_MODE
+        } else if base_limit >= PARALLEL_UPPER_HIGH_OFFSET_MIN_BASE_LIMIT {
+            PARALLEL_UPPER_HIGH_OFFSET_COUNT_MODE
         } else {
             PARALLEL_VERY_HIGH_OFFSET_COUNT_MODE
         }
@@ -4009,6 +4017,10 @@ mod tests {
             PARALLEL_VERY_HIGH_OFFSET_SEGMENT_SIZE
         );
         assert_eq!(
+            recommended_count_segment_size(100_000_000_000_000, 100_000_010_000_000, 8),
+            PARALLEL_UPPER_HIGH_OFFSET_SEGMENT_SIZE
+        );
+        assert_eq!(
             recommended_count_segment_size(1_000_000_000_000, 1_000_010_000_000, 1),
             VERY_HIGH_OFFSET_SEGMENT_SIZE
         );
@@ -4056,15 +4068,19 @@ mod tests {
         );
         assert_eq!(
             recommended_count_mode(1_000_000_000_000, 1_000_010_000_000, 8),
-            PARALLEL_VERY_HIGH_OFFSET_COUNT_MODE
+            PARALLEL_EDGE_HIGH_OFFSET_COUNT_MODE
         );
         assert_eq!(
             recommended_count_mode(1_500_000_000_000, 1_500_010_000_000, 8),
             PARALLEL_LOWER_HIGH_OFFSET_COUNT_MODE
         );
         assert_eq!(
-            recommended_count_mode(100_000_000_000_000, 100_000_010_000_000, 8),
+            recommended_count_mode(10_000_000_000_000, 10_000_010_000_000, 8),
             PARALLEL_VERY_HIGH_OFFSET_COUNT_MODE
+        );
+        assert_eq!(
+            recommended_count_mode(100_000_000_000_000, 100_000_010_000_000, 8),
+            PARALLEL_UPPER_HIGH_OFFSET_COUNT_MODE
         );
         assert_eq!(recommended_count_mode(1_000_000, 2_000_000, 8), "dynamic");
     }

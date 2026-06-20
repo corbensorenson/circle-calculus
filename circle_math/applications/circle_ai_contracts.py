@@ -89,6 +89,7 @@ ROPE_EXACT_RATIONAL_THRESHOLD_THEOREMS = (
 ROPE_DIRICHLET_GUARDRAIL_THEOREMS = (
     "AIRA-T0239",
     "AIRA-T0240",
+    "AIRA-T0241",
 )
 
 GENERIC_IDS = {
@@ -176,11 +177,12 @@ CONTRACT_ARTIFACTS = {
                 "--field d19_undecided_probe_margin_in_open_gap "
                 "--field real_phase_dirichlet_witness_guardrail "
                 "--field real_phase_margin_ceiling_guardrail "
+                "--field real_phase_exact_weakest_margin_ceiling_guardrail "
                 "--require-theorem AIRA-T0171 --require-theorem AIRA-T0172 "
                 "--require-theorem AIRA-T0234 --require-theorem AIRA-T0235 "
                 "--require-theorem AIRA-T0236 --require-theorem AIRA-T0237 "
                 "--require-theorem AIRA-T0238 --require-theorem AIRA-T0239 "
-                "--require-theorem AIRA-T0240 "
+                "--require-theorem AIRA-T0240 --require-theorem AIRA-T0241 "
                 "--require-recommendation ROPE-USE-D19-MARGIN-FRONTIER "
                 "--require-recommendation-evidence-field "
                 "ROPE-USE-D19-MARGIN-FRONTIER="
@@ -200,6 +202,9 @@ CONTRACT_ARTIFACTS = {
                 "--require-recommendation-evidence-field "
                 "ROPE-USE-D19-MARGIN-FRONTIER="
                 "real_phase_margin_ceiling_guardrail "
+                "--require-recommendation-evidence-field "
+                "ROPE-USE-D19-MARGIN-FRONTIER="
+                "real_phase_exact_weakest_margin_ceiling_guardrail "
                 "--require-recommendation-theorem "
                 "ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0234 "
                 "--require-recommendation-theorem "
@@ -214,6 +219,8 @@ CONTRACT_ARTIFACTS = {
                 "ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0239 "
                 "--require-recommendation-theorem "
                 "ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0240 "
+                "--require-recommendation-theorem "
+                "ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0241 "
                 "--require-recommendation-action-parameter "
                 "ROPE-USE-D19-MARGIN-FRONTIER=proved_branch_bank_transfer "
                 "--require-recommendation-action-parameter-path "
@@ -606,6 +613,7 @@ MINIMUM_FIELDS_BY_KIND = {
         "d19_proved_first_channel_bank_tolerance_rule",
         "real_phase_dirichlet_witness_guardrail",
         "real_phase_margin_ceiling_guardrail",
+        "real_phase_exact_weakest_margin_ceiling_guardrail",
         "proof_layers",
     ),
     "kv_cache_ring_buffer": (
@@ -964,6 +972,7 @@ PACK_VALIDATION_COMMANDS = [
         "--field d19_undecided_probe_margin_in_open_gap "
         "--field real_phase_dirichlet_witness_guardrail "
         "--field real_phase_margin_ceiling_guardrail "
+        "--field real_phase_exact_weakest_margin_ceiling_guardrail "
         "--include-field-metadata --include-recommendations"
     ),
     (
@@ -981,11 +990,12 @@ PACK_VALIDATION_COMMANDS = [
         "--field d19_undecided_probe_margin_in_open_gap "
         "--field real_phase_dirichlet_witness_guardrail "
         "--field real_phase_margin_ceiling_guardrail "
+        "--field real_phase_exact_weakest_margin_ceiling_guardrail "
         "--require-theorem AIRA-T0171 --require-theorem AIRA-T0172 "
         "--require-theorem AIRA-T0234 --require-theorem AIRA-T0235 "
         "--require-theorem AIRA-T0236 --require-theorem AIRA-T0237 "
         "--require-theorem AIRA-T0238 --require-theorem AIRA-T0239 "
-        "--require-theorem AIRA-T0240 "
+        "--require-theorem AIRA-T0240 --require-theorem AIRA-T0241 "
         "--require-recommendation ROPE-USE-D19-MARGIN-FRONTIER "
         "--require-recommendation-evidence-field "
         "ROPE-USE-D19-MARGIN-FRONTIER=d19_proved_first_channel_bank_transfer "
@@ -1000,6 +1010,9 @@ PACK_VALIDATION_COMMANDS = [
         "ROPE-USE-D19-MARGIN-FRONTIER=real_phase_dirichlet_witness_guardrail "
         "--require-recommendation-evidence-field "
         "ROPE-USE-D19-MARGIN-FRONTIER=real_phase_margin_ceiling_guardrail "
+        "--require-recommendation-evidence-field "
+        "ROPE-USE-D19-MARGIN-FRONTIER="
+        "real_phase_exact_weakest_margin_ceiling_guardrail "
         "--require-recommendation-theorem "
         "ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0234 "
         "--require-recommendation-theorem "
@@ -1014,6 +1027,8 @@ PACK_VALIDATION_COMMANDS = [
         "ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0239 "
         "--require-recommendation-theorem "
         "ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0240 "
+        "--require-recommendation-theorem "
+        "ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0241 "
         "--require-recommendation-action-parameter "
         "ROPE-USE-D19-MARGIN-FRONTIER=proved_branch_bank_transfer "
         "--require-recommendation-action-parameter-path "
@@ -1702,6 +1717,11 @@ FIELD_DESCRIPTION_OVERRIDES = {
     "real_phase_margin_ceiling_guardrail": (
         "Boolean theorem-trail guard showing Lean includes the direct "
         "no-margin-above-1/context ceiling theorem AIRA-T0240."
+    ),
+    "real_phase_exact_weakest_margin_ceiling_guardrail": (
+        "Boolean theorem-trail guard showing Lean constrains exact "
+        "weakest-gap margin reports by the 1/context Dirichlet ceiling via "
+        "AIRA-T0241."
     ),
     "d19_undecided_request_relation": (
         "Stable request-relation label for the D19 undecided probe; it records "
@@ -2740,6 +2760,7 @@ def _generic_planner_recommendations(
                     "d19_proved_first_channel_bank_tolerance_rule",
                     "real_phase_dirichlet_witness_guardrail",
                     "real_phase_margin_ceiling_guardrail",
+                    "real_phase_exact_weakest_margin_ceiling_guardrail",
                 ],
                 "theorem_ids": [
                     "AIRA-T0171",
@@ -2759,6 +2780,7 @@ def _generic_planner_recommendations(
                     "AIRA-T0238",
                     "AIRA-T0239",
                     "AIRA-T0240",
+                    "AIRA-T0241",
                     "AIRA-T0230",
                     "AIRA-T0231",
                 ],
@@ -3404,6 +3426,9 @@ def _rope_position_contract() -> dict[str, Any]:
         "real_phase_margin_ceiling_guardrail": (
             "AIRA-T0240" in certificate.real_phase_margin.formal_precursor_theorem_ids
         ),
+        "real_phase_exact_weakest_margin_ceiling_guardrail": (
+            "AIRA-T0241" in certificate.real_phase_margin.formal_precursor_theorem_ids
+        ),
         "proof_layers": [
             {
                 "layer": layer.layer,
@@ -3447,6 +3472,7 @@ def _rope_position_contract() -> dict[str, Any]:
             and fields["d19_undecided_probe_margin_in_open_gap"]
             and fields["real_phase_dirichlet_witness_guardrail"]
             and fields["real_phase_margin_ceiling_guardrail"]
+            and fields["real_phase_exact_weakest_margin_ceiling_guardrail"]
             and proved_request.margin_thresholds_ordered
             and proved_request.proved_impossible_branches_disjoint
             and impossible_request.proved_impossible_branches_disjoint

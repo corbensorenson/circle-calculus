@@ -499,12 +499,12 @@ def test_rust_prime_cli_recommends_high_offset_count_defaults(
     payload = json.loads(output)
     assert payload["count"] is True
     assert payload["segment_size"] == DEFAULTS["parallel_very_high_offset_segment_size"]
-    assert payload["count_mode"] == DEFAULTS["parallel_very_high_offset_count_mode"]
+    assert payload["count_mode"] == DEFAULTS["parallel_edge_high_offset_count_mode"]
     assert payload["threads"] == effective_threads_for_mode(
         10_000_000,
         DEFAULTS["parallel_very_high_offset_segment_size"],
         8,
-        DEFAULTS["parallel_very_high_offset_count_mode"],
+        DEFAULTS["parallel_edge_high_offset_count_mode"],
     )
     assert payload["requested_threads"] == 8
 
@@ -535,6 +535,32 @@ def test_rust_prime_cli_recommends_mid_high_offset_count_defaults(
     assert payload["requested_threads"] == 8
 
 
+def test_rust_prime_cli_recommends_middle_upper_high_offset_count_defaults(
+    circle_prime_bin: Path,
+) -> None:
+    output = run_circle_prime(
+        circle_prime_bin,
+        "recommend",
+        "10000000000000",
+        "10000010000000",
+        "--count",
+        "--json",
+        "--threads",
+        "8",
+    )
+    payload = json.loads(output)
+    assert payload["count"] is True
+    assert payload["segment_size"] == DEFAULTS["parallel_very_high_offset_segment_size"]
+    assert payload["count_mode"] == DEFAULTS["parallel_very_high_offset_count_mode"]
+    assert payload["threads"] == effective_threads_for_mode(
+        10_000_000,
+        DEFAULTS["parallel_very_high_offset_segment_size"],
+        8,
+        DEFAULTS["parallel_very_high_offset_count_mode"],
+    )
+    assert payload["requested_threads"] == 8
+
+
 def test_rust_prime_cli_recommends_upper_high_offset_count_defaults(
     circle_prime_bin: Path,
 ) -> None:
@@ -550,13 +576,13 @@ def test_rust_prime_cli_recommends_upper_high_offset_count_defaults(
     )
     payload = json.loads(output)
     assert payload["count"] is True
-    assert payload["segment_size"] == DEFAULTS["parallel_very_high_offset_segment_size"]
-    assert payload["count_mode"] == DEFAULTS["parallel_very_high_offset_count_mode"]
+    assert payload["segment_size"] == DEFAULTS["parallel_upper_high_offset_segment_size"]
+    assert payload["count_mode"] == DEFAULTS["parallel_upper_high_offset_count_mode"]
     assert payload["threads"] == effective_threads_for_mode(
         10_000_000,
-        DEFAULTS["parallel_very_high_offset_segment_size"],
+        DEFAULTS["parallel_upper_high_offset_segment_size"],
         8,
-        DEFAULTS["parallel_very_high_offset_count_mode"],
+        DEFAULTS["parallel_upper_high_offset_count_mode"],
     )
     assert payload["requested_threads"] == 8
 

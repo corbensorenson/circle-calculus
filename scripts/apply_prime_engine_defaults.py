@@ -39,7 +39,19 @@ DEFAULT_KEYS_BY_RANGE = {
     },
     (1_000_000_000_000, 1_000_010_000_000): {
         "segment_size": "parallel_very_high_offset_segment_size",
+        "count_mode": "parallel_edge_high_offset_count_mode",
+    },
+    (1_500_000_000_000, 1_500_010_000_000): {
+        "segment_size": "parallel_very_high_offset_segment_size",
+        "count_mode": "parallel_lower_high_offset_count_mode",
+    },
+    (10_000_000_000_000, 10_000_010_000_000): {
+        "segment_size": "parallel_very_high_offset_segment_size",
         "count_mode": "parallel_very_high_offset_count_mode",
+    },
+    (100_000_000_000_000, 100_000_010_000_000): {
+        "segment_size": "parallel_upper_high_offset_segment_size",
+        "count_mode": "parallel_upper_high_offset_count_mode",
     },
 }
 

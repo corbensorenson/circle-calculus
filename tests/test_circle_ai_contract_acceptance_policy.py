@@ -605,6 +605,7 @@ def test_default_flagship_policy_matches_generated_contract_pack() -> None:
         "d19_proved_first_channel_bank_tolerance_rule",
         "real_phase_dirichlet_witness_guardrail",
         "real_phase_margin_ceiling_guardrail",
+        "real_phase_exact_weakest_margin_ceiling_guardrail",
     ]
     assert rope_receipt["required_recommendation_ids"] == [
         "ROPE-AUDIT-EXACT-INTEGER-PHASE-BANK",
@@ -642,6 +643,7 @@ def test_default_flagship_policy_matches_generated_contract_pack() -> None:
         "d19_proved_first_channel_bank_tolerance_rule",
         "real_phase_dirichlet_witness_guardrail",
         "real_phase_margin_ceiling_guardrail",
+        "real_phase_exact_weakest_margin_ceiling_guardrail",
     ]
     assert rope_receipt["required_theorem_ids"] == [
         "AIRA-T0171",
@@ -657,6 +659,7 @@ def test_default_flagship_policy_matches_generated_contract_pack() -> None:
         "AIRA-T0238",
         "AIRA-T0239",
         "AIRA-T0240",
+        "AIRA-T0241",
     ]
     assert rope_receipt["required_recommendation_theorem_ids"][
         "ROPE-AUDIT-EXACT-INTEGER-PHASE-BANK"
@@ -682,6 +685,7 @@ def test_default_flagship_policy_matches_generated_contract_pack() -> None:
         "AIRA-T0238",
         "AIRA-T0239",
         "AIRA-T0240",
+        "AIRA-T0241",
     ]
     assert rope_receipt["required_recommendation_action_parameters"][
         "ROPE-AUDIT-EXACT-INTEGER-PHASE-BANK"

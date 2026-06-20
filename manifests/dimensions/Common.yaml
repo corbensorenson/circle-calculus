@@ -6625,6 +6625,20 @@ theorems:
       python_property_tests:
         - tests/test_rope_certifier.py::test_real_phase_precursor_theorem_inventory_includes_dirichlet_guardrail
     blocker: ""
+  - id: AIRA-T0241
+    status: lean_proved
+    lean_name: Circle.Applications.ropeTurnRatioExactWeakestGapMargin_le_inv_context
+    informal_statement: "Any exact weakest nearest-integer gap-margin report over a nontrivial finite context has reported margin at most 1/context."
+    formal_statement: "forall {turnRatio margin : Real} {context witnessGap : Nat}, 1 < context -> Circle.Applications.ropeTurnRatioExactWeakestGapMargin turnRatio margin context witnessGap -> margin <= ((1 : Real) / context)"
+    dictionary_dependencies: ["COMMON-0076", "COMMON-0077", "COMMON-0080", "COMMON-0082", "COMMON-0087", "COMMON-0088", "COMMON-0089"]
+    paper_refs: ["papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_rope_certifier.py::test_real_phase_precursor_theorem_inventory_includes_dirichlet_guardrail
+    blocker: ""
   - id: AIT-T0001
     status: lean_proved
     lean_name: Circle.Applications.attentionReach_eq_div_gcd

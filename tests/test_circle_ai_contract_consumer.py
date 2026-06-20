@@ -797,6 +797,7 @@ def test_consumer_exposes_rope_planner_recommendations() -> None:
         "AIRA-T0238",
         "AIRA-T0239",
         "AIRA-T0240",
+        "AIRA-T0241",
         "AIRA-T0230",
         "AIRA-T0231",
     ]
@@ -850,6 +851,7 @@ def test_consumer_exposes_top_level_planner_recommendation_index() -> None:
         "d19_proved_first_channel_bank_tolerance_rule",
         "real_phase_dirichlet_witness_guardrail",
         "real_phase_margin_ceiling_guardrail",
+        "real_phase_exact_weakest_margin_ceiling_guardrail",
     ]
     assert "AIRA-T0216" in rope_frontier["theorem_ids"]
     assert "AIRA-T0234" in rope_frontier["theorem_ids"]
@@ -859,6 +861,7 @@ def test_consumer_exposes_top_level_planner_recommendation_index() -> None:
     assert "AIRA-T0238" in rope_frontier["theorem_ids"]
     assert "AIRA-T0239" in rope_frontier["theorem_ids"]
     assert "AIRA-T0240" in rope_frontier["theorem_ids"]
+    assert "AIRA-T0241" in rope_frontier["theorem_ids"]
     assert "docs/ROPE_CERTIFIER_QUICKSTART.md" in rope_frontier["quickstart_docs"]
     assert "docs/ROPE_CERTIFIER_RESULTS_NOTE.md" in rope_frontier["quickstart_docs"]
     assert (

@@ -1,7 +1,7 @@
 {
   "contracts": [
     {
-      "expected_contract_fingerprint": "29a773e248190f980f329b3f1aa544a8f2cd0f4e440b11fc70dff0f26e86a467",
+      "expected_contract_fingerprint": "9d627a7b70cb2447dada8355a65a48bf2d90db0055664cc41127204ab4193918",
       "kind": "rope_position_distinguishability",
       "required_fields": [
         "preset",
@@ -28,7 +28,8 @@
         "d19_proved_first_channel_radian_bank_form",
         "d19_proved_first_channel_bank_tolerance_rule",
         "real_phase_dirichlet_witness_guardrail",
-        "real_phase_margin_ceiling_guardrail"
+        "real_phase_margin_ceiling_guardrail",
+        "real_phase_exact_weakest_margin_ceiling_guardrail"
       ],
       "required_recommendation_action_parameter_paths": {
         "ROPE-AUDIT-EXACT-INTEGER-PHASE-BANK": [
@@ -95,7 +96,8 @@
           "d19_proved_first_channel_radian_bank_form",
           "d19_proved_first_channel_bank_tolerance_rule",
           "real_phase_dirichlet_witness_guardrail",
-          "real_phase_margin_ceiling_guardrail"
+          "real_phase_margin_ceiling_guardrail",
+          "real_phase_exact_weakest_margin_ceiling_guardrail"
         ]
       },
       "required_recommendation_ids": [
@@ -122,7 +124,8 @@
           "AIRA-T0237",
           "AIRA-T0238",
           "AIRA-T0239",
-          "AIRA-T0240"
+          "AIRA-T0240",
+          "AIRA-T0241"
         ]
       },
       "required_theorem_ids": [
@@ -138,7 +141,8 @@
         "AIRA-T0237",
         "AIRA-T0238",
         "AIRA-T0239",
-        "AIRA-T0240"
+        "AIRA-T0240",
+        "AIRA-T0241"
       ]
     },
     {
@@ -373,7 +377,7 @@
       ]
     }
   ],
-  "expected_pack_fingerprint": "448c01e271080dcebed337ace4ad251b156b51231e0835d24a93c28e2baf44e1",
+  "expected_pack_fingerprint": "8c52b35599a228ec7e87e335e0012495cecb3f7da9cce505841fe11cb6c1a217",
   "policy_id": "circle_ai_flagship_contracts_acceptance_v0",
   "policy_name": "Circle AI flagship contracts acceptance policy",
   "schema_id": "circle_calculus.ai_contract_acceptance_policy.v0"

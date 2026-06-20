@@ -203,13 +203,23 @@ def test_real_phase_nat_turn_error_matches_endpoint_precursor_shape() -> None:
     assert "AIRA-T0238" in ROPE_REAL_PHASE_PRECURSOR_THEOREMS
     assert "AIRA-T0239" in ROPE_REAL_PHASE_PRECURSOR_THEOREMS
     assert "AIRA-T0240" in ROPE_REAL_PHASE_PRECURSOR_THEOREMS
+    assert "AIRA-T0241" in ROPE_REAL_PHASE_PRECURSOR_THEOREMS
 
 
 def test_real_phase_precursor_theorem_inventory_includes_dirichlet_guardrail() -> None:
     assert "AIRA-T0239" in ROPE_REAL_PHASE_PRECURSOR_THEOREMS
     assert "AIRA-T0240" in ROPE_REAL_PHASE_PRECURSOR_THEOREMS
+    assert "AIRA-T0241" in ROPE_REAL_PHASE_PRECURSOR_THEOREMS
     assert (
         "Circle.Applications.exists_ropeTurnRatioError_le_inv_context"
+        in ROPE_REAL_PHASE_PRECURSOR_LEAN_DECLARATIONS
+    )
+    assert (
+        "Circle.Applications.not_ropeTurnRatioFiniteMargin_of_inv_context_lt_margin"
+        in ROPE_REAL_PHASE_PRECURSOR_LEAN_DECLARATIONS
+    )
+    assert (
+        "Circle.Applications.ropeTurnRatioExactWeakestGapMargin_le_inv_context"
         in ROPE_REAL_PHASE_PRECURSOR_LEAN_DECLARATIONS
     )
 

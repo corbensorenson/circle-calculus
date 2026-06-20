@@ -167,6 +167,15 @@ def main() -> int:
         action="store_true",
         help="Also benchmark persistent circle-prime next-server requests.",
     )
+    parser.add_argument(
+        "--server-only",
+        action="store_true",
+        help=(
+            "Benchmark only persistent Circle next-server requests against the "
+            "persistent libprimesieve helper. This is the low-overhead lane for "
+            "next-prime throughput checks."
+        ),
+    )
     parser.add_argument("--output", type=Path)
     parser.add_argument("--sample-output", type=Path)
     parser.add_argument("--metadata-output", type=Path)
@@ -192,8 +201,16 @@ def main() -> int:
 
     starts = parse_starts(args.starts)
     started_at_utc = utc_now()
+    if args.server_only:
+        args.include_circle_server = True
+        args.include_primesieve_library_server = True
+
     primesieve = shutil.which("primesieve")
-    include_primecount = args.include_primecount or "primecount" in args.require_tool
+    include_primecount = (
+        False
+        if args.server_only
+        else args.include_primecount or "primecount" in args.require_tool
+    )
     primecount = shutil.which("primecount") if include_primecount else None
     include_primesieve_library_server = (
         args.include_primesieve_library_server
@@ -277,6 +294,8 @@ def main() -> int:
             external_threads=args.external_threads,
             rounds=args.rounds,
             include_circle_server=args.include_circle_server,
+            include_circle_cli=not args.server_only,
+            include_primesieve_cli=not args.server_only,
             primecount_max_start=args.primecount_max_start,
             primesieve_library_max_start=args.primesieve_library_max_start,
         )
@@ -403,13 +422,17 @@ def measure_start_interleaved(
     external_threads: int,
     rounds: int,
     include_circle_server: bool = False,
+    include_circle_cli: bool = True,
+    include_primesieve_cli: bool = True,
     primecount_max_start: int = 1_000_000_000_000,
     primesieve_library_max_start: int = 2**64 - 1,
 ) -> tuple[list[NextBenchRow], list[NextBenchSample]]:
-    measurements = [circle_next_measurement(circle_prime, start, batch_size)]
+    measurements = []
+    if include_circle_cli:
+        measurements.append(circle_next_measurement(circle_prime, start, batch_size))
     if include_circle_server:
         measurements.append(circle_next_server_measurement(circle_prime, start, batch_size))
-    if primesieve is not None:
+    if primesieve is not None and include_primesieve_cli:
         measurements.append(
             primesieve_next_measurement(primesieve, start, batch_size, external_threads)
         )
@@ -508,7 +531,7 @@ class NextServerClient:
             return []
         assert self.process.stdin is not None
         assert self.process.stdout is not None
-        self.process.stdin.write(f"{start}\n" * count)
+        self.process.stdin.write(next_server_request_line(start, count))
         self.process.stdin.flush()
         results = []
         for _ in range(count):
@@ -674,7 +697,7 @@ class PrimeLineServerClient:
             return []
         assert self.process.stdin is not None
         assert self.process.stdout is not None
-        self.process.stdin.write(f"{start}\n" * count)
+        self.process.stdin.write(next_server_request_line(start, count))
         self.process.stdin.flush()
         results = []
         for _ in range(count):
@@ -707,6 +730,10 @@ class PrimeLineServerClient:
             return self.process.stderr.read()
         except OSError:
             return ""
+
+
+def next_server_request_line(start: int, count: int) -> str:
+    return f"{start}\n" if count == 1 else f"{start} {count}\n"
 
 
 def primesieve_generate_server_measurement(
@@ -993,9 +1020,11 @@ def build_run_metadata(
         "row_count": row_count,
         "rounds": args.rounds,
         "batch_size": args.batch_size,
+        "server_only": bool(getattr(args, "server_only", False)),
         "include_circle_server": bool(getattr(args, "include_circle_server", False)),
         "include_primecount": bool(
-            getattr(args, "include_primecount", False) or "primecount" in args.require_tool
+            not getattr(args, "server_only", False)
+            and (getattr(args, "include_primecount", False) or "primecount" in args.require_tool)
         ),
         "primecount_max_start": int(getattr(args, "primecount_max_start", 0)),
         "include_primesieve_library_server": bool(

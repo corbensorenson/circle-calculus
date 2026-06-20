@@ -95,6 +95,7 @@ class Measurement:
     threads: int
     requested_threads: int
     run_once: Callable[[], int]
+    run_batch: Callable[[int], int] | None = None
     count_mode: str = ""
     close: Callable[[], None] | None = None
 
@@ -716,6 +717,29 @@ class CountServerClient:
         *,
         use_request_defaults: bool = False,
     ) -> int:
+        return self.count_many(
+            low,
+            high,
+            segment_size,
+            threads,
+            count_mode,
+            1,
+            use_request_defaults=use_request_defaults,
+        )[-1]
+
+    def count_many(
+        self,
+        low: int,
+        high: int,
+        segment_size: int,
+        threads: int,
+        count_mode: str,
+        repetitions: int,
+        *,
+        use_request_defaults: bool = False,
+    ) -> list[int]:
+        if repetitions <= 0:
+            return []
         assert self.process.stdin is not None
         assert self.process.stdout is not None
         request = count_server_request(
@@ -726,13 +750,18 @@ class CountServerClient:
             count_mode,
             use_request_defaults=use_request_defaults,
         )
+        if repetitions != 1:
+            request = f"repeat {repetitions} {request}"
         self.process.stdin.write(request)
         self.process.stdin.flush()
-        response = self.process.stdout.readline()
-        if response == "":
-            stderr = self._read_stderr()
-            raise RuntimeError(f"count-server exited without a response: {stderr}")
-        return parse_integer_output(response)
+        counts = []
+        for _ in range(repetitions):
+            response = self.process.stdout.readline()
+            if response == "":
+                stderr = self._read_stderr()
+                raise RuntimeError(f"count-server exited without a response: {stderr}")
+            counts.append(parse_integer_output(response))
+        return counts
 
     def close(self) -> None:
         if self.process.poll() is not None:
@@ -811,6 +840,24 @@ def circle_prime_server_measurement(
             )
         return count
 
+    def run_batch(batch_size: int) -> int:
+        counts = client.count_many(
+            low,
+            high,
+            actual_segment_size,
+            threads,
+            resolved_count_mode,
+            batch_size,
+            use_request_defaults=use_request_defaults,
+        )
+        for count in counts:
+            if count != metadata_count:
+                raise AssertionError(
+                    f"Circle count-server disagreed with JSON metadata for [{low},{high}): "
+                    f"metadata {metadata_count}, server {count}"
+                )
+        return counts[-1] if counts else metadata_count
+
     name = circle_server_measurement_name(count_mode, actual_threads)
     return Measurement(
         name=name,
@@ -820,6 +867,7 @@ def circle_prime_server_measurement(
         threads=actual_threads,
         requested_threads=threads,
         run_once=run_once,
+        run_batch=run_batch,
         count_mode=resolved_count_mode,
         close=client.close,
     )
@@ -1032,15 +1080,26 @@ class PrimeRangeServerClient:
             raise RuntimeError(f"failed to open {self.label} pipes")
 
     def count(self, low: int, high: int, threads: int) -> int:
+        return self.count_many(low, high, threads, 1)[-1]
+
+    def count_many(self, low: int, high: int, threads: int, repetitions: int) -> list[int]:
+        if repetitions <= 0:
+            return []
         assert self.process.stdin is not None
         assert self.process.stdout is not None
-        self.process.stdin.write(f"{low} {high} {threads}\n")
+        if repetitions == 1:
+            self.process.stdin.write(f"{low} {high} {threads}\n")
+        else:
+            self.process.stdin.write(f"repeat {repetitions} {low} {high} {threads}\n")
         self.process.stdin.flush()
-        response = self.process.stdout.readline()
-        if response == "":
-            stderr = self._read_stderr()
-            raise RuntimeError(f"{self.label} exited without a response: {stderr}")
-        return parse_integer_output(response)
+        counts = []
+        for _ in range(repetitions):
+            response = self.process.stdout.readline()
+            if response == "":
+                stderr = self._read_stderr()
+                raise RuntimeError(f"{self.label} exited without a response: {stderr}")
+            counts.append(parse_integer_output(response))
+        return counts
 
     def close(self) -> None:
         if self.process.poll() is not None:
@@ -1119,6 +1178,19 @@ def primesieve_count_server_measurement(
             )
         return count
 
+    def run_batch(batch_size: int) -> int:
+        nonlocal expected_count
+        counts = client.count_many(low, high, threads, batch_size)
+        for count in counts:
+            if expected_count is None:
+                expected_count = count
+            elif count != expected_count:
+                raise AssertionError(
+                    "libprimesieve count result changed for "
+                    f"[{low},{high}): expected {expected_count}, got {count}"
+                )
+        return counts[-1] if counts else expected_count or 0
+
     return Measurement(
         name="external_primesieve_count_server",
         low=low,
@@ -1127,6 +1199,7 @@ def primesieve_count_server_measurement(
         threads=threads,
         requested_threads=threads,
         run_once=run_once,
+        run_batch=run_batch,
         close=client.close,
     )
 
@@ -1290,6 +1363,8 @@ def measure_interleaved(
 
 
 def run_batch(measurement: Measurement, batch_size: int) -> int:
+    if measurement.run_batch is not None:
+        return measurement.run_batch(batch_size)
     result = measurement.run_once()
     for _ in range(1, batch_size):
         repeated = measurement.run_once()

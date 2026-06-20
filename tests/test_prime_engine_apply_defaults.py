@@ -26,15 +26,20 @@ def calibration_row(
 
 def defaults_fixture() -> dict[str, object]:
     return {
+        "parallel_edge_high_offset_count_mode": "segmented",
+        "parallel_edge_high_offset_min_base_limit": 1_000_000,
         "parallel_tiny_prefix_count_mode": "segmented",
         "parallel_tiny_prefix_segment_size": 262_144,
         "parallel_small_prefix_count_mode": "segmented",
         "parallel_small_prefix_segment_size": 65_536,
         "parallel_medium_prefix_count_mode": "segmented",
         "parallel_medium_prefix_segment_size": 131_072,
-        "parallel_lower_high_offset_base_limit": 5_000_000,
+        "parallel_lower_high_offset_base_limit": 3_000_000,
         "parallel_lower_high_offset_count_mode": "presieve13",
         "parallel_lower_high_offset_min_base_limit": 1_200_000,
+        "parallel_upper_high_offset_count_mode": "segmented",
+        "parallel_upper_high_offset_min_base_limit": 5_000_000,
+        "parallel_upper_high_offset_segment_size": 1_310_720,
         "parallel_very_high_offset_count_mode": "segmented",
         "parallel_very_high_offset_segment_size": 3_145_728,
     }
@@ -155,7 +160,7 @@ def test_build_default_updates_skips_unconfirmed_high_offset_recommendation() ->
     assert skipped == [
         "refusing unconfirmed external recommendation for "
         "parallel_very_high_offset_segment_size/"
-        "parallel_very_high_offset_count_mode: unconfirmed"
+        "parallel_edge_high_offset_count_mode: unconfirmed"
     ]
 
 
@@ -181,7 +186,7 @@ def test_build_default_updates_skips_unconfirmed_high_offset_tight_recommendatio
     assert skipped == [
         "refusing unconfirmed external recommendation for "
         "parallel_very_high_offset_segment_size/"
-        "parallel_very_high_offset_count_mode: unconfirmed"
+        "parallel_edge_high_offset_count_mode: unconfirmed"
     ]
 
 
@@ -205,7 +210,7 @@ def test_build_default_updates_applies_confirmed_high_offset_confirmation() -> N
 
     assert skipped == []
     assert updated["parallel_very_high_offset_segment_size"] == 4_194_304
-    assert updated["parallel_very_high_offset_count_mode"] == "presieve17"
+    assert updated["parallel_edge_high_offset_count_mode"] == "presieve17"
     assert changes == [
         {
             "key": "parallel_very_high_offset_segment_size",
@@ -217,11 +222,114 @@ def test_build_default_updates_applies_confirmed_high_offset_confirmation() -> N
             "stability": "stable",
         },
         {
-            "key": "parallel_very_high_offset_count_mode",
+            "key": "parallel_edge_high_offset_count_mode",
             "old": "segmented",
             "new": "presieve17",
             "low": 1_000_000_000_000,
             "high": 1_000_010_000_000,
+            "source": "external_high_offset_confirmation",
+            "stability": "stable",
+        },
+    ]
+
+
+def test_build_default_updates_applies_confirmed_middle_upper_high_offset_confirmation() -> None:
+    defaults = defaults_fixture()
+
+    row = calibration_row(
+        low=10_000_000_000_000,
+        high=10_000_010_000_000,
+        source="external_high_offset_confirmation",
+        stability="stable",
+        selected_segment_size=3_145_728,
+        selected_count_mode="presieve13",
+    )
+    row["selected_effective_sample_stability"] = "stable"
+    row["selected_mode_confirmation_status"] = "confirmed"
+    updated, changes, skipped = build_default_updates(
+        {"recommendations": [row]},
+        defaults,
+    )
+
+    assert skipped == []
+    assert updated["parallel_very_high_offset_segment_size"] == 3_145_728
+    assert updated["parallel_very_high_offset_count_mode"] == "presieve13"
+    assert changes == [
+        {
+            "key": "parallel_very_high_offset_count_mode",
+            "old": "segmented",
+            "new": "presieve13",
+            "low": 10_000_000_000_000,
+            "high": 10_000_010_000_000,
+            "source": "external_high_offset_confirmation",
+            "stability": "stable",
+        },
+    ]
+
+
+def test_build_default_updates_applies_confirmed_lower_middle_high_offset_confirmation() -> None:
+    defaults = defaults_fixture()
+    defaults["parallel_lower_high_offset_count_mode"] = "segmented"
+
+    row = calibration_row(
+        low=1_500_000_000_000,
+        high=1_500_010_000_000,
+        source="external_high_offset_confirmation",
+        stability="stable",
+        selected_segment_size=3_145_728,
+        selected_count_mode="presieve13",
+    )
+    row["selected_effective_sample_stability"] = "stable"
+    row["selected_mode_confirmation_status"] = "confirmed"
+    updated, changes, skipped = build_default_updates(
+        {"recommendations": [row]},
+        defaults,
+    )
+
+    assert skipped == []
+    assert updated["parallel_very_high_offset_segment_size"] == 3_145_728
+    assert updated["parallel_lower_high_offset_count_mode"] == "presieve13"
+    assert changes == [
+        {
+            "key": "parallel_lower_high_offset_count_mode",
+            "old": "segmented",
+            "new": "presieve13",
+            "low": 1_500_000_000_000,
+            "high": 1_500_010_000_000,
+            "source": "external_high_offset_confirmation",
+            "stability": "stable",
+        },
+    ]
+
+
+def test_build_default_updates_applies_confirmed_upper_high_offset_confirmation() -> None:
+    defaults = defaults_fixture()
+
+    row = calibration_row(
+        low=100_000_000_000_000,
+        high=100_000_010_000_000,
+        source="external_high_offset_confirmation",
+        stability="stable",
+        selected_segment_size=1_310_720,
+        selected_count_mode="presieve17",
+    )
+    row["selected_effective_sample_stability"] = "stable"
+    row["selected_mode_confirmation_status"] = "confirmed"
+    updated, changes, skipped = build_default_updates(
+        {"recommendations": [row]},
+        defaults,
+    )
+
+    assert skipped == []
+    assert updated["parallel_upper_high_offset_segment_size"] == 1_310_720
+    assert updated["parallel_upper_high_offset_count_mode"] == "presieve17"
+    assert changes == [
+        {
+            "key": "parallel_upper_high_offset_count_mode",
+            "old": "segmented",
+            "new": "presieve17",
+            "low": 100_000_000_000_000,
+            "high": 100_000_010_000_000,
             "source": "external_high_offset_confirmation",
             "stability": "stable",
         },

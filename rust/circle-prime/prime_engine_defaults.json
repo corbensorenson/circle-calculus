@@ -1,13 +1,18 @@
 {
-  "parallel_lower_high_offset_base_limit": 5000000,
+  "parallel_edge_high_offset_count_mode": "presieve13",
+  "parallel_edge_high_offset_min_base_limit": 1000000,
+  "parallel_lower_high_offset_base_limit": 3000000,
   "parallel_lower_high_offset_count_mode": "presieve13",
   "parallel_lower_high_offset_min_base_limit": 1200000,
+  "parallel_upper_high_offset_count_mode": "segmented",
+  "parallel_upper_high_offset_min_base_limit": 5000000,
+  "parallel_upper_high_offset_segment_size": 1310720,
   "parallel_medium_prefix_count_mode": "prefix-pi",
   "parallel_medium_prefix_segment_size": 196608,
   "parallel_small_prefix_count_mode": "prefix-pi",
   "parallel_small_prefix_segment_size": 65536,
   "parallel_tiny_prefix_count_mode": "prefix-pi",
   "parallel_tiny_prefix_segment_size": 262144,
-  "parallel_very_high_offset_count_mode": "segmented",
+  "parallel_very_high_offset_count_mode": "presieve13",
   "parallel_very_high_offset_segment_size": 1310720
 }

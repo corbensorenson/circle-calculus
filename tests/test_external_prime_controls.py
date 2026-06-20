@@ -783,6 +783,16 @@ def test_primesieve_count_server_measurement_uses_half_open_range(monkeypatch) -
             requests.append((low, high, threads))
             return 168
 
+        def count_many(
+            self,
+            low: int,
+            high: int,
+            threads: int,
+            repetitions: int,
+        ) -> list[int]:
+            requests.extend((low, high, threads) for _ in range(repetitions))
+            return [168] * repetitions
+
         def close(self) -> None:
             nonlocal closed
             closed = True
@@ -804,6 +814,15 @@ def test_primesieve_count_server_measurement_uses_half_open_range(monkeypatch) -
     assert measurement.run_once() == 168
     assert measurement.run_once() == 168
     assert requests == [(10, 1000, 8), (10, 1000, 8)]
+    assert measurement.run_batch is not None
+    assert measurement.run_batch(3) == 168
+    assert requests == [
+        (10, 1000, 8),
+        (10, 1000, 8),
+        (10, 1000, 8),
+        (10, 1000, 8),
+        (10, 1000, 8),
+    ]
     assert measurement.close is not None
     measurement.close()
     assert closed is True

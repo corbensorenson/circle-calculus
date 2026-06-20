@@ -50,6 +50,24 @@ class ConfirmedWinner:
     source_labels: list[str]
 
 
+@dataclass(frozen=True)
+class ConfirmedIdentity:
+    low: int
+    high: int
+    baseline: str
+    count_mode: str
+    segment_size: int
+    threads: int
+    requested_threads: int
+    confirmation_count: int
+    observed_count: int
+    stable_observed_count: int
+    status: str
+    median_ms_values: list[float]
+    median_speedup_values: list[float]
+    source_labels: list[str]
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(
         description=(
@@ -331,6 +349,8 @@ def read_recommendations_by_source(
             baseline_priority,
         ):
             row["source_path"] = str(csv_path)
+            for candidate in row.get("candidates", []):
+                candidate.setdefault("source_path", str(csv_path))
             recommendations.append(row)
     return recommendations
 
@@ -350,6 +370,7 @@ def build_confirmation(
         grouped.setdefault((int(row["low"]), int(row["high"]), str(row["baseline"])), []).append(row)
 
     winners = []
+    identity_summaries = []
     for key, rows in sorted(grouped.items()):
         winners.append(
             asdict(
@@ -359,6 +380,15 @@ def build_confirmation(
                     min_confirmations=min_confirmations,
                     require_stable_samples=require_stable_samples,
                 )
+            )
+        )
+        identity_summaries.extend(
+            asdict(row)
+            for row in confirm_identities(
+                key,
+                rows,
+                min_confirmations=min_confirmations,
+                require_stable_samples=require_stable_samples,
             )
         )
     confirmed_count = sum(1 for row in winners if row["status"] == "confirmed")
@@ -373,6 +403,7 @@ def build_confirmation(
         "confirmed_count": confirmed_count,
         "unconfirmed_count": len(winners) - confirmed_count,
         "winners": winners,
+        "identity_summaries": identity_summaries,
     }
 
 
@@ -428,6 +459,59 @@ def winner_key(row: dict[str, Any]) -> tuple[str, int, int, int]:
         int(row["threads"]),
         int(row["requested_threads"]),
     )
+
+
+def confirm_identities(
+    key: tuple[int, int, str],
+    rows: list[dict[str, Any]],
+    *,
+    min_confirmations: int,
+    require_stable_samples: bool,
+) -> list[ConfirmedIdentity]:
+    low, high, baseline = key
+    grouped: dict[tuple[str, int, int, int], list[dict[str, Any]]] = {}
+    for row in rows:
+        candidates = row.get("candidates") or [row]
+        for candidate in candidates:
+            grouped.setdefault(winner_key(candidate), []).append(candidate)
+
+    identities = []
+    for identity, identity_rows in sorted(grouped.items()):
+        eligible = [
+            row
+            for row in identity_rows
+            if row_is_confirmation_eligible(
+                row,
+                require_stable_samples=require_stable_samples,
+            )
+        ]
+        confirmation_count = len(eligible)
+        mode, segment_size, threads, requested_threads = identity
+        status = "confirmed" if confirmation_count >= min_confirmations else "unconfirmed"
+        identities.append(
+            ConfirmedIdentity(
+                low=low,
+                high=high,
+                baseline=baseline,
+                count_mode=mode,
+                segment_size=segment_size,
+                threads=threads,
+                requested_threads=requested_threads,
+                confirmation_count=confirmation_count,
+                observed_count=len(identity_rows),
+                stable_observed_count=sum(
+                    1 for row in identity_rows if row.get("sample_stability") == "stable"
+                ),
+                status=status,
+                median_ms_values=[float(row["median_ms"]) for row in identity_rows],
+                median_speedup_values=median_speedup_values(identity_rows),
+                source_labels=[
+                    str(row.get("source_path") or row.get("source"))
+                    for row in identity_rows
+                ],
+            )
+        )
+    return identities
 
 
 def row_is_confirmation_eligible(
@@ -504,6 +588,29 @@ def render_markdown(confirmation: dict[str, Any]) -> str:
                 f"{row['confirmation_count']}/{confirmation['min_confirmations']} | "
                 f"{row['stable_observed_count']}/{row['observed_count']} | "
                 f"{medians} | {speedups} | `{row['status']}` |"
+            )
+        lines.append("")
+    if confirmation.get("identity_summaries"):
+        lines.extend(
+            [
+                "## Identity Evidence",
+                "",
+                "| Range | Baseline | Mode | Segment | Threads | Confirmations | Stable Runs | Median Speedups | Status |",
+                "| --- | --- | --- | ---: | ---: | ---: | ---: | ---: | --- |",
+            ]
+        )
+        for row in confirmation["identity_summaries"]:
+            speedups = ", ".join(
+                f"{value:.3f}" for value in row.get("median_speedup_values", [])
+            )
+            speedups = speedups or "-"
+            lines.append(
+                f"| [{row['low']}, {row['high']}) | `{row['baseline']}` | "
+                f"`{row['count_mode']}` | {row['segment_size']} | "
+                f"{row['threads']}/{row['requested_threads']} | "
+                f"{row['confirmation_count']}/{confirmation['min_confirmations']} | "
+                f"{row['stable_observed_count']}/{row['observed_count']} | "
+                f"{speedups} | `{row['status']}` |"
             )
         lines.append("")
     return "\n".join(lines).rstrip() + "\n"

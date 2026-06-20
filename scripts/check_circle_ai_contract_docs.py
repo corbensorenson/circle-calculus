@@ -93,6 +93,7 @@ STRICT_ROPE_RECEIPT_TOKENS = (
     "--field d19_undecided_probe_margin_in_open_gap",
     "--field real_phase_dirichlet_witness_guardrail",
     "--field real_phase_margin_ceiling_guardrail",
+    "--field real_phase_exact_weakest_margin_ceiling_guardrail",
     "--require-theorem AIRA-T0171",
     "--require-theorem AIRA-T0172",
     "--require-theorem AIRA-T0234",
@@ -102,6 +103,7 @@ STRICT_ROPE_RECEIPT_TOKENS = (
     "--require-theorem AIRA-T0238",
     "--require-theorem AIRA-T0239",
     "--require-theorem AIRA-T0240",
+    "--require-theorem AIRA-T0241",
     "--require-recommendation ROPE-USE-D19-MARGIN-FRONTIER",
     (
         "--require-recommendation-evidence-field "
@@ -126,6 +128,10 @@ STRICT_ROPE_RECEIPT_TOKENS = (
     (
         "--require-recommendation-evidence-field "
         "ROPE-USE-D19-MARGIN-FRONTIER=real_phase_margin_ceiling_guardrail"
+    ),
+    (
+        "--require-recommendation-evidence-field "
+        "ROPE-USE-D19-MARGIN-FRONTIER=real_phase_exact_weakest_margin_ceiling_guardrail"
     ),
     (
         "--require-recommendation-theorem "
@@ -154,6 +160,10 @@ STRICT_ROPE_RECEIPT_TOKENS = (
     (
         "--require-recommendation-theorem "
         "ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0240"
+    ),
+    (
+        "--require-recommendation-theorem "
+        "ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0241"
     ),
     (
         "--require-recommendation-action-parameter "

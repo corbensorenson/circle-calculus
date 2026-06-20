@@ -45,12 +45,23 @@ def recommendation(
 
 
 def test_build_confirmation_requires_repeated_stable_winner() -> None:
+    run1 = recommendation(source="run1", median_ms=2.9)
+    run1["candidates"] = [
+        dict(run1),
+        recommendation(source="run1", mode="segmented", median_ms=3.2),
+    ]
+    run2 = recommendation(source="run2", median_ms=3.0)
+    run2["candidates"] = [
+        dict(run2),
+        recommendation(source="run2", mode="segmented", median_ms=3.1),
+    ]
+    run3 = recommendation(source="run3", mode="segmented", median_ms=3.2)
+    run3["candidates"] = [
+        recommendation(source="run3", median_ms=3.3),
+        dict(run3),
+    ]
     confirmation = build_confirmation(
-        [
-            recommendation(source="run1", median_ms=2.9),
-            recommendation(source="run2", median_ms=3.0),
-            recommendation(source="run3", mode="segmented", median_ms=3.2),
-        ],
+        [run1, run2, run3],
         baseline_priority=["external_primesieve_count"],
         min_confirmations=2,
         require_stable_samples=True,
@@ -67,9 +78,23 @@ def test_build_confirmation_requires_repeated_stable_winner() -> None:
     assert row["confirmation_count"] == 2
     assert row["stable_observed_count"] == 3
     assert row["median_speedup_values"] == [1.1, 1.1]
+    identities = confirmation["identity_summaries"]
+    dynamic = [
+        row for row in identities if row["count_mode"] == "dynamic"
+    ][0]
+    segmented = [
+        row for row in identities if row["count_mode"] == "segmented"
+    ][0]
+    assert dynamic["status"] == "confirmed"
+    assert dynamic["confirmation_count"] == 3
+    assert dynamic["observed_count"] == 3
+    assert segmented["status"] == "confirmed"
+    assert segmented["confirmation_count"] == 3
+    assert segmented["observed_count"] == 3
     markdown = render_markdown(confirmation)
     assert "External Mode Confirmation" in markdown
     assert "Median Speedups" in markdown
+    assert "Identity Evidence" in markdown
     assert "Fresh-run count requests per timed sample: `3`" in markdown
 
 

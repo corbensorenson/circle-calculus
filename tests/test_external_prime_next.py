@@ -12,6 +12,7 @@ from scripts.benchmark_prime_external_next import (
     build_run_metadata,
     measure_start_interleaved,
     measure_interleaved_next,
+    next_server_request_line,
     parse_starts,
     primecount_nth_prime_command,
     primecount_pi_command,
@@ -74,10 +75,14 @@ def test_prime_line_server_client_batches_repeated_requests() -> None:
             (
                 "import sys\n"
                 "for line in sys.stdin:\n"
-                "    request = line.strip()\n"
+                "    parts = line.strip().split()\n"
+                "    request = parts[0] if parts else ''\n"
                 "    if request in {'quit', 'exit'}:\n"
                 "        break\n"
-                "    print(int(request) + 1, flush=True)\n"
+                "    count = int(parts[1]) if len(parts) > 1 else 1\n"
+                "    for _ in range(count):\n"
+                "        print(int(request) + 1)\n"
+                "    sys.stdout.flush()\n"
             ),
         ],
         "test line server",
@@ -88,6 +93,11 @@ def test_prime_line_server_client_batches_repeated_requests() -> None:
         assert client.next_primes(5, 0) == []
     finally:
         client.close()
+
+
+def test_next_server_request_line_uses_batch_protocol() -> None:
+    assert next_server_request_line(100, 1) == "100\n"
+    assert next_server_request_line(100, 3) == "100 3\n"
 
 
 def test_next_interleaved_measurement_rotates_and_summarizes_samples() -> None:
@@ -276,6 +286,73 @@ def test_measure_start_interleaved_can_use_primesieve_library_server(monkeypatch
     assert len(samples) == 4
 
 
+def test_measure_start_interleaved_can_skip_cold_cli_rows_for_server_lane(
+    monkeypatch,
+) -> None:
+    def measurement(name: str, result: int) -> NextMeasurement:
+        return NextMeasurement(
+            name=name,
+            start=100,
+            batch_size=2,
+            threads=1,
+            requested_threads=1,
+            candidate_count=1 if name.startswith("circle_prime") else 0,
+            run_once=lambda: result,
+        )
+
+    monkeypatch.setattr(
+        next_bench,
+        "circle_next_measurement",
+        lambda *_: (_ for _ in ()).throw(
+            AssertionError("cold Circle next-prime row should be skipped")
+        ),
+    )
+    monkeypatch.setattr(
+        next_bench,
+        "primesieve_next_measurement",
+        lambda *_: (_ for _ in ()).throw(
+            AssertionError("cold primesieve next-prime row should be skipped")
+        ),
+    )
+    monkeypatch.setattr(
+        next_bench,
+        "circle_next_server_measurement",
+        lambda circle_prime, start, batch_size: measurement(
+            "circle_prime_server_next_prime", 101
+        ),
+    )
+    monkeypatch.setattr(
+        next_bench,
+        "primesieve_generate_server_measurement",
+        lambda server, start, batch_size: measurement(
+            "external_primesieve_generate_next_server", 101
+        ),
+    )
+
+    rows, samples = measure_start_interleaved(
+        circle_prime=Path("circle-prime"),
+        primesieve="primesieve",
+        primecount=None,
+        primesieve_library_server=Path("primesieve-next-server"),
+        start=100,
+        batch_size=2,
+        external_threads=8,
+        rounds=2,
+        include_circle_server=True,
+        include_circle_cli=False,
+        include_primesieve_cli=False,
+    )
+
+    assert [row.name for row in rows if row.kind == "timing"] == [
+        "circle_prime_server_next_prime",
+        "external_primesieve_generate_next_server",
+    ]
+    assert [row.baseline for row in rows if row.kind == "speedup"] == [
+        "external_primesieve_generate_next_server"
+    ]
+    assert len(samples) == 4
+
+
 def test_next_metadata_records_commands_and_tools(monkeypatch) -> None:
     monkeypatch.setattr(
         next_bench,
@@ -303,6 +380,7 @@ def test_next_metadata_records_commands_and_tools(monkeypatch) -> None:
         external_threads=8,
         require_tool=["primesieve", "primecount", "primesieve-library"],
         include_circle_server=True,
+        server_only=False,
         include_primecount=True,
         include_primesieve_library_server=True,
         primecount_max_start=1_000_000_000_000,
@@ -323,6 +401,7 @@ def test_next_metadata_records_commands_and_tools(monkeypatch) -> None:
 
     assert metadata["rounds"] == 5
     assert metadata["batch_size"] == 2
+    assert metadata["server_only"] is False
     assert metadata["include_circle_server"] is True
     assert metadata["include_primecount"] is True
     assert metadata["primecount_max_start"] == 1_000_000_000_000

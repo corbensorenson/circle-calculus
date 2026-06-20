@@ -281,6 +281,7 @@ def test_generic_contract_pack_is_standalone_with_compatibility_aliases() -> Non
         "--field d19_undecided_probe_margin_in_open_gap "
         "--field real_phase_dirichlet_witness_guardrail "
         "--field real_phase_margin_ceiling_guardrail "
+        "--field real_phase_exact_weakest_margin_ceiling_guardrail "
         "--include-field-metadata --include-recommendations"
         in pack["validation_commands"]
     )
@@ -298,11 +299,12 @@ def test_generic_contract_pack_is_standalone_with_compatibility_aliases() -> Non
         "--field d19_undecided_probe_margin_in_open_gap "
         "--field real_phase_dirichlet_witness_guardrail "
         "--field real_phase_margin_ceiling_guardrail "
+        "--field real_phase_exact_weakest_margin_ceiling_guardrail "
         "--require-theorem AIRA-T0171 --require-theorem AIRA-T0172 "
         "--require-theorem AIRA-T0234 --require-theorem AIRA-T0235 "
         "--require-theorem AIRA-T0236 --require-theorem AIRA-T0237 "
         "--require-theorem AIRA-T0238 --require-theorem AIRA-T0239 "
-        "--require-theorem AIRA-T0240 "
+        "--require-theorem AIRA-T0240 --require-theorem AIRA-T0241 "
         "--require-recommendation ROPE-USE-D19-MARGIN-FRONTIER "
         "--require-recommendation-evidence-field "
         "ROPE-USE-D19-MARGIN-FRONTIER=d19_proved_first_channel_bank_transfer "
@@ -317,6 +319,9 @@ def test_generic_contract_pack_is_standalone_with_compatibility_aliases() -> Non
         "ROPE-USE-D19-MARGIN-FRONTIER=real_phase_dirichlet_witness_guardrail "
         "--require-recommendation-evidence-field "
         "ROPE-USE-D19-MARGIN-FRONTIER=real_phase_margin_ceiling_guardrail "
+        "--require-recommendation-evidence-field "
+        "ROPE-USE-D19-MARGIN-FRONTIER="
+        "real_phase_exact_weakest_margin_ceiling_guardrail "
         "--require-recommendation-theorem "
         "ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0234 "
         "--require-recommendation-theorem "
@@ -326,6 +331,7 @@ def test_generic_contract_pack_is_standalone_with_compatibility_aliases() -> Non
         "--require-recommendation-theorem ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0238 "
         "--require-recommendation-theorem ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0239 "
         "--require-recommendation-theorem ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0240 "
+        "--require-recommendation-theorem ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0241 "
         "--require-recommendation-action-parameter "
         "ROPE-USE-D19-MARGIN-FRONTIER=proved_branch_bank_transfer "
         "--require-recommendation-action-parameter-path "
@@ -669,6 +675,7 @@ def test_generic_contract_pack_is_standalone_with_compatibility_aliases() -> Non
     assert rope_fields["d19_undecided_probe_margin_in_open_gap"] is True
     assert rope_fields["real_phase_dirichlet_witness_guardrail"] is True
     assert rope_fields["real_phase_margin_ceiling_guardrail"] is True
+    assert rope_fields["real_phase_exact_weakest_margin_ceiling_guardrail"] is True
     assert rope_fields["d19_undecided_margin_interval_lower_exclusive"] == (
         "1/328459"
     )
@@ -709,6 +716,7 @@ def test_generic_contract_pack_is_standalone_with_compatibility_aliases() -> Non
     assert "AIRA-T0238" in contracts["rope_position_distinguishability"]["theorem_ids"]
     assert "AIRA-T0239" in contracts["rope_position_distinguishability"]["theorem_ids"]
     assert "AIRA-T0240" in contracts["rope_position_distinguishability"]["theorem_ids"]
+    assert "AIRA-T0241" in contracts["rope_position_distinguishability"]["theorem_ids"]
     assert (
         "python scripts/circle_ai_contract_ready.py --kind "
         "rope_position_distinguishability --receipt --format json "
@@ -723,11 +731,12 @@ def test_generic_contract_pack_is_standalone_with_compatibility_aliases() -> Non
         "--field d19_undecided_probe_margin_in_open_gap "
         "--field real_phase_dirichlet_witness_guardrail "
         "--field real_phase_margin_ceiling_guardrail "
+        "--field real_phase_exact_weakest_margin_ceiling_guardrail "
         "--require-theorem AIRA-T0171 --require-theorem AIRA-T0172 "
         "--require-theorem AIRA-T0234 --require-theorem AIRA-T0235 "
         "--require-theorem AIRA-T0236 --require-theorem AIRA-T0237 "
         "--require-theorem AIRA-T0238 --require-theorem AIRA-T0239 "
-        "--require-theorem AIRA-T0240 "
+        "--require-theorem AIRA-T0240 --require-theorem AIRA-T0241 "
         "--require-recommendation ROPE-USE-D19-MARGIN-FRONTIER "
         "--require-recommendation-evidence-field "
         "ROPE-USE-D19-MARGIN-FRONTIER="
@@ -743,6 +752,9 @@ def test_generic_contract_pack_is_standalone_with_compatibility_aliases() -> Non
         "ROPE-USE-D19-MARGIN-FRONTIER=real_phase_dirichlet_witness_guardrail "
         "--require-recommendation-evidence-field "
         "ROPE-USE-D19-MARGIN-FRONTIER=real_phase_margin_ceiling_guardrail "
+        "--require-recommendation-evidence-field "
+        "ROPE-USE-D19-MARGIN-FRONTIER="
+        "real_phase_exact_weakest_margin_ceiling_guardrail "
         "--require-recommendation-theorem "
         "ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0234 "
         "--require-recommendation-theorem "
@@ -752,6 +764,7 @@ def test_generic_contract_pack_is_standalone_with_compatibility_aliases() -> Non
         "--require-recommendation-theorem ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0238 "
         "--require-recommendation-theorem ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0239 "
         "--require-recommendation-theorem ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0240 "
+        "--require-recommendation-theorem ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0241 "
         "--require-recommendation-action-parameter "
         "ROPE-USE-D19-MARGIN-FRONTIER=proved_branch_bank_transfer "
         "--require-recommendation-action-parameter-path "
@@ -801,6 +814,9 @@ def test_generic_contract_pack_is_standalone_with_compatibility_aliases() -> Non
         "evidence_fields"
     ]
     assert "real_phase_margin_ceiling_guardrail" in rope_recommendations[1][
+        "evidence_fields"
+    ]
+    assert "real_phase_exact_weakest_margin_ceiling_guardrail" in rope_recommendations[1][
         "evidence_fields"
     ]
     assert rope_recommendations[1]["request_context"] == 131072
@@ -903,6 +919,7 @@ def test_generic_contract_pack_is_standalone_with_compatibility_aliases() -> Non
         "AIRA-T0238",
         "AIRA-T0239",
         "AIRA-T0240",
+        "AIRA-T0241",
         "AIRA-T0230",
         "AIRA-T0231",
     ]
