@@ -17,10 +17,12 @@ if str(ROOT) not in sys.path:
 
 from circle_math.applications import (  # noqa: E402
     CIRCLE_AI_CONTRACT_RECEIPT_FILE_CHECK_SCHEMA_ID,
+    build_contract_receipt_file_check_json_schema,
     load_contract_pack,
     validate_contract_receipt_against_pack,
 )
 from circle_math.applications.circle_ai_contract_runner import (  # noqa: E402
+    RECEIPT_FILE_CHECK_SCHEMA_PATH,
     STATUS_VALUES,
 )
 
@@ -30,6 +32,7 @@ DEFAULT_PACK_PATH = ROOT / "site" / "data" / "generated" / "circle_ai_contract_p
 DEFAULT_RECEIPT_SCHEMA = (
     ROOT / "site" / "data" / "generated" / "circle_ai_contract_receipt.schema.json"
 )
+DEFAULT_REPORT_SCHEMA = ROOT / RECEIPT_FILE_CHECK_SCHEMA_PATH
 
 
 def _json_object(path: Path) -> dict[str, Any]:
@@ -49,6 +52,17 @@ def _display_path(path: Path) -> str:
 def _write_json(path: Path, payload: dict[str, Any]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n")
+
+
+def _validate_report_schema(report: dict[str, Any], schema_path: Path) -> None:
+    schema = _json_object(schema_path)
+    jsonschema.Draft202012Validator.check_schema(schema)
+    jsonschema.validate(report, schema)
+    generated_schema = build_contract_receipt_file_check_json_schema()
+    if schema != generated_schema:
+        raise jsonschema.SchemaError(
+            "receipt-file check schema drifted from application builder"
+        )
 
 
 def _gate_failures(
@@ -155,6 +169,7 @@ def main() -> int:
     parser.add_argument("receipts", nargs="+", type=Path)
     parser.add_argument("--pack", type=Path, default=DEFAULT_PACK_PATH)
     parser.add_argument("--receipt-schema", type=Path, default=DEFAULT_RECEIPT_SCHEMA)
+    parser.add_argument("--report-schema", type=Path, default=DEFAULT_REPORT_SCHEMA)
     parser.add_argument("--format", choices=("text", "json"), default="text")
     parser.add_argument(
         "--report-out",
@@ -185,6 +200,7 @@ def main() -> int:
         required_statuses=tuple(args.require_status),
         require_passed=args.require_passed,
     )
+    _validate_report_schema(report, args.report_schema)
     if args.report_out is not None:
         _write_json(args.report_out, report)
     if args.format == "json":

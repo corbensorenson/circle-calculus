@@ -231,8 +231,10 @@ This is the smallest downstream CI check. It validates the receipt JSON Schema,
 the in-process receipt shape, the receipt fingerprint, the loaded contract-pack
 fingerprint, the contract fingerprint, theorem-id membership in the loaded
 contract, and the optional status/pass gates. It does not run Lean; it verifies
-that the receipt still points at the public contract pack it claims to use, and
-it can write the validation report to disk for audit logs.
+that the receipt still points at the public contract pack it claims to use. The
+checker validates its own report against
+`site/data/generated/circle_ai_contract_receipt_file_check.schema.json` and can
+write that report to disk for audit logs.
 
 ## Receipt Reading Loop
 
