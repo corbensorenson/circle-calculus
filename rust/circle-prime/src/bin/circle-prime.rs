@@ -16,12 +16,10 @@ use circle_prime::{
     prime_count_in_range_wheel30_marks, prime_count_in_range_wheel30_marks_parallel,
     prime_horizon_proof_contract_json, prime_range_count_proof_contract_json, primes_in_range,
     recommended_count_mode, recommended_count_segment_size, recommended_segment_size,
-    PrimeCountScratch,
+    PrimeCountScratch, BASE_PRIME_CACHE_LIMIT,
 };
 
 const MAX_INSPECT_N: u128 = 100_000;
-const SERVER_POOL_STATIC_BASE_LIMIT: u64 = 1_100_000;
-
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 enum CountMode {
     Segmented,
@@ -810,7 +808,7 @@ fn count_range_with_server_pool(
     if worker_threads <= 1
         || high <= low
         || segment_size == 0
-        || (high - 1).isqrt() > SERVER_POOL_STATIC_BASE_LIMIT
+        || (high - 1).isqrt() > BASE_PRIME_CACHE_LIMIT
         || !mode.supports_server_worker_pool()
     {
         return Ok(None);
@@ -1024,6 +1022,26 @@ mod tests {
         assert_eq!(pooled.segment_size, direct.segment_size);
         assert_eq!(pooled.threads, direct.threads);
         assert_eq!(pooled.count_mode, direct.count_mode);
+    }
+
+    #[test]
+    fn count_server_worker_pool_accepts_generated_base_prime_limit() {
+        let mut pool = CountServerWorkerPool::new();
+        let request = "1500000000000 1500001000000 1507328 4 presieve13";
+        let pooled_count = count_range_with_server_pool(
+            &mut pool,
+            1_500_000_000_000,
+            1_500_001_000_000,
+            1_507_328,
+            4,
+            CountMode::Presieve13,
+        )
+        .expect("pooled count should succeed")
+        .expect("range should use the widened worker pool path");
+        let direct = count_server_response(request, None, 1, None)
+            .expect("direct count-server request should succeed");
+
+        assert_eq!(pooled_count, direct.count);
     }
 
     #[test]

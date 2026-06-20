@@ -1,11 +1,11 @@
 # Prime Engine Report
 
-Generated: `2026-06-20T05:00:01Z`
+Generated: `2026-06-20T05:23:15Z`
 
 ## External Correctness
 
-Status: `passed`; checks: `810`; failures: `0`.
-Count checks: `379`; count-server checks: `379`; enumeration checks: `46`; next-prime checks: `6`.
+Status: `passed`; checks: `824`; failures: `0`.
+Count checks: `386`; count-server checks: `386`; enumeration checks: `46`; next-prime checks: `6`.
 Required external controls: `primecount`, `primesieve`.
 Circle count modes checked: `segmented`, `balanced`, `dynamic`, `prefix-pi`, `presieve13`, `presieve17`, `wheel30-mark`, `hybrid-wheel30-mark`.
 Requested Circle segment sizes: `0`, `65536`, `196608`, `1310720`, `1441792`, `1507328`, `2621440`, `4194304`.
@@ -168,12 +168,13 @@ High-offset tight candidate spread:
 
 ## High-Offset Confirmation
 
-Observed groups: `1`; confirmed: `0`; unconfirmed: `1`.
+Observed groups: `1`; confirmed: `1`; unconfirmed: `0`.
 Minimum confirmations: `2`; requires stable samples: `True`.
+Fresh-run count requests per timed sample: `5`.
 
 | Range | Baseline | Mode | Segment | Threads | Confirmations | Stable Runs | Median ms Values | Status |
 | --- | --- | --- | ---: | ---: | ---: | ---: | --- | --- |
-| [1000000000000, 1000010000000) | `external_primesieve_count_server` | `presieve17` | 1507328 | 7 | 1/2 | 1/3 | 1.811, 1.805 | `unconfirmed` |
+| [1000000000000, 1000010000000) | `external_primesieve_count_server` | `presieve13` | 1310720 | 8 | 3/2 | 4/5 | 1.959, 1.565, 1.901 | `confirmed` |
 
 ## External Count Mode Sweep
 
@@ -335,7 +336,7 @@ Segment candidate spread:
 
 ## Default Calibration
 
-Recommendations: `4`; aligned: `2`; within tolerance: `2`; drift: `0`; noisy drift: `0`; unconfirmed mode drift: `0`; missing evidence: `0`.
+Recommendations: `5`; aligned: `3`; within tolerance: `1`; drift: `0`; noisy drift: `0`; unconfirmed mode drift: `1`; missing evidence: `0`.
 Tolerance: `0.050` median slowdown.
 
 | Range | Source | Baseline | Selected Mode | Default Mode | Selected Segment | Default Segment | Threads | Median ms | Samples | Ratio | Status |
@@ -343,7 +344,8 @@ Tolerance: `0.050` median slowdown.
 | [0, 1000000) | `tuning` | `n/a` | `prefix-pi` | `prefix-pi` | 131072 | 262144 | 1 -> 1 | 0.000 | unknown | 1.506x | `within_tolerance` |
 | [0, 10000000) | `external_mode_sweep` | `external_primesieve_count` | `prefix-pi` | `prefix-pi` | 65536 | 65536 | 1/8 -> 1/8 | 2.664 | noisy<br>C n=5, robust/med=1.10, max/med=1.29<br>B n=15, robust/med=2.28, max/med=7.25<br>mode unconfirmed 0/2 | 1.000x | `aligned` |
 | [0, 100000000) | `external_mode_sweep` | `external_primesieve_count` | `prefix-pi` | `prefix-pi` | 196608 | 196608 | 1/8 -> 1/8 | 3.195 | stable<br>C n=5, robust/med=1.05, max/med=1.33<br>B n=15, robust/med=1.25, max/med=1.54<br>mode unconfirmed 0/2 | 1.000x | `aligned` |
-| [1000000000000, 1000010000000) | `external_high_offset_tight` | `external_primesieve_count` | `presieve13` | `presieve13` | 4194304 | 1507328 | 3/8 -> 7/8 | 4.957 | stable<br>C n=7, robust/med=1.03, max/med=1.21<br>B n=7, robust/med=1.02, max/med=1.89<br>mode missing 0/2 | 1.026x | `within_tolerance` |
+| [1000000000000, 1000010000000) | `external_high_offset_confirmation` | `external_primesieve_count_server` | `presieve13` | `presieve13` | 1310720 | 1310720 | 8 -> 8 | 1.565 | noisy<br>effective stable<br>C n=45, robust/med=2.75, max/med=3.35<br>B n=45, robust/med=2.54, max/med=2.82<br>mode confirmed 3/2 | 1.000x | `aligned` |
+| [1000000000000, 1000010000000) | `external_high_offset_tight` | `external_primesieve_count` | `presieve13` | `presieve13` | 4194304 | 1310720 | 3/8 -> 8 | 4.957 | stable<br>C n=7, robust/med=1.03, max/med=1.21<br>B n=7, robust/med=1.02, max/med=1.89<br>mode missing 0/2 | 1.050x | `unconfirmed_mode_drift` |
 
 ## Release Benchmark
 
