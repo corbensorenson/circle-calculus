@@ -28,6 +28,7 @@ printf '1000000000000 1000010000000\n' | cargo run -p circle-prime -- count-serv
 cargo run --release -p circle-prime --bin circle-prime-bench -- --rounds 3
 cargo run --release -p circle-prime --bin circle-prime-tune -- --rounds 3
 make prime-engine-check
+make prime-engine-competitive-short
 make prime-engine-benchmark
 make prime-engine-benchmark-record
 make prime-engine-benchmark-compare
@@ -704,7 +705,13 @@ there, and the two-worker non-prefix difference is now close to specialized
 `primecount` on `[1e9, 2e9)`. It is deliberately not the larger-range or
 high-offset default: probes above the cutoff, and high-offset intervals such as
 `[1e12, 1e12 + 1e7)`, stay on the segmented-sieve family, currently the
-threaded `presieve17` count mode with a tuned high-offset segment size.
+threaded `presieve13` count mode with a tuned high-offset segment size.
+
+`prime-engine-competitive-short` is the daytime orientation workflow. It runs
+external correctness, warmed persistent count controls, the high-offset
+hot-server scorecard, repeated high-offset confirmation, the focused next-prime
+comparison, default-calibration drift check, and the combined report. Use it
+when you need a current competitive read without starting the overnight tuner.
 
 `prime-engine-high-offset-quick` is the interactive scorecard for the remaining
 `primesieve` gap. It isolates `[1e12, 1e12 + 1e7)`, runs 13 interleaved rounds

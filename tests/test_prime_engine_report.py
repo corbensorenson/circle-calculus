@@ -501,6 +501,49 @@ def test_prime_engine_report_summarizes_artifacts(tmp_path: Path) -> None:
         )
         + "\n"
     )
+    external_high_offset_hot_server = tmp_path / "high-offset-hot-server.csv"
+    external_high_offset_hot_server.write_text(
+        "\n".join(
+            [
+                "kind,name,low,high,span,segment_size,result,rounds,best_ms,median_ms,rate_per_second,median_rate_per_second,threads,requested_threads,baseline,best_speedup,median_speedup,count_mode",
+                "timing,circle_prime_server_parallel_default_count_8t,1000000000000,1000010000000,10000000,1310720,361726,7,1.700,1.900,5882352941,5263157894,8,8,,,,presieve13",
+                "timing,circle_prime_server_parallel_presieve17_count_8t,1000000000000,1000010000000,10000000,1310720,361726,7,1.600,1.800,6250000000,5555555555,8,8,,,,presieve17",
+                "timing,external_primesieve_count_server,1000000000000,1000010000000,10000000,0,361726,7,2.000,2.100,5000000000,4761904761,8,8,,,,",
+                "speedup,circle_prime_server_parallel_default_count_8t,1000000000000,1000010000000,10000000,1310720,361726,7,1.700,1.900,5882352941,5263157894,8,8,external_primesieve_count_server,1.176,1.105,presieve13",
+                "speedup,circle_prime_server_parallel_presieve17_count_8t,1000000000000,1000010000000,10000000,1310720,361726,7,1.600,1.800,6250000000,5555555555,8,8,external_primesieve_count_server,1.250,1.167,presieve17",
+            ]
+        )
+        + "\n"
+    )
+    external_high_offset_hot_server_metadata = tmp_path / "high-offset-hot-server.json"
+    external_high_offset_hot_server_metadata.write_text(
+        json.dumps(
+            {
+                "row_count": 5,
+                "rounds": 7,
+                "batch_size": 20,
+                "warmup_rounds": 2,
+                "include_circle_server": True,
+                "include_primesieve_count_server": True,
+                "required_external_tools": ["primesieve-library"],
+                "requested_segment_sizes": [0, 1310720],
+                "circle_count_modes": ["default", "presieve17"],
+                "thread_policy": {
+                    "circle_requested_threads": 8,
+                    "external_requested_threads": 8,
+                },
+                "ranges": [
+                    {
+                        "low": 1000000000000,
+                        "high": 1000010000000,
+                        "span": 10000000,
+                    }
+                ],
+                "tools": {},
+            }
+        )
+        + "\n"
+    )
     high_offset_hot_cold = tmp_path / "high-offset-hot-cold.csv"
     high_offset_hot_cold.write_text(
         "\n".join(
@@ -673,6 +716,10 @@ def test_prime_engine_report_summarizes_artifacts(tmp_path: Path) -> None:
         external_high_offset_quick_metadata_path=external_high_offset_quick_metadata,
         external_high_offset_tight_path=external_high_offset_tight,
         external_high_offset_tight_metadata_path=external_high_offset_tight_metadata,
+        external_high_offset_hot_server_path=external_high_offset_hot_server,
+        external_high_offset_hot_server_metadata_path=(
+            external_high_offset_hot_server_metadata
+        ),
         high_offset_hot_cold_benchmark_path=high_offset_hot_cold,
         tuning_path=tuning,
         default_calibration_path=calibration,
@@ -803,6 +850,21 @@ def test_prime_engine_report_summarizes_artifacts(tmp_path: Path) -> None:
     assert high_offset_tight["best_by_range_baseline"][0]["segment_size"] == 1376256
     assert high_offset_tight["best_by_range_baseline"][0]["median_circle_speedup"] == 0.889
     assert high_offset_tight["candidate_spread"][0]["candidates"][1]["segment_size"] == 1507328
+    high_offset_hot_server = report["external_high_offset_hot_server"]
+    assert high_offset_hot_server["available"] is True
+    assert high_offset_hot_server["metadata"]["batch_size"] == 20
+    assert high_offset_hot_server["metadata"]["warmup_rounds"] == 2
+    assert high_offset_hot_server["metadata"]["include_circle_server"] is True
+    assert high_offset_hot_server["metadata"]["include_primesieve_count_server"] is True
+    assert high_offset_hot_server["best_by_range_baseline"][0]["name"] == (
+        "circle_prime_server_parallel_presieve17_count_8t"
+    )
+    assert high_offset_hot_server["best_by_range_baseline"][0][
+        "median_circle_speedup"
+    ] == 1.167
+    assert high_offset_hot_server["default_by_range_baseline"][0]["name"] == (
+        "circle_prime_server_parallel_default_count_8t"
+    )
     fastest = report["benchmark"]["fastest_primary_counts"]
     materialized = report["benchmark"]["materialized_generation"]
     assert materialized[0]["name"] == "enumerate_range_primes"
@@ -981,8 +1043,13 @@ def test_prime_engine_report_summarizes_artifacts(tmp_path: Path) -> None:
     assert "High-offset quick candidate spread" in markdown
     assert "High-Offset Tight Scorecard" in markdown
     assert "High-offset tight candidate spread" in markdown
+    assert "High-Offset Hot-Server Scorecard" in markdown
+    assert "Adaptive default hot-server scorecard" in markdown
+    assert "Best hot-server candidate scorecard" in markdown
+    assert "High-offset hot-server candidate spread" in markdown
     assert "Requested Circle segment sizes: `1310720`, `1507328`." in markdown
     assert "Requested Circle segment sizes: `1376256`, `1507328`." in markdown
+    assert "Requested Circle segment sizes: `0`, `1310720`." in markdown
     assert "Count mode candidate spread" in markdown
     assert "Throughput segment candidate spread" in markdown
     assert "Adaptive default scorecard" in markdown

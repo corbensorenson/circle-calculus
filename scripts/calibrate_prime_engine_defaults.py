@@ -403,14 +403,7 @@ def select_external_recommendations(
             continue
         candidates = sorted(
             grouped[(low, high, chosen_baseline)],
-            key=lambda row: (
-                row["median_ms"],
-                row["best_ms"],
-                row["segment_size"],
-                row["threads"],
-                row["count_mode"],
-                row["source"],
-            ),
+            key=external_recommendation_sort_key,
         )
         selected = dict(candidates[0])
         selected.update(
@@ -422,6 +415,22 @@ def select_external_recommendations(
         )
         recommendations.append(selected)
     return recommendations
+
+
+def external_recommendation_sort_key(row: dict[str, Any]) -> tuple[Any, ...]:
+    stable_baseline_win = (
+        row.get("sample_stability") == "stable"
+        and float(row.get("median_circle_speedup") or 0.0) > 1.0
+    )
+    return (
+        not stable_baseline_win,
+        row["median_ms"],
+        row["best_ms"],
+        row["segment_size"],
+        row["threads"],
+        row["count_mode"],
+        row["source"],
+    )
 
 
 def apply_mode_confirmation(

@@ -22,13 +22,17 @@ against CLI and direct `libprimesieve` controls, or sweep segment sizes and
 write tuning CSV/JSON summaries.
 
 `make prime-engine-competitive-short` is the default orientation target for
-daytime iteration. It uses interleaved samples, persistent Circle count-server
-rows, CLI `primesieve`/`primecount`, and a persistent `libprimesieve` count
-helper when the local headers/library are available. It batches a few repeated
-count requests inside each timed sample and reports per-request timings, which
-keeps short runs useful for sub-10 ms rows without turning them into overnight
-jobs. Overnight targets are optional regression/tuning jobs, not the primary
-way to learn whether Circle is competitive.
+daytime iteration. It runs the external correctness matrix, warmed persistent
+count controls, the high-offset hot-server scorecard, repeated high-offset
+confirmation, the focused next-prime comparison, default-calibration drift
+check, and the combined report. The control rows use interleaved samples,
+persistent Circle count-server rows, CLI `primesieve`/`primecount`, and a
+persistent `libprimesieve` count helper when the local headers/library are
+available. Count timings batch repeated requests inside each timed sample and
+report per-request timings, which keeps sub-10 ms rows meaningful without
+turning the target into an overnight job. Overnight targets are optional
+regression/tuning jobs, not the primary way to learn whether Circle is
+competitive.
 
 `make prime-engine-high-offset-confirm` is the stricter short gate for the
 remaining hard count lane near `1e12`. It runs warmed repeated confirmations
@@ -38,8 +42,8 @@ batch repeated count requests and report per-request timings, so default changes
 require a repeatable win rather than a one-run median. This target focuses the
 timing loop on hot-server rows by default: `external_primesieve_count_server`
 for the external baseline and `circle-prime count-server` rows for Circle. The
-broader `prime-engine-competitive-short` target remains the place to compare
-against CLI `primesieve` and `primecount` in the same run.
+broader `prime-engine-competitive-short` target includes this gate and also
+refreshes CLI controls and next-prime evidence.
 
 Short-run sample stability ignores a single high outlier when there are at
 least five samples, but still marks repeated high samples as noisy. This keeps

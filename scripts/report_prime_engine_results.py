@@ -51,6 +51,12 @@ DEFAULT_EXTERNAL_HIGH_OFFSET_TIGHT = (
 DEFAULT_EXTERNAL_HIGH_OFFSET_TIGHT_METADATA = (
     RESULTS_DIR / "prime_engine_high_offset_tight_latest.json"
 )
+DEFAULT_EXTERNAL_HIGH_OFFSET_HOT_SERVER = (
+    RESULTS_DIR / "prime_engine_high_offset_hot_server_latest.csv"
+)
+DEFAULT_EXTERNAL_HIGH_OFFSET_HOT_SERVER_METADATA = (
+    RESULTS_DIR / "prime_engine_high_offset_hot_server_latest.json"
+)
 DEFAULT_EXTERNAL_HIGH_OFFSET_CONFIRMATION = (
     RESULTS_DIR / "prime_engine_high_offset_confirmation_latest.json"
 )
@@ -185,6 +191,16 @@ def main() -> int:
         default=DEFAULT_EXTERNAL_HIGH_OFFSET_TIGHT_METADATA,
     )
     parser.add_argument(
+        "--external-high-offset-hot-server",
+        type=Path,
+        default=DEFAULT_EXTERNAL_HIGH_OFFSET_HOT_SERVER,
+    )
+    parser.add_argument(
+        "--external-high-offset-hot-server-metadata",
+        type=Path,
+        default=DEFAULT_EXTERNAL_HIGH_OFFSET_HOT_SERVER_METADATA,
+    )
+    parser.add_argument(
         "--external-high-offset-confirmation",
         type=Path,
         default=DEFAULT_EXTERNAL_HIGH_OFFSET_CONFIRMATION,
@@ -227,6 +243,10 @@ def main() -> int:
         external_high_offset_quick_metadata_path=args.external_high_offset_quick_metadata,
         external_high_offset_tight_path=args.external_high_offset_tight,
         external_high_offset_tight_metadata_path=args.external_high_offset_tight_metadata,
+        external_high_offset_hot_server_path=args.external_high_offset_hot_server,
+        external_high_offset_hot_server_metadata_path=(
+            args.external_high_offset_hot_server_metadata
+        ),
         external_high_offset_confirmation_path=args.external_high_offset_confirmation,
         high_offset_hot_cold_benchmark_path=args.high_offset_hot_cold_benchmark,
         tuning_path=args.tuning,
@@ -266,6 +286,8 @@ def build_report(
     external_high_offset_quick_metadata_path: Path | None = None,
     external_high_offset_tight_path: Path | None = None,
     external_high_offset_tight_metadata_path: Path | None = None,
+    external_high_offset_hot_server_path: Path | None = None,
+    external_high_offset_hot_server_metadata_path: Path | None = None,
     external_high_offset_confirmation_path: Path | None = None,
     high_offset_hot_cold_benchmark_path: Path | None = None,
     default_calibration_path: Path | None = None,
@@ -315,6 +337,15 @@ def build_report(
     )
     external_high_offset_tight_sample_rows = read_sample_rows_from_metadata(
         external_high_offset_tight_metadata
+    )
+    external_high_offset_hot_server_rows = read_csv_optional(
+        external_high_offset_hot_server_path
+    )
+    external_high_offset_hot_server_metadata = read_json_optional(
+        external_high_offset_hot_server_metadata_path
+    )
+    external_high_offset_hot_server_sample_rows = read_sample_rows_from_metadata(
+        external_high_offset_hot_server_metadata
     )
     external_high_offset_confirmation = read_json_optional(
         external_high_offset_confirmation_path
@@ -414,6 +445,16 @@ def build_report(
                 if external_high_offset_tight_metadata_path is not None
                 else None
             ),
+            "external_high_offset_hot_server": (
+                str(external_high_offset_hot_server_path)
+                if external_high_offset_hot_server_path is not None
+                else None
+            ),
+            "external_high_offset_hot_server_metadata": (
+                str(external_high_offset_hot_server_metadata_path)
+                if external_high_offset_hot_server_metadata_path is not None
+                else None
+            ),
             "external_high_offset_confirmation": (
                 str(external_high_offset_confirmation_path)
                 if external_high_offset_confirmation_path is not None
@@ -465,6 +506,11 @@ def build_report(
             external_high_offset_tight_rows,
             external_high_offset_tight_metadata,
             external_high_offset_tight_sample_rows,
+        ),
+        "external_high_offset_hot_server": summarize_external_segment_sweep(
+            external_high_offset_hot_server_rows,
+            external_high_offset_hot_server_metadata,
+            external_high_offset_hot_server_sample_rows,
         ),
         "external_high_offset_confirmation": summarize_external_mode_confirmation(
             external_high_offset_confirmation
@@ -1894,6 +1940,17 @@ def render_markdown(report: dict[str, Any]) -> str:
             title="High-Offset Tight Scorecard",
             missing_message="No high-offset tight scorecard artifact was available.",
             spread_label="High-offset tight candidate spread:",
+            include_circle_row=True,
+        )
+    )
+    lines.extend(
+        render_external_segment_sweep_markdown(
+            report["external_high_offset_hot_server"],
+            title="High-Offset Hot-Server Scorecard",
+            missing_message="No high-offset hot-server scorecard artifact was available.",
+            default_label="Adaptive default hot-server scorecard:",
+            best_label="Best hot-server candidate scorecard:",
+            spread_label="High-offset hot-server candidate spread:",
             include_circle_row=True,
         )
     )

@@ -47,6 +47,65 @@ def speedup_row(
     }
 
 
+def timing_row(
+    *,
+    low: int = 0,
+    high: int = 10_000_000,
+    name: str = "external_primesieve_count",
+    segment_size: int = 0,
+    result: int = 664579,
+    threads: int = 8,
+    requested_threads: int = 8,
+    best_ms: str = "2.500",
+    median_ms: str = "2.600",
+) -> dict[str, str]:
+    return {
+        "kind": "timing",
+        "name": name,
+        "low": str(low),
+        "high": str(high),
+        "span": str(high - low),
+        "segment_size": str(segment_size),
+        "result": str(result),
+        "rounds": "5",
+        "best_ms": best_ms,
+        "median_ms": median_ms,
+        "rate_per_second": "0",
+        "median_rate_per_second": "0",
+        "threads": str(threads),
+        "requested_threads": str(requested_threads),
+        "baseline": "",
+        "best_speedup": "",
+        "median_speedup": "",
+    }
+
+
+def sample_row(
+    *,
+    low: int = 0,
+    high: int = 10_000_000,
+    name: str,
+    segment_size: int,
+    elapsed_ms: float,
+    threads: int = 8,
+    requested_threads: int = 8,
+) -> dict[str, str]:
+    return {
+        "kind": "sample",
+        "name": name,
+        "low": str(low),
+        "high": str(high),
+        "span": str(high - low),
+        "segment_size": str(segment_size),
+        "result": "664579",
+        "round_index": "0",
+        "elapsed_ms": str(elapsed_ms),
+        "threads": str(threads),
+        "requested_threads": str(requested_threads),
+        "count_mode": "",
+    }
+
+
 def test_select_recommendations_prefers_primesieve_median_row() -> None:
     rows = [
         speedup_row(segment_size=65536, best_ms="3.2", median_ms="3.0"),
@@ -70,6 +129,54 @@ def test_select_recommendations_prefers_primesieve_median_row() -> None:
     assert selected[0]["count_mode"] == "segmented"
     assert selected[0]["segment_size"] == 65536
     assert selected[0]["selected_by"] == "median_ms"
+
+
+def test_select_recommendations_prefers_stable_baseline_win_over_noisy_faster_row() -> None:
+    noisy_fast_name = "circle_prime_parallel_presieve13_count_7t"
+    stable_win_name = "circle_prime_parallel_presieve13_count_5t"
+    rows = [
+        timing_row(),
+        speedup_row(
+            name=noisy_fast_name,
+            segment_size=1_507_328,
+            threads=7,
+            requested_threads=8,
+            best_ms="1.8",
+            median_ms="2.0",
+            best_speedup="1.389",
+            median_speedup="1.300",
+        ),
+        speedup_row(
+            name=stable_win_name,
+            segment_size=2_097_152,
+            threads=5,
+            requested_threads=5,
+            best_ms="2.1",
+            median_ms="2.2",
+            best_speedup="1.190",
+            median_speedup="1.182",
+        ),
+    ]
+    sample_rows = [
+        *(sample_row(name=noisy_fast_name, segment_size=1_507_328, elapsed_ms=value, threads=7) for value in [2.0, 2.1, 2.2, 6.0, 8.0]),
+        *(sample_row(name=stable_win_name, segment_size=2_097_152, elapsed_ms=value, threads=5, requested_threads=5) for value in [2.2, 2.21, 2.22, 2.23, 4.0]),
+        *(sample_row(name="external_primesieve_count", segment_size=0, elapsed_ms=value) for value in [2.6, 2.61, 2.62, 2.63, 4.0]),
+    ]
+
+    selected = select_recommendations(
+        external_rows=rows,
+        external_sample_rows=sample_rows,
+        tuning_summary=None,
+        baseline_priority=["external_primesieve_count"],
+    )
+
+    assert len(selected) == 1
+    assert selected[0]["segment_size"] == 2_097_152
+    assert selected[0]["threads"] == 5
+    assert selected[0]["sample_stability"] == "stable"
+    assert selected[0]["median_circle_speedup"] > 1.0
+    assert selected[0]["candidates"][1]["segment_size"] == 1_507_328
+    assert selected[0]["candidates"][1]["sample_stability"] == "noisy"
 
 
 def test_build_calibration_marks_default_drift_over_tolerance() -> None:

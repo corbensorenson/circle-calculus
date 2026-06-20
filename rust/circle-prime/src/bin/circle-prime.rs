@@ -14,9 +14,10 @@ use circle_prime::{
     prime_count_in_range_presieve13_with_scratch, prime_count_in_range_presieve17,
     prime_count_in_range_presieve17_parallel, prime_count_in_range_presieve17_with_scratch,
     prime_count_in_range_wheel30_marks, prime_count_in_range_wheel30_marks_parallel,
-    prime_horizon_proof_contract_json, prime_range_count_proof_contract_json, primes_in_range,
-    recommended_count_mode, recommended_count_segment_size, recommended_segment_size,
-    PrimeCountScratch, BASE_PRIME_CACHE_LIMIT,
+    prime_count_in_range_with_scratch, prime_horizon_proof_contract_json,
+    prime_range_count_proof_contract_json, primes_in_range, recommended_count_mode,
+    recommended_count_segment_size, recommended_segment_size, PrimeCountScratch,
+    BASE_PRIME_CACHE_LIMIT,
 };
 
 const MAX_INSPECT_N: u128 = 100_000;
@@ -699,13 +700,18 @@ fn count_server_response_with_pool(
 struct CountServerWorkerPool {
     senders: Vec<mpsc::Sender<CountServerWorkerCommand>>,
     handles: Vec<JoinHandle<()>>,
+    result_sender: mpsc::Sender<Result<usize, circle_prime::RangeError>>,
+    result_receiver: mpsc::Receiver<Result<usize, circle_prime::RangeError>>,
 }
 
 impl CountServerWorkerPool {
     fn new() -> Self {
+        let (result_sender, result_receiver) = mpsc::channel();
         Self {
             senders: Vec::new(),
             handles: Vec::new(),
+            result_sender,
+            result_receiver,
         }
     }
 
@@ -716,7 +722,6 @@ impl CountServerWorkerPool {
         count_mode: CountMode,
     ) -> Result<usize, circle_prime::RangeError> {
         self.ensure_worker_count(chunks.len());
-        let (result_sender, result_receiver) = mpsc::channel();
         for (worker_index, &(low, high)) in chunks.iter().enumerate() {
             self.senders[worker_index]
                 .send(CountServerWorkerCommand::Count {
@@ -724,15 +729,14 @@ impl CountServerWorkerPool {
                     high,
                     segment_size,
                     count_mode,
-                    result_sender: result_sender.clone(),
                 })
                 .map_err(|_| circle_prime::RangeError::WorkerPanic)?;
         }
-        drop(result_sender);
 
         let mut total = 0usize;
         for _ in chunks {
-            total += result_receiver
+            total += self
+                .result_receiver
                 .recv()
                 .map_err(|_| circle_prime::RangeError::WorkerPanic)??;
         }
@@ -742,7 +746,8 @@ impl CountServerWorkerPool {
     fn ensure_worker_count(&mut self, worker_count: usize) {
         while self.senders.len() < worker_count {
             let (sender, receiver) = mpsc::channel();
-            let handle = thread::spawn(move || count_server_worker_loop(receiver));
+            let result_sender = self.result_sender.clone();
+            let handle = thread::spawn(move || count_server_worker_loop(receiver, result_sender));
             self.senders.push(sender);
             self.handles.push(handle);
         }
@@ -766,12 +771,14 @@ enum CountServerWorkerCommand {
         high: u64,
         segment_size: u64,
         count_mode: CountMode,
-        result_sender: mpsc::Sender<Result<usize, circle_prime::RangeError>>,
     },
     Stop,
 }
 
-fn count_server_worker_loop(receiver: mpsc::Receiver<CountServerWorkerCommand>) {
+fn count_server_worker_loop(
+    receiver: mpsc::Receiver<CountServerWorkerCommand>,
+    result_sender: mpsc::Sender<Result<usize, circle_prime::RangeError>>,
+) {
     let mut scratch = PrimeCountScratch::new();
     while let Ok(command) = receiver.recv() {
         match command {
@@ -780,7 +787,6 @@ fn count_server_worker_loop(receiver: mpsc::Receiver<CountServerWorkerCommand>) 
                 high,
                 segment_size,
                 count_mode,
-                result_sender,
             } => {
                 let result = count_range_with_mode_scratch(
                     low,
@@ -922,6 +928,9 @@ fn count_range_with_mode_scratch(
     scratch: &mut PrimeCountScratch,
 ) -> Result<usize, circle_prime::RangeError> {
     match mode {
+        CountMode::Segmented if worker_threads == 1 => {
+            prime_count_in_range_with_scratch(low, high, segment_size, scratch)
+        }
         CountMode::Presieve13 if worker_threads == 1 => {
             prime_count_in_range_presieve13_with_scratch(low, high, segment_size, scratch)
         }
@@ -1042,6 +1051,34 @@ mod tests {
             .expect("direct count-server request should succeed");
 
         assert_eq!(pooled_count, direct.count);
+    }
+
+    #[test]
+    fn count_server_worker_pool_reuses_result_channel_across_requests() {
+        let mut pool = CountServerWorkerPool::new();
+        let requests = [
+            (1_000_000_000_000, 1_000_001_000_000, 1_507_328, 4),
+            (1_500_000_000_000, 1_500_001_000_000, 1_507_328, 4),
+            (1_000_000_000_000, 1_000_001_000_000, 1_310_720, 4),
+        ];
+
+        for &(low, high, segment_size, threads) in &requests {
+            let pooled_count = count_range_with_server_pool(
+                &mut pool,
+                low,
+                high,
+                segment_size,
+                threads,
+                CountMode::Presieve13,
+            )
+            .expect("pooled count should succeed")
+            .expect("range should use the worker pool");
+            let direct_count =
+                count_range_with_mode(low, high, segment_size, threads, CountMode::Presieve13)
+                    .expect("direct parallel count should succeed");
+
+            assert_eq!(pooled_count, direct_count);
+        }
     }
 
     #[test]

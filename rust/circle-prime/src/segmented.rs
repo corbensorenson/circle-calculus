@@ -407,6 +407,45 @@ pub fn prime_count_in_range(low: u64, high: u64, segment_size: u64) -> Result<us
     prime_count_in_range_odd_bytes(low, high, segment_size)
 }
 
+pub fn prime_count_in_range_with_scratch(
+    low: u64,
+    high: u64,
+    segment_size: u64,
+    scratch: &mut PrimeCountScratch,
+) -> Result<usize, RangeError> {
+    if segment_size == 0 {
+        return Err(RangeError::SegmentSizeZero);
+    }
+    if high <= low {
+        return Ok(0);
+    }
+    if use_scalar_range_fallback(low, high) {
+        return Ok(prime_count_in_range_scalar(low, high));
+    }
+
+    let limit = (high - 1).isqrt();
+    if limit <= BASE_PRIME_CACHE_LIMIT {
+        let PrimeCountScratch {
+            odd_flags,
+            single_segment_mark_plan,
+            base_primes,
+            base_prime_limit,
+        } = scratch;
+        let base = cached_base_primes_slice(limit, base_primes, base_prime_limit)?;
+        return prime_count_in_range_odd_bytes_with_base_and_flags_and_plan(
+            low,
+            high,
+            segment_size,
+            base,
+            odd_flags,
+            Some(single_segment_mark_plan),
+        );
+    }
+    with_base_primes(limit, |base| {
+        prime_count_in_range_odd_bytes_with_base_and_scratch(low, high, segment_size, base, scratch)
+    })
+}
+
 pub fn prime_pi_u64(n: u64) -> Result<usize, RangeError> {
     if n < 2 {
         return Ok(0);
@@ -1269,6 +1308,105 @@ fn prime_count_in_range_odd_bytes_with_base(
             );
 
             count += count_flag_bytes(&flags);
+        }
+
+        segment_low = segment_high;
+    }
+
+    Ok(count)
+}
+
+fn prime_count_in_range_odd_bytes_with_base_and_scratch(
+    low: u64,
+    high: u64,
+    segment_size: u64,
+    base: &[u64],
+    scratch: &mut PrimeCountScratch,
+) -> Result<usize, RangeError> {
+    let PrimeCountScratch {
+        odd_flags,
+        single_segment_mark_plan,
+        ..
+    } = scratch;
+    prime_count_in_range_odd_bytes_with_base_and_flags_and_plan(
+        low,
+        high,
+        segment_size,
+        base,
+        odd_flags,
+        Some(single_segment_mark_plan),
+    )
+}
+
+fn prime_count_in_range_odd_bytes_with_base_and_flags_and_plan(
+    mut low: u64,
+    high: u64,
+    segment_size: u64,
+    base: &[u64],
+    flags: &mut Vec<u8>,
+    mut mark_plan: Option<&mut Option<SingleSegmentMarkPlan>>,
+) -> Result<usize, RangeError> {
+    if segment_size == 0 {
+        return Err(RangeError::SegmentSizeZero);
+    }
+    if high <= low {
+        return Ok(0);
+    }
+
+    let mut count = small_prime_count_in_range(low, high);
+    if high <= 23 {
+        return Ok(count);
+    }
+
+    low = low.max(23);
+    if high - low <= segment_size {
+        let odd_low = if low % 2 == 0 { low + 1 } else { low };
+        if odd_low >= high {
+            return Ok(count);
+        }
+
+        let odd_count_u64 = ((high - odd_low) + 1) / 2;
+        let odd_count = usize::try_from(odd_count_u64).map_err(|_| RangeError::SegmentTooLarge)?;
+        refill_presieved_odd_flags(flags, odd_low, odd_count);
+        let dense_marking = use_dense_odd_byte_marking(high);
+        mark_single_segment_base_multiples_after_with_plan(
+            flags,
+            odd_low,
+            high,
+            base,
+            dense_marking,
+            19,
+            mark_plan.as_deref_mut(),
+        )?;
+        return Ok(count + count_flag_bytes(flags));
+    }
+
+    let mut segment_low = low;
+    let dense_marking = use_dense_odd_byte_marking(high);
+    let first_odd_low = if segment_low % 2 == 0 {
+        segment_low + 1
+    } else {
+        segment_low
+    };
+    let mut cursors = initial_sieve_cursors(base, first_odd_low, high)?;
+
+    while segment_low < high {
+        let segment_high = segment_low.saturating_add(segment_size).min(high);
+        let odd_low = if segment_low % 2 == 0 {
+            segment_low + 1
+        } else {
+            segment_low
+        };
+
+        if odd_low < segment_high {
+            let odd_count_u64 = ((segment_high - odd_low) + 1) / 2;
+            let odd_count =
+                usize::try_from(odd_count_u64).map_err(|_| RangeError::SegmentTooLarge)?;
+            refill_presieved_odd_flags(flags, odd_low, odd_count);
+
+            mark_active_sieve_cursors(flags, &mut cursors, odd_low, segment_high, dense_marking);
+
+            count += count_flag_bytes(flags);
         }
 
         segment_low = segment_high;
@@ -3214,7 +3352,7 @@ mod tests {
     }
 
     #[test]
-    fn presieve_scratch_counts_match_public_counts() {
+    fn count_scratch_counts_match_public_counts() {
         let mut scratch = PrimeCountScratch::new();
         for (low, high, segment_size) in [
             (0, 10, 64),
@@ -3223,6 +3361,14 @@ mod tests {
             (1_000_000_000, 1_001_000_000, 1 << 16),
             (1_000_000_000_000, 1_000_010_000_000, 1_507_328),
         ] {
+            let expected = prime_count_in_range(low, high, segment_size).unwrap();
+            let actual =
+                prime_count_in_range_with_scratch(low, high, segment_size, &mut scratch).unwrap();
+            assert_eq!(
+                actual, expected,
+                "segmented range=[{low},{high}), segment_size={segment_size}"
+            );
+
             let expected13 = prime_count_in_range_presieve13(low, high, segment_size).unwrap();
             let actual13 =
                 prime_count_in_range_presieve13_with_scratch(low, high, segment_size, &mut scratch)
@@ -3246,11 +3392,39 @@ mod tests {
     }
 
     #[test]
-    fn presieve_scratch_reuses_single_segment_mark_plan() {
+    fn count_scratch_reuses_single_segment_mark_plan() {
         let low = 1_000_000_000_000;
         let high = 1_000_001_000_000;
         let segment_size = 1_507_328;
         let mut scratch = PrimeCountScratch::new();
+
+        let expected = prime_count_in_range(low, high, segment_size).unwrap();
+        assert_eq!(
+            prime_count_in_range_with_scratch(low, high, segment_size, &mut scratch).unwrap(),
+            expected
+        );
+        let plan = scratch
+            .single_segment_mark_plan
+            .as_ref()
+            .expect("single-segment segmented count caches a mark plan");
+        assert_eq!(plan.odd_low, low + 1);
+        assert_eq!(plan.high, high);
+        assert_eq!(plan.presieved_through, 19);
+        assert!(!plan.marks.is_empty());
+        let segmented_mark_count = plan.marks.len();
+        assert_eq!(
+            prime_count_in_range_with_scratch(low, high, segment_size, &mut scratch).unwrap(),
+            expected
+        );
+        assert_eq!(
+            scratch
+                .single_segment_mark_plan
+                .as_ref()
+                .expect("mark plan remains cached")
+                .marks
+                .len(),
+            segmented_mark_count
+        );
 
         let expected13 = prime_count_in_range_presieve13(low, high, segment_size).unwrap();
         assert_eq!(
@@ -3299,7 +3473,7 @@ mod tests {
     }
 
     #[test]
-    fn presieve_scratch_caches_generated_base_primes_above_static_limit() {
+    fn count_scratch_caches_generated_base_primes_above_static_limit() {
         let low = 1_500_000_000_000;
         let high = 1_500_001_000_000;
         let segment_size = 1_507_328;
@@ -3307,14 +3481,28 @@ mod tests {
         let expected = prime_count_in_range(low, high, segment_size).unwrap();
 
         assert_eq!(
-            prime_count_in_range_presieve13_with_scratch(low, high, segment_size, &mut scratch)
-                .unwrap(),
+            prime_count_in_range_with_scratch(low, high, segment_size, &mut scratch).unwrap(),
             expected
         );
         assert!(scratch.base_prime_limit > STATIC_BASE_PRIME_LIMIT);
         assert!(!scratch.base_primes.is_empty());
         let cached_limit = scratch.base_prime_limit;
         let cached_len = scratch.base_primes.len();
+
+        assert_eq!(
+            prime_count_in_range_with_scratch(low, high, segment_size, &mut scratch).unwrap(),
+            expected
+        );
+        assert_eq!(scratch.base_prime_limit, cached_limit);
+        assert_eq!(scratch.base_primes.len(), cached_len);
+
+        assert_eq!(
+            prime_count_in_range_presieve13_with_scratch(low, high, segment_size, &mut scratch)
+                .unwrap(),
+            expected
+        );
+        assert_eq!(scratch.base_prime_limit, cached_limit);
+        assert_eq!(scratch.base_primes.len(), cached_len);
 
         assert_eq!(
             prime_count_in_range_presieve13_with_scratch(low, high, segment_size, &mut scratch)
