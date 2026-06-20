@@ -21,6 +21,10 @@ site/data/generated/circle_ai_contract_acceptance_policy.schema.json
 site/data/generated/circle_ai_contract_acceptance_policy_report.schema.json
 site/data/generated/circle_ai_contract_acceptance_receipt.schema.json
 site/data/generated/circle_ai_downstream_rejection_report.schema.json
+site/data/generated/circle_ai_contract_request.schema.json
+site/data/generated/circle_ai_contract_request_validation.schema.json
+site/data/generated/circle_ai_contract_receipt.schema.json
+site/data/generated/circle_ai_contract_runner_check.schema.json
 ```
 
 The schema id is:
@@ -345,6 +349,12 @@ report schema path `site/data/generated/circle_ai_contract_acceptance_policy_rep
 receipt schema path `site/data/generated/circle_ai_contract_acceptance_receipt.schema.json`,
 rejection report schema path `site/data/generated/circle_ai_downstream_rejection_report.schema.json`,
 fingerprint refresh command, and pinned requirement keys.
+The parameterized runner sidecars
+`site/data/generated/circle_ai_contract_request.schema.json`,
+`site/data/generated/circle_ai_contract_request_validation.schema.json`,
+`site/data/generated/circle_ai_contract_receipt.schema.json`, and
+`site/data/generated/circle_ai_contract_runner_check.schema.json` cover the
+config-to-receipt flow and the batch example-check report.
 The default policy covers the four flagship contracts: RoPE, KV-cache, sparse
 attention, and recurrence schedules.
 Use `python scripts/circle_ai_contract_ready.py --print-refreshed-policy` after

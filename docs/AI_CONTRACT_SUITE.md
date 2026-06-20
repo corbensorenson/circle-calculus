@@ -26,7 +26,10 @@ python scripts/circle_ai_certify.py rope \
 ```
 
 The runner receipt schema is `circle_calculus.ai_contract_receipt.v0`; the
-request schema is `circle_calculus.ai_contract_request.v0`. The generated
+request schema is `circle_calculus.ai_contract_request.v0`; the request
+validation report schema is
+`circle_calculus.ai_contract_request_validation.v0`; and the batch runner-check
+report schema is `circle_calculus.ai_contract_runner_check.v0`. The generated
 schemas live under `site/data/generated/`.
 
 The common contract shape is:
@@ -95,8 +98,10 @@ make circle-ai-contracts-ready
 It writes `site/data/generated/circle_ai_contract_pack.json`, the JSON Schema
 sidecar `site/data/generated/circle_ai_contract_pack.schema.json`, the
 parameterized runner schema sidecars
-`site/data/generated/circle_ai_contract_request.schema.json` and
-`site/data/generated/circle_ai_contract_receipt.schema.json`, and the
+`site/data/generated/circle_ai_contract_request.schema.json`,
+`site/data/generated/circle_ai_contract_request_validation.schema.json`,
+`site/data/generated/circle_ai_contract_receipt.schema.json`, and
+`site/data/generated/circle_ai_contract_runner_check.schema.json`, and the
 acceptance-policy schema sidecar
 `site/data/generated/circle_ai_contract_acceptance_policy.schema.json`, policy-report
 schema sidecar

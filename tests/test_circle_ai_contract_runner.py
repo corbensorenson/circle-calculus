@@ -12,6 +12,7 @@ from circle_math.applications import (
     build_contract_receipt,
     build_contract_receipt_json_schema,
     build_contract_receipt_from_request,
+    build_contract_runner_check_json_schema,
     build_contract_request_json_schema,
     build_contract_request_validation_report,
     build_contract_request_validation_json_schema,
@@ -441,6 +442,35 @@ def test_request_validation_report_schema_accepts_public_reports() -> None:
     jsonschema.validate(bad_report, schema)
     assert good_report["ok"] is True
     assert bad_report["ok"] is False
+
+
+def test_runner_check_report_schema_accepts_public_report() -> None:
+    schema = build_contract_runner_check_json_schema()
+    report = {
+        "schema_id": "circle_calculus.ai_contract_runner_check.v0",
+        "ok": True,
+        "example_count": 1,
+        "failure_count": 0,
+        "failures": [],
+        "summaries": [
+            {
+                "request_path": "examples/circle_ai_requests/rope_request.json",
+                "receipt_path": None,
+                "kind": "rope_position_distinguishability",
+                "status": "proved",
+                "request_passed": True,
+                "theorem_count": 43,
+                "recommendation_count": 2,
+                "validation_command_count": 2,
+                "request_content_fingerprint": "0" * 64,
+                "normalized_request_fingerprint": "1" * 64,
+                "receipt_content_fingerprint": "2" * 64,
+            }
+        ],
+    }
+
+    jsonschema.Draft202012Validator.check_schema(schema)
+    jsonschema.validate(report, schema)
 
 
 def test_circle_ai_certify_cli_emits_json_receipt() -> None:

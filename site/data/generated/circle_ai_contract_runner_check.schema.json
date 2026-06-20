@@ -1,0 +1,116 @@
+{
+  "$id": "https://circle-calculus.local/schemas/circle_ai_contract_runner_check.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "example_count": {
+      "minimum": 0,
+      "type": "integer"
+    },
+    "failure_count": {
+      "minimum": 0,
+      "type": "integer"
+    },
+    "failures": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "ok": {
+      "type": "boolean"
+    },
+    "schema_id": {
+      "const": "circle_calculus.ai_contract_runner_check.v0"
+    },
+    "summaries": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "kind": {
+            "enum": [
+              "rope_position_distinguishability",
+              "kv_cache_ring_buffer",
+              "sparse_attention_coverage",
+              "recurrence_schedule"
+            ]
+          },
+          "normalized_request_fingerprint": {
+            "pattern": "^[0-9a-f]{64}$",
+            "type": "string"
+          },
+          "receipt_content_fingerprint": {
+            "pattern": "^[0-9a-f]{64}$",
+            "type": "string"
+          },
+          "receipt_path": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "recommendation_count": {
+            "minimum": 0,
+            "type": "integer"
+          },
+          "request_content_fingerprint": {
+            "pattern": "^[0-9a-f]{64}$",
+            "type": "string"
+          },
+          "request_passed": {
+            "type": [
+              "boolean",
+              "null"
+            ]
+          },
+          "request_path": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "proved",
+              "impossible",
+              "undecided",
+              "numerical_only",
+              "outside_scope"
+            ]
+          },
+          "theorem_count": {
+            "minimum": 0,
+            "type": "integer"
+          },
+          "validation_command_count": {
+            "minimum": 0,
+            "type": "integer"
+          }
+        },
+        "required": [
+          "request_path",
+          "receipt_path",
+          "kind",
+          "status",
+          "request_passed",
+          "theorem_count",
+          "recommendation_count",
+          "validation_command_count",
+          "request_content_fingerprint",
+          "normalized_request_fingerprint",
+          "receipt_content_fingerprint"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    }
+  },
+  "required": [
+    "schema_id",
+    "ok",
+    "example_count",
+    "failure_count",
+    "failures",
+    "summaries"
+  ],
+  "title": "Circle AI Contract Runner Check Report",
+  "type": "object"
+}

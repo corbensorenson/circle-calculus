@@ -5,6 +5,20 @@ import subprocess
 import sys
 from pathlib import Path
 
+import jsonschema
+
+
+RUNNER_CHECK_SCHEMA = (
+    Path("site")
+    / "data"
+    / "generated"
+    / "circle_ai_contract_runner_check.schema.json"
+)
+
+
+def _runner_check_schema() -> dict:
+    return json.loads(RUNNER_CHECK_SCHEMA.read_text())
+
 
 def test_check_circle_ai_contract_runner_accepts_examples() -> None:
     result = subprocess.run(
@@ -35,6 +49,7 @@ def test_check_circle_ai_contract_runner_emits_json_report() -> None:
     )
 
     payload = json.loads(result.stdout)
+    jsonschema.validate(payload, _runner_check_schema())
     assert payload["schema_id"] == "circle_calculus.ai_contract_runner_check.v0"
     assert payload["ok"] is True
     assert payload["example_count"] == 4
@@ -64,6 +79,7 @@ def test_check_circle_ai_contract_runner_writes_receipts(tmp_path: Path) -> None
     )
 
     payload = json.loads(result.stdout)
+    jsonschema.validate(payload, _runner_check_schema())
     receipt_paths = [Path(summary["receipt_path"]) for summary in payload["summaries"]]
     assert len(receipt_paths) == 4
     assert all(path.exists() for path in receipt_paths)

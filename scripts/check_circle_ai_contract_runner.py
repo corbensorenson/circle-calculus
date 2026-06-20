@@ -17,10 +17,14 @@ if str(ROOT) not in sys.path:
 
 from circle_math.applications import (  # noqa: E402
     build_contract_request_validation_report,
+    build_contract_runner_check_json_schema,
     build_contract_receipt_from_request,
     load_contract_pack,
     validate_contract_receipt,
     validate_contract_request,
+)
+from circle_math.applications.circle_ai_contract_runner import (  # noqa: E402
+    RUNNER_CHECK_SCHEMA_ID,
 )
 
 
@@ -38,6 +42,9 @@ DEFAULT_REQUEST_VALIDATION_SCHEMA = (
 )
 DEFAULT_RECEIPT_SCHEMA = (
     ROOT / "site" / "data" / "generated" / "circle_ai_contract_receipt.schema.json"
+)
+DEFAULT_RUNNER_CHECK_SCHEMA = (
+    ROOT / "site" / "data" / "generated" / "circle_ai_contract_runner_check.schema.json"
 )
 
 
@@ -74,14 +81,17 @@ def check_runner_examples(
     request_schema_path: Path = DEFAULT_REQUEST_SCHEMA,
     request_validation_schema_path: Path = DEFAULT_REQUEST_VALIDATION_SCHEMA,
     receipt_schema_path: Path = DEFAULT_RECEIPT_SCHEMA,
+    runner_check_schema_path: Path = DEFAULT_RUNNER_CHECK_SCHEMA,
     receipt_out_dir: Path | None = None,
 ) -> dict[str, Any]:
     request_schema = _json(request_schema_path)
     request_validation_schema = _json(request_validation_schema_path)
     receipt_schema = _json(receipt_schema_path)
+    runner_check_schema = _json(runner_check_schema_path)
     jsonschema.Draft202012Validator.check_schema(request_schema)
     jsonschema.Draft202012Validator.check_schema(request_validation_schema)
     jsonschema.Draft202012Validator.check_schema(receipt_schema)
+    jsonschema.Draft202012Validator.check_schema(runner_check_schema)
     pack = load_contract_pack(pack_path)
     summaries: list[dict[str, Any]] = []
     failures: list[str] = []
@@ -132,14 +142,21 @@ def check_runner_examples(
         except (ValueError, jsonschema.ValidationError, jsonschema.SchemaError) as exc:
             failures.append(f"{path}: {exc}")
 
-    return {
-        "schema_id": "circle_calculus.ai_contract_runner_check.v0",
+    report = {
+        "schema_id": RUNNER_CHECK_SCHEMA_ID,
         "ok": not failures,
         "example_count": len(summaries),
         "failure_count": len(failures),
         "failures": failures,
         "summaries": summaries,
     }
+    jsonschema.validate(report, runner_check_schema)
+    generated_schema = build_contract_runner_check_json_schema()
+    if runner_check_schema != generated_schema:
+        raise jsonschema.SchemaError(
+            "contract-runner check schema drifted from application builder"
+        )
+    return report
 
 
 def main() -> int:
@@ -163,6 +180,11 @@ def main() -> int:
         type=Path,
         default=DEFAULT_REQUEST_VALIDATION_SCHEMA,
     )
+    parser.add_argument(
+        "--runner-check-schema",
+        type=Path,
+        default=DEFAULT_RUNNER_CHECK_SCHEMA,
+    )
     parser.add_argument("--format", choices=("text", "json"), default="text")
     parser.add_argument(
         "--receipt-out-dir",
@@ -177,6 +199,7 @@ def main() -> int:
         request_schema_path=args.request_schema,
         request_validation_schema_path=args.request_validation_schema,
         receipt_schema_path=args.receipt_schema,
+        runner_check_schema_path=args.runner_check_schema,
         receipt_out_dir=args.receipt_out_dir,
     )
     if args.format == "json":

@@ -41,11 +41,15 @@ from .rope_certifier import (
 REQUEST_SCHEMA_ID = "circle_calculus.ai_contract_request.v0"
 RECEIPT_SCHEMA_ID = "circle_calculus.ai_contract_receipt.v0"
 REQUEST_VALIDATION_SCHEMA_ID = "circle_calculus.ai_contract_request_validation.v0"
+RUNNER_CHECK_SCHEMA_ID = "circle_calculus.ai_contract_runner_check.v0"
 REQUEST_SCHEMA_PATH = "site/data/generated/circle_ai_contract_request.schema.json"
 REQUEST_VALIDATION_SCHEMA_PATH = (
     "site/data/generated/circle_ai_contract_request_validation.schema.json"
 )
 RECEIPT_SCHEMA_PATH = "site/data/generated/circle_ai_contract_receipt.schema.json"
+RUNNER_CHECK_SCHEMA_PATH = (
+    "site/data/generated/circle_ai_contract_runner_check.schema.json"
+)
 
 SUPPORTED_CONTRACT_KINDS = (
     "rope_position_distinguishability",
@@ -1488,6 +1492,67 @@ def build_contract_request_validation_json_schema() -> dict[str, Any]:
             },
             "failure_count": {"type": "integer", "minimum": 0},
             "failures": string_list,
+        },
+        "additionalProperties": False,
+    }
+
+
+def build_contract_runner_check_json_schema() -> dict[str, Any]:
+    string_list = {"type": "array", "items": {"type": "string"}}
+    fingerprint = {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+    summary = {
+        "type": "object",
+        "required": [
+            "request_path",
+            "receipt_path",
+            "kind",
+            "status",
+            "request_passed",
+            "theorem_count",
+            "recommendation_count",
+            "validation_command_count",
+            "request_content_fingerprint",
+            "normalized_request_fingerprint",
+            "receipt_content_fingerprint",
+        ],
+        "properties": {
+            "request_path": {"type": "string", "minLength": 1},
+            "receipt_path": {"type": ["string", "null"]},
+            "kind": {"enum": list(SUPPORTED_CONTRACT_KINDS)},
+            "status": {"enum": list(STATUS_VALUES)},
+            "request_passed": {"type": ["boolean", "null"]},
+            "theorem_count": {"type": "integer", "minimum": 0},
+            "recommendation_count": {"type": "integer", "minimum": 0},
+            "validation_command_count": {"type": "integer", "minimum": 0},
+            "request_content_fingerprint": fingerprint,
+            "normalized_request_fingerprint": fingerprint,
+            "receipt_content_fingerprint": fingerprint,
+        },
+        "additionalProperties": False,
+    }
+    return {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "$id": (
+            "https://circle-calculus.local/schemas/"
+            "circle_ai_contract_runner_check.schema.json"
+        ),
+        "title": "Circle AI Contract Runner Check Report",
+        "type": "object",
+        "required": [
+            "schema_id",
+            "ok",
+            "example_count",
+            "failure_count",
+            "failures",
+            "summaries",
+        ],
+        "properties": {
+            "schema_id": {"const": RUNNER_CHECK_SCHEMA_ID},
+            "ok": {"type": "boolean"},
+            "example_count": {"type": "integer", "minimum": 0},
+            "failure_count": {"type": "integer", "minimum": 0},
+            "failures": string_list,
+            "summaries": {"type": "array", "items": summary},
         },
         "additionalProperties": False,
     }

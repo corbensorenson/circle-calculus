@@ -249,6 +249,7 @@ The generated request and receipt schemas live at:
 site/data/generated/circle_ai_contract_request.schema.json
 site/data/generated/circle_ai_contract_request_validation.schema.json
 site/data/generated/circle_ai_contract_receipt.schema.json
+site/data/generated/circle_ai_contract_runner_check.schema.json
 ```
 
 The request schema is contract-specific: it accepts defaults for RoPE and
@@ -256,6 +257,9 @@ recurrence, requires the core KV-cache and sparse-attention fields, and rejects
 unknown parameter names before a receipt is issued.
 The Python `validate_contract_request(request)` helper applies the same public
 checks for downstream code that does not invoke JSON Schema directly.
+The runner-check schema validates the batch report emitted by
+`python scripts/check_circle_ai_contract_runner.py --format json`, including the
+per-request receipt fingerprints and optional receipt paths.
 
 ## What This Does Not Prove
 
