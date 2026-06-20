@@ -1,0 +1,13 @@
+{
+  "schema_id": "circle_calculus.ai_contract_request.v0",
+  "kind": "recurrence",
+  "parameters": {
+    "loop_period": 5,
+    "sample_index": 8,
+    "max_loops": 7,
+    "token_count": 8,
+    "selected_block_start": 2,
+    "selected_block_width": 3,
+    "shift_passes": 3
+  }
+}

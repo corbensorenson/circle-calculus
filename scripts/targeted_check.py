@@ -270,6 +270,13 @@ def add_circle_ai_contract_checks(checks: list[Check], seen: set[tuple[str, ...]
         pytest("tests/test_circle_ai_contract_runner.py"),
         reason,
     )
+    add(
+        checks,
+        seen,
+        "Circle AI request example tests",
+        pytest("tests/test_circle_ai_contract_request_examples.py"),
+        reason,
+    )
 
 
 AI_CONTRACT_DIGEST_FIELDS = {
@@ -511,6 +518,7 @@ def ai_contract_impact(files: Iterable[str], *, full: bool = False) -> tuple[str
             path in AI_CONTRACT_BROAD_SURFACE_PATHS
             or path in AI_CONTRACT_SHARED_SITE_PAGES
             or path.startswith("site/data/generated/circle_ai_contract_pack")
+            or path.startswith("examples/circle_ai_requests/")
             or path.startswith("sidecars/PAPER_AI_")
             or "circle_ai_contract" in path
         ):
@@ -717,6 +725,13 @@ def plan_for_files(files: Iterable[str], *, full: bool = False) -> list[Check]:
 
         if path in AI_CONTRACT_BROAD_SURFACE_PATHS:
             add_circle_ai_contract_checks(checks, seen, f"{path} changed public AI contract validation surface")
+
+        if path.startswith("examples/circle_ai_requests/"):
+            add_circle_ai_contract_checks(
+                checks,
+                seen,
+                f"{path} changed a public AI contract request example",
+            )
 
         if path == "pyproject.toml" or path.startswith(".github/workflows/"):
             add(checks, seen, "full source checks", ("make", "sourcecheck"), f"{path} changes validation plumbing")

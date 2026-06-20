@@ -1,0 +1,10 @@
+{
+  "schema_id": "circle_calculus.ai_contract_request.v0",
+  "kind": "sparse-attention",
+  "parameters": {
+    "context": 32,
+    "strides": [5, 11, 17],
+    "path_length": 16,
+    "local_window": 9
+  }
+}

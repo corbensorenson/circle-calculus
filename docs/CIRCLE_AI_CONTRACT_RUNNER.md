@@ -65,6 +65,15 @@ python scripts/circle_ai_certify.py request \
   --json-out path/to/receipt.json
 ```
 
+Copyable starting points live under:
+
+```text
+examples/circle_ai_requests/rope_request.json
+examples/circle_ai_requests/kv_cache_request.json
+examples/circle_ai_requests/sparse_attention_request.json
+examples/circle_ai_requests/recurrence_request.json
+```
+
 ## Receipt Statuses
 
 | Status | Meaning |

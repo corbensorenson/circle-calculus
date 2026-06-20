@@ -1,0 +1,12 @@
+{
+  "schema_id": "circle_calculus.ai_contract_request.v0",
+  "kind": "kv-cache",
+  "parameters": {
+    "cache_size": 16,
+    "current": 31,
+    "token": 20,
+    "batch_tokens": [20, 24, 29, 31],
+    "sink_size": 4,
+    "request_id": "example_read_request"
+  }
+}

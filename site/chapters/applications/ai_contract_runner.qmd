@@ -145,6 +145,15 @@ python scripts/circle_ai_certify.py request \
   --json-out reports/rope_receipt.json
 ```
 
+Checked-in examples are available for all four runner surfaces:
+
+```text
+examples/circle_ai_requests/rope_request.json
+examples/circle_ai_requests/kv_cache_request.json
+examples/circle_ai_requests/sparse_attention_request.json
+examples/circle_ai_requests/recurrence_request.json
+```
+
 ## Receipt Reading Loop
 
 Read every receipt in this order:
