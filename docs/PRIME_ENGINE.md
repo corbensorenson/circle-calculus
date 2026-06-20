@@ -812,7 +812,9 @@ rows. This is intentionally separate from the default external controls because
 it exposes whether a `pi(x)` workload should use prefix counting or sustained
 marking. On the current machine, this row shows `prefix-pi` is the correct
 Circle lane for `pi(1e9)`, while specialized `primecount` remains the bar to
-beat for pure prefix-counting.
+beat for pure prefix-counting. The target uses exact `--circle-variant`
+entries instead of a full segment-size by count-mode grid, so the adaptive
+default row is measured once with no explicit segment-size override.
 
 `prime-engine-external-throughput-compare` reruns the same short workload into
 candidate artifacts and then gates `circle_prime_default_count` against

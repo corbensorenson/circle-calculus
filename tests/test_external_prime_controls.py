@@ -11,9 +11,11 @@ from scripts.benchmark_prime_external_controls import (
     circle_measurement_name,
     circle_prime_command,
     circle_server_measurement_name,
+    parse_circle_variants,
     measure_interleaved,
     median,
     parse_circle_count_modes,
+    parse_circle_variants,
     parse_segment_size_list,
     primecount_command,
     primesieve_command,
@@ -155,6 +157,25 @@ def test_circle_count_mode_parser_and_names() -> None:
         circle_server_measurement_name("presieve13", 4)
         == "circle_prime_server_parallel_presieve13_count_4t"
     )
+
+
+def test_circle_variant_parser_can_avoid_cross_product() -> None:
+    assert parse_circle_variants([], [0, 131072], ["default", "segmented"]) == [
+        (0, "default"),
+        (0, "segmented"),
+        (131072, "default"),
+        (131072, "segmented"),
+    ]
+    assert parse_circle_variants(
+        ["default:0", "segmented:131072,segmented:196608", "prefix-pi:0"],
+        [0],
+        ["segmented"],
+    ) == [
+        (0, "default"),
+        (131072, "segmented"),
+        (196608, "segmented"),
+        (0, "prefix-pi"),
+    ]
 
 
 def test_external_commands_can_request_threads() -> None:
@@ -338,7 +359,7 @@ def test_external_metadata_records_circle_sweep_commands(monkeypatch) -> None:
 
     metadata = build_run_metadata(
         args=args,
-        ranges=[(0, 1000)],
+        ranges=[(0, 1000), (1000, 2000)],
         started_at_utc="2026-01-01T00:00:00Z",
         cargo=None,
         circle_prime=Path("target/release/circle-prime"),
@@ -383,6 +404,78 @@ def test_external_metadata_records_circle_sweep_commands(monkeypatch) -> None:
         "8",
         "--count-mode",
         "hybrid-wheel30-mark",
+    ]
+
+
+def test_external_metadata_records_exact_circle_variants(monkeypatch) -> None:
+    monkeypatch.setattr(
+        benchmark_prime_external_controls,
+        "circle_prime_package_metadata",
+        lambda cargo: {"name": "circle-prime", "version": "0.1.0"},
+    )
+    args = SimpleNamespace(
+        rounds=3,
+        segment_size=0,
+        segment_sizes=None,
+        circle_count_modes="segmented",
+        circle_variant=[
+            "default:0",
+            "segmented:131072,segmented:196608",
+            "prefix-pi:0",
+        ],
+        circle_threads=8,
+        external_threads=8,
+        require_tool=[],
+        include_circle_server=False,
+    )
+
+    metadata = build_run_metadata(
+        args=args,
+        ranges=[(0, 1000)],
+        started_at_utc="2026-01-01T00:00:00Z",
+        cargo=None,
+        circle_prime=Path("target/release/circle-prime"),
+        primesieve="/opt/bin/primesieve",
+        primecount=None,
+        row_count=8,
+    )
+
+    assert metadata["requested_segment_sizes"] == [0, 131072, 196608]
+    assert metadata["circle_count_modes"] == ["default", "segmented", "prefix-pi"]
+    assert metadata["circle_variants"] == [
+        {"segment_size": 0, "count_mode": "default"},
+        {"segment_size": 131072, "count_mode": "segmented"},
+        {"segment_size": 196608, "count_mode": "segmented"},
+        {"segment_size": 0, "count_mode": "prefix-pi"},
+    ]
+    for command_set in metadata["range_commands"]:
+        variants = command_set["circle_variants"]
+        assert [(variant["segment_size"], variant["count_mode"]) for variant in variants] == [
+            (0, "default"),
+            (131072, "segmented"),
+            (196608, "segmented"),
+            (0, "prefix-pi"),
+        ]
+    variants = metadata["range_commands"][0]["circle_variants"]
+    assert variants[0]["timing"] == [
+        "target/release/circle-prime",
+        "range",
+        "0",
+        "1000",
+        "--count",
+        "--threads",
+        "8",
+    ]
+    assert variants[3]["timing"] == [
+        "target/release/circle-prime",
+        "range",
+        "0",
+        "1000",
+        "--count",
+        "--threads",
+        "8",
+        "--count-mode",
+        "prefix-pi",
     ]
 
 

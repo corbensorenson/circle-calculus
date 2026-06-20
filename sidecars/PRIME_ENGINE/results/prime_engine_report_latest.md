@@ -1,6 +1,6 @@
 # Prime Engine Report
 
-Generated: `2026-06-20T01:44:24Z`
+Generated: `2026-06-20T01:52:20Z`
 
 ## External Correctness
 
@@ -225,29 +225,29 @@ Minimum confirmations: `2`; requires stable samples: `True`.
 
 ## External Throughput
 
-Requested Circle segment sizes: `131072`, `196608`, `262144`, `524288`.
+Requested Circle segment sizes: `0`, `131072`, `196608`, `262144`, `524288`.
 Circle count modes: `default`, `segmented`, `prefix-pi`.
 Rounds per row: `5`.
 
 | Range | Baseline | Circle Row | Segment | Threads | Best ms | Median ms | Best Speedup | Median Speedup | Samples | Verdict |
 | --- | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | --- | --- |
-| [0, 1000000000) | `external_primecount_pi_diff` | `circle_prime_default_count`<br>mode: `prefix-pi` | 262144 | 1/8 | 5.549 | 5.688 | 0.789 | 1.002 | noisy<br>C n=5, max/med=5.28<br>B n=5, max/med=1.64 | circle_faster |
-| [0, 1000000000) | `external_primesieve_count` | `circle_prime_default_count`<br>mode: `prefix-pi` | 262144 | 1/8 | 5.549 | 5.688 | 3.043 | 3.830 | noisy<br>C n=5, max/med=5.28<br>B n=5, max/med=2.52 | circle_faster |
+| [0, 1000000000) | `external_primecount_pi_diff` | `circle_prime_prefix_pi_count`<br>mode: `prefix-pi` | 262144 | 1/8 | 6.313 | 6.744 | 0.817 | 0.944 | stable<br>C n=5, max/med=1.31<br>B n=5, max/med=1.43 | baseline_faster |
+| [0, 1000000000) | `external_primesieve_count` | `circle_prime_prefix_pi_count`<br>mode: `prefix-pi` | 262144 | 1/8 | 6.313 | 6.744 | 2.771 | 3.114 | stable<br>C n=5, max/med=1.31<br>B n=5, max/med=1.15 | circle_faster |
 
 Throughput segment candidate spread:
 
 | Range | Baseline | Circle Row | Segment | Threads | Best ms | Median ms | Best Speedup | Median Speedup | Samples |
 | --- | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | --- |
-| [0, 1000000000) | `external_primecount_pi_diff` | `circle_prime_default_count`<br>mode: `prefix-pi` | 262144 | 1/8 | 5.549 | 5.688 | 0.789 | 1.002 | noisy<br>C n=5, max/med=5.28<br>B n=5, max/med=1.64 |
-| [0, 1000000000) | `external_primecount_pi_diff` | `circle_prime_default_count`<br>mode: `prefix-pi` | 524288 | 1/8 | 5.424 | 5.832 | 0.808 | 0.977 | noisy<br>C n=5, max/med=1.35<br>B n=5, max/med=1.64 |
-| [0, 1000000000) | `external_primecount_pi_diff` | `circle_prime_prefix_pi_count`<br>mode: `prefix-pi` | 196608 | 1/8 | 5.855 | 5.908 | 0.748 | 0.965 | noisy<br>C n=5, max/med=1.75<br>B n=5, max/med=1.64 |
-| [0, 1000000000) | `external_primecount_pi_diff` | `circle_prime_prefix_pi_count`<br>mode: `prefix-pi` | 262144 | 1/8 | 5.792 | 6.042 | 0.756 | 0.944 | noisy<br>C n=5, max/med=1.14<br>B n=5, max/med=1.64 |
-| [0, 1000000000) | `external_primecount_pi_diff` | `circle_prime_default_count`<br>mode: `prefix-pi` | 196608 | 1/8 | 5.734 | 6.222 | 0.764 | 0.916 | noisy<br>C n=5, max/med=1.52<br>B n=5, max/med=1.64 |
-| [0, 1000000000) | `external_primesieve_count` | `circle_prime_default_count`<br>mode: `prefix-pi` | 262144 | 1/8 | 5.549 | 5.688 | 3.043 | 3.830 | noisy<br>C n=5, max/med=5.28<br>B n=5, max/med=2.52 |
-| [0, 1000000000) | `external_primesieve_count` | `circle_prime_default_count`<br>mode: `prefix-pi` | 524288 | 1/8 | 5.424 | 5.832 | 3.114 | 3.735 | noisy<br>C n=5, max/med=1.35<br>B n=5, max/med=2.52 |
-| [0, 1000000000) | `external_primesieve_count` | `circle_prime_prefix_pi_count`<br>mode: `prefix-pi` | 196608 | 1/8 | 5.855 | 5.908 | 2.884 | 3.687 | noisy<br>C n=5, max/med=1.75<br>B n=5, max/med=2.52 |
-| [0, 1000000000) | `external_primesieve_count` | `circle_prime_prefix_pi_count`<br>mode: `prefix-pi` | 262144 | 1/8 | 5.792 | 6.042 | 2.916 | 3.605 | noisy<br>C n=5, max/med=1.14<br>B n=5, max/med=2.52 |
-| [0, 1000000000) | `external_primesieve_count` | `circle_prime_default_count`<br>mode: `prefix-pi` | 196608 | 1/8 | 5.734 | 6.222 | 2.945 | 3.501 | noisy<br>C n=5, max/med=1.52<br>B n=5, max/med=2.52 |
+| [0, 1000000000) | `external_primecount_pi_diff` | `circle_prime_prefix_pi_count`<br>mode: `prefix-pi` | 262144 | 1/8 | 6.313 | 6.744 | 0.817 | 0.944 | stable<br>C n=5, max/med=1.31<br>B n=5, max/med=1.43 |
+| [0, 1000000000) | `external_primecount_pi_diff` | `circle_prime_default_count`<br>mode: `prefix-pi` | 262144 | 1/8 | 5.933 | 6.831 | 0.870 | 0.932 | noisy<br>C n=5, max/med=2.76<br>B n=5, max/med=1.43 |
+| [0, 1000000000) | `external_primecount_pi_diff` | `circle_prime_parallel_segmented_count_8t`<br>mode: `segmented` | 131072 | 8 | 39.817 | 46.084 | 0.130 | 0.138 | noisy<br>C n=5, max/med=1.90<br>B n=5, max/med=1.43 |
+| [0, 1000000000) | `external_primecount_pi_diff` | `circle_prime_parallel_segmented_count_8t`<br>mode: `segmented` | 196608 | 8 | 41.413 | 56.594 | 0.125 | 0.112 | noisy<br>C n=5, max/med=2.68<br>B n=5, max/med=1.43 |
+| [0, 1000000000) | `external_primecount_pi_diff` | `circle_prime_parallel_segmented_count_8t`<br>mode: `segmented` | 262144 | 8 | 41.102 | 60.106 | 0.126 | 0.106 | stable<br>C n=5, max/med=1.43<br>B n=5, max/med=1.43 |
+| [0, 1000000000) | `external_primesieve_count` | `circle_prime_prefix_pi_count`<br>mode: `prefix-pi` | 262144 | 1/8 | 6.313 | 6.744 | 2.771 | 3.114 | stable<br>C n=5, max/med=1.31<br>B n=5, max/med=1.15 |
+| [0, 1000000000) | `external_primesieve_count` | `circle_prime_default_count`<br>mode: `prefix-pi` | 262144 | 1/8 | 5.933 | 6.831 | 2.949 | 3.075 | noisy<br>C n=5, max/med=2.76<br>B n=5, max/med=1.15 |
+| [0, 1000000000) | `external_primesieve_count` | `circle_prime_parallel_segmented_count_8t`<br>mode: `segmented` | 131072 | 8 | 39.817 | 46.084 | 0.439 | 0.456 | noisy<br>C n=5, max/med=1.90<br>B n=5, max/med=1.15 |
+| [0, 1000000000) | `external_primesieve_count` | `circle_prime_parallel_segmented_count_8t`<br>mode: `segmented` | 196608 | 8 | 41.413 | 56.594 | 0.422 | 0.371 | noisy<br>C n=5, max/med=2.68<br>B n=5, max/med=1.15 |
+| [0, 1000000000) | `external_primesieve_count` | `circle_prime_parallel_segmented_count_8t`<br>mode: `segmented` | 262144 | 8 | 41.102 | 60.106 | 0.426 | 0.349 | stable<br>C n=5, max/med=1.43<br>B n=5, max/med=1.15 |
 
 ## External Segment Sweep
 
