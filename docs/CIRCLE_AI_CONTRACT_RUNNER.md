@@ -23,6 +23,11 @@ python scripts/circle_ai_certify.py rope \
   --context 131072 \
   --requested-margin 1/328459
 
+python scripts/circle_ai_certify.py rope \
+  --model-config path/to/config.json \
+  --requested-margin 1/328459 \
+  --format json
+
 python scripts/circle_ai_certify.py kv-cache \
   --cache-size 16 \
   --current 31 \
@@ -41,6 +46,14 @@ python scripts/circle_ai_certify.py recurrence
 
 Add `--format json` for a machine-readable receipt, or `--json-out PATH` to
 write one to disk.
+
+For standard RoPE model configs, `--model-config` infers `head_dim` from
+`head_dim` or `hidden_size / num_attention_heads`, `base` from `rope_theta`
+when present, and `context` from `max_position_embeddings` or related context
+fields. Explicit `--head-dim`, `--base`, `--context`, `--tolerance`, and
+`--discretization` flags override inferred values. Non-default `rope_scaling`
+metadata is rejected rather than treated as proved by the current standard-RoPE
+contract.
 
 External projects can also use the versioned request schema directly:
 
@@ -172,6 +185,7 @@ and written to:
 site/data/generated/circle_ai_contract_request.schema.json
 site/data/generated/circle_ai_contract_request_validation.schema.json
 site/data/generated/circle_ai_contract_receipt.schema.json
+site/data/generated/circle_ai_contract_runner_check.schema.json
 ```
 
 The request schema has contract-specific parameter shapes. RoPE and recurrence

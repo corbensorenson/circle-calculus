@@ -77,6 +77,21 @@ python scripts/circle_ai_certify.py rope \
   --requested-margin 1/328459
 ```
 
+If you already have a standard RoPE model `config.json`, import the common
+fields directly:
+
+```bash
+python scripts/circle_ai_certify.py rope \
+  --model-config path/to/config.json \
+  --requested-margin 1/328459 \
+  --format json
+```
+
+The importer reads `head_dim` or `hidden_size / num_attention_heads`, `rope_theta`
+when present, and `max_position_embeddings` or related context fields. Explicit
+CLI flags override inferred values. Non-default `rope_scaling` metadata is
+rejected because the current receipt does not prove scaled-RoPE semantics.
+
 Expected shape:
 
 ```text

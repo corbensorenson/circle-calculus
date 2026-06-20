@@ -17,6 +17,7 @@ from circle_math.applications import (  # noqa: E402
     build_contract_receipt,
     build_contract_receipt_from_request,
     build_contract_request_validation_report,
+    build_rope_request_parameters_from_model_config,
     load_contract_pack,
     receipt_summary_lines,
 )
@@ -93,10 +94,18 @@ def parse_args() -> argparse.Namespace:
         help="Certify a RoPE position-distinguishability configuration.",
     )
     add_common_options(rope)
-    rope.add_argument("--head-dim", type=int, default=128)
-    rope.add_argument("--base", type=float, default=10000.0)
-    rope.add_argument("--context", type=int, default=32768)
-    rope.add_argument("--tolerance", type=float, default=1e-6)
+    rope.add_argument(
+        "--model-config",
+        type=Path,
+        help=(
+            "Optional model config.json to infer standard-RoPE head_dim, base, "
+            "and context. Explicit flags override inferred values."
+        ),
+    )
+    rope.add_argument("--head-dim", type=int)
+    rope.add_argument("--base", type=float)
+    rope.add_argument("--context", type=int)
+    rope.add_argument("--tolerance", type=float)
     rope.add_argument(
         "--discretization",
         choices=("round", "floor", "ceil"),
@@ -157,13 +166,17 @@ def _pack_from_args(args: argparse.Namespace) -> dict[str, Any] | None:
     return load_contract_pack(path)
 
 
-def _load_request_json(path: Path) -> dict[str, Any]:
+def _load_json_object(path: Path, *, label: str) -> dict[str, Any]:
     if not path.is_absolute():
         path = ROOT / path
     payload = json.loads(path.read_text(encoding="utf-8"))
     if not isinstance(payload, dict):
-        raise SystemExit("request JSON must be an object")
+        raise SystemExit(f"{label} must be an object")
     return payload
+
+
+def _load_request_json(path: Path) -> dict[str, Any]:
+    return _load_json_object(path, label="request JSON")
 
 
 def _receipt_from_request_json(
@@ -183,11 +196,21 @@ def _request_validation_report(path: Path) -> dict[str, Any]:
 
 def _parameters_from_args(args: argparse.Namespace) -> dict[str, Any]:
     if args.kind == "rope":
+        if args.model_config is not None:
+            return build_rope_request_parameters_from_model_config(
+                _load_json_object(args.model_config, label="model config JSON"),
+                head_dim=args.head_dim,
+                base=args.base,
+                context=args.context,
+                tolerance=args.tolerance,
+                discretization=args.discretization,
+                requested_margin=args.requested_margin,
+            )
         return {
-            "head_dim": args.head_dim,
-            "base": args.base,
-            "context": args.context,
-            "tolerance": args.tolerance,
+            "head_dim": 128 if args.head_dim is None else args.head_dim,
+            "base": 10000.0 if args.base is None else args.base,
+            "context": 32768 if args.context is None else args.context,
+            "tolerance": 1e-6 if args.tolerance is None else args.tolerance,
             "discretization": args.discretization,
             "requested_margin": args.requested_margin,
         }
@@ -248,11 +271,14 @@ def main() -> int:
         receipt = _receipt_from_request_json(args.request_json, pack=pack)
     else:
         pack = _pack_from_args(args)
-        receipt = build_contract_receipt(
-            args.kind,
-            _parameters_from_args(args),
-            pack=pack,
-        )
+        try:
+            receipt = build_contract_receipt(
+                args.kind,
+                _parameters_from_args(args),
+                pack=pack,
+            )
+        except ValueError as exc:
+            raise SystemExit(str(exc)) from exc
     if args.json_out is not None:
         write_json(args.json_out, receipt)
     if args.format == "json":

@@ -18,6 +18,7 @@ from circle_math.applications import (
     build_contract_request_validation_json_schema,
     build_kv_cache_receipt,
     build_recurrence_receipt,
+    build_rope_request_parameters_from_model_config,
     build_rope_receipt,
     build_sparse_attention_receipt,
     validate_contract_request,
@@ -231,6 +232,64 @@ def test_request_api_validates_and_builds_receipts(contract_pack: dict) -> None:
     assert receipt["kind"] == "sparse_attention_coverage"
     assert receipt["request_passed"] is True
     assert validate_contract_receipt(receipt) == []
+
+
+def test_rope_model_config_import_builds_standard_request_parameters() -> None:
+    parameters = build_rope_request_parameters_from_model_config(
+        {
+            "hidden_size": 4096,
+            "num_attention_heads": 32,
+            "rope_theta": 500000.0,
+            "max_position_embeddings": 131072,
+        },
+        requested_margin="1/328459",
+    )
+
+    assert parameters == {
+        "head_dim": 128,
+        "base": 500000.0,
+        "context": 131072,
+        "tolerance": 1e-6,
+        "discretization": "round",
+        "requested_margin": "1/328459",
+    }
+    assert validate_contract_request(
+        {
+            "schema_id": "circle_calculus.ai_contract_request.v0",
+            "kind": "rope",
+            "parameters": parameters,
+        }
+    ) == []
+
+
+def test_rope_model_config_import_handles_partial_rotary_factor() -> None:
+    parameters = build_rope_request_parameters_from_model_config(
+        {
+            "hidden_size": 1024,
+            "num_attention_heads": 8,
+            "max_position_embeddings": 2048,
+            "partial_rotary_factor": 0.5,
+        },
+        base=10000.0,
+        context=4096,
+    )
+
+    assert parameters["head_dim"] == 64
+    assert parameters["base"] == 10000.0
+    assert parameters["context"] == 4096
+
+
+def test_rope_model_config_import_rejects_unproved_scaling_metadata() -> None:
+    with pytest.raises(ValueError, match="rope_scaling"):
+        build_rope_request_parameters_from_model_config(
+            {
+                "hidden_size": 4096,
+                "num_attention_heads": 32,
+                "rope_theta": 500000.0,
+                "max_position_embeddings": 131072,
+                "rope_scaling": {"rope_type": "llama3", "factor": 8.0},
+            }
+        )
 
 
 def test_request_api_reports_malformed_requests() -> None:
@@ -504,6 +563,88 @@ def test_circle_ai_certify_cli_emits_json_receipt() -> None:
     assert payload["evidence"]["standard_channel0_d19_request_classifier"][
         "request_status"
     ] == "proved"
+
+
+def test_circle_ai_certify_cli_imports_standard_rope_model_config(
+    tmp_path: Path,
+) -> None:
+    config_path = tmp_path / "config.json"
+    config_path.write_text(
+        json.dumps(
+            {
+                "hidden_size": 4096,
+                "num_attention_heads": 32,
+                "rope_theta": 10000.0,
+                "max_position_embeddings": 131072,
+            }
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+
+    result = subprocess.run(
+        [
+            sys.executable,
+            str(SCRIPT),
+            "rope",
+            "--model-config",
+            str(config_path),
+            "--requested-margin",
+            "1/328459",
+            "--format",
+            "json",
+        ],
+        cwd=ROOT,
+        check=True,
+        text=True,
+        capture_output=True,
+    )
+
+    payload = json.loads(result.stdout)
+    assert payload["kind"] == "rope_position_distinguishability"
+    assert payload["status"] == "proved"
+    assert payload["normalized_request"]["head_dim"] == 128
+    assert payload["normalized_request"]["base"] == 10000.0
+    assert payload["normalized_request"]["context_length"] == 131072
+    assert payload["request"]["parameters"]["requested_margin"] == "1/328459"
+
+
+def test_circle_ai_certify_cli_rejects_scaled_rope_model_config(
+    tmp_path: Path,
+) -> None:
+    config_path = tmp_path / "config.json"
+    config_path.write_text(
+        json.dumps(
+            {
+                "hidden_size": 4096,
+                "num_attention_heads": 32,
+                "rope_theta": 500000.0,
+                "max_position_embeddings": 131072,
+                "rope_scaling": {"rope_type": "llama3", "factor": 8.0},
+            }
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+
+    result = subprocess.run(
+        [
+            sys.executable,
+            str(SCRIPT),
+            "rope",
+            "--model-config",
+            str(config_path),
+            "--format",
+            "json",
+        ],
+        cwd=ROOT,
+        check=False,
+        text=True,
+        capture_output=True,
+    )
+
+    assert result.returncode == 1
+    assert "rope_scaling is outside" in result.stderr
 
 
 def test_circle_ai_certify_cli_accepts_request_json(tmp_path: Path) -> None:

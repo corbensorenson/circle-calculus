@@ -84,6 +84,15 @@ ROPE_DIRICHLET_GUARDRAIL_THEOREM_IDS = (
     "AIRA-T0240",
     "AIRA-T0241",
 )
+ROPE_MODEL_BASE_KEYS = ("rope_theta", "rope_base", "rotary_emb_base")
+ROPE_MODEL_CONTEXT_KEYS = (
+    "max_position_embeddings",
+    "context_length",
+    "seq_length",
+    "n_positions",
+)
+ROPE_MODEL_HEAD_DIM_KEYS = ("head_dim", "attention_head_dim")
+ROPE_MODEL_ROTARY_FRACTION_KEYS = ("partial_rotary_factor", "rotary_pct")
 
 
 def canonical_contract_kind(kind: str) -> str:
@@ -105,6 +114,153 @@ def parse_fraction(value: str | Fraction | None) -> Fraction | None:
     if not text:
         raise ValueError("fraction value must be non-empty")
     return Fraction(text)
+
+
+def _model_config_value(config: Mapping[str, Any], keys: Sequence[str]) -> Any:
+    for key in keys:
+        if key in config:
+            return config[key]
+    return None
+
+
+def _positive_int_value(value: Any, *, field: str) -> int:
+    if not isinstance(value, int) or isinstance(value, bool) or value <= 0:
+        raise ValueError(f"model config {field} must be a positive integer")
+    return value
+
+
+def _positive_float_value(value: Any, *, field: str) -> float:
+    if not isinstance(value, (int, float)) or isinstance(value, bool) or value <= 0:
+        raise ValueError(f"model config {field} must be a positive number")
+    return float(value)
+
+
+def _nonnegative_float_value(value: Any, *, field: str) -> float:
+    if not isinstance(value, (int, float)) or isinstance(value, bool) or value < 0:
+        raise ValueError(f"model config {field} must be a nonnegative number")
+    return float(value)
+
+
+def _optional_rotary_fraction(config: Mapping[str, Any]) -> Fraction | None:
+    value = _model_config_value(config, ROPE_MODEL_ROTARY_FRACTION_KEYS)
+    if value is None:
+        return None
+    if not isinstance(value, (int, float, str)) or isinstance(value, bool):
+        raise ValueError("model config rotary fraction must be a positive number")
+    try:
+        fraction = Fraction(str(value))
+    except (ValueError, ZeroDivisionError) as exc:
+        raise ValueError(
+            "model config rotary fraction must parse as a positive number"
+        ) from exc
+    if fraction <= 0:
+        raise ValueError("model config rotary fraction must be positive")
+    return fraction
+
+
+def _ensure_standard_rope_scaling(config: Mapping[str, Any]) -> None:
+    rope_scaling = config.get("rope_scaling")
+    if rope_scaling in (None, False):
+        return
+    if isinstance(rope_scaling, Mapping):
+        rope_type = rope_scaling.get("rope_type", rope_scaling.get("type"))
+        if rope_type in (None, "default", "none"):
+            return
+    raise ValueError(
+        "model config rope_scaling is outside the standard-RoPE importer; "
+        "use an explicit Circle request only for the simplified parameters "
+        "you intend to certify"
+    )
+
+
+def _infer_rope_head_dim(config: Mapping[str, Any]) -> int:
+    direct = _model_config_value(config, ROPE_MODEL_HEAD_DIM_KEYS)
+    if direct is not None:
+        head_dim = _positive_int_value(direct, field="head_dim")
+    else:
+        hidden_size = _positive_int_value(
+            config.get("hidden_size"),
+            field="hidden_size",
+        )
+        num_heads = _positive_int_value(
+            config.get("num_attention_heads"),
+            field="num_attention_heads",
+        )
+        if hidden_size % num_heads != 0:
+            raise ValueError(
+                "model config hidden_size must be divisible by num_attention_heads"
+            )
+        head_dim = hidden_size // num_heads
+
+    fraction = _optional_rotary_fraction(config)
+    if fraction is None:
+        return head_dim
+    numerator = head_dim * fraction.numerator
+    if numerator % fraction.denominator != 0:
+        raise ValueError(
+            "model config rotary fraction must produce an integer RoPE head_dim"
+        )
+    rotary_dim = numerator // fraction.denominator
+    if rotary_dim <= 0:
+        raise ValueError("model config rotary fraction produced a nonpositive head_dim")
+    return rotary_dim
+
+
+def build_rope_request_parameters_from_model_config(
+    config: Mapping[str, Any],
+    *,
+    head_dim: int | None = None,
+    base: float | None = None,
+    context: int | None = None,
+    tolerance: float | None = None,
+    discretization: str | None = None,
+    requested_margin: str | Fraction | None = None,
+) -> dict[str, Any]:
+    """Build standard-RoPE runner parameters from a model config object.
+
+    The importer covers the common standard-RoPE fields used by model
+    ``config.json`` files. Non-default ``rope_scaling`` metadata is rejected
+    because the current runner receipts do not prove scaled-RoPE semantics.
+    """
+
+    if not isinstance(config, Mapping):
+        raise ValueError("model config must be a JSON object")
+    _ensure_standard_rope_scaling(config)
+
+    resolved_head_dim = (
+        _positive_int_value(head_dim, field="head_dim")
+        if head_dim is not None
+        else _infer_rope_head_dim(config)
+    )
+    base_value = (
+        base if base is not None else _model_config_value(config, ROPE_MODEL_BASE_KEYS)
+    )
+    resolved_base = 10000.0 if base_value is None else _positive_float_value(
+        base_value,
+        field="base",
+    )
+    context_value = (
+        context
+        if context is not None
+        else _model_config_value(config, ROPE_MODEL_CONTEXT_KEYS)
+    )
+    resolved_context = _positive_int_value(context_value, field="context")
+    resolved_tolerance = 1e-6 if tolerance is None else _nonnegative_float_value(
+        tolerance,
+        field="tolerance",
+    )
+    resolved_discretization = "round" if discretization is None else discretization
+
+    parameters: dict[str, Any] = {
+        "head_dim": resolved_head_dim,
+        "base": resolved_base,
+        "context": resolved_context,
+        "tolerance": resolved_tolerance,
+        "discretization": resolved_discretization,
+    }
+    if requested_margin is not None:
+        parameters["requested_margin"] = str(requested_margin)
+    return parameters
 
 
 def _strip_fingerprint_fields(value: Any) -> Any:

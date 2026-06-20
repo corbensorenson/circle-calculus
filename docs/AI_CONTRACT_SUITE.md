@@ -25,6 +25,20 @@ python scripts/circle_ai_certify.py rope \
   --format json
 ```
 
+For standard RoPE model configs, the same runner can infer parameters from a
+`config.json`:
+
+```bash
+python scripts/circle_ai_certify.py rope \
+  --model-config path/to/config.json \
+  --requested-margin 1/328459 \
+  --format json
+```
+
+This imports only the standard-RoPE fields used by the current theorem-backed
+receipt. Non-default `rope_scaling` metadata is rejected instead of being
+treated as covered by the proof status.
+
 The runner receipt schema is `circle_calculus.ai_contract_receipt.v0`; the
 request schema is `circle_calculus.ai_contract_request.v0`; the request
 validation report schema is
