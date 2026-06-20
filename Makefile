@@ -379,6 +379,7 @@ circle-ai-contracts-check: circle-ai-contracts
 
 circle-ai-contracts-ready: circle-ai-contracts-check
 	python scripts/example_validate_circle_ai_contract_pack_schema.py --summary >/dev/null
+	python scripts/circle_ai_contract_ready.py
 	python scripts/circle_ai_contract_ready.py --list-kinds
 	python scripts/circle_ai_contract_ready.py --list-recommendations
 	python scripts/circle_ai_contract_ready.py --action-plan
