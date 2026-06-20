@@ -103,6 +103,9 @@ The mapping is conservative:
   current flagship evidence fields: RoPE D19 request-classifier and
   first-channel bank-transfer fields, KV-cache stale/sink-window policy fields,
   and sparse-attention first-gap plus complete-fallback fields.
+- RoPE-backed application Lean files also run `tests/test_rope_certifier.py`,
+  because that file compares the committed RoPE preset result sidecars against
+  their generator and catches stale theorem-id trails after proof-surface edits.
 - RoPE Python or CLI changes run the RoPE certifier tests.
 - KV-cache Python or CLI changes run the KV-cache certifier tests.
 - sparse-attention / Circle AI changes run the sparse and Circle transformer tests.
