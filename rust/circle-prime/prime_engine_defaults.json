@@ -1,4 +1,6 @@
 {
+  "parallel_lower_high_offset_base_limit": 5000000,
+  "parallel_lower_high_offset_count_mode": "presieve13",
   "parallel_medium_prefix_count_mode": "prefix-pi",
   "parallel_medium_prefix_segment_size": 196608,
   "parallel_small_prefix_count_mode": "prefix-pi",

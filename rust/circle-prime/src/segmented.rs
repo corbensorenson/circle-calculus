@@ -1164,7 +1164,11 @@ pub fn recommended_count_mode(low: u64, high: u64, requested_threads: usize) -> 
     } else if requested_threads <= 1 {
         "segmented"
     } else if base_limit >= 1_000_000 && span <= 16_000_000 {
-        PARALLEL_VERY_HIGH_OFFSET_COUNT_MODE
+        if base_limit < PARALLEL_LOWER_HIGH_OFFSET_BASE_LIMIT {
+            PARALLEL_LOWER_HIGH_OFFSET_COUNT_MODE
+        } else {
+            PARALLEL_VERY_HIGH_OFFSET_COUNT_MODE
+        }
     } else if base_limit < 300_000 && span <= 128_000_000 {
         "dynamic"
     } else {
@@ -4050,6 +4054,10 @@ mod tests {
         );
         assert_eq!(
             recommended_count_mode(1_000_000_000_000, 1_000_010_000_000, 8),
+            PARALLEL_LOWER_HIGH_OFFSET_COUNT_MODE
+        );
+        assert_eq!(
+            recommended_count_mode(100_000_000_000_000, 100_000_010_000_000, 8),
             PARALLEL_VERY_HIGH_OFFSET_COUNT_MODE
         );
         assert_eq!(recommended_count_mode(1_000_000, 2_000_000, 8), "dynamic");
