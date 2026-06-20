@@ -2,7 +2,7 @@
 
 This document is the compact working entry point for the proof-carrying AI contracts. It is for using the contracts, not for reading every theorem.
 
-The guided suite starts with four v0.3 flagship contracts:
+The guided suite starts with four flagship contracts:
 
 | Contract | Question | CLI | Living Book lesson |
 | --- | --- | --- | --- |
@@ -23,6 +23,16 @@ engineering object
 ```
 
 These contracts are useful because they expose finite failure modes before training or deployment: collisions, stale reads, uncovered lags, duplicate candidate collapse, and exact count boundaries. They do not prove model quality.
+
+Read each contract in the same order:
+
+1. name the finite circular object;
+2. run the CLI or open the generated JSON record;
+3. inspect the main evidence fields;
+4. check the cited theorem ids and proof status;
+5. read the explicit non-claims before treating the result as useful.
+
+This is the core usage rule. A `PASS`, `FAIL`, `GAPS`, or `READY` label is only a report summary; the contract is the theorem-linked evidence plus its boundary.
 
 ## First 10 Minutes
 

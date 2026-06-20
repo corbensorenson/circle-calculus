@@ -8,7 +8,7 @@ This lesson is the working front door for the Circle Calculus AI contracts. The 
 
 ## Goal
 
-Use the four v0.3 flagship contracts as a guided suite: RoPE position distinguishability, KV-cache ring-buffer freshness plus sink-window policy, sparse-attention coverage, and looped recurrence schedule accounting. For each one, identify the circular address space, run or export the certificate, read the theorem ids, and state what the certificate does not prove.
+Use the four flagship contracts as a guided suite: RoPE position distinguishability, KV-cache ring-buffer freshness plus sink-window policy, sparse-attention coverage, and looped recurrence schedule accounting. For each one, identify the circular address space, run or export the certificate, read the theorem ids, and state what the certificate does not prove.
 
 :::
 
@@ -56,6 +56,18 @@ The diagram is explanatory only. The theorem ids and Lean declarations are the p
 ::: {.warning-box}
 The certifiers on this page prove finite structural facts only. They do not prove model quality, speed, memory savings, context-length improvement, reasoning ability, deployment safety, or implementation correctness.
 :::
+
+## One Contract Reading Loop
+
+Use the same loop for every contract on this page:
+
+1. name the finite circular object;
+2. run the CLI or open the generated JSON record;
+3. inspect the main evidence fields;
+4. check the cited theorem ids and proof status;
+5. read the explicit non-claims before treating the result as useful.
+
+A `PASS`, `FAIL`, `GAPS`, or `READY` label is only the report summary. The reusable artifact is the theorem-linked evidence plus its boundary.
 
 ## Reading Path
 
