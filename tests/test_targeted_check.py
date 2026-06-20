@@ -4,6 +4,7 @@ import json
 import subprocess
 import sys
 
+import scripts.targeted_check as targeted_check
 from scripts.check_circle_ai_contract_docs import STRICT_RECEIPT_TOKENS_BY_KIND
 from scripts.targeted_check import plan_for_files, plan_payload
 
@@ -375,7 +376,8 @@ def test_rust_prime_engine_change_runs_cargo_and_cli_tests() -> None:
     assert ("make", "check") not in commands
 
 
-def test_makefile_change_uses_targeted_smoke_without_sourcecheck() -> None:
+def test_makefile_unknown_change_uses_conservative_contract_smoke_without_sourcecheck(monkeypatch) -> None:
+    monkeypatch.setattr(targeted_check, "makefile_changed_topics", lambda: ("unknown",))
     commands = commands_for(["Makefile"])
 
     assert contains_command(commands, "make", "targeted-check-list")
@@ -384,6 +386,41 @@ def test_makefile_change_uses_targeted_smoke_without_sourcecheck() -> None:
     assert not contains_command(commands, "pytest", "tests/test_circle_ai_contract_consumer.py")
     assert ("make", "sourcecheck") not in commands
     assert ("make", "check") not in commands
+
+
+def test_makefile_prime_only_change_skips_ai_contract_readiness(monkeypatch) -> None:
+    monkeypatch.setattr(targeted_check, "makefile_changed_topics", lambda: ("prime_engine",))
+    commands = commands_for(["Makefile"])
+    payload = plan_payload(plan_for_files(["Makefile"]), ["Makefile"])
+
+    assert contains_command(commands, "make", "targeted-check-list")
+    assert contains_command(
+        commands,
+        "pytest",
+        "tests/test_prime_external_mode_confirm.py",
+    )
+    assert contains_command(commands, "pytest", "tests/test_prime_engine_report.py")
+    assert not contains_command(commands, "make", "circle-ai-contracts-ready")
+    assert payload["ai_contract_validation_scope"] == "none"
+
+
+def test_makefile_ai_contract_change_keeps_contract_readiness(monkeypatch) -> None:
+    monkeypatch.setattr(targeted_check, "makefile_changed_topics", lambda: ("ai_contract",))
+    commands = commands_for(["Makefile"])
+    payload = plan_payload(plan_for_files(["Makefile"]), ["Makefile"])
+
+    assert contains_command(commands, "make", "targeted-check-list")
+    assert contains_command(commands, "make", "circle-ai-contracts-ready")
+    assert payload["ai_contract_validation_scope"] == "all_contracts"
+
+
+def test_makefile_targeted_only_change_runs_planner_tests(monkeypatch) -> None:
+    monkeypatch.setattr(targeted_check, "makefile_changed_topics", lambda: ("targeted",))
+    commands = commands_for(["Makefile"])
+
+    assert contains_command(commands, "make", "targeted-check-list")
+    assert contains_command(commands, "pytest", "tests/test_targeted_check.py")
+    assert not contains_command(commands, "make", "circle-ai-contracts-ready")
 
 
 def test_pyproject_change_still_uses_full_sourcecheck() -> None:

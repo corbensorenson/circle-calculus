@@ -127,7 +127,13 @@ The mapping is conservative:
 - paper changes run paper manifest/link/source checks and claim-language checks.
 - Living Book source changes run generated-data, source-link, theorem-status, dictionary-link, backlink, and widget checks as appropriate. The showcase page also runs the capability-showcase validator because it mirrors manifest evidence text and theorem ids.
 - generated Living Book JSON changes under `site/data/generated/` run the same source-of-truth site checks, because those files feed public theorem, dictionary, paper, widget, and target indexes.
-- `Makefile` changes run a targeted-check smoke plus AI-contract readiness checks, because most Makefile edits in the current workflow add or adjust focused validation targets.
+- `Makefile` changes always run a targeted-check smoke. The runner then
+  inspects the changed Makefile lines when git diff context is available:
+  prime-engine target/default edits run the matching prime-engine regression
+  tests, Living Book target edits run site checks, targeted-check wrapper edits
+  run the planner tests, and AI-contract or unclassified Makefile edits still
+  run `make circle-ai-contracts-ready`. This keeps known local target edits
+  focused while preserving the conservative path for ambiguous build changes.
 - build or CI plumbing changes such as `pyproject.toml` or GitHub workflow files still escalate to `make sourcecheck`.
 
 If no changed files are detected, the runner performs a small baseline manifest and dictionary check.

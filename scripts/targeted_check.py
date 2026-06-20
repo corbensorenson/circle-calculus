@@ -119,6 +119,103 @@ def path_matches(path: str, *needles: str) -> bool:
     return any(needle.lower() in lower for needle in needles)
 
 
+MAKEFILE_AI_CONTRACT_MARKERS = (
+    "ai_contract",
+    "ai-contract",
+    "circle-ai",
+    "circle_ai",
+    "contract-pack",
+    "contract pack",
+    "theseus-ai",
+    "theseus_ai",
+    "rope",
+    "kv-cache",
+    "kv_cache",
+    "sparse-attention",
+    "sparse_attention",
+    "recurrence",
+    "strided-candidate",
+    "cyclic-memory",
+    "multicoil",
+    "circulant",
+    "seed-rule",
+)
+
+MAKEFILE_PRIME_ENGINE_MARKERS = (
+    "circle_prime",
+    "circle-prime",
+    "prime-engine",
+    "prime_engine",
+    "primesieve",
+)
+
+MAKEFILE_SITE_MARKERS = (
+    "living-book",
+    "living_book",
+    "quarto",
+    "site-",
+    "site_",
+    "sitecheck",
+    "siterender",
+)
+
+MAKEFILE_TARGETED_MARKERS = (
+    "targeted-check",
+    "targeted_check",
+    "targeted_",
+)
+
+
+def makefile_changed_lines() -> tuple[str, ...]:
+    """Return changed Makefile content lines when git has enough context."""
+
+    diff_args: list[list[str]] = [
+        ["diff", "--unified=0", "--", "Makefile"],
+        ["diff", "--cached", "--unified=0", "--", "Makefile"],
+    ]
+    base = detect_base()
+    if base:
+        diff_args.append(["diff", "--unified=0", f"{base}...HEAD", "--", "Makefile"])
+
+    lines: list[str] = []
+    for args in diff_args:
+        for line in run_git(args):
+            if not line.startswith(("+", "-")):
+                continue
+            if line.startswith(("+++", "---")):
+                continue
+            content = line[1:].strip()
+            if content:
+                lines.append(content)
+    return tuple(dict.fromkeys(lines))
+
+
+def makefile_changed_topics() -> tuple[str, ...]:
+    lines = makefile_changed_lines()
+    if not lines:
+        return ("unknown",)
+
+    topics: set[str] = set()
+    for line in lines:
+        lower = line.lower()
+        matched = False
+        if any(marker in lower for marker in MAKEFILE_AI_CONTRACT_MARKERS):
+            topics.add("ai_contract")
+            matched = True
+        if any(marker in lower for marker in MAKEFILE_PRIME_ENGINE_MARKERS):
+            topics.add("prime_engine")
+            matched = True
+        if any(marker in lower for marker in MAKEFILE_SITE_MARKERS):
+            topics.add("site")
+            matched = True
+        if any(marker in lower for marker in MAKEFILE_TARGETED_MARKERS):
+            topics.add("targeted")
+            matched = True
+        if not matched:
+            topics.add("unknown")
+    return tuple(sorted(topics))
+
+
 def lean_module_name(path: str) -> str | None:
     if not path.startswith("Circle/") or not path.endswith(".lean"):
         return None
@@ -403,14 +500,19 @@ def ai_contract_impact(files: Iterable[str], *, full: bool = False) -> tuple[str
     for raw_path in files:
         path = rel(raw_path)
         if (
-            path == "Makefile"
-            or path in AI_CONTRACT_BROAD_SURFACE_PATHS
+            path in AI_CONTRACT_BROAD_SURFACE_PATHS
             or path in AI_CONTRACT_SHARED_SITE_PAGES
             or path.startswith("site/data/generated/circle_ai_contract_pack")
             or path.startswith("sidecars/PAPER_AI_")
             or "circle_ai_contract" in path
         ):
             all_contracts = True
+            continue
+
+        if path == "Makefile":
+            makefile_topics = makefile_changed_topics()
+            if "unknown" in makefile_topics or "ai_contract" in makefile_topics:
+                all_contracts = True
             continue
 
         for mapping in (
@@ -568,14 +670,42 @@ def plan_for_files(files: Iterable[str], *, full: bool = False) -> list[Check]:
             )
 
         if path == "Makefile":
-            add(checks, seen, "Makefile targeted-check smoke", ("make", "targeted-check-list", "TARGETED_FILES=scripts/targeted_check.py"), f"{path} changed")
+            makefile_topics = makefile_changed_topics()
             add(
                 checks,
                 seen,
-                "Circle AI contract readiness",
-                ("make", "circle-ai-contracts-ready"),
-                f"{path} changed validation targets",
+                "Makefile targeted-check smoke",
+                ("make", "targeted-check-list", "TARGETED_FILES=scripts/targeted_check.py"),
+                f"{path} changed",
             )
+            if "targeted" in makefile_topics:
+                add(
+                    checks,
+                    seen,
+                    "targeted-check planner tests",
+                    pytest("tests/test_targeted_check.py"),
+                    f"{path} changed targeted-check wrapper targets",
+                )
+            if "prime_engine" in makefile_topics:
+                add_prime_engine_tests(
+                    checks,
+                    seen,
+                    (
+                        "tests/test_prime_external_mode_confirm.py",
+                        "tests/test_prime_engine_report.py",
+                    ),
+                    f"{path} changed prime-engine targets or defaults",
+                )
+            if "site" in makefile_topics:
+                add_site_checks(checks, seen, f"{path} changed Living Book targets")
+            if "unknown" in makefile_topics or "ai_contract" in makefile_topics:
+                add(
+                    checks,
+                    seen,
+                    "Circle AI contract readiness",
+                    ("make", "circle-ai-contracts-ready"),
+                    f"{path} changed AI-contract or unclassified validation targets",
+                )
 
         if path in AI_CONTRACT_BROAD_SURFACE_PATHS:
             add_circle_ai_contract_checks(checks, seen, f"{path} changed public AI contract validation surface")
