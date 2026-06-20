@@ -289,6 +289,7 @@ def test_external_metadata_records_thread_policy_and_commands(monkeypatch) -> No
         external_threads=4,
         require_tool=["primesieve", "primecount", "primesieve-library"],
         include_circle_server=True,
+        circle_server_only=False,
         include_primesieve_count_server=True,
     )
 
@@ -310,6 +311,7 @@ def test_external_metadata_records_thread_policy_and_commands(monkeypatch) -> No
     assert metadata["row_count"] == 6
     assert metadata["interleaved"] is False
     assert metadata["include_circle_server"] is True
+    assert metadata["circle_server_only"] is False
     assert metadata["include_primesieve_count_server"] is True
     assert metadata["requested_segment_sizes"] == [131072]
     assert metadata["thread_policy"]["circle_requested_threads"] == 8
@@ -385,6 +387,7 @@ def test_external_baseline_selection_filters_metadata_commands(monkeypatch) -> N
         external_threads=4,
         require_tool=[],
         include_circle_server=False,
+        circle_server_only=False,
         include_primesieve_count_server=True,
         external_baselines="external_primesieve_count_server",
     )
@@ -428,6 +431,7 @@ def test_external_metadata_records_circle_sweep_commands(monkeypatch) -> None:
         external_threads=8,
         require_tool=[],
         include_circle_server=False,
+        circle_server_only=False,
     )
 
     metadata = build_run_metadata(
@@ -501,6 +505,7 @@ def test_external_metadata_records_exact_circle_variants(monkeypatch) -> None:
         external_threads=8,
         require_tool=[],
         include_circle_server=False,
+        circle_server_only=False,
     )
 
     metadata = build_run_metadata(

@@ -118,6 +118,7 @@ def test_fresh_sweep_command_forwards_segment_size_grid() -> None:
             segment_sizes="0,98304,196608",
             circle_variant=["default:0,dynamic:98304"],
             include_circle_server=True,
+            circle_server_only=True,
             include_primesieve_count_server=True,
             require_tool=[
                 "primecount",
@@ -145,5 +146,6 @@ def test_fresh_sweep_command_forwards_segment_size_grid() -> None:
     assert "--circle-variant" in command
     assert command[command.index("--circle-variant") + 1] == "default:0,dynamic:98304"
     assert "--include-circle-server" in command
+    assert "--circle-server-only" in command
     assert "--include-primesieve-count-server" in command
     assert command.count("--require-tool") == 3
