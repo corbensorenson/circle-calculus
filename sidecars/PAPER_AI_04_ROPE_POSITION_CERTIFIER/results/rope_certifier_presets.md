@@ -118,7 +118,7 @@ This is a 160k one-channel standard-RoPE bracket. It is not a full all-channel b
 
 | Name | Bank shape | Requested context | Requested margin | Certified context | Certified margin | Status | Theorem ids |
 | --- | --- | ---: | ---: | ---: | ---: | --- | --- |
-| standard_rope_channel0_d19_bank_bridge_request | standard_channel0_first | 196608 | 1/328459 | 196608 | 1/328459 | PASS | AIRA-T0171, AIRA-T0172, AIRA-T0234, AIRA-T0235 |
+| standard_rope_channel0_d19_bank_bridge_request | standard_channel0_first | 196608 | 1/328459 | 196608 | 1/328459 | PASS | AIRA-T0171, AIRA-T0172, AIRA-T0234, AIRA-T0235, AIRA-T0236 |
 
 This is a conditional one-separating-channel bank certificate based on standard channel 0. It is not a full all-channel standard-RoPE margin theorem and not a model-quality claim.
 

@@ -13050,7 +13050,7 @@
       "informal_statement": "The standard channel-0 D19 request classifier's undecided open margin interval has exact rational width 1/107884986222.",
       "lean_name": "Circle.Applications.ropeStandardChannel0D19_request_margin_open_gap_width",
       "lean_source": "Circle/Applications/RoPEFrontier.lean",
-      "lean_source_line": 255,
+      "lean_source_line": 294,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
@@ -13165,6 +13165,44 @@
       "lean_name": "Circle.Applications.ropeStandardChannel0D19_proved_request_firstChannel_bank_noNearTurn_onContext",
       "lean_source": "Circle/Applications/RoPEFrontier.lean",
       "lean_source_line": 234,
+      "original_status": "lean_proved",
+      "paper_refs": [
+        "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"
+      ],
+      "source_manifest": "manifests/dimensions/Common.yaml",
+      "status": "lean_proved",
+      "used_by_papers": [],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": [
+          "tests/test_rope_certifier.py::test_standard_channel0_d19_bank_request_certificate_marks_covered_request",
+          "tests/test_circle_ai_contract_pack.py::test_generic_contract_pack_is_standalone_with_compatibility_aliases",
+          "tests/test_circle_ai_contract_consumer.py::test_consumer_exposes_rope_planner_recommendations"
+        ]
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "COMMON-0076",
+        "COMMON-0077",
+        "COMMON-0080",
+        "COMMON-0082",
+        "COMMON-0087",
+        "COMMON-0088",
+        "COMMON-0089"
+      ],
+      "formal_statement": "forall {extraFrequencies : List Real} {requestedMargin tolerance : Real} {requestedContext : Nat}, requestedContext <= Circle.Applications.ropeStandardChannel0D19SeedContext -> requestedMargin <= Circle.Applications.ropeStandardChannel0D19SeedMargin -> tolerance < (2 * Real.pi) * requestedMargin -> forall {left right : Nat}, left < right -> right < requestedContext -> not (Circle.Applications.ropeRealPhaseBankNearTurn ((1 : Real) :: extraFrequencies) (2 * Real.pi) tolerance left right)",
+      "id": "AIRA-T0236",
+      "imports_allowed": [
+        "Common"
+      ],
+      "informal_statement": "The D19 proved request branch specializes to the ordinary radian RoPE bank form whose first frequency is 1 and full turn is 2\u03c0.",
+      "lean_name": "Circle.Applications.ropeStandardChannel0D19_proved_request_radianFirstChannel_bank_noNearTurn_onContext",
+      "lean_source": "Circle/Applications/RoPEFrontier.lean",
+      "lean_source_line": 268,
       "original_status": "lean_proved",
       "paper_refs": [
         "papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"

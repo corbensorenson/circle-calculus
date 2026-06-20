@@ -247,6 +247,45 @@ theorem ropeStandardChannel0D19_proved_request_firstChannel_bank_noNearTurn_onCo
     ropeStandardChannel0D19_proved_request_firstChannel_bank_noNearTurn
       hcontext hmargin_le hleft hright hfull_pos htolerance
 
+/-- Standard channel 0 has radian frequency `1` when the full turn is `2π`.
+
+This algebra bridge lets downstream contracts cite the ordinary RoPE radian
+bank shape `(1 :: extraFrequencies)` instead of the normalized expression
+`(1 / (2π)) * (2π) :: extraFrequencies`. -/
+theorem ropeStandardChannel0TurnRatio_mul_two_pi :
+    ropeStandardChannel0TurnRatio * (2 * Real.pi) = 1 := by
+  have htwo_pi_ne : (2 * Real.pi : ℝ) ≠ 0 := ne_of_gt Real.two_pi_pos
+  rw [ropeStandardChannel0TurnRatio]
+  field_simp [htwo_pi_ne]
+
+/-- The D19 proved request branch in ordinary radian RoPE bank form.
+
+For a finite real-phase bank whose first frequency is the standard radian
+channel-0 frequency `1`, with full turn `2π`, every requested context inside
+the D19 horizon and every requested margin at or below `1/328459` inherits the
+context-wide no-near-turn guarantee. This is still a one-separating-channel
+contract, not an independent margin theorem for every channel. -/
+theorem ropeStandardChannel0D19_proved_request_radianFirstChannel_bank_noNearTurn_onContext
+    {extraFrequencies : List ℝ} {requestedMargin tolerance : ℝ}
+    {requestedContext : Nat}
+    (hcontext : requestedContext ≤ ropeStandardChannel0D19SeedContext)
+    (hmargin_le : requestedMargin ≤ ropeStandardChannel0D19SeedMargin)
+    (htolerance : tolerance < (2 * Real.pi) * requestedMargin) :
+    ∀ {left right : Nat}, left < right → right < requestedContext →
+      ¬ ropeRealPhaseBankNearTurn
+        ((1 : ℝ) :: extraFrequencies) (2 * Real.pi) tolerance left right := by
+  intro left right hleft hright
+  simpa [ropeStandardChannel0TurnRatio_mul_two_pi] using
+    (ropeStandardChannel0D19_proved_request_firstChannel_bank_noNearTurn
+      (extraFrequencies := extraFrequencies)
+      (fullTurn := 2 * Real.pi)
+      (requestedMargin := requestedMargin)
+      (tolerance := tolerance)
+      (requestedContext := requestedContext)
+      (left := left)
+      (right := right)
+      hcontext hmargin_le hleft hright Real.two_pi_pos htolerance)
+
 /-- The D19 classifier's undecided open margin interval has the exact rational
 width reported by the public Python certificate.
 

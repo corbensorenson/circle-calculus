@@ -154,6 +154,7 @@ def test_contract_ready_cli_emits_json_digest_fields() -> None:
     assert "AIRA-T0231" in payload["theorem_ids"]
     assert "AIRA-T0234" in payload["theorem_ids"]
     assert "AIRA-T0235" in payload["theorem_ids"]
+    assert "AIRA-T0236" in payload["theorem_ids"]
 
 
 def test_contract_ready_cli_emits_rope_digest_recommendations() -> None:
@@ -484,6 +485,8 @@ def test_contract_ready_cli_emits_rope_bank_transfer_receipt() -> None:
             "AIRA-T0234",
             "--require-theorem",
             "AIRA-T0235",
+            "--require-theorem",
+            "AIRA-T0236",
             "--require-recommendation",
             "ROPE-USE-D19-MARGIN-FRONTIER",
             "--require-recommendation-evidence-field",
@@ -500,6 +503,8 @@ def test_contract_ready_cli_emits_rope_bank_transfer_receipt() -> None:
             "ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0234",
             "--require-recommendation-theorem",
             "ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0235",
+            "--require-recommendation-theorem",
+            "ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0236",
             "--require-recommendation-action-parameter",
             "ROPE-USE-D19-MARGIN-FRONTIER=proved_branch_bank_transfer",
             "--require-recommendation-action-parameter-path",
@@ -525,6 +530,7 @@ def test_contract_ready_cli_emits_rope_bank_transfer_receipt() -> None:
         "AIRA-T0172",
         "AIRA-T0234",
         "AIRA-T0235",
+        "AIRA-T0236",
     ]
     assert payload["evidence_fields"] == {
         "d19_proved_request_status": "proved",
@@ -550,7 +556,11 @@ def test_contract_ready_cli_emits_rope_bank_transfer_receipt() -> None:
         ],
     }
     assert payload["required_recommendation_theorem_ids"] == {
-        "ROPE-USE-D19-MARGIN-FRONTIER": ["AIRA-T0234", "AIRA-T0235"],
+        "ROPE-USE-D19-MARGIN-FRONTIER": [
+            "AIRA-T0234",
+            "AIRA-T0235",
+            "AIRA-T0236",
+        ],
     }
     assert payload["required_recommendation_action_parameters"] == {
         "ROPE-USE-D19-MARGIN-FRONTIER": ["proved_branch_bank_transfer"],
@@ -571,7 +581,13 @@ def test_contract_ready_cli_emits_rope_bank_transfer_receipt() -> None:
         "tolerance_rule": (
             "Lean conclusion applies when tolerance < fullTurn * requestedMargin."
         ),
-        "theorem_ids": ["AIRA-T0171", "AIRA-T0172", "AIRA-T0234", "AIRA-T0235"],
+        "theorem_ids": [
+            "AIRA-T0171",
+            "AIRA-T0172",
+            "AIRA-T0234",
+            "AIRA-T0235",
+            "AIRA-T0236",
+        ],
     }
 
 
