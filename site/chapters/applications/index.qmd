@@ -30,27 +30,27 @@ The claim is *not* that circular language automatically improves every domain. I
 
 - [Classical bridges](erdos_bridges.qmd) — Erdős-style combinatorics restated through Circle vocabulary (Lean-checked wrappers, not new results).
 - [AI](ai.qmd) — phase channels, cyclic memory, coil retrieval, routing, and adapter-block indexing seeds.
-- [AI contract suite](ai_contract_suite.qmd) — guided working entry point for RoPE, KV-cache, sparse-attention, recurrence, and public contract-pack certificates.
-- [AI contract pack audit](ai_contract_pack_audit.qmd) — generated minimum-field checklist for downstream consumers of the public contract pack.
-- [AI contract ladder](ai_contract_ladder.qmd) — guided sequence from RoPE phase certificates to KV-cache freshness, sparse-attention coverage, and circulant mixer guarantees.
-- [Application proof audit](application_proof_audit.qmd) — representative theorem-card appendix for the application unit.
-- [RoPE certifier](rope_certifier.qmd) — proof-carrying position-distinguishability certificates for exact discretized rotary phase banks.
-- [RoPE proof audit](rope_certifier_audit.qmd) — focused theorem-card appendix for the certifier's discrete, real-phase, rational-margin, and standard-channel proof families.
+- [RoPE certifier](rope_certifier.qmd) — the flagship applied demo: proof-carrying position-distinguishability certificates for exact discretized rotary phase banks and the current bounded standard-channel frontier.
+- [AI contract ladder](ai_contract_ladder.qmd) — guided sequence from RoPE phase certificates to KV-cache freshness, sparse-attention coverage, recurrence schedules, and circulant mixer guarantees.
+- [AI contract suite](ai_contract_suite.qmd) — compact working entry point for RoPE, KV-cache, sparse-attention, recurrence, and the public contract-pack certificates.
 - [KV-cache ring buffer](kv_cache_ring_buffer.qmd) — proof-carrying finite slot and retained-window certificates for ring-buffer cache indexing.
-- [KV-cache proof audit](kv_cache_ring_buffer_audit.qmd) — theorem-card appendix for slot, window, trace, stale-request, live-window, and sink-window claims.
 - [Sparse attention coverage](sparse_attention_contract.qmd) — proof-carrying finite coverage, gap-witness, and candidate-budget certificates for local-window plus stride-family sparse plans.
-- [Sparse attention proof audit](sparse_attention_audit.qmd) — theorem-card appendix for coverage, gap, count, candidate-range, period-threshold, and dedup-loss facts.
+- [Looped recurrence contracts](looped_recurrence_contracts.qmd) — guided finite recurrence-budget, exit-certificate, token-route, middle-block, and multi-resolution schedule contracts.
 - [Strided candidate fanout](strided_candidate_fanout.qmd) — finite stride-orbit traversal and duplicate-collapsed candidate-budget certificates.
 - [Cyclic memory residue winding](cyclic_memory_residue_winding.qmd) — finite alias-provenance certificates that keep residue and winding together.
 - [Multicoil phase features](multicoil_phase_feature.qmd) — joint-repeat and relative-shift certificates for finite phase-bank features.
 - [Circulant and block-cyclic mixers](circulant_block_cyclic_mixer.qmd) — structured-mixer parity and parameter-accounting certificates.
-- [Looped recurrence contracts](looped_recurrence_contracts.qmd) — guided finite recurrence-budget, exit-certificate, token-route, middle-block, and multi-resolution schedule contracts.
-- [Looped recurrence proof audit](looped_recurrence_audit.qmd) — theorem-card appendix for loop budgets, exits, active-token boundaries, routes, and recurrent-state closure.
 - [Physics](physics.qmd) — finite gauge links, path holonomy, Wilson-loop certificates, plaquettes.
 - [Generative structures](generative.qmd) — seed-rule provenance and exact-regeneration fixtures.
 - [Compute](compute.qmd) — cyclic addresses, direction bins, stride layouts, round-robin schedules.
 - [Rendering](rendering.qmd) — direction-bin sampling vocabulary.
 - [Data analysis](data_analysis.qmd) — finite phase coordinates and synthetic periodic-signal fixtures.
+- [AI contract pack audit](ai_contract_pack_audit.qmd) — generated minimum-field checklist for downstream consumers of the public contract pack.
+- [Application proof audit](application_proof_audit.qmd) — representative theorem-card appendix for the application unit.
+- [RoPE proof audit](rope_certifier_audit.qmd) — focused theorem-card appendix for the certifier's discrete, real-phase, rational-margin, and standard-channel proof families.
+- [KV-cache proof audit](kv_cache_ring_buffer_audit.qmd) — theorem-card appendix for slot, window, trace, stale-request, live-window, and sink-window claims.
+- [Sparse attention proof audit](sparse_attention_audit.qmd) — theorem-card appendix for coverage, gap, count, candidate-range, period-threshold, and dedup-loss facts.
+- [Looped recurrence proof audit](looped_recurrence_audit.qmd) — theorem-card appendix for loop budgets, exits, active-token boundaries, routes, and recurrent-state closure.
 
 ::: {.warning-box}
 These are active but exploratory tracks: theorem cards are the status source, and benchmarks and fixtures are executable references, not proof of real-world performance or usefulness. See [What "Proved" Means Here](../../what_proved_means.qmd).
@@ -72,7 +72,7 @@ Start with the page whose domain you care about, not with the theorem index. Eac
 concept -> finite circular object -> example -> theorem card -> code/certificate -> non-claim
 ```
 
-If you want to audit the application theorem cards directly, use the [Application Proof Audit](application_proof_audit.qmd). If you are here for AI, start with the [AI Contract Suite](ai_contract_suite.qmd).
+If you want to audit the application theorem cards directly, use the [Application Proof Audit](application_proof_audit.qmd). If you are here for AI, start with the [RoPE certifier](rope_certifier.qmd), then walk the [AI Contract Ladder](ai_contract_ladder.qmd).
 
 <div class="book-navigation">
 <a href="../phase2/proof_carrying_glyphs.qmd">Previous: Proof-Carrying Glyphs</a>

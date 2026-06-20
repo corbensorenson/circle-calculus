@@ -134,28 +134,18 @@ website:
             text: Classical Bridges
           - href: chapters/applications/ai.qmd
             text: AI
-          - href: chapters/applications/ai_contract_suite.qmd
-            text: AI Contract Suite
-          - href: chapters/applications/ai_contract_pack_audit.qmd
-            text: AI Contract Pack Audit
-          - href: chapters/applications/ai_contract_ladder.qmd
-            text: AI Contract Ladder
-          - href: chapters/applications/ai_contract_ladder_audit.qmd
-            text: AI Contract Proof Audit
-          - href: chapters/applications/application_proof_audit.qmd
-            text: Application Proof Audit
           - href: chapters/applications/rope_certifier.qmd
             text: RoPE Certifier
-          - href: chapters/applications/rope_certifier_audit.qmd
-            text: RoPE Proof Audit
+          - href: chapters/applications/ai_contract_ladder.qmd
+            text: AI Contract Ladder
+          - href: chapters/applications/ai_contract_suite.qmd
+            text: AI Contract Suite
           - href: chapters/applications/kv_cache_ring_buffer.qmd
             text: KV-Cache Ring Buffer
-          - href: chapters/applications/kv_cache_ring_buffer_audit.qmd
-            text: KV-Cache Proof Audit
           - href: chapters/applications/sparse_attention_contract.qmd
             text: Sparse Attention Coverage
-          - href: chapters/applications/sparse_attention_audit.qmd
-            text: Sparse Attention Proof Audit
+          - href: chapters/applications/looped_recurrence_contracts.qmd
+            text: Looped Recurrence Contracts
           - href: chapters/applications/strided_candidate_fanout.qmd
             text: Strided Candidate Fanout
           - href: chapters/applications/cyclic_memory_residue_winding.qmd
@@ -164,22 +154,32 @@ website:
             text: Multicoil Phase Features
           - href: chapters/applications/circulant_block_cyclic_mixer.qmd
             text: Circulant And Block-Cyclic Mixers
-          - href: chapters/applications/looped_recurrence_contracts.qmd
-            text: Looped Recurrence Contracts
-          - href: chapters/applications/looped_recurrence_audit.qmd
-            text: Looped Recurrence Proof Audit
           - href: chapters/applications/physics.qmd
             text: Physics
           - href: chapters/applications/generative.qmd
             text: Generative Structures
-          - href: chapters/applications/generative_audit.qmd
-            text: Generative Proof Audit
           - href: chapters/applications/compute.qmd
             text: Compute
           - href: chapters/applications/rendering.qmd
             text: Rendering
           - href: chapters/applications/data_analysis.qmd
             text: Data Analysis
+          - href: chapters/applications/ai_contract_pack_audit.qmd
+            text: AI Contract Pack Audit
+          - href: chapters/applications/ai_contract_ladder_audit.qmd
+            text: AI Contract Proof Audit
+          - href: chapters/applications/application_proof_audit.qmd
+            text: Application Proof Audit
+          - href: chapters/applications/rope_certifier_audit.qmd
+            text: RoPE Proof Audit
+          - href: chapters/applications/kv_cache_ring_buffer_audit.qmd
+            text: KV-Cache Proof Audit
+          - href: chapters/applications/sparse_attention_audit.qmd
+            text: Sparse Attention Proof Audit
+          - href: chapters/applications/looped_recurrence_audit.qmd
+            text: Looped Recurrence Proof Audit
+          - href: chapters/applications/generative_audit.qmd
+            text: Generative Proof Audit
       - section: "For Reviewers And Skeptics"
         contents:
           - href: what_proved_means.qmd
