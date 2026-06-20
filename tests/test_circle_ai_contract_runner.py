@@ -9,10 +9,13 @@ import pytest
 
 from circle_math.applications import (
     build_contract_receipt,
+    build_contract_receipt_from_request,
+    build_contract_request_json_schema,
     build_kv_cache_receipt,
     build_recurrence_receipt,
     build_rope_receipt,
     build_sparse_attention_receipt,
+    validate_contract_request,
     validate_contract_receipt,
 )
 from circle_math.applications.circle_ai_contracts import build_contract_pack
@@ -171,6 +174,64 @@ def test_dispatcher_aliases_and_fingerprint_validation(contract_pack: dict) -> N
     broken["receipt_content_fingerprint"] = "0" * 64
     failures = validate_contract_receipt(broken)
     assert any("drifted" in failure for failure in failures)
+
+
+def test_request_api_validates_and_builds_receipts(contract_pack: dict) -> None:
+    request = {
+        "schema_id": "circle_calculus.ai_contract_request.v0",
+        "kind": "sparse-attention",
+        "parameters": {
+            "context": 9,
+            "strides": (2, 5),
+            "path_length": 4,
+            "local_window": 8,
+        },
+    }
+
+    assert validate_contract_request(request) == []
+    receipt = build_contract_receipt_from_request(request, pack=contract_pack)
+    assert receipt["kind"] == "sparse_attention_coverage"
+    assert receipt["request_passed"] is True
+    assert validate_contract_receipt(receipt) == []
+
+
+def test_request_api_reports_malformed_requests() -> None:
+    missing_parameters = {
+        "schema_id": "circle_calculus.ai_contract_request.v0",
+        "kind": "rope",
+    }
+    wrong_schema = {
+        "schema_id": "wrong",
+        "kind": "rope",
+        "parameters": {},
+    }
+    unsupported = {
+        "schema_id": "circle_calculus.ai_contract_request.v0",
+        "kind": "unknown",
+        "parameters": {},
+    }
+
+    assert "parameters must be an object" in validate_contract_request(
+        missing_parameters
+    )
+    assert any("schema_id" in failure for failure in validate_contract_request(wrong_schema))
+    assert any(
+        "supported Circle AI contract kind" in failure
+        for failure in validate_contract_request(unsupported)
+    )
+    with pytest.raises(ValueError, match="invalid Circle AI contract request"):
+        build_contract_receipt_from_request(unsupported)
+
+
+def test_request_schema_accepts_public_aliases() -> None:
+    schema = build_contract_request_json_schema()
+
+    assert schema["properties"]["schema_id"]["const"] == (
+        "circle_calculus.ai_contract_request.v0"
+    )
+    assert "rope" in schema["properties"]["kind"]["enum"]
+    assert "rope_position_distinguishability" in schema["properties"]["kind"]["enum"]
+    assert schema["properties"]["parameters"]["type"] == "object"
 
 
 def test_circle_ai_certify_cli_emits_json_receipt() -> None:

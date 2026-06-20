@@ -5,13 +5,23 @@
   "properties": {
     "kind": {
       "enum": [
-        "rope_position_distinguishability",
+        "kv",
+        "kv-cache",
+        "kv_cache",
         "kv_cache_ring_buffer",
-        "sparse_attention_coverage",
-        "recurrence_schedule"
+        "recurrence",
+        "recurrence-schedule",
+        "recurrence_schedule",
+        "rope",
+        "rope_position_distinguishability",
+        "sparse",
+        "sparse-attention",
+        "sparse_attention",
+        "sparse_attention_coverage"
       ]
     },
     "parameters": {
+      "minProperties": 0,
       "type": "object"
     },
     "schema_id": {

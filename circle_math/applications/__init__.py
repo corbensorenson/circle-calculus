@@ -26,6 +26,7 @@ from .circle_ai_contract_runner import (
     REQUEST_SCHEMA_ID as CIRCLE_AI_CONTRACT_REQUEST_SCHEMA_ID,
     SUPPORTED_CONTRACT_KINDS as CIRCLE_AI_RUNNER_CONTRACT_KINDS,
     build_contract_receipt,
+    build_contract_receipt_from_request,
     build_contract_receipt_json_schema,
     build_contract_request_json_schema,
     build_kv_cache_receipt,
@@ -35,6 +36,7 @@ from .circle_ai_contract_runner import (
     canonical_contract_kind,
     parse_fraction,
     receipt_summary_lines,
+    validate_contract_request,
     validate_contract_receipt,
 )
 from .coil_data import (
@@ -472,6 +474,7 @@ __all__ = [
     "CIRCLE_AI_RUNNER_CONTRACT_KINDS",
     "build_circle_ai_contract_pack",
     "build_contract_receipt",
+    "build_contract_receipt_from_request",
     "build_contract_receipt_json_schema",
     "build_contract_request_json_schema",
     "build_kv_cache_receipt",
@@ -481,6 +484,7 @@ __all__ = [
     "canonical_contract_kind",
     "parse_fraction",
     "receipt_summary_lines",
+    "validate_contract_request",
     "validate_contract_receipt",
     "PeriodBenchmarkResult",
     "PeriodFixtureCaseResult",

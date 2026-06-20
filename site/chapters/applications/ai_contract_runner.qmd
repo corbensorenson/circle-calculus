@@ -160,7 +160,11 @@ Read every receipt in this order:
 ## Python API
 
 ```python
-from circle_math.applications import build_contract_receipt
+from circle_math.applications import (
+    build_contract_receipt,
+    build_contract_receipt_from_request,
+    validate_contract_request,
+)
 
 receipt = build_contract_receipt(
     "kv-cache",
@@ -172,6 +176,24 @@ receipt = build_contract_receipt(
         "sink_size": 4,
     },
 )
+```
+
+The request-file object can be used directly from Python:
+
+```python
+request = {
+    "schema_id": "circle_calculus.ai_contract_request.v0",
+    "kind": "sparse-attention",
+    "parameters": {
+        "context": 120,
+        "strides": (7, 13),
+        "path_length": 3,
+        "local_window": 4,
+    },
+}
+
+assert validate_contract_request(request) == []
+receipt = build_contract_receipt_from_request(request)
 ```
 
 That returns the same schema as the CLI:

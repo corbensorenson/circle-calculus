@@ -14,8 +14,8 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from circle_math.applications import (  # noqa: E402
-    CIRCLE_AI_CONTRACT_REQUEST_SCHEMA_ID,
     build_contract_receipt,
+    build_contract_receipt_from_request,
     load_contract_pack,
     receipt_summary_lines,
 )
@@ -151,24 +151,24 @@ def _pack_from_args(args: argparse.Namespace) -> dict[str, Any] | None:
     return load_contract_pack(path)
 
 
-def _load_request_json(path: Path) -> tuple[str, dict[str, Any]]:
+def _load_request_json(path: Path) -> dict[str, Any]:
     if not path.is_absolute():
         path = ROOT / path
     payload = json.loads(path.read_text(encoding="utf-8"))
     if not isinstance(payload, dict):
         raise SystemExit("request JSON must be an object")
-    if payload.get("schema_id") != CIRCLE_AI_CONTRACT_REQUEST_SCHEMA_ID:
-        raise SystemExit(
-            "request JSON schema_id must be "
-            f"{CIRCLE_AI_CONTRACT_REQUEST_SCHEMA_ID!r}"
-        )
-    kind = payload.get("kind")
-    if not isinstance(kind, str) or not kind:
-        raise SystemExit("request JSON kind must be a non-empty string")
-    parameters = payload.get("parameters")
-    if not isinstance(parameters, dict):
-        raise SystemExit("request JSON parameters must be an object")
-    return kind, parameters
+    return payload
+
+
+def _receipt_from_request_json(
+    path: Path,
+    *,
+    pack: dict[str, Any] | None,
+) -> dict[str, Any]:
+    try:
+        return build_contract_receipt_from_request(_load_request_json(path), pack=pack)
+    except ValueError as exc:
+        raise SystemExit(str(exc)) from exc
 
 
 def _parameters_from_args(args: argparse.Namespace) -> dict[str, Any]:
@@ -217,16 +217,15 @@ def write_json(path: Path, payload: dict[str, Any]) -> None:
 
 def main() -> int:
     args = parse_args()
+    pack = _pack_from_args(args)
     if args.kind == "request":
-        kind, parameters = _load_request_json(args.request_json)
+        receipt = _receipt_from_request_json(args.request_json, pack=pack)
     else:
-        kind = args.kind
-        parameters = _parameters_from_args(args)
-    receipt = build_contract_receipt(
-        kind,
-        parameters,
-        pack=_pack_from_args(args),
-    )
+        receipt = build_contract_receipt(
+            args.kind,
+            _parameters_from_args(args),
+            pack=pack,
+        )
     if args.json_out is not None:
         write_json(args.json_out, receipt)
     if args.format == "json":

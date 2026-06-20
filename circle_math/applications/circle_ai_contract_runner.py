@@ -839,6 +839,39 @@ def build_contract_receipt(
     raise ValueError(f"unsupported contract kind: {kind}")
 
 
+def validate_contract_request(request: Mapping[str, Any]) -> list[str]:
+    """Return request-shape failures for the public runner request object."""
+
+    failures: list[str] = []
+    if request.get("schema_id") != REQUEST_SCHEMA_ID:
+        failures.append(f"schema_id must be {REQUEST_SCHEMA_ID!r}")
+    kind = request.get("kind")
+    if not isinstance(kind, str) or not kind:
+        failures.append("kind must be a non-empty string")
+    elif kind not in KIND_ALIASES:
+        failures.append("kind must be a supported Circle AI contract kind or alias")
+    parameters = request.get("parameters")
+    if not isinstance(parameters, Mapping):
+        failures.append("parameters must be an object")
+    return failures
+
+
+def build_contract_receipt_from_request(
+    request: Mapping[str, Any],
+    *,
+    pack: Mapping[str, Any] | None = None,
+) -> dict[str, Any]:
+    """Build a receipt from a versioned public runner request object."""
+
+    failures = validate_contract_request(request)
+    if failures:
+        raise ValueError("invalid Circle AI contract request: " + "; ".join(failures))
+    kind = str(request["kind"])
+    parameters = request["parameters"]
+    assert isinstance(parameters, Mapping)
+    return build_contract_receipt(kind, parameters, pack=pack)
+
+
 def validate_contract_receipt(receipt: Mapping[str, Any]) -> list[str]:
     """Return receipt-shape failures. This is a JSON-level check, not Lean."""
 
@@ -1031,8 +1064,8 @@ def build_contract_request_json_schema() -> dict[str, Any]:
         "required": ["schema_id", "kind", "parameters"],
         "properties": {
             "schema_id": {"const": REQUEST_SCHEMA_ID},
-            "kind": {"enum": list(SUPPORTED_CONTRACT_KINDS)},
-            "parameters": {"type": "object"},
+            "kind": {"enum": sorted(KIND_ALIASES)},
+            "parameters": {"type": "object", "minProperties": 0},
         },
         "additionalProperties": True,
     }
