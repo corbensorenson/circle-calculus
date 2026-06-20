@@ -168,7 +168,7 @@ CONTRACT_ARTIFACTS = {
                 "--field d19_proved_first_channel_bank_tolerance_rule "
                 "--require-theorem AIRA-T0171 --require-theorem AIRA-T0172 "
                 "--require-theorem AIRA-T0234 --require-theorem AIRA-T0235 "
-                "--require-theorem AIRA-T0236 "
+                "--require-theorem AIRA-T0236 --require-theorem AIRA-T0237 "
                 "--require-recommendation ROPE-USE-D19-MARGIN-FRONTIER "
                 "--require-recommendation-evidence-field "
                 "ROPE-USE-D19-MARGIN-FRONTIER="
@@ -185,6 +185,8 @@ CONTRACT_ARTIFACTS = {
                 "ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0235 "
                 "--require-recommendation-theorem "
                 "ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0236 "
+                "--require-recommendation-theorem "
+                "ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0237 "
                 "--require-recommendation-action-parameter "
                 "ROPE-USE-D19-MARGIN-FRONTIER=proved_branch_bank_transfer "
                 "--require-recommendation-action-parameter-path "
@@ -946,7 +948,7 @@ PACK_VALIDATION_COMMANDS = [
         "--field d19_proved_first_channel_bank_tolerance_rule "
         "--require-theorem AIRA-T0171 --require-theorem AIRA-T0172 "
         "--require-theorem AIRA-T0234 --require-theorem AIRA-T0235 "
-        "--require-theorem AIRA-T0236 "
+        "--require-theorem AIRA-T0236 --require-theorem AIRA-T0237 "
         "--require-recommendation ROPE-USE-D19-MARGIN-FRONTIER "
         "--require-recommendation-evidence-field "
         "ROPE-USE-D19-MARGIN-FRONTIER=d19_proved_first_channel_bank_transfer "
@@ -961,6 +963,8 @@ PACK_VALIDATION_COMMANDS = [
         "ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0235 "
         "--require-recommendation-theorem "
         "ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0236 "
+        "--require-recommendation-theorem "
+        "ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0237 "
         "--require-recommendation-action-parameter "
         "ROPE-USE-D19-MARGIN-FRONTIER=proved_branch_bank_transfer "
         "--require-recommendation-action-parameter-path "
@@ -2583,6 +2587,7 @@ def _generic_planner_recommendations(
                         "AIRA-T0234",
                         "AIRA-T0235",
                         "AIRA-T0236",
+                        "AIRA-T0237",
                     ],
                 },
                 "classifier_regions": [
@@ -2681,6 +2686,7 @@ def _generic_planner_recommendations(
                     "AIRA-T0234",
                     "AIRA-T0235",
                     "AIRA-T0236",
+                    "AIRA-T0237",
                     "AIRA-T0230",
                     "AIRA-T0231",
                 ],

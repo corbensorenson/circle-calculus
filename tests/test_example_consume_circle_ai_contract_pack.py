@@ -398,6 +398,8 @@ def test_example_consumer_emits_rope_bank_transfer_receipt(
             "AIRA-T0235",
             "--require-theorem",
             "AIRA-T0236",
+            "--require-theorem",
+            "AIRA-T0237",
             "--require-recommendation",
             "ROPE-USE-D19-MARGIN-FRONTIER",
             "--require-recommendation-evidence-field",
@@ -421,6 +423,8 @@ def test_example_consumer_emits_rope_bank_transfer_receipt(
             "ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0235",
             "--require-recommendation-theorem",
             "ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0236",
+            "--require-recommendation-theorem",
+            "ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0237",
             "--require-recommendation-action-parameter",
             "ROPE-USE-D19-MARGIN-FRONTIER=proved_branch_bank_transfer",
             "--require-recommendation-action-parameter-path",
@@ -458,6 +462,7 @@ def test_example_consumer_emits_rope_bank_transfer_receipt(
         "AIRA-T0234",
         "AIRA-T0235",
         "AIRA-T0236",
+        "AIRA-T0237",
     ]
     assert payload["evidence_fields"]["d19_proved_first_channel_bank_transfer"] is True
     assert (
@@ -476,6 +481,7 @@ def test_example_consumer_emits_rope_bank_transfer_receipt(
             "AIRA-T0234",
             "AIRA-T0235",
             "AIRA-T0236",
+            "AIRA-T0237",
         ],
     }
     assert payload["required_recommendation_action_parameters"] == {
@@ -502,6 +508,7 @@ def test_example_consumer_emits_rope_bank_transfer_receipt(
         "AIRA-T0234",
         "AIRA-T0235",
         "AIRA-T0236",
+        "AIRA-T0237",
     ]
 
 

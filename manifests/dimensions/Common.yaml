@@ -6565,6 +6565,22 @@ theorems:
         - tests/test_circle_ai_contract_pack.py::test_generic_contract_pack_is_standalone_with_compatibility_aliases
         - tests/test_circle_ai_contract_consumer.py::test_consumer_exposes_rope_planner_recommendations
     blocker: ""
+  - id: AIRA-T0237
+    status: lean_proved
+    lean_name: Circle.Applications.ropeStandardChannel0D19_contextRange_radianFirstChannel_request_semantic_trichotomy
+    informal_statement: "Inside the D19 context range, the request classifier packages the proved branch with an ordinary-radian first-channel bank no-near-turn consequence, the impossible branch with a one-channel margin refutation, and the open interval as undecided."
+    formal_statement: "forall {extraFrequencies : List Real} {requestedContext : Nat} {requestedMargin tolerance : Real}, 103993 < requestedContext -> requestedContext <= Circle.Applications.ropeStandardChannel0D19SeedContext -> tolerance < (2 * Real.pi) * requestedMargin -> ((requestedMargin <= Circle.Applications.ropeStandardChannel0D19SeedMargin and (forall {left right : Nat}, left < right -> right < requestedContext -> not (Circle.Applications.ropeRealPhaseBankNearTurn ((1 : Real) :: extraFrequencies) (2 * Real.pi) tolerance left right)) and not ((1 : Real) / 328458 <= requestedMargin) and not (Circle.Applications.ropeStandardChannel0D19SeedMargin < requestedMargin and requestedMargin < (1 : Real) / 328458)) or (((1 : Real) / 328458 <= requestedMargin and not (Circle.Applications.ropeTurnRatioFiniteMargin Circle.Applications.ropeStandardChannel0TurnRatio requestedMargin requestedContext) and not (requestedMargin <= Circle.Applications.ropeStandardChannel0D19SeedMargin) and not (Circle.Applications.ropeStandardChannel0D19SeedMargin < requestedMargin and requestedMargin < (1 : Real) / 328458)) or ((Circle.Applications.ropeStandardChannel0D19SeedMargin < requestedMargin and requestedMargin < (1 : Real) / 328458) and not (requestedMargin <= Circle.Applications.ropeStandardChannel0D19SeedMargin) and not ((1 : Real) / 328458 <= requestedMargin)))"
+    dictionary_dependencies: ["COMMON-0076", "COMMON-0077", "COMMON-0080", "COMMON-0082", "COMMON-0087", "COMMON-0088", "COMMON-0089"]
+    paper_refs: ["papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_rope_certifier.py::test_standard_channel0_d19_bank_request_certificate_marks_covered_request
+        - tests/test_circle_ai_contract_pack.py::test_generic_contract_pack_is_standalone_with_compatibility_aliases
+        - tests/test_circle_ai_contract_consumer.py::test_consumer_exposes_rope_planner_recommendations
+    blocker: ""
   - id: AIT-T0001
     status: lean_proved
     lean_name: Circle.Applications.attentionReach_eq_div_gcd

@@ -201,6 +201,7 @@ ROPE_REAL_PHASE_PRECURSOR_THEOREMS: tuple[str, ...] = (
     "AIRA-T0234",
     "AIRA-T0235",
     "AIRA-T0236",
+    "AIRA-T0237",
     "AIRA-T0232",
     "AIRA-T0222",
     "AIRA-T0223",
@@ -262,6 +263,7 @@ ROPE_REAL_PHASE_PRECURSOR_LEAN_DECLARATIONS: tuple[str, ...] = (
     "Circle.Applications.ropeStandardChannel0D19_proved_request_firstChannel_bank_noNearTurn",
     "Circle.Applications.ropeStandardChannel0D19_proved_request_firstChannel_bank_noNearTurn_onContext",
     "Circle.Applications.ropeStandardChannel0D19_proved_request_radianFirstChannel_bank_noNearTurn_onContext",
+    "Circle.Applications.ropeStandardChannel0D19_contextRange_radianFirstChannel_request_semantic_trichotomy",
     "Circle.Applications.ropeTurnRatioOneOverNat_gapOneNearestIntegerMargin",
     "Circle.Applications.ropeTurnRatioOneOverNat_exactWeakestGapMargin_report",
     "Circle.Applications.ropeTurnRatioGapNearestIntegerMargin_le_error",
@@ -670,6 +672,7 @@ ROPE_STANDARD_CHANNEL0_D19_BANK_BRIDGE_THEOREMS: tuple[str, ...] = (
     "AIRA-T0234",
     "AIRA-T0235",
     "AIRA-T0236",
+    "AIRA-T0237",
 )
 
 ROPE_STANDARD_CHANNEL0_D19_BANK_BRIDGE_LEAN_DECLARATIONS: tuple[str, ...] = (
@@ -678,6 +681,7 @@ ROPE_STANDARD_CHANNEL0_D19_BANK_BRIDGE_LEAN_DECLARATIONS: tuple[str, ...] = (
     "Circle.Applications.ropeStandardChannel0D19_proved_request_firstChannel_bank_noNearTurn",
     "Circle.Applications.ropeStandardChannel0D19_proved_request_firstChannel_bank_noNearTurn_onContext",
     "Circle.Applications.ropeStandardChannel0D19_proved_request_radianFirstChannel_bank_noNearTurn_onContext",
+    "Circle.Applications.ropeStandardChannel0D19_contextRange_radianFirstChannel_request_semantic_trichotomy",
 )
 
 ROPE_CERTIFIER_CLAIM_BOUNDARY = (

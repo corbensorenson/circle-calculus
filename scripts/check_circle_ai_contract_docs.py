@@ -92,6 +92,7 @@ STRICT_ROPE_RECEIPT_TOKENS = (
     "--require-theorem AIRA-T0234",
     "--require-theorem AIRA-T0235",
     "--require-theorem AIRA-T0236",
+    "--require-theorem AIRA-T0237",
     "--require-recommendation ROPE-USE-D19-MARGIN-FRONTIER",
     (
         "--require-recommendation-evidence-field "
@@ -116,6 +117,10 @@ STRICT_ROPE_RECEIPT_TOKENS = (
     (
         "--require-recommendation-theorem "
         "ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0236"
+    ),
+    (
+        "--require-recommendation-theorem "
+        "ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0237"
     ),
     (
         "--require-recommendation-action-parameter "

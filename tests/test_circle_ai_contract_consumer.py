@@ -720,6 +720,7 @@ def test_consumer_digest_exposes_rope_d19_request_classifier_fields() -> None:
     assert "AIRA-T0234" in digest["theorem_ids"]
     assert "AIRA-T0235" in digest["theorem_ids"]
     assert "AIRA-T0236" in digest["theorem_ids"]
+    assert "AIRA-T0237" in digest["theorem_ids"]
 
 
 def test_consumer_exposes_rope_planner_recommendations() -> None:
@@ -771,6 +772,7 @@ def test_consumer_exposes_rope_planner_recommendations() -> None:
             "AIRA-T0234",
             "AIRA-T0235",
             "AIRA-T0236",
+            "AIRA-T0237",
         ],
     }
     assert d19_frontier["theorem_ids"] == [
@@ -787,6 +789,7 @@ def test_consumer_exposes_rope_planner_recommendations() -> None:
         "AIRA-T0234",
         "AIRA-T0235",
         "AIRA-T0236",
+        "AIRA-T0237",
         "AIRA-T0230",
         "AIRA-T0231",
     ]
@@ -841,6 +844,7 @@ def test_consumer_exposes_top_level_planner_recommendation_index() -> None:
     assert "AIRA-T0234" in rope_frontier["theorem_ids"]
     assert "AIRA-T0235" in rope_frontier["theorem_ids"]
     assert "AIRA-T0236" in rope_frontier["theorem_ids"]
+    assert "AIRA-T0237" in rope_frontier["theorem_ids"]
     assert "docs/ROPE_CERTIFIER_QUICKSTART.md" in rope_frontier["quickstart_docs"]
     assert (
         "python scripts/circle_ai_contract_ready.py --kind rope_position_distinguishability"

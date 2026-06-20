@@ -647,6 +647,7 @@ def test_default_flagship_policy_matches_generated_contract_pack() -> None:
         "AIRA-T0234",
         "AIRA-T0235",
         "AIRA-T0236",
+        "AIRA-T0237",
     ]
     assert rope_receipt["required_recommendation_theorem_ids"][
         "ROPE-AUDIT-EXACT-INTEGER-PHASE-BANK"
@@ -668,6 +669,7 @@ def test_default_flagship_policy_matches_generated_contract_pack() -> None:
         "AIRA-T0234",
         "AIRA-T0235",
         "AIRA-T0236",
+        "AIRA-T0237",
     ]
     assert rope_receipt["required_recommendation_action_parameters"][
         "ROPE-AUDIT-EXACT-INTEGER-PHASE-BANK"

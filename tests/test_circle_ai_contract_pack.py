@@ -294,7 +294,7 @@ def test_generic_contract_pack_is_standalone_with_compatibility_aliases() -> Non
         "--field d19_proved_first_channel_bank_tolerance_rule "
         "--require-theorem AIRA-T0171 --require-theorem AIRA-T0172 "
         "--require-theorem AIRA-T0234 --require-theorem AIRA-T0235 "
-        "--require-theorem AIRA-T0236 "
+        "--require-theorem AIRA-T0236 --require-theorem AIRA-T0237 "
         "--require-recommendation ROPE-USE-D19-MARGIN-FRONTIER "
         "--require-recommendation-evidence-field "
         "ROPE-USE-D19-MARGIN-FRONTIER=d19_proved_first_channel_bank_transfer "
@@ -308,7 +308,7 @@ def test_generic_contract_pack_is_standalone_with_compatibility_aliases() -> Non
         "--require-recommendation-theorem "
         "ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0235 "
         "--require-recommendation-theorem "
-        "ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0236 "
+        "ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0236 --require-recommendation-theorem ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0237 "
         "--require-recommendation-action-parameter "
         "ROPE-USE-D19-MARGIN-FRONTIER=proved_branch_bank_transfer "
         "--require-recommendation-action-parameter-path "
@@ -682,6 +682,7 @@ def test_generic_contract_pack_is_standalone_with_compatibility_aliases() -> Non
     assert "AIRA-T0234" in contracts["rope_position_distinguishability"]["theorem_ids"]
     assert "AIRA-T0235" in contracts["rope_position_distinguishability"]["theorem_ids"]
     assert "AIRA-T0236" in contracts["rope_position_distinguishability"]["theorem_ids"]
+    assert "AIRA-T0237" in contracts["rope_position_distinguishability"]["theorem_ids"]
     assert (
         "python scripts/circle_ai_contract_ready.py --kind "
         "rope_position_distinguishability --receipt --format json "
@@ -695,7 +696,7 @@ def test_generic_contract_pack_is_standalone_with_compatibility_aliases() -> Non
         "--field d19_proved_first_channel_bank_tolerance_rule "
         "--require-theorem AIRA-T0171 --require-theorem AIRA-T0172 "
         "--require-theorem AIRA-T0234 --require-theorem AIRA-T0235 "
-        "--require-theorem AIRA-T0236 "
+        "--require-theorem AIRA-T0236 --require-theorem AIRA-T0237 "
         "--require-recommendation ROPE-USE-D19-MARGIN-FRONTIER "
         "--require-recommendation-evidence-field "
         "ROPE-USE-D19-MARGIN-FRONTIER="
@@ -710,7 +711,7 @@ def test_generic_contract_pack_is_standalone_with_compatibility_aliases() -> Non
         "--require-recommendation-theorem "
         "ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0235 "
         "--require-recommendation-theorem "
-        "ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0236 "
+        "ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0236 --require-recommendation-theorem ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0237 "
         "--require-recommendation-action-parameter "
         "ROPE-USE-D19-MARGIN-FRONTIER=proved_branch_bank_transfer "
         "--require-recommendation-action-parameter-path "
@@ -787,6 +788,7 @@ def test_generic_contract_pack_is_standalone_with_compatibility_aliases() -> Non
             "AIRA-T0234",
             "AIRA-T0235",
             "AIRA-T0236",
+            "AIRA-T0237",
         ],
     }
     assert rope_recommendations[1]["classifier_regions"] == [
@@ -849,6 +851,7 @@ def test_generic_contract_pack_is_standalone_with_compatibility_aliases() -> Non
         "AIRA-T0234",
         "AIRA-T0235",
         "AIRA-T0236",
+        "AIRA-T0237",
         "AIRA-T0230",
         "AIRA-T0231",
     ]

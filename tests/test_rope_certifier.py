@@ -197,6 +197,7 @@ def test_real_phase_nat_turn_error_matches_endpoint_precursor_shape() -> None:
     assert "AIRA-T0234" in ROPE_REAL_PHASE_PRECURSOR_THEOREMS
     assert "AIRA-T0235" in ROPE_REAL_PHASE_PRECURSOR_THEOREMS
     assert "AIRA-T0236" in ROPE_REAL_PHASE_PRECURSOR_THEOREMS
+    assert "AIRA-T0237" in ROPE_REAL_PHASE_PRECURSOR_THEOREMS
     assert "AIRA-T0232" in ROPE_REAL_PHASE_PRECURSOR_THEOREMS
 
 
@@ -2240,6 +2241,7 @@ def test_standard_channel0_d19_bank_request_certificate_marks_covered_request() 
         "AIRA-T0234",
         "AIRA-T0235",
         "AIRA-T0236",
+        "AIRA-T0237",
     )
     assert certificate.lean_declarations == (
         "Circle.Applications.not_ropeRealPhaseBankNearTurn_of_standardChannel0D19Seed",
@@ -2247,6 +2249,7 @@ def test_standard_channel0_d19_bank_request_certificate_marks_covered_request() 
         "Circle.Applications.ropeStandardChannel0D19_proved_request_firstChannel_bank_noNearTurn",
         "Circle.Applications.ropeStandardChannel0D19_proved_request_firstChannel_bank_noNearTurn_onContext",
         "Circle.Applications.ropeStandardChannel0D19_proved_request_radianFirstChannel_bank_noNearTurn_onContext",
+        "Circle.Applications.ropeStandardChannel0D19_contextRange_radianFirstChannel_request_semantic_trichotomy",
     )
     assert "standard channel 0 as its first channel" in certificate.assumptions[0]
     assert "tolerance < fullTurn * requestedMargin" in certificate.tolerance_rule
@@ -2791,6 +2794,7 @@ def test_rope_preset_sidecar_emits_json_and_markdown() -> None:
         "AIRA-T0234",
         "AIRA-T0235",
         "AIRA-T0236",
+        "AIRA-T0237",
     ]
     assert payload["standard_d19_bank_bridge_request"][
         "context_wide_first_channel_contract"
@@ -3090,7 +3094,7 @@ def test_rope_preset_sidecar_emits_json_and_markdown() -> None:
     assert "AIRA-T0162, AIRA-T0163, AIRA-T0155, AIRA-T0167" in markdown_result.stdout
     assert "Standard RoPE D19 Bank Bridge Request" in markdown_result.stdout
     assert (
-        "AIRA-T0171, AIRA-T0172, AIRA-T0234, AIRA-T0235, AIRA-T0236"
+        "AIRA-T0171, AIRA-T0172, AIRA-T0234, AIRA-T0235, AIRA-T0236, AIRA-T0237"
         in markdown_result.stdout
     )
     assert "Standard RoPE D19 Margin Bracket" in markdown_result.stdout
