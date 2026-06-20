@@ -395,6 +395,56 @@ def test_comparison_failures_can_require_a_serious_control_win() -> None:
     assert failures == ["no compared row met required candidate median speedup 1.000"]
 
 
+def test_comparison_failures_can_require_each_selected_row_to_win() -> None:
+    comparisons = [
+        ExternalComparison(
+            key=speedup_row().key,
+            baseline_result=664_579,
+            candidate_result=664_579,
+            baseline_best_speedup=0.900,
+            candidate_best_speedup=0.910,
+            baseline_median_speedup=0.950,
+            candidate_median_speedup=1.010,
+        )
+    ]
+
+    failures = comparison_failures(
+        comparisons,
+        min_median_speedup_ratio=0.95,
+        min_best_speedup_ratio=0.90,
+        require_each_median_speedup_at_least=1.0,
+    )
+
+    assert failures == []
+
+
+def test_comparison_failures_rejects_selected_row_below_required_win_floor() -> None:
+    comparisons = [
+        ExternalComparison(
+            key=speedup_row().key,
+            baseline_result=664_579,
+            candidate_result=664_579,
+            baseline_best_speedup=0.900,
+            candidate_best_speedup=0.910,
+            baseline_median_speedup=0.950,
+            candidate_median_speedup=0.990,
+        )
+    ]
+
+    failures = comparison_failures(
+        comparisons,
+        min_median_speedup_ratio=0.95,
+        min_best_speedup_ratio=0.90,
+        require_each_median_speedup_at_least=1.0,
+    )
+
+    assert failures == [
+        "circle_prime_default_count range=[0,10000000) segment=0 "
+        "threads=8 requested_threads=8 baseline=external_primesieve_count "
+        "median speedup below required floor: 0.990 < 1.000"
+    ]
+
+
 def test_median_regression_can_be_tolerated_when_best_speedup_stays_close() -> None:
     comparisons = [
         ExternalComparison(

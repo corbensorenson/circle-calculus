@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import sys
 from pathlib import Path
 from types import SimpleNamespace
 
@@ -7,6 +8,7 @@ from scripts import benchmark_prime_external_next as next_bench
 from scripts.benchmark_prime_external_next import (
     NextBenchRow,
     NextMeasurement,
+    PrimeLineServerClient,
     build_run_metadata,
     measure_start_interleaved,
     measure_interleaved_next,
@@ -62,6 +64,30 @@ def test_primecount_next_commands_use_pi_then_nth_prime() -> None:
         "1",
         "--nth-prime",
     ]
+
+
+def test_prime_line_server_client_batches_repeated_requests() -> None:
+    client = PrimeLineServerClient(
+        [
+            sys.executable,
+            "-c",
+            (
+                "import sys\n"
+                "for line in sys.stdin:\n"
+                "    request = line.strip()\n"
+                "    if request in {'quit', 'exit'}:\n"
+                "        break\n"
+                "    print(int(request) + 1, flush=True)\n"
+            ),
+        ],
+        "test line server",
+    )
+    try:
+        assert client.next_primes(100, 3) == [101, 101, 101]
+        assert client.next_prime(40) == 41
+        assert client.next_primes(5, 0) == []
+    finally:
+        client.close()
 
 
 def test_next_interleaved_measurement_rotates_and_summarizes_samples() -> None:

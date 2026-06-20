@@ -1810,6 +1810,7 @@ def render_markdown(report: dict[str, Any]) -> str:
             title="External Throughput",
             missing_message="No external throughput artifact was available.",
             spread_label="Throughput segment candidate spread:",
+            include_circle_row=True,
         )
     )
     lines.extend(render_external_segment_sweep_markdown(report["external_segment_sweep"]))

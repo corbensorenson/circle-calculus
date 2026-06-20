@@ -489,18 +489,26 @@ class NextServerClient:
             raise RuntimeError("failed to open next-server pipes")
 
     def next_prime(self, start: int) -> int:
+        return self.next_primes(start, 1)[-1]
+
+    def next_primes(self, start: int, count: int) -> list[int]:
+        if count <= 0:
+            return []
         assert self.process.stdin is not None
         assert self.process.stdout is not None
-        self.process.stdin.write(f"{start}\n")
+        self.process.stdin.write(f"{start}\n" * count)
         self.process.stdin.flush()
-        response = self.process.stdout.readline()
-        if response == "":
-            stderr = self._read_stderr()
-            raise RuntimeError(f"next-server exited without a response: {stderr}")
-        stripped = response.strip()
-        if stripped == "none":
-            raise ValueError(f"circle-prime next-server did not find a prime for {start}")
-        return parse_integer_output(stripped)
+        results = []
+        for _ in range(count):
+            response = self.process.stdout.readline()
+            if response == "":
+                stderr = self._read_stderr()
+                raise RuntimeError(f"next-server exited without a response: {stderr}")
+            stripped = response.strip()
+            if stripped == "none":
+                raise ValueError(f"circle-prime next-server did not find a prime for {start}")
+            results.append(parse_integer_output(stripped))
+        return results
 
     def close(self) -> None:
         if self.process.poll() is not None:
@@ -548,15 +556,14 @@ def circle_next_server_measurement(
     client = NextServerClient(binary)
 
     def run_once() -> int:
-        result = 0
-        for _ in range(batch_size):
-            result = client.next_prime(start)
+        results = client.next_primes(start, batch_size)
+        for result in results:
             if result != expected_prime:
                 raise AssertionError(
                     f"Circle next-server disagreed with JSON metadata for start={start}: "
                     f"metadata {expected_prime}, server {result}"
                 )
-        return result
+        return results[-1] if results else 0
 
     return NextMeasurement(
         name="circle_prime_server_next_prime",
@@ -648,15 +655,23 @@ class PrimeLineServerClient:
             raise RuntimeError(f"failed to open {self.label} pipes")
 
     def next_prime(self, start: int) -> int:
+        return self.next_primes(start, 1)[-1]
+
+    def next_primes(self, start: int, count: int) -> list[int]:
+        if count <= 0:
+            return []
         assert self.process.stdin is not None
         assert self.process.stdout is not None
-        self.process.stdin.write(f"{start}\n")
+        self.process.stdin.write(f"{start}\n" * count)
         self.process.stdin.flush()
-        response = self.process.stdout.readline()
-        if response == "":
-            stderr = self._read_stderr()
-            raise RuntimeError(f"{self.label} exited without a response: {stderr}")
-        return parse_integer_output(response)
+        results = []
+        for _ in range(count):
+            response = self.process.stdout.readline()
+            if response == "":
+                stderr = self._read_stderr()
+                raise RuntimeError(f"{self.label} exited without a response: {stderr}")
+            results.append(parse_integer_output(response))
+        return results
 
     def close(self) -> None:
         if self.process.poll() is not None:
@@ -695,9 +710,8 @@ def primesieve_generate_server_measurement(
 
     def run_once() -> int:
         nonlocal expected_prime
-        result = 0
-        for _ in range(batch_size):
-            result = client.next_prime(start)
+        results = client.next_primes(start, batch_size)
+        for result in results:
             if expected_prime is None:
                 expected_prime = result
             elif result != expected_prime:
@@ -705,7 +719,7 @@ def primesieve_generate_server_measurement(
                     "libprimesieve generate_n_primes result changed for "
                     f"start={start}: expected {expected_prime}, got {result}"
                 )
-        return result
+        return results[-1] if results else 0
 
     return NextMeasurement(
         name="external_primesieve_generate_next_server",

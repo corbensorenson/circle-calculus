@@ -34,6 +34,7 @@ const DYNAMIC_PARALLEL_MAX_SEGMENTS_PER_BATCH: u64 = 64;
 const DYNAMIC_PARALLEL_TARGET_BATCHES_PER_WORKER: u64 = 4;
 const PRIME_PI_PHI_SMALL_PRIME_COUNT: usize = 6;
 const PRIME_PI_PHI_SMALL_MODULUS: u64 = 30_030;
+const PREFIX_PI_DEFAULT_SPAN_LIMIT: u64 = 1_000_000_000;
 pub const DEFAULT_SEGMENT_SIZE: u64 = 1 << 18;
 include!(concat!(env!("OUT_DIR"), "/prime_engine_defaults.rs"));
 pub const HIGH_OFFSET_SEGMENT_SIZE: u64 = 1 << 20;
@@ -951,6 +952,8 @@ pub fn recommended_count_mode(low: u64, high: u64, requested_threads: usize) -> 
         PARALLEL_SMALL_PREFIX_COUNT_MODE
     } else if low == 0 && base_limit < 300_000 && span <= 128_000_000 {
         PARALLEL_MEDIUM_PREFIX_COUNT_MODE
+    } else if low == 0 && base_limit < 300_000 && span <= PREFIX_PI_DEFAULT_SPAN_LIMIT {
+        "prefix-pi"
     } else if requested_threads <= 1 {
         "segmented"
     } else if base_limit >= 1_000_000 && span <= 16_000_000 {
@@ -3317,6 +3320,8 @@ mod tests {
             recommended_count_mode(0, 100_000_000, 8),
             PARALLEL_MEDIUM_PREFIX_COUNT_MODE
         );
+        assert_eq!(recommended_count_mode(0, 1_000_000_000, 8), "prefix-pi");
+        assert_eq!(recommended_count_mode(0, 1_000_000_001, 8), "segmented");
         assert_eq!(
             recommended_count_mode(1_000_000_000_000, 1_000_010_000_000, 8),
             PARALLEL_VERY_HIGH_OFFSET_COUNT_MODE

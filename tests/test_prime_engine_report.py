@@ -923,6 +923,11 @@ def test_prime_engine_report_summarizes_artifacts(tmp_path: Path) -> None:
     assert "Requested Circle segment sizes: `1376256`, `1507328`." in markdown
     assert "Count mode candidate spread" in markdown
     assert "Throughput segment candidate spread" in markdown
+    assert (
+        "| [0, 1000000000) | `external_primesieve_count` | "
+        "`circle_prime_parallel_segmented_count_8t` | 196608 | 8 | "
+        "39.000 | 41.000 | 0.462 | 0.463 | unknown | baseline_faster |"
+    ) in markdown
     assert "Circle count modes: `segmented`, `hybrid-wheel30-mark`." in markdown
     assert "Requested Circle segment sizes: `0`, `32768`, `131072`." in markdown
     assert "Requested Circle segment sizes: `131072`, `196608`." in markdown

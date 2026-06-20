@@ -39,6 +39,7 @@ make prime-engine-external-mode-sweep
 make prime-engine-external-mode-confirm
 make prime-engine-high-offset-hot-cold
 make prime-engine-external-throughput
+make prime-engine-external-throughput-compare
 make prime-engine-external-segment-sweep
 make prime-engine-calibrate-defaults
 make prime-engine-calibrate-defaults-check
@@ -126,9 +127,9 @@ is still present in source.
   the range. When no explicit `--segment-size` is provided, count-only threaded
   prefix-style ranges use command-level tuned defaults: `262144` up to
   about 2M, `65536` up to about 16M, and `196608` up to about 128M.
-  True prefix buckets use the exact `prefix-pi` counter. Very-high-offset
-  threaded counts with small spans use a tuned `1310720` default and the
-  threaded `presieve13` count mode, which currently gives the best short-run
+  True prefix buckets use the exact `prefix-pi` counter through `1e9`.
+  Very-high-offset threaded counts with small spans use a tuned `1507328`
+  default and the threaded `presieve17` count mode, which currently gives the best short-run
   command-level result against `primesieve` without claiming parity. Other
   ranges keep the conservative segmented default.
   The threaded-count values live in
@@ -554,8 +555,11 @@ The Makefile target includes persistent `next-server` Circle request rows
 beside the cold CLI rows, so the report separates command-level startup cost
 from steady-state search throughput. The libprimesieve helper is also
 persistent, which makes it the right comparison for judging Circle's persistent
-server path. The default starts cover small search, the `2^32` boundary,
-`10^12`, and a near-`u64::MAX` scalar path.
+server path. Persistent server rows send the repeated `batch_size` requests in
+one stdin write per timing sample and then read one response line per request;
+that keeps Circle and the libprimesieve helper on the same line-server footing
+while reducing Python round-trip noise. The default starts cover small search,
+the `2^32` boundary, `10^12`, and a near-`u64::MAX` scalar path.
 The CSV keeps next-prime fields separate from range-count fields: `start`,
 `batch_size`, resolved `result`, Circle `candidate_count`, and searches/sec. Use
 `CIRCLE_PRIME_EXTERNAL_NEXT_BATCH_SIZE` for repeated searches per timing sample;
@@ -687,11 +691,12 @@ default-change gate for current segmented CLI defaults.
 
 `prefix-pi` is a Lehmer-style exact prefix counter exposed as a Circle count
 mode. It is promoted for true prefix-count buckets such as `[0, 1M)`,
-`[0, 10M)`, and `[0, 100M)`, where short external-control runs showed the
-adaptive default beating both `primesieve` and `primecount`. It is deliberately
-not the high-offset default: high-offset intervals such as
-`[1e12, 1e12 + 1e7)` stay on the segmented-sieve family, currently the
-threaded `presieve13` count mode with a tuned high-offset segment size.
+`[0, 10M)`, `[0, 100M)`, and `[0, 1B)`. Short external-control runs show this
+lane is the right Circle default for `pi(1e9)`: it is roughly competitive with
+`primesieve` but still behind specialized `primecount`. It is deliberately not
+the high-offset default: high-offset intervals such as `[1e12, 1e12 + 1e7)`
+stay on the segmented-sieve family, currently the threaded `presieve17` count
+mode with a tuned high-offset segment size.
 
 `prime-engine-high-offset-quick` is the interactive scorecard for the remaining
 `primesieve` gap. It isolates `[1e12, 1e12 + 1e7)`, runs 13 interleaved rounds
@@ -801,11 +806,21 @@ sidecars/PRIME_ENGINE/results/prime_engine_external_throughput_latest.json
 sidecars/PRIME_ENGINE/results/prime_engine_external_throughput_samples_latest.csv
 ```
 
-It runs a 1B prefix range with a small segment sweep. This is intentionally
-separate from the default external controls because it exposes sustained
-marking throughput and cache behavior after command startup is amortized. On
-the current machine, this row shows `primesieve` still substantially ahead, so
-the next serious range-count work is algorithmic rather than default tuning.
+It runs a 1B prefix range across the adaptive default, explicit segmented
+sieving, and explicit `prefix-pi`, with a small segment sweep for the segmented
+rows. This is intentionally separate from the default external controls because
+it exposes whether a `pi(x)` workload should use prefix counting or sustained
+marking. On the current machine, this row shows `prefix-pi` is the correct
+Circle lane for `pi(1e9)`, while specialized `primecount` remains the bar to
+beat for pure prefix-counting.
+
+`prime-engine-external-throughput-compare` reruns the same short workload into
+candidate artifacts and then gates `circle_prime_default_count` against
+`external_primesieve_count` with
+`CIRCLE_PRIME_EXTERNAL_THROUGHPUT_MEDIAN_FLOOR` (default `1.0`). This is a
+focused regression check for the adaptive `pi(1e9)` default; it deliberately
+does not require a `primecount` win because the current `primecount` comparison
+is near parity and noisier.
 
 `prime-engine-external-segment-sweep` writes:
 
@@ -885,9 +900,9 @@ make prime-engine-apply-defaults-check
 Current external-control readout on this machine:
 
 - `primesieve` remains the serious range-counting bar. Prefix defaults now beat
-  it on the tracked true-prefix count rows. The high-offset cold CLI interval is
-  near parity in the current short command-level run and slightly ahead by
-  median, while the persistent `count-server` row is clearly ahead. The
+  it on the tracked small true-prefix count rows and are competitive on
+  `pi(1e9)`. The high-offset cold CLI interval is near parity in the current
+  short command-level run, while the persistent `count-server` row is clearly ahead. The
   comparison is intentionally command-level and therefore noisy, but it records
   actual worker counts. With `CIRCLE_PRIME_THREADS=8`, prefix-pi rows report
   `1/8` effective Circle thread, and the high-offset interval currently caps to
