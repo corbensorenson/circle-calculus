@@ -6611,6 +6611,20 @@ theorems:
       python_property_tests:
         - tests/test_rope_certifier.py::test_real_phase_precursor_theorem_inventory_includes_dirichlet_guardrail
     blocker: ""
+  - id: AIRA-T0240
+    status: lean_proved
+    lean_name: Circle.Applications.not_ropeTurnRatioFiniteMargin_of_inv_context_lt_margin
+    informal_statement: "Dirichlet's finite-context close-return witness rules out any advertised turn-ratio margin strictly larger than 1/context."
+    formal_statement: "forall {turnRatio margin : Real} {context : Nat}, 1 < context -> ((1 : Real) / context) < margin -> not (Circle.Applications.ropeTurnRatioFiniteMargin turnRatio margin context)"
+    dictionary_dependencies: ["COMMON-0076", "COMMON-0077", "COMMON-0080", "COMMON-0082", "COMMON-0087", "COMMON-0088", "COMMON-0089"]
+    paper_refs: ["papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md#real-phase-precursor"]
+    imports_allowed: ["Common"]
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests:
+        - tests/test_rope_certifier.py::test_real_phase_precursor_theorem_inventory_includes_dirichlet_guardrail
+    blocker: ""
   - id: AIT-T0001
     status: lean_proved
     lean_name: Circle.Applications.attentionReach_eq_div_gcd

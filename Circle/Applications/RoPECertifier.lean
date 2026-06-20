@@ -1433,6 +1433,23 @@ theorem exists_ropeTurnRatioError_le_inv_context
       exact_mod_cast hnat
     simpa [ropeTurnRatioError, hden] using herror
 
+/-- Dirichlet's finite-context close-return witness rules out any margin
+strictly larger than `1 / context`.
+
+This turns the qualitative guardrail into the direct negative contract a
+certifier can cite: before advertising a finite turn-ratio margin above the
+Dirichlet scale, one must explain the close-return obstruction. It is an
+upper-bound theorem, not a positive margin lower bound. -/
+theorem not_ropeTurnRatioFiniteMargin_of_inv_context_lt_margin
+    {turnRatio margin : ℝ} {context : Nat}
+    (hcontext : 1 < context) (hmargin : (1 : ℝ) / context < margin) :
+    ¬ ropeTurnRatioFiniteMargin turnRatio margin context := by
+  rcases exists_ropeTurnRatioError_le_inv_context turnRatio hcontext with
+    ⟨gap, hgap_pos, hgap_context, turns, herror⟩
+  intro hfinite
+  have hbound := hfinite gap hgap_pos hgap_context turns
+  linarith
+
 /-- One near-integer witness obstructs a finite-context turn-ratio margin.
 
 This is the generic proof shape behind the standard channel-0 gap-`710`
