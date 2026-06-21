@@ -17,9 +17,9 @@ if str(ROOT) not in sys.path:
 
 from circle_math.applications import (  # noqa: E402
     CIRCLE_AI_CONTRACT_RECEIPT_FILE_CHECK_SCHEMA_ID,
+    build_contract_receipt_file_check_report,
     build_contract_receipt_file_check_json_schema,
     load_contract_pack,
-    validate_contract_receipt_against_pack,
 )
 from circle_math.applications.circle_ai_contract_runner import (  # noqa: E402
     RECEIPT_FILE_CHECK_SCHEMA_PATH,
@@ -65,27 +65,6 @@ def _validate_report_schema(report: dict[str, Any], schema_path: Path) -> None:
         )
 
 
-def _gate_failures(
-    *,
-    receipt: dict[str, Any],
-    required_statuses: tuple[str, ...],
-    require_passed: bool,
-) -> list[str]:
-    failures: list[str] = []
-    status = receipt.get("status")
-    if required_statuses and status not in required_statuses:
-        failures.append(
-            f"receipt status {status!r} did not match required status set: "
-            + ", ".join(required_statuses)
-        )
-    if require_passed and receipt.get("request_passed") is not True:
-        failures.append(
-            "receipt request_passed was not true "
-            f"(got {receipt.get('request_passed')!r})"
-        )
-    return failures
-
-
 def check_receipt_files(
     *,
     receipt_paths: tuple[Path, ...],
@@ -105,34 +84,15 @@ def check_receipt_files(
         try:
             receipt = _json_object(path)
             jsonschema.validate(receipt, receipt_schema)
-            path_failures.extend(
-                validate_contract_receipt_against_pack(receipt, pack)
+            receipt_report = build_contract_receipt_file_check_report(
+                receipt,
+                pack,
+                receipt_path=_display_path(path),
+                required_statuses=required_statuses,
+                require_passed=require_passed,
             )
-            path_failures.extend(
-                _gate_failures(
-                    receipt=receipt,
-                    required_statuses=required_statuses,
-                    require_passed=require_passed,
-                )
-            )
-            summaries.append(
-                {
-                    "path": _display_path(path),
-                    "kind": receipt.get("kind"),
-                    "contract_id": receipt.get("contract_id"),
-                    "status": receipt.get("status"),
-                    "request_passed": receipt.get("request_passed"),
-                    "theorem_count": (
-                        receipt.get("proof_status", {}).get("theorem_count")
-                        if isinstance(receipt.get("proof_status"), dict)
-                        else None
-                    ),
-                    "receipt_content_fingerprint": receipt.get(
-                        "receipt_content_fingerprint"
-                    ),
-                    "failure_count": len(path_failures),
-                }
-            )
+            path_failures.extend(receipt_report["failures"])
+            summaries.extend(receipt_report["summaries"])
         except (
             OSError,
             ValueError,
