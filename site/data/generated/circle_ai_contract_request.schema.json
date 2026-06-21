@@ -30,7 +30,8 @@
               ]
             },
             "head_dim": {
-              "minimum": 1,
+              "minimum": 2,
+              "multipleOf": 2,
               "type": "integer"
             },
             "requested_margin": {

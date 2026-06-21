@@ -67,7 +67,8 @@ when present, and `context` from `max_position_embeddings` or related context
 fields. Explicit `--head-dim`, `--base`, `--context`, `--tolerance`, and
 `--discretization` flags override inferred values. Non-default `rope_scaling`
 metadata is rejected rather than treated as proved by the current standard-RoPE
-contract.
+contract. `head_dim` must be even because the current RoPE contract models
+rotary dimension pairs.
 The copyable fixture is
 `examples/circle_ai_model_configs/standard_rope_config.json`.
 
@@ -375,8 +376,9 @@ site/data/generated/circle_ai_contract_receipt_file_check.schema.json
 
 The request schema has contract-specific parameter shapes. RoPE and recurrence
 requests may rely on defaults, while KV-cache and sparse-attention requests must
-include their required fields. Unknown top-level request keys and unknown
-parameter keys are rejected so typoed configs fail before a receipt is issued.
+include their required fields. RoPE `head_dim` values must be positive and even.
+Unknown top-level request keys and unknown parameter keys are rejected so typoed
+configs fail before a receipt is issued.
 
 `validate_contract_request(request)` applies the same contract-specific checks
 inside Python, including required fields, unknown keys, numeric ranges, and

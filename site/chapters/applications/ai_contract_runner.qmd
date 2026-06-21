@@ -97,6 +97,8 @@ The importer reads `head_dim` or `hidden_size / num_attention_heads`, `rope_thet
 when present, and `max_position_embeddings` or related context fields. Explicit
 CLI flags override inferred values. Non-default `rope_scaling` metadata is
 rejected because the current receipt does not prove scaled-RoPE semantics.
+`head_dim` must be even because the current RoPE contract models rotary
+dimension pairs.
 The saved request is the exact versioned Circle request object used to produce
 the receipt, so downstream tools can pin it before rerunning or auditing the
 certificate.
@@ -431,8 +433,9 @@ site/data/generated/circle_ai_contract_receipt_file_check.schema.json
 ```
 
 The request schema is contract-specific: it accepts defaults for RoPE and
-recurrence, requires the core KV-cache and sparse-attention fields, and rejects
-unknown top-level request keys or parameter names before a receipt is issued.
+recurrence, requires the core KV-cache and sparse-attention fields, rejects odd
+RoPE `head_dim` values, and rejects unknown top-level request keys or parameter
+names before a receipt is issued.
 The Python `validate_contract_request(request)` helper applies the same public
 checks for downstream code that does not invoke JSON Schema directly.
 The runner-check schema validates the batch report emitted by

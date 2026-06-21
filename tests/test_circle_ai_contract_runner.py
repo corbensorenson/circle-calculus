@@ -1032,6 +1032,27 @@ def test_rope_model_config_import_rejects_unproved_scaling_metadata() -> None:
         )
 
 
+def test_rope_model_config_import_rejects_odd_head_dim() -> None:
+    with pytest.raises(ValueError, match="must be even"):
+        build_rope_request_parameters_from_model_config(
+            {
+                "hidden_size": 381,
+                "num_attention_heads": 3,
+                "max_position_embeddings": 2048,
+            }
+        )
+
+    with pytest.raises(ValueError, match="must produce an even RoPE head_dim"):
+        build_rope_request_parameters_from_model_config(
+            {
+                "hidden_size": 1008,
+                "num_attention_heads": 8,
+                "max_position_embeddings": 2048,
+                "partial_rotary_factor": 0.5,
+            }
+        )
+
+
 def test_request_api_reports_malformed_requests() -> None:
     missing_parameters = {
         "schema_id": "circle_calculus.ai_contract_request.v0",
@@ -1056,6 +1077,11 @@ def test_request_api_reports_malformed_requests() -> None:
         "schema_id": "circle_calculus.ai_contract_request.v0",
         "kind": "rope",
         "parameters": {"requested_margin": "not-a-fraction"},
+    }
+    invalid_rope_head_dim = {
+        "schema_id": "circle_calculus.ai_contract_request.v0",
+        "kind": "rope",
+        "parameters": {"head_dim": 127},
     }
     invalid_sparse_stride = {
         "schema_id": "circle_calculus.ai_contract_request.v0",
@@ -1094,6 +1120,10 @@ def test_request_api_reports_malformed_requests() -> None:
     assert any(
         "parse as a Fraction" in failure
         for failure in validate_contract_request(invalid_rope_margin)
+    )
+    assert any(
+        "parameters.head_dim must be even" in failure
+        for failure in validate_contract_request(invalid_rope_head_dim)
     )
     assert any(
         "positive integers" in failure
@@ -1212,6 +1242,11 @@ def test_request_schema_validates_public_parameter_shapes() -> None:
         "parameters": {},
         "paramaters": {},
     }
+    odd_rope_head_dim = {
+        "schema_id": "circle_calculus.ai_contract_request.v0",
+        "kind": "rope",
+        "parameters": {"head_dim": 127},
+    }
 
     with pytest.raises(jsonschema.ValidationError):
         jsonschema.validate(missing_sparse_field, schema)
@@ -1219,6 +1254,8 @@ def test_request_schema_validates_public_parameter_shapes() -> None:
         jsonschema.validate(typo_parameter, schema)
     with pytest.raises(jsonschema.ValidationError):
         jsonschema.validate(typo_top_level, schema)
+    with pytest.raises(jsonschema.ValidationError):
+        jsonschema.validate(odd_rope_head_dim, schema)
 
 
 def test_receipt_schema_exposes_runner_metadata() -> None:

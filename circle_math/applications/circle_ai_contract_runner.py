@@ -181,6 +181,15 @@ def _positive_int_value(value: Any, *, field: str) -> int:
     return value
 
 
+def _even_rope_head_dim_value(value: Any, *, field: str) -> int:
+    head_dim = _positive_int_value(value, field=field)
+    if head_dim % 2 != 0:
+        raise ValueError(
+            f"model config {field} must be even because RoPE uses dimension pairs"
+        )
+    return head_dim
+
+
 def _positive_float_value(value: Any, *, field: str) -> float:
     if not isinstance(value, (int, float)) or isinstance(value, bool) or value <= 0:
         raise ValueError(f"model config {field} must be a positive number")
@@ -228,7 +237,7 @@ def _ensure_standard_rope_scaling(config: Mapping[str, Any]) -> None:
 def _infer_rope_head_dim(config: Mapping[str, Any]) -> int:
     direct = _model_config_value(config, ROPE_MODEL_HEAD_DIM_KEYS)
     if direct is not None:
-        head_dim = _positive_int_value(direct, field="head_dim")
+        head_dim = _even_rope_head_dim_value(direct, field="head_dim")
     else:
         hidden_size = _positive_int_value(
             config.get("hidden_size"),
@@ -246,7 +255,7 @@ def _infer_rope_head_dim(config: Mapping[str, Any]) -> int:
 
     fraction = _optional_rotary_fraction(config)
     if fraction is None:
-        return head_dim
+        return _even_rope_head_dim_value(head_dim, field="head_dim")
     numerator = head_dim * fraction.numerator
     if numerator % fraction.denominator != 0:
         raise ValueError(
@@ -255,6 +264,10 @@ def _infer_rope_head_dim(config: Mapping[str, Any]) -> int:
     rotary_dim = numerator // fraction.denominator
     if rotary_dim <= 0:
         raise ValueError("model config rotary fraction produced a nonpositive head_dim")
+    if rotary_dim % 2 != 0:
+        raise ValueError(
+            "model config rotary fraction must produce an even RoPE head_dim"
+        )
     return rotary_dim
 
 
@@ -280,7 +293,7 @@ def build_rope_request_parameters_from_model_config(
     _ensure_standard_rope_scaling(config)
 
     resolved_head_dim = (
-        _positive_int_value(head_dim, field="head_dim")
+        _even_rope_head_dim_value(head_dim, field="head_dim")
         if head_dim is not None
         else _infer_rope_head_dim(config)
     )
@@ -1309,6 +1322,17 @@ def _require_positive_int(
         failures.append(f"parameters.{key} must be a positive integer")
 
 
+def _require_even_int(
+    parameters: Mapping[str, Any],
+    key: str,
+    failures: list[str],
+    *,
+    reason: str,
+) -> None:
+    if key in parameters and _is_int(parameters[key]) and parameters[key] % 2 != 0:
+        failures.append(f"parameters.{key} must be even {reason}")
+
+
 def _require_nonnegative_int(
     parameters: Mapping[str, Any],
     key: str,
@@ -1377,6 +1401,12 @@ def _validate_request_parameters(
         }
         _require_allowed_keys(parameters, allowed=allowed, failures=failures)
         _require_positive_int(parameters, "head_dim", failures)
+        _require_even_int(
+            parameters,
+            "head_dim",
+            failures,
+            reason="because RoPE uses dimension pairs",
+        )
         _require_positive_number(parameters, "base", failures)
         _require_positive_int(parameters, "context", failures)
         _require_nonnegative_number(parameters, "tolerance", failures)
@@ -2304,6 +2334,7 @@ def build_contract_request_json_schema() -> dict[str, Any]:
     ]
     integer = {"type": "integer"}
     positive_integer = {"type": "integer", "minimum": 1}
+    positive_even_integer = {"type": "integer", "minimum": 2, "multipleOf": 2}
     nonnegative_integer = {"type": "integer", "minimum": 0}
     integer_array = {
         "type": "array",
@@ -2327,7 +2358,7 @@ def build_contract_request_json_schema() -> dict[str, Any]:
                     "parameters": {
                         "type": "object",
                         "properties": {
-                            "head_dim": positive_integer,
+                            "head_dim": positive_even_integer,
                             "base": {"type": "number", "exclusiveMinimum": 0},
                             "context": positive_integer,
                             "tolerance": {"type": "number", "minimum": 0},
