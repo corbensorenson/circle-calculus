@@ -18,6 +18,8 @@ from .ai_contracts import (
     SUPPORTED_CONTRACT_KINDS,
     build_contract_pack,
     build_validated_contract_receipt,
+    build_validated_rope_receipt_from_model_config,
+    canonical_contract_kind,
     receipt_summary_lines,
 )
 from .applications.circle_ai import certify_stride_family_coverage
@@ -203,6 +205,48 @@ def contract_receipt_main() -> int:
         help="Path to a JSON object containing contract parameters.",
     )
     parser.add_argument(
+        "--model-config-file",
+        type=Path,
+        help=(
+            "Path to a model config JSON object. Currently supported for "
+            "standard RoPE receipts only."
+        ),
+    )
+    parser.add_argument(
+        "--head-dim",
+        type=int,
+        default=None,
+        help="Optional RoPE head-dimension override for --model-config-file.",
+    )
+    parser.add_argument(
+        "--base",
+        type=float,
+        default=None,
+        help="Optional RoPE base/theta override for --model-config-file.",
+    )
+    parser.add_argument(
+        "--context",
+        type=int,
+        default=None,
+        help="Optional context-length override for --model-config-file.",
+    )
+    parser.add_argument(
+        "--tolerance",
+        type=float,
+        default=None,
+        help="Optional numerical tolerance override for --model-config-file.",
+    )
+    parser.add_argument(
+        "--discretization",
+        default=None,
+        help="Optional discretization override for --model-config-file.",
+    )
+    parser.add_argument(
+        "--requested-margin",
+        default=None,
+        help="Optional real-phase margin request for --model-config-file.",
+    )
+    parser.add_argument(
         "--pack",
         type=Path,
         default=None,
@@ -211,14 +255,44 @@ def contract_receipt_main() -> int:
     parser.add_argument("--format", choices=("text", "json"), default="text")
     args = parser.parse_args()
 
-    parameters = _load_json_object_from_args(
-        parser,
-        inline_json=args.parameters,
-        json_file=args.parameters_file,
-        label="parameters",
-    )
     pack = build_contract_pack() if args.pack is None else load_contract_pack(args.pack)
-    receipt = build_validated_contract_receipt(args.kind, parameters, pack=pack)
+    if args.model_config_file is not None:
+        if args.parameters is not None or args.parameters_file is not None:
+            parser.error(
+                "use either --model-config-file or parameter JSON, not both"
+            )
+        if canonical_contract_kind(args.kind) != "rope_position_distinguishability":
+            parser.error("--model-config-file is currently supported only for RoPE")
+        model_config = _load_json_object_from_args(
+            parser,
+            inline_json=None,
+            json_file=args.model_config_file,
+            label="model-config",
+        )
+        try:
+            receipt = build_validated_rope_receipt_from_model_config(
+                model_config,
+                head_dim=args.head_dim,
+                base=args.base,
+                context=args.context,
+                tolerance=args.tolerance,
+                discretization=args.discretization,
+                requested_margin=args.requested_margin,
+                pack=pack,
+            )
+        except ValueError as exc:
+            parser.error(str(exc))
+    else:
+        parameters = _load_json_object_from_args(
+            parser,
+            inline_json=args.parameters,
+            json_file=args.parameters_file,
+            label="parameters",
+        )
+        try:
+            receipt = build_validated_contract_receipt(args.kind, parameters, pack=pack)
+        except ValueError as exc:
+            parser.error(str(exc))
     if args.format == "json":
         print(json.dumps(receipt, indent=2, sort_keys=True))
     else:

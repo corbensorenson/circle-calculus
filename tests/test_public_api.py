@@ -5,7 +5,12 @@ import subprocess
 import sys
 
 from circle_math.core import finite_orbit, finite_period, is_full_coil
-from circle_math.ai_contracts import CONTRACT_PACK_SCHEMA_ID, build_contract_pack
+from circle_math.ai_contracts import (
+    CONTRACT_PACK_SCHEMA_ID,
+    build_contract_pack,
+    build_rope_request_parameters_from_model_config,
+    build_validated_rope_receipt_from_model_config,
+)
 from circle_math.contracts import contract_kinds, readiness_summary
 
 
@@ -25,6 +30,27 @@ def test_stable_contract_api_pack_readiness() -> None:
     sparse = readiness_summary(pack, "sparse_attention_coverage")
     assert sparse.ready_for_downstream_fixture_use is True
     assert sparse.all_theorem_ids_proved is True
+
+
+def test_stable_rope_model_config_api_builds_receipt() -> None:
+    model_config = {
+        "hidden_size": 4096,
+        "num_attention_heads": 32,
+        "max_position_embeddings": 4096,
+        "rope_theta": 10000.0,
+    }
+
+    parameters = build_rope_request_parameters_from_model_config(model_config)
+    assert parameters["head_dim"] == 128
+    assert parameters["base"] == 10000.0
+    assert parameters["context"] == 4096
+
+    receipt = build_validated_rope_receipt_from_model_config(model_config)
+    assert receipt["kind"] == "rope_position_distinguishability"
+    assert receipt["request"]["parameters"]["context"] == 4096
+    assert receipt["normalized_request"]["head_dim"] == 128
+    assert receipt["normalized_request"]["context_length"] == 4096
+    assert receipt["proof_status"]["all_theorem_ids_proved"] is True
 
 
 def test_package_cli_contract_ready_json() -> None:
@@ -94,4 +120,46 @@ def test_package_cli_contract_receipt_json() -> None:
     assert receipt["kind"] == "sparse_attention_coverage"
     assert receipt["status"] == "proved"
     assert receipt["request_passed"] is True
+    assert receipt["proof_status"]["all_theorem_ids_proved"] is True
+
+
+def test_package_cli_contract_receipt_from_rope_model_config_json(
+    tmp_path,
+) -> None:
+    config_path = tmp_path / "config.json"
+    config_path.write_text(
+        json.dumps(
+            {
+                "hidden_size": 4096,
+                "num_attention_heads": 32,
+                "max_position_embeddings": 4096,
+                "rope_theta": 10000.0,
+            }
+        )
+    )
+
+    result = subprocess.run(
+        [
+            sys.executable,
+            "-c",
+            (
+                "import sys; "
+                "from circle_math.cli import contract_receipt_main; "
+                "sys.exit(contract_receipt_main())"
+            ),
+            "--kind",
+            "rope",
+            "--model-config-file",
+            str(config_path),
+            "--format",
+            "json",
+        ],
+        text=True,
+        capture_output=True,
+        check=True,
+    )
+    receipt = json.loads(result.stdout)
+    assert receipt["kind"] == "rope_position_distinguishability"
+    assert receipt["request"]["parameters"]["head_dim"] == 128
+    assert receipt["request"]["parameters"]["context"] == 4096
     assert receipt["proof_status"]["all_theorem_ids_proved"] is True

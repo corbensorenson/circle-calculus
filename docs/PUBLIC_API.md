@@ -38,11 +38,27 @@ assert is_full_coil(12, 5) is True
 Use `circle_math.ai_contracts` to build public contract fixtures and receipts:
 
 ```python
-from circle_math.ai_contracts import build_contract_pack, build_rope_receipt
+from circle_math.ai_contracts import (
+    build_contract_pack,
+    build_rope_receipt,
+    build_validated_rope_receipt_from_model_config,
+)
 
 pack = build_contract_pack()
 receipt = build_rope_receipt(context=4096, pack=pack)
 assert receipt["decision"]["all_theorem_ids_proved"] is True
+
+model_config = {
+    "hidden_size": 4096,
+    "num_attention_heads": 32,
+    "max_position_embeddings": 4096,
+    "rope_theta": 10000.0,
+}
+receipt_from_config = build_validated_rope_receipt_from_model_config(
+    model_config,
+    pack=pack,
+)
+assert receipt_from_config["kind"] == "rope_position_distinguishability"
 ```
 
 Use `circle_math.contracts` to consume an already exported pack:
@@ -58,6 +74,11 @@ print(contract["id"])
 The installed CLI exposes the same receipt path for shell users:
 
 ```bash
+circle-ai-contract-receipt \
+  --kind rope \
+  --model-config-file examples/circle_ai_model_configs/standard_rope_config.json \
+  --format json
+
 circle-ai-contract-receipt \
   --kind sparse-attention \
   --parameters '{"context": 9, "strides": [3, 4, 7], "path_length": 2, "local_window": 2}' \

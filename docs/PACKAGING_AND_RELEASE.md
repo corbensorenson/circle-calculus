@@ -65,6 +65,7 @@ The package exposes these console scripts:
 
 ```bash
 circle-ai-contract-ready --kind sparse_attention_coverage
+circle-ai-contract-receipt --kind rope --model-config-file examples/circle_ai_model_configs/standard_rope_config.json
 circle-ai-contract-receipt --kind sparse-attention --parameters '{"context": 9, "strides": [3, 4, 7], "path_length": 2, "local_window": 2}'
 circle-rope-certify --preset llama_style_10000_4k
 circle-sparse-attention-certify --context 9 --strides 3,4,7 --path-length 2 --local-window 2

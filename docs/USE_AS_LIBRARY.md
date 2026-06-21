@@ -38,7 +38,11 @@ True
 ## Python: RoPE Contract Receipt
 
 ```python
-from circle_math.ai_contracts import build_contract_pack, build_rope_receipt
+from circle_math.ai_contracts import (
+    build_contract_pack,
+    build_rope_receipt,
+    build_validated_rope_receipt_from_model_config,
+)
 
 pack = build_contract_pack()
 receipt = build_rope_receipt(
@@ -57,6 +61,20 @@ print(receipt["decision"]["all_theorem_ids_proved"])
 This returns a theorem-linked structural receipt for the declared RoPE request.
 Read the `not_claimed` field before treating the receipt as an engineering
 result.
+
+For a model-style config object, use the standard-RoPE importer:
+
+```python
+model_config = {
+    "hidden_size": 4096,
+    "num_attention_heads": 32,
+    "max_position_embeddings": 4096,
+    "rope_theta": 10000.0,
+}
+
+receipt = build_validated_rope_receipt_from_model_config(model_config, pack=pack)
+print(receipt["request"]["parameters"])
+```
 
 ## Python: Sparse-Attention Coverage Contract
 
@@ -92,6 +110,7 @@ available:
 
 ```bash
 circle-ai-contract-ready --kind sparse_attention_coverage
+circle-ai-contract-receipt --kind rope --model-config-file examples/circle_ai_model_configs/standard_rope_config.json
 circle-ai-contract-receipt --kind sparse-attention --parameters '{"context": 9, "strides": [3, 4, 7], "path_length": 2, "local_window": 2}'
 circle-rope-certify --preset llama_style_10000_4k
 circle-sparse-attention-certify --context 9 --strides 3,4,7 --path-length 2 --local-window 2
@@ -99,7 +118,8 @@ circle-sparse-attention-certify --context 9 --strides 3,4,7 --path-length 2 --lo
 
 `circle-ai-contract-receipt` is the installed-package path for producing a
 theorem-linked receipt without using the repository-only scripts. It accepts
-`--parameters-file` when the request should come from checked-in JSON.
+`--model-config-file` for standard RoPE configs and `--parameters-file` when
+the request should come from checked-in JSON.
 
 The richer repository maintenance commands under `scripts/` are still the
 source-tree tools for generating and validating all artifacts.
