@@ -391,6 +391,30 @@ def build_contract_request(kind: str, parameters: Mapping[str, Any]) -> dict[str
     return request
 
 
+def build_rope_contract_request_from_model_config(
+    config: Mapping[str, Any],
+    *,
+    head_dim: int | None = None,
+    base: float | None = None,
+    context: int | None = None,
+    tolerance: float | None = None,
+    discretization: str | None = None,
+    requested_margin: str | Fraction | None = None,
+) -> dict[str, Any]:
+    """Build a versioned standard-RoPE request from a model config object."""
+
+    parameters = build_rope_request_parameters_from_model_config(
+        config,
+        head_dim=head_dim,
+        base=base,
+        context=context,
+        tolerance=tolerance,
+        discretization=discretization,
+        requested_margin=requested_margin,
+    )
+    return build_contract_request("rope", parameters)
+
+
 def _default_pack(pack: Mapping[str, Any] | None) -> dict[str, Any]:
     return dict(pack) if pack is not None else build_contract_pack()
 
@@ -1536,6 +1560,31 @@ def build_validated_contract_receipt_from_request(
             + "; ".join(failures)
         )
     return receipt
+
+
+def build_validated_rope_receipt_from_model_config(
+    config: Mapping[str, Any],
+    *,
+    head_dim: int | None = None,
+    base: float | None = None,
+    context: int | None = None,
+    tolerance: float | None = None,
+    discretization: str | None = None,
+    requested_margin: str | Fraction | None = None,
+    pack: Mapping[str, Any] | None = None,
+) -> dict[str, Any]:
+    """Build a pack-validated standard-RoPE receipt from a model config object."""
+
+    request = build_rope_contract_request_from_model_config(
+        config,
+        head_dim=head_dim,
+        base=base,
+        context=context,
+        tolerance=tolerance,
+        discretization=discretization,
+        requested_margin=requested_margin,
+    )
+    return build_validated_contract_receipt_from_request(request, pack=pack)
 
 
 def _validate_decision_block(

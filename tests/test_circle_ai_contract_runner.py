@@ -23,11 +23,13 @@ from circle_math.applications import (
     build_contract_request_validation_json_schema,
     build_kv_cache_receipt,
     build_recurrence_receipt,
+    build_rope_contract_request_from_model_config,
     build_rope_request_parameters_from_model_config,
     build_rope_receipt,
     build_sparse_attention_receipt,
     build_validated_contract_receipt,
     build_validated_contract_receipt_from_request,
+    build_validated_rope_receipt_from_model_config,
     receipt_summary_lines,
     require_contract_receipt_gate,
     validate_contract_request,
@@ -956,6 +958,48 @@ def test_rope_model_config_import_builds_standard_request_parameters() -> None:
             "parameters": parameters,
         }
     ) == []
+
+
+def test_rope_model_config_public_api_builds_request_and_receipt(
+    contract_pack: dict,
+) -> None:
+    config = {
+        "hidden_size": 4096,
+        "num_attention_heads": 32,
+        "rope_theta": 10000.0,
+        "max_position_embeddings": 131072,
+    }
+
+    request = build_rope_contract_request_from_model_config(
+        config,
+        requested_margin="1/328459",
+    )
+    receipt = build_validated_rope_receipt_from_model_config(
+        config,
+        requested_margin="1/328459",
+        pack=contract_pack,
+    )
+
+    assert request == {
+        "schema_id": "circle_calculus.ai_contract_request.v0",
+        "kind": "rope_position_distinguishability",
+        "parameters": {
+            "head_dim": 128,
+            "base": 10000.0,
+            "context": 131072,
+            "tolerance": 1e-6,
+            "discretization": "round",
+            "requested_margin": "1/328459",
+        },
+    }
+    assert validate_contract_request(request) == []
+    assert receipt["kind"] == "rope_position_distinguishability"
+    assert receipt["request"] == request
+    assert receipt["status"] == "proved"
+    assert receipt["request_passed"] is True
+    assert receipt["decision"]["verdict"] == "passed"
+    assert receipt["proof_status"]["all_theorem_ids_proved"] is True
+    assert validate_contract_receipt_against_pack(receipt, contract_pack) == []
 
 
 def test_rope_model_config_import_handles_partial_rotary_factor() -> None:

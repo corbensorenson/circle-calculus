@@ -263,8 +263,10 @@ from circle_math.applications import (
     build_contract_receipt_gate_report,
     build_contract_request,
     build_contract_request_validation_report,
+    build_rope_contract_request_from_model_config,
     build_validated_contract_receipt,
     build_validated_contract_receipt_from_request,
+    build_validated_rope_receipt_from_model_config,
     validate_contract_request,
     validate_contract_receipt_against_pack,
     load_contract_pack,
@@ -272,6 +274,23 @@ from circle_math.applications import (
 )
 
 pack = load_contract_pack("site/data/generated/circle_ai_contract_pack.json")
+model_config = {
+    "hidden_size": 4096,
+    "num_attention_heads": 32,
+    "rope_theta": 10000.0,
+    "max_position_embeddings": 131072,
+}
+request = build_rope_contract_request_from_model_config(
+    model_config,
+    requested_margin="1/328459",
+)
+receipt = build_validated_rope_receipt_from_model_config(
+    model_config,
+    requested_margin="1/328459",
+    pack=pack,
+)
+assert receipt["request"] == request
+
 request = build_contract_request(
     "rope",
     {
