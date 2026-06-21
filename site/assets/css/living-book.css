@@ -84,6 +84,55 @@ body {
   background: #f1f4f7;
 }
 
+.claim-boundary-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  align-items: center;
+  margin: 0.75rem 0 1rem;
+}
+
+.claim-boundary-label {
+  color: var(--cc-muted);
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.claim-boundary-badge {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid var(--cc-line);
+  border-radius: 999px;
+  padding: 0.15rem 0.55rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.claim-boundary-proved {
+  color: var(--cc-proof);
+  border-color: #9fd4bd;
+  background: #ecf8f2;
+}
+
+.claim-boundary-executable {
+  color: #0b4f6c;
+  border-color: #9ccfe0;
+  background: #ebf7fb;
+}
+
+.claim-boundary-experimental {
+  color: var(--cc-plan);
+  border-color: #e7d58e;
+  background: #fff8d7;
+}
+
+.claim-boundary-speculative {
+  color: var(--cc-deferred);
+  border-color: #cbd5df;
+  background: #f1f4f7;
+}
+
 .warning-box {
   border-color: #efc36d;
   background: #fff8e6;

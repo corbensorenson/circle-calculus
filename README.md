@@ -3,87 +3,24 @@
 [![CI](https://github.com/corbensorenson/circle-calculus/actions/workflows/ci.yml/badge.svg)](https://github.com/corbensorenson/circle-calculus/actions/workflows/ci.yml)
 [![Deploy Living Book](https://github.com/corbensorenson/circle-calculus/actions/workflows/pages.yml/badge.svg)](https://github.com/corbensorenson/circle-calculus/actions/workflows/pages.yml)
 
-**Start here:** the [Circle Calculus Living Book](https://corbensorenson.github.io/circle-calculus/) is the public, interactive textbook for this project. If you only click one link, click that one.
+Circle Calculus is a proof-carrying finite cyclic mathematics project: Lean
+proofs, Python reference models, Rust prime/horizon utilities, theorem
+manifests, papers, and a Quarto Living Book all tied together by explicit proof
+status.
 
-Circle Calculus rebuilds familiar mathematics from one move — *count, and when you run out of room, wrap around* — and keeps every claimed result tied to a machine-checked Lean proof. It is a staged, honest formalization: papers are allowed to be ambitious, but a theorem only counts as proved when a Lean declaration says so.
+Start with the public site: <https://corbensorenson.github.io/circle-calculus/>.
 
-## What This Is
+## Use It
 
-The project starts from the finite cyclic address space `C_n` (modeled in Lean as `ZMod n`) and builds upward: rotations as addition, coils as repeated rotation, period and closure, orbit decomposition, winding/lift to the natural numbers, scaling and factor structure, and a dimension-indexed ladder of finite sphere scaffolds (`S^0` through `S^7`, with `S^15` as a roadmap).
+- Learn the project: [Living Book](https://corbensorenson.github.io/circle-calculus/)
+- Use it as code: [docs/USE_AS_LIBRARY.md](docs/USE_AS_LIBRARY.md)
+- Inspect stable APIs: [docs/PUBLIC_API.md](docs/PUBLIC_API.md)
+- Consume AI/system contracts: [docs/CIRCLE_AI_CONTRACTS_INTEGRATION.md](docs/CIRCLE_AI_CONTRACTS_INTEGRATION.md)
+- Check contract schema/version policy: [docs/CONTRACT_SCHEMA_VERSIONING.md](docs/CONTRACT_SCHEMA_VERSIONING.md)
+- Verify claims: [site/verify_claim.qmd](site/verify_claim.qmd)
+- Understand "proved": [docs/PROOF_POLICY.md](docs/PROOF_POLICY.md)
 
-Every serious concept is meant to be traceable to:
-
-- a human-readable paper in `papers/`,
-- a Lean 4 / mathlib declaration in `Circle/` (and per-paper sidecars in `sidecars/`),
-- an executable Python reference model in `circle_math/`,
-- a shared dictionary entry in `dictionary/`, and
-- a status entry in a manifest under `manifests/`.
-
-## What Is Actually Proved
-
-In plain terms — and stated at its true altitude — the proved core is **clean, elementary finite and cyclic mathematics, fully formalized**:
-
-- **Finite-circle arithmetic (S1):** rotation laws, coils, period `= n / gcd(n, k)`, orbit decomposition (`gcd(n, k)` classes), full-coil-iff-coprime, and a substantial scaling/affine theory. These are genuine finite group-theory results proved against mathlib (Lagrange's theorem, additive order, Bézout's identity).
-- **Winding and naturals:** the unique winding/residue lift and lifted natural-number addition with carry.
-- **A finite sphere ladder (S0–S7):** suspension cell-counts and the Euler-characteristic rule `χ → 2 − χ`, the real-quaternion algebra spine, bounded Hopf-coordinate facts, and a bounded Cayley–Dickson (octonion) model including explicit non-associativity.
-- **Classical bridges:** Lean-checked *wrappers* around established mathlib results (Erdős–Ginzburg–Ziv, Cauchy–Davenport, Roth, and others), restated in Circle-facing language. These are not new theorems and not progress on open problems — they are labeled as wrappers.
-- **Finite "application" lanes (physics / AI / generative / compute):** these are deliberately modest, honestly named finite models. A "Wilson-loop invariance" theorem here is the fact that a sum of `ZMod n` phases around a closed loop is gauge-independent; an "AI memory-slot" theorem is the fact that an index stays below its bank size and is unchanged by adding a full period. They are correct, useful for keeping the prose honest, and **not** claims about physics or about model quality.
-- **Proof-carrying AI contracts:** the active AI lane now targets checked architecture facts: RoPE position distinguishability, KV-cache ring-buffer safety with sink-window policy, sparse-attention coverage and gap witnesses, recurrence schedules, and circulant/block-cyclic mixer laws. The flagship public artifact is the RoPE position-distinguishability certifier, followed by KV-cache ring-buffer and sparse-attention coverage contracts; none is a claim that Circle Calculus improves model quality, context length, speed, or memory.
-
-The exhaustive, per-theorem list lives where it belongs — in the manifests (`manifests/theorem_manifest.yaml` and `manifests/dimensions/`, `manifests/applications/`) — and is rendered, with live status, on the Living Book [Theorem Index](https://corbensorenson.github.io/circle-calculus/theorems.html). It is intentionally **not** duplicated here.
-
-## What This Does Not Claim
-
-This repository does not claim to have rebuilt all of mathematics from circles. It does not claim that Python tests or diagrams are proofs, that the physics/AI lanes are physics or model-quality results, that `S^2` has a natural group structure, that `S^3` is globally `S^2 × S^1`, that unit octonions form a group, or that formalization bypasses foundational limits. See `docs/GODEL_AND_LIMITATIONS.md`.
-
-## How To Read It
-
-1. The [Living Book](https://corbensorenson.github.io/circle-calculus/) — the guided learning path, starting with the finite circle.
-2. `papers/PAPER_01_FINITE_CIRCLES.md` and its sidecar `sidecars/PAPER_01_FINITE_CIRCLES/lean/Paper01.lean`.
-3. `dictionary/circle_dictionary.yaml` for fixed vocabulary.
-4. `manifests/theorem_manifest.yaml` for theorem status.
-5. `docs/COMPLETION_ROADMAP.md` and `docs/DIMENSIONAL_LADDER.md` for where it is going.
-6. The Living Book [AI contract suite](https://corbensorenson.github.io/circle-calculus/chapters/applications/ai_contract_suite.html), `docs/AI_CONTRACT_SUITE.md`, and `docs/CIRCLE_AI_CONTRACTS_INTEGRATION.md` for the compact working entry point to proof-carrying RoPE, KV-cache, sparse-attention certificates, and the generic contract pack other AI/math projects can consume.
-7. The Living Book [AI contract ladder](https://corbensorenson.github.io/circle-calculus/chapters/applications/ai_contract_ladder.html) for the guided sequence through proof-carrying RoPE, KV-cache, sparse-attention, recurrence, and mixer contracts.
-8. `docs/ROPE_CERTIFIER_RESULTS_NOTE.md`, `docs/ROPE_CERTIFIER_QUICKSTART.md`, `docs/ROPE_CERTIFIER_REVIEW_PACKET.md`, `papers/applications/PAPER_AI_04_ROPE_POSITION_CERTIFIER.md`, and `scripts/rope_certify.py` for the first standalone AI contract.
-9. The Living Book [KV-cache ring-buffer lesson](https://corbensorenson.github.io/circle-calculus/chapters/applications/kv_cache_ring_buffer.html), `docs/KV_CACHE_CERTIFIER_QUICKSTART.md`, `scripts/kv_cache_certify.py`, `papers/applications/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY.md`, and `sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_kv_cache_ring_buffer.py` for the second standalone AI contract.
-10. The Living Book [sparse-attention coverage lesson](https://corbensorenson.github.io/circle-calculus/chapters/applications/sparse_attention_contract.html), `docs/SPARSE_ATTENTION_CERTIFIER_QUICKSTART.md`, `scripts/stride_family_certify.py`, and `sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_stride_family_sparse_attention.py` for the third standalone AI contract.
-11. The Living Book [looped recurrence contracts lesson](https://corbensorenson.github.io/circle-calculus/chapters/applications/looped_recurrence_contracts.html), `docs/RECURRENCE_SCHEDULE_CERTIFIER_QUICKSTART.md`, and `scripts/recurrence_schedule_certify.py` for the fourth standalone AI contract.
-12. `docs/PHASE8_DEPTH_VALIDATION.md` for the current depth-and-validation push: RoPE real-phase theorem work, sparse coverage iffs, collision counting, KV-cache safety, contract hardening, change-aware validation, and proof-depth guardrails.
-13. `docs/THESEUS_HIVE_AI_TRANSFER.md` for the optional private-transfer lane; it is not the public proof standard.
-
-The Living Book's [What "Proved" Means Here](https://corbensorenson.github.io/circle-calculus/what_proved_means.html) page is the one-paragraph contract the whole project lives by.
-
-## Proof Standard
-
-A claim is treated as **proved** only when all of the following hold:
-
-1. it has a theorem id in a manifest under `manifests/`,
-2. that id names an exact Lean declaration,
-3. its manifest status is `proved` or `lean_proved`,
-4. `lake build` succeeds, and
-5. `scripts/check_no_fake_proofs.py` finds no forbidden placeholders (`sorry`, `admit`, `axiom`, …).
-
-Anything short of that is `planned`, `exploratory`, or `stated` — never "proved." Python tests and diagrams are executable support, not proofs. Full policy: `docs/PROOF_POLICY.md`.
-
-## Repository Layout
-
-```text
-Circle/        Lean 4 / mathlib formalization
-circle_math/   Python reference models
-dictionary/    Shared vocabulary
-docs/          Proof policy and foundational notes
-manifests/     Paper and theorem metadata (the canonical theorem index)
-papers/        Human-readable papers
-sidecars/      Per-paper Lean, Python, and diagram artifacts
-site/          The Quarto Living Book
-scripts/       Repository validation scripts
-tests/         Python regression / property tests
-```
-
-## Getting Started
-
-Install Lean via `elan`, then set up Python:
+## Install
 
 ```bash
 python -m venv .venv
@@ -91,90 +28,92 @@ source .venv/bin/activate
 python -m pip install -e .
 ```
 
-Run the full verification suite (the first Lean build fetches and compiles mathlib, so it takes a while):
+For Lean, install `elan`; Lake reads the pinned toolchain from
+`lean-toolchain`.
+
+## Stable Entry Points
+
+Python:
+
+```python
+from circle_math.core import finite_orbit, finite_period
+from circle_math.ai_contracts import build_contract_pack, build_rope_receipt
+```
+
+Lean:
+
+```lean
+import Circle.Core
+import Circle.Contracts
+```
+
+Rust:
 
 ```bash
+cargo run -p circle-prime -- --help
+cargo doc -p circle-prime --no-deps
+```
+
+## Verify
+
+```bash
+make targeted-check
 make check
 ```
 
-Useful targets: `make targeted-check-list` (preview change-aware checks), `make targeted-check` (run only the checks inferred from changed files), `make targeted-check TARGETED_FILES="path/a path/b"` (force a focused file set), `make lean` (build the Lean library), `make test` (Python tests), `make sitecheck` (validate the Living Book), `make site-render` (render the book), and `make living-book-check` (everything, including the rendered artifact). The targeted runner is documented in `docs/CHANGE_AWARE_VALIDATION.md`; it speeds up local iteration but does not replace `make check` before release-grade commits. See the `Makefile` for the full list.
-
-For the proof-carrying RoPE certifier, run:
+Core focused checks:
 
 ```bash
-python scripts/rope_certify.py --head-dim 128 --base 10000 --context 32768 --tolerance 1e-6
-python scripts/rope_certify.py --preset llama_style_10000_4k
-python scripts/rope_certify.py --preset llama_style_10000_128k
-python scripts/rope_certify.py --preset llama_style_500000_128k
-python scripts/phase_bank_certify.py --preset interpolated_x4_boundary_fail_961
+lake build Circle
+python scripts/check_manifest.py
+python scripts/check_manifest_lean_names.py
+python scripts/check_no_fake_proofs.py
+python scripts/check_paper_theorem_links.py
 ```
 
-The certifier emits theorem ids, Lean declaration names, exact discrete pass/fail, fitting common-gap multiple counts, sample colliding pairs when present, a proof-layer inventory, and a separate numerical real-phase margin report. Exact pass/fail is for the declared integer-period phase-bank model; it is not a language-model quality, context-length, speed, or memory claim. The exact phase-bank CLI includes quantized and interpolation-style boundary diagnostics, plus Lean-proved count facts: the total integer-bank collision count is zero exactly in the LCM-reaches-context pass case, and it is positive exactly when an unequal all-channel collision witness exists.
+## Proof Boundary
 
-The real-phase proof program now reduces finite margin checks to generated gaps, floor/ceiling witnesses, rational interval certificates, rational-band certificate audits, band-list compression, and rational endpoint-reflection bridges; it includes one theorem-backed rational/discretized `1/4099` context-4096 certificate plus genuine standard-RoPE channel-0 interval seeds for `1 / (2π)`. The sharp `1/104219` margin is Lean-proved through the 64k channel-0 seed, while every margin at or above `1/104218` is Lean-refuted there; the D19 generated certificate lowers the margin to `1/328459` and reaches 192k, and `AIRA-T0208` packages the bracket for every `103993 < context <= 196608`, with every margin at or above `1/328458` Lean-refuted throughout that range. `AIRA-T0216` and `AIRA-T0217` expose that bracket as a Python request classifier that returns proved, impossible, undecided-margin-gap, or outside-range; `AIRA-T0234` through `AIRA-T0237` package the proved branch as first-channel, context-wide, ordinary-radian-bank, and in-range semantic-trichotomy contracts. `AIRA-T0238` proves the public undecided probe lies inside the open gap, and `AIRA-T0239` through `AIRA-T0241` add finite-context guardrails: a close-return witness exists at scale `1/context`, no strictly larger margin can hold, and exact weakest-gap report margins are bounded by the same ceiling. This is still channel-0 based, not a full all-channel standard-RoPE bank theorem or a model-quality claim.
+A claim is treated as proved only when it has a theorem id, a compiled Lean
+declaration, manifest status `proved` or `lean_proved`, a passing Lean build,
+and no forbidden proof placeholders. Python tests, diagrams, widgets, benchmark
+fixtures, and generated JSON are useful evidence layers, not proofs.
 
-For the proof-carrying KV-cache ring-buffer certificate, run:
+The AI and systems contracts prove finite structural facts such as cyclic
+indexing, RoPE phase-bank conditions, sparse-attention coverage fields,
+ring-buffer freshness, recurrence schedules, and circulant/block-cyclic mixer
+laws. They do not claim model-quality, speed, memory, context-length,
+deployment-safety, physics, or universal-compression improvements.
 
-```bash
-python scripts/kv_cache_certify.py --cache-size 16 --current 31 --token 20 --batch-tokens 20,24,29,31 --sink-size 4
-python sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_kv_cache_ring_buffer.py --format markdown
+The current contract surface distinguishes 8 public contract families from 6 compatibility
+downstream-transfer contract families.
+
+## Repository Layout
+
+```text
+Circle/        Lean 4 / mathlib formalization
+circle_math/   Python public APIs and reference models
+rust/          Rust prime/horizon engine
+dictionary/    Shared vocabulary
+docs/          Policy, guides, quickstarts, and release notes
+manifests/     Theorem, paper, target, and capability metadata
+papers/        Human-readable papers
+sidecars/      Per-paper Lean, Python, diagram, and result artifacts
+site/          Quarto Living Book
+scripts/       Validation, export, and repository maintenance tools
+tests/         Python regression and contract tests
 ```
 
-The certifier emits theorem ids, Lean declaration names, a finite slot/window certificate, retained-batch distinctness, a no-same-slot-overwrite-before-current read guard, an explicit stale-token same-slot overwrite witness, single-token and batch retained-iff-no-later-same-slot-write trace contracts, next-overwrite boundary iff fields, a modeled adapter request-trace pass/fail certificate, a stale requested-token failure witness, stale requested-member count, pass/fail iff stale-count fields under non-future duplicate-free assumptions, a pass-iff-boundary checklist, a pass-iff-no-stale-member checklist, trace-fresh read-batch slot distinctness, a live-window slot-count iff, a full generated live-window coverage flag, and a full-coverage-contract iff. It proves finite ring-buffer indexing and overwrite-window facts only; it is not a paging-policy, throughput, memory-saving, retrieval-quality, implementation-correctness, deployment-safety, or model-quality claim.
+## Contribute
 
-For the proof-carrying sparse-attention coverage certificate, run:
+Use [CONTRIBUTING.md](CONTRIBUTING.md) for the four common workflows:
 
-```bash
-python scripts/stride_family_certify.py --context 120 --strides 7,13 --path-length 3 --local-window 4
-python sidecars/PAPER_AI_02_COIL_ATTENTION_AND_MEMORY/python/benchmark_stride_family_sparse_attention.py --format markdown
-```
+- adding a theorem,
+- adding a Python model,
+- adding a contract,
+- adding a paper.
 
-The sparse certificate emits theorem ids, covered lags, theorem-side covered/uncovered-lag lists, a covered-plus-uncovered count partition, covered-count completion, uncovered-count witness, and covered-count shortfall witness criteria, no-collision budget predicates, candidate-count fields, a default hit/gap fixture, a compact complete-coverage fixture, and compact planner-style rows for larger declared sparse layouts. It proves finite candidate-set coverage, hit/gap-list membership and counting, and budget facts only; it is not an attention-quality, long-context, throughput, runtime, memory-use, or model-quality claim.
+## Release Readiness
 
-For the standalone Circle AI contract pack, run:
-
-```bash
-make circle-ai-contracts
-make circle-ai-contracts-check
-make circle-ai-contracts-ready
-python scripts/circle_ai_contract_ready.py
-python scripts/circle_ai_contract_ready.py --kind sparse_attention_coverage
-```
-
-This writes `site/data/generated/circle_ai_contract_pack.json`, a public-safe generic fixture pack for nine contract families: RoPE position distinguishability, KV-cache ring-buffer freshness, sparse-attention coverage, recurrence schedules, strided fanout, cyclic memory, phase-feature tags, circulant/block-cyclic mixers, and seed-rule regeneration. The pack includes a top-level `contract_readiness_index` plus per-record `consumer_check.ready_for_downstream_fixture_use` and `proof_status` gates for projects that want to consume theorem-linked fields without reading Lean internals. See `docs/CIRCLE_AI_CONTRACTS_INTEGRATION.md` for the schema and downstream-consumer rules.
-
-For your own AI architecture parameters, use the unified Circle AI runner:
-
-```bash
-python scripts/circle_ai_certify.py rope \
-  --head-dim 128 \
-  --base 10000 \
-  --context 131072 \
-  --requested-margin 1/328459 \
-  --artifact-dir reports/rope_contract \
-  --require-status proved \
-  --require-decision passed \
-  --require-assurance mixed_theorem_and_computation \
-  --require-passed
-```
-
-That runner also supports `kv-cache`, `sparse-attention`, and `recurrence`.
-`--artifact-dir` writes the request, preflight report, receipt, gate report,
-certification bundle, bundle-check report, and artifact manifest with stable
-names. The receipt and bundle are theorem-linked audit artifacts; they do not
-claim better model quality, speed, memory, or deployment safety.
-
-For the optional Theseus-Hive AI transfer compatibility lane, run:
-
-```bash
-make theseus-ai-contracts
-make theseus-ai-feedback
-```
-
-This writes `site/data/generated/theseus_hive_ai_contracts.json`, a Theseus-compatible view of the six downstream-transfer families currently used by that compatibility lane.
-The feedback target writes `site/data/generated/theseus_hive_ai_feedback_summary.json` from a sanitized Theseus-Hive handoff when present, or an explicit missing-state placeholder otherwise.
-Detailed private-transfer plumbing belongs in `docs/THESEUS_HIVE_AI_TRANSFER.md`. It is optional, aggregate-only, and remains separate from the public proof-carrying contract lane.
-
-## License And Citation
-
-Released under the MIT License. If you build on this work, please cite Corben Sorenson and the public repository; GitHub and citation tools can read the recommended citation from `CITATION.cff`.
+Release and package preparation lives in
+[docs/PACKAGING_AND_RELEASE.md](docs/PACKAGING_AND_RELEASE.md). The project is
+MIT licensed; citation metadata is in [CITATION.cff](CITATION.cff).

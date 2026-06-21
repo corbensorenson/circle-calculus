@@ -2,6 +2,13 @@
 title: "Circle Calculus Living Book"
 ---
 
+<div class="claim-boundary-strip">
+<span class="claim-boundary-label">Claim boundary</span>
+<span class="claim-boundary-badge claim-boundary-proved">Lean-proved where cited</span>
+<span class="claim-boundary-badge claim-boundary-executable">widgets are examples</span>
+<span class="claim-boundary-badge claim-boundary-speculative">no universal-circle claim</span>
+</div>
+
 Most of mathematics quietly runs on one move: count, and when you run out of room, wrap around. A clock does it. So does a week, a music scale, the hours on a parking meter, and the remainder you learned in grade school. **Circle Calculus** takes that single move seriously and rebuilds familiar mathematics on top of it, one careful step at a time — and every step is backed by a machine-checked proof.
 
 ## Start With One Idea: The Finite Circle
@@ -83,6 +90,9 @@ If you are here specifically for proof-carrying AI contracts, start with the [Ro
 <div class="portfolio-entrypoint" data-entrypoint-ref="showcase.qmd" data-verify-ref="verify_claim.qmd" data-manifest-ref="manifests/capability_showcase.yaml" data-validator-ref="scripts/check_capability_showcase.py"></div>
 
 If you are asking why anyone should use Circle Calculus, start with the [Proof-Backed Showcase](showcase.qmd). It is the serious public advertisement for the project: every advertised capability is required to name a standard anchor, a Circle expression, a Circle-native value claim, a proof scope, a not-claimed boundary, paper ids, proved theorem ids, dictionary ids, executable examples, and Living Book pages or widgets. The advertised surfaces are generated from `manifests/capability_showcase.yaml` and validated by `scripts/check_capability_showcase.py`.
+
+If you want to use the project as a library rather than read the textbook, start
+with [Use This As A Library](use_as_library.qmd).
 
 Read [How To Verify A Claim](verify_claim.qmd) beside it. The portfolio does not prove universal expressiveness by assertion; it shows the current checked surfaces and the source trail needed to audit each one. The widgets, diagrams, and Python examples on this site are illustrations and executable support — they are not proofs and not formal proof of the theorems they accompany.
 

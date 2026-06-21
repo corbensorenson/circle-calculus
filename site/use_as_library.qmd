@@ -1,0 +1,130 @@
+---
+title: "Use This As A Library"
+---
+
+<div class="claim-boundary-strip">
+<span class="claim-boundary-label">Claim boundary</span>
+<span class="claim-boundary-badge claim-boundary-proved">proved finite facts</span>
+<span class="claim-boundary-badge claim-boundary-executable">executable receipts</span>
+<span class="claim-boundary-badge claim-boundary-experimental">benchmarks separate</span>
+<span class="claim-boundary-badge claim-boundary-speculative">no model-quality claim</span>
+</div>
+
+This is the shortest public path for using Circle Calculus as code. The stable
+facades are:
+
+- `circle_math.core` for finite-circle Python helpers;
+- `circle_math.ai_contracts` and `circle_math.contracts` for public contract
+  builders and consumers;
+- `Circle.Core` for Lean finite-circle imports;
+- `Circle.Contracts` for Lean proof-carrying contract imports;
+- `circle-prime` for Rust prime and horizon utilities.
+
+## Finite Circle Orbit
+
+```python
+from circle_math.core import finite_orbit, finite_period, is_full_coil
+
+orbit = finite_orbit(12, 5)
+period = finite_period(12, 5)
+full = is_full_coil(12, 5)
+
+print(orbit)
+print(period)
+print(full)
+```
+
+Expected output:
+
+```text
+[0, 5, 10, 3, 8, 1, 6, 11, 4, 9, 2, 7]
+12
+True
+```
+
+## RoPE Contract Receipt
+
+```python
+from circle_math.ai_contracts import build_contract_pack, build_rope_receipt
+
+pack = build_contract_pack()
+receipt = build_rope_receipt(
+    head_dim=128,
+    base=10000,
+    context=4096,
+    pack=pack,
+)
+
+print(receipt["contract_id"])
+print(receipt["decision"]["verdict"])
+print(receipt["decision"]["claim_status"])
+print(receipt["decision"]["all_theorem_ids_proved"])
+```
+
+The receipt is a theorem-linked structural certificate for the declared request.
+It is not a language-model quality, speed, memory, or deployment-safety result.
+
+## Sparse-Attention Coverage Contract
+
+```python
+from circle_math.ai_contracts import (
+    build_contract_pack,
+    build_sparse_attention_receipt,
+)
+
+pack = build_contract_pack()
+receipt = build_sparse_attention_receipt(
+    context=9,
+    strides=(3, 4, 7),
+    path_length=2,
+    local_window=2,
+    pack=pack,
+)
+
+print(receipt["contract_id"])
+print(receipt["decision"]["verdict"])
+print(receipt["evidence"]["coverage_complete"])
+print(receipt["evidence"]["uncovered_lag_count"])
+```
+
+The compact fixture is a complete finite coverage example. To inspect a gap
+certificate instead, use `context=120`, `strides=(7, 13)`, `path_length=3`, and
+`local_window=4`.
+
+## CLI Entry Points
+
+After installing the package in editable mode:
+
+```bash
+python -m pip install -e .
+circle-ai-contract-ready --kind sparse_attention_coverage
+circle-rope-certify --preset llama_style_10000_4k
+circle-sparse-attention-certify --context 9 --strides 3,4,7 --path-length 2 --local-window 2
+```
+
+The richer repository maintenance commands under `scripts/` remain the source
+tools for generating and validating every artifact.
+
+## Lean Imports
+
+```lean
+import Circle.Core
+import Circle.Contracts
+```
+
+Use `Circle.Applications.Public` when you want application facts without the
+large generated RoPE certificate module.
+
+## Rust Prime Engine
+
+```bash
+cargo run -p circle-prime -- --help
+cargo run -p circle-prime --bin circle-prime-count -- --help
+cargo doc -p circle-prime --no-deps
+```
+
+The Rust crate stays focused on prime decisions, prime counts, and horizon/coil
+inspection. It does not contain the Lean theorem corpus or the Python reference
+models.
+
+<script type="module" src="widgets/shared/widget_base.js"></script>

@@ -6,13 +6,57 @@ build-backend = "setuptools.build_meta"
 name = "circle-calculus"
 version = "0.1.0"
 description = "Circle Calculus paper-and-proof corpus with Lean sidecars and Python reference models."
+readme = "README.md"
 requires-python = ">=3.9"
+license = "MIT"
+authors = [
+  {name = "Corben Sorenson"},
+]
+keywords = [
+  "formal-methods",
+  "lean",
+  "modular-arithmetic",
+  "cyclic-groups",
+  "proof-carrying-data",
+  "ai-contracts",
+]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Developers",
+  "Intended Audience :: Education",
+  "Intended Audience :: Science/Research",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Topic :: Scientific/Engineering :: Mathematics",
+  "Topic :: Software Development :: Libraries :: Python Modules",
+]
 dependencies = [
   "jsonschema",
   "numpy",
   "PyYAML",
   "pytest",
 ]
+
+[project.optional-dependencies]
+dev = [
+  "build",
+  "twine>=6.2",
+]
+
+[project.urls]
+Homepage = "https://corbensorenson.github.io/circle-calculus/"
+Repository = "https://github.com/corbensorenson/circle-calculus"
+Documentation = "https://corbensorenson.github.io/circle-calculus/"
+Issues = "https://github.com/corbensorenson/circle-calculus/issues"
+
+[project.scripts]
+circle-ai-contract-ready = "circle_math.cli:contract_ready_main"
+circle-rope-certify = "circle_math.cli:rope_certify_main"
+circle-sparse-attention-certify = "circle_math.cli:sparse_attention_certify_main"
 
 [tool.pytest.ini_options]
 testpaths = ["tests", "sidecars"]

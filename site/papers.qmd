@@ -2,6 +2,13 @@
 title: "Paper Index"
 ---
 
+<div class="claim-boundary-strip">
+<span class="claim-boundary-label">Claim boundary</span>
+<span class="claim-boundary-badge claim-boundary-executable">papers explain</span>
+<span class="claim-boundary-badge claim-boundary-proved">theorem ids prove</span>
+<span class="claim-boundary-badge claim-boundary-speculative">ambition stays labeled</span>
+</div>
+
 This index is generated from the paper manifest and links papers to their current status, source file, sidecar roots, theorem ids, and dictionary ids. Paper prose can be ambitious, but proof status still comes from theorem manifests and Lean builds.
 
 Click ids in the generated table to jump between papers, theorem status, and dictionary definitions without losing the source trail.

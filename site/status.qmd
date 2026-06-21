@@ -2,6 +2,13 @@
 title: "Theorem Status Legend"
 ---
 
+<div class="claim-boundary-strip">
+<span class="claim-boundary-label">Claim boundary</span>
+<span class="claim-boundary-badge claim-boundary-proved">status comes from manifests</span>
+<span class="claim-boundary-badge claim-boundary-executable">checks support status</span>
+<span class="claim-boundary-badge claim-boundary-speculative">prose never upgrades status</span>
+</div>
+
 The Living Book uses theorem-status labels from generated theorem data. Page prose, widgets, and diagrams do not upgrade theorem status.
 
 ::: {.learning-unit}

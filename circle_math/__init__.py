@@ -4,6 +4,13 @@ These models support examples and tests. They are not formal proofs.
 """
 
 from .finite import Circle
+from .core import (
+    finite_circle,
+    finite_orbit,
+    finite_orbit_decomposition,
+    finite_period,
+    is_full_coil,
+)
 from .additive import (
     CauchyDavenportExample,
     cauchy_davenport_example,
@@ -80,12 +87,17 @@ __all__ = [
     "ekr_star_family",
     "egz_sharpness_family",
     "factor_pairs",
+    "finite_circle",
     "finite_coil_signature",
+    "finite_orbit",
+    "finite_orbit_decomposition",
+    "finite_period",
     "find_monochromatic_arithmetic_progression",
     "find_monochromatic_combinatorial_line",
     "find_monochromatic_homothetic_copy",
     "has_zero_sum_subsequence",
     "is_intersecting_family",
+    "is_full_coil",
     "is_three_ap_free",
     "is_uniform_family",
     "katona_prefixed_density_example",

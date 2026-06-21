@@ -1,3 +1,5 @@
+import Circle.Core
+import Circle.Contracts
 import Circle.Basic
 import Circle.Common.Scaffold
 import Circle.S0.Scaffold
@@ -21,6 +23,9 @@ import Circle.Applications.CoilData
 import Circle.Applications.CoilCompute
 import Circle.Applications.CoilRendering
 import Circle.Applications.CoilSystems
+import Circle.Applications.TemporalCoil
+import Circle.Applications.TreeLLM
+import Circle.Applications.AIConfig
 import Circle.Applications.CircleAI
 import Circle.Applications.CircleTransformer
 import Circle.Applications.Circulant

@@ -2,6 +2,13 @@
 title: "Verify A Claim"
 ---
 
+<div class="claim-boundary-strip">
+<span class="claim-boundary-label">Claim boundary</span>
+<span class="claim-boundary-badge claim-boundary-proved">audit Lean declarations</span>
+<span class="claim-boundary-badge claim-boundary-executable">source trails are evidence</span>
+<span class="claim-boundary-badge claim-boundary-speculative">missing links mean unproved</span>
+</div>
+
 Use this page when you want to check whether a sentence, diagram, widget, paper paragraph, or theorem card is backed by the formal project.
 
 ## Quick Rule

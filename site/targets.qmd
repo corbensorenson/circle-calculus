@@ -2,6 +2,13 @@
 title: "Target Index"
 ---
 
+<div class="claim-boundary-strip">
+<span class="claim-boundary-label">Claim boundary</span>
+<span class="claim-boundary-badge claim-boundary-experimental">targets are planned work</span>
+<span class="claim-boundary-badge claim-boundary-executable">experiments need evidence</span>
+<span class="claim-boundary-badge claim-boundary-speculative">targets are not theorems</span>
+</div>
+
 This index is generated from target manifests. These are planned theorem, proof, paper, experiment, and edge-problem targets. They are not proved theorem claims.
 
 Click ids in the generated tables to move between targets, promoted theorem ids, dictionary terms, and source artifacts.

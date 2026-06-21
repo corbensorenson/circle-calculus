@@ -2,6 +2,13 @@
 title: "Theorem Index"
 ---
 
+<div class="claim-boundary-strip">
+<span class="claim-boundary-label">Claim boundary</span>
+<span class="claim-boundary-badge claim-boundary-proved">status generated from manifests</span>
+<span class="claim-boundary-badge claim-boundary-executable">index is navigation</span>
+<span class="claim-boundary-badge claim-boundary-speculative">Lean source is authority</span>
+</div>
+
 This index is generated from theorem manifests. It is a navigation layer, not a proof layer. The status column is the public-facing source for what the Living Book may call Lean-proved, planned, exploratory, blocked, deferred, or draft.
 
 Click a theorem, dictionary, paper, target, or glyph id to open the corresponding generated index filtered to that id.

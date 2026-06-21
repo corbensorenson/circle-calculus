@@ -2,6 +2,13 @@
 title: "What \"Proved\" Means Here"
 ---
 
+<div class="claim-boundary-strip">
+<span class="claim-boundary-label">Claim boundary</span>
+<span class="claim-boundary-badge claim-boundary-proved">proved means Lean-backed</span>
+<span class="claim-boundary-badge claim-boundary-executable">examples are not proofs</span>
+<span class="claim-boundary-badge claim-boundary-speculative">planned stays unproved</span>
+</div>
+
 This is the one page that explains how Circle Calculus uses the word **proved**. Every lesson links here instead of repeating a disclaimer, so you can read the lessons calmly: when a page says something is proved, it means exactly what is written below, no more and no less.
 
 ## The Rule
