@@ -7,8 +7,8 @@ Edges are manifest evidence and paper reading-order links, not formal Lean proof
 ## Summary
 
 - Theorems: `985`
-- Nodes: `2177`
-- Edges: `8374`
+- Nodes: `2176`
+- Edges: `8350`
 
 ## Status Counts
 

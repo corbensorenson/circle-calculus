@@ -25377,7 +25377,7 @@
       "name": "Phase-channel collision iff gap divisibility",
       "original_status": "proved",
       "paper_refs": [
-        "docs/POSITION_PHASE_CONTRACTS.md"
+        "docs/POSITION_PHASE_BANKS.md"
       ],
       "proof_notes": "Lean theorem is compiled in Circle/Applications/PositionPhase.lean from Nat.modEq_iff_dvd'.",
       "python_tests": [],
@@ -25406,7 +25406,7 @@
       "name": "Phase-channel distinguishability iff gap nondivisibility",
       "original_status": "proved",
       "paper_refs": [
-        "docs/POSITION_PHASE_CONTRACTS.md"
+        "docs/POSITION_PHASE_BANKS.md"
       ],
       "proof_notes": "Lean theorem is compiled in Circle/Applications/PositionPhase.lean by negating the single-channel collision criterion.",
       "python_tests": [],
@@ -25435,7 +25435,7 @@
       "name": "Phase-channel context injectivity",
       "original_status": "proved",
       "paper_refs": [
-        "docs/POSITION_PHASE_CONTRACTS.md"
+        "docs/POSITION_PHASE_BANKS.md"
       ],
       "proof_notes": "Lean theorem is compiled in Circle/Applications/PositionPhase.lean by reducing both residues with Nat.mod_eq_of_lt.",
       "python_tests": [],
@@ -25464,7 +25464,7 @@
       "name": "Phase-bank collision iff all declared periods divide gap",
       "original_status": "proved",
       "paper_refs": [
-        "docs/POSITION_PHASE_CONTRACTS.md"
+        "docs/POSITION_PHASE_BANKS.md"
       ],
       "proof_notes": "Lean theorem is compiled in Circle/Applications/PositionPhase.lean by applying the single-channel divisibility criterion pointwise over the bank.",
       "python_tests": [],
@@ -25493,7 +25493,7 @@
       "name": "Phase-bank distinguishability iff some period does not divide gap",
       "original_status": "proved",
       "paper_refs": [
-        "docs/POSITION_PHASE_CONTRACTS.md"
+        "docs/POSITION_PHASE_BANKS.md"
       ],
       "proof_notes": "Lean theorem is compiled in Circle/Applications/PositionPhase.lean by existentially packaging a single-channel noncollision witness.",
       "python_tests": [],
@@ -25522,7 +25522,7 @@
       "name": "Phase-bank period at context distinguishes unequal in-context positions",
       "original_status": "proved",
       "paper_refs": [
-        "docs/POSITION_PHASE_CONTRACTS.md"
+        "docs/POSITION_PHASE_BANKS.md"
       ],
       "proof_notes": "Lean theorem is compiled in Circle/Applications/PositionPhase.lean from the single-channel context injectivity criterion.",
       "python_tests": [],
@@ -25551,7 +25551,7 @@
       "name": "Phase-bank collision restricts to subbanks",
       "original_status": "proved",
       "paper_refs": [
-        "docs/POSITION_PHASE_CONTRACTS.md"
+        "docs/POSITION_PHASE_BANKS.md"
       ],
       "proof_notes": "Lean theorem is compiled in Circle/Applications/PositionPhase.lean by applying the larger-bank collision hypothesis through the subset witness.",
       "python_tests": [],
@@ -25580,7 +25580,7 @@
       "name": "Phase-bank distinguishability is monotone under adding channels",
       "original_status": "proved",
       "paper_refs": [
-        "docs/POSITION_PHASE_CONTRACTS.md"
+        "docs/POSITION_PHASE_BANKS.md"
       ],
       "proof_notes": "Lean theorem is compiled in Circle/Applications/PositionPhase.lean by reusing the existing witness channel in the extended bank.",
       "python_tests": [],
@@ -25609,7 +25609,7 @@
       "name": "Two-axis phase-grid collision iff both axes collide",
       "original_status": "proved",
       "paper_refs": [
-        "docs/POSITION_PHASE_CONTRACTS.md"
+        "docs/POSITION_PHASE_BANKS.md"
       ],
       "proof_notes": "Lean theorem is compiled in Circle/Applications/PositionPhase.lean because the grid collision predicate is defined as the conjunction of axis-bank collisions.",
       "python_tests": [],
@@ -25638,7 +25638,7 @@
       "name": "Positive phase-period scaling preserves positivity",
       "original_status": "proved",
       "paper_refs": [
-        "docs/POSITION_PHASE_CONTRACTS.md"
+        "docs/POSITION_PHASE_BANKS.md"
       ],
       "proof_notes": "Lean theorem is compiled in Circle/Applications/PositionPhase.lean by Nat.mul_pos.",
       "python_tests": [],
@@ -25667,7 +25667,7 @@
       "name": "Positive phase-bank scaling preserves positive periods",
       "original_status": "proved",
       "paper_refs": [
-        "docs/POSITION_PHASE_CONTRACTS.md"
+        "docs/POSITION_PHASE_BANKS.md"
       ],
       "proof_notes": "Lean theorem is compiled in Circle/Applications/PositionPhase.lean by List.mem_map and the positive-period scaling theorem.",
       "python_tests": [],

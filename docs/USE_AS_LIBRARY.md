@@ -56,6 +56,34 @@ The corresponding Lean facts are in `Circle.Core.FiniteFourier` and
 `Circle.Applications.CirculantSpectral`. The executable residual check is a
 floating-point diagnostic; the algebraic identities are the Lean-proved layer.
 
+## Python: Position Phase Bank
+
+```python
+from circle_math.ai_contracts import (
+    phase_bank_collision_report,
+    phase_bank_from_periods,
+)
+
+bank = phase_bank_from_periods("diagnostic", [6, 9, 13])
+report = phase_bank_collision_report(bank, 0, 36)
+
+print(report.all_channels_collide)
+print(report.witness_channels)
+print([row.period_divides_gap for row in report.channel_results])
+```
+
+Expected output:
+
+```text
+False
+('phase_2',)
+[True, True, False]
+```
+
+The corresponding Lean facts are in `Circle.Applications.PositionPhase`.
+This is an exact integer-period residue contract. It is not a real-valued
+RoPE, xPos, YaRN, LongRoPE, model-quality, or context-length proof.
+
 ## Python: RoPE Contract Receipt
 
 ```python

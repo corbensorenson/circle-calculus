@@ -1,5 +1,5 @@
 {
-  "edge_count": 8374,
+  "edge_count": 8350,
   "edges": [
     {
       "kind": "cited_by_paper",
@@ -28792,16 +28792,6 @@
       "target": "paper:docs/POSITION_PHASE_BANKS"
     },
     {
-      "kind": "cited_by_paper",
-      "source": "CC-T0122",
-      "target": "paper:docs/POSITION_PHASE_CONTRACTS"
-    },
-    {
-      "kind": "declares",
-      "source": "CC-T0122",
-      "target": "lean:Circle.Applications.phaseChannelCollision_iff_gap_dvd"
-    },
-    {
       "kind": "declares",
       "source": "CC-T0122",
       "target": "lean:Circle.Applications.phaseChannelCollision_iff_gap_dvd"
@@ -28810,16 +28800,6 @@
       "kind": "uses_dictionary",
       "source": "CC-T0122",
       "target": "dict:CC-0001"
-    },
-    {
-      "kind": "uses_dictionary",
-      "source": "CC-T0122",
-      "target": "dict:CC-0001"
-    },
-    {
-      "kind": "uses_dictionary",
-      "source": "CC-T0122",
-      "target": "dict:CC-0101"
     },
     {
       "kind": "uses_dictionary",
@@ -28830,16 +28810,6 @@
       "kind": "cited_by_paper",
       "source": "CC-T0123",
       "target": "paper:docs/POSITION_PHASE_BANKS"
-    },
-    {
-      "kind": "cited_by_paper",
-      "source": "CC-T0123",
-      "target": "paper:docs/POSITION_PHASE_CONTRACTS"
-    },
-    {
-      "kind": "declares",
-      "source": "CC-T0123",
-      "target": "lean:Circle.Applications.phaseBankCollision_iff_forall_gap_dvd"
     },
     {
       "kind": "declares",
@@ -28854,32 +28824,12 @@
     {
       "kind": "uses_dictionary",
       "source": "CC-T0123",
-      "target": "dict:CC-0001"
-    },
-    {
-      "kind": "uses_dictionary",
-      "source": "CC-T0123",
-      "target": "dict:CC-0101"
-    },
-    {
-      "kind": "uses_dictionary",
-      "source": "CC-T0123",
       "target": "dict:CC-0101"
     },
     {
       "kind": "cited_by_paper",
       "source": "CC-T0124",
       "target": "paper:docs/POSITION_PHASE_BANKS"
-    },
-    {
-      "kind": "cited_by_paper",
-      "source": "CC-T0124",
-      "target": "paper:docs/POSITION_PHASE_CONTRACTS"
-    },
-    {
-      "kind": "declares",
-      "source": "CC-T0124",
-      "target": "lean:Circle.Applications.phaseBankDistinguishable_iff_exists_not_gap_dvd"
     },
     {
       "kind": "declares",
@@ -28894,27 +28844,12 @@
     {
       "kind": "uses_dictionary",
       "source": "CC-T0124",
-      "target": "dict:CC-0001"
-    },
-    {
-      "kind": "uses_dictionary",
-      "source": "CC-T0124",
-      "target": "dict:CC-0101"
-    },
-    {
-      "kind": "uses_dictionary",
-      "source": "CC-T0124",
       "target": "dict:CC-0101"
     },
     {
       "kind": "cited_by_paper",
       "source": "CC-T0125",
       "target": "paper:docs/POSITION_PHASE_BANKS"
-    },
-    {
-      "kind": "cited_by_paper",
-      "source": "CC-T0125",
-      "target": "paper:docs/POSITION_PHASE_CONTRACTS"
     },
     {
       "kind": "declares",
@@ -28922,24 +28857,9 @@
       "target": "lean:Circle.Applications.phaseBankCollision_iff_forall_gap_dvd"
     },
     {
-      "kind": "declares",
-      "source": "CC-T0125",
-      "target": "lean:Circle.Applications.phaseBankDistinguishable_of_subset"
-    },
-    {
       "kind": "uses_dictionary",
       "source": "CC-T0125",
       "target": "dict:CC-0001"
-    },
-    {
-      "kind": "uses_dictionary",
-      "source": "CC-T0125",
-      "target": "dict:CC-0001"
-    },
-    {
-      "kind": "uses_dictionary",
-      "source": "CC-T0125",
-      "target": "dict:CC-0101"
     },
     {
       "kind": "uses_dictionary",
@@ -28950,11 +28870,6 @@
       "kind": "cited_by_paper",
       "source": "CC-T0126",
       "target": "paper:docs/POSITION_PHASE_BANKS"
-    },
-    {
-      "kind": "cited_by_paper",
-      "source": "CC-T0126",
-      "target": "paper:docs/POSITION_PHASE_CONTRACTS"
     },
     {
       "kind": "declares",
@@ -28962,24 +28877,9 @@
       "target": "lean:Circle.Applications.phaseBankDistinguishable_iff_exists_not_gap_dvd"
     },
     {
-      "kind": "declares",
-      "source": "CC-T0126",
-      "target": "lean:Circle.Applications.phaseGrid2DCollision_iff_axes"
-    },
-    {
       "kind": "uses_dictionary",
       "source": "CC-T0126",
       "target": "dict:CC-0001"
-    },
-    {
-      "kind": "uses_dictionary",
-      "source": "CC-T0126",
-      "target": "dict:CC-0001"
-    },
-    {
-      "kind": "uses_dictionary",
-      "source": "CC-T0126",
-      "target": "dict:CC-0101"
     },
     {
       "kind": "uses_dictionary",
@@ -28992,34 +28892,14 @@
       "target": "paper:docs/POSITION_PHASE_BANKS"
     },
     {
-      "kind": "cited_by_paper",
-      "source": "CC-T0127",
-      "target": "paper:docs/POSITION_PHASE_CONTRACTS"
-    },
-    {
       "kind": "declares",
       "source": "CC-T0127",
       "target": "lean:Circle.Applications.phaseBankDistinguishable_of_period_ge_context"
     },
     {
-      "kind": "declares",
-      "source": "CC-T0127",
-      "target": "lean:Circle.Applications.scaledPhasePeriodBank_all_pos"
-    },
-    {
       "kind": "uses_dictionary",
       "source": "CC-T0127",
       "target": "dict:CC-0001"
-    },
-    {
-      "kind": "uses_dictionary",
-      "source": "CC-T0127",
-      "target": "dict:CC-0001"
-    },
-    {
-      "kind": "uses_dictionary",
-      "source": "CC-T0127",
-      "target": "dict:CC-0101"
     },
     {
       "kind": "uses_dictionary",
@@ -29029,7 +28909,7 @@
     {
       "kind": "cited_by_paper",
       "source": "CC-T0128",
-      "target": "paper:docs/POSITION_PHASE_CONTRACTS"
+      "target": "paper:docs/POSITION_PHASE_BANKS"
     },
     {
       "kind": "declares",
@@ -29049,7 +28929,7 @@
     {
       "kind": "cited_by_paper",
       "source": "CC-T0129",
-      "target": "paper:docs/POSITION_PHASE_CONTRACTS"
+      "target": "paper:docs/POSITION_PHASE_BANKS"
     },
     {
       "kind": "declares",
@@ -29069,7 +28949,7 @@
     {
       "kind": "cited_by_paper",
       "source": "CC-T0130",
-      "target": "paper:docs/POSITION_PHASE_CONTRACTS"
+      "target": "paper:docs/POSITION_PHASE_BANKS"
     },
     {
       "kind": "declares",
@@ -29089,7 +28969,7 @@
     {
       "kind": "cited_by_paper",
       "source": "CC-T0131",
-      "target": "paper:docs/POSITION_PHASE_CONTRACTS"
+      "target": "paper:docs/POSITION_PHASE_BANKS"
     },
     {
       "kind": "declares",
@@ -29109,7 +28989,7 @@
     {
       "kind": "cited_by_paper",
       "source": "CC-T0132",
-      "target": "paper:docs/POSITION_PHASE_CONTRACTS"
+      "target": "paper:docs/POSITION_PHASE_BANKS"
     },
     {
       "kind": "declares",
@@ -41873,7 +41753,7 @@
     }
   ],
   "kind": "manifest_evidence_graph",
-  "node_count": 2177,
+  "node_count": 2176,
   "nodes": [
     {
       "id": "AIA-T0001",
@@ -57517,11 +57397,6 @@
       "id": "paper:docs/POSITION_PHASE_BANKS",
       "kind": "paper",
       "paper_id": "docs/POSITION_PHASE_BANKS"
-    },
-    {
-      "id": "paper:docs/POSITION_PHASE_CONTRACTS",
-      "kind": "paper",
-      "paper_id": "docs/POSITION_PHASE_CONTRACTS"
     },
     {
       "id": "paper:docs/PRIME_ENGINE",

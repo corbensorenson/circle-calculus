@@ -77,6 +77,24 @@ receipt_from_config = build_validated_rope_receipt_from_model_config(
 assert receipt_from_config["kind"] == "rope_position_distinguishability"
 ```
 
+The same facade exposes reusable integer phase-bank helpers for sinusoidal,
+RoPE-family, scaled, and 2D positional phase descriptors:
+
+```python
+from circle_math.ai_contracts import (
+    phase_bank_collision_report,
+    phase_bank_from_periods,
+)
+
+bank = phase_bank_from_periods("diagnostic", [6, 9, 13])
+report = phase_bank_collision_report(bank, 0, 36)
+assert report.witness_channels == ("phase_2",)
+```
+
+The Lean proof spine for this layer lives in
+`Circle.Applications.PositionPhase`; see
+[POSITION_PHASE_BANKS.md](POSITION_PHASE_BANKS.md).
+
 Use `circle_math.contracts` to consume an already exported pack:
 
 ```python

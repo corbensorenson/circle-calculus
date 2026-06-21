@@ -29,14 +29,24 @@ POSITION_PHASE_THEOREM_IDS: tuple[str, ...] = (
     "CC-T0125",
     "CC-T0126",
     "CC-T0127",
+    "CC-T0128",
+    "CC-T0129",
+    "CC-T0130",
+    "CC-T0131",
+    "CC-T0132",
 )
 
 POSITION_PHASE_LEAN_DECLARATIONS: tuple[str, ...] = (
     "Circle.Applications.phaseChannelCollision_iff_gap_dvd",
+    "Circle.Applications.phaseChannelDistinguishable_iff_not_gap_dvd",
+    "Circle.Applications.phaseChannelCollision_iff_eq_on_context",
     "Circle.Applications.phaseBankCollision_iff_forall_gap_dvd",
     "Circle.Applications.phaseBankDistinguishable_iff_exists_not_gap_dvd",
+    "Circle.Applications.phaseBankDistinguishable_of_period_ge_context",
+    "Circle.Applications.phaseBankCollision_of_subset",
     "Circle.Applications.phaseBankDistinguishable_of_subset",
     "Circle.Applications.phaseGrid2DCollision_iff_axes",
+    "Circle.Applications.scaledPhasePeriod_pos",
     "Circle.Applications.scaledPhasePeriodBank_all_pos",
 )
 

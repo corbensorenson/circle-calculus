@@ -152,6 +152,8 @@ website:
             text: AI
           - href: chapters/applications/rope_certifier.qmd
             text: RoPE Certifier
+          - href: chapters/applications/position_phase_banks.qmd
+            text: Position Phase Banks
           - href: chapters/applications/ai_contract_ladder.qmd
             text: AI Contract Ladder
           - href: chapters/applications/ai_contract_suite.qmd

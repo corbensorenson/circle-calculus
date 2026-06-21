@@ -64,6 +64,34 @@ identities in `Circle.Core.FiniteFourier` and
 `Circle.Applications.CirculantSpectral`. The Python residual check is an
 executable floating-point diagnostic.
 
+## Position Phase Bank
+
+```python
+from circle_math.ai_contracts import (
+    phase_bank_collision_report,
+    phase_bank_from_periods,
+)
+
+bank = phase_bank_from_periods("diagnostic", [6, 9, 13])
+report = phase_bank_collision_report(bank, 0, 36)
+
+print(report.all_channels_collide)
+print(report.witness_channels)
+print([row.period_divides_gap for row in report.channel_results])
+```
+
+Expected output:
+
+```text
+False
+('phase_2',)
+[True, True, False]
+```
+
+The Lean layer proves the integer residue/divisibility contract in
+`Circle.Applications.PositionPhase`. This does not prove real-valued RoPE-family
+margins or model-quality claims.
+
 ## RoPE Contract Receipt
 
 ```python

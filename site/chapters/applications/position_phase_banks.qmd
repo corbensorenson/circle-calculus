@@ -1,0 +1,123 @@
+---
+title: "Position Phase Banks"
+---
+
+<div class="claim-boundary-strip">
+<span class="claim-boundary-label">Claim boundary</span>
+<span class="claim-boundary-badge claim-boundary-proved">integer residue proofs</span>
+<span class="claim-boundary-badge claim-boundary-executable">Python reports</span>
+<span class="claim-boundary-badge claim-boundary-experimental">real margins separate</span>
+<span class="claim-boundary-badge claim-boundary-speculative">no model-quality claim</span>
+</div>
+
+Positional encodings often turn positions into phases on circles. The original
+Transformer used sinusoidal frequency banks
+([Vaswani et al.](https://arxiv.org/abs/1706.03762)); RoPE made position a
+rotation in query/key space ([RoFormer](https://arxiv.org/abs/2104.09864)); and
+xPos, YaRN, LongRoPE, and 2D RoPE variants modify the scaling or axis structure
+around the same phase-bank idea
+([xPos](https://arxiv.org/abs/2212.10554),
+[YaRN](https://arxiv.org/abs/2309.00071),
+[LongRoPE](https://arxiv.org/abs/2402.13753),
+[RoPE-ViT](https://arxiv.org/abs/2403.13298)).
+
+This chapter proves a narrower reusable layer: finite declared period banks.
+
+```text
+phase(period, position) = position mod period
+```
+
+For ordered positions, one channel collides exactly when its period divides the
+gap. A bank collides exactly when every declared period divides the gap.
+
+## Python Report
+
+```python
+from circle_math.ai_contracts import (
+    phase_bank_collision_report,
+    phase_bank_from_periods,
+)
+
+bank = phase_bank_from_periods("diagnostic", [6, 9, 13])
+report = phase_bank_collision_report(bank, 0, 36)
+
+print(report.all_channels_collide)
+print(report.witness_channels)
+print([row.period_divides_gap for row in report.channel_results])
+```
+
+Expected output:
+
+```text
+False
+('phase_2',)
+[True, True, False]
+```
+
+The `13`-period channel is the separating witness. This is the same finite
+divisibility criterion used by the Lean theorem.
+
+## RoPE-Family Integer Layers
+
+```python
+from circle_math.ai_contracts import (
+    longrope_nonuniform_scaled_phase_bank,
+    rope_integer_phase_bank,
+    yarn_uniform_scaled_phase_bank,
+)
+
+base = rope_integer_phase_bank(head_dim=8, channel_count=3)
+yarn = yarn_uniform_scaled_phase_bank(base, scale=4)
+longrope = longrope_nonuniform_scaled_phase_bank(base, scale_factors=[1, 2, 3])
+
+print(base.periods)
+print(yarn.periods)
+print(longrope.periods)
+```
+
+These helpers export integer artifacts that can cite the finite phase-bank
+theorems. They do not prove the empirical claims in the source papers, and they
+do not certify real-valued all-channel margins.
+
+## Two-Axis Grid
+
+```python
+from circle_math.ai_contracts import (
+    phase_bank_from_periods,
+    phase_grid_2d_collision_report,
+)
+
+x_bank = phase_bank_from_periods("x", [4, 6], axis="x")
+y_bank = phase_bank_from_periods("y", [5], axis="y")
+
+report = phase_grid_2d_collision_report(x_bank, y_bank, (0, 1), (12, 6))
+print(report.grid_collides)
+```
+
+The proved 2D predicate is axiswise: x-bank collision and y-bank collision.
+More directional variants, including recent spiral-style 2D RoPE work
+([Spiral RoPE](https://arxiv.org/abs/2602.03227)), should be modeled as future
+phase-bank products before any proof claim is made.
+
+## Lean Theorems
+
+```lean
+import Circle.Applications.PositionPhase
+```
+
+Theorem ids:
+
+- `CC-T0122`: single-channel collision iff the period divides the gap.
+- `CC-T0123`: single-channel distinguishability iff the period does not divide
+  the gap.
+- `CC-T0124`: in-context collision iff equality when context fits in period.
+- `CC-T0125`: bank collision iff every declared period divides the gap.
+- `CC-T0126`: bank distinguishability iff some declared period does not divide
+  the gap.
+- `CC-T0127`: a period at least as large as context distinguishes unequal
+  in-context positions.
+- `CC-T0128`: larger-bank collision restricts to subbanks.
+- `CC-T0129`: adding channels preserves an existing distinguishability witness.
+- `CC-T0130`: 2D grid collision is the conjunction of axis-bank collisions.
+- `CC-T0131`: positive integer scaling preserves one positive declared period.
+- `CC-T0132`: positive integer scaling preserves positive declared phase banks.
