@@ -4,6 +4,11 @@ version = "0.1.0"
 edition = "2021"
 description = "Rust prime-search engine for Circle Calculus horizon/coil arithmetic."
 license = "MIT"
+repository = "https://github.com/corbensorenson/circle-calculus"
+homepage = "https://corbensorenson.github.io/circle-calculus/"
+readme = "README.md"
+keywords = ["prime", "sieve", "modular-arithmetic", "circle-calculus"]
+categories = ["mathematics", "algorithms", "command-line-utilities"]
 default-run = "circle-prime"
 
 [lib]
@@ -16,3 +21,7 @@ primal = "0.3.3"
 [[bin]]
 name = "circle-prime"
 path = "src/bin/circle-prime.rs"
+
+[[bin]]
+name = "circle-prime-count"
+path = "src/bin/circle-prime-count.rs"

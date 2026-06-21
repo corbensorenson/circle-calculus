@@ -5,6 +5,7 @@ import csv
 import json
 from datetime import datetime, timezone
 from pathlib import Path
+from statistics import median
 from typing import Any
 
 
@@ -61,11 +62,50 @@ DEFAULT_EXTERNAL_HIGH_OFFSET_HOT_SERVER = (
 DEFAULT_EXTERNAL_HIGH_OFFSET_HOT_SERVER_METADATA = (
     RESULTS_DIR / "prime_engine_high_offset_hot_server_latest.json"
 )
+DEFAULT_EXTERNAL_HIGH_OFFSET_COUNT_BINARY = (
+    RESULTS_DIR / "prime_engine_high_offset_count_binary_probe_latest.csv"
+)
+DEFAULT_EXTERNAL_HIGH_OFFSET_COUNT_BINARY_METADATA = (
+    RESULTS_DIR / "prime_engine_high_offset_count_binary_probe_latest.json"
+)
+DEFAULT_EXTERNAL_HIGH_OFFSET_COUNT_BINARY_SWEEP = (
+    RESULTS_DIR / "prime_engine_high_offset_count_binary_segment_sweep_latest.csv"
+)
+DEFAULT_EXTERNAL_HIGH_OFFSET_COUNT_BINARY_SWEEP_METADATA = (
+    RESULTS_DIR / "prime_engine_high_offset_count_binary_segment_sweep_latest.json"
+)
+DEFAULT_EXTERNAL_HIGH_OFFSET_COUNT_BINARY_CANDIDATE_CONFIRM = (
+    RESULTS_DIR / "prime_engine_high_offset_count_binary_candidate_confirm_latest.csv"
+)
+DEFAULT_EXTERNAL_HIGH_OFFSET_COUNT_BINARY_CANDIDATE_CONFIRM_METADATA = (
+    RESULTS_DIR / "prime_engine_high_offset_count_binary_candidate_confirm_latest.json"
+)
+DEFAULT_EXTERNAL_HIGH_OFFSET_SHIFTED_HOT_SERVER = (
+    RESULTS_DIR / "prime_engine_high_offset_shifted_hot_server_top_confirm_latest.csv"
+)
+DEFAULT_EXTERNAL_HIGH_OFFSET_SHIFTED_HOT_SERVER_METADATA = (
+    RESULTS_DIR / "prime_engine_high_offset_shifted_hot_server_top_confirm_latest.json"
+)
+DEFAULT_EXTERNAL_HIGH_OFFSET_SHIFTED_COUNT_BINARY = (
+    RESULTS_DIR / "prime_engine_high_offset_shifted_count_binary_probe_latest.csv"
+)
+DEFAULT_EXTERNAL_HIGH_OFFSET_SHIFTED_COUNT_BINARY_METADATA = (
+    RESULTS_DIR / "prime_engine_high_offset_shifted_count_binary_probe_latest.json"
+)
+DEFAULT_EXTERNAL_COMPETITIVE_SMOKE = (
+    RESULTS_DIR / "prime_engine_competitive_smoke_latest.csv"
+)
+DEFAULT_EXTERNAL_COMPETITIVE_SMOKE_METADATA = (
+    RESULTS_DIR / "prime_engine_competitive_smoke_latest.json"
+)
 DEFAULT_EXTERNAL_HIGH_OFFSET_CONFIRMATION = (
     RESULTS_DIR / "prime_engine_high_offset_confirmation_latest.json"
 )
 DEFAULT_EXTERNAL_HIGH_OFFSET_CANDIDATE_CONFIRMATION = (
     RESULTS_DIR / "prime_engine_high_offset_candidate_confirmation_latest.json"
+)
+DEFAULT_EXTERNAL_HIGH_OFFSET_PROMOTION_FOCUS = (
+    RESULTS_DIR / "prime_engine_high_offset_promotion_focus_latest.json"
 )
 DEFAULT_HIGH_OFFSET_HOT_COLD_BENCHMARK = (
     RESULTS_DIR / "prime_engine_high_offset_hot_cold_latest.csv"
@@ -77,6 +117,16 @@ DEFAULT_OUTPUT_JSON = RESULTS_DIR / "prime_engine_report_latest.json"
 SAMPLE_NOISY_MAX_OVER_MEDIAN = 1.5
 SAMPLE_ROBUST_NOISE_MIN_COUNT = 5
 HIGH_OFFSET_PROMOTION_MIN_GAIN_RATIO = 1.05
+HIGH_OFFSET_SHIFTED_CANDIDATE_MIN_GAIN_RATIO = 1.05
+EXTERNAL_CONTROL_PROVENANCE_TOOLS = (
+    "primesieve",
+    "primecount",
+    "primesieve_count_server",
+    "primecount_pi_server",
+    "primesieve_library_server",
+    "primesieve_iterator_server",
+    "primecount_library_server",
+)
 
 
 PRIMARY_COUNT_ROWS = {
@@ -219,6 +269,66 @@ def main() -> int:
         default=DEFAULT_EXTERNAL_HIGH_OFFSET_HOT_SERVER_METADATA,
     )
     parser.add_argument(
+        "--external-high-offset-count-binary",
+        type=Path,
+        default=DEFAULT_EXTERNAL_HIGH_OFFSET_COUNT_BINARY,
+    )
+    parser.add_argument(
+        "--external-high-offset-count-binary-metadata",
+        type=Path,
+        default=DEFAULT_EXTERNAL_HIGH_OFFSET_COUNT_BINARY_METADATA,
+    )
+    parser.add_argument(
+        "--external-high-offset-count-binary-sweep",
+        type=Path,
+        default=DEFAULT_EXTERNAL_HIGH_OFFSET_COUNT_BINARY_SWEEP,
+    )
+    parser.add_argument(
+        "--external-high-offset-count-binary-sweep-metadata",
+        type=Path,
+        default=DEFAULT_EXTERNAL_HIGH_OFFSET_COUNT_BINARY_SWEEP_METADATA,
+    )
+    parser.add_argument(
+        "--external-high-offset-count-binary-candidate-confirm",
+        type=Path,
+        default=DEFAULT_EXTERNAL_HIGH_OFFSET_COUNT_BINARY_CANDIDATE_CONFIRM,
+    )
+    parser.add_argument(
+        "--external-high-offset-count-binary-candidate-confirm-metadata",
+        type=Path,
+        default=DEFAULT_EXTERNAL_HIGH_OFFSET_COUNT_BINARY_CANDIDATE_CONFIRM_METADATA,
+    )
+    parser.add_argument(
+        "--external-high-offset-shifted-hot-server",
+        type=Path,
+        default=DEFAULT_EXTERNAL_HIGH_OFFSET_SHIFTED_HOT_SERVER,
+    )
+    parser.add_argument(
+        "--external-high-offset-shifted-hot-server-metadata",
+        type=Path,
+        default=DEFAULT_EXTERNAL_HIGH_OFFSET_SHIFTED_HOT_SERVER_METADATA,
+    )
+    parser.add_argument(
+        "--external-high-offset-shifted-count-binary",
+        type=Path,
+        default=DEFAULT_EXTERNAL_HIGH_OFFSET_SHIFTED_COUNT_BINARY,
+    )
+    parser.add_argument(
+        "--external-high-offset-shifted-count-binary-metadata",
+        type=Path,
+        default=DEFAULT_EXTERNAL_HIGH_OFFSET_SHIFTED_COUNT_BINARY_METADATA,
+    )
+    parser.add_argument(
+        "--external-competitive-smoke",
+        type=Path,
+        default=DEFAULT_EXTERNAL_COMPETITIVE_SMOKE,
+    )
+    parser.add_argument(
+        "--external-competitive-smoke-metadata",
+        type=Path,
+        default=DEFAULT_EXTERNAL_COMPETITIVE_SMOKE_METADATA,
+    )
+    parser.add_argument(
         "--external-high-offset-confirmation",
         type=Path,
         default=DEFAULT_EXTERNAL_HIGH_OFFSET_CONFIRMATION,
@@ -227,6 +337,11 @@ def main() -> int:
         "--external-high-offset-candidate-confirmation",
         type=Path,
         default=DEFAULT_EXTERNAL_HIGH_OFFSET_CANDIDATE_CONFIRMATION,
+    )
+    parser.add_argument(
+        "--external-high-offset-promotion-focus",
+        type=Path,
+        default=DEFAULT_EXTERNAL_HIGH_OFFSET_PROMOTION_FOCUS,
     )
     parser.add_argument(
         "--high-offset-hot-cold-benchmark",
@@ -272,9 +387,44 @@ def main() -> int:
         external_high_offset_hot_server_metadata_path=(
             args.external_high_offset_hot_server_metadata
         ),
+        external_high_offset_count_binary_path=args.external_high_offset_count_binary,
+        external_high_offset_count_binary_metadata_path=(
+            args.external_high_offset_count_binary_metadata
+        ),
+        external_high_offset_count_binary_sweep_path=(
+            args.external_high_offset_count_binary_sweep
+        ),
+        external_high_offset_count_binary_sweep_metadata_path=(
+            args.external_high_offset_count_binary_sweep_metadata
+        ),
+        external_high_offset_count_binary_candidate_confirm_path=(
+            args.external_high_offset_count_binary_candidate_confirm
+        ),
+        external_high_offset_count_binary_candidate_confirm_metadata_path=(
+            args.external_high_offset_count_binary_candidate_confirm_metadata
+        ),
+        external_high_offset_shifted_hot_server_path=(
+            args.external_high_offset_shifted_hot_server
+        ),
+        external_high_offset_shifted_hot_server_metadata_path=(
+            args.external_high_offset_shifted_hot_server_metadata
+        ),
+        external_high_offset_shifted_count_binary_path=(
+            args.external_high_offset_shifted_count_binary
+        ),
+        external_high_offset_shifted_count_binary_metadata_path=(
+            args.external_high_offset_shifted_count_binary_metadata
+        ),
+        external_competitive_smoke_path=args.external_competitive_smoke,
+        external_competitive_smoke_metadata_path=(
+            args.external_competitive_smoke_metadata
+        ),
         external_high_offset_confirmation_path=args.external_high_offset_confirmation,
         external_high_offset_candidate_confirmation_path=(
             args.external_high_offset_candidate_confirmation
+        ),
+        external_high_offset_promotion_focus_path=(
+            args.external_high_offset_promotion_focus
         ),
         high_offset_hot_cold_benchmark_path=args.high_offset_hot_cold_benchmark,
         tuning_path=args.tuning,
@@ -318,8 +468,21 @@ def build_report(
     external_high_offset_tight_metadata_path: Path | None = None,
     external_high_offset_hot_server_path: Path | None = None,
     external_high_offset_hot_server_metadata_path: Path | None = None,
+    external_high_offset_count_binary_path: Path | None = None,
+    external_high_offset_count_binary_metadata_path: Path | None = None,
+    external_high_offset_count_binary_sweep_path: Path | None = None,
+    external_high_offset_count_binary_sweep_metadata_path: Path | None = None,
+    external_high_offset_count_binary_candidate_confirm_path: Path | None = None,
+    external_high_offset_count_binary_candidate_confirm_metadata_path: Path | None = None,
+    external_high_offset_shifted_hot_server_path: Path | None = None,
+    external_high_offset_shifted_hot_server_metadata_path: Path | None = None,
+    external_high_offset_shifted_count_binary_path: Path | None = None,
+    external_high_offset_shifted_count_binary_metadata_path: Path | None = None,
+    external_competitive_smoke_path: Path | None = None,
+    external_competitive_smoke_metadata_path: Path | None = None,
     external_high_offset_confirmation_path: Path | None = None,
     external_high_offset_candidate_confirmation_path: Path | None = None,
+    external_high_offset_promotion_focus_path: Path | None = None,
     high_offset_hot_cold_benchmark_path: Path | None = None,
     default_calibration_path: Path | None = None,
     generated_at_utc: str,
@@ -383,11 +546,70 @@ def build_report(
     external_high_offset_hot_server_sample_rows = read_sample_rows_from_metadata(
         external_high_offset_hot_server_metadata
     )
+    external_high_offset_count_binary_rows = (
+        read_csv_if_present(external_high_offset_count_binary_path, missing_inputs)
+        if external_high_offset_count_binary_path is not None
+        else []
+    )
+    external_high_offset_count_binary_metadata = read_json_optional(
+        external_high_offset_count_binary_metadata_path
+    )
+    external_high_offset_count_binary_sample_rows = read_sample_rows_from_metadata(
+        external_high_offset_count_binary_metadata
+    )
+    external_high_offset_count_binary_sweep_rows = read_csv_optional(
+        external_high_offset_count_binary_sweep_path
+    )
+    external_high_offset_count_binary_sweep_metadata = read_json_optional(
+        external_high_offset_count_binary_sweep_metadata_path
+    )
+    external_high_offset_count_binary_sweep_sample_rows = read_sample_rows_from_metadata(
+        external_high_offset_count_binary_sweep_metadata
+    )
+    external_high_offset_count_binary_candidate_confirm_rows = read_csv_optional(
+        external_high_offset_count_binary_candidate_confirm_path
+    )
+    external_high_offset_count_binary_candidate_confirm_metadata = read_json_optional(
+        external_high_offset_count_binary_candidate_confirm_metadata_path
+    )
+    external_high_offset_count_binary_candidate_confirm_sample_rows = (
+        read_sample_rows_from_metadata(
+            external_high_offset_count_binary_candidate_confirm_metadata
+        )
+    )
+    external_high_offset_shifted_hot_server_rows = read_csv_optional(
+        external_high_offset_shifted_hot_server_path
+    )
+    external_high_offset_shifted_hot_server_metadata = read_json_optional(
+        external_high_offset_shifted_hot_server_metadata_path
+    )
+    external_high_offset_shifted_hot_server_sample_rows = read_sample_rows_from_metadata(
+        external_high_offset_shifted_hot_server_metadata
+    )
+    external_high_offset_shifted_count_binary_rows = read_csv_optional(
+        external_high_offset_shifted_count_binary_path
+    )
+    external_high_offset_shifted_count_binary_metadata = read_json_optional(
+        external_high_offset_shifted_count_binary_metadata_path
+    )
+    external_high_offset_shifted_count_binary_sample_rows = read_sample_rows_from_metadata(
+        external_high_offset_shifted_count_binary_metadata
+    )
+    external_competitive_smoke_rows = read_csv_optional(external_competitive_smoke_path)
+    external_competitive_smoke_metadata = read_json_optional(
+        external_competitive_smoke_metadata_path
+    )
+    external_competitive_smoke_sample_rows = read_sample_rows_from_metadata(
+        external_competitive_smoke_metadata
+    )
     external_high_offset_confirmation = read_json_optional(
         external_high_offset_confirmation_path
     )
     external_high_offset_candidate_confirmation = read_json_optional(
         external_high_offset_candidate_confirmation_path
+    )
+    external_high_offset_promotion_focus = read_json_optional(
+        external_high_offset_promotion_focus_path
     )
     high_offset_hot_cold_benchmark_rows = read_csv_optional(
         high_offset_hot_cold_benchmark_path
@@ -413,16 +635,79 @@ def build_report(
         external_high_offset_hot_server_metadata,
         external_high_offset_hot_server_sample_rows,
     )
+    external_high_offset_count_binary_summary = summarize_high_offset_count_binary(
+        external_high_offset_count_binary_rows,
+        external_high_offset_count_binary_metadata,
+        external_high_offset_count_binary_sample_rows,
+    )
+    external_high_offset_count_binary_sweep_summary = (
+        summarize_high_offset_count_binary_segment_sweep(
+            external_high_offset_count_binary_sweep_rows,
+            external_high_offset_count_binary_sweep_metadata,
+            external_high_offset_count_binary_sweep_sample_rows,
+        )
+    )
+    external_high_offset_count_binary_candidate_confirm_summary = (
+        summarize_high_offset_count_binary_segment_sweep(
+            external_high_offset_count_binary_candidate_confirm_rows,
+            external_high_offset_count_binary_candidate_confirm_metadata,
+            external_high_offset_count_binary_candidate_confirm_sample_rows,
+            readout_require_stable_samples=False,
+        )
+    )
+    external_high_offset_count_binary_sweep_summary = (
+        apply_count_binary_cold_confirmation_readout(
+            external_high_offset_count_binary_sweep_summary,
+            external_high_offset_count_binary_candidate_confirm_summary,
+        )
+    )
     external_high_offset_confirmation_summary = summarize_external_mode_confirmation(
         external_high_offset_confirmation
     )
     external_high_offset_candidate_confirmation_summary = (
         summarize_external_mode_confirmation(external_high_offset_candidate_confirmation)
     )
+    external_high_offset_promotion_focus_summary = (
+        summarize_external_mode_confirmation(external_high_offset_promotion_focus)
+    )
     external_high_offset_promotion_readout = summarize_high_offset_promotion_readout(
         external_high_offset_hot_server_summary,
         external_high_offset_confirmation_summary,
         external_high_offset_candidate_confirmation_summary,
+        external_high_offset_promotion_focus_summary,
+    )
+    external_high_offset_shifted_hot_server_summary = summarize_external_segment_sweep(
+        external_high_offset_shifted_hot_server_rows,
+        external_high_offset_shifted_hot_server_metadata,
+        external_high_offset_shifted_hot_server_sample_rows,
+    )
+    external_high_offset_shifted_count_binary_summary = summarize_external_segment_sweep(
+        external_high_offset_shifted_count_binary_rows,
+        external_high_offset_shifted_count_binary_metadata,
+        external_high_offset_shifted_count_binary_sample_rows,
+    )
+    external_competitive_smoke_summary = summarize_external_segment_sweep(
+        external_competitive_smoke_rows,
+        external_competitive_smoke_metadata,
+        external_competitive_smoke_sample_rows,
+    )
+    external_control_provenance = summarize_external_control_provenance(
+        [
+            ("external_controls", external_metadata),
+            ("competitive_smoke", external_competitive_smoke_metadata),
+            ("high_offset_count_binary", external_high_offset_count_binary_metadata),
+            ("high_offset_hot_server", external_high_offset_hot_server_metadata),
+            (
+                "high_offset_shifted_count_binary",
+                external_high_offset_shifted_count_binary_metadata,
+            ),
+            ("external_next_server", external_next_server_metadata),
+        ]
+    )
+    external_high_offset_shifted_candidate_readout = (
+        summarize_high_offset_shifted_candidate_readout(
+            external_high_offset_shifted_hot_server_summary
+        )
     )
     return {
         "generated_at_utc": generated_at_utc,
@@ -520,6 +805,67 @@ def build_report(
                 if external_high_offset_hot_server_metadata_path is not None
                 else None
             ),
+            "external_high_offset_count_binary": (
+                str(external_high_offset_count_binary_path)
+                if external_high_offset_count_binary_path is not None
+                else None
+            ),
+            "external_high_offset_count_binary_metadata": (
+                str(external_high_offset_count_binary_metadata_path)
+                if external_high_offset_count_binary_metadata_path is not None
+                else None
+            ),
+            "external_high_offset_count_binary_sweep": (
+                str(external_high_offset_count_binary_sweep_path)
+                if external_high_offset_count_binary_sweep_path is not None
+                else None
+            ),
+            "external_high_offset_count_binary_sweep_metadata": (
+                str(external_high_offset_count_binary_sweep_metadata_path)
+                if external_high_offset_count_binary_sweep_metadata_path is not None
+                else None
+            ),
+            "external_high_offset_count_binary_candidate_confirm": (
+                str(external_high_offset_count_binary_candidate_confirm_path)
+                if external_high_offset_count_binary_candidate_confirm_path is not None
+                else None
+            ),
+            "external_high_offset_count_binary_candidate_confirm_metadata": (
+                str(external_high_offset_count_binary_candidate_confirm_metadata_path)
+                if external_high_offset_count_binary_candidate_confirm_metadata_path
+                is not None
+                else None
+            ),
+            "external_high_offset_shifted_hot_server": (
+                str(external_high_offset_shifted_hot_server_path)
+                if external_high_offset_shifted_hot_server_path is not None
+                else None
+            ),
+            "external_high_offset_shifted_hot_server_metadata": (
+                str(external_high_offset_shifted_hot_server_metadata_path)
+                if external_high_offset_shifted_hot_server_metadata_path is not None
+                else None
+            ),
+            "external_high_offset_shifted_count_binary": (
+                str(external_high_offset_shifted_count_binary_path)
+                if external_high_offset_shifted_count_binary_path is not None
+                else None
+            ),
+            "external_high_offset_shifted_count_binary_metadata": (
+                str(external_high_offset_shifted_count_binary_metadata_path)
+                if external_high_offset_shifted_count_binary_metadata_path is not None
+                else None
+            ),
+            "external_competitive_smoke": (
+                str(external_competitive_smoke_path)
+                if external_competitive_smoke_path is not None
+                else None
+            ),
+            "external_competitive_smoke_metadata": (
+                str(external_competitive_smoke_metadata_path)
+                if external_competitive_smoke_metadata_path is not None
+                else None
+            ),
             "external_high_offset_confirmation": (
                 str(external_high_offset_confirmation_path)
                 if external_high_offset_confirmation_path is not None
@@ -528,6 +874,11 @@ def build_report(
             "external_high_offset_candidate_confirmation": (
                 str(external_high_offset_candidate_confirmation_path)
                 if external_high_offset_candidate_confirmation_path is not None
+                else None
+            ),
+            "external_high_offset_promotion_focus": (
+                str(external_high_offset_promotion_focus_path)
+                if external_high_offset_promotion_focus_path is not None
                 else None
             ),
             "high_offset_hot_cold_benchmark": (
@@ -541,6 +892,7 @@ def build_report(
             ),
         },
         "missing_inputs": missing_inputs,
+        "external_control_provenance": external_control_provenance,
         "benchmark": benchmark_summary,
         "external_correctness": summarize_external_correctness(external_correctness),
         "external": external_summary,
@@ -583,10 +935,30 @@ def build_report(
             external_high_offset_tight_sample_rows,
         ),
         "external_high_offset_hot_server": external_high_offset_hot_server_summary,
+        "external_high_offset_count_binary": external_high_offset_count_binary_summary,
+        "external_high_offset_count_binary_sweep": (
+            external_high_offset_count_binary_sweep_summary
+        ),
+        "external_high_offset_count_binary_candidate_confirm": (
+            external_high_offset_count_binary_candidate_confirm_summary
+        ),
+        "external_high_offset_shifted_hot_server": (
+            external_high_offset_shifted_hot_server_summary
+        ),
+        "external_high_offset_shifted_count_binary": (
+            external_high_offset_shifted_count_binary_summary
+        ),
+        "external_competitive_smoke": external_competitive_smoke_summary,
+        "external_high_offset_shifted_candidate_readout": (
+            external_high_offset_shifted_candidate_readout
+        ),
         "external_high_offset_promotion_readout": external_high_offset_promotion_readout,
         "external_high_offset_confirmation": external_high_offset_confirmation_summary,
         "external_high_offset_candidate_confirmation": (
             external_high_offset_candidate_confirmation_summary
+        ),
+        "external_high_offset_promotion_focus": (
+            external_high_offset_promotion_focus_summary
         ),
         "tuning": summarize_tuning(tuning_summary, default_calibration_summary),
         "default_calibration": default_calibration_summary,
@@ -954,18 +1326,18 @@ def summarize_external(
         [
             row
             for row in speedups
-            if not is_circle_server_row(row) and not is_primesieve_count_server_baseline(row)
+            if not is_circle_server_row(row) and not is_external_count_server_baseline(row)
         ]
     )
     server_summary = external_win_counts(
         [
             row
             for row in speedups
-            if is_circle_server_row(row) and not is_primesieve_count_server_baseline(row)
+            if is_circle_server_row(row) and not is_external_count_server_baseline(row)
         ]
     )
     external_server_summary = external_win_counts(
-        [row for row in speedups if is_primesieve_count_server_baseline(row)]
+        [row for row in speedups if is_external_count_server_baseline(row)]
     )
     return {
         "speedups": speedups,
@@ -977,10 +1349,359 @@ def summarize_external(
     }
 
 
+COUNT_BINARY_FOCUS_ORDER = {
+    "cold_count_binary_vs_primesieve_cli": 0,
+    "cold_count_binary_vs_primecount_cli": 1,
+    "slim_server_vs_primesieve_cli": 2,
+    "slim_server_vs_primecount_cli": 3,
+    "slim_server_vs_libprimesieve": 4,
+    "slim_server_vs_libprimecount": 5,
+    "hot_server_vs_libprimesieve": 6,
+    "hot_server_vs_libprimecount": 7,
+}
+
+
+def summarize_high_offset_count_binary(
+    rows: list[dict[str, str]],
+    metadata: dict[str, Any] | None,
+    sample_rows: list[dict[str, str]] | None = None,
+) -> dict[str, Any]:
+    summary = summarize_external_segment_sweep(rows, metadata, sample_rows)
+    focus_rows = []
+    for row in summary.get("speedups", []):
+        role = high_offset_count_binary_role(row)
+        if role is None:
+            continue
+        focus_rows.append(
+            {
+                **row,
+                "role": role,
+                "role_label": high_offset_count_binary_role_label(role),
+            }
+        )
+    focus_rows.sort(
+        key=lambda row: (
+            row["low"],
+            row["high"],
+            COUNT_BINARY_FOCUS_ORDER.get(row["role"], 99),
+            row["baseline"],
+            row["name"],
+        )
+    )
+    return {
+        **summary,
+        "focus_rows": focus_rows,
+        "focus_rows_count": len(focus_rows),
+        "focus_median_wins": sum(
+            1 for row in focus_rows if row["median_circle_speedup"] >= 1.0
+        ),
+        "focus_best_wins": sum(1 for row in focus_rows if row["circle_speedup"] >= 1.0),
+        "cold_hot_overhead": summarize_count_binary_cold_hot_overhead(focus_rows),
+    }
+
+
+def summarize_high_offset_count_binary_segment_sweep(
+    rows: list[dict[str, str]],
+    metadata: dict[str, Any] | None,
+    sample_rows: list[dict[str, str]] | None = None,
+    *,
+    readout_require_stable_samples: bool = True,
+) -> dict[str, Any]:
+    summary = summarize_external_segment_sweep(
+        [row for row in rows if is_count_binary_sweep_row(row)],
+        metadata,
+        [row for row in sample_rows or [] if is_count_binary_sweep_row(row)],
+    )
+    return {
+        **summary,
+        "cold_candidate_readout": summarize_count_binary_cold_candidate_readout(
+            summary.get("speedups", []),
+            require_stable_samples=readout_require_stable_samples,
+        ),
+    }
+
+
+def is_count_binary_sweep_row(row: dict[str, str]) -> bool:
+    name = str(row.get("name", ""))
+    return name.startswith("circle_prime_count_binary_") or name.startswith("external_")
+
+
+def summarize_count_binary_cold_candidate_readout(
+    speedups: list[dict[str, Any]],
+    *,
+    min_gain: float = 1.03,
+    min_candidate_median_speedup: float = 1.0,
+    min_candidate_best_speedup: float = 1.0,
+    require_stable_samples: bool = True,
+) -> list[dict[str, Any]]:
+    cold_rows = [
+        row
+        for row in speedups
+        if str(row.get("name", "")).startswith("circle_prime_count_binary_")
+        and "_server_" not in str(row.get("name", ""))
+        and row.get("baseline") == "external_primesieve_count"
+    ]
+    grouped: dict[tuple[int, int, str], list[dict[str, Any]]] = {}
+    for row in cold_rows:
+        grouped.setdefault((row["low"], row["high"], row["baseline"]), []).append(row)
+
+    readout = []
+    for (low, high, baseline), rows in sorted(grouped.items()):
+        decision_rows = (
+            [row for row in rows if row.get("sample_stability") == "stable"]
+            if require_stable_samples
+            else rows
+        )
+        if not decision_rows:
+            continue
+        default = best_count_binary_cold_row(
+            [row for row in decision_rows if is_adaptive_default_row(str(row["name"]))]
+        )
+        best = best_count_binary_cold_row(
+            [
+                row
+                for row in decision_rows
+                if not is_adaptive_default_row(str(row["name"]))
+            ]
+        )
+        if default is None:
+            continue
+        if best is None:
+            best = default
+        gain = safe_ratio(best["median_circle_speedup"], default["median_circle_speedup"])
+        action = count_binary_cold_candidate_action(
+            default,
+            best,
+            gain,
+            min_gain=min_gain,
+            min_candidate_median_speedup=min_candidate_median_speedup,
+            min_candidate_best_speedup=min_candidate_best_speedup,
+        )
+        readout.append(
+            {
+                "low": low,
+                "high": high,
+                "baseline": baseline,
+                "default": default,
+                "best": best,
+                "median_gain_over_default": gain,
+                "action": action,
+                "min_gain": min_gain,
+                "min_candidate_median_speedup": min_candidate_median_speedup,
+                "min_candidate_best_speedup": min_candidate_best_speedup,
+                "sample_scope": "stable" if require_stable_samples else "all",
+            }
+        )
+    return readout
+
+
+def best_count_binary_cold_row(rows: list[dict[str, Any]]) -> dict[str, Any] | None:
+    if not rows:
+        return None
+    return max(
+        rows,
+        key=lambda row: (
+            row["median_circle_speedup"],
+            row["circle_speedup"],
+            -row["median_ms"],
+            -row["best_ms"],
+            str(row["name"]),
+        ),
+    )
+
+
+def count_binary_cold_candidate_action(
+    default: dict[str, Any],
+    best: dict[str, Any],
+    gain: float | None,
+    *,
+    min_gain: float,
+    min_candidate_median_speedup: float,
+    min_candidate_best_speedup: float,
+) -> str:
+    if external_candidate_identity(default) == external_candidate_identity(best):
+        return "keep_default"
+    if gain is None or best["median_circle_speedup"] <= default["median_circle_speedup"]:
+        return "keep_default"
+    if gain < min_gain or best["median_circle_speedup"] < min_candidate_median_speedup:
+        return "hold_small_gain_candidate"
+    if best["circle_speedup"] < min_candidate_best_speedup:
+        return "hold_best_speedup_below_floor"
+    return "trial_cold_count_binary_candidate"
+
+
+def apply_count_binary_cold_confirmation_readout(
+    sweep_summary: dict[str, Any],
+    confirmation_summary: dict[str, Any],
+) -> dict[str, Any]:
+    readout = sweep_summary.get("cold_candidate_readout") or []
+    confirmation_readout = confirmation_summary.get("cold_candidate_readout") or []
+    if not readout or not confirmation_readout:
+        return sweep_summary
+
+    annotated = []
+    for row in readout:
+        confirmation = matching_count_binary_cold_confirmation(row, confirmation_readout)
+        if confirmation is None:
+            annotated.append(
+                {
+                    **row,
+                    "final_action": row.get("action"),
+                    "confirmation_status": "missing",
+                }
+            )
+            continue
+
+        confirmation_action = confirmation.get("action")
+        action = row.get("action")
+        final_action = action
+        if action == "trial_cold_count_binary_candidate":
+            if confirmation_action == "trial_cold_count_binary_candidate":
+                final_action = "trial_confirmed_by_focused_confirmation"
+            else:
+                final_action = "held_by_focused_confirmation"
+        annotated.append(
+            {
+                **row,
+                "confirmation": confirmation,
+                "confirmation_status": "matched",
+                "confirmation_action": confirmation_action,
+                "confirmation_sample_scope": confirmation.get("sample_scope", "unknown"),
+                "final_action": final_action,
+            }
+        )
+
+    return {**sweep_summary, "cold_candidate_readout": annotated}
+
+
+def matching_count_binary_cold_confirmation(
+    row: dict[str, Any],
+    confirmation_rows: list[dict[str, Any]],
+) -> dict[str, Any] | None:
+    row_best = external_candidate_identity(row.get("best", {}))
+    for confirmation in confirmation_rows:
+        if (
+            confirmation.get("low") == row.get("low")
+            and confirmation.get("high") == row.get("high")
+            and confirmation.get("baseline") == row.get("baseline")
+            and external_candidate_identity(confirmation.get("best", {})) == row_best
+        ):
+            return confirmation
+    return None
+
+
+def summarize_count_binary_cold_hot_overhead(
+    focus_rows: list[dict[str, Any]],
+) -> list[dict[str, Any]]:
+    grouped: dict[tuple[int, int, int], dict[str, dict[str, Any]]] = {}
+    for row in focus_rows:
+        key = (int(row["low"]), int(row["high"]), int(row["result"]))
+        grouped.setdefault(key, {})[row["role"]] = row
+
+    summaries = []
+    for key in sorted(grouped):
+        rows = grouped[key]
+        cold = rows.get("cold_count_binary_vs_primesieve_cli")
+        hot = rows.get("slim_server_vs_libprimesieve")
+        if cold is None or hot is None:
+            continue
+        cold_median_ms = float(cold["median_ms"])
+        hot_median_ms = float(hot["median_ms"])
+        if cold_median_ms <= 0.0 or hot_median_ms <= 0.0:
+            continue
+        primesieve_cli_median_ms = cold.get("baseline_median_ms")
+        libprimesieve_median_ms = hot.get("baseline_median_ms")
+        summaries.append(
+            {
+                "low": key[0],
+                "high": key[1],
+                "result": key[2],
+                "cold_count_binary_name": cold["name"],
+                "hot_count_binary_server_name": hot["name"],
+                "hot_server_name": hot["name"],
+                "cold_count_binary_median_ms": cold_median_ms,
+                "hot_count_binary_server_median_ms": hot_median_ms,
+                "hot_server_median_ms": hot_median_ms,
+                "circle_cold_over_hot_median": cold_median_ms / hot_median_ms,
+                "circle_cold_extra_ms": cold_median_ms - hot_median_ms,
+                "cold_count_binary_vs_primesieve_median_speedup": cold[
+                    "median_circle_speedup"
+                ],
+                "hot_count_binary_server_vs_libprimesieve_median_speedup": hot[
+                    "median_circle_speedup"
+                ],
+                "hot_server_vs_libprimesieve_median_speedup": hot[
+                    "median_circle_speedup"
+                ],
+                "primesieve_cli_median_ms": primesieve_cli_median_ms,
+                "libprimesieve_median_ms": libprimesieve_median_ms,
+                "primesieve_cli_over_lib_median": (
+                    primesieve_cli_median_ms / libprimesieve_median_ms
+                    if primesieve_cli_median_ms is not None
+                    and libprimesieve_median_ms is not None
+                    and libprimesieve_median_ms > 0.0
+                    else None
+                ),
+                "primesieve_cli_extra_ms": (
+                    primesieve_cli_median_ms - libprimesieve_median_ms
+                    if primesieve_cli_median_ms is not None
+                    and libprimesieve_median_ms is not None
+                    else None
+                ),
+            }
+        )
+    return summaries
+
+
+def high_offset_count_binary_role(row: dict[str, Any]) -> str | None:
+    name = str(row.get("name", ""))
+    baseline = str(row.get("baseline", ""))
+    if not is_adaptive_default_row(name):
+        return None
+    if name.startswith("circle_prime_count_binary_server_"):
+        if baseline == "external_primesieve_count":
+            return "slim_server_vs_primesieve_cli"
+        if baseline == "external_primecount_pi_diff":
+            return "slim_server_vs_primecount_cli"
+        if baseline == "external_primesieve_count_server":
+            return "slim_server_vs_libprimesieve"
+        if baseline == "external_primecount_pi_diff_server":
+            return "slim_server_vs_libprimecount"
+        return None
+    if name.startswith("circle_prime_count_binary_"):
+        if baseline == "external_primesieve_count":
+            return "cold_count_binary_vs_primesieve_cli"
+        if baseline == "external_primecount_pi_diff":
+            return "cold_count_binary_vs_primecount_cli"
+    if name.startswith("circle_prime_server_"):
+        if baseline == "external_primesieve_count_server":
+            return "hot_server_vs_libprimesieve"
+        if baseline == "external_primecount_pi_diff_server":
+            return "hot_server_vs_libprimecount"
+    return None
+
+
+def high_offset_count_binary_role_label(role: str) -> str:
+    labels = {
+        "cold_count_binary_vs_primesieve_cli": "cold count binary vs primesieve CLI",
+        "cold_count_binary_vs_primecount_cli": "cold count binary vs primecount CLI",
+        "slim_server_vs_primesieve_cli": "slim count binary server vs primesieve CLI",
+        "slim_server_vs_primecount_cli": "slim count binary server vs primecount CLI",
+        "slim_server_vs_libprimesieve": "slim count binary server vs libprimesieve",
+        "slim_server_vs_libprimecount": "slim count binary server vs libprimecount",
+        "hot_server_vs_libprimesieve": "hot server vs libprimesieve",
+        "hot_server_vs_libprimecount": "hot server vs libprimecount",
+    }
+    return labels.get(role, role)
+
+
 def external_win_counts(speedups: list[dict[str, Any]]) -> dict[str, int]:
     primesieve = [row for row in speedups if row["baseline"] == "external_primesieve_count"]
     primesieve_count_server = [
         row for row in speedups if row["baseline"] == "external_primesieve_count_server"
+    ]
+    primecount_pi_server = [
+        row for row in speedups if row["baseline"] == "external_primecount_pi_diff_server"
     ]
     primecount = [row for row in speedups if row["baseline"] == "external_primecount_pi_diff"]
     return {
@@ -994,6 +1715,13 @@ def external_win_counts(speedups: list[dict[str, Any]]) -> dict[str, int]:
             1 for row in primecount if row["median_circle_speedup"] >= 1.0
         ),
         "primecount_rows": len(primecount),
+        "primecount_pi_server_wins": sum(
+            1 for row in primecount_pi_server if row["circle_speedup"] >= 1.0
+        ),
+        "primecount_pi_server_median_wins": sum(
+            1 for row in primecount_pi_server if row["median_circle_speedup"] >= 1.0
+        ),
+        "primecount_pi_server_rows": len(primecount_pi_server),
         "primesieve_count_server_wins": sum(
             1 for row in primesieve_count_server if row["circle_speedup"] >= 1.0
         ),
@@ -1010,6 +1738,13 @@ def is_circle_server_row(row: dict[str, Any]) -> bool:
 
 def is_primesieve_count_server_baseline(row: dict[str, Any]) -> bool:
     return row.get("baseline") == "external_primesieve_count_server"
+
+
+def is_external_count_server_baseline(row: dict[str, Any]) -> bool:
+    return row.get("baseline") in {
+        "external_primesieve_count_server",
+        "external_primecount_pi_diff_server",
+    }
 
 
 def summarize_external_next(
@@ -1207,6 +1942,19 @@ def sample_stats_for_external_next_timing(
     return stats.get(key)
 
 
+def fingerprint_summary(value: dict[str, Any] | None) -> dict[str, Any] | None:
+    if not isinstance(value, dict):
+        return None
+    return {
+        "available": value.get("available"),
+        "path": value.get("path"),
+        "size_bytes": value.get("size_bytes"),
+        "modified_at_utc": value.get("modified_at_utc"),
+        "sha256": value.get("sha256"),
+        "error": value.get("error"),
+    }
+
+
 def summarize_external_next_metadata(metadata: dict[str, Any] | None) -> dict[str, Any]:
     if metadata is None:
         return {
@@ -1215,10 +1963,14 @@ def summarize_external_next_metadata(metadata: dict[str, Any] | None) -> dict[st
             "thread_policy": {},
             "starts": [],
             "batch_size": None,
+            "warmup_rounds": 0,
             "server_only": False,
             "include_primecount": False,
             "primecount_max_start": None,
+            "include_primecount_library_server": False,
+            "primecount_library_max_start": None,
             "include_primesieve_library_server": False,
+            "include_primesieve_iterator_server": False,
             "primesieve_library_max_start": None,
             "required_external_tools": [],
         }
@@ -1230,15 +1982,26 @@ def summarize_external_next_metadata(metadata: dict[str, Any] | None) -> dict[st
         "rounds": metadata.get("rounds"),
         "row_count": metadata.get("row_count"),
         "batch_size": metadata.get("batch_size"),
+        "warmup_rounds": int(metadata.get("warmup_rounds") or 0),
         "server_only": bool(metadata.get("server_only")),
         "include_circle_server": bool(metadata.get("include_circle_server")),
         "include_primecount": bool(metadata.get("include_primecount")),
         "primecount_max_start": metadata.get("primecount_max_start"),
+        "include_primecount_library_server": bool(
+            metadata.get("include_primecount_library_server")
+        ),
+        "primecount_library_max_start": metadata.get("primecount_library_max_start"),
         "include_primesieve_library_server": bool(
             metadata.get("include_primesieve_library_server")
         ),
+        "include_primesieve_iterator_server": bool(
+            metadata.get("include_primesieve_iterator_server")
+        ),
         "primesieve_library_max_start": metadata.get("primesieve_library_max_start"),
         "sample_output": metadata.get("sample_output"),
+        "circle_prime_defaults": fingerprint_summary(
+            metadata.get("circle_prime_defaults")
+        ),
         "thread_policy": metadata.get("thread_policy", {}),
         "starts": metadata.get("starts", []),
         "required_external_tools": sorted(
@@ -1252,6 +2015,38 @@ def summarize_external_next_metadata(metadata: dict[str, Any] | None) -> dict[st
                 "source": tool.get("source"),
                 "method": tool.get("method"),
                 "error": tool.get("error"),
+                "binary": fingerprint_summary(tool.get("binary")),
+                "defaults": fingerprint_summary(tool.get("defaults")),
+                "small_prefix_pi_cache_limit": tool.get(
+                    "small_prefix_pi_cache_limit"
+                ),
+                "small_prefix_pi_cache_default_limit": tool.get(
+                    "small_prefix_pi_cache_default_limit"
+                ),
+                "small_prefix_pi_cache_max_limit": tool.get(
+                    "small_prefix_pi_cache_max_limit"
+                ),
+                "small_prefix_pi_cache_limit_env": tool.get(
+                    "small_prefix_pi_cache_limit_env"
+                ),
+                "small_prefix_pi_cache_estimated_bytes": tool.get(
+                    "small_prefix_pi_cache_estimated_bytes"
+                ),
+                "small_prefix_pi_cache_default_estimated_bytes": tool.get(
+                    "small_prefix_pi_cache_default_estimated_bytes"
+                ),
+                "small_prefix_pi_cache_max_estimated_bytes": tool.get(
+                    "small_prefix_pi_cache_max_estimated_bytes"
+                ),
+                "small_prefix_pi_cache_warmup_profiles": tool.get(
+                    "small_prefix_pi_cache_warmup_profiles", []
+                ),
+                "small_prefix_pi_cache_scope": tool.get(
+                    "small_prefix_pi_cache_scope"
+                ),
+                "small_prefix_pi_cache_warmup": tool.get(
+                    "small_prefix_pi_cache_warmup"
+                ),
             }
             for name, tool in tools.items()
         },
@@ -1323,6 +2118,7 @@ def summarize_high_offset_promotion_readout(
     hot_server_summary: dict[str, Any],
     default_confirmation: dict[str, Any],
     candidate_confirmation: dict[str, Any],
+    promotion_focus_confirmation: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     if not hot_server_summary.get("available"):
         return {"available": False, "rows": []}
@@ -1337,8 +2133,19 @@ def summarize_high_offset_promotion_readout(
         candidate_confirmation_generated_at,
         hot_server_finished_at,
     )
+    promotion_focus_confirmation = promotion_focus_confirmation or {}
+    promotion_focus_generated_at = promotion_focus_confirmation.get("generated_at_utc")
+    promotion_focus_freshness = confirmation_freshness(
+        promotion_focus_generated_at,
+        hot_server_finished_at,
+    )
     default_confirmations = confirmation_rows_by_range_and_identity(default_confirmation)
-    candidate_confirmations = confirmation_rows_by_range_and_identity(candidate_confirmation)
+    candidate_confirmations = confirmation_winner_rows_by_range_and_identity(
+        candidate_confirmation
+    )
+    promotion_focus_confirmations = confirmation_winner_rows_by_range_and_identity(
+        promotion_focus_confirmation
+    )
     rows = []
     for best in hot_server_summary.get("best_by_range_baseline", []):
         key = range_baseline_key(best)
@@ -1346,21 +2153,40 @@ def summarize_high_offset_promotion_readout(
         if default is None:
             continue
 
-        best_identity = hot_server_row_identity(best)
-        default_identity = hot_server_row_identity(default)
-        candidate_confirmation_row = candidate_confirmations.get((key, best_identity))
-        default_confirmation_row = default_confirmations.get((key, default_identity))
+        best_confirmation_identity = hot_server_row_identity(best)
+        default_confirmation_identity = hot_server_row_identity(default)
+        best_execution_identity = hot_server_execution_identity(best)
+        default_execution_identity = hot_server_execution_identity(default)
+        best_is_default = best_execution_identity == default_execution_identity
+        candidate_confirmation_row = candidate_confirmations.get(
+            (key, best_confirmation_identity)
+        )
+        candidate_confirmation_source = "candidate_confirmation"
+        action_confirmation_freshness = candidate_confirmation_freshness
+        focus_confirmation_row = promotion_focus_confirmations.get(
+            (key, best_confirmation_identity)
+        )
+        if focus_confirmation_row is not None and promotion_focus_freshness == "fresh":
+            candidate_confirmation_row = focus_confirmation_row
+            candidate_confirmation_source = "promotion_focus"
+            action_confirmation_freshness = promotion_focus_freshness
+        elif candidate_confirmation_row is None:
+            candidate_confirmation_source = "missing"
+            action_confirmation_freshness = "missing"
+        default_confirmation_row = default_confirmations.get(
+            (key, default_confirmation_identity)
+        )
         candidate_status = confirmation_status(candidate_confirmation_row)
         default_status = confirmation_status(default_confirmation_row)
         default_median_speedup = default.get("median_circle_speedup")
         best_median_speedup = best.get("median_circle_speedup")
         median_gain = ratio_or_none_any(best_median_speedup, default_median_speedup)
         action = high_offset_promotion_action(
-            best_is_default=best_identity == default_identity,
+            best_is_default=best_is_default,
             best_median_speedup=best_median_speedup,
             median_gain_over_default=median_gain,
             candidate_status=candidate_status,
-            candidate_confirmation_freshness=candidate_confirmation_freshness,
+            candidate_confirmation_freshness=action_confirmation_freshness,
         )
         rows.append(
             {
@@ -1369,11 +2195,12 @@ def summarize_high_offset_promotion_readout(
                 "baseline": best["baseline"],
                 "default": default,
                 "best": best,
-                "best_is_default": best_identity == default_identity,
+                "best_is_default": best_is_default,
                 "median_gain_over_default": median_gain,
                 "default_confirmation_status": default_status,
                 "candidate_confirmation_status": candidate_status,
-                "candidate_confirmation_freshness": candidate_confirmation_freshness,
+                "candidate_confirmation_source": candidate_confirmation_source,
+                "candidate_confirmation_freshness": action_confirmation_freshness,
                 "action": action,
             }
         )
@@ -1381,8 +2208,65 @@ def summarize_high_offset_promotion_readout(
     return {
         "available": bool(rows),
         "candidate_confirmation_generated_at_utc": candidate_confirmation_generated_at,
+        "promotion_focus_confirmation_generated_at_utc": promotion_focus_generated_at,
         "hot_server_finished_at_utc": hot_server_finished_at,
         "candidate_confirmation_freshness": candidate_confirmation_freshness,
+        "promotion_focus_confirmation_freshness": promotion_focus_freshness,
+        "rows": rows,
+    }
+
+
+def summarize_high_offset_shifted_candidate_readout(
+    shifted_summary: dict[str, Any],
+) -> dict[str, Any]:
+    if not shifted_summary.get("available"):
+        return {"available": False, "rows": []}
+
+    default_rows = {
+        range_baseline_key(row): row
+        for row in shifted_summary.get("default_by_range_baseline", [])
+    }
+    rows = []
+    for best in shifted_summary.get("best_by_range_baseline", []):
+        key = range_baseline_key(best)
+        default = default_rows.get(key)
+        if default is None:
+            continue
+
+        best_execution_identity = hot_server_execution_identity(best)
+        default_execution_identity = hot_server_execution_identity(default)
+        best_is_default = best_execution_identity == default_execution_identity
+        default_median_speedup = default.get("median_circle_speedup")
+        best_median_speedup = best.get("median_circle_speedup")
+        median_gain = ratio_or_none_any(best_median_speedup, default_median_speedup)
+        action = high_offset_shifted_candidate_action(
+            best_is_default=best_is_default,
+            best_median_speedup=best_median_speedup,
+            median_gain_over_default=median_gain,
+        )
+        rows.append(
+            {
+                "low": best["low"],
+                "high": best["high"],
+                "baseline": best["baseline"],
+                "default": default,
+                "best": best,
+                "best_is_default": best_is_default,
+                "median_gain_over_default": median_gain,
+                "action": action,
+            }
+        )
+
+    metadata = shifted_summary.get("metadata", {})
+    return {
+        "available": bool(rows),
+        "min_gain_ratio": HIGH_OFFSET_SHIFTED_CANDIDATE_MIN_GAIN_RATIO,
+        "batch_request_profile": metadata.get("batch_request_profile"),
+        "batch_size": metadata.get("batch_size"),
+        "batch_shift": metadata.get("batch_shift"),
+        "rounds": metadata.get("rounds"),
+        "warmup_rounds": metadata.get("warmup_rounds"),
+        "finished_at_utc": metadata.get("finished_at_utc"),
         "rows": rows,
     }
 
@@ -1397,6 +2281,20 @@ def hot_server_row_identity(row: dict[str, Any]) -> tuple[str, int, int | None, 
         int(row.get("segment_size") or 0),
         parse_identity_int(row.get("circle_threads")),
         parse_identity_int(row.get("circle_requested_threads")),
+    )
+
+
+def hot_server_execution_identity(row: dict[str, Any]) -> tuple[str, int, int | None]:
+    effective_threads = first_identity_int(
+        row.get("circle_threads"),
+        row.get("threads"),
+        row.get("circle_requested_threads"),
+        row.get("requested_threads"),
+    )
+    return (
+        str(row.get("count_mode") or ""),
+        int(row.get("segment_size") or 0),
+        effective_threads,
     )
 
 
@@ -1415,6 +2313,14 @@ def parse_identity_int(value: Any) -> int | None:
     return int(value)
 
 
+def first_identity_int(*values: Any) -> int | None:
+    for value in values:
+        parsed = parse_identity_int(value)
+        if parsed is not None:
+            return parsed
+    return None
+
+
 def confirmation_rows_by_range_and_identity(
     summary: dict[str, Any],
 ) -> dict[tuple[tuple[int, int, str], tuple[str, int, int | None, int | None]], dict[str, Any]]:
@@ -1423,6 +2329,18 @@ def confirmation_rows_by_range_and_identity(
         return rows
     source_rows = summary.get("identity_summaries") or summary.get("winners", [])
     for row in source_rows:
+        key = (int(row["low"]), int(row["high"]), str(row["baseline"]))
+        rows[(key, confirmation_row_identity(row))] = row
+    return rows
+
+
+def confirmation_winner_rows_by_range_and_identity(
+    summary: dict[str, Any],
+) -> dict[tuple[tuple[int, int, str], tuple[str, int, int | None, int | None]], dict[str, Any]]:
+    rows = {}
+    if not summary.get("available"):
+        return rows
+    for row in summary.get("winners", []):
         key = (int(row["low"]), int(row["high"]), str(row["baseline"]))
         rows[(key, confirmation_row_identity(row))] = row
     return rows
@@ -1491,6 +2409,24 @@ def high_offset_promotion_action(
     ):
         return "hold_small_gain_candidate"
     return "trial_candidate_default"
+
+
+def high_offset_shifted_candidate_action(
+    *,
+    best_is_default: bool,
+    best_median_speedup: Any,
+    median_gain_over_default: float | None,
+) -> str:
+    if best_is_default:
+        return "keep_default"
+    if best_median_speedup is None or float(best_median_speedup) < 1.0:
+        return "reject_candidate"
+    if (
+        median_gain_over_default is None
+        or median_gain_over_default < HIGH_OFFSET_SHIFTED_CANDIDATE_MIN_GAIN_RATIO
+    ):
+        return "hold_small_gain_candidate"
+    return "trial_shifted_candidate"
 
 
 def summarize_prefix_pi_thread_comparisons(
@@ -1562,9 +2498,14 @@ def summarize_external_metadata(metadata: dict[str, Any] | None) -> dict[str, An
             "ranges": [],
             "circle_count_modes": [],
             "include_primesieve_count_server": False,
+            "include_primecount_pi_server": False,
+            "include_circle_count_binary": False,
+            "include_circle_count_binary_server": False,
             "required_external_tools": [],
             "warmup_rounds": 0,
             "batch_size": 1,
+            "batch_request_profile": "identical",
+            "batch_shift": 0,
         }
     tools = metadata.get("tools", {})
     return {
@@ -1573,14 +2514,28 @@ def summarize_external_metadata(metadata: dict[str, Any] | None) -> dict[str, An
         "finished_at_utc": metadata.get("finished_at_utc"),
         "rounds": metadata.get("rounds"),
         "batch_size": int(metadata.get("batch_size") or 1),
+        "batch_request_profile": metadata.get("batch_request_profile", "identical"),
+        "batch_shift": int(metadata.get("batch_shift") or 0),
         "warmup_rounds": int(metadata.get("warmup_rounds") or 0),
         "row_count": metadata.get("row_count"),
         "interleaved": bool(metadata.get("interleaved")),
+        "include_circle_count_binary": bool(
+            metadata.get("include_circle_count_binary")
+        ),
+        "include_circle_count_binary_server": bool(
+            metadata.get("include_circle_count_binary_server")
+        ),
         "include_circle_server": bool(metadata.get("include_circle_server")),
         "include_primesieve_count_server": bool(
             metadata.get("include_primesieve_count_server")
         ),
+        "include_primecount_pi_server": bool(
+            metadata.get("include_primecount_pi_server")
+        ),
         "sample_output": metadata.get("sample_output"),
+        "circle_prime_defaults": fingerprint_summary(
+            metadata.get("circle_prime_defaults")
+        ),
         "thread_policy": metadata.get("thread_policy", {}),
         "circle_count_modes": metadata.get("circle_count_modes", []),
         "ranges": metadata.get("ranges", []),
@@ -1595,9 +2550,104 @@ def summarize_external_metadata(metadata: dict[str, Any] | None) -> dict[str, An
                 "source": tool.get("source"),
                 "method": tool.get("method"),
                 "error": tool.get("error"),
+                "binary": fingerprint_summary(tool.get("binary")),
+                "defaults": fingerprint_summary(tool.get("defaults")),
+                "small_prefix_pi_cache_limit": tool.get(
+                    "small_prefix_pi_cache_limit"
+                ),
+                "small_prefix_pi_cache_default_limit": tool.get(
+                    "small_prefix_pi_cache_default_limit"
+                ),
+                "small_prefix_pi_cache_max_limit": tool.get(
+                    "small_prefix_pi_cache_max_limit"
+                ),
+                "small_prefix_pi_cache_limit_env": tool.get(
+                    "small_prefix_pi_cache_limit_env"
+                ),
+                "small_prefix_pi_cache_estimated_bytes": tool.get(
+                    "small_prefix_pi_cache_estimated_bytes"
+                ),
+                "small_prefix_pi_cache_default_estimated_bytes": tool.get(
+                    "small_prefix_pi_cache_default_estimated_bytes"
+                ),
+                "small_prefix_pi_cache_max_estimated_bytes": tool.get(
+                    "small_prefix_pi_cache_max_estimated_bytes"
+                ),
+                "small_prefix_pi_cache_warmup_profiles": tool.get(
+                    "small_prefix_pi_cache_warmup_profiles", []
+                ),
+                "small_prefix_pi_cache_scope": tool.get(
+                    "small_prefix_pi_cache_scope"
+                ),
+                "small_prefix_pi_cache_warmup": tool.get(
+                    "small_prefix_pi_cache_warmup"
+                ),
             }
             for name, tool in tools.items()
         },
+    }
+
+
+def summarize_external_control_provenance(
+    artifacts: list[tuple[str, dict[str, Any] | None]],
+) -> dict[str, Any]:
+    rows = []
+    for artifact, metadata in artifacts:
+        if metadata is None:
+            continue
+        tools = metadata.get("tools", {})
+        if not isinstance(tools, dict):
+            continue
+        for name in EXTERNAL_CONTROL_PROVENANCE_TOOLS:
+            tool = tools.get(name)
+            if not isinstance(tool, dict):
+                continue
+            if not tool_has_provenance(tool):
+                continue
+            rows.append(external_control_provenance_row(artifact, metadata, name, tool))
+    return {
+        "available": bool(rows),
+        "rows": rows,
+    }
+
+
+def tool_has_provenance(tool: dict[str, Any]) -> bool:
+    return any(
+        tool.get(key)
+        for key in [
+            "available",
+            "path",
+            "version",
+            "error",
+        ]
+    )
+
+
+def external_control_provenance_row(
+    artifact: str,
+    metadata: dict[str, Any],
+    name: str,
+    tool: dict[str, Any],
+) -> dict[str, Any]:
+    binary = fingerprint_summary(tool.get("binary")) or {}
+    source = fingerprint_summary(tool.get("source_fingerprint")) or {}
+    return {
+        "artifact": artifact,
+        "tool": name,
+        "available": bool(tool.get("available")),
+        "version": first_nonempty_line(tool.get("version")),
+        "path": tool.get("path") or binary.get("path"),
+        "method": tool.get("method"),
+        "error": tool.get("error"),
+        "binary_sha256": binary.get("sha256"),
+        "binary_size_bytes": binary.get("size_bytes"),
+        "source_sha256": source.get("sha256"),
+        "source_path": source.get("path") or tool.get("source"),
+        "started_at_utc": metadata.get("started_at_utc"),
+        "finished_at_utc": metadata.get("finished_at_utc"),
+        "rounds": metadata.get("rounds"),
+        "batch_size": metadata.get("batch_size"),
+        "batch_request_profile": metadata.get("batch_request_profile", "identical"),
     }
 
 
@@ -1616,6 +2666,8 @@ def summarize_external_correctness(summary: dict[str, Any] | None) -> dict[str, 
             "tools": {},
             "failures": [],
             "max_checked_high": None,
+            "primecount_next_max_start": None,
+            "next_external_check_count": 0,
         }
     failures = [
         check
@@ -1657,6 +2709,14 @@ def summarize_external_correctness(summary: dict[str, Any] | None) -> dict[str, 
         "next_check_count": int(
             summary.get("next_check_count") or len(summary.get("next_checks", []))
         ),
+        "next_external_check_count": int(
+            summary.get("next_external_check_count")
+            or sum(
+                len(check.get("external_primes", {}))
+                or int(check.get("external_prime") is not None)
+                for check in summary.get("next_checks", [])
+            )
+        ),
         "failure_count": int(
             summary.get("failure_count")
             or len(failures)
@@ -1675,6 +2735,7 @@ def summarize_external_correctness(summary: dict[str, Any] | None) -> dict[str, 
         "ranges": summary.get("ranges", []),
         "enumeration_ranges": summary.get("enumeration_ranges", []),
         "next_starts": summary.get("next_starts", []),
+        "primecount_next_max_start": summary.get("primecount_next_max_start"),
         "max_checked_high": max_checked_high(
             summary.get("ranges", []),
             summary.get("enumeration_ranges", []),
@@ -1928,6 +2989,12 @@ def format_optional_ratio(value: float | None) -> str:
     return "n/a" if value is None else f"{value:.2f}x"
 
 
+def safe_ratio(numerator: float | None, denominator: float | None) -> float | None:
+    if numerator is None or denominator is None or denominator == 0.0:
+        return None
+    return numerator / denominator
+
+
 def format_optional_code(value: str | None) -> str:
     return "n/a" if value is None else f"`{value}`"
 
@@ -2142,7 +3209,33 @@ def summarize_external_mode_confirmation(summary: dict[str, Any] | None) -> dict
             confirmation_row_summary(row)
             for row in summary.get("identity_summaries", [])
         ],
+        "input_metadata": summarize_confirmation_input_metadata(summary),
     }
+
+
+def summarize_confirmation_input_metadata(summary: dict[str, Any]) -> list[dict[str, Any]]:
+    rows = []
+    for row in summary.get("input_metadata", []):
+        circle_prime = row.get("circle_prime") or {}
+        binary = circle_prime.get("binary") or {}
+        defaults = row.get("circle_prime_defaults") or circle_prime.get("defaults") or {}
+        rows.append(
+            {
+                "input": row.get("input"),
+                "metadata": row.get("metadata"),
+                "metadata_available": row.get("metadata_available"),
+                "started_at_utc": row.get("started_at_utc"),
+                "finished_at_utc": row.get("finished_at_utc"),
+                "rounds": row.get("rounds"),
+                "batch_size": row.get("batch_size"),
+                "warmup_rounds": row.get("warmup_rounds"),
+                "circle_binary_sha256": binary.get("sha256"),
+                "circle_binary_modified_at_utc": binary.get("modified_at_utc"),
+                "defaults_sha256": defaults.get("sha256"),
+                "defaults_modified_at_utc": defaults.get("modified_at_utc"),
+            }
+        )
+    return rows
 
 
 def confirmation_row_summary(row: dict[str, Any]) -> dict[str, Any]:
@@ -2179,6 +3272,11 @@ def render_markdown(report: dict[str, Any]) -> str:
             lines.append(f"- `{path}`")
         lines.append("")
 
+    lines.extend(
+        render_external_control_provenance_markdown(
+            report["external_control_provenance"]
+        )
+    )
     lines.extend(render_external_correctness_markdown(report["external_correctness"]))
     lines.extend(render_external_markdown(report["external"]))
     lines.extend(render_external_next_markdown(report["external_next"]))
@@ -2219,8 +3317,92 @@ def render_markdown(report: dict[str, Any]) -> str:
         )
     )
     lines.extend(
+        render_high_offset_count_binary_markdown(
+            report["external_high_offset_count_binary"]
+        )
+    )
+    lines.extend(
+        render_external_segment_sweep_markdown(
+            report["external_high_offset_count_binary_sweep"],
+            title="High-Offset Count-Binary Mode/Segment Sweep",
+            missing_message=(
+                "No high-offset count-binary mode/segment sweep artifact was available."
+            ),
+            default_label="Adaptive count-binary mode/segment scorecard:",
+            best_label="Best count-binary mode/segment candidate scorecard:",
+            spread_label="High-offset count-binary mode/segment candidate spread:",
+            include_circle_row=True,
+        )
+    )
+    lines.extend(
+        render_external_segment_sweep_markdown(
+            report["external_high_offset_count_binary_candidate_confirm"],
+            title="High-Offset Count-Binary Candidate Confirmation",
+            missing_message=(
+                "No high-offset count-binary candidate confirmation artifact was "
+                "available."
+            ),
+            default_label="Focused cold default scorecard:",
+            best_label="Focused cold candidate scorecard:",
+            spread_label="Focused cold candidate spread:",
+            include_circle_row=True,
+        )
+    )
+    lines.extend(
+        render_external_segment_sweep_markdown(
+            report["external_high_offset_shifted_hot_server"],
+            title="High-Offset Shifted Hot-Server Scorecard",
+            missing_message=(
+                "No high-offset shifted hot-server scorecard artifact was available."
+            ),
+            default_label="Adaptive default shifted scorecard:",
+            best_label="Best shifted candidate scorecard:",
+            spread_label="High-offset shifted candidate spread:",
+            include_circle_row=True,
+        )
+    )
+    lines.extend(
+        render_external_segment_sweep_markdown(
+            report["external_high_offset_shifted_count_binary"],
+            title="High-Offset Shifted Count-Binary Scorecard",
+            missing_message=(
+                "No high-offset shifted count-binary scorecard artifact was available."
+            ),
+            default_label="Adaptive shifted count-binary scorecard:",
+            best_label="Best shifted count-binary candidate scorecard:",
+            spread_label="High-offset shifted count-binary candidate spread:",
+            include_circle_row=True,
+        )
+    )
+    lines.extend(
+        render_external_segment_sweep_markdown(
+            report["external_competitive_smoke"],
+            title="Competitive Smoke Scorecard",
+            missing_message="No competitive smoke scorecard artifact was available.",
+            default_label="Fresh shifted count-binary smoke scorecard:",
+            best_label="Best competitive smoke candidate scorecard:",
+            spread_label="Competitive smoke candidate spread:",
+            include_circle_row=True,
+        )
+    )
+    lines.extend(
+        render_high_offset_shifted_candidate_readout_markdown(
+            report["external_high_offset_shifted_candidate_readout"]
+        )
+    )
+    lines.extend(
         render_high_offset_promotion_readout_markdown(
             report["external_high_offset_promotion_readout"]
+        )
+    )
+    lines.extend(
+        render_external_mode_confirmation_markdown(
+            report["external_high_offset_promotion_focus"],
+            title="High-Offset Promotion Focus Confirmation",
+            missing_message=(
+                "No focused high-offset promotion confirmation artifact was "
+                "available."
+            ),
         )
     )
     lines.extend(
@@ -2293,6 +3475,11 @@ def render_external_correctness_markdown(summary: dict[str, Any]) -> list[str]:
             f"enumeration checks: `{summary.get('enumeration_check_count', 0)}`; "
             f"next-prime checks: `{summary.get('next_check_count', 0)}`."
         )
+    if summary.get("next_external_check_count"):
+        lines.append(
+            "Next-prime external oracle comparisons: "
+            f"`{summary.get('next_external_check_count', 0)}`."
+        )
     required_tools = summary.get("required_external_tools") or []
     if required_tools:
         formatted = ", ".join(f"`{tool}`" for tool in required_tools)
@@ -2325,6 +3512,11 @@ def render_external_correctness_markdown(summary: dict[str, Any]) -> list[str]:
         )
     if summary.get("max_checked_high") is not None:
         lines.append(f"Largest checked high: `{summary['max_checked_high']}`.")
+    if summary.get("primecount_next_max_start") is not None:
+        lines.append(
+            "Primecount next-prime checks capped at start "
+            f"`{summary['primecount_next_max_start']}`."
+        )
     if summary.get("failures"):
         lines.append("")
         lines.append("Count failures:")
@@ -2387,6 +3579,14 @@ def render_external_markdown(summary: dict[str, Any]) -> list[str]:
     lines.append(external_lane_summary_line("primecount", "cold CLI", cold_summary))
     if server_summary.get("primecount_rows", 0):
         lines.append(external_lane_summary_line("primecount", "server", server_summary))
+    if external_server_summary.get("primecount_pi_server_rows", 0):
+        lines.append(
+            external_lane_summary_line(
+                "libprimecount pi server",
+                "external server",
+                external_server_summary,
+            )
+        )
     lines.append("")
     metadata = summary.get("metadata", {})
     if metadata.get("available"):
@@ -2418,6 +3618,133 @@ def render_external_markdown(summary: dict[str, Any]) -> list[str]:
     return lines
 
 
+def render_external_control_provenance_markdown(summary: dict[str, Any]) -> list[str]:
+    lines = ["## External Control Provenance", ""]
+    rows = summary.get("rows", [])
+    if not rows:
+        lines.append("No external-control provenance metadata was available.")
+        lines.append("")
+        return lines
+
+    lines.extend(
+        [
+            "| Artifact | Tool | Status | Version / Method | Path | Hashes |",
+            "| --- | --- | --- | --- | --- | --- |",
+        ]
+    )
+    for row in rows:
+        status = "available" if row.get("available") else "unavailable"
+        version_or_method = row.get("version") or row.get("method") or row.get("error") or ""
+        path = row.get("path") or ""
+        hashes = external_control_hash_text(row)
+        lines.append(
+            f"| `{row.get('artifact', '')}` | `{row.get('tool', '')}` | "
+            f"`{status}` | {markdown_cell(version_or_method)} | "
+            f"{markdown_cell(path)} | {markdown_cell(hashes)} |"
+        )
+    lines.append("")
+    return lines
+
+
+def external_control_hash_text(row: dict[str, Any]) -> str:
+    parts = []
+    binary_sha = row.get("binary_sha256")
+    source_sha = row.get("source_sha256")
+    if binary_sha:
+        parts.append(f"bin {str(binary_sha)[:12]}")
+    if source_sha:
+        parts.append(f"src {str(source_sha)[:12]}")
+    return ", ".join(parts)
+
+
+def markdown_cell(value: Any) -> str:
+    if value is None:
+        return ""
+    text = str(value).replace("|", "\\|")
+    return f"`{text}`" if text else ""
+
+
+def render_high_offset_count_binary_markdown(summary: dict[str, Any]) -> list[str]:
+    lines = ["## High-Offset Count Binary", ""]
+    if not summary["available"]:
+        lines.append("No high-offset count-binary probe artifact was available.")
+        lines.append("")
+        return lines
+
+    focus_rows = summary.get("focus_rows", [])
+    lines.append(
+        f"Focused rows: `{len(focus_rows)}`; median wins: "
+        f"`{summary.get('focus_median_wins', 0)}/{len(focus_rows)}`; "
+        f"best-time wins: `{summary.get('focus_best_wins', 0)}/{len(focus_rows)}`."
+    )
+    metadata = summary.get("metadata", {})
+    if metadata.get("available"):
+        rounds = metadata.get("rounds")
+        batch_size = metadata.get("batch_size")
+        warmup_rounds = metadata.get("warmup_rounds")
+        if rounds is not None:
+            lines.append(
+                f"Probe shape: rounds `{rounds}`, batch `{batch_size}`, "
+                f"warmup `{warmup_rounds}`."
+            )
+        count_tool = metadata.get("tools", {}).get("circle_prime_count", {})
+        if count_tool:
+            lines.append(render_tool_binary_bullet("circle-prime-count", count_tool))
+        if metadata.get("include_circle_count_binary"):
+            lines.append("- standalone `circle-prime-count` rows included.")
+        if metadata.get("include_circle_count_binary_server"):
+            lines.append("- slim `circle-prime-count count-server` rows included.")
+        if metadata.get("include_primesieve_count_server"):
+            lines.append("- libprimesieve count-server rows included.")
+        if metadata.get("include_primecount_pi_server"):
+            lines.append("- libprimecount pi-server rows included.")
+    lines.append("")
+
+    if focus_rows:
+        lines.extend(
+            [
+                "| Lane | Range | Circle Row | Baseline | Circle Median ms | Baseline Median ms | Best Speedup | Median Speedup | Samples | Verdict |",
+                "| --- | --- | --- | --- | ---: | ---: | ---: | ---: | --- | --- |",
+            ]
+        )
+        for row in focus_rows:
+            lines.append(
+                f"| {row['role_label']} | [{row['low']}, {row['high']}) | "
+                f"{circle_row_label(row)} | "
+                f"`{external_count_baseline_label(row['baseline'])}` | "
+                f"{row['median_ms']:.3f} | "
+                f"{format_optional_ms(row['baseline_median_ms'])} | "
+                f"{row['circle_speedup']:.3f} | "
+                f"{row['median_circle_speedup']:.3f} | "
+                f"{sample_stability_text(row)} | {row['verdict']} |"
+            )
+        lines.append("")
+
+    overhead_rows = summary.get("cold_hot_overhead", [])
+    if overhead_rows:
+        lines.extend(
+            [
+                "Cold-binary overhead diagnosis:",
+                "",
+                "| Range | Cold Count Binary Median ms | Hot Count Binary Server Median ms | Circle Cold/Hot | Circle Extra ms | primesieve CLI/lib | Cold vs primesieve | Hot count binary vs libprimesieve |",
+                "| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |",
+            ]
+        )
+        for row in overhead_rows:
+            lines.append(
+                f"| [{row['low']}, {row['high']}) | "
+                f"{row['cold_count_binary_median_ms']:.3f} | "
+                f"{row['hot_count_binary_server_median_ms']:.3f} | "
+                f"{format_optional_ratio(row['circle_cold_over_hot_median'])} | "
+                f"{format_optional_ms(row['circle_cold_extra_ms'])} | "
+                f"{format_optional_ratio(row['primesieve_cli_over_lib_median'])} | "
+                f"{row['cold_count_binary_vs_primesieve_median_speedup']:.3f} | "
+                f"{row['hot_count_binary_server_vs_libprimesieve_median_speedup']:.3f} |"
+            )
+        lines.append("")
+    return lines
+
+
 def external_lane_summary_line(
     baseline_label: str,
     lane_label: str,
@@ -2427,6 +3754,7 @@ def external_lane_summary_line(
         "primesieve": "primesieve",
         "primecount": "primecount",
         "libprimesieve count server": "primesieve_count_server",
+        "libprimecount pi server": "primecount_pi_server",
     }
     prefix = prefix_by_label[baseline_label]
     wins = summary.get(f"{prefix}_wins", 0)
@@ -2438,6 +3766,33 @@ def external_lane_summary_line(
     )
 
 
+def external_count_baseline_label(baseline: str) -> str:
+    labels = {
+        "external_primesieve_count": "primesieve CLI count",
+        "external_primecount_pi_diff": "primecount CLI pi diff",
+        "external_primesieve_count_server": "libprimesieve count server",
+        "external_primecount_pi_diff_server": "libprimecount pi server",
+    }
+    return labels.get(baseline, baseline)
+
+
+def render_tool_binary_bullet(label: str, tool: dict[str, Any]) -> str:
+    path = tool.get("path") or "path unavailable"
+    version = tool.get("version") or "version unavailable"
+    binary = tool.get("binary") or {}
+    sha = binary.get("sha256")
+    size = binary.get("size_bytes")
+    fingerprint_parts = []
+    if sha:
+        fingerprint_parts.append(f"sha `{str(sha)[:12]}`")
+    if size is not None:
+        fingerprint_parts.append(f"size `{size}` bytes")
+    fingerprint = ""
+    if fingerprint_parts:
+        fingerprint = "; " + ", ".join(fingerprint_parts)
+    return f"- `{label}`: {version} (`{path}`{fingerprint})."
+
+
 def render_external_metadata_markdown(metadata: dict[str, Any]) -> list[str]:
     lines = ["Tool metadata:"]
     for name in ["circle_prime", "primesieve", "primecount"]:
@@ -2447,6 +3802,79 @@ def render_external_metadata_markdown(metadata: dict[str, Any]) -> list[str]:
         path = tool.get("path") or "path unavailable"
         status = version if available else "not installed"
         lines.append(f"- `{name}`: {status} (`{path}`)")
+    circle_count_server = metadata.get("tools", {}).get("circle_count_server", {})
+    if circle_count_server:
+        path = circle_count_server.get("path") or "path unavailable"
+        method = circle_count_server.get("method") or "method unavailable"
+        if circle_count_server.get("available"):
+            lines.append(
+                "- `circle_count_server`: available "
+                f"(`{path}`); method `{method}`."
+            )
+            cache_limit = circle_count_server.get("small_prefix_pi_cache_limit")
+            cache_default_limit = circle_count_server.get(
+                "small_prefix_pi_cache_default_limit"
+            )
+            cache_max_limit = circle_count_server.get("small_prefix_pi_cache_max_limit")
+            cache_limit_env = circle_count_server.get("small_prefix_pi_cache_limit_env")
+            cache_estimated_bytes = circle_count_server.get(
+                "small_prefix_pi_cache_estimated_bytes"
+            )
+            cache_default_estimated_bytes = circle_count_server.get(
+                "small_prefix_pi_cache_default_estimated_bytes"
+            )
+            cache_max_estimated_bytes = circle_count_server.get(
+                "small_prefix_pi_cache_max_estimated_bytes"
+            )
+            cache_warmup_profiles = circle_count_server.get(
+                "small_prefix_pi_cache_warmup_profiles"
+            ) or []
+            cache_scope = circle_count_server.get("small_prefix_pi_cache_scope")
+            cache_warmup = circle_count_server.get("small_prefix_pi_cache_warmup")
+            if cache_limit is not None:
+                detail = f"limit `{cache_limit}`"
+                if cache_default_limit is not None:
+                    detail += f"; default `{cache_default_limit}`"
+                if cache_max_limit is not None:
+                    detail += f"; max `{cache_max_limit}`"
+                if cache_limit_env:
+                    detail += f"; env `{cache_limit_env}`"
+                detail += f"; scope {cache_scope}"
+                lines.append(
+                    "- `circle_count_server` small-prefix `pi` cache: "
+                    f"{detail}."
+                )
+            if cache_estimated_bytes is not None:
+                detail = f"estimated bytes `{cache_estimated_bytes}`"
+                if cache_default_estimated_bytes is not None:
+                    detail += f"; default bytes `{cache_default_estimated_bytes}`"
+                if cache_max_estimated_bytes is not None:
+                    detail += f"; max bytes `{cache_max_estimated_bytes}`"
+                lines.append(
+                    "- `circle_count_server` small-prefix `pi` cache memory: "
+                    f"{detail}."
+                )
+            if cache_warmup_profiles:
+                warmup_ms = [
+                    profile.get("startup_warmup_ms")
+                    for profile in cache_warmup_profiles
+                    if profile.get("startup_warmup_ms") is not None
+                ]
+                if warmup_ms:
+                    lines.append(
+                        "- `circle_count_server` small-prefix `pi` cache startup "
+                        f"warmup: min `{min(warmup_ms):.3f} ms`; "
+                        f"median `{median(warmup_ms):.3f} ms`; "
+                        f"max `{max(warmup_ms):.3f} ms`; "
+                        f"samples `{len(warmup_ms)}`."
+                    )
+            if cache_warmup:
+                lines.append(
+                    "- `circle_count_server` small-prefix `pi` cache warmup: "
+                    f"{cache_warmup}."
+                )
+        else:
+            lines.append(f"- `circle_count_server`: not included (`{path}`)")
     primesieve_count_server = metadata.get("tools", {}).get("primesieve_count_server", {})
     if primesieve_count_server:
         path = primesieve_count_server.get("path") or "path unavailable"
@@ -2459,6 +3887,18 @@ def render_external_metadata_markdown(metadata: dict[str, Any]) -> list[str]:
         else:
             status = primesieve_count_server.get("error") or "not built"
             lines.append(f"- `primesieve_count_server`: {status} (`{path}`)")
+    primecount_pi_server = metadata.get("tools", {}).get("primecount_pi_server", {})
+    if primecount_pi_server:
+        path = primecount_pi_server.get("path") or "path unavailable"
+        method = primecount_pi_server.get("method") or "method unavailable"
+        if primecount_pi_server.get("available"):
+            lines.append(
+                "- `primecount_pi_server`: available "
+                f"(`{path}`); method `{method}`."
+            )
+        else:
+            status = primecount_pi_server.get("error") or "not built"
+            lines.append(f"- `primecount_pi_server`: {status} (`{path}`)")
     thread_policy = metadata.get("thread_policy", {})
     circle_threads = thread_policy.get("circle_requested_threads")
     external_threads = thread_policy.get("external_requested_threads")
@@ -2487,10 +3927,19 @@ def render_external_metadata_markdown(metadata: dict[str, Any]) -> list[str]:
             f"- repeated count requests per timed sample: `{batch_size}` "
             "(reported timings are per-request averages)."
         )
+    batch_request_profile = metadata.get("batch_request_profile", "identical")
+    if batch_request_profile != "identical":
+        batch_shift = int(metadata.get("batch_shift") or 0)
+        lines.append(
+            f"- batch request profile: `{batch_request_profile}` "
+            f"with shift `{batch_shift}`."
+        )
     if metadata.get("include_circle_server"):
         lines.append("- Circle server rows: persistent `count-server` requests included.")
     if metadata.get("include_primesieve_count_server"):
         lines.append("- libprimesieve count-server rows included.")
+    if metadata.get("include_primecount_pi_server"):
+        lines.append("- libprimecount pi-server rows included.")
     if metadata.get("sample_output"):
         lines.append(f"- per-round samples: `{metadata['sample_output']}`.")
     lines.append("")
@@ -2567,8 +4016,10 @@ def external_next_lane_summary_lines(
 def external_next_baseline_sort_key(baseline: str) -> tuple[int, str]:
     order = {
         "external_primesieve_generate_next_server": 0,
-        "external_primesieve_next_prime": 1,
-        "external_primecount_next_prime": 2,
+        "external_primesieve_iterator_next_server": 1,
+        "external_primesieve_next_prime": 2,
+        "external_primecount_next_prime": 3,
+        "external_primecount_next_server": 4,
     }
     return (order.get(baseline, 99), baseline)
 
@@ -2576,8 +4027,10 @@ def external_next_baseline_sort_key(baseline: str) -> tuple[int, str]:
 def external_next_baseline_label(baseline: str) -> str:
     labels = {
         "external_primesieve_generate_next_server": "libprimesieve generate_n_primes server",
+        "external_primesieve_iterator_next_server": "libprimesieve iterator server",
         "external_primesieve_next_prime": "primesieve --nth-prime",
         "external_primecount_next_prime": "primecount pi+nth-prime",
+        "external_primecount_next_server": "libprimecount pi+nth-prime server",
     }
     return labels.get(baseline, baseline)
 
@@ -2608,6 +4061,33 @@ def render_external_next_metadata_markdown(metadata: dict[str, Any]) -> list[str
         else:
             status = library_tool.get("error") or "not built"
             lines.append(f"- `primesieve_library_server`: {status} (`{path}`)")
+    iterator_tool = metadata.get("tools", {}).get("primesieve_iterator_server", {})
+    if iterator_tool:
+        path = iterator_tool.get("path") or "path unavailable"
+        method = iterator_tool.get("method") or "method unavailable"
+        if iterator_tool.get("available"):
+            lines.append(
+                "- `primesieve_iterator_server`: available "
+                f"(`{path}`); method `{method}`."
+            )
+        else:
+            status = iterator_tool.get("error") or "not built"
+            lines.append(f"- `primesieve_iterator_server`: {status} (`{path}`)")
+    primecount_library_tool = metadata.get("tools", {}).get(
+        "primecount_library_server",
+        {},
+    )
+    if primecount_library_tool:
+        path = primecount_library_tool.get("path") or "path unavailable"
+        method = primecount_library_tool.get("method") or "method unavailable"
+        if primecount_library_tool.get("available"):
+            lines.append(
+                "- `primecount_library_server`: available "
+                f"(`{path}`); method `{method}`."
+            )
+        else:
+            status = primecount_library_tool.get("error") or "not built"
+            lines.append(f"- `primecount_library_server`: {status} (`{path}`)")
     thread_policy = metadata.get("thread_policy", {})
     external_threads = thread_policy.get("external_requested_threads")
     if external_threads is not None:
@@ -2645,6 +4125,24 @@ def render_external_next_metadata_markdown(metadata: dict[str, Any]) -> list[str
         else:
             lines.append(
                 "- libprimesieve next-prime helper rows included for starts at or below "
+                f"`{cap}`."
+            )
+    if metadata.get("include_primesieve_iterator_server"):
+        cap = metadata.get("primesieve_library_max_start")
+        if cap is None:
+            lines.append("- libprimesieve iterator helper rows included where available.")
+        else:
+            lines.append(
+                "- libprimesieve iterator helper rows included for starts at or below "
+                f"`{cap}`."
+            )
+    if metadata.get("include_primecount_library_server"):
+        cap = metadata.get("primecount_library_max_start")
+        if cap is None:
+            lines.append("- libprimecount next-prime helper rows included where available.")
+        else:
+            lines.append(
+                "- libprimecount next-prime helper rows included for starts at or below "
                 f"`{cap}`."
             )
     required_tools = metadata.get("required_external_tools") or []
@@ -2787,11 +4285,143 @@ def render_high_offset_promotion_readout_markdown(summary: dict[str, Any]) -> li
     return lines
 
 
+def render_high_offset_shifted_candidate_readout_markdown(
+    summary: dict[str, Any],
+) -> list[str]:
+    lines = ["## High-Offset Shifted Candidate Readout", ""]
+    if not summary.get("available"):
+        lines.append("No high-offset shifted candidate readout was available.")
+        lines.append("")
+        return lines
+
+    lines.append(
+        "Shifted candidates require at least "
+        f"`{HIGH_OFFSET_SHIFTED_CANDIDATE_MIN_GAIN_RATIO:.3f}x` median gain "
+        "over the adaptive default before this readout marks them as "
+        "trial-ready for fresh-interval optimization."
+    )
+    profile = summary.get("batch_request_profile")
+    batch_size = summary.get("batch_size")
+    batch_shift = summary.get("batch_shift")
+    rounds = summary.get("rounds")
+    if profile is not None:
+        lines.append(
+            "Artifact profile: "
+            f"`{profile}`, batch `{batch_size}`, shift `{batch_shift}`, "
+            f"rounds `{rounds}`."
+        )
+    lines.append("")
+
+    lines.extend(
+        [
+            "| Range | Baseline | Default | Default Median Speedup | Best Candidate | Candidate Median Speedup | vs Default | Action |",
+            "| --- | --- | --- | ---: | --- | ---: | ---: | --- |",
+        ]
+    )
+    for row in summary["rows"]:
+        default = row["default"]
+        best = row["best"]
+        gain = row.get("median_gain_over_default")
+        gain_text = "-" if gain is None else f"{gain:.3f}x"
+        lines.append(
+            f"| [{row['low']}, {row['high']}) | `{row['baseline']}` | "
+            + f"{mode_segment_thread_text(default)} | "
+            + f"{default['median_circle_speedup']:.3f} | "
+            + f"{mode_segment_thread_text(best)} | "
+            + f"{best['median_circle_speedup']:.3f} | "
+            + f"{gain_text} | "
+            + f"`{row['action']}` |"
+        )
+    lines.append("")
+    return lines
+
+
 def mode_segment_thread_text(row: dict[str, Any]) -> str:
     return (
         f"`{row.get('count_mode') or 'segmented'}` "
         f"{row['segment_size']} "
         f"({thread_text(row.get('circle_threads'), row.get('circle_requested_threads'))})"
+    )
+
+
+def render_count_binary_cold_candidate_readout_markdown(
+    rows: list[dict[str, Any]],
+) -> list[str]:
+    if not rows:
+        return []
+    first = rows[0]
+    include_confirmation = any(row.get("confirmation") for row in rows)
+    lines = [
+        "Cold one-shot count-binary candidate readout:",
+        "",
+        (
+            "Trial requires median gain over default at least "
+            f"`{first.get('min_gain', 1.03):.3f}x`, candidate median speedup "
+            f"at least `{first.get('min_candidate_median_speedup', 1.0):.3f}x`, "
+            "and candidate best-time speedup at least "
+            f"`{first.get('min_candidate_best_speedup', 1.0):.3f}x` versus "
+            "cold `primesieve`."
+        ),
+        "",
+    ]
+    if include_confirmation:
+        lines.extend(
+            [
+                "| Range | Default | Default Median/Best | Best Candidate | Candidate Median/Best | Median Gain | Sweep Action | Confirmation | Final Action |",
+                "| --- | --- | ---: | --- | ---: | ---: | --- | --- | --- |",
+            ]
+        )
+    else:
+        lines.extend(
+            [
+                "| Range | Default | Default Median/Best | Best Candidate | Candidate Median/Best | Median Gain | Action |",
+                "| --- | --- | ---: | --- | ---: | ---: | --- |",
+            ]
+        )
+    for row in rows:
+        default = row["default"]
+        best = row["best"]
+        base = (
+            f"| [{row['low']}, {row['high']}) | "
+            f"{cold_count_binary_candidate_label(default)} | "
+            f"{default['median_circle_speedup']:.3f}x / "
+            f"{default['circle_speedup']:.3f}x | "
+            f"{cold_count_binary_candidate_label(best)} | "
+            f"{best['median_circle_speedup']:.3f}x / "
+            f"{best['circle_speedup']:.3f}x | "
+            f"{format_optional_ratio(row.get('median_gain_over_default'))} | "
+            f"`{row['action']}` |"
+        )
+        if include_confirmation:
+            lines.append(
+                base
+                + f" {count_binary_confirmation_text(row)} | "
+                + f"`{row.get('final_action', row['action'])}` |"
+            )
+        else:
+            lines.append(base)
+    lines.append("")
+    return lines
+
+
+def count_binary_confirmation_text(row: dict[str, Any]) -> str:
+    confirmation = row.get("confirmation")
+    if not isinstance(confirmation, dict):
+        return "`missing`"
+    best = confirmation["best"]
+    return (
+        f"`{row.get('confirmation_sample_scope', confirmation.get('sample_scope', 'unknown'))}` "
+        f"`{confirmation.get('action', 'unknown')}`<br>"
+        f"{best['median_circle_speedup']:.3f}x / {best['circle_speedup']:.3f}x, "
+        f"gain {format_optional_ratio(confirmation.get('median_gain_over_default'))}"
+    )
+
+
+def cold_count_binary_candidate_label(row: dict[str, Any]) -> str:
+    return (
+        f"{circle_row_label(row)}<br>segment: `{row['segment_size']}`, "
+        "threads: "
+        f"`{thread_text(row.get('circle_threads'), row.get('circle_requested_threads'))}`"
     )
 
 
@@ -2831,6 +4461,13 @@ def render_external_segment_sweep_markdown(
         if metadata.get("rounds") is not None:
             lines.append(f"Rounds per row: `{metadata['rounds']}`.")
         lines.append("")
+
+    if summary.get("cold_candidate_readout"):
+        lines.extend(
+            render_count_binary_cold_candidate_readout_markdown(
+                summary["cold_candidate_readout"]
+            )
+        )
 
     if default_label and summary.get("default_by_range_baseline"):
         lines.extend([default_label, ""])

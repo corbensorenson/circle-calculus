@@ -1,0 +1,32 @@
+---
+title: "Public API Reference"
+---
+
+<div class="claim-boundary-strip">
+<span class="claim-boundary-label">Claim boundary</span>
+<span class="claim-boundary-badge claim-boundary-executable">generated reference</span>
+<span class="claim-boundary-badge claim-boundary-proved">Lean imports compile</span>
+<span class="claim-boundary-badge claim-boundary-speculative">research modules may change</span>
+</div>
+
+The public API reference is generated from the stable Python facades, Lean
+facade imports, and Rust crate root:
+
+- [Generated Public API Reference](https://github.com/corbensorenson/circle-calculus/blob/main/docs/generated/PUBLIC_API_REFERENCE.md)
+- Source generator: `scripts/generate_public_api_docs.py`
+
+Stable entry points:
+
+- Python: `circle_math.core`, `circle_math.contracts`, `circle_math.ai_contracts`
+- Lean: `Circle.Core`, `Circle.Applications.Public`, `Circle.Contracts`
+- Rust: `circle-prime`
+
+Regenerate locally:
+
+```bash
+make public-api-docs
+```
+
+For copy-paste usage examples, start with [Use This As A Library](use_as_library.qmd).
+
+<script type="module" src="widgets/shared/widget_base.js"></script>

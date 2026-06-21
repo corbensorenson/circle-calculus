@@ -223,6 +223,598 @@ theorems:
       no_sorry_required: true
       python_property_tests: ["range count equals number of primes in the half-open interval"]
 
+  - id: CC-T0080
+    name: Next prime horizon result for found candidate
+    status: proved
+    lean_name: Circle.nextPrimeHorizonResultUpTo_some_iff
+    informal_statement: "A found next-prime result is exactly a prime horizon at or above the start, within the finite domain ceiling, with no earlier prime horizon in between."
+    formal_statement: "forall {start high p : Nat}, Circle.nextPrimeHorizonResultUpTo start high (some p) iff p <= high and start <= p and Circle.primeHorizon p and forall n, start <= n -> n < p -> not (Circle.primeHorizon n)"
+    dictionary_dependencies: ["CC-0201", "CC-0206"]
+    paper_refs: ["docs/PRIME_ENGINE.md"]
+    python_tests: ["tests/test_rust_prime_cli.py::test_rust_prime_cli_finds_next_prime", "tests/test_prime_external_correctness.py::test_run_next_checks_compares_against_primesieve_and_primecount"]
+    proof_notes: "Lean theorem is compiled in Circle/Core/Horizon.lean as the finite-domain next-prime result spec for a found candidate. Rust supplies the exact u64 search and external controls check representative starts."
+    blocker: ""
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["next(start)=p implies p is prime, start<=p<=u64::MAX, and no prime lies in [start,p)"]
+
+  - id: CC-T0081
+    name: Next prime horizon result for no candidate
+    status: proved
+    lean_name: Circle.nextPrimeHorizonResultUpTo_none_iff
+    informal_statement: "A not-found next-prime result is exactly the absence of any prime horizon from the start through the finite domain ceiling."
+    formal_statement: "forall {start high : Nat}, Circle.nextPrimeHorizonResultUpTo start high none iff forall n, start <= n -> n <= high -> not (Circle.primeHorizon n)"
+    dictionary_dependencies: ["CC-0201", "CC-0206"]
+    paper_refs: ["docs/PRIME_ENGINE.md"]
+    python_tests: ["tests/test_rust_prime_cli.py::test_rust_prime_cli_reports_no_next_prime_in_u64_domain", "tests/test_prime_external_correctness.py::test_run_next_checks_skips_primecount_above_cap"]
+    proof_notes: "Lean theorem is compiled in Circle/Core/Horizon.lean as the finite-domain next-prime not-found spec. Rust's u64 boundary behavior is checked against external controls at the top of the domain."
+    blocker: ""
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["next(start)=none implies no prime exists in [start,u64::MAX]"]
+
+  - id: CC-T0082
+    name: Old antinode scan reduces to chord interleaving
+    status: proved
+    lean_name: Circle.oldScanCrosses_iff_chordCrosses_of_sorted
+    informal_statement: "For normalized chord endpoints, the old antinode scan predicate is exactly strict endpoint interleaving."
+    formal_statement: "forall {a b c d : Nat}, c < d -> Circle.oldScanCrosses a b c d iff Circle.chordCrosses a b c d"
+    dictionary_dependencies: ["CC-0201", "CC-0207"]
+    paper_refs: ["docs/GOOGLE_DRIVE_CIRCLE_IDEAS_AUDIT.md"]
+    python_tests: []
+    proof_notes: "Lean theorem is compiled in Circle/Core/Antinode.lean. It captures the finite endpoint-order condition from the older vortex/nodeConnections code without assuming Euclidean geometry."
+    blocker: ""
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: []
+
+  - id: CC-T0083
+    name: Prime angle stride on prime circle
+    status: proved
+    lean_name: Circle.primeAngleStride_of_prime
+    informal_statement: "On a prime-size circle, every forward non-spoke stride is a prime-angle stride because it is a full coil."
+    formal_statement: "forall {p k : Nat}, Nat.Prime p -> Circle.nonSpokeForwardStride p k -> Circle.primeAngleStride p k"
+    dictionary_dependencies: ["CC-0201", "CC-0205", "CC-0206"]
+    paper_refs: ["docs/GOOGLE_DRIVE_CIRCLE_IDEAS_AUDIT.md"]
+    python_tests: []
+    proof_notes: "Lean theorem is compiled in Circle/Core/Antinode.lean using Circle.prime_full_coil."
+    blocker: ""
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: []
+
+  - id: CC-T0084
+    name: Prime chord path count examples
+    status: proved
+    lean_name: Circle.primeChordPathCount_examples
+    informal_statement: "The first prime-size chord-network path counts match the historical antinode data table."
+    formal_statement: "Circle.primeChordPathCount 5 = 1 and Circle.primeChordPathCount 7 = 2 and Circle.primeChordPathCount 11 = 4 and Circle.primeChordPathCount 13 = 5 and Circle.primeChordPathCount 17 = 7 and Circle.primeChordPathCount 19 = 8 and Circle.primeChordPathCount 23 = 10"
+    dictionary_dependencies: ["CC-0201", "CC-0206"]
+    paper_refs: ["docs/GOOGLE_DRIVE_CIRCLE_IDEAS_AUDIT.md"]
+    python_tests: []
+    proof_notes: "Lean theorem is compiled in Circle/Core/Antinode.lean by computation from (n - 3) / 2."
+    blocker: ""
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: []
+
+  - id: CC-T0085
+    name: Full chord network antinode count formula
+    status: proved
+    lean_name: Circle.fullChordNetworkAntinodeCount_eq_certificate_card
+    informal_statement: "The full abstract chord-network antinode count is the cardinality of the finite set of 4-node boundary certificates."
+    formal_statement: "forall n : Nat, Circle.fullChordNetworkAntinodeCount n = (Circle.fullChordAntinodeCertificates n).card"
+    dictionary_dependencies: ["CC-0201", "CC-0207"]
+    paper_refs: ["docs/GOOGLE_DRIVE_CIRCLE_IDEAS_AUDIT.md"]
+    python_tests: []
+    proof_notes: "Lean theorem is compiled in Circle/Core/Antinode.lean using the Finset powersetCard cardinality theorem. A later refinement should add the explicit opposite-chord pairing map."
+    blocker: ""
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: []
+
+  - id: CC-T0086
+    name: Full chord network antinode count examples
+    status: proved
+    lean_name: Circle.fullChordNetworkAntinodeCount_prime_examples
+    informal_statement: "The first prime-size antinode counts match the historical antinode data table under the full chord-network count formula."
+    formal_statement: "Circle.fullChordNetworkAntinodeCount 5 = 5 and Circle.fullChordNetworkAntinodeCount 7 = 35 and Circle.fullChordNetworkAntinodeCount 11 = 330 and Circle.fullChordNetworkAntinodeCount 13 = 715 and Circle.fullChordNetworkAntinodeCount 17 = 2380 and Circle.fullChordNetworkAntinodeCount 19 = 3876 and Circle.fullChordNetworkAntinodeCount 23 = 8855 and Circle.fullChordNetworkAntinodeCount 29 = 23751 and Circle.fullChordNetworkAntinodeCount 31 = 31465"
+    dictionary_dependencies: ["CC-0201", "CC-0206", "CC-0207"]
+    paper_refs: ["docs/GOOGLE_DRIVE_CIRCLE_IDEAS_AUDIT.md"]
+    python_tests: []
+    proof_notes: "Lean theorem is compiled in Circle/Core/Antinode.lean by computation from n.choose 4."
+    blocker: ""
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: []
+
+  - id: CC-T0087
+    name: Subcoil count equals gcd
+    status: proved
+    lean_name: Circle.subcoil_count_eq_gcd
+    informal_statement: "The old subcoil-count terminology is the existing stride-orbit decomposition count, so it equals gcd(n,k)."
+    formal_statement: "forall {n k : Nat}, n != 0 -> Circle.subcoilCount n k = Nat.gcd n k"
+    dictionary_dependencies: ["CC-0201", "CC-0205", "CC-0207", "CC-0208"]
+    paper_refs: ["docs/GOOGLE_DRIVE_CIRCLE_IDEAS_AUDIT.md"]
+    python_tests: []
+    proof_notes: "Lean theorem is compiled in Circle/Core/Antinode.lean as a wrapper around Circle.orbit_decomposition_count."
+    blocker: ""
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: []
+
+  - id: CC-T0088
+    name: Prime subcoil count one
+    status: proved
+    lean_name: Circle.prime_subcoil_count_one
+    informal_statement: "A nonzero stride below a prime circle size has exactly one subcoil/orbit class."
+    formal_statement: "forall {p k : Nat}, Nat.Prime p -> 0 < k -> k < p -> Circle.subcoilCount p k = 1"
+    dictionary_dependencies: ["CC-0201", "CC-0205", "CC-0206", "CC-0207", "CC-0208"]
+    paper_refs: ["docs/GOOGLE_DRIVE_CIRCLE_IDEAS_AUDIT.md"]
+    python_tests: []
+    proof_notes: "Lean theorem is compiled in Circle/Core/Antinode.lean from Circle.subcoil_count_eq_gcd and Nat.coprime_of_lt_prime."
+    blocker: ""
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: []
+
+  - id: CC-T0089
+    name: Full coil-network stride partition
+    status: proved
+    lean_name: Circle.fullCoilNetworkStride_iff_prime_or_composite
+    informal_statement: "Every forward non-spoke full coil-network stride is classified as either a prime coil-network stride or a composite coil-network stride."
+    formal_statement: "forall n k : Nat, Circle.fullCoilNetworkStride n k iff Circle.primeCoilNetworkStride n k or Circle.compositeCoilNetworkStride n k"
+    dictionary_dependencies: ["CC-0201", "CC-0205", "CC-0207"]
+    paper_refs: ["docs/GOOGLE_DRIVE_CIRCLE_IDEAS_AUDIT.md"]
+    python_tests: []
+    proof_notes: "Lean theorem is compiled in Circle/Core/CoilNetwork.lean by case-splitting on whether the stride is a full coil."
+    blocker: ""
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: []
+
+  - id: CC-T0090
+    name: Prime circle full network strides are prime network strides
+    status: proved
+    lean_name: Circle.primeCircle_fullNetworkStride_is_prime
+    informal_statement: "On a prime-size circle, every forward non-spoke full-network stride is a prime coil-network stride."
+    formal_statement: "forall {p k : Nat}, Nat.Prime p -> Circle.fullCoilNetworkStride p k -> Circle.primeCoilNetworkStride p k"
+    dictionary_dependencies: ["CC-0201", "CC-0205", "CC-0206", "CC-0207"]
+    paper_refs: ["docs/GOOGLE_DRIVE_CIRCLE_IDEAS_AUDIT.md"]
+    python_tests: []
+    proof_notes: "Lean theorem is compiled in Circle/Core/CoilNetwork.lean from Circle.primeAngleStride_of_prime."
+    blocker: ""
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: []
+
+  - id: CC-T0091
+    name: Midpoint spokes are excluded from forward non-spoke strides
+    status: proved
+    lean_name: Circle.spokeStride_not_nonSpokeForwardStride
+    informal_statement: "A midpoint spoke stride cannot also satisfy the forward non-spoke stride inequality."
+    formal_statement: "forall {n k : Nat}, Circle.spokeStride n k -> not Circle.nonSpokeForwardStride n k"
+    dictionary_dependencies: ["CC-0201", "CC-0207"]
+    paper_refs: ["docs/GOOGLE_DRIVE_CIRCLE_IDEAS_AUDIT.md"]
+    python_tests: []
+    proof_notes: "Lean theorem is compiled in Circle/Core/CoilNetwork.lean by rewriting the strict midpoint inequality to 2*k < 2*k."
+    blocker: ""
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: []
+
+  - id: CC-T0092
+    name: Factor subcoil copies multiply back to host
+    status: proved
+    lean_name: Circle.factorSubcoilCopies_mul
+    informal_statement: "If a visible subcoil size divides the host node count, then copy count times visible size reconstructs the host count."
+    formal_statement: "forall {n d : Nat}, Circle.factorSubcoilExists n d -> Circle.factorSubcoilCopies n d * d = n"
+    dictionary_dependencies: ["CC-0201", "CC-0207", "CC-0208"]
+    paper_refs: ["docs/GOOGLE_DRIVE_CIRCLE_IDEAS_AUDIT.md"]
+    python_tests: []
+    proof_notes: "Lean theorem is compiled in Circle/Core/CoilNetwork.lean using Nat.div_mul_cancel."
+    blocker: ""
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: []
+
+  - id: CC-T0093
+    name: Factor subcoil copy examples
+    status: proved
+    lean_name: Circle.factorSubcoilCopies_18_examples
+    informal_statement: "The white-paper examples 18/3 = 6, 18/9 = 2, and 72/18 = 4 are checked as factor subcoil copy counts."
+    formal_statement: "Circle.factorSubcoilCopies 18 3 = 6 and Circle.factorSubcoilCopies 18 9 = 2 and Circle.factorSubcoilCopies 72 18 = 4"
+    dictionary_dependencies: ["CC-0201", "CC-0207", "CC-0208"]
+    paper_refs: ["docs/GOOGLE_DRIVE_CIRCLE_IDEAS_AUDIT.md"]
+    python_tests: []
+    proof_notes: "Lean theorem is compiled in Circle/Core/CoilNetwork.lean by native computation."
+    blocker: ""
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: []
+
+  - id: CC-T0094
+    name: Coil map 18 by 4 has 72 represented nodes
+    status: proved
+    lean_name: Circle.coilMapTotalNodes_18_4
+    informal_statement: "A coil map with 18 visible nodes and 4 underlying nodes per visible node represents 72 concrete nodes."
+    formal_statement: "Circle.coilMapTotalNodes 18 4 = 72"
+    dictionary_dependencies: ["CC-0201", "CC-0207"]
+    paper_refs: ["docs/GOOGLE_DRIVE_CIRCLE_IDEAS_AUDIT.md"]
+    python_tests: []
+    proof_notes: "Lean theorem is compiled in Circle/Core/CoilNetwork.lean by native computation."
+    blocker: ""
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: []
+
+  - id: CC-T0095
+    name: Coil map block width
+    status: proved
+    lean_name: Circle.coilMapBlockWidth
+    informal_statement: "Each visible coil-map node represents a concrete block whose width is the fixed fiber size."
+    formal_statement: "forall fiber i : Nat, Circle.coilMapBlockEnd fiber i - Circle.coilMapBlockStart fiber i = fiber"
+    dictionary_dependencies: ["CC-0201", "CC-0207"]
+    paper_refs: ["docs/GOOGLE_DRIVE_CIRCLE_IDEAS_AUDIT.md"]
+    python_tests: []
+    proof_notes: "Lean theorem is compiled in Circle/Core/CoilNetwork.lean from distributivity of multiplication over addition."
+    blocker: ""
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: []
+
+  - id: CC-T0096
+    name: Temporal coil stride from prime window
+    status: proved
+    lean_name: Circle.Applications.temporalCoilStride_of_prime
+    informal_statement: "For a prime temporal window, every positive stride below the window is a coprime temporal-coil stride."
+    formal_statement: "forall {window stride : Nat}, Nat.Prime window -> 0 < stride -> stride < window -> Circle.Applications.temporalCoilStride window stride"
+    dictionary_dependencies: ["CC-0201", "CC-0206", "CC-0207"]
+    paper_refs: ["docs/GOOGLE_DRIVE_CIRCLE_IDEAS_AUDIT.md"]
+    python_tests: []
+    proof_notes: "Lean theorem is compiled in Circle/Applications/TemporalCoil.lean using Nat.coprime_of_lt_prime."
+    blocker: ""
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: []
+
+  - id: CC-T0097
+    name: Temporal prime ladder examples
+    status: proved
+    lean_name: Circle.Applications.temporalPrimeLadder_examples
+    informal_statement: "The temporal-coil progressive ladder values 11, 17, and 29 are prime."
+    formal_statement: "Nat.Prime 11 and Nat.Prime 17 and Nat.Prime 29"
+    dictionary_dependencies: ["CC-0201", "CC-0206", "CC-0207"]
+    paper_refs: ["docs/GOOGLE_DRIVE_CIRCLE_IDEAS_AUDIT.md"]
+    python_tests: []
+    proof_notes: "Lean theorem is compiled in Circle/Applications/TemporalCoil.lean by native computation."
+    blocker: ""
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: []
+
+  - id: CC-T0098
+    name: Temporal stride set 29 examples
+    status: proved
+    lean_name: Circle.Applications.temporalStrideSet29_examples
+    informal_statement: "The manifest stride set 1, 2, 3, 5, 8 is valid for the prime temporal window 29."
+    formal_statement: "Circle.Applications.temporalCoilStride 29 1 and Circle.Applications.temporalCoilStride 29 2 and Circle.Applications.temporalCoilStride 29 3 and Circle.Applications.temporalCoilStride 29 5 and Circle.Applications.temporalCoilStride 29 8"
+    dictionary_dependencies: ["CC-0201", "CC-0206", "CC-0207"]
+    paper_refs: ["docs/GOOGLE_DRIVE_CIRCLE_IDEAS_AUDIT.md"]
+    python_tests: []
+    proof_notes: "Lean theorem is compiled in Circle/Applications/TemporalCoil.lean from Circle.Applications.temporalCoilStride_of_prime."
+    blocker: ""
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: []
+
+  - id: CC-T0099
+    name: Temporal abyss endpoint node edge example
+    status: proved
+    lean_name: Circle.Applications.temporalAbyss59EndpointNodeEdges16000
+    informal_statement: "With 59 temporal sets and 16,000 vocabulary nodes, an endpoint token has 912,000 outgoing non-abyss directed edges."
+    formal_statement: "Circle.Applications.temporalAbyssEndpointNodeEdges 59 16000 = 912000"
+    dictionary_dependencies: ["CC-0201", "CC-0207"]
+    paper_refs: ["docs/GOOGLE_DRIVE_CIRCLE_IDEAS_AUDIT.md"]
+    python_tests: []
+    proof_notes: "Lean theorem is compiled in Circle/Applications/TemporalCoil.lean by native computation from (59 - 2) * 16000."
+    blocker: ""
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: []
+
+  - id: CC-T0100
+    name: Temporal abyss interior node edge example
+    status: proved
+    lean_name: Circle.Applications.temporalAbyss59InteriorNodeEdges16000
+    informal_statement: "With 59 temporal sets and 16,000 vocabulary nodes, an interior token has 928,000 outgoing non-self directed edges."
+    formal_statement: "Circle.Applications.temporalAbyssInteriorNodeEdges 59 16000 = 928000"
+    dictionary_dependencies: ["CC-0201", "CC-0207"]
+    paper_refs: ["docs/GOOGLE_DRIVE_CIRCLE_IDEAS_AUDIT.md"]
+    python_tests: []
+    proof_notes: "Lean theorem is compiled in Circle/Applications/TemporalCoil.lean by native computation from (59 - 1) * 16000."
+    blocker: ""
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: []
+
+  - id: CC-T0101
+    name: Temporal abyss total directed edge example
+    status: proved
+    lean_name: Circle.Applications.temporalAbyss59TotalDirectedEdges16000
+    informal_statement: "The 59-set, 16,000-vocabulary temporal abyss all-to-all count is 875,520,000,000 directed token edges before further sparsity."
+    formal_statement: "Circle.Applications.temporalAbyssTotalDirectedEdges 59 16000 = 875520000000"
+    dictionary_dependencies: ["CC-0201", "CC-0207"]
+    paper_refs: ["docs/GOOGLE_DRIVE_CIRCLE_IDEAS_AUDIT.md"]
+    python_tests: []
+    proof_notes: "Lean theorem is compiled in Circle/Applications/TemporalCoil.lean by native computation from the endpoint and interior edge-count formula."
+    blocker: ""
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: []
+
+  - id: CC-T0102
+    name: White-paper prime angle skip is full coil
+    status: proved
+    lean_name: Circle.whitePaperPrimeAngleSkip_fullCoil
+    informal_statement: "A Primecoin/(ed) white-paper prime-angle skip induces a full coil whenever the node count is nonzero."
+    formal_statement: "forall {n skip : Nat}, n != 0 -> Circle.whitePaperPrimeAngleSkip n skip -> Circle.fullCoil n (Circle.whitePaperSkipStride skip)"
+    dictionary_dependencies: ["CC-0201", "CC-0205", "CC-0207"]
+    paper_refs: ["docs/GOOGLE_DRIVE_CIRCLE_IDEAS_AUDIT.md"]
+    python_tests: []
+    proof_notes: "Lean theorem is compiled in Circle/Core/CoilNetwork.lean by converting the skip predicate's gcd-one condition into Circle.fullCoil via Circle.fullCoil_iff_coprime."
+    blocker: ""
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: []
+
+  - id: CC-T0103
+    name: Prime node count makes every forward skip prime
+    status: proved
+    lean_name: Circle.whitePaperPrimeAngleSkip_of_prime
+    informal_statement: "For a prime node count, every pre-midpoint white-paper skip is a prime-angle skip."
+    formal_statement: "forall {p skip : Nat}, Nat.Prime p -> Circle.whitePaperForwardSkip p skip -> Circle.whitePaperPrimeAngleSkip p skip"
+    dictionary_dependencies: ["CC-0201", "CC-0205", "CC-0206", "CC-0207"]
+    paper_refs: ["docs/GOOGLE_DRIVE_CIRCLE_IDEAS_AUDIT.md"]
+    python_tests: []
+    proof_notes: "Lean theorem is compiled in Circle/Core/CoilNetwork.lean from Nat.coprime_of_lt_prime after translating skip to stride skip+1."
+    blocker: ""
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: []
+
+  - id: CC-T0104
+    name: White-paper prime angle skips for 12
+    status: proved
+    lean_name: Circle.whitePaperPrimeAngleSkips12_eq
+    informal_statement: "In the white-paper skip range for 12 nodes, exactly skips 0 and 4 are prime-angle skips."
+    formal_statement: "((List.range 5).filter (fun skip => decide (Circle.whitePaperPrimeAngleSkip 12 skip))) = [0, 4]"
+    dictionary_dependencies: ["CC-0201", "CC-0205", "CC-0207"]
+    paper_refs: ["docs/GOOGLE_DRIVE_CIRCLE_IDEAS_AUDIT.md"]
+    python_tests: []
+    proof_notes: "Lean theorem is compiled in Circle/Core/CoilNetwork.lean by native computation over the finite skip list 0..4."
+    blocker: ""
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: []
+
+  - id: CC-T0105
+    name: White-paper prime angle skips for 13
+    status: proved
+    lean_name: Circle.whitePaperPrimeAngleSkips13_eq
+    informal_statement: "In the white-paper skip range for 13 nodes, all skips 0 through 5 are prime-angle skips."
+    formal_statement: "((List.range 6).filter (fun skip => decide (Circle.whitePaperPrimeAngleSkip 13 skip))) = [0, 1, 2, 3, 4, 5]"
+    dictionary_dependencies: ["CC-0201", "CC-0205", "CC-0206", "CC-0207"]
+    paper_refs: ["docs/GOOGLE_DRIVE_CIRCLE_IDEAS_AUDIT.md"]
+    python_tests: []
+    proof_notes: "Lean theorem is compiled in Circle/Core/CoilNetwork.lean by native computation over the finite skip list 0..5."
+    blocker: ""
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: []
+
+  - id: CC-T0106
+    name: TreeLLM root count is prime
+    status: proved
+    lean_name: Circle.Applications.treeLLMRootQuestionCount_prime
+    informal_statement: "The TreeLLM universal root count, 13, is prime."
+    formal_statement: "Nat.Prime Circle.Applications.treeLLMRootQuestionCount"
+    dictionary_dependencies: ["CC-0201", "CC-0206"]
+    paper_refs: ["docs/GOOGLE_DRIVE_CIRCLE_IDEAS_AUDIT.md"]
+    python_tests: []
+    proof_notes: "Lean theorem is compiled in Circle/Applications/TreeLLM.lean by native computation."
+    blocker: ""
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: []
+
+  - id: CC-T0107
+    name: TreeLLM path-id bits are byte-aligned
+    status: proved
+    lean_name: Circle.Applications.treeLLMPathIdBits_byte_aligned
+    informal_statement: "Thirteen 24-bit TreeLLM root paths use 312 bits, exactly 39 bytes."
+    formal_statement: "Circle.Applications.treeLLMPathIdBytes * Circle.Applications.treeLLMBitsPerByte = Circle.Applications.treeLLMPathIdBits"
+    dictionary_dependencies: ["CC-0201"]
+    paper_refs: ["docs/GOOGLE_DRIVE_CIRCLE_IDEAS_AUDIT.md"]
+    python_tests: []
+    proof_notes: "Lean theorem is compiled in Circle/Applications/TreeLLM.lean by native computation from 13 * 24 = 312 and 312 / 8 = 39."
+    blocker: ""
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: []
+
+  - id: CC-T0108
+    name: TreeLLM 76-byte token layout sum
+    status: proved
+    lean_name: Circle.Applications.treeLLM76TokenBytes_eq
+    informal_statement: "The TreeLLM 76-byte token fields sum to exactly 76 bytes."
+    formal_statement: "Circle.Applications.treeLLM76TokenBytes = 76"
+    dictionary_dependencies: ["CC-0201"]
+    paper_refs: ["docs/GOOGLE_DRIVE_CIRCLE_IDEAS_AUDIT.md"]
+    python_tests: []
+    proof_notes: "Lean theorem is compiled in Circle/Applications/TreeLLM.lean from 39 path bytes, 13 root-probability bytes, 8 hash bytes, and 16 residual bytes."
+    blocker: ""
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: []
+
+  - id: CC-T0109
+    name: TreeLLM 80-byte token layout sum
+    status: proved
+    lean_name: Circle.Applications.treeLLM80TokenBytes_eq
+    informal_statement: "The TreeLLM 80-byte token variant fields sum to exactly 80 bytes."
+    formal_statement: "Circle.Applications.treeLLM80TokenBytes = 80"
+    dictionary_dependencies: ["CC-0201"]
+    paper_refs: ["docs/GOOGLE_DRIVE_CIRCLE_IDEAS_AUDIT.md"]
+    python_tests: []
+    proof_notes: "Lean theorem is compiled in Circle/Applications/TreeLLM.lean from 39 path bytes, 13 root-probability bytes, 4 covariance bytes, 8 Kyber bytes, and 16 residual bytes."
+    blocker: ""
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: []
+
+  - id: CC-T0110
+    name: TreeLLM initial payload fits 32 bytes
+    status: proved
+    lean_name: Circle.Applications.treeLLMInitialPayloadFits32Bytes
+    informal_statement: "The initial TreeLLM 14-bit path id plus 20 int8 residual dimensions fit inside a 32-byte token."
+    formal_statement: "Circle.Applications.treeLLMInitialPayloadBits <= Circle.Applications.treeLLMInitialTokenBits"
+    dictionary_dependencies: ["CC-0201"]
+    paper_refs: ["docs/GOOGLE_DRIVE_CIRCLE_IDEAS_AUDIT.md"]
+    python_tests: []
+    proof_notes: "Lean theorem is compiled in Circle/Applications/TreeLLM.lean by native computation: 14 + 20 * 8 = 174 <= 256."
+    blocker: ""
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: []
+
+  - id: CC-T0111
+    name: TreeLLM v8 semantic vector layout sum
+    status: proved
+    lean_name: Circle.Applications.treeLLMV8SemanticVectorBytes_eq
+    informal_statement: "The TreeLLM v8 semantic vector fields sum to exactly 32 bytes."
+    formal_statement: "Circle.Applications.treeLLMV8SemanticVectorBytes = 32"
+    dictionary_dependencies: ["CC-0201"]
+    paper_refs: ["docs/GOOGLE_DRIVE_CIRCLE_IDEAS_AUDIT.md"]
+    python_tests: []
+    proof_notes: "Lean theorem is compiled in Circle/Applications/TreeLLM.lean from 16 graph-coordinate bytes, 4 type-header bytes, and 12 residual bytes."
+    blocker: ""
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: []
+
+  - id: CC-T0112
+    name: TreeLLM non-sensory anchor count
+    status: proved
+    lean_name: Circle.Applications.treeLLMNonSensoryAnchorCount_eq
+    informal_statement: "If TreeLLM reserves 16 of 128 semantic anchors for sensory data, 112 anchors remain non-sensory."
+    formal_statement: "Circle.Applications.treeLLMNonSensoryAnchorCount = 112"
+    dictionary_dependencies: ["CC-0201"]
+    paper_refs: ["docs/GOOGLE_DRIVE_CIRCLE_IDEAS_AUDIT.md"]
+    python_tests: []
+    proof_notes: "Lean theorem is compiled in Circle/Applications/TreeLLM.lean by native computation from 128 - 16."
+    blocker: ""
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: []
+
+  - id: CC-T0113
+    name: TreeLLM sensory anchors fit total anchors
+    status: proved
+    lean_name: Circle.Applications.treeLLMSensoryAnchorCapacity_le_total
+    informal_statement: "The 16 reserved TreeLLM sensory anchors fit within the 128 total semantic anchors."
+    formal_statement: "Circle.Applications.treeLLMSensoryAnchorCount <= Circle.Applications.treeLLMTotalAnchorCount"
+    dictionary_dependencies: ["CC-0201"]
+    paper_refs: ["docs/GOOGLE_DRIVE_CIRCLE_IDEAS_AUDIT.md"]
+    python_tests: []
+    proof_notes: "Lean theorem is compiled in Circle/Applications/TreeLLM.lean by native computation."
+    blocker: ""
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: []
+
+  - id: CC-T0114
+    name: TreeLLM speculative hop span is nonempty
+    status: proved
+    lean_name: Circle.Applications.treeLLMSpeculativeHopSpan_nonempty
+    informal_statement: "The TreeLLM speculative traversal range 3 to 5 hops is a nonempty numeric interval."
+    formal_statement: "Circle.Applications.treeLLMSpeculativeHopMin <= Circle.Applications.treeLLMSpeculativeHopMax"
+    dictionary_dependencies: ["CC-0201"]
+    paper_refs: ["docs/GOOGLE_DRIVE_CIRCLE_IDEAS_AUDIT.md"]
+    python_tests: []
+    proof_notes: "Lean theorem is compiled in Circle/Applications/TreeLLM.lean by native computation."
+    blocker: ""
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: []
+
+  - id: CC-T0115
+    name: MLX rotary config 512 8 4 16 well formed
+    status: proved
+    lean_name: Circle.Applications.mlxRotaryConfig512_8_4_16_wellFormed
+    informal_statement: "The Drive RoPE config with model_dim 512, 8 heads, 4 KV heads, and 16 RoPE dimensions satisfies the finite attention-shape guardrails."
+    formal_statement: "Circle.Applications.rotaryAttentionConfigWellFormed Circle.Applications.mlxRotaryConfig512_8_4_16"
+    dictionary_dependencies: ["CC-0201"]
+    paper_refs: ["docs/GOOGLE_DRIVE_CIRCLE_IDEAS_AUDIT.md"]
+    python_tests: []
+    proof_notes: "Lean theorem is compiled in Circle/Applications/AIConfig.lean by native computation over the divisibility, evenness, and RoPE-dimension bounds."
+    blocker: ""
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: []
+
+  - id: CC-T0116
+    name: MLX zero RoPE dims default to full head
+    status: proved
+    lean_name: Circle.Applications.mlxRotaryConfig512_8_4_0_effectiveFullHead
+    informal_statement: "For the Drive MLX config with rope_dims = 0, the effective rotary dimension is the full 64-dimensional head."
+    formal_statement: "Circle.Applications.effectiveRotaryDims (Circle.Applications.rotaryAttentionHeadDim Circle.Applications.mlxRotaryConfig512_8_4_0) Circle.Applications.mlxRotaryConfig512_8_4_0.ropeDims = 64"
+    dictionary_dependencies: ["CC-0201"]
+    paper_refs: ["docs/GOOGLE_DRIVE_CIRCLE_IDEAS_AUDIT.md"]
+    python_tests: []
+    proof_notes: "Lean theorem is compiled in Circle/Applications/AIConfig.lean by native computation from 512 / 8 = 64 and the rope_dims = 0 default rule."
+    blocker: ""
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: []
+
   - id: CC-T0008
     name: Scaling invertible iff coprime
     status: proved

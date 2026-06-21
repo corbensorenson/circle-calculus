@@ -2,7 +2,9 @@ from __future__ import annotations
 
 import argparse
 import csv
+import hashlib
 import json
+import os
 import re
 import shutil
 import subprocess
@@ -15,7 +17,8 @@ from typing import Any, Callable, Iterable
 
 
 ROOT = Path(__file__).resolve().parents[1]
-DEFAULT_RANGES = "0:10000000,0:100000000,1000000000000:1000010000000"
+PRIME_ENGINE_DEFAULTS = ROOT / "rust" / "circle-prime" / "prime_engine_defaults.json"
+DEFAULT_RANGES = "0:10000000,0:100000000,0:1000000000,1000000000000:1000010000000"
 DEFAULT_CIRCLE_COUNT_MODES = "segmented"
 VALID_CIRCLE_COUNT_MODES = {
     "default",
@@ -31,14 +34,49 @@ VALID_CIRCLE_COUNT_MODES = {
 VALID_EXTERNAL_BASELINES = {
     "external_primesieve_count",
     "external_primecount_pi_diff",
+    "external_primecount_pi_diff_server",
     "external_primesieve_count_server",
 }
 PRIMESIEVE_COUNT_SERVER_SOURCE = (
     ROOT / "sidecars" / "PRIME_ENGINE" / "controls" / "primesieve_count_server.c"
 )
 PRIMESIEVE_COUNT_SERVER_BINARY = ROOT / "target" / "prime-controls" / "primesieve-count-server"
+PRIMECOUNT_PI_SERVER_SOURCE = (
+    ROOT / "sidecars" / "PRIME_ENGINE" / "controls" / "primecount_pi_server.c"
+)
+PRIMECOUNT_PI_SERVER_BINARY = ROOT / "target" / "prime-controls" / "primecount-pi-server"
+CIRCLE_COUNT_SERVER_SMALL_PREFIX_PI_CACHE_LIMIT_ENV = "CIRCLE_PRIME_SMALL_PREFIX_PI_CACHE_LIMIT"
+CIRCLE_COUNT_SERVER_SMALL_PREFIX_PI_CACHE_DEFAULT_LIMIT = 2_000_000_000
+CIRCLE_COUNT_SERVER_SMALL_PREFIX_PI_CACHE_MAX_LIMIT = 3_000_000_000
 SAMPLE_NOISY_MAX_OVER_MEDIAN = 1.5
 SAMPLE_ROBUST_NOISE_MIN_COUNT = 5
+COUNT_SERVER_PREFIX_CACHE_WARMUP_PROFILES: list[dict[str, Any]] = []
+VALID_BATCH_REQUEST_PROFILES = {"identical", "shifted"}
+
+
+def circle_count_server_small_prefix_pi_cache_limit() -> int:
+    raw = os.environ.get(CIRCLE_COUNT_SERVER_SMALL_PREFIX_PI_CACHE_LIMIT_ENV)
+    if raw is None:
+        return CIRCLE_COUNT_SERVER_SMALL_PREFIX_PI_CACHE_DEFAULT_LIMIT
+    try:
+        limit = int(raw)
+    except ValueError:
+        return CIRCLE_COUNT_SERVER_SMALL_PREFIX_PI_CACHE_DEFAULT_LIMIT
+    if limit < 0:
+        return CIRCLE_COUNT_SERVER_SMALL_PREFIX_PI_CACHE_DEFAULT_LIMIT
+    return min(limit, CIRCLE_COUNT_SERVER_SMALL_PREFIX_PI_CACHE_MAX_LIMIT)
+
+
+def small_prefix_pi_cache_profile(limit: int) -> dict[str, int]:
+    odd_count = 0 if limit < 3 else ((limit - 3) // 2) + 1
+    word_count = (odd_count + 63) // 64
+    estimated_bytes = word_count * 8 + (word_count + 1) * 4
+    return {
+        "limit": limit,
+        "odd_count": odd_count,
+        "word_count": word_count,
+        "estimated_bytes": estimated_bytes,
+    }
 
 
 @dataclass(frozen=True)
@@ -96,6 +134,7 @@ class Measurement:
     requested_threads: int
     run_once: Callable[[], int]
     run_batch: Callable[[int], int] | None = None
+    run_shifted_batch: Callable[[int, int], int] | None = None
     count_mode: str = ""
     close: Callable[[], None] | None = None
 
@@ -121,6 +160,26 @@ def main() -> int:
             "Repeat each identical count request this many times inside one "
             "timed sample and report per-request average milliseconds. This "
             "keeps short runs useful for sub-10 ms persistent-server comparisons."
+        ),
+    )
+    parser.add_argument(
+        "--batch-request-profile",
+        choices=sorted(VALID_BATCH_REQUEST_PROFILES),
+        default="identical",
+        help=(
+            "Batch timing profile. identical repeats the exact same request, "
+            "which is useful for fixed hot-service throughput. shifted keeps "
+            "the span constant and advances each request by --batch-shift so "
+            "persistent helpers cannot rely on exact-range reuse."
+        ),
+    )
+    parser.add_argument(
+        "--batch-shift",
+        type=int,
+        default=0,
+        help=(
+            "Low/high shift applied between repeated requests when "
+            "--batch-request-profile=shifted. Defaults to the range span."
         ),
     )
     parser.add_argument(
@@ -175,11 +234,44 @@ def main() -> int:
         ),
     )
     parser.add_argument(
+        "--circle-prime-bin",
+        type=Path,
+        help=(
+            "Use this prebuilt circle-prime binary instead of rebuilding "
+            "target/release/circle-prime. The selected binary is still "
+            "fingerprinted in metadata."
+        ),
+    )
+    parser.add_argument(
+        "--circle-prime-count-bin",
+        type=Path,
+        help=(
+            "Use this prebuilt circle-prime-count binary instead of rebuilding "
+            "target/release/circle-prime-count. Requires a count-binary row."
+        ),
+    )
+    parser.add_argument(
         "--include-circle-server",
         action="store_true",
         help=(
             "Also benchmark persistent circle-prime count-server requests for "
             "the same Circle variants. Requires --interleaved."
+        ),
+    )
+    parser.add_argument(
+        "--include-circle-count-binary",
+        action="store_true",
+        help=(
+            "Also benchmark the slim circle-prime-count binary for the same "
+            "Circle variants. Requires --interleaved."
+        ),
+    )
+    parser.add_argument(
+        "--include-circle-count-binary-server",
+        action="store_true",
+        help=(
+            "Also benchmark persistent circle-prime-count count-server requests "
+            "for the same Circle variants. Requires --interleaved."
         ),
     )
     parser.add_argument(
@@ -197,6 +289,15 @@ def main() -> int:
         help=(
             "Also benchmark a persistent helper linked against libprimesieve "
             "and using primesieve_count_primes(LOW, HIGH-1). Requires --interleaved."
+        ),
+    )
+    parser.add_argument(
+        "--include-primecount-pi-server",
+        action="store_true",
+        help=(
+            "Also benchmark a persistent helper linked against libprimecount "
+            "and using primecount_pi(HIGH-1)-primecount_pi(LOW-1). "
+            "Requires --interleaved."
         ),
     )
     parser.add_argument(
@@ -243,7 +344,7 @@ def main() -> int:
     )
     parser.add_argument(
         "--require-tool",
-        choices=("primesieve", "primecount", "primesieve-library"),
+        choices=("primesieve", "primecount", "primesieve-library", "primecount-library"),
         action="append",
         default=[],
         help=(
@@ -266,12 +367,27 @@ def main() -> int:
         type=Path,
         help="Optional library directory containing libprimesieve.",
     )
+    parser.add_argument(
+        "--primecount-include-dir",
+        type=Path,
+        help="Optional include directory containing primecount.h.",
+    )
+    parser.add_argument(
+        "--primecount-lib-dir",
+        type=Path,
+        help="Optional library directory containing libprimecount.",
+    )
     args = parser.parse_args()
+    COUNT_SERVER_PREFIX_CACHE_WARMUP_PROFILES.clear()
 
     if args.rounds <= 0:
         parser.error("--rounds must be positive")
     if args.batch_size <= 0:
         parser.error("--batch-size must be positive")
+    if args.batch_shift < 0:
+        parser.error("--batch-shift must be nonnegative")
+    if args.batch_request_profile == "shifted" and not args.interleaved:
+        parser.error("--batch-request-profile=shifted requires --interleaved")
     if args.warmup_rounds < 0:
         parser.error("--warmup-rounds must be nonnegative")
     if args.segment_size < 0:
@@ -284,12 +400,20 @@ def main() -> int:
         parser.error("--sample-output requires --interleaved")
     if args.include_circle_server and not args.interleaved:
         parser.error("--include-circle-server requires --interleaved")
+    if args.include_circle_count_binary and not args.interleaved:
+        parser.error("--include-circle-count-binary requires --interleaved")
+    if args.include_circle_count_binary_server and not args.interleaved:
+        parser.error("--include-circle-count-binary-server requires --interleaved")
     if args.circle_server_only and not args.include_circle_server:
         parser.error("--circle-server-only requires --include-circle-server")
     if (
         args.include_primesieve_count_server or "primesieve-library" in args.require_tool
     ) and not args.interleaved:
         parser.error("--include-primesieve-count-server requires --interleaved")
+    if (
+        args.include_primecount_pi_server or "primecount-library" in args.require_tool
+    ) and not args.interleaved:
+        parser.error("--include-primecount-pi-server requires --interleaved")
 
     ranges = parse_ranges(args.ranges)
     try:
@@ -309,6 +433,24 @@ def main() -> int:
         )
     except argparse.ArgumentTypeError as exc:
         parser.error(str(exc))
+    if args.batch_request_profile == "shifted":
+        if not args.include_circle_server and not args.include_circle_count_binary_server:
+            parser.error(
+                "--batch-request-profile=shifted requires --include-circle-server "
+                "or --include-circle-count-binary-server"
+            )
+        shifted_supported_baselines = {
+            "external_primesieve_count_server",
+            "external_primecount_pi_diff_server",
+        }
+        if external_baselines is None:
+            external_baselines = shifted_supported_baselines
+        unsupported = external_baselines - shifted_supported_baselines
+        if unsupported:
+            parser.error(
+                "--batch-request-profile=shifted supports only persistent server baselines; "
+                f"unsupported: {','.join(sorted(unsupported))}"
+            )
     started_at_utc = utc_now()
     primesieve = shutil.which("primesieve")
     primecount = shutil.which("primecount")
@@ -333,12 +475,34 @@ def main() -> int:
                     f"{primesieve_count_server_error}",
                     file=sys.stderr,
                 )
+    include_primecount_pi_server = (
+        args.include_primecount_pi_server
+        or "primecount-library" in args.require_tool
+        or external_baseline_selected(
+            external_baselines,
+            "external_primecount_pi_diff_server",
+        )
+    )
+    primecount_pi_server: Path | None = None
+    primecount_pi_server_error: str | None = None
+    if include_primecount_pi_server:
+        try:
+            primecount_pi_server = build_primecount_pi_server(args)
+        except Exception as exc:
+            primecount_pi_server_error = str(exc)
+            if "primecount-library" not in args.require_tool:
+                print(
+                    "skipping libprimecount pi helper: "
+                    f"{primecount_pi_server_error}",
+                    file=sys.stderr,
+                )
 
     missing_required = required_external_tools_missing(
         args.require_tool,
         primesieve=primesieve,
         primecount=primecount,
         primesieve_library=primesieve_count_server,
+        primecount_library=primecount_pi_server,
     )
     if missing_required:
         metadata = build_run_metadata(
@@ -351,6 +515,8 @@ def main() -> int:
             primecount=primecount,
             primesieve_count_server=primesieve_count_server,
             primesieve_count_server_error=primesieve_count_server_error,
+            primecount_pi_server=primecount_pi_server,
+            primecount_pi_server_error=primecount_pi_server_error,
             row_count=0,
         )
         emit_metadata(metadata, args.metadata_output)
@@ -365,6 +531,7 @@ def main() -> int:
         primesieve=primesieve,
         primecount=primecount,
         primesieve_library=primesieve_count_server,
+        primecount_library=primecount_pi_server,
     )
     if missing_selected_baselines:
         metadata = build_run_metadata(
@@ -381,6 +548,8 @@ def main() -> int:
             primecount=primecount,
             primesieve_count_server=primesieve_count_server,
             primesieve_count_server_error=primesieve_count_server_error,
+            primecount_pi_server=primecount_pi_server,
+            primecount_pi_server_error=primecount_pi_server_error,
             row_count=0,
         )
         emit_metadata(metadata, args.metadata_output)
@@ -392,6 +561,7 @@ def main() -> int:
         primesieve=primesieve,
         primecount=primecount,
         primesieve_library=primesieve_count_server,
+        primecount_library=primecount_pi_server,
     ):
         metadata = build_run_metadata(
             args=args,
@@ -407,6 +577,8 @@ def main() -> int:
             primecount=None,
             primesieve_count_server=primesieve_count_server,
             primesieve_count_server_error=primesieve_count_server_error,
+            primecount_pi_server=primecount_pi_server,
+            primecount_pi_server_error=primecount_pi_server_error,
             row_count=0,
         )
         emit_metadata(metadata, args.metadata_output)
@@ -419,8 +591,19 @@ def main() -> int:
         print(message, file=sys.stderr)
         return 0
 
-    cargo = require_cargo()
-    circle_prime = build_circle_prime(cargo)
+    needs_circle_count_binary = (
+        args.include_circle_count_binary or args.include_circle_count_binary_server
+    )
+    needs_cargo_build = args.circle_prime_bin is None or (
+        needs_circle_count_binary and args.circle_prime_count_bin is None
+    )
+    cargo = require_cargo() if needs_cargo_build else shutil.which("cargo")
+    circle_prime = selected_circle_prime_binary(cargo, args.circle_prime_bin)
+    circle_prime_count = (
+        selected_circle_prime_count_binary(cargo, args.circle_prime_count_bin)
+        if needs_circle_count_binary
+        else None
+    )
 
     rows: list[ExternalBenchRow] = []
     samples: list[ExternalBenchSample] = []
@@ -428,6 +611,7 @@ def main() -> int:
         if args.interleaved:
             range_rows, range_samples = measure_range_interleaved(
                 circle_prime=circle_prime,
+                circle_prime_count=circle_prime_count,
                 primesieve=primesieve,
                 primecount=primecount,
                 low=low,
@@ -438,10 +622,14 @@ def main() -> int:
                 external_threads=args.external_threads,
                 rounds=args.rounds,
                 batch_size=args.batch_size,
+                batch_request_profile=args.batch_request_profile,
+                batch_shift=args.batch_shift,
                 warmup_rounds=args.warmup_rounds,
                 include_circle_server=args.include_circle_server,
+                include_circle_count_binary_server=args.include_circle_count_binary_server,
                 circle_server_only=args.circle_server_only,
                 primesieve_count_server=primesieve_count_server,
+                primecount_pi_server=primecount_pi_server,
             )
             rows.extend(range_rows)
             samples.extend(range_samples)
@@ -521,6 +709,22 @@ def main() -> int:
                 for circle_row in circle_rows:
                     verify_count(circle_row, row)
                     rows.append(speedup_row(circle_row, row))
+            if external_baseline_enabled(
+                external_baselines,
+                "external_primecount_pi_diff_server",
+            ) and primecount_pi_server is not None:
+                row = measure_primecount_pi_server(
+                    primecount_pi_server,
+                    low,
+                    high,
+                    args.rounds,
+                    args.batch_size,
+                    args.external_threads,
+                )
+                rows.append(row)
+                for circle_row in circle_rows:
+                    verify_count(circle_row, row)
+                    rows.append(speedup_row(circle_row, row))
 
     emit_csv(rows, args.output)
     emit_samples(samples, args.sample_output)
@@ -534,11 +738,15 @@ def main() -> int:
         started_at_utc=started_at_utc,
         cargo=cargo,
         circle_prime=circle_prime,
+        circle_prime_count=circle_prime_count,
         primesieve=primesieve,
         primecount=primecount,
         primesieve_count_server=primesieve_count_server,
         primesieve_count_server_error=primesieve_count_server_error,
+        primecount_pi_server=primecount_pi_server,
+        primecount_pi_server_error=primecount_pi_server_error,
         row_count=len(rows),
+        count_server_warmup_profiles=COUNT_SERVER_PREFIX_CACHE_WARMUP_PROFILES,
     )
     emit_metadata(metadata, args.metadata_output)
     return 0
@@ -681,6 +889,74 @@ def circle_prime_measurement(
     )
 
 
+def circle_prime_count_binary_measurement(
+    binary: Path,
+    low: int,
+    high: int,
+    segment_size: int,
+    threads: int,
+    count_mode: str = "segmented",
+) -> Measurement:
+    metadata_command = circle_prime_count_command(
+        binary,
+        low,
+        high,
+        segment_size,
+        threads,
+        count_mode,
+        json_output=True,
+    )
+    metadata_completed = subprocess.run(
+        metadata_command,
+        cwd=ROOT,
+        check=True,
+        text=True,
+        capture_output=True,
+    )
+    metadata = json.loads(metadata_completed.stdout)
+    actual_segment_size = int(metadata["segment_size"])
+    actual_threads = int(metadata["threads"])
+    resolved_count_mode = str(metadata.get("count_mode", count_mode))
+    metadata_count = int(metadata["count"])
+    timing_command = circle_prime_count_command(
+        binary,
+        low,
+        high,
+        segment_size,
+        threads,
+        count_mode,
+        json_output=False,
+    )
+
+    def run_once() -> int:
+        completed = subprocess.run(
+            timing_command,
+            cwd=ROOT,
+            check=True,
+            text=True,
+            capture_output=True,
+        )
+        count = parse_integer_output(completed.stdout)
+        if count != metadata_count:
+            raise AssertionError(
+                f"Circle count binary disagreed with JSON metadata for [{low},{high}): "
+                f"metadata {metadata_count}, plain {count}"
+            )
+        return count
+
+    name = circle_count_binary_measurement_name(count_mode, actual_threads)
+    return Measurement(
+        name=name,
+        low=low,
+        high=high,
+        segment_size=actual_segment_size,
+        threads=actual_threads,
+        requested_threads=threads,
+        run_once=run_once,
+        count_mode=resolved_count_mode,
+    )
+
+
 class CountServerClient:
     def __init__(
         self,
@@ -689,6 +965,7 @@ class CountServerClient:
         default_segment_size: int = 0,
         default_threads: int = 1,
         default_count_mode: str = "default",
+        warm_prefix_pi_cache: bool = False,
     ) -> None:
         self.process = subprocess.Popen(
             count_server_command(
@@ -696,6 +973,7 @@ class CountServerClient:
                 default_segment_size=default_segment_size,
                 default_threads=default_threads,
                 default_count_mode=default_count_mode,
+                warm_prefix_pi_cache=warm_prefix_pi_cache,
             ),
             cwd=ROOT,
             text=True,
@@ -706,6 +984,11 @@ class CountServerClient:
         if self.process.stdin is None or self.process.stdout is None:
             self.close()
             raise RuntimeError("failed to open count-server pipes")
+        self.startup_warmup_ms: float | None = None
+        if warm_prefix_pi_cache:
+            start = time.perf_counter()
+            self.count(0, 0, 0, 1, "prefix-pi")
+            self.startup_warmup_ms = (time.perf_counter() - start) * 1000.0
 
     def count(
         self,
@@ -763,6 +1046,48 @@ class CountServerClient:
             counts.append(parse_integer_output(response))
         return counts
 
+    def count_shifted_many(
+        self,
+        low: int,
+        high: int,
+        segment_size: int,
+        threads: int,
+        count_mode: str,
+        repetitions: int,
+        shift: int,
+        *,
+        expected_first_count: int | None = None,
+        use_request_defaults: bool = False,
+    ) -> list[int]:
+        if repetitions <= 0:
+            return []
+        assert self.process.stdin is not None
+        assert self.process.stdout is not None
+        request = count_server_request(
+            low,
+            high,
+            segment_size,
+            threads,
+            count_mode,
+            use_request_defaults=use_request_defaults,
+        ).strip()
+        self.process.stdin.write(f"shifted {repetitions} {shift} {request}\n")
+        self.process.stdin.flush()
+        counts = []
+        for index in range(repetitions):
+            response = self.process.stdout.readline()
+            if response == "":
+                stderr = self._read_stderr()
+                raise RuntimeError(f"count-server exited without a response: {stderr}")
+            count = parse_integer_output(response)
+            if index == 0 and expected_first_count is not None and count != expected_first_count:
+                raise AssertionError(
+                    f"Circle count-server disagreed with JSON metadata for [{low},{high}): "
+                    f"metadata {expected_first_count}, server {count}"
+                )
+            counts.append(count)
+        return counts
+
     def close(self) -> None:
         if self.process.poll() is not None:
             return
@@ -794,7 +1119,12 @@ def circle_prime_server_measurement(
     segment_size: int,
     threads: int,
     count_mode: str = "segmented",
+    *,
+    batch_request_profile: str = "identical",
+    batch_shift: int = 0,
+    batch_size: int = 1,
 ) -> Measurement:
+    use_request_defaults = count_mode == "default"
     metadata_command = circle_prime_command(
         binary,
         low,
@@ -816,12 +1146,43 @@ def circle_prime_server_measurement(
     actual_threads = int(metadata["threads"])
     metadata_count = int(metadata["count"])
     resolved_count_mode = str(metadata.get("count_mode", count_mode))
-    use_request_defaults = count_mode == "default"
+    small_prefix_pi_cache_limit = circle_count_server_small_prefix_pi_cache_limit()
+    warm_prefix_pi_cache = (
+        resolved_count_mode == "prefix-pi"
+        and high > 0
+        and high - 1 <= small_prefix_pi_cache_limit
+    )
+    if batch_request_profile == "shifted":
+        server_metadata = count_server_json_metadata_probe(
+            binary,
+            low,
+            high,
+            actual_segment_size,
+            threads,
+            resolved_count_mode,
+            default_segment_size=segment_size if use_request_defaults else 0,
+            default_threads=threads if use_request_defaults else 1,
+            default_count_mode=count_mode if use_request_defaults else "default",
+            warm_prefix_pi_cache=warm_prefix_pi_cache,
+            repetitions=batch_size,
+            shift=batch_shift,
+            use_request_defaults=use_request_defaults,
+        )
+        actual_segment_size = int(server_metadata["segment_size"])
+        actual_threads = int(server_metadata["threads"])
+        resolved_count_mode = str(server_metadata.get("count_mode", resolved_count_mode))
+        server_count = int(server_metadata["count"])
+        if server_count != metadata_count:
+            raise AssertionError(
+                f"Circle shifted count-server disagreed with JSON metadata for [{low},{high}): "
+                f"range metadata {metadata_count}, shifted server {server_count}"
+            )
     client = CountServerClient(
         binary,
         default_segment_size=segment_size if use_request_defaults else 0,
         default_threads=threads if use_request_defaults else 1,
         default_count_mode=count_mode if use_request_defaults else "default",
+        warm_prefix_pi_cache=warm_prefix_pi_cache,
     )
 
     def run_once() -> int:
@@ -858,7 +1219,35 @@ def circle_prime_server_measurement(
                 )
         return counts[-1] if counts else metadata_count
 
+    def run_shifted_batch(batch_size: int, shift: int) -> int:
+        counts = client.count_shifted_many(
+            low,
+            high,
+            actual_segment_size,
+            threads,
+            resolved_count_mode,
+            batch_size,
+            shift,
+            expected_first_count=metadata_count,
+            use_request_defaults=use_request_defaults,
+        )
+        return counts[-1] if counts else metadata_count
+
     name = circle_server_measurement_name(count_mode, actual_threads)
+    if warm_prefix_pi_cache and client.startup_warmup_ms is not None:
+        COUNT_SERVER_PREFIX_CACHE_WARMUP_PROFILES.append(
+            {
+                "name": name,
+                "low": low,
+                "high": high,
+                "count_mode": resolved_count_mode,
+                "threads": actual_threads,
+                "requested_threads": threads,
+                "cache_limit": small_prefix_pi_cache_limit,
+                "startup_warmup_ms": round(client.startup_warmup_ms, 6),
+                **small_prefix_pi_cache_profile(small_prefix_pi_cache_limit),
+            }
+        )
     return Measurement(
         name=name,
         low=low,
@@ -868,6 +1257,136 @@ def circle_prime_server_measurement(
         requested_threads=threads,
         run_once=run_once,
         run_batch=run_batch,
+        run_shifted_batch=run_shifted_batch,
+        count_mode=resolved_count_mode,
+        close=client.close,
+    )
+
+
+def circle_prime_count_binary_server_measurement(
+    binary: Path,
+    low: int,
+    high: int,
+    segment_size: int,
+    threads: int,
+    count_mode: str = "segmented",
+    *,
+    batch_request_profile: str = "identical",
+    batch_shift: int = 0,
+    batch_size: int = 1,
+) -> Measurement:
+    use_request_defaults = count_mode == "default"
+    metadata_command = circle_prime_count_command(
+        binary,
+        low,
+        high,
+        segment_size,
+        threads,
+        count_mode,
+        json_output=True,
+    )
+    metadata_completed = subprocess.run(
+        metadata_command,
+        cwd=ROOT,
+        check=True,
+        text=True,
+        capture_output=True,
+    )
+    metadata = json.loads(metadata_completed.stdout)
+    actual_segment_size = int(metadata["segment_size"])
+    actual_threads = int(metadata["threads"])
+    metadata_count = int(metadata["count"])
+    resolved_count_mode = str(metadata.get("count_mode", count_mode))
+    if batch_request_profile == "shifted":
+        server_metadata = count_server_json_metadata_probe(
+            binary,
+            low,
+            high,
+            actual_segment_size,
+            threads,
+            resolved_count_mode,
+            default_segment_size=segment_size if use_request_defaults else 0,
+            default_threads=threads if use_request_defaults else 1,
+            default_count_mode=count_mode if use_request_defaults else "default",
+            repetitions=batch_size,
+            shift=batch_shift,
+            use_request_defaults=use_request_defaults,
+        )
+        actual_segment_size = int(server_metadata["segment_size"])
+        actual_threads = int(server_metadata["threads"])
+        resolved_count_mode = str(server_metadata.get("count_mode", resolved_count_mode))
+        server_count = int(server_metadata["count"])
+        if server_count != metadata_count:
+            raise AssertionError(
+                "Circle shifted count-binary server disagreed with JSON metadata for "
+                f"[{low},{high}): range metadata {metadata_count}, shifted server {server_count}"
+            )
+    client = CountServerClient(
+        binary,
+        default_segment_size=segment_size if use_request_defaults else 0,
+        default_threads=threads if use_request_defaults else 1,
+        default_count_mode=count_mode if use_request_defaults else "default",
+    )
+
+    def run_once() -> int:
+        count = client.count(
+            low,
+            high,
+            actual_segment_size,
+            threads,
+            resolved_count_mode,
+            use_request_defaults=use_request_defaults,
+        )
+        if count != metadata_count:
+            raise AssertionError(
+                "Circle count-binary server disagreed with JSON metadata for "
+                f"[{low},{high}): metadata {metadata_count}, server {count}"
+            )
+        return count
+
+    def run_batch(batch_size: int) -> int:
+        counts = client.count_many(
+            low,
+            high,
+            actual_segment_size,
+            threads,
+            resolved_count_mode,
+            batch_size,
+            use_request_defaults=use_request_defaults,
+        )
+        for count in counts:
+            if count != metadata_count:
+                raise AssertionError(
+                    "Circle count-binary server disagreed with JSON metadata for "
+                    f"[{low},{high}): metadata {metadata_count}, server {count}"
+                )
+        return counts[-1] if counts else metadata_count
+
+    def run_shifted_batch(batch_size: int, shift: int) -> int:
+        counts = client.count_shifted_many(
+            low,
+            high,
+            actual_segment_size,
+            threads,
+            resolved_count_mode,
+            batch_size,
+            shift,
+            expected_first_count=metadata_count,
+            use_request_defaults=use_request_defaults,
+        )
+        return counts[-1] if counts else metadata_count
+
+    name = circle_count_binary_server_measurement_name(count_mode, actual_threads)
+    return Measurement(
+        name=name,
+        low=low,
+        high=high,
+        segment_size=actual_segment_size,
+        threads=actual_threads,
+        requested_threads=threads,
+        run_once=run_once,
+        run_batch=run_batch,
+        run_shifted_batch=run_shifted_batch,
         count_mode=resolved_count_mode,
         close=client.close,
     )
@@ -879,6 +1398,8 @@ def count_server_command(
     default_segment_size: int = 0,
     default_threads: int = 1,
     default_count_mode: str = "default",
+    warm_prefix_pi_cache: bool = False,
+    json_output: bool = False,
 ) -> list[str]:
     command = [str(binary), "count-server"]
     if default_segment_size > 0:
@@ -887,6 +1408,10 @@ def count_server_command(
         command.extend(["--threads", str(default_threads)])
     if default_count_mode != "default":
         command.extend(["--count-mode", default_count_mode])
+    if warm_prefix_pi_cache:
+        command.append("--warm-prefix-pi-cache")
+    if json_output:
+        command.append("--json")
     return command
 
 
@@ -902,6 +1427,52 @@ def count_server_request(
     if use_request_defaults:
         return f"{low} {high}\n"
     return f"{low} {high} {segment_size} {threads} {count_mode}\n"
+
+
+def count_server_json_metadata_probe(
+    binary: Path,
+    low: int,
+    high: int,
+    segment_size: int,
+    threads: int,
+    count_mode: str,
+    *,
+    default_segment_size: int = 0,
+    default_threads: int = 1,
+    default_count_mode: str = "default",
+    warm_prefix_pi_cache: bool = False,
+    repetitions: int = 1,
+    shift: int = 0,
+    use_request_defaults: bool = False,
+) -> dict[str, Any]:
+    repetitions = max(1, repetitions)
+    request = count_server_request(
+        low,
+        high,
+        segment_size,
+        threads,
+        count_mode,
+        use_request_defaults=use_request_defaults,
+    ).strip()
+    if shift > 0 or repetitions > 1:
+        request = f"shifted {repetitions} {shift} {request}"
+    completed = subprocess.run(
+        count_server_command(
+            binary,
+            default_segment_size=default_segment_size,
+            default_threads=default_threads,
+            default_count_mode=default_count_mode,
+            warm_prefix_pi_cache=warm_prefix_pi_cache,
+            json_output=True,
+        ),
+        input=f"{request}\n",
+        cwd=ROOT,
+        check=True,
+        text=True,
+        capture_output=True,
+    )
+    first_line = completed.stdout.splitlines()[0]
+    return json.loads(first_line)
 
 
 def circle_prime_command(
@@ -932,11 +1503,49 @@ def circle_prime_command(
     return command
 
 
+def circle_prime_count_command(
+    binary: Path,
+    low: int,
+    high: int,
+    segment_size: int,
+    threads: int,
+    count_mode: str = "segmented",
+    *,
+    json_output: bool,
+) -> list[str]:
+    command = [str(binary), str(low), str(high)]
+    if json_output:
+        command.append("--json")
+    if segment_size > 0:
+        command.extend(["--segment-size", str(segment_size)])
+    if threads != 1:
+        command.extend(["--threads", str(threads)])
+    if count_mode != "default":
+        command.extend(["--count-mode", count_mode])
+    return command
+
+
 def circle_measurement_name(count_mode: str, actual_threads: int) -> str:
     suffix = count_mode.replace("-", "_")
     name = f"circle_prime_{suffix}_count"
     if actual_threads != 1:
         name = f"circle_prime_parallel_{suffix}_count_{actual_threads}t"
+    return name
+
+
+def circle_count_binary_measurement_name(count_mode: str, actual_threads: int) -> str:
+    suffix = count_mode.replace("-", "_")
+    name = f"circle_prime_count_binary_{suffix}_count"
+    if actual_threads != 1:
+        name = f"circle_prime_count_binary_parallel_{suffix}_count_{actual_threads}t"
+    return name
+
+
+def circle_count_binary_server_measurement_name(count_mode: str, actual_threads: int) -> str:
+    suffix = count_mode.replace("-", "_")
+    name = f"circle_prime_count_binary_server_{suffix}_count"
+    if actual_threads != 1:
+        name = f"circle_prime_count_binary_server_parallel_{suffix}_count_{actual_threads}t"
     return name
 
 
@@ -1042,6 +1651,33 @@ def measure_primecount(
     )
 
 
+def measure_primecount_pi_server(
+    binary: Path,
+    low: int,
+    high: int,
+    rounds: int,
+    batch_size: int,
+    threads: int,
+) -> ExternalBenchRow:
+    measurement = primecount_pi_server_measurement(binary, low, high, threads)
+    try:
+        row = measure(
+            measurement.name,
+            low,
+            high,
+            0,
+            rounds,
+            measurement.run_once,
+            batch_size=batch_size,
+            threads=measurement.threads,
+            requested_threads=measurement.requested_threads,
+        )
+        return row
+    finally:
+        if measurement.close is not None:
+            measurement.close()
+
+
 def primecount_measurement(
     binary: str,
     low: int,
@@ -1061,6 +1697,72 @@ def primecount_measurement(
         threads=threads,
         requested_threads=threads,
         run_once=run_once,
+    )
+
+
+def primecount_pi_server_measurement(
+    binary: Path,
+    low: int,
+    high: int,
+    threads: int,
+) -> Measurement:
+    if high <= low:
+        raise ValueError(f"empty range [{low},{high})")
+    client = PrimeRangeServerClient(
+        [str(binary)],
+        "libprimecount pi helper",
+    )
+    expected_count: int | None = None
+
+    def run_once() -> int:
+        nonlocal expected_count
+        count = client.count(low, high, threads)
+        if expected_count is None:
+            expected_count = count
+        elif count != expected_count:
+            raise AssertionError(
+                "libprimecount pi result changed for "
+                f"[{low},{high}): expected {expected_count}, got {count}"
+            )
+        return count
+
+    def run_batch(batch_size: int) -> int:
+        nonlocal expected_count
+        counts = client.count_many(low, high, threads, batch_size)
+        for count in counts:
+            if expected_count is None:
+                expected_count = count
+            elif count != expected_count:
+                raise AssertionError(
+                    "libprimecount pi result changed for "
+                    f"[{low},{high}): expected {expected_count}, got {count}"
+                )
+        return counts[-1] if counts else expected_count or 0
+
+    def run_shifted_batch(batch_size: int, shift: int) -> int:
+        nonlocal expected_count
+        counts = client.count_shifted_many(low, high, threads, batch_size, shift)
+        if counts:
+            if expected_count is None:
+                expected_count = counts[0]
+            elif counts[0] != expected_count:
+                raise AssertionError(
+                    "libprimecount pi result changed for first shifted range "
+                    f"[{low},{high}): expected {expected_count}, got {counts[0]}"
+                )
+        return counts[-1] if counts else expected_count or 0
+
+    return Measurement(
+        name="external_primecount_pi_diff_server",
+        low=low,
+        high=high,
+        segment_size=0,
+        threads=threads,
+        requested_threads=threads,
+        run_once=run_once,
+        run_batch=run_batch,
+        run_shifted_batch=run_shifted_batch,
+        close=client.close,
     )
 
 
@@ -1091,6 +1793,29 @@ class PrimeRangeServerClient:
             self.process.stdin.write(f"{low} {high} {threads}\n")
         else:
             self.process.stdin.write(f"repeat {repetitions} {low} {high} {threads}\n")
+        self.process.stdin.flush()
+        counts = []
+        for _ in range(repetitions):
+            response = self.process.stdout.readline()
+            if response == "":
+                stderr = self._read_stderr()
+                raise RuntimeError(f"{self.label} exited without a response: {stderr}")
+            counts.append(parse_integer_output(response))
+        return counts
+
+    def count_shifted_many(
+        self,
+        low: int,
+        high: int,
+        threads: int,
+        repetitions: int,
+        shift: int,
+    ) -> list[int]:
+        if repetitions <= 0:
+            return []
+        assert self.process.stdin is not None
+        assert self.process.stdout is not None
+        self.process.stdin.write(f"shifted {repetitions} {shift} {low} {high} {threads}\n")
         self.process.stdin.flush()
         counts = []
         for _ in range(repetitions):
@@ -1191,6 +1916,19 @@ def primesieve_count_server_measurement(
                 )
         return counts[-1] if counts else expected_count or 0
 
+    def run_shifted_batch(batch_size: int, shift: int) -> int:
+        nonlocal expected_count
+        counts = client.count_shifted_many(low, high, threads, batch_size, shift)
+        if counts:
+            if expected_count is None:
+                expected_count = counts[0]
+            elif counts[0] != expected_count:
+                raise AssertionError(
+                    "libprimesieve count result changed for first shifted range "
+                    f"[{low},{high}): expected {expected_count}, got {counts[0]}"
+                )
+        return counts[-1] if counts else expected_count or 0
+
     return Measurement(
         name="external_primesieve_count_server",
         low=low,
@@ -1200,6 +1938,7 @@ def primesieve_count_server_measurement(
         requested_threads=threads,
         run_once=run_once,
         run_batch=run_batch,
+        run_shifted_batch=run_shifted_batch,
         close=client.close,
     )
 
@@ -1207,9 +1946,11 @@ def primesieve_count_server_measurement(
 def measure_range_interleaved(
     *,
     circle_prime: Path,
+    circle_prime_count: Path | None,
     primesieve: str | None,
     primecount: str | None,
     primesieve_count_server: Path | None,
+    primecount_pi_server: Path | None,
     low: int,
     high: int,
     external_baselines: set[str] | None,
@@ -1218,15 +1959,18 @@ def measure_range_interleaved(
     external_threads: int,
     rounds: int,
     batch_size: int,
+    batch_request_profile: str = "identical",
+    batch_shift: int = 0,
     warmup_rounds: int = 0,
     include_circle_server: bool = False,
+    include_circle_count_binary_server: bool = False,
     circle_server_only: bool = False,
 ) -> tuple[list[ExternalBenchRow], list[ExternalBenchSample]]:
     circle_measurements: list[Measurement] = []
     seen_circle_variants: set[tuple[str, int, int]] = set()
     for variant in circle_variants:
         variant_threads = variant.threads or circle_threads
-        if not circle_server_only:
+        if not circle_server_only and batch_request_profile != "shifted":
             measurement = circle_prime_measurement(
                 circle_prime,
                 low,
@@ -1239,6 +1983,23 @@ def measure_range_interleaved(
             if variant_key not in seen_circle_variants:
                 circle_measurements.append(measurement)
                 seen_circle_variants.add(variant_key)
+            if circle_prime_count is not None:
+                count_binary_measurement = circle_prime_count_binary_measurement(
+                    circle_prime_count,
+                    low,
+                    high,
+                    variant.segment_size,
+                    variant_threads,
+                    variant.count_mode,
+                )
+                count_binary_variant_key = (
+                    count_binary_measurement.name,
+                    count_binary_measurement.segment_size,
+                    count_binary_measurement.threads,
+                )
+                if count_binary_variant_key not in seen_circle_variants:
+                    circle_measurements.append(count_binary_measurement)
+                    seen_circle_variants.add(count_binary_variant_key)
         if include_circle_server:
             server_measurement = circle_prime_server_measurement(
                 circle_prime,
@@ -1247,6 +2008,13 @@ def measure_range_interleaved(
                 variant.segment_size,
                 variant_threads,
                 variant.count_mode,
+                batch_request_profile=batch_request_profile,
+                batch_shift=(
+                    batch_shift
+                    if batch_request_profile != "shifted" or batch_shift != 0
+                    else high - low
+                ),
+                batch_size=batch_size,
             )
             server_variant_key = (
                 server_measurement.name,
@@ -1259,6 +2027,32 @@ def measure_range_interleaved(
             else:
                 if server_measurement.close is not None:
                     server_measurement.close()
+        if include_circle_count_binary_server and circle_prime_count is not None:
+            count_binary_server_measurement = circle_prime_count_binary_server_measurement(
+                circle_prime_count,
+                low,
+                high,
+                variant.segment_size,
+                variant_threads,
+                variant.count_mode,
+                batch_request_profile=batch_request_profile,
+                batch_shift=(
+                    batch_shift
+                    if batch_request_profile != "shifted" or batch_shift != 0
+                    else high - low
+                ),
+                batch_size=batch_size,
+            )
+            count_binary_server_variant_key = (
+                count_binary_server_measurement.name,
+                count_binary_server_measurement.segment_size,
+                count_binary_server_measurement.threads,
+            )
+            if count_binary_server_variant_key not in seen_circle_variants:
+                circle_measurements.append(count_binary_server_measurement)
+                seen_circle_variants.add(count_binary_server_variant_key)
+            elif count_binary_server_measurement.close is not None:
+                count_binary_server_measurement.close()
 
     baseline_measurements = []
     if (
@@ -1290,6 +2084,21 @@ def measure_range_interleaved(
                 external_threads,
             )
         )
+    if (
+        external_baseline_enabled(
+            external_baselines,
+            "external_primecount_pi_diff_server",
+        )
+        and primecount_pi_server is not None
+    ):
+        baseline_measurements.append(
+            primecount_pi_server_measurement(
+                primecount_pi_server,
+                low,
+                high,
+                external_threads,
+            )
+        )
 
     measurements = [*circle_measurements, *baseline_measurements]
     try:
@@ -1297,6 +2106,8 @@ def measure_range_interleaved(
             measurements,
             rounds,
             batch_size=batch_size,
+            batch_request_profile=batch_request_profile,
+            batch_shift=batch_shift,
             warmup_rounds=warmup_rounds,
         )
     finally:
@@ -1323,21 +2134,38 @@ def measure_interleaved(
     rounds: int,
     *,
     batch_size: int = 1,
+    batch_request_profile: str = "identical",
+    batch_shift: int = 0,
     warmup_rounds: int = 0,
 ) -> tuple[list[ExternalBenchRow], list[ExternalBenchSample]]:
     if not measurements:
         return [], []
     if batch_size <= 0:
         raise ValueError("batch_size must be positive")
+    if batch_request_profile not in VALID_BATCH_REQUEST_PROFILES:
+        raise ValueError(f"unsupported batch request profile: {batch_request_profile}")
+    if batch_shift < 0:
+        raise ValueError("batch_shift must be nonnegative")
+    effective_batch_shift = batch_shift
+    if batch_request_profile == "shifted" and effective_batch_shift == 0:
+        effective_batch_shift = max(
+            (measurement.high - measurement.low for measurement in measurements),
+            default=0,
+        )
     timings: dict[str, list[float]] = {measurement_key(m): [] for m in measurements}
     results: dict[str, int] = {}
     samples: list[ExternalBenchSample] = []
     for warmup_index in range(warmup_rounds):
         for measurement in rotated(measurements, warmup_index):
             key = measurement_key(measurement)
-            result = run_batch(measurement, batch_size)
+            result = run_batch(
+                measurement,
+                batch_size,
+                batch_request_profile=batch_request_profile,
+                batch_shift=effective_batch_shift,
+            )
             expected = results.setdefault(key, result)
-            if result != expected:
+            if batch_request_profile == "identical" and result != expected:
                 raise AssertionError(
                     f"{measurement.name} result changed during warmup"
                 )
@@ -1346,10 +2174,15 @@ def measure_interleaved(
         for measurement in order:
             key = measurement_key(measurement)
             start = time.perf_counter()
-            result = run_batch(measurement, batch_size)
+            result = run_batch(
+                measurement,
+                batch_size,
+                batch_request_profile=batch_request_profile,
+                batch_shift=effective_batch_shift,
+            )
             elapsed = (time.perf_counter() - start) / batch_size
             expected = results.setdefault(key, result)
-            if result != expected:
+            if batch_request_profile == "identical" and result != expected:
                 raise AssertionError(f"{measurement.name} result changed between rounds")
             timings[key].append(elapsed)
             samples.append(sample_row(measurement, result, round_index, elapsed))
@@ -1362,7 +2195,19 @@ def measure_interleaved(
     return rows, samples
 
 
-def run_batch(measurement: Measurement, batch_size: int) -> int:
+def run_batch(
+    measurement: Measurement,
+    batch_size: int,
+    *,
+    batch_request_profile: str = "identical",
+    batch_shift: int = 0,
+) -> int:
+    if batch_request_profile == "shifted":
+        if measurement.run_shifted_batch is None:
+            raise ValueError(
+                f"{measurement.name} does not support shifted batch requests"
+            )
+        return measurement.run_shifted_batch(batch_size, batch_shift)
     if measurement.run_batch is not None:
         return measurement.run_batch(batch_size)
     result = measurement.run_once()
@@ -1698,9 +2543,13 @@ def build_run_metadata(
     circle_prime: Path | None,
     primesieve: str | None,
     primecount: str | None,
+    circle_prime_count: Path | None = None,
     primesieve_count_server: Path | None = None,
     primesieve_count_server_error: str | None = None,
+    primecount_pi_server: Path | None = None,
+    primecount_pi_server_error: str | None = None,
     row_count: int,
+    count_server_warmup_profiles: list[dict[str, Any]] | None = None,
 ) -> dict[str, Any]:
     circle_binary = circle_prime or ROOT / "target" / "release" / "circle-prime"
     if segment_sizes is None:
@@ -1726,19 +2575,49 @@ def build_run_metadata(
         )
     if external_baselines is None and hasattr(args, "external_baselines"):
         external_baselines = parse_external_baselines(args.external_baselines)
+    small_prefix_pi_cache_limit = circle_count_server_small_prefix_pi_cache_limit()
+    small_prefix_pi_cache_default_profile = small_prefix_pi_cache_profile(
+        CIRCLE_COUNT_SERVER_SMALL_PREFIX_PI_CACHE_DEFAULT_LIMIT
+    )
+    small_prefix_pi_cache_max_profile = small_prefix_pi_cache_profile(
+        CIRCLE_COUNT_SERVER_SMALL_PREFIX_PI_CACHE_MAX_LIMIT
+    )
+    small_prefix_pi_cache_effective_profile = small_prefix_pi_cache_profile(
+        small_prefix_pi_cache_limit
+    )
     return {
         "started_at_utc": started_at_utc,
         "finished_at_utc": utc_now(),
         "row_count": row_count,
         "rounds": args.rounds,
         "batch_size": int(getattr(args, "batch_size", 1)),
+        "batch_request_profile": getattr(args, "batch_request_profile", "identical"),
+        "batch_shift": int(getattr(args, "batch_shift", 0)),
         "warmup_rounds": int(getattr(args, "warmup_rounds", 0)),
         "interleaved": bool(getattr(args, "interleaved", False)),
         "include_circle_server": bool(getattr(args, "include_circle_server", False)),
+        "include_circle_count_binary": bool(
+            getattr(args, "include_circle_count_binary", False)
+        ),
+        "include_circle_count_binary_server": bool(
+            getattr(args, "include_circle_count_binary_server", False)
+        ),
         "circle_server_only": bool(getattr(args, "circle_server_only", False)),
         "include_primesieve_count_server": bool(
             getattr(args, "include_primesieve_count_server", False)
             or "primesieve-library" in getattr(args, "require_tool", [])
+            or external_baseline_selected(
+                external_baselines,
+                "external_primesieve_count_server",
+            )
+        ),
+        "include_primecount_pi_server": bool(
+            getattr(args, "include_primecount_pi_server", False)
+            or "primecount-library" in getattr(args, "require_tool", [])
+            or external_baseline_selected(
+                external_baselines,
+                "external_primecount_pi_diff_server",
+            )
         ),
         "sample_output": (
             str(args.sample_output)
@@ -1752,6 +2631,7 @@ def build_run_metadata(
         "external_baselines": (
             sorted(external_baselines) if external_baselines is not None else None
         ),
+        "circle_prime_defaults": file_fingerprint(PRIME_ENGINE_DEFAULTS),
         "thread_policy": {
             "circle_requested_threads": args.circle_threads,
             "external_requested_threads": args.external_threads,
@@ -1761,6 +2641,54 @@ def build_run_metadata(
         "ranges": [{"low": low, "high": high, "span": high - low} for low, high in ranges],
         "tools": {
             "circle_prime": circle_prime_metadata(cargo, circle_prime),
+            "circle_prime_count": circle_prime_metadata(cargo, circle_prime_count),
+            "circle_count_server": {
+                "available": bool(getattr(args, "include_circle_server", False))
+                and circle_prime is not None
+                and circle_prime.exists(),
+                "path": str(circle_binary),
+                "method": "persistent count-server requests",
+                "small_prefix_pi_cache_limit": small_prefix_pi_cache_limit,
+                "small_prefix_pi_cache_default_limit": (
+                    CIRCLE_COUNT_SERVER_SMALL_PREFIX_PI_CACHE_DEFAULT_LIMIT
+                ),
+                "small_prefix_pi_cache_max_limit": (
+                    CIRCLE_COUNT_SERVER_SMALL_PREFIX_PI_CACHE_MAX_LIMIT
+                ),
+                "small_prefix_pi_cache_limit_env": (
+                    CIRCLE_COUNT_SERVER_SMALL_PREFIX_PI_CACHE_LIMIT_ENV
+                ),
+                "small_prefix_pi_cache_estimated_bytes": (
+                    small_prefix_pi_cache_effective_profile["estimated_bytes"]
+                ),
+                "small_prefix_pi_cache_default_estimated_bytes": (
+                    small_prefix_pi_cache_default_profile["estimated_bytes"]
+                ),
+                "small_prefix_pi_cache_max_estimated_bytes": (
+                    small_prefix_pi_cache_max_profile["estimated_bytes"]
+                ),
+                "small_prefix_pi_cache_scope": (
+                    "prefix-pi count-server ranges with HIGH-1 at or below the limit"
+                ),
+                "small_prefix_pi_cache_warmup": (
+                    "eligible prefix-pi count-server rows pass --warm-prefix-pi-cache "
+                    "before reading timed requests"
+                ),
+                "small_prefix_pi_cache_warmup_profiles": (
+                    count_server_warmup_profiles
+                    if count_server_warmup_profiles is not None
+                    else []
+                ),
+            },
+            "circle_prime_count_server": {
+                "available": bool(
+                    getattr(args, "include_circle_count_binary_server", False)
+                )
+                and circle_prime_count is not None
+                and circle_prime_count.exists(),
+                "path": str(circle_prime_count) if circle_prime_count is not None else None,
+                "method": "persistent slim circle-prime-count count-server requests",
+            },
             "primesieve": external_tool_metadata("primesieve", primesieve, ["--version"]),
             "primecount": external_tool_metadata("primecount", primecount, ["--version"]),
             "primesieve_count_server": {
@@ -1770,34 +2698,79 @@ def build_run_metadata(
                     if primesieve_count_server is not None
                     else None
                 ),
+                "binary": file_fingerprint(primesieve_count_server),
                 "source": str(PRIMESIEVE_COUNT_SERVER_SOURCE),
+                "source_fingerprint": file_fingerprint(PRIMESIEVE_COUNT_SERVER_SOURCE),
                 "method": "primesieve_count_primes(LOW, HIGH-1)",
                 "error": primesieve_count_server_error,
+            },
+            "primecount_pi_server": {
+                "available": primecount_pi_server is not None,
+                "path": (
+                    str(primecount_pi_server)
+                    if primecount_pi_server is not None
+                    else None
+                ),
+                "binary": file_fingerprint(primecount_pi_server),
+                "source": str(PRIMECOUNT_PI_SERVER_SOURCE),
+                "source_fingerprint": file_fingerprint(PRIMECOUNT_PI_SERVER_SOURCE),
+                "method": "primecount_pi(HIGH-1)-primecount_pi(LOW-1)",
+                "error": primecount_pi_server_error,
             },
         },
         "range_commands": range_command_metadata(
             circle_binary,
+            circle_prime_count,
             primesieve,
             primecount,
             primesieve_count_server,
+            primecount_pi_server,
             ranges,
             circle_variants,
             external_baselines,
             args.circle_threads,
             args.external_threads,
             include_circle_server=bool(getattr(args, "include_circle_server", False)),
+            include_circle_count_binary_server=bool(
+                getattr(args, "include_circle_count_binary_server", False)
+            ),
         ),
     }
 
 
 def circle_prime_metadata(cargo: str | None, circle_prime: Path | None) -> dict[str, Any]:
     package = circle_prime_package_metadata(cargo)
+    binary = file_fingerprint(circle_prime)
     return {
         "available": circle_prime is not None and circle_prime.exists(),
         "path": str(circle_prime) if circle_prime is not None else None,
         "package_name": package.get("name"),
         "version": package.get("version"),
+        "binary": binary,
+        "defaults": file_fingerprint(PRIME_ENGINE_DEFAULTS),
     }
+
+
+def file_fingerprint(path: Path | None) -> dict[str, Any]:
+    if path is None:
+        return {"available": False, "path": None}
+    info: dict[str, Any] = {"available": path.exists(), "path": str(path)}
+    if not path.exists():
+        return info
+    try:
+        stat = path.stat()
+        info.update(
+            {
+                "size_bytes": stat.st_size,
+                "modified_at_utc": datetime.fromtimestamp(
+                    stat.st_mtime, timezone.utc
+                ).strftime("%Y-%m-%dT%H:%M:%SZ"),
+                "sha256": hashlib.sha256(path.read_bytes()).hexdigest(),
+            }
+        )
+    except OSError as exc:
+        info["error"] = str(exc)
+    return info
 
 
 def circle_prime_package_metadata(cargo: str | None) -> dict[str, str | None]:
@@ -1845,12 +2818,18 @@ def circle_count_server_variant_metadata(
 ) -> dict[str, Any]:
     variant_threads = variant.threads or circle_threads
     use_request_defaults = variant.count_mode == "default"
+    small_prefix_pi_cache_limit = circle_count_server_small_prefix_pi_cache_limit()
     metadata: dict[str, Any] = {
         "command": count_server_command(
             circle_prime,
             default_segment_size=variant.segment_size if use_request_defaults else 0,
             default_threads=variant_threads if use_request_defaults else 1,
             default_count_mode=variant.count_mode if use_request_defaults else "default",
+            warm_prefix_pi_cache=(
+                variant.count_mode in {"default", "prefix-pi"}
+                and high > 0
+                and high - 1 <= small_prefix_pi_cache_limit
+            ),
         ),
         "uses_server_defaults": use_request_defaults,
     }
@@ -1930,6 +2909,54 @@ def build_primesieve_count_server(args: argparse.Namespace) -> Path:
     return PRIMESIEVE_COUNT_SERVER_BINARY
 
 
+def build_primecount_pi_server(args: argparse.Namespace) -> Path:
+    compiler = shutil.which(args.cc)
+    if compiler is None:
+        raise RuntimeError(f"C compiler {args.cc!r} was not found")
+    if not PRIMECOUNT_PI_SERVER_SOURCE.exists():
+        raise RuntimeError(f"missing helper source: {PRIMECOUNT_PI_SERVER_SOURCE}")
+
+    include_dir = args.primecount_include_dir or autodetect_primecount_include_dir()
+    lib_dir = args.primecount_lib_dir or autodetect_primecount_lib_dir()
+    PRIMECOUNT_PI_SERVER_BINARY.parent.mkdir(parents=True, exist_ok=True)
+
+    command = [
+        compiler,
+        "-O3",
+        "-std=c11",
+        "-Wall",
+        "-Wextra",
+    ]
+    if include_dir is not None:
+        command.append(f"-I{include_dir}")
+    command.extend(
+        [
+            str(PRIMECOUNT_PI_SERVER_SOURCE),
+            "-o",
+            str(PRIMECOUNT_PI_SERVER_BINARY),
+        ]
+    )
+    if lib_dir is not None:
+        command.append(f"-L{lib_dir}")
+    command.append("-lprimecount")
+    if lib_dir is not None:
+        command.append(f"-Wl,-rpath,{lib_dir}")
+
+    completed = subprocess.run(
+        command,
+        cwd=ROOT,
+        text=True,
+        capture_output=True,
+    )
+    if completed.returncode != 0:
+        detail = (completed.stderr or completed.stdout).strip()
+        raise RuntimeError(
+            "failed to build libprimecount pi helper"
+            + (f": {detail}" if detail else "")
+        )
+    return PRIMECOUNT_PI_SERVER_BINARY
+
+
 def autodetect_primesieve_include_dir() -> Path | None:
     for directory in [
         Path("/opt/homebrew/opt/primesieve/include"),
@@ -1961,6 +2988,37 @@ def autodetect_primesieve_lib_dir() -> Path | None:
     return None
 
 
+def autodetect_primecount_include_dir() -> Path | None:
+    for directory in [
+        Path("/opt/homebrew/opt/primecount/include"),
+        Path("/opt/homebrew/include"),
+        Path("/usr/local/opt/primecount/include"),
+        Path("/usr/local/include"),
+        Path("/usr/include"),
+    ]:
+        if (directory / "primecount.h").exists():
+            return directory
+    return None
+
+
+def autodetect_primecount_lib_dir() -> Path | None:
+    names = [
+        "libprimecount.dylib",
+        "libprimecount.so",
+        "libprimecount.a",
+    ]
+    for directory in [
+        Path("/opt/homebrew/opt/primecount/lib"),
+        Path("/opt/homebrew/lib"),
+        Path("/usr/local/opt/primecount/lib"),
+        Path("/usr/local/lib"),
+        Path("/usr/lib"),
+    ]:
+        if any((directory / name).exists() for name in names):
+            return directory
+    return None
+
+
 def command_output(command: list[str]) -> str:
     try:
         completed = subprocess.run(
@@ -1979,9 +3037,11 @@ def command_output(command: list[str]) -> str:
 
 def range_command_metadata(
     circle_prime: Path,
+    circle_prime_count: Path | None,
     primesieve: str | None,
     primecount: str | None,
     primesieve_count_server: Path | None,
+    primecount_pi_server: Path | None,
     ranges: list[tuple[int, int]],
     circle_variants: list[CircleVariant],
     external_baselines: set[str] | None,
@@ -1989,6 +3049,7 @@ def range_command_metadata(
     external_threads: int,
     *,
     include_circle_server: bool = False,
+    include_circle_count_binary_server: bool = False,
 ) -> list[dict[str, Any]]:
     commands = []
     for low, high in ranges:
@@ -2017,6 +3078,25 @@ def range_command_metadata(
                     json_output=False,
                 ),
             }
+            if circle_prime_count is not None:
+                variant_metadata["count_binary_json_probe"] = circle_prime_count_command(
+                    circle_prime_count,
+                    low,
+                    high,
+                    variant.segment_size,
+                    variant_threads,
+                    variant.count_mode,
+                    json_output=True,
+                )
+                variant_metadata["count_binary_timing"] = circle_prime_count_command(
+                    circle_prime_count,
+                    low,
+                    high,
+                    variant.segment_size,
+                    variant_threads,
+                    variant.count_mode,
+                    json_output=False,
+                )
             if include_circle_server:
                 variant_metadata["count_server"] = circle_count_server_variant_metadata(
                     circle_prime,
@@ -2024,6 +3104,13 @@ def range_command_metadata(
                     high,
                     variant,
                     circle_threads,
+                )
+            if include_circle_count_binary_server and circle_prime_count is not None:
+                variant_metadata["count_binary_server"] = count_server_command(
+                    circle_prime_count,
+                    default_segment_size=variant.segment_size,
+                    default_threads=variant_threads,
+                    default_count_mode=variant.count_mode,
                 )
             circle_variant_commands.append(variant_metadata)
         first_variant = circle_variant_commands[0]
@@ -2036,6 +3123,11 @@ def range_command_metadata(
         }
         if include_circle_server:
             entry["circle_count_server"] = [str(circle_prime), "count-server"]
+        if include_circle_count_binary_server and circle_prime_count is not None:
+            entry["circle_count_binary_server"] = [
+                str(circle_prime_count),
+                "count-server",
+            ]
         if (
             external_baseline_enabled(external_baselines, "external_primesieve_count")
             and primesieve is not None
@@ -2060,6 +3152,14 @@ def range_command_metadata(
             and primesieve_count_server is not None
         ):
             entry["primesieve_count_server"] = [str(primesieve_count_server)]
+        if (
+            external_baseline_enabled(
+                external_baselines,
+                "external_primecount_pi_diff_server",
+            )
+            and primecount_pi_server is not None
+        ):
+            entry["primecount_pi_server"] = [str(primecount_pi_server)]
         commands.append(entry)
     return commands
 
@@ -2070,11 +3170,13 @@ def required_external_tools_missing(
     primesieve: str | None,
     primecount: str | None,
     primesieve_library: Path | None = None,
+    primecount_library: Path | None = None,
 ) -> list[str]:
     available = {
         "primesieve": primesieve is not None,
         "primecount": primecount is not None,
         "primesieve-library": primesieve_library is not None,
+        "primecount-library": primecount_library is not None,
     }
     return sorted({tool for tool in required_tools if not available[tool]})
 
@@ -2085,6 +3187,7 @@ def selected_external_baselines_missing(
     primesieve: str | None,
     primecount: str | None,
     primesieve_library: Path | None,
+    primecount_library: Path | None = None,
 ) -> list[str]:
     if selected_baselines is None:
         return []
@@ -2092,6 +3195,7 @@ def selected_external_baselines_missing(
         "external_primesieve_count": primesieve is not None,
         "external_primecount_pi_diff": primecount is not None,
         "external_primesieve_count_server": primesieve_library is not None,
+        "external_primecount_pi_diff_server": primecount_library is not None,
     }
     return sorted(
         baseline
@@ -2106,6 +3210,7 @@ def any_external_baseline_available(
     primesieve: str | None,
     primecount: str | None,
     primesieve_library: Path | None,
+    primecount_library: Path | None = None,
 ) -> bool:
     return (
         (
@@ -2129,6 +3234,13 @@ def any_external_baseline_available(
             )
             and primesieve_library is not None
         )
+        or (
+            external_baseline_enabled(
+                selected_baselines,
+                "external_primecount_pi_diff_server",
+            )
+            and primecount_library is not None
+        )
     )
 
 
@@ -2137,6 +3249,13 @@ def external_baseline_enabled(
     baseline: str,
 ) -> bool:
     return selected_baselines is None or baseline in selected_baselines
+
+
+def external_baseline_selected(
+    selected_baselines: set[str] | None,
+    baseline: str,
+) -> bool:
+    return selected_baselines is not None and baseline in selected_baselines
 
 
 def utc_now() -> str:
@@ -2159,6 +3278,48 @@ def build_circle_prime(cargo: str) -> Path:
     )
     suffix = ".exe" if sys.platform == "win32" else ""
     return ROOT / "target" / "release" / f"circle-prime{suffix}"
+
+
+def selected_circle_prime_binary(cargo: str | None, override: Path | None) -> Path:
+    if override is not None:
+        return require_existing_binary(override, "--circle-prime-bin")
+    if cargo is None:
+        cargo = require_cargo()
+    return build_circle_prime(cargo)
+
+
+def build_circle_prime_count(cargo: str) -> Path:
+    print(
+        "+ "
+        + " ".join(
+            [cargo, "build", "--release", "-p", "circle-prime", "--bin", "circle-prime-count"]
+        ),
+        file=sys.stderr,
+    )
+    subprocess.run(
+        [cargo, "build", "--release", "-p", "circle-prime", "--bin", "circle-prime-count"],
+        cwd=ROOT,
+        check=True,
+    )
+    suffix = ".exe" if sys.platform == "win32" else ""
+    return ROOT / "target" / "release" / f"circle-prime-count{suffix}"
+
+
+def selected_circle_prime_count_binary(cargo: str | None, override: Path | None) -> Path:
+    if override is not None:
+        return require_existing_binary(override, "--circle-prime-count-bin")
+    if cargo is None:
+        cargo = require_cargo()
+    return build_circle_prime_count(cargo)
+
+
+def require_existing_binary(path: Path, label: str) -> Path:
+    path = path.expanduser()
+    if not path.exists():
+        raise FileNotFoundError(f"{label} does not exist: {path}")
+    if not path.is_file():
+        raise FileNotFoundError(f"{label} is not a file: {path}")
+    return path
 
 
 def require_cargo() -> str:

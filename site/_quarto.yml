@@ -22,6 +22,8 @@ website:
         text: Lesson 1
       - href: reader_path.qmd
         text: Guided Path
+      - href: use_as_library.qmd
+        text: Use As Library
       - text: Reference
         menu:
           - href: what_proved_means.qmd
@@ -30,6 +32,12 @@ website:
             text: How To Verify A Claim
           - href: showcase.qmd
             text: Proof-Backed Showcase
+          - href: use_as_library.qmd
+            text: Use This As A Library
+          - href: api_reference.qmd
+            text: Public API Reference
+          - href: theorem_blueprint_graph.qmd
+            text: Theorem Blueprint Graph
           - text: "---"
           - href: dictionary.qmd
             text: Dictionary
@@ -56,6 +64,12 @@ website:
             text: Guided Learning Path
           - href: what_proved_means.qmd
             text: What "Proved" Means Here
+          - href: use_as_library.qmd
+            text: Use This As A Library
+          - href: api_reference.qmd
+            text: Public API Reference
+          - href: theorem_blueprint_graph.qmd
+            text: Theorem Blueprint Graph
       - section: "Part I: Learning Toolkit"
         contents:
           - href: chapters/foundations/index.qmd
@@ -190,10 +204,18 @@ website:
             text: How To Verify A Claim
           - href: showcase.qmd
             text: Proof-Backed Showcase
+          - href: use_as_library.qmd
+            text: Use This As A Library
       - section: "Appendix: Source Reference"
         contents:
           - href: status.qmd
             text: Theorem Status
+          - href: use_as_library.qmd
+            text: Use This As A Library
+          - href: api_reference.qmd
+            text: Public API Reference
+          - href: theorem_blueprint_graph.qmd
+            text: Theorem Blueprint Graph
           - href: dictionary.qmd
             text: Dictionary Index
           - href: theorems.qmd

@@ -1,5 +1,7 @@
 use std::collections::HashMap;
 use std::convert::TryFrom;
+use std::env;
+use std::hash::{BuildHasherDefault, Hash, Hasher};
 use std::ptr;
 use std::sync::atomic::{AtomicU64, Ordering};
 use std::sync::OnceLock;
@@ -32,8 +34,16 @@ const DENSE_MARKING_BASE_LIMIT: u64 = 300_000;
 const HYBRID_DENSE_STEP_DIVISOR: usize = 4;
 const DYNAMIC_PARALLEL_MAX_SEGMENTS_PER_BATCH: u64 = 64;
 const DYNAMIC_PARALLEL_TARGET_BATCHES_PER_WORKER: u64 = 4;
-const PRIME_PI_PHI_SMALL_PRIME_COUNT: usize = 6;
-const PRIME_PI_PHI_SMALL_MODULUS: u64 = 30_030;
+const PRIME_PI_PHI6_PRIME_COUNT: usize = 6;
+const PRIME_PI_PHI6_MODULUS: u64 = PRESIEVE13_MODULUS;
+const PRIME_PI_PHI6_PERIOD_COUNT: u64 = 5_760;
+const PRIME_PI_PHI7_PRIME_COUNT: usize = 7;
+const PRIME_PI_PHI7_MODULUS: u64 = PRESIEVE17_MODULUS;
+const PRIME_PI_PHI7_PERIOD_COUNT: u64 = 92_160;
+const PRIME_PI_PHI7_MIN_N: u64 = 500_000_000;
+pub const SMALL_PREFIX_PI_CACHE_LIMIT: u64 = 2_000_000_000;
+pub const SMALL_PREFIX_PI_CACHE_MAX_LIMIT: u64 = 3_000_000_000;
+pub const SMALL_PREFIX_PI_CACHE_LIMIT_ENV: &str = "CIRCLE_PRIME_SMALL_PREFIX_PI_CACHE_LIMIT";
 const PREFIX_PI_DEFAULT_SPAN_LIMIT: u64 = 1_000_000_000;
 const PREFIX_PI_RANGE_DEFAULT_SPAN_FLOOR: u64 = 128_000_000;
 const PREFIX_PI_RANGE_DEFAULT_HIGH_LIMIT: u64 = 3_000_000_000;
@@ -42,6 +52,68 @@ pub const DEFAULT_SEGMENT_SIZE: u64 = 1 << 18;
 include!(concat!(env!("OUT_DIR"), "/prime_engine_defaults.rs"));
 pub const HIGH_OFFSET_SEGMENT_SIZE: u64 = 1 << 20;
 pub const VERY_HIGH_OFFSET_SEGMENT_SIZE: u64 = 1 << 22;
+
+type FastHashMap<K, V> = HashMap<K, V, BuildHasherDefault<FastHasher>>;
+
+#[derive(Clone, Copy, PartialEq, Eq)]
+struct PhiMemoKey {
+    x: u64,
+    a: u32,
+}
+
+impl PhiMemoKey {
+    fn new(x: u64, a: usize) -> Self {
+        Self { x, a: a as u32 }
+    }
+}
+
+impl Hash for PhiMemoKey {
+    fn hash<H: Hasher>(&self, state: &mut H) {
+        state.write_u64(self.x ^ (u64::from(self.a).wrapping_mul(0x9e37_79b9_7f4a_7c15)));
+    }
+}
+
+#[derive(Default)]
+struct FastHasher {
+    state: u64,
+}
+
+impl Hasher for FastHasher {
+    fn finish(&self) -> u64 {
+        mix_hash(self.state)
+    }
+
+    fn write(&mut self, bytes: &[u8]) {
+        let mut chunks = bytes.chunks_exact(8);
+        for chunk in &mut chunks {
+            let mut word = [0u8; 8];
+            word.copy_from_slice(chunk);
+            self.write_u64(u64::from_ne_bytes(word));
+        }
+        let remainder = chunks.remainder();
+        if !remainder.is_empty() {
+            let mut word = [0u8; 8];
+            word[..remainder.len()].copy_from_slice(remainder);
+            self.write_u64(u64::from_ne_bytes(word));
+        }
+    }
+
+    fn write_u64(&mut self, value: u64) {
+        self.state = mix_hash(self.state ^ value);
+    }
+
+    fn write_usize(&mut self, value: usize) {
+        self.write_u64(value as u64);
+    }
+}
+
+fn mix_hash(mut value: u64) -> u64 {
+    value ^= value >> 30;
+    value = value.wrapping_mul(0xbf58_476d_1ce4_e5b9);
+    value ^= value >> 27;
+    value = value.wrapping_mul(0x94d0_49bb_1331_11eb);
+    value ^ (value >> 31)
+}
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum RangeError {
@@ -79,6 +151,15 @@ struct Wheel30Cursor {
 struct SingleSegmentMark {
     index: usize,
     step: usize,
+    dense: bool,
+}
+
+#[derive(Debug, Clone)]
+struct ShiftedSingleSegmentMark {
+    index: usize,
+    step: usize,
+    square: u64,
+    half_shift_mod_step: usize,
     dense: bool,
 }
 
@@ -244,16 +325,22 @@ fn base_primes_bitset(limit: u64) -> Result<Vec<u64>, RangeError> {
 
 struct PrimePiCounter {
     primes: Vec<u64>,
-    pi_memo: HashMap<u64, u64>,
-    phi_memo: HashMap<(u64, usize), u64>,
+    pi_memo: FastHashMap<u64, u64>,
+    phi_memo: FastHashMap<PhiMemoKey, u64>,
+    phi_small_prime_count: usize,
 }
 
 impl PrimePiCounter {
-    fn new(primes: Vec<u64>) -> Self {
+    fn new(primes: Vec<u64>, n: u64) -> Self {
         Self {
             primes,
-            pi_memo: HashMap::new(),
-            phi_memo: HashMap::new(),
+            pi_memo: FastHashMap::default(),
+            phi_memo: FastHashMap::default(),
+            phi_small_prime_count: if n >= PRIME_PI_PHI7_MIN_N {
+                PRIME_PI_PHI7_PRIME_COUNT
+            } else {
+                PRIME_PI_PHI6_PRIME_COUNT
+            },
         }
     }
 
@@ -294,18 +381,19 @@ impl PrimePiCounter {
         if a == 0 {
             return x;
         }
-        if a == PRIME_PI_PHI_SMALL_PRIME_COUNT {
-            return prime_pi_phi_small(x);
+        if a == self.phi_small_prime_count {
+            return self.phi_small(x);
         }
-        if a < PRIME_PI_PHI_SMALL_PRIME_COUNT {
+        if a < self.phi_small_prime_count {
             return self.phi(x, a - 1) - self.phi(x / self.primes[a - 1], a - 1);
         }
-        if let Some(&count) = self.phi_memo.get(&(x, a)) {
+        let key = PhiMemoKey::new(x, a);
+        if let Some(&count) = self.phi_memo.get(&key) {
             return count;
         }
 
-        let mut count = prime_pi_phi_small(x);
-        for i in PRIME_PI_PHI_SMALL_PRIME_COUNT..a {
+        let mut count = self.phi_small(x);
+        for i in self.phi_small_prime_count..a {
             let prime = self.primes[i];
             if prime > x {
                 break;
@@ -313,8 +401,16 @@ impl PrimePiCounter {
             count -= self.phi(x / prime, i);
         }
 
-        self.phi_memo.insert((x, a), count);
+        self.phi_memo.insert(key, count);
         count
+    }
+
+    fn phi_small(&self, x: u64) -> u64 {
+        if self.phi_small_prime_count == PRIME_PI_PHI7_PRIME_COUNT {
+            prime_pi_phi7_small(x)
+        } else {
+            prime_pi_phi6_small(x)
+        }
     }
 }
 
@@ -322,28 +418,174 @@ fn static_base_prime_pi(n: u64) -> u64 {
     STATIC_BASE_PRIMES_U64.partition_point(|&prime| prime <= n) as u64
 }
 
-fn prime_pi_phi_small(x: u64) -> u64 {
-    let prefix = prime_pi_phi_small_prefix();
-    let full_periods = x / PRIME_PI_PHI_SMALL_MODULUS;
-    let remainder = (x % PRIME_PI_PHI_SMALL_MODULUS) as usize;
-    let period_count = u64::from(prefix[PRIME_PI_PHI_SMALL_MODULUS as usize]);
-    full_periods * period_count + u64::from(prefix[remainder])
+struct SmallPrefixPiCache {
+    words: Vec<u64>,
+    word_prefix_counts: Vec<u32>,
 }
 
-fn prime_pi_phi_small_prefix() -> &'static [u16] {
-    static PREFIX: OnceLock<Vec<u16>> = OnceLock::new();
-    PREFIX.get_or_init(|| {
-        let mut prefix = Vec::with_capacity(PRIME_PI_PHI_SMALL_MODULUS as usize + 1);
-        let mut count = 0u16;
-        prefix.push(count);
-        for value in 1..=PRIME_PI_PHI_SMALL_MODULUS {
-            if [2, 3, 5, 7, 11, 13].iter().all(|&prime| value % prime != 0) {
-                count += 1;
+impl SmallPrefixPiCache {
+    fn build(limit: u64) -> Self {
+        let odd_count = odd_index_count_through(limit);
+        let word_count = odd_count.div_ceil(64);
+        let mut words = vec![u64::MAX; word_count];
+        if let Some(last_word) = words.last_mut() {
+            let used_bits = odd_count % 64;
+            if used_bits != 0 {
+                *last_word &= (1u64 << used_bits) - 1;
             }
-            prefix.push(count);
         }
-        prefix
+
+        let sqrt_limit = limit.isqrt();
+        let mut index = 0usize;
+        while index < odd_count {
+            let prime = odd_value_at_index(index);
+            if prime > sqrt_limit {
+                break;
+            }
+            if bit_is_set(&words, index) {
+                let step = prime as usize;
+                let mut multiple_index = odd_index(prime * prime);
+                while multiple_index < odd_count {
+                    words[multiple_index / 64] &= !(1u64 << (multiple_index % 64));
+                    multiple_index += step;
+                }
+            }
+            index += 1;
+        }
+
+        let mut word_prefix_counts = Vec::with_capacity(words.len() + 1);
+        let mut count = 0u32;
+        word_prefix_counts.push(count);
+        for &word in &words {
+            count += word.count_ones();
+            word_prefix_counts.push(count);
+        }
+        Self {
+            words,
+            word_prefix_counts,
+        }
+    }
+
+    fn pi(&self, n: u64) -> u64 {
+        if n < 2 {
+            return 0;
+        }
+        if n < 3 {
+            return 1;
+        }
+        let odd_count = odd_index_count_through(n);
+        let full_words = odd_count / 64;
+        let remainder_bits = odd_count % 64;
+        let mut count = 1 + u64::from(self.word_prefix_counts[full_words]);
+        if remainder_bits != 0 {
+            let mask = (1u64 << remainder_bits) - 1;
+            count += u64::from((self.words[full_words] & mask).count_ones());
+        }
+        count
+    }
+}
+
+fn odd_index_count_through(n: u64) -> usize {
+    if n < 3 {
+        0
+    } else {
+        ((n - 3) / 2 + 1) as usize
+    }
+}
+
+fn odd_index(odd: u64) -> usize {
+    ((odd - 3) / 2) as usize
+}
+
+fn odd_value_at_index(index: usize) -> u64 {
+    2 * index as u64 + 3
+}
+
+fn bit_is_set(words: &[u64], index: usize) -> bool {
+    (words[index / 64] & (1u64 << (index % 64))) != 0
+}
+
+fn small_prefix_pi_cache() -> &'static SmallPrefixPiCache {
+    static CACHE: OnceLock<SmallPrefixPiCache> = OnceLock::new();
+    CACHE.get_or_init(|| SmallPrefixPiCache::build(small_prefix_pi_cache_limit()))
+}
+
+pub fn small_prefix_pi_cache_limit() -> u64 {
+    static LIMIT: OnceLock<u64> = OnceLock::new();
+    *LIMIT.get_or_init(|| {
+        resolve_small_prefix_pi_cache_limit(
+            env::var(SMALL_PREFIX_PI_CACHE_LIMIT_ENV).ok().as_deref(),
+        )
     })
+}
+
+fn resolve_small_prefix_pi_cache_limit(raw: Option<&str>) -> u64 {
+    raw.and_then(|value| value.parse::<u64>().ok())
+        .map(|limit| limit.min(SMALL_PREFIX_PI_CACHE_MAX_LIMIT))
+        .unwrap_or(SMALL_PREFIX_PI_CACHE_LIMIT)
+}
+
+pub fn warm_small_prefix_pi_cache() -> u64 {
+    let _ = small_prefix_pi_cache();
+    small_prefix_pi_cache_limit()
+}
+
+pub fn prime_count_in_range_small_prefix_pi(low: u64, high: u64) -> Option<usize> {
+    prime_count_in_range_with_prefix_pi_cache(
+        low,
+        high,
+        small_prefix_pi_cache_limit(),
+        small_prefix_pi_cache(),
+    )
+}
+
+fn prime_count_in_range_with_prefix_pi_cache(
+    low: u64,
+    high: u64,
+    limit: u64,
+    cache: &SmallPrefixPiCache,
+) -> Option<usize> {
+    if high <= low {
+        return Some(0);
+    }
+    let high_n = high - 1;
+    if high_n > limit {
+        return None;
+    }
+    let high_count = cache.pi(high_n);
+    let low_count = if low == 0 { 0 } else { cache.pi(low - 1) };
+    usize::try_from(high_count - low_count).ok()
+}
+
+fn prime_pi_phi6_small(x: u64) -> u64 {
+    let full_periods = x / PRIME_PI_PHI6_MODULUS;
+    let remainder = (x % PRIME_PI_PHI6_MODULUS) as usize;
+    full_periods * PRIME_PI_PHI6_PERIOD_COUNT + u64::from(prime_pi_phi6_small_prefix(remainder))
+}
+
+fn prime_pi_phi6_small_prefix(index: usize) -> u16 {
+    const PREFIX: &[u8] = include_bytes!(concat!(env!("OUT_DIR"), "/prime_pi_phi6_prefix_u16.bin"));
+    debug_assert!(index <= PRIME_PI_PHI6_MODULUS as usize);
+    let offset = index * 2;
+    u16::from_le_bytes([PREFIX[offset], PREFIX[offset + 1]])
+}
+
+fn prime_pi_phi7_small(x: u64) -> u64 {
+    let full_periods = x / PRIME_PI_PHI7_MODULUS;
+    let remainder = (x % PRIME_PI_PHI7_MODULUS) as usize;
+    full_periods * PRIME_PI_PHI7_PERIOD_COUNT + u64::from(prime_pi_phi7_small_prefix(remainder))
+}
+
+fn prime_pi_phi7_small_prefix(index: usize) -> u32 {
+    const PREFIX: &[u8] = include_bytes!(concat!(env!("OUT_DIR"), "/prime_pi_phi7_prefix_u32.bin"));
+    debug_assert!(index <= PRIME_PI_PHI7_MODULUS as usize);
+    let offset = index * 4;
+    u32::from_le_bytes([
+        PREFIX[offset],
+        PREFIX[offset + 1],
+        PREFIX[offset + 2],
+        PREFIX[offset + 3],
+    ])
 }
 
 fn integer_cuberoot(n: u64) -> u64 {
@@ -456,7 +698,7 @@ pub fn prime_pi_u64(n: u64) -> Result<usize, RangeError> {
 }
 
 fn prime_pi_u64_with_base(n: u64, base: Vec<u64>) -> Result<usize, RangeError> {
-    let mut counter = PrimePiCounter::new(base);
+    let mut counter = PrimePiCounter::new(base, n);
     usize::try_from(counter.pi(n)).map_err(|_| RangeError::BaseLimitTooLarge)
 }
 
@@ -466,7 +708,7 @@ pub fn prime_count_in_range_prefix_pi(low: u64, high: u64) -> Result<usize, Rang
     }
 
     let base = base_primes((high - 1).isqrt())?;
-    let mut counter = PrimePiCounter::new(base);
+    let mut counter = PrimePiCounter::new(base, high - 1);
     let high_count = counter.pi(high - 1);
     let low_count = if low == 0 { 0 } else { counter.pi(low - 1) };
     usize::try_from(high_count - low_count).map_err(|_| RangeError::BaseLimitTooLarge)
@@ -607,6 +849,138 @@ pub fn prime_count_in_range_presieve13_with_scratch(
     })
 }
 
+pub fn prime_count_shifted_single_segment_presieve13_with_scratch(
+    low: u64,
+    high: u64,
+    segment_size: u64,
+    repetitions: usize,
+    shift: u64,
+    scratch: &mut PrimeCountScratch,
+) -> Result<Option<Vec<usize>>, RangeError> {
+    prime_count_shifted_single_segment_presieved_with_scratch(
+        low,
+        high,
+        segment_size,
+        repetitions,
+        shift,
+        scratch,
+        13,
+        17,
+        refill_presieved13_odd_flags,
+    )
+}
+
+pub fn prime_count_shifted_single_segment_presieve17_with_scratch(
+    low: u64,
+    high: u64,
+    segment_size: u64,
+    repetitions: usize,
+    shift: u64,
+    scratch: &mut PrimeCountScratch,
+) -> Result<Option<Vec<usize>>, RangeError> {
+    prime_count_shifted_single_segment_presieved_with_scratch(
+        low,
+        high,
+        segment_size,
+        repetitions,
+        shift,
+        scratch,
+        17,
+        19,
+        refill_presieved17_odd_flags,
+    )
+}
+
+fn prime_count_shifted_single_segment_presieved_with_scratch(
+    low: u64,
+    high: u64,
+    segment_size: u64,
+    repetitions: usize,
+    shift: u64,
+    scratch: &mut PrimeCountScratch,
+    presieved_through: u64,
+    min_low: u64,
+    refill_flags: fn(&mut Vec<u8>, u64, usize),
+) -> Result<Option<Vec<usize>>, RangeError> {
+    if segment_size == 0 {
+        return Err(RangeError::SegmentSizeZero);
+    }
+    if repetitions == 0 {
+        return Ok(Some(Vec::new()));
+    }
+    if high <= low {
+        return Ok(Some(vec![0; repetitions]));
+    }
+    if shift % 2 != 0 || low < min_low || high - low > segment_size {
+        return Ok(None);
+    }
+
+    let final_delta = shift
+        .checked_mul(u64::try_from(repetitions - 1).map_err(|_| RangeError::SegmentTooLarge)?)
+        .ok_or(RangeError::SegmentTooLarge)?;
+    let final_high = high
+        .checked_add(final_delta)
+        .ok_or(RangeError::SegmentTooLarge)?;
+    if use_scalar_range_fallback(low, final_high) {
+        return Ok(None);
+    }
+    let limit = (final_high - 1).isqrt();
+    if limit > BASE_PRIME_CACHE_LIMIT {
+        return Ok(None);
+    }
+
+    let odd_low = if low % 2 == 0 { low + 1 } else { low };
+    if odd_low >= high {
+        return Ok(Some(vec![0; repetitions]));
+    }
+    let odd_count_u64 = ((high - odd_low) + 1) / 2;
+    let odd_count = usize::try_from(odd_count_u64).map_err(|_| RangeError::SegmentTooLarge)?;
+    let half_shift = shift / 2;
+    let dense_marking = use_dense_odd_byte_marking(final_high);
+
+    let PrimeCountScratch {
+        odd_flags,
+        base_primes,
+        base_prime_limit,
+        ..
+    } = scratch;
+    let base = cached_base_primes_slice(limit, base_primes, base_prime_limit)?;
+    let mut marks = build_shifted_single_segment_marks(
+        base,
+        limit,
+        odd_low,
+        odd_count,
+        half_shift,
+        dense_marking,
+        presieved_through,
+    )?;
+
+    let mut counts = Vec::with_capacity(repetitions);
+    let mut request_low = low;
+    let mut request_high = high;
+    let mut request_odd_low = odd_low;
+    for index in 0..repetitions {
+        refill_flags(odd_flags, request_odd_low, odd_count);
+        mark_shifted_single_segment(odd_flags, &marks, request_high);
+        counts.push(count_flag_bytes(odd_flags));
+
+        if index + 1 < repetitions {
+            request_low = request_low
+                .checked_add(shift)
+                .ok_or(RangeError::SegmentTooLarge)?;
+            request_high = request_high
+                .checked_add(shift)
+                .ok_or(RangeError::SegmentTooLarge)?;
+            request_odd_low = request_odd_low
+                .checked_add(shift)
+                .ok_or(RangeError::SegmentTooLarge)?;
+            advance_shifted_single_segment_marks(&mut marks, request_odd_low)?;
+        }
+    }
+
+    Ok(Some(counts))
+}
+
 pub fn prime_count_in_range_presieve13_parallel(
     low: u64,
     high: u64,
@@ -633,24 +1007,13 @@ pub fn prime_count_in_range_presieve13_parallel(
     let limit = (high - 1).isqrt();
     with_base_primes(limit, |base| {
         let chunks = split_range(low, high, workers);
-        thread::scope(|scope| {
-            let mut handles = Vec::with_capacity(chunks.len());
-            for (chunk_low, chunk_high) in chunks {
-                handles.push(scope.spawn(move || {
-                    prime_count_in_range_odd_bytes_presieve13_with_base(
-                        chunk_low,
-                        chunk_high,
-                        segment_size,
-                        base,
-                    )
-                }));
-            }
-
-            let mut total = 0usize;
-            for handle in handles {
-                total += handle.join().map_err(|_| RangeError::WorkerPanic)??;
-            }
-            Ok(total)
+        count_parallel_chunks_on_caller(&chunks, |chunk_low, chunk_high| {
+            prime_count_in_range_odd_bytes_presieve13_with_base(
+                chunk_low,
+                chunk_high,
+                segment_size,
+                base,
+            )
         })
     })
 }
@@ -735,24 +1098,13 @@ pub fn prime_count_in_range_presieve17_parallel(
     let limit = (high - 1).isqrt();
     with_base_primes(limit, |base| {
         let chunks = split_range(low, high, workers);
-        thread::scope(|scope| {
-            let mut handles = Vec::with_capacity(chunks.len());
-            for (chunk_low, chunk_high) in chunks {
-                handles.push(scope.spawn(move || {
-                    prime_count_in_range_odd_bytes_presieve17_with_base(
-                        chunk_low,
-                        chunk_high,
-                        segment_size,
-                        base,
-                    )
-                }));
-            }
-
-            let mut total = 0usize;
-            for handle in handles {
-                total += handle.join().map_err(|_| RangeError::WorkerPanic)??;
-            }
-            Ok(total)
+        count_parallel_chunks_on_caller(&chunks, |chunk_low, chunk_high| {
+            prime_count_in_range_odd_bytes_presieve17_with_base(
+                chunk_low,
+                chunk_high,
+                segment_size,
+                base,
+            )
         })
     })
 }
@@ -825,24 +1177,8 @@ pub fn prime_count_in_range_wheel30_marks_parallel(
     let limit = (high - 1).isqrt();
     with_base_primes(limit, |base| {
         let chunks = split_range(low, high, workers);
-        thread::scope(|scope| {
-            let mut handles = Vec::with_capacity(chunks.len());
-            for (chunk_low, chunk_high) in chunks {
-                handles.push(scope.spawn(move || {
-                    prime_count_in_range_wheel30_marks_with_base(
-                        chunk_low,
-                        chunk_high,
-                        segment_size,
-                        base,
-                    )
-                }));
-            }
-
-            let mut total = 0usize;
-            for handle in handles {
-                total += handle.join().map_err(|_| RangeError::WorkerPanic)??;
-            }
-            Ok(total)
+        count_parallel_chunks_on_caller(&chunks, |chunk_low, chunk_high| {
+            prime_count_in_range_wheel30_marks_with_base(chunk_low, chunk_high, segment_size, base)
         })
     })
 }
@@ -894,24 +1230,13 @@ pub fn prime_count_in_range_hybrid_wheel30_marks_parallel(
     let limit = (high - 1).isqrt();
     with_base_primes(limit, |base| {
         let chunks = split_range(low, high, workers);
-        thread::scope(|scope| {
-            let mut handles = Vec::with_capacity(chunks.len());
-            for (chunk_low, chunk_high) in chunks {
-                handles.push(scope.spawn(move || {
-                    prime_count_in_range_hybrid_wheel30_marks_with_base(
-                        chunk_low,
-                        chunk_high,
-                        segment_size,
-                        base,
-                    )
-                }));
-            }
-
-            let mut total = 0usize;
-            for handle in handles {
-                total += handle.join().map_err(|_| RangeError::WorkerPanic)??;
-            }
-            Ok(total)
+        count_parallel_chunks_on_caller(&chunks, |chunk_low, chunk_high| {
+            prime_count_in_range_hybrid_wheel30_marks_with_base(
+                chunk_low,
+                chunk_high,
+                segment_size,
+                base,
+            )
         })
     })
 }
@@ -942,24 +1267,8 @@ pub fn prime_count_in_range_parallel(
     let limit = (high - 1).isqrt();
     with_base_primes(limit, |base| {
         let chunks = split_range(low, high, workers);
-        thread::scope(|scope| {
-            let mut handles = Vec::with_capacity(chunks.len());
-            for (chunk_low, chunk_high) in chunks {
-                handles.push(scope.spawn(move || {
-                    prime_count_in_range_odd_bytes_with_base(
-                        chunk_low,
-                        chunk_high,
-                        segment_size,
-                        base,
-                    )
-                }));
-            }
-
-            let mut total = 0usize;
-            for handle in handles {
-                total += handle.join().map_err(|_| RangeError::WorkerPanic)??;
-            }
-            Ok(total)
+        count_parallel_chunks_on_caller(&chunks, |chunk_low, chunk_high| {
+            prime_count_in_range_odd_bytes_with_base(chunk_low, chunk_high, segment_size, base)
         })
     })
 }
@@ -990,24 +1299,8 @@ pub fn prime_count_in_range_parallel_balanced(
     let limit = (high - 1).isqrt();
     with_base_primes(limit, |base| {
         let chunks = split_range_by_sieve_work(low, high, workers);
-        thread::scope(|scope| {
-            let mut handles = Vec::with_capacity(chunks.len());
-            for (chunk_low, chunk_high) in chunks {
-                handles.push(scope.spawn(move || {
-                    prime_count_in_range_odd_bytes_with_base(
-                        chunk_low,
-                        chunk_high,
-                        segment_size,
-                        base,
-                    )
-                }));
-            }
-
-            let mut total = 0usize;
-            for handle in handles {
-                total += handle.join().map_err(|_| RangeError::WorkerPanic)??;
-            }
-            Ok(total)
+        count_parallel_chunks_on_caller(&chunks, |chunk_low, chunk_high| {
+            prime_count_in_range_odd_bytes_with_base(chunk_low, chunk_high, segment_size, base)
         })
     })
 }
@@ -1082,6 +1375,32 @@ pub fn prime_count_in_range_parallel_dynamic(
     })
 }
 
+fn count_parallel_chunks_on_caller<F>(
+    chunks: &[(u64, u64)],
+    count_chunk: F,
+) -> Result<usize, RangeError>
+where
+    F: Fn(u64, u64) -> Result<usize, RangeError> + Sync,
+{
+    let Some((&first_chunk, remaining_chunks)) = chunks.split_first() else {
+        return Ok(0);
+    };
+
+    thread::scope(|scope| {
+        let mut handles = Vec::with_capacity(remaining_chunks.len());
+        for &(chunk_low, chunk_high) in remaining_chunks {
+            let count_chunk = &count_chunk;
+            handles.push(scope.spawn(move || count_chunk(chunk_low, chunk_high)));
+        }
+
+        let mut total = count_chunk(first_chunk.0, first_chunk.1)?;
+        for handle in handles {
+            total += handle.join().map_err(|_| RangeError::WorkerPanic)??;
+        }
+        Ok(total)
+    })
+}
+
 fn dynamic_parallel_segments_per_batch(segment_count: u64, workers: usize) -> u64 {
     let worker_count = u64::try_from(workers).unwrap_or(u64::MAX).max(1);
     let target_batches = worker_count
@@ -1129,6 +1448,11 @@ pub fn recommended_count_segment_size(low: u64, high: u64, requested_threads: us
     let base_limit = (high - 1).isqrt();
     if base_limit >= PARALLEL_UPPER_HIGH_OFFSET_MIN_BASE_LIMIT && span <= 16_000_000 {
         PARALLEL_UPPER_HIGH_OFFSET_SEGMENT_SIZE
+    } else if base_limit >= PARALLEL_EDGE_HIGH_OFFSET_MIN_BASE_LIMIT
+        && base_limit < PARALLEL_LOWER_HIGH_OFFSET_MIN_BASE_LIMIT
+        && span <= 16_000_000
+    {
+        PARALLEL_EDGE_HIGH_OFFSET_SEGMENT_SIZE
     } else if base_limit >= 1_000_000 && span <= 16_000_000 {
         PARALLEL_VERY_HIGH_OFFSET_SEGMENT_SIZE
     } else if base_limit < 300_000 && span <= 2_000_000 {
@@ -1219,17 +1543,8 @@ fn prime_count_in_range_scalar_parallel(
     }
 
     let chunks = split_range(low, high, threads);
-    thread::scope(|scope| {
-        let mut handles = Vec::with_capacity(chunks.len());
-        for (chunk_low, chunk_high) in chunks {
-            handles.push(scope.spawn(move || prime_count_in_range_scalar(chunk_low, chunk_high)));
-        }
-
-        let mut total = 0usize;
-        for handle in handles {
-            total += handle.join().map_err(|_| RangeError::WorkerPanic)?;
-        }
-        Ok(total)
+    count_parallel_chunks_on_caller(&chunks, |chunk_low, chunk_high| {
+        Ok(prime_count_in_range_scalar(chunk_low, chunk_high))
     })
 }
 
@@ -2175,26 +2490,35 @@ fn mark_single_segment_base_multiples_after(
 ) -> Result<(), RangeError> {
     let limit = (high - 1).isqrt();
     let active_base = active_sieving_base_primes(base, limit, presieved_through);
+    let len = flags.len();
     if dense_marking {
         for &q in active_base {
             let index = first_odd_multiple_index_at_or_after(q, odd_low)?;
+            if index >= len {
+                continue;
+            }
             let step = usize::try_from(q).map_err(|_| RangeError::SegmentTooLarge)?;
             mark_dense_odd_byte_multiples(flags, index, step);
         }
     } else {
-        let dense_step_limit = flags.len() / HYBRID_DENSE_STEP_DIVISOR;
+        let dense_step_limit = len / HYBRID_DENSE_STEP_DIVISOR;
         let (dense_base, sparse_base) =
             split_base_primes_by_dense_step(active_base, dense_step_limit);
         for &q in dense_base {
             let index = first_odd_multiple_index_at_or_after(q, odd_low)?;
+            if index >= len {
+                continue;
+            }
             let step = usize::try_from(q).map_err(|_| RangeError::SegmentTooLarge)?;
             mark_dense_odd_byte_multiples(flags, index, step);
         }
 
-        let len = flags.len();
         let ptr = flags.as_mut_ptr();
         for &q in sparse_base {
             let index = first_odd_multiple_index_at_or_after(q, odd_low)?;
+            if index >= len {
+                continue;
+            }
             let step = usize::try_from(q).map_err(|_| RangeError::SegmentTooLarge)?;
             mark_odd_byte_multiples_checked_unroll(ptr, len, index, step);
         }
@@ -2310,6 +2634,87 @@ fn mark_single_segment_base_multiples_from_plan(flags: &mut [u8], plan: &SingleS
             mark_odd_byte_multiples_checked_unroll(ptr, len, mark.index, mark.step);
         }
     }
+}
+
+fn build_shifted_single_segment_marks(
+    base: &[u64],
+    limit: u64,
+    odd_low: u64,
+    odd_count: usize,
+    half_shift: u64,
+    dense_marking: bool,
+    presieved_through: u64,
+) -> Result<Vec<ShiftedSingleSegmentMark>, RangeError> {
+    let active_base = active_sieving_base_primes(base, limit, presieved_through);
+    let mut marks = Vec::with_capacity(active_base.len());
+    if dense_marking {
+        for &q in active_base {
+            push_shifted_single_segment_mark(&mut marks, q, odd_low, half_shift, true)?;
+        }
+    } else {
+        let dense_step_limit = odd_count / HYBRID_DENSE_STEP_DIVISOR;
+        let (dense_base, sparse_base) =
+            split_base_primes_by_dense_step(active_base, dense_step_limit);
+        for &q in dense_base {
+            push_shifted_single_segment_mark(&mut marks, q, odd_low, half_shift, true)?;
+        }
+        for &q in sparse_base {
+            push_shifted_single_segment_mark(&mut marks, q, odd_low, half_shift, false)?;
+        }
+    }
+    Ok(marks)
+}
+
+fn push_shifted_single_segment_mark(
+    marks: &mut Vec<ShiftedSingleSegmentMark>,
+    q: u64,
+    odd_low: u64,
+    half_shift: u64,
+    dense: bool,
+) -> Result<(), RangeError> {
+    let index = first_odd_multiple_index_at_or_after(q, odd_low)?;
+    let step = usize::try_from(q).map_err(|_| RangeError::SegmentTooLarge)?;
+    let half_shift_mod_step =
+        usize::try_from(half_shift % q).map_err(|_| RangeError::SegmentTooLarge)?;
+    marks.push(ShiftedSingleSegmentMark {
+        index,
+        step,
+        square: q * q,
+        half_shift_mod_step,
+        dense,
+    });
+    Ok(())
+}
+
+fn mark_shifted_single_segment(flags: &mut [u8], marks: &[ShiftedSingleSegmentMark], high: u64) {
+    let len = flags.len();
+    let ptr = flags.as_mut_ptr();
+    for mark in marks {
+        if mark.square >= high || mark.index >= len {
+            continue;
+        }
+        if mark.dense {
+            mark_dense_odd_byte_multiples(flags, mark.index, mark.step);
+        } else {
+            mark_odd_byte_multiples_checked_unroll(ptr, len, mark.index, mark.step);
+        }
+    }
+}
+
+fn advance_shifted_single_segment_marks(
+    marks: &mut [ShiftedSingleSegmentMark],
+    next_odd_low: u64,
+) -> Result<(), RangeError> {
+    for mark in marks {
+        if mark.square >= next_odd_low {
+            mark.index = usize::try_from((mark.square - next_odd_low) / 2)
+                .map_err(|_| RangeError::SegmentTooLarge)?;
+        } else {
+            mark.index =
+                (mark.index % mark.step + mark.step - mark.half_shift_mod_step) % mark.step;
+        }
+    }
+    Ok(())
 }
 
 fn initial_wheel30_mark_cursors(
@@ -2733,7 +3138,20 @@ fn fill_presieved_odd_words(words: &mut Vec<u64>, odd_low: u64, odd_count: usize
 }
 
 fn presieve_3_5_7_11_13_17_19_pattern() -> &'static [u8] {
-    include_bytes!(concat!(env!("OUT_DIR"), "/presieve_3_5_7_11_13_17_19.bin"))
+    static PATTERN: OnceLock<Vec<u8>> = OnceLock::new();
+    PATTERN.get_or_init(generate_presieve_3_5_7_11_13_17_19_pattern)
+}
+
+fn generate_presieve_3_5_7_11_13_17_19_pattern() -> Vec<u8> {
+    let mut pattern = vec![1u8; PRESIEVE19_ODD_PERIOD];
+    for prime in [3usize, 5, 7, 11, 13, 17, 19] {
+        let mut index = (prime - 1) / 2;
+        while index < pattern.len() {
+            pattern[index] = 0;
+            index += prime;
+        }
+    }
+    pattern
 }
 
 fn presieve_3_5_7_11_13_pattern() -> &'static [u8] {
@@ -3328,6 +3746,111 @@ mod tests {
     }
 
     #[test]
+    fn shifted_single_segment_presieve13_matches_repeated_counts() {
+        let low = 1_000_000_000_000;
+        let high = 1_000_001_250_000;
+        let segment_size = 1_310_720;
+        let repetitions = 9;
+        let shift = 10_000_000;
+        let mut scratch = PrimeCountScratch::new();
+
+        let actual = prime_count_shifted_single_segment_presieve13_with_scratch(
+            low,
+            high,
+            segment_size,
+            repetitions,
+            shift,
+            &mut scratch,
+        )
+        .expect("optimized shifted count should not fail")
+        .expect("high-offset single-segment shifted count should optimize");
+        let expected = (0..repetitions)
+            .map(|index| {
+                let delta = shift * index as u64;
+                prime_count_in_range_presieve13(low + delta, high + delta, segment_size).unwrap()
+            })
+            .collect::<Vec<_>>();
+
+        assert_eq!(actual, expected);
+    }
+
+    #[test]
+    fn shifted_single_segment_presieve17_matches_repeated_counts() {
+        let low = 1_500_000_000_000;
+        let high = 1_500_001_250_000;
+        let segment_size = 1_310_720;
+        let repetitions = 9;
+        let shift = 10_000_000;
+        let mut scratch = PrimeCountScratch::new();
+
+        let actual = prime_count_shifted_single_segment_presieve17_with_scratch(
+            low,
+            high,
+            segment_size,
+            repetitions,
+            shift,
+            &mut scratch,
+        )
+        .expect("optimized shifted presieve17 count should not fail")
+        .expect("high-offset single-segment shifted presieve17 count should optimize");
+        let expected = (0..repetitions)
+            .map(|index| {
+                let delta = shift * index as u64;
+                prime_count_in_range_presieve17(low + delta, high + delta, segment_size).unwrap()
+            })
+            .collect::<Vec<_>>();
+
+        assert_eq!(actual, expected);
+    }
+
+    #[test]
+    fn shifted_single_segment_presieve13_counts_even_only_ranges_as_zero() {
+        let mut scratch = PrimeCountScratch::new();
+        let counts = prime_count_shifted_single_segment_presieve13_with_scratch(
+            1_000_000_000_000,
+            1_000_000_000_001,
+            1_310_720,
+            5,
+            10_000_000,
+            &mut scratch,
+        )
+        .expect("even-only shifted count should not fail")
+        .expect("even-only high-offset ranges are supported");
+
+        assert_eq!(counts, vec![0; 5]);
+    }
+
+    #[test]
+    fn shifted_single_segment_presieve13_declines_unsupported_shapes() {
+        let mut scratch = PrimeCountScratch::new();
+
+        assert_eq!(
+            prime_count_shifted_single_segment_presieve13_with_scratch(
+                1_000_000_000_000,
+                1_000_001_250_000,
+                1_310_720,
+                3,
+                1,
+                &mut scratch,
+            )
+            .expect("odd shift should decline without failing"),
+            None
+        );
+        assert_eq!(
+            prime_count_shifted_single_segment_presieve13_with_scratch(
+                1_000_000_000_000,
+                1_000_003_000_000,
+                1_310_720,
+                3,
+                10_000_000,
+                &mut scratch,
+            )
+            .expect("multi-segment shape should decline without failing"),
+            None
+        );
+    }
+
+    #[test]
     fn presieve17_count_matches_byte_count() {
         for (low, high) in [
             (0, 10),
@@ -3488,8 +4011,8 @@ mod tests {
 
     #[test]
     fn count_scratch_caches_generated_base_primes_above_static_limit() {
-        let low = 1_500_000_000_000;
-        let high = 1_500_001_000_000;
+        let low = 40_000_000_000_000;
+        let high = 40_000_010_000_000;
         let segment_size = 1_507_328;
         let mut scratch = PrimeCountScratch::new();
         let expected = prime_count_in_range(low, high, segment_size).unwrap();
@@ -3690,6 +4213,20 @@ mod tests {
     }
 
     #[test]
+    fn lazy_presieve19_pattern_marks_coprime_odd_residues() {
+        let pattern = presieve_3_5_7_11_13_17_19_pattern();
+        assert_eq!(pattern.len(), PRESIEVE19_ODD_PERIOD);
+        assert_eq!(pattern.iter().filter(|&&flag| flag != 0).count(), 1_658_880);
+        for (index, &flag) in pattern.iter().enumerate().take(4096) {
+            let residue = 1 + 2 * index as u64;
+            let expected = [3, 5, 7, 11, 13, 17, 19]
+                .iter()
+                .all(|prime| residue % prime != 0);
+            assert_eq!(flag != 0, expected, "residue={residue}");
+        }
+    }
+
+    #[test]
     fn bitpacked_presieve_fill_matches_byte_presieve_fill() {
         for odd_low in [1, 3, 23, 101, 1_000_001, 9_699_689, 19_399_379] {
             for odd_count in [1usize, 7, 63, 64, 65, 1_001] {
@@ -3866,6 +4403,46 @@ mod tests {
     }
 
     #[test]
+    fn generated_prime_pi_phi_prefix_tables_match_slow_counts() {
+        fn slow_phi_small(x: u64, primes: &[u64]) -> u64 {
+            (1..=x)
+                .filter(|value| primes.iter().all(|prime| value % prime != 0))
+                .count() as u64
+        }
+
+        for x in [
+            0,
+            1,
+            29,
+            30,
+            1_000,
+            PRIME_PI_PHI6_MODULUS - 1,
+            PRIME_PI_PHI6_MODULUS,
+        ] {
+            assert_eq!(
+                prime_pi_phi6_small(x),
+                slow_phi_small(x, &[2, 3, 5, 7, 11, 13]),
+                "phi6({x})"
+            );
+        }
+        for x in [0, 1, 29, 30, 1_000, 100_000, PRIME_PI_PHI7_MODULUS] {
+            assert_eq!(
+                prime_pi_phi7_small(x),
+                slow_phi_small(x, &[2, 3, 5, 7, 11, 13, 17]),
+                "phi7({x})"
+            );
+        }
+        assert_eq!(
+            prime_pi_phi6_small(PRIME_PI_PHI6_MODULUS),
+            PRIME_PI_PHI6_PERIOD_COUNT
+        );
+        assert_eq!(
+            prime_pi_phi7_small(PRIME_PI_PHI7_MODULUS),
+            PRIME_PI_PHI7_PERIOD_COUNT
+        );
+    }
+
+    #[test]
     fn prefix_pi_range_count_matches_segmented_count() {
         for (low, high) in [
             (0, 1_000),
@@ -3881,6 +4458,50 @@ mod tests {
                 "range=[{low},{high})"
             );
         }
+    }
+
+    #[test]
+    fn small_prefix_pi_cache_matches_prefix_counter() {
+        let limit = 128_000_000;
+        let cache = SmallPrefixPiCache::build(limit);
+        for (low, high, expected) in [
+            (0, 1_000, Some(168)),
+            (0, 1_000_000, Some(78_498)),
+            (0, 10_000_000, Some(664_579)),
+            (10_000_000, 100_000_000, Some(5_096_876)),
+            (0, 128_000_002, None),
+        ] {
+            assert_eq!(
+                prime_count_in_range_with_prefix_pi_cache(low, high, limit, &cache),
+                expected,
+                "small prefix cache range=[{low},{high})"
+            );
+            if let Some(count) = expected {
+                assert_eq!(
+                    count,
+                    prime_count_in_range_prefix_pi(low, high).unwrap(),
+                    "cached prefix count matches exact counter for range=[{low},{high})"
+                );
+            }
+        }
+    }
+
+    #[test]
+    fn small_prefix_pi_cache_limit_env_is_bounded() {
+        assert_eq!(resolve_small_prefix_pi_cache_limit(None), 2_000_000_000);
+        assert_eq!(
+            resolve_small_prefix_pi_cache_limit(Some("bad")),
+            2_000_000_000
+        );
+        assert_eq!(resolve_small_prefix_pi_cache_limit(Some("0")), 0);
+        assert_eq!(
+            resolve_small_prefix_pi_cache_limit(Some("2000000000")),
+            2_000_000_000
+        );
+        assert_eq!(
+            resolve_small_prefix_pi_cache_limit(Some("999999999999")),
+            SMALL_PREFIX_PI_CACHE_MAX_LIMIT
+        );
     }
 
     #[test]
@@ -4014,6 +4635,10 @@ mod tests {
         );
         assert_eq!(
             recommended_count_segment_size(1_000_000_000_000, 1_000_010_000_000, 8),
+            PARALLEL_EDGE_HIGH_OFFSET_SEGMENT_SIZE
+        );
+        assert_eq!(
+            recommended_count_segment_size(1_500_000_000_000, 1_500_010_000_000, 8),
             PARALLEL_VERY_HIGH_OFFSET_SEGMENT_SIZE
         );
         assert_eq!(
@@ -4188,12 +4813,12 @@ mod tests {
         );
         let high_offset_span = 10_000_000u64;
         let high_offset_expected_workers =
-            high_offset_span.div_ceil(PARALLEL_VERY_HIGH_OFFSET_SEGMENT_SIZE) as usize;
+            high_offset_span.div_ceil(PARALLEL_EDGE_HIGH_OFFSET_SEGMENT_SIZE) as usize;
         assert_eq!(
             effective_parallel_thread_count(
                 1_000_000_000_000,
                 1_000_010_000_000,
-                PARALLEL_VERY_HIGH_OFFSET_SEGMENT_SIZE,
+                PARALLEL_EDGE_HIGH_OFFSET_SEGMENT_SIZE,
                 8
             ),
             high_offset_expected_workers

@@ -39,6 +39,12 @@ def test_default_correctness_ranges_cover_boundary_windows() -> None:
     assert 4_294_967_000 in correctness.parse_integer_list_argument(
         correctness.DEFAULT_NEXT_STARTS
     )
+    assert 18_446_744_073_709_551_500 in correctness.parse_integer_list_argument(
+        correctness.DEFAULT_NEXT_STARTS
+    )
+    assert 18_446_744_073_709_551_558 in correctness.parse_integer_list_argument(
+        correctness.DEFAULT_NEXT_STARTS
+    )
 
 
 def test_run_checks_deduplicates_resolved_circle_variants(monkeypatch) -> None:
@@ -164,11 +170,16 @@ def test_run_enumeration_checks_compares_exact_prime_lists(monkeypatch) -> None:
     assert all(check["circle_count"] == 4 for check in checks)
 
 
-def test_run_next_checks_compares_against_primesieve_first_prime(monkeypatch) -> None:
+def test_run_next_checks_compares_against_primesieve_and_primecount(monkeypatch) -> None:
     monkeypatch.setattr(
         correctness,
         "primesieve_next_prime",
         lambda binary, start, search_window: start + 1,
+    )
+    monkeypatch.setattr(
+        correctness,
+        "primecount_next_prime",
+        lambda binary, start, threads: start + 1,
     )
     monkeypatch.setattr(
         correctness,
@@ -179,14 +190,54 @@ def test_run_next_checks_compares_against_primesieve_first_prime(monkeypatch) ->
     checks = correctness.run_next_checks(
         circle_prime=Path("circle-prime"),
         primesieve="/opt/bin/primesieve",
+        primecount="/opt/bin/primecount",
         starts=[100, 1_000_000],
         search_window=1000,
+        external_threads=8,
+        primecount_max_start=1_000_000_000_000,
     )
 
     assert len(checks) == 2
     assert all(check["passes"] for check in checks)
     assert checks[0]["circle_prime"] == 101
     assert checks[0]["external_prime"] == 101
+    assert checks[0]["external_primes"] == {"primesieve": 101, "primecount": 101}
+    assert checks[0]["matches"] == {"primesieve": True, "primecount": True}
+
+
+def test_run_next_checks_skips_primecount_above_cap(monkeypatch) -> None:
+    monkeypatch.setattr(
+        correctness,
+        "primesieve_next_prime",
+        lambda binary, start, search_window: start + 1,
+    )
+    monkeypatch.setattr(
+        correctness,
+        "primecount_next_prime",
+        lambda binary, start, threads: (_ for _ in ()).throw(
+            AssertionError("primecount should be capped for this start")
+        ),
+    )
+    monkeypatch.setattr(
+        correctness,
+        "circle_next_prime",
+        lambda binary, start: {"prime": start + 1, "candidate_count": 1},
+    )
+
+    checks = correctness.run_next_checks(
+        circle_prime=Path("circle-prime"),
+        primesieve="/opt/bin/primesieve",
+        primecount="/opt/bin/primecount",
+        starts=[18_446_744_073_709_551_500],
+        search_window=1000,
+        external_threads=8,
+        primecount_max_start=1_000_000_000_000,
+    )
+
+    assert checks[0]["external_primes"] == {
+        "primesieve": 18_446_744_073_709_551_501
+    }
+    assert checks[0]["matches"] == {"primesieve": True}
 
 
 def test_run_count_server_checks_compares_one_shot_and_external_counts(monkeypatch) -> None:
@@ -325,6 +376,8 @@ def test_build_report_counts_failures() -> None:
                 "search_window": 1000,
                 "circle_prime": 101,
                 "external_prime": 103,
+                "external_primes": {"primesieve": 103, "primecount": 103},
+                "matches": {"primesieve": False, "primecount": False},
                 "candidate_count": 1,
                 "passes": False,
             }
@@ -335,6 +388,7 @@ def test_build_report_counts_failures() -> None:
     assert report["count_server_check_count"] == 1
     assert report["enumeration_check_count"] == 1
     assert report["next_check_count"] == 1
+    assert report["next_external_check_count"] == 2
     assert report["check_count"] == 4
     assert report["count_failure_count"] == 1
     assert report["count_server_failure_count"] == 1

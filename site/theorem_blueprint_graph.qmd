@@ -1,0 +1,35 @@
+---
+title: "Theorem Blueprint Graph"
+---
+
+<div class="claim-boundary-strip">
+<span class="claim-boundary-label">Claim boundary</span>
+<span class="claim-boundary-badge claim-boundary-executable">manifest evidence graph</span>
+<span class="claim-boundary-badge claim-boundary-proved">theorem status preserved</span>
+<span class="claim-boundary-badge claim-boundary-speculative">not proof-dependency edges</span>
+</div>
+
+The theorem blueprint graph is a generated evidence graph. It connects theorem
+ids to Lean declarations, dictionary terms, paper references, and paper
+reading-order edges.
+
+It is not a formal Lean dependency graph. The manifests do not currently encode
+which theorem proof depends on which earlier theorem proof.
+
+Artifacts:
+
+- [Generated Markdown Summary](https://github.com/corbensorenson/circle-calculus/blob/main/docs/generated/THEOREM_BLUEPRINT_GRAPH.md)
+- JSON: `site/data/generated/theorem_blueprint_graph.json`
+- Source generator: `scripts/generate_theorem_blueprint_graph.py`
+
+Regenerate locally:
+
+```bash
+make theorem-blueprint
+```
+
+The graph is useful for navigating the corpus: it shows which papers carry the
+largest theorem spines, which dictionary terms each theorem uses, and which Lean
+declaration each theorem id claims.
+
+<script type="module" src="widgets/shared/widget_base.js"></script>

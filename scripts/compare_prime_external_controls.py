@@ -48,6 +48,10 @@ class ExternalSpeedupRow:
     def comparison_name(self) -> str:
         if not is_adaptive_default_row(self.name):
             return self.name
+        if is_count_binary_server_row(self.name):
+            return "circle_prime_count_binary_server_default_count"
+        if is_count_binary_row(self.name):
+            return "circle_prime_count_binary_default_count"
         if is_server_row(self.name):
             return "circle_prime_server_default_count"
         return "circle_prime_default_count"
@@ -153,6 +157,32 @@ def main() -> int:
         ),
     )
     parser.add_argument(
+        "--allow-best-regression-when-median-speedup-at-least",
+        type=float,
+        help=(
+            "Do not fail a best-speedup regression when the candidate median "
+            "speedup is already at or above this material-win floor. This keeps "
+            "microsecond hot-server rows from failing on best-sample jitter."
+        ),
+    )
+    parser.add_argument(
+        "--allow-median-regression-when-median-speedup-at-least",
+        type=float,
+        help=(
+            "Do not fail a median-speedup ratio regression when the candidate "
+            "median speedup is already at or above this material-win floor."
+        ),
+    )
+    parser.add_argument(
+        "--allow-noisy-baseline-median-regression-when-candidate-speedup-at-least",
+        type=float,
+        help=(
+            "Do not fail a median-speedup ratio regression when the baseline "
+            "sample was noisy, the candidate sample is stable, and the "
+            "candidate median speedup remains at or above this floor."
+        ),
+    )
+    parser.add_argument(
         "--require-any-median-speedup-at-least",
         type=float,
         help=(
@@ -229,6 +259,30 @@ def main() -> int:
     ):
         parser.error("--require-each-median-speedup-at-least must be nonnegative")
     if (
+        args.allow_best_regression_when_median_speedup_at_least is not None
+        and args.allow_best_regression_when_median_speedup_at_least < 0.0
+    ):
+        parser.error(
+            "--allow-best-regression-when-median-speedup-at-least must be nonnegative"
+        )
+    if (
+        args.allow_median_regression_when_median_speedup_at_least is not None
+        and args.allow_median_regression_when_median_speedup_at_least < 0.0
+    ):
+        parser.error(
+            "--allow-median-regression-when-median-speedup-at-least must be nonnegative"
+        )
+    if (
+        args.allow_noisy_baseline_median_regression_when_candidate_speedup_at_least
+        is not None
+        and args.allow_noisy_baseline_median_regression_when_candidate_speedup_at_least
+        < 0.0
+    ):
+        parser.error(
+            "--allow-noisy-baseline-median-regression-when-candidate-speedup-at-least "
+            "must be nonnegative"
+        )
+    if (
         args.allow_noisy_when_median_speedup_at_least is not None
         and args.allow_noisy_when_median_speedup_at_least < 0.0
     ):
@@ -253,6 +307,15 @@ def main() -> int:
         min_best_speedup_ratio=args.min_best_speedup_ratio,
         median_regression_best_speedup_ratio_floor=(
             args.median_regression_best_speedup_ratio_floor
+        ),
+        allow_best_regression_when_median_speedup_at_least=(
+            args.allow_best_regression_when_median_speedup_at_least
+        ),
+        allow_median_regression_when_median_speedup_at_least=(
+            args.allow_median_regression_when_median_speedup_at_least
+        ),
+        allow_noisy_baseline_median_regression_when_candidate_speedup_at_least=(
+            args.allow_noisy_baseline_median_regression_when_candidate_speedup_at_least
         ),
         require_any_median_speedup_at_least=args.require_any_median_speedup_at_least,
         require_each_median_speedup_at_least=args.require_each_median_speedup_at_least,
@@ -431,6 +494,10 @@ def comparison_failures(
     min_median_speedup_ratio: float,
     min_best_speedup_ratio: float,
     median_regression_best_speedup_ratio_floor: float | None = None,
+    allow_best_regression_when_median_speedup_at_least: float | None = None,
+    allow_median_regression_when_median_speedup_at_least: float | None = None,
+    allow_noisy_baseline_median_regression_when_candidate_speedup_at_least: float
+    | None = None,
     require_any_median_speedup_at_least: float | None = None,
     require_each_median_speedup_at_least: float | None = None,
     require_stable_samples: bool = False,
@@ -479,12 +546,30 @@ def comparison_failures(
                 f"median_speedup={row.baseline_median_speedup:.3f}"
             )
         elif median_ratio < min_median_speedup_ratio:
+            material_median_win_allows_median_drift = (
+                allow_median_regression_when_median_speedup_at_least is not None
+                and row.candidate_median_speedup
+                >= allow_median_regression_when_median_speedup_at_least
+            )
             best_floor_allows_median_drift = (
                 median_regression_best_speedup_ratio_floor is not None
                 and best_ratio is not None
                 and best_ratio >= median_regression_best_speedup_ratio_floor
             )
-            if not best_floor_allows_median_drift:
+            noisy_baseline_allows_median_drift = (
+                allow_noisy_baseline_median_regression_when_candidate_speedup_at_least
+                is not None
+                and row.baseline_sample_stability
+                and row.baseline_sample_stability != "stable"
+                and row.candidate_sample_stability == "stable"
+                and row.candidate_median_speedup
+                >= allow_noisy_baseline_median_regression_when_candidate_speedup_at_least
+            )
+            if (
+                not material_median_win_allows_median_drift
+                and not best_floor_allows_median_drift
+                and not noisy_baseline_allows_median_drift
+            ):
                 failures.append(
                     f"{label} median speedup regressed: candidate/baseline="
                     f"{median_ratio:.3f} < {min_median_speedup_ratio:.3f}"
@@ -495,10 +580,16 @@ def comparison_failures(
                 f"best_speedup={row.baseline_best_speedup:.3f}"
             )
         elif best_ratio < min_best_speedup_ratio:
-            failures.append(
-                f"{label} best speedup regressed: candidate/baseline="
-                f"{best_ratio:.3f} < {min_best_speedup_ratio:.3f}"
+            material_median_win_allows_best_drift = (
+                allow_best_regression_when_median_speedup_at_least is not None
+                and row.candidate_median_speedup
+                >= allow_best_regression_when_median_speedup_at_least
             )
+            if not material_median_win_allows_best_drift:
+                failures.append(
+                    f"{label} best speedup regressed: candidate/baseline="
+                    f"{best_ratio:.3f} < {min_best_speedup_ratio:.3f}"
+                )
         if (
             require_each_median_speedup_at_least is not None
             and row.candidate_median_speedup < require_each_median_speedup_at_least
@@ -575,6 +666,16 @@ def is_adaptive_default_row(name: str) -> bool:
 
 def is_server_row(name: str) -> bool:
     return name.startswith("circle_prime_server_")
+
+
+def is_count_binary_server_row(name: str) -> bool:
+    return name.startswith("circle_prime_count_binary_server_")
+
+
+def is_count_binary_row(name: str) -> bool:
+    return name.startswith("circle_prime_count_binary_") and not is_count_binary_server_row(
+        name
+    )
 
 
 if __name__ == "__main__":

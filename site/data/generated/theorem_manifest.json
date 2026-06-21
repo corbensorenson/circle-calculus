@@ -23877,7 +23877,7 @@
       "informal_statement": "The primitive d-horizon is contained in the n-horizon exactly when d divides n.",
       "lean_name": "Circle.primitiveHorizonContained_iff_dvd",
       "lean_source": "Circle/Core/Horizon.lean",
-      "lean_source_line": 52,
+      "lean_source_line": 67,
       "name": "Primitive horizon containment iff divisibility",
       "original_status": "proved",
       "paper_refs": [
@@ -23910,7 +23910,7 @@
       "informal_statement": "An n-horizon is prime exactly when n is at least two and it contains no nontrivial smaller primitive horizon.",
       "lean_name": "Circle.primeHorizon_iff_no_smaller_contained",
       "lean_source": "Circle/Core/Horizon.lean",
-      "lean_source_line": 72,
+      "lean_source_line": 100,
       "name": "Prime horizon iff no smaller contained horizon",
       "original_status": "proved",
       "paper_refs": [
@@ -23944,7 +23944,7 @@
       "informal_statement": "An n-horizon is prime exactly when n is at least two and no primitive horizon d up to sqrt(n) is contained in it.",
       "lean_name": "Circle.primeHorizon_iff_no_sqrt_contained",
       "lean_source": "Circle/Core/Horizon.lean",
-      "lean_source_line": 78,
+      "lean_source_line": 106,
       "name": "Prime horizon iff no square-root contained horizon",
       "original_status": "proved",
       "paper_refs": [
@@ -23978,7 +23978,7 @@
       "informal_statement": "If n is at least two and no primitive horizon d up to sqrt(n) is contained in it, then the n-horizon is prime.",
       "lean_name": "Circle.primeHorizon_of_no_sqrt_contained",
       "lean_source": "Circle/Core/Horizon.lean",
-      "lean_source_line": 84,
+      "lean_source_line": 112,
       "name": "Prime horizon from no square-root contained horizon",
       "original_status": "proved",
       "paper_refs": [
@@ -24012,7 +24012,7 @@
       "informal_statement": "If n is at least two and its horizon is not prime, then some primitive horizon d up to sqrt(n) is contained in it.",
       "lean_name": "Circle.not_primeHorizon_has_sqrt_contained",
       "lean_source": "Circle/Core/Horizon.lean",
-      "lean_source_line": 100,
+      "lean_source_line": 128,
       "name": "Non-prime horizon has square-root contained horizon",
       "original_status": "proved",
       "paper_refs": [
@@ -24046,7 +24046,7 @@
       "informal_statement": "A horizon belongs to the finite prime-horizon interval exactly when it lies in the half-open range and is a prime horizon.",
       "lean_name": "Circle.mem_primeHorizonsInRange_iff",
       "lean_source": "Circle/Core/Horizon.lean",
-      "lean_source_line": 56,
+      "lean_source_line": 71,
       "name": "Prime horizons in range membership",
       "original_status": "proved",
       "paper_refs": [
@@ -24080,7 +24080,7 @@
       "informal_statement": "The prime-horizon range count is the cardinality of the finite half-open interval filtered by prime horizons.",
       "lean_name": "Circle.primeHorizonRangeCount_eq_filter_card",
       "lean_source": "Circle/Core/Horizon.lean",
-      "lean_source_line": 62,
+      "lean_source_line": 77,
       "name": "Prime horizon range count is filter cardinality",
       "original_status": "proved",
       "paper_refs": [
@@ -24100,6 +24100,1100 @@
         "python_property_tests": [
           "range count equals number of primes in the half-open interval"
         ]
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "CC-0201",
+        "CC-0206"
+      ],
+      "formal_statement": "forall {start high p : Nat}, Circle.nextPrimeHorizonResultUpTo start high (some p) iff p <= high and start <= p and Circle.primeHorizon p and forall n, start <= n -> n < p -> not (Circle.primeHorizon n)",
+      "id": "CC-T0080",
+      "informal_statement": "A found next-prime result is exactly a prime horizon at or above the start, within the finite domain ceiling, with no earlier prime horizon in between.",
+      "lean_name": "Circle.nextPrimeHorizonResultUpTo_some_iff",
+      "lean_source": "Circle/Core/Horizon.lean",
+      "lean_source_line": 82,
+      "name": "Next prime horizon result for found candidate",
+      "original_status": "proved",
+      "paper_refs": [
+        "docs/PRIME_ENGINE.md"
+      ],
+      "proof_notes": "Lean theorem is compiled in Circle/Core/Horizon.lean as the finite-domain next-prime result spec for a found candidate. Rust supplies the exact u64 search and external controls check representative starts.",
+      "python_tests": [
+        "tests/test_rust_prime_cli.py::test_rust_prime_cli_finds_next_prime",
+        "tests/test_prime_external_correctness.py::test_run_next_checks_compares_against_primesieve_and_primecount"
+      ],
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved",
+      "used_by_papers": [],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": [
+          "next(start)=p implies p is prime, start<=p<=u64::MAX, and no prime lies in [start,p)"
+        ]
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "CC-0201",
+        "CC-0206"
+      ],
+      "formal_statement": "forall {start high : Nat}, Circle.nextPrimeHorizonResultUpTo start high none iff forall n, start <= n -> n <= high -> not (Circle.primeHorizon n)",
+      "id": "CC-T0081",
+      "informal_statement": "A not-found next-prime result is exactly the absence of any prime horizon from the start through the finite domain ceiling.",
+      "lean_name": "Circle.nextPrimeHorizonResultUpTo_none_iff",
+      "lean_source": "Circle/Core/Horizon.lean",
+      "lean_source_line": 90,
+      "name": "Next prime horizon result for no candidate",
+      "original_status": "proved",
+      "paper_refs": [
+        "docs/PRIME_ENGINE.md"
+      ],
+      "proof_notes": "Lean theorem is compiled in Circle/Core/Horizon.lean as the finite-domain next-prime not-found spec. Rust's u64 boundary behavior is checked against external controls at the top of the domain.",
+      "python_tests": [
+        "tests/test_rust_prime_cli.py::test_rust_prime_cli_reports_no_next_prime_in_u64_domain",
+        "tests/test_prime_external_correctness.py::test_run_next_checks_skips_primecount_above_cap"
+      ],
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved",
+      "used_by_papers": [],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": [
+          "next(start)=none implies no prime exists in [start,u64::MAX]"
+        ]
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "CC-0201",
+        "CC-0207"
+      ],
+      "formal_statement": "forall {a b c d : Nat}, c < d -> Circle.oldScanCrosses a b c d iff Circle.chordCrosses a b c d",
+      "id": "CC-T0082",
+      "informal_statement": "For normalized chord endpoints, the old antinode scan predicate is exactly strict endpoint interleaving.",
+      "lean_name": "Circle.oldScanCrosses_iff_chordCrosses_of_sorted",
+      "lean_source": "Circle/Core/Antinode.lean",
+      "lean_source_line": 37,
+      "name": "Old antinode scan reduces to chord interleaving",
+      "original_status": "proved",
+      "paper_refs": [
+        "docs/GOOGLE_DRIVE_CIRCLE_IDEAS_AUDIT.md"
+      ],
+      "proof_notes": "Lean theorem is compiled in Circle/Core/Antinode.lean. It captures the finite endpoint-order condition from the older vortex/nodeConnections code without assuming Euclidean geometry.",
+      "python_tests": [],
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved",
+      "used_by_papers": [],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": []
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "CC-0201",
+        "CC-0205",
+        "CC-0206"
+      ],
+      "formal_statement": "forall {p k : Nat}, Nat.Prime p -> Circle.nonSpokeForwardStride p k -> Circle.primeAngleStride p k",
+      "id": "CC-T0083",
+      "informal_statement": "On a prime-size circle, every forward non-spoke stride is a prime-angle stride because it is a full coil.",
+      "lean_name": "Circle.primeAngleStride_of_prime",
+      "lean_source": "Circle/Core/Antinode.lean",
+      "lean_source_line": 65,
+      "name": "Prime angle stride on prime circle",
+      "original_status": "proved",
+      "paper_refs": [
+        "docs/GOOGLE_DRIVE_CIRCLE_IDEAS_AUDIT.md"
+      ],
+      "proof_notes": "Lean theorem is compiled in Circle/Core/Antinode.lean using Circle.prime_full_coil.",
+      "python_tests": [],
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved",
+      "used_by_papers": [],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": []
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "CC-0201",
+        "CC-0206"
+      ],
+      "formal_statement": "Circle.primeChordPathCount 5 = 1 and Circle.primeChordPathCount 7 = 2 and Circle.primeChordPathCount 11 = 4 and Circle.primeChordPathCount 13 = 5 and Circle.primeChordPathCount 17 = 7 and Circle.primeChordPathCount 19 = 8 and Circle.primeChordPathCount 23 = 10",
+      "id": "CC-T0084",
+      "informal_statement": "The first prime-size chord-network path counts match the historical antinode data table.",
+      "lean_name": "Circle.primeChordPathCount_examples",
+      "lean_source": "Circle/Core/Antinode.lean",
+      "lean_source_line": 85,
+      "name": "Prime chord path count examples",
+      "original_status": "proved",
+      "paper_refs": [
+        "docs/GOOGLE_DRIVE_CIRCLE_IDEAS_AUDIT.md"
+      ],
+      "proof_notes": "Lean theorem is compiled in Circle/Core/Antinode.lean by computation from (n - 3) / 2.",
+      "python_tests": [],
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved",
+      "used_by_papers": [],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": []
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "CC-0201",
+        "CC-0207"
+      ],
+      "formal_statement": "forall n : Nat, Circle.fullChordNetworkAntinodeCount n = (Circle.fullChordAntinodeCertificates n).card",
+      "id": "CC-T0085",
+      "informal_statement": "The full abstract chord-network antinode count is the cardinality of the finite set of 4-node boundary certificates.",
+      "lean_name": "Circle.fullChordNetworkAntinodeCount_eq_certificate_card",
+      "lean_source": "Circle/Core/Antinode.lean",
+      "lean_source_line": 120,
+      "name": "Full chord network antinode count formula",
+      "original_status": "proved",
+      "paper_refs": [
+        "docs/GOOGLE_DRIVE_CIRCLE_IDEAS_AUDIT.md"
+      ],
+      "proof_notes": "Lean theorem is compiled in Circle/Core/Antinode.lean using the Finset powersetCard cardinality theorem. A later refinement should add the explicit opposite-chord pairing map.",
+      "python_tests": [],
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved",
+      "used_by_papers": [],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": []
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "CC-0201",
+        "CC-0206",
+        "CC-0207"
+      ],
+      "formal_statement": "Circle.fullChordNetworkAntinodeCount 5 = 5 and Circle.fullChordNetworkAntinodeCount 7 = 35 and Circle.fullChordNetworkAntinodeCount 11 = 330 and Circle.fullChordNetworkAntinodeCount 13 = 715 and Circle.fullChordNetworkAntinodeCount 17 = 2380 and Circle.fullChordNetworkAntinodeCount 19 = 3876 and Circle.fullChordNetworkAntinodeCount 23 = 8855 and Circle.fullChordNetworkAntinodeCount 29 = 23751 and Circle.fullChordNetworkAntinodeCount 31 = 31465",
+      "id": "CC-T0086",
+      "informal_statement": "The first prime-size antinode counts match the historical antinode data table under the full chord-network count formula.",
+      "lean_name": "Circle.fullChordNetworkAntinodeCount_prime_examples",
+      "lean_source": "Circle/Core/Antinode.lean",
+      "lean_source_line": 124,
+      "name": "Full chord network antinode count examples",
+      "original_status": "proved",
+      "paper_refs": [
+        "docs/GOOGLE_DRIVE_CIRCLE_IDEAS_AUDIT.md"
+      ],
+      "proof_notes": "Lean theorem is compiled in Circle/Core/Antinode.lean by computation from n.choose 4.",
+      "python_tests": [],
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved",
+      "used_by_papers": [],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": []
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "CC-0201",
+        "CC-0205",
+        "CC-0207",
+        "CC-0208"
+      ],
+      "formal_statement": "forall {n k : Nat}, n != 0 -> Circle.subcoilCount n k = Nat.gcd n k",
+      "id": "CC-T0087",
+      "informal_statement": "The old subcoil-count terminology is the existing stride-orbit decomposition count, so it equals gcd(n,k).",
+      "lean_name": "Circle.subcoil_count_eq_gcd",
+      "lean_source": "Circle/Core/Antinode.lean",
+      "lean_source_line": 140,
+      "name": "Subcoil count equals gcd",
+      "original_status": "proved",
+      "paper_refs": [
+        "docs/GOOGLE_DRIVE_CIRCLE_IDEAS_AUDIT.md"
+      ],
+      "proof_notes": "Lean theorem is compiled in Circle/Core/Antinode.lean as a wrapper around Circle.orbit_decomposition_count.",
+      "python_tests": [],
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved",
+      "used_by_papers": [],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": []
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "CC-0201",
+        "CC-0205",
+        "CC-0206",
+        "CC-0207",
+        "CC-0208"
+      ],
+      "formal_statement": "forall {p k : Nat}, Nat.Prime p -> 0 < k -> k < p -> Circle.subcoilCount p k = 1",
+      "id": "CC-T0088",
+      "informal_statement": "A nonzero stride below a prime circle size has exactly one subcoil/orbit class.",
+      "lean_name": "Circle.prime_subcoil_count_one",
+      "lean_source": "Circle/Core/Antinode.lean",
+      "lean_source_line": 144,
+      "name": "Prime subcoil count one",
+      "original_status": "proved",
+      "paper_refs": [
+        "docs/GOOGLE_DRIVE_CIRCLE_IDEAS_AUDIT.md"
+      ],
+      "proof_notes": "Lean theorem is compiled in Circle/Core/Antinode.lean from Circle.subcoil_count_eq_gcd and Nat.coprime_of_lt_prime.",
+      "python_tests": [],
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved",
+      "used_by_papers": [],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": []
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "CC-0201",
+        "CC-0205",
+        "CC-0207"
+      ],
+      "formal_statement": "forall n k : Nat, Circle.fullCoilNetworkStride n k iff Circle.primeCoilNetworkStride n k or Circle.compositeCoilNetworkStride n k",
+      "id": "CC-T0089",
+      "informal_statement": "Every forward non-spoke full coil-network stride is classified as either a prime coil-network stride or a composite coil-network stride.",
+      "lean_name": "Circle.fullCoilNetworkStride_iff_prime_or_composite",
+      "lean_source": "Circle/Core/CoilNetwork.lean",
+      "lean_source_line": 44,
+      "name": "Full coil-network stride partition",
+      "original_status": "proved",
+      "paper_refs": [
+        "docs/GOOGLE_DRIVE_CIRCLE_IDEAS_AUDIT.md"
+      ],
+      "proof_notes": "Lean theorem is compiled in Circle/Core/CoilNetwork.lean by case-splitting on whether the stride is a full coil.",
+      "python_tests": [],
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved",
+      "used_by_papers": [],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": []
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "CC-0201",
+        "CC-0205",
+        "CC-0206",
+        "CC-0207"
+      ],
+      "formal_statement": "forall {p k : Nat}, Nat.Prime p -> Circle.fullCoilNetworkStride p k -> Circle.primeCoilNetworkStride p k",
+      "id": "CC-T0090",
+      "informal_statement": "On a prime-size circle, every forward non-spoke full-network stride is a prime coil-network stride.",
+      "lean_name": "Circle.primeCircle_fullNetworkStride_is_prime",
+      "lean_source": "Circle/Core/CoilNetwork.lean",
+      "lean_source_line": 58,
+      "name": "Prime circle full network strides are prime network strides",
+      "original_status": "proved",
+      "paper_refs": [
+        "docs/GOOGLE_DRIVE_CIRCLE_IDEAS_AUDIT.md"
+      ],
+      "proof_notes": "Lean theorem is compiled in Circle/Core/CoilNetwork.lean from Circle.primeAngleStride_of_prime.",
+      "python_tests": [],
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved",
+      "used_by_papers": [],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": []
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "CC-0201",
+        "CC-0207"
+      ],
+      "formal_statement": "forall {n k : Nat}, Circle.spokeStride n k -> not Circle.nonSpokeForwardStride n k",
+      "id": "CC-T0091",
+      "informal_statement": "A midpoint spoke stride cannot also satisfy the forward non-spoke stride inequality.",
+      "lean_name": "Circle.spokeStride_not_nonSpokeForwardStride",
+      "lean_source": "Circle/Core/CoilNetwork.lean",
+      "lean_source_line": 68,
+      "name": "Midpoint spokes are excluded from forward non-spoke strides",
+      "original_status": "proved",
+      "paper_refs": [
+        "docs/GOOGLE_DRIVE_CIRCLE_IDEAS_AUDIT.md"
+      ],
+      "proof_notes": "Lean theorem is compiled in Circle/Core/CoilNetwork.lean by rewriting the strict midpoint inequality to 2*k < 2*k.",
+      "python_tests": [],
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved",
+      "used_by_papers": [],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": []
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "CC-0201",
+        "CC-0207",
+        "CC-0208"
+      ],
+      "formal_statement": "forall {n d : Nat}, Circle.factorSubcoilExists n d -> Circle.factorSubcoilCopies n d * d = n",
+      "id": "CC-T0092",
+      "informal_statement": "If a visible subcoil size divides the host node count, then copy count times visible size reconstructs the host count.",
+      "lean_name": "Circle.factorSubcoilCopies_mul",
+      "lean_source": "Circle/Core/CoilNetwork.lean",
+      "lean_source_line": 150,
+      "name": "Factor subcoil copies multiply back to host",
+      "original_status": "proved",
+      "paper_refs": [
+        "docs/GOOGLE_DRIVE_CIRCLE_IDEAS_AUDIT.md"
+      ],
+      "proof_notes": "Lean theorem is compiled in Circle/Core/CoilNetwork.lean using Nat.div_mul_cancel.",
+      "python_tests": [],
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved",
+      "used_by_papers": [],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": []
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "CC-0201",
+        "CC-0207",
+        "CC-0208"
+      ],
+      "formal_statement": "Circle.factorSubcoilCopies 18 3 = 6 and Circle.factorSubcoilCopies 18 9 = 2 and Circle.factorSubcoilCopies 72 18 = 4",
+      "id": "CC-T0093",
+      "informal_statement": "The white-paper examples 18/3 = 6, 18/9 = 2, and 72/18 = 4 are checked as factor subcoil copy counts.",
+      "lean_name": "Circle.factorSubcoilCopies_18_examples",
+      "lean_source": "Circle/Core/CoilNetwork.lean",
+      "lean_source_line": 155,
+      "name": "Factor subcoil copy examples",
+      "original_status": "proved",
+      "paper_refs": [
+        "docs/GOOGLE_DRIVE_CIRCLE_IDEAS_AUDIT.md"
+      ],
+      "proof_notes": "Lean theorem is compiled in Circle/Core/CoilNetwork.lean by native computation.",
+      "python_tests": [],
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved",
+      "used_by_papers": [],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": []
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "CC-0201",
+        "CC-0207"
+      ],
+      "formal_statement": "Circle.coilMapTotalNodes 18 4 = 72",
+      "id": "CC-T0094",
+      "informal_statement": "A coil map with 18 visible nodes and 4 underlying nodes per visible node represents 72 concrete nodes.",
+      "lean_name": "Circle.coilMapTotalNodes_18_4",
+      "lean_source": "Circle/Core/CoilNetwork.lean",
+      "lean_source_line": 173,
+      "name": "Coil map 18 by 4 has 72 represented nodes",
+      "original_status": "proved",
+      "paper_refs": [
+        "docs/GOOGLE_DRIVE_CIRCLE_IDEAS_AUDIT.md"
+      ],
+      "proof_notes": "Lean theorem is compiled in Circle/Core/CoilNetwork.lean by native computation.",
+      "python_tests": [],
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved",
+      "used_by_papers": [],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": []
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "CC-0201",
+        "CC-0207"
+      ],
+      "formal_statement": "forall fiber i : Nat, Circle.coilMapBlockEnd fiber i - Circle.coilMapBlockStart fiber i = fiber",
+      "id": "CC-T0095",
+      "informal_statement": "Each visible coil-map node represents a concrete block whose width is the fixed fiber size.",
+      "lean_name": "Circle.coilMapBlockWidth",
+      "lean_source": "Circle/Core/CoilNetwork.lean",
+      "lean_source_line": 177,
+      "name": "Coil map block width",
+      "original_status": "proved",
+      "paper_refs": [
+        "docs/GOOGLE_DRIVE_CIRCLE_IDEAS_AUDIT.md"
+      ],
+      "proof_notes": "Lean theorem is compiled in Circle/Core/CoilNetwork.lean from distributivity of multiplication over addition.",
+      "python_tests": [],
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved",
+      "used_by_papers": [],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": []
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "CC-0201",
+        "CC-0206",
+        "CC-0207"
+      ],
+      "formal_statement": "forall {window stride : Nat}, Nat.Prime window -> 0 < stride -> stride < window -> Circle.Applications.temporalCoilStride window stride",
+      "id": "CC-T0096",
+      "informal_statement": "For a prime temporal window, every positive stride below the window is a coprime temporal-coil stride.",
+      "lean_name": "Circle.Applications.temporalCoilStride_of_prime",
+      "lean_source": "Circle/Applications/TemporalCoil.lean",
+      "lean_source_line": 17,
+      "name": "Temporal coil stride from prime window",
+      "original_status": "proved",
+      "paper_refs": [
+        "docs/GOOGLE_DRIVE_CIRCLE_IDEAS_AUDIT.md"
+      ],
+      "proof_notes": "Lean theorem is compiled in Circle/Applications/TemporalCoil.lean using Nat.coprime_of_lt_prime.",
+      "python_tests": [],
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved",
+      "used_by_papers": [],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": []
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "CC-0201",
+        "CC-0206",
+        "CC-0207"
+      ],
+      "formal_statement": "Nat.Prime 11 and Nat.Prime 17 and Nat.Prime 29",
+      "id": "CC-T0097",
+      "informal_statement": "The temporal-coil progressive ladder values 11, 17, and 29 are prime.",
+      "lean_name": "Circle.Applications.temporalPrimeLadder_examples",
+      "lean_source": "Circle/Applications/TemporalCoil.lean",
+      "lean_source_line": 23,
+      "name": "Temporal prime ladder examples",
+      "original_status": "proved",
+      "paper_refs": [
+        "docs/GOOGLE_DRIVE_CIRCLE_IDEAS_AUDIT.md"
+      ],
+      "proof_notes": "Lean theorem is compiled in Circle/Applications/TemporalCoil.lean by native computation.",
+      "python_tests": [],
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved",
+      "used_by_papers": [],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": []
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "CC-0201",
+        "CC-0206",
+        "CC-0207"
+      ],
+      "formal_statement": "Circle.Applications.temporalCoilStride 29 1 and Circle.Applications.temporalCoilStride 29 2 and Circle.Applications.temporalCoilStride 29 3 and Circle.Applications.temporalCoilStride 29 5 and Circle.Applications.temporalCoilStride 29 8",
+      "id": "CC-T0098",
+      "informal_statement": "The manifest stride set 1, 2, 3, 5, 8 is valid for the prime temporal window 29.",
+      "lean_name": "Circle.Applications.temporalStrideSet29_examples",
+      "lean_source": "Circle/Applications/TemporalCoil.lean",
+      "lean_source_line": 27,
+      "name": "Temporal stride set 29 examples",
+      "original_status": "proved",
+      "paper_refs": [
+        "docs/GOOGLE_DRIVE_CIRCLE_IDEAS_AUDIT.md"
+      ],
+      "proof_notes": "Lean theorem is compiled in Circle/Applications/TemporalCoil.lean from Circle.Applications.temporalCoilStride_of_prime.",
+      "python_tests": [],
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved",
+      "used_by_papers": [],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": []
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "CC-0201",
+        "CC-0207"
+      ],
+      "formal_statement": "Circle.Applications.temporalAbyssEndpointNodeEdges 59 16000 = 912000",
+      "id": "CC-T0099",
+      "informal_statement": "With 59 temporal sets and 16,000 vocabulary nodes, an endpoint token has 912,000 outgoing non-abyss directed edges.",
+      "lean_name": "Circle.Applications.temporalAbyss59EndpointNodeEdges16000",
+      "lean_source": "Circle/Applications/TemporalCoil.lean",
+      "lean_source_line": 64,
+      "name": "Temporal abyss endpoint node edge example",
+      "original_status": "proved",
+      "paper_refs": [
+        "docs/GOOGLE_DRIVE_CIRCLE_IDEAS_AUDIT.md"
+      ],
+      "proof_notes": "Lean theorem is compiled in Circle/Applications/TemporalCoil.lean by native computation from (59 - 2) * 16000.",
+      "python_tests": [],
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved",
+      "used_by_papers": [],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": []
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "CC-0201",
+        "CC-0207"
+      ],
+      "formal_statement": "Circle.Applications.temporalAbyssInteriorNodeEdges 59 16000 = 928000",
+      "id": "CC-T0100",
+      "informal_statement": "With 59 temporal sets and 16,000 vocabulary nodes, an interior token has 928,000 outgoing non-self directed edges.",
+      "lean_name": "Circle.Applications.temporalAbyss59InteriorNodeEdges16000",
+      "lean_source": "Circle/Applications/TemporalCoil.lean",
+      "lean_source_line": 68,
+      "name": "Temporal abyss interior node edge example",
+      "original_status": "proved",
+      "paper_refs": [
+        "docs/GOOGLE_DRIVE_CIRCLE_IDEAS_AUDIT.md"
+      ],
+      "proof_notes": "Lean theorem is compiled in Circle/Applications/TemporalCoil.lean by native computation from (59 - 1) * 16000.",
+      "python_tests": [],
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved",
+      "used_by_papers": [],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": []
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "CC-0201",
+        "CC-0207"
+      ],
+      "formal_statement": "Circle.Applications.temporalAbyssTotalDirectedEdges 59 16000 = 875520000000",
+      "id": "CC-T0101",
+      "informal_statement": "The 59-set, 16,000-vocabulary temporal abyss all-to-all count is 875,520,000,000 directed token edges before further sparsity.",
+      "lean_name": "Circle.Applications.temporalAbyss59TotalDirectedEdges16000",
+      "lean_source": "Circle/Applications/TemporalCoil.lean",
+      "lean_source_line": 72,
+      "name": "Temporal abyss total directed edge example",
+      "original_status": "proved",
+      "paper_refs": [
+        "docs/GOOGLE_DRIVE_CIRCLE_IDEAS_AUDIT.md"
+      ],
+      "proof_notes": "Lean theorem is compiled in Circle/Applications/TemporalCoil.lean by native computation from the endpoint and interior edge-count formula.",
+      "python_tests": [],
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved",
+      "used_by_papers": [],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": []
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "CC-0201",
+        "CC-0205",
+        "CC-0207"
+      ],
+      "formal_statement": "forall {n skip : Nat}, n != 0 -> Circle.whitePaperPrimeAngleSkip n skip -> Circle.fullCoil n (Circle.whitePaperSkipStride skip)",
+      "id": "CC-T0102",
+      "informal_statement": "A Primecoin/(ed) white-paper prime-angle skip induces a full coil whenever the node count is nonzero.",
+      "lean_name": "Circle.whitePaperPrimeAngleSkip_fullCoil",
+      "lean_source": "Circle/Core/CoilNetwork.lean",
+      "lean_source_line": 110,
+      "name": "White-paper prime angle skip is full coil",
+      "original_status": "proved",
+      "paper_refs": [
+        "docs/GOOGLE_DRIVE_CIRCLE_IDEAS_AUDIT.md"
+      ],
+      "proof_notes": "Lean theorem is compiled in Circle/Core/CoilNetwork.lean by converting the skip predicate's gcd-one condition into Circle.fullCoil via Circle.fullCoil_iff_coprime.",
+      "python_tests": [],
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved",
+      "used_by_papers": [],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": []
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "CC-0201",
+        "CC-0205",
+        "CC-0206",
+        "CC-0207"
+      ],
+      "formal_statement": "forall {p skip : Nat}, Nat.Prime p -> Circle.whitePaperForwardSkip p skip -> Circle.whitePaperPrimeAngleSkip p skip",
+      "id": "CC-T0103",
+      "informal_statement": "For a prime node count, every pre-midpoint white-paper skip is a prime-angle skip.",
+      "lean_name": "Circle.whitePaperPrimeAngleSkip_of_prime",
+      "lean_source": "Circle/Core/CoilNetwork.lean",
+      "lean_source_line": 115,
+      "name": "Prime node count makes every forward skip prime",
+      "original_status": "proved",
+      "paper_refs": [
+        "docs/GOOGLE_DRIVE_CIRCLE_IDEAS_AUDIT.md"
+      ],
+      "proof_notes": "Lean theorem is compiled in Circle/Core/CoilNetwork.lean from Nat.coprime_of_lt_prime after translating skip to stride skip+1.",
+      "python_tests": [],
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved",
+      "used_by_papers": [],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": []
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "CC-0201",
+        "CC-0205",
+        "CC-0207"
+      ],
+      "formal_statement": "((List.range 5).filter (fun skip => decide (Circle.whitePaperPrimeAngleSkip 12 skip))) = [0, 4]",
+      "id": "CC-T0104",
+      "informal_statement": "In the white-paper skip range for 12 nodes, exactly skips 0 and 4 are prime-angle skips.",
+      "lean_name": "Circle.whitePaperPrimeAngleSkips12_eq",
+      "lean_source": "Circle/Core/CoilNetwork.lean",
+      "lean_source_line": 127,
+      "name": "White-paper prime angle skips for 12",
+      "original_status": "proved",
+      "paper_refs": [
+        "docs/GOOGLE_DRIVE_CIRCLE_IDEAS_AUDIT.md"
+      ],
+      "proof_notes": "Lean theorem is compiled in Circle/Core/CoilNetwork.lean by native computation over the finite skip list 0..4.",
+      "python_tests": [],
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved",
+      "used_by_papers": [],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": []
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "CC-0201",
+        "CC-0205",
+        "CC-0206",
+        "CC-0207"
+      ],
+      "formal_statement": "((List.range 6).filter (fun skip => decide (Circle.whitePaperPrimeAngleSkip 13 skip))) = [0, 1, 2, 3, 4, 5]",
+      "id": "CC-T0105",
+      "informal_statement": "In the white-paper skip range for 13 nodes, all skips 0 through 5 are prime-angle skips.",
+      "lean_name": "Circle.whitePaperPrimeAngleSkips13_eq",
+      "lean_source": "Circle/Core/CoilNetwork.lean",
+      "lean_source_line": 132,
+      "name": "White-paper prime angle skips for 13",
+      "original_status": "proved",
+      "paper_refs": [
+        "docs/GOOGLE_DRIVE_CIRCLE_IDEAS_AUDIT.md"
+      ],
+      "proof_notes": "Lean theorem is compiled in Circle/Core/CoilNetwork.lean by native computation over the finite skip list 0..5.",
+      "python_tests": [],
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved",
+      "used_by_papers": [],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": []
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "CC-0201",
+        "CC-0206"
+      ],
+      "formal_statement": "Nat.Prime Circle.Applications.treeLLMRootQuestionCount",
+      "id": "CC-T0106",
+      "informal_statement": "The TreeLLM universal root count, 13, is prime.",
+      "lean_name": "Circle.Applications.treeLLMRootQuestionCount_prime",
+      "lean_source": "Circle/Applications/TreeLLM.lean",
+      "lean_source_line": 31,
+      "name": "TreeLLM root count is prime",
+      "original_status": "proved",
+      "paper_refs": [
+        "docs/GOOGLE_DRIVE_CIRCLE_IDEAS_AUDIT.md"
+      ],
+      "proof_notes": "Lean theorem is compiled in Circle/Applications/TreeLLM.lean by native computation.",
+      "python_tests": [],
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved",
+      "used_by_papers": [],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": []
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "CC-0201"
+      ],
+      "formal_statement": "Circle.Applications.treeLLMPathIdBytes * Circle.Applications.treeLLMBitsPerByte = Circle.Applications.treeLLMPathIdBits",
+      "id": "CC-T0107",
+      "informal_statement": "Thirteen 24-bit TreeLLM root paths use 312 bits, exactly 39 bytes.",
+      "lean_name": "Circle.Applications.treeLLMPathIdBits_byte_aligned",
+      "lean_source": "Circle/Applications/TreeLLM.lean",
+      "lean_source_line": 43,
+      "name": "TreeLLM path-id bits are byte-aligned",
+      "original_status": "proved",
+      "paper_refs": [
+        "docs/GOOGLE_DRIVE_CIRCLE_IDEAS_AUDIT.md"
+      ],
+      "proof_notes": "Lean theorem is compiled in Circle/Applications/TreeLLM.lean by native computation from 13 * 24 = 312 and 312 / 8 = 39.",
+      "python_tests": [],
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved",
+      "used_by_papers": [],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": []
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "CC-0201"
+      ],
+      "formal_statement": "Circle.Applications.treeLLM76TokenBytes = 76",
+      "id": "CC-T0108",
+      "informal_statement": "The TreeLLM 76-byte token fields sum to exactly 76 bytes.",
+      "lean_name": "Circle.Applications.treeLLM76TokenBytes_eq",
+      "lean_source": "Circle/Applications/TreeLLM.lean",
+      "lean_source_line": 70,
+      "name": "TreeLLM 76-byte token layout sum",
+      "original_status": "proved",
+      "paper_refs": [
+        "docs/GOOGLE_DRIVE_CIRCLE_IDEAS_AUDIT.md"
+      ],
+      "proof_notes": "Lean theorem is compiled in Circle/Applications/TreeLLM.lean from 39 path bytes, 13 root-probability bytes, 8 hash bytes, and 16 residual bytes.",
+      "python_tests": [],
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved",
+      "used_by_papers": [],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": []
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "CC-0201"
+      ],
+      "formal_statement": "Circle.Applications.treeLLM80TokenBytes = 80",
+      "id": "CC-T0109",
+      "informal_statement": "The TreeLLM 80-byte token variant fields sum to exactly 80 bytes.",
+      "lean_name": "Circle.Applications.treeLLM80TokenBytes_eq",
+      "lean_source": "Circle/Applications/TreeLLM.lean",
+      "lean_source_line": 82,
+      "name": "TreeLLM 80-byte token layout sum",
+      "original_status": "proved",
+      "paper_refs": [
+        "docs/GOOGLE_DRIVE_CIRCLE_IDEAS_AUDIT.md"
+      ],
+      "proof_notes": "Lean theorem is compiled in Circle/Applications/TreeLLM.lean from 39 path bytes, 13 root-probability bytes, 4 covariance bytes, 8 Kyber bytes, and 16 residual bytes.",
+      "python_tests": [],
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved",
+      "used_by_papers": [],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": []
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "CC-0201"
+      ],
+      "formal_statement": "Circle.Applications.treeLLMInitialPayloadBits <= Circle.Applications.treeLLMInitialTokenBits",
+      "id": "CC-T0110",
+      "informal_statement": "The initial TreeLLM 14-bit path id plus 20 int8 residual dimensions fit inside a 32-byte token.",
+      "lean_name": "Circle.Applications.treeLLMInitialPayloadFits32Bytes",
+      "lean_source": "Circle/Applications/TreeLLM.lean",
+      "lean_source_line": 104,
+      "name": "TreeLLM initial payload fits 32 bytes",
+      "original_status": "proved",
+      "paper_refs": [
+        "docs/GOOGLE_DRIVE_CIRCLE_IDEAS_AUDIT.md"
+      ],
+      "proof_notes": "Lean theorem is compiled in Circle/Applications/TreeLLM.lean by native computation: 14 + 20 * 8 = 174 <= 256.",
+      "python_tests": [],
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved",
+      "used_by_papers": [],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": []
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "CC-0201"
+      ],
+      "formal_statement": "Circle.Applications.treeLLMV8SemanticVectorBytes = 32",
+      "id": "CC-T0111",
+      "informal_statement": "The TreeLLM v8 semantic vector fields sum to exactly 32 bytes.",
+      "lean_name": "Circle.Applications.treeLLMV8SemanticVectorBytes_eq",
+      "lean_source": "Circle/Applications/TreeLLM.lean",
+      "lean_source_line": 118,
+      "name": "TreeLLM v8 semantic vector layout sum",
+      "original_status": "proved",
+      "paper_refs": [
+        "docs/GOOGLE_DRIVE_CIRCLE_IDEAS_AUDIT.md"
+      ],
+      "proof_notes": "Lean theorem is compiled in Circle/Applications/TreeLLM.lean from 16 graph-coordinate bytes, 4 type-header bytes, and 12 residual bytes.",
+      "python_tests": [],
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved",
+      "used_by_papers": [],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": []
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "CC-0201"
+      ],
+      "formal_statement": "Circle.Applications.treeLLMNonSensoryAnchorCount = 112",
+      "id": "CC-T0112",
+      "informal_statement": "If TreeLLM reserves 16 of 128 semantic anchors for sensory data, 112 anchors remain non-sensory.",
+      "lean_name": "Circle.Applications.treeLLMNonSensoryAnchorCount_eq",
+      "lean_source": "Circle/Applications/TreeLLM.lean",
+      "lean_source_line": 129,
+      "name": "TreeLLM non-sensory anchor count",
+      "original_status": "proved",
+      "paper_refs": [
+        "docs/GOOGLE_DRIVE_CIRCLE_IDEAS_AUDIT.md"
+      ],
+      "proof_notes": "Lean theorem is compiled in Circle/Applications/TreeLLM.lean by native computation from 128 - 16.",
+      "python_tests": [],
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved",
+      "used_by_papers": [],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": []
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "CC-0201"
+      ],
+      "formal_statement": "Circle.Applications.treeLLMSensoryAnchorCount <= Circle.Applications.treeLLMTotalAnchorCount",
+      "id": "CC-T0113",
+      "informal_statement": "The 16 reserved TreeLLM sensory anchors fit within the 128 total semantic anchors.",
+      "lean_name": "Circle.Applications.treeLLMSensoryAnchorCapacity_le_total",
+      "lean_source": "Circle/Applications/TreeLLM.lean",
+      "lean_source_line": 133,
+      "name": "TreeLLM sensory anchors fit total anchors",
+      "original_status": "proved",
+      "paper_refs": [
+        "docs/GOOGLE_DRIVE_CIRCLE_IDEAS_AUDIT.md"
+      ],
+      "proof_notes": "Lean theorem is compiled in Circle/Applications/TreeLLM.lean by native computation.",
+      "python_tests": [],
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved",
+      "used_by_papers": [],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": []
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "CC-0201"
+      ],
+      "formal_statement": "Circle.Applications.treeLLMSpeculativeHopMin <= Circle.Applications.treeLLMSpeculativeHopMax",
+      "id": "CC-T0114",
+      "informal_statement": "The TreeLLM speculative traversal range 3 to 5 hops is a nonempty numeric interval.",
+      "lean_name": "Circle.Applications.treeLLMSpeculativeHopSpan_nonempty",
+      "lean_source": "Circle/Applications/TreeLLM.lean",
+      "lean_source_line": 150,
+      "name": "TreeLLM speculative hop span is nonempty",
+      "original_status": "proved",
+      "paper_refs": [
+        "docs/GOOGLE_DRIVE_CIRCLE_IDEAS_AUDIT.md"
+      ],
+      "proof_notes": "Lean theorem is compiled in Circle/Applications/TreeLLM.lean by native computation.",
+      "python_tests": [],
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved",
+      "used_by_papers": [],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": []
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "CC-0201"
+      ],
+      "formal_statement": "Circle.Applications.rotaryAttentionConfigWellFormed Circle.Applications.mlxRotaryConfig512_8_4_16",
+      "id": "CC-T0115",
+      "informal_statement": "The Drive RoPE config with model_dim 512, 8 heads, 4 KV heads, and 16 RoPE dimensions satisfies the finite attention-shape guardrails.",
+      "lean_name": "Circle.Applications.mlxRotaryConfig512_8_4_16_wellFormed",
+      "lean_source": "Circle/Applications/AIConfig.lean",
+      "lean_source_line": 49,
+      "name": "MLX rotary config 512 8 4 16 well formed",
+      "original_status": "proved",
+      "paper_refs": [
+        "docs/GOOGLE_DRIVE_CIRCLE_IDEAS_AUDIT.md"
+      ],
+      "proof_notes": "Lean theorem is compiled in Circle/Applications/AIConfig.lean by native computation over the divisibility, evenness, and RoPE-dimension bounds.",
+      "python_tests": [],
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved",
+      "used_by_papers": [],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": []
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "CC-0201"
+      ],
+      "formal_statement": "Circle.Applications.effectiveRotaryDims (Circle.Applications.rotaryAttentionHeadDim Circle.Applications.mlxRotaryConfig512_8_4_0) Circle.Applications.mlxRotaryConfig512_8_4_0.ropeDims = 64",
+      "id": "CC-T0116",
+      "informal_statement": "For the Drive MLX config with rope_dims = 0, the effective rotary dimension is the full 64-dimensional head.",
+      "lean_name": "Circle.Applications.mlxRotaryConfig512_8_4_0_effectiveFullHead",
+      "lean_source": "Circle/Applications/AIConfig.lean",
+      "lean_source_line": 65,
+      "name": "MLX zero RoPE dims default to full head",
+      "original_status": "proved",
+      "paper_refs": [
+        "docs/GOOGLE_DRIVE_CIRCLE_IDEAS_AUDIT.md"
+      ],
+      "proof_notes": "Lean theorem is compiled in Circle/Applications/AIConfig.lean by native computation from 512 / 8 = 64 and the rope_dims = 0 default rule.",
+      "python_tests": [],
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved",
+      "used_by_papers": [],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": []
       }
     },
     {

@@ -28,6 +28,7 @@ def defaults_fixture() -> dict[str, object]:
     return {
         "parallel_edge_high_offset_count_mode": "segmented",
         "parallel_edge_high_offset_min_base_limit": 1_000_000,
+        "parallel_edge_high_offset_segment_size": 1_507_328,
         "parallel_tiny_prefix_count_mode": "segmented",
         "parallel_tiny_prefix_segment_size": 262_144,
         "parallel_small_prefix_count_mode": "segmented",
@@ -159,7 +160,7 @@ def test_build_default_updates_skips_unconfirmed_high_offset_recommendation() ->
     assert changes == []
     assert skipped == [
         "refusing unconfirmed external recommendation for "
-        "parallel_very_high_offset_segment_size/"
+        "parallel_edge_high_offset_segment_size/"
         "parallel_edge_high_offset_count_mode: unconfirmed"
     ]
 
@@ -185,7 +186,7 @@ def test_build_default_updates_skips_unconfirmed_high_offset_tight_recommendatio
     assert changes == []
     assert skipped == [
         "refusing unconfirmed external recommendation for "
-        "parallel_very_high_offset_segment_size/"
+        "parallel_edge_high_offset_segment_size/"
         "parallel_edge_high_offset_count_mode: unconfirmed"
     ]
 
@@ -209,12 +210,12 @@ def test_build_default_updates_applies_confirmed_high_offset_confirmation() -> N
     )
 
     assert skipped == []
-    assert updated["parallel_very_high_offset_segment_size"] == 4_194_304
+    assert updated["parallel_edge_high_offset_segment_size"] == 4_194_304
     assert updated["parallel_edge_high_offset_count_mode"] == "presieve17"
     assert changes == [
         {
-            "key": "parallel_very_high_offset_segment_size",
-            "old": 3_145_728,
+            "key": "parallel_edge_high_offset_segment_size",
+            "old": 1_507_328,
             "new": 4_194_304,
             "low": 1_000_000_000_000,
             "high": 1_000_010_000_000,

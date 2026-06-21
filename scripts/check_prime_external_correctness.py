@@ -52,8 +52,13 @@ DEFAULT_ENUMERATION_RANGES = (
     "1000000000000:1000000001000,"
     "18446744073709551515:18446744073709551615"
 )
-DEFAULT_NEXT_STARTS = "0,2,90,1000000,4294967000,1000000000000"
+U64_MAX = 2**64 - 1
+DEFAULT_NEXT_STARTS = (
+    "0,2,90,1000000,4294967000,1000000000000,"
+    "18446744073709551500,18446744073709551558"
+)
 DEFAULT_NEXT_SEARCH_WINDOW = 100_000
+DEFAULT_PRIMECOUNT_NEXT_MAX_START = 1_000_000_000_000
 DEFAULT_OUTPUT = RESULTS_DIR / "prime_engine_external_correctness_latest.json"
 DEFAULT_REQUIRED_TOOLS = ("primesieve", "primecount")
 
@@ -84,6 +89,15 @@ def main() -> int:
         type=int,
         default=DEFAULT_NEXT_SEARCH_WINDOW,
         help="Inclusive search window passed to primesieve for each next-prime check.",
+    )
+    parser.add_argument(
+        "--primecount-next-max-start",
+        type=int,
+        default=DEFAULT_PRIMECOUNT_NEXT_MAX_START,
+        help=(
+            "Largest next-prime START checked against primecount pi+nth-prime. "
+            "Larger starts still check against primesieve when available."
+        ),
     )
     parser.add_argument(
         "--segment-size",
@@ -129,6 +143,8 @@ def main() -> int:
         parser.error("--external-threads must be nonnegative")
     if args.next_search_window <= 0:
         parser.error("--next-search-window must be positive")
+    if args.primecount_next_max_start < 0:
+        parser.error("--primecount-next-max-start must be nonnegative")
 
     try:
         ranges = parse_ranges(args.ranges)
@@ -162,6 +178,7 @@ def main() -> int:
             circle_count_modes=circle_count_modes,
             circle_threads=args.circle_threads,
             external_threads=args.external_threads,
+            primecount_next_max_start=args.primecount_next_max_start,
             required_tools=required_tools,
             checks=[],
             missing_tools=missing_tools,
@@ -198,8 +215,11 @@ def main() -> int:
     next_checks = run_next_checks(
         circle_prime=circle_prime,
         primesieve=primesieve,
+        primecount=primecount,
         starts=next_starts,
         search_window=args.next_search_window,
+        external_threads=args.external_threads,
+        primecount_max_start=args.primecount_next_max_start,
     )
     report = build_report(
         started_at_utc=started_at_utc,
@@ -214,6 +234,7 @@ def main() -> int:
         circle_count_modes=circle_count_modes,
         circle_threads=args.circle_threads,
         external_threads=args.external_threads,
+        primecount_next_max_start=args.primecount_next_max_start,
         required_tools=required_tools,
         checks=checks,
         count_server_checks=count_server_checks,
@@ -257,6 +278,10 @@ def parse_integer_list_argument(raw: str) -> list[int]:
         if value < 0:
             raise argparse.ArgumentTypeError(
                 f"expected comma-separated nonnegative integers, got {stripped!r}"
+            )
+        if value > U64_MAX:
+            raise argparse.ArgumentTypeError(
+                f"expected comma-separated u64 integers, got {stripped!r}"
             )
         values.append(value)
     if not values:
@@ -454,23 +479,44 @@ def run_next_checks(
     *,
     circle_prime: Path,
     primesieve: str | None,
+    primecount: str | None,
     starts: list[int],
     search_window: int,
+    external_threads: int,
+    primecount_max_start: int,
 ) -> list[dict[str, Any]]:
-    if primesieve is None:
+    if primesieve is None and primecount is None:
         return []
     checks = []
     for start in starts:
-        expected = primesieve_next_prime(primesieve, start, search_window)
+        external_primes: dict[str, int | None] = {}
+        if primesieve is not None:
+            external_primes["primesieve"] = primesieve_next_prime(
+                primesieve,
+                start,
+                search_window,
+            )
+        if primecount is not None and start <= primecount_max_start:
+            external_primes["primecount"] = primecount_next_prime(
+                primecount,
+                start,
+                external_threads,
+            )
         circle = circle_next_prime(circle_prime, start)
+        matches = {
+            name: circle["prime"] == expected
+            for name, expected in external_primes.items()
+        }
         checks.append(
             {
                 "start": start,
                 "search_window": search_window,
                 "circle_prime": circle["prime"],
-                "external_prime": expected,
+                "external_prime": external_primes.get("primesieve"),
+                "external_primes": external_primes,
+                "matches": matches,
                 "candidate_count": circle["candidate_count"],
-                "passes": circle["prime"] == expected,
+                "passes": all(matches.values()),
             }
         )
     return checks
@@ -489,9 +535,28 @@ def primesieve_primes(binary: str, low: int, high: int) -> list[int]:
 
 
 def primesieve_next_prime(binary: str, start: int, search_window: int) -> int | None:
-    high = start + search_window
+    high = min(start + search_window, U64_MAX)
     values = primesieve_primes(binary, start, high + 1)
     return values[0] if values else None
+
+
+def primecount_next_prime(binary: str, start: int, threads: int) -> int:
+    pi_before_start = run_primecount(binary, start - 1, threads) if start > 2 else 0
+    completed = subprocess.run(
+        primecount_nth_prime_command(binary, pi_before_start + 1, threads),
+        cwd=ROOT,
+        check=True,
+        text=True,
+        capture_output=True,
+    )
+    return parse_integer_output(completed.stdout)
+
+
+def primecount_nth_prime_command(binary: str, nth: int, threads: int) -> list[str]:
+    command = [binary, str(nth), "--nth-prime"]
+    if threads > 0:
+        command.append(f"--threads={threads}")
+    return command
 
 
 def circle_next_prime(binary: Path, start: int) -> dict[str, Any]:
@@ -615,6 +680,7 @@ def build_report(
     circle_count_modes: list[str],
     circle_threads: int,
     external_threads: int,
+    primecount_next_max_start: int = DEFAULT_PRIMECOUNT_NEXT_MAX_START,
     required_tools: list[str],
     checks: list[dict[str, Any]],
     count_server_checks: list[dict[str, Any]] | None = None,
@@ -640,6 +706,10 @@ def build_report(
         1 for check in enumeration_checks if not check["passes"]
     )
     next_failure_count = sum(1 for check in next_checks if not check["passes"])
+    next_external_check_count = sum(
+        len(check.get("external_primes", {})) or int(check.get("external_prime") is not None)
+        for check in next_checks
+    )
     failure_count = (
         count_failure_count
         + count_server_failure_count
@@ -661,6 +731,7 @@ def build_report(
             "circle_requested_threads": circle_threads,
             "external_requested_threads": external_threads,
         },
+        "primecount_next_max_start": primecount_next_max_start,
         "required_external_tools": required_tools,
         "missing_external_tools": missing_tools,
         "tools": {
@@ -672,6 +743,7 @@ def build_report(
         "count_server_check_count": len(count_server_checks),
         "enumeration_check_count": len(enumeration_checks),
         "next_check_count": len(next_checks),
+        "next_external_check_count": next_external_check_count,
         "check_count": (
             len(checks)
             + len(count_server_checks)

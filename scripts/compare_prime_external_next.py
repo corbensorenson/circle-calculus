@@ -168,6 +168,14 @@ def main() -> int:
         ),
     )
     parser.add_argument(
+        "--allow-noisy-when-median-speedup-at-least",
+        type=float,
+        help=(
+            "With --require-stable-samples, allow a noisy candidate row when "
+            "its median speedup is at or above this material-win floor."
+        ),
+    )
+    parser.add_argument(
         "--allow-candidate-subset",
         action="store_true",
         help=(
@@ -209,6 +217,11 @@ def main() -> int:
         parser.error(
             "--dominant-speedup-floor and --dominant-min-speedup-ratio must be used together"
         )
+    if (
+        args.allow_noisy_when_median_speedup_at_least is not None
+        and args.allow_noisy_when_median_speedup_at_least < 0.0
+    ):
+        parser.error("--allow-noisy-when-median-speedup-at-least must be nonnegative")
 
     names = parse_csv_set(args.names, "--names")
     starts = parse_int_set(args.starts, "--starts")
@@ -238,6 +251,9 @@ def main() -> int:
         require_any_median_speedup_at_least=args.require_any_median_speedup_at_least,
         require_each_median_speedup_at_least=args.require_each_median_speedup_at_least,
         require_stable_samples=args.require_stable_samples,
+        allow_noisy_when_median_speedup_at_least=(
+            args.allow_noisy_when_median_speedup_at_least
+        ),
     )
 
     print(render_comparison_table(comparisons))
@@ -395,6 +411,7 @@ def comparison_failures(
     require_any_median_speedup_at_least: float | None = None,
     require_each_median_speedup_at_least: float | None = None,
     require_stable_samples: bool = False,
+    allow_noisy_when_median_speedup_at_least: float | None = None,
 ) -> list[str]:
     comparisons = list(comparisons)
     failures = []
@@ -409,7 +426,15 @@ def comparison_failures(
                 f"{label} result changed: baseline={row.baseline_result}, "
                 f"candidate={row.candidate_result}"
             )
-        if require_stable_samples and row.candidate_sample_stability != "stable":
+        noisy_bypass = (
+            allow_noisy_when_median_speedup_at_least is not None
+            and row.candidate_median_speedup >= allow_noisy_when_median_speedup_at_least
+        )
+        if (
+            require_stable_samples
+            and row.candidate_sample_stability != "stable"
+            and not noisy_bypass
+        ):
             stability = row.candidate_sample_stability or "missing"
             failures.append(f"{label} sample stability is not stable: {stability}")
         median_ratio = row.median_speedup_ratio

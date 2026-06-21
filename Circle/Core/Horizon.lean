@@ -34,6 +34,21 @@ noncomputable def primeHorizonsInRange (low high : Nat) : Finset Nat := by
 noncomputable def primeHorizonRangeCount (low high : Nat) : Nat :=
   (primeHorizonsInRange low high).card
 
+/-- The exact finite-domain next-prime result target.
+
+`some p` means `p` is the first prime horizon at or above `start` and no larger
+than the finite execution-domain ceiling `high`. `none` means no prime horizon
+exists in the closed finite interval `[start, high]`. This is the theorem-side
+shape of the Rust `u64` next-prime API, where the finite ceiling is `u64::MAX`. -/
+def nextPrimeHorizonResultUpTo (start high : Nat) : Option Nat → Prop
+  | some p =>
+      p ≤ high ∧
+        start ≤ p ∧
+          primeHorizon p ∧
+            ∀ n, start ≤ n → n < p → ¬ primeHorizon n
+  | none =>
+      ∀ n, start ≤ n → n ≤ high → ¬ primeHorizon n
+
 theorem primitiveHorizonCollision_exists_iff_dvd (n d : Nat) :
     (∃ k, primitiveHorizonCollision n d k) ↔ d ∣ n := by
   constructor
@@ -62,6 +77,19 @@ theorem mem_primeHorizonsInRange_iff {low high n : Nat} :
 theorem primeHorizonRangeCount_eq_filter_card (low high : Nat) :
     primeHorizonRangeCount low high = ((Finset.Ico low high).filter primeHorizon).card := by
   classical
+  rfl
+
+theorem nextPrimeHorizonResultUpTo_some_iff {start high p : Nat} :
+    nextPrimeHorizonResultUpTo start high (some p) ↔
+      p ≤ high ∧
+        start ≤ p ∧
+          primeHorizon p ∧
+            ∀ n, start ≤ n → n < p → ¬ primeHorizon n := by
+  rfl
+
+theorem nextPrimeHorizonResultUpTo_none_iff {start high : Nat} :
+    nextPrimeHorizonResultUpTo start high none ↔
+      ∀ n, start ≤ n → n ≤ high → ¬ primeHorizon n := by
   rfl
 
 theorem primitiveHorizonCollision_div_skip {n d : Nat} (hd : d ∣ n) :

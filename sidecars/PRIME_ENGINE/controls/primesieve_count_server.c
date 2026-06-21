@@ -46,6 +46,8 @@ int main(void)
 
     char* first_raw = strtok(line, " \t\r\n");
     uint64_t repetitions = 1;
+    uint64_t shift = 0;
+    int shifted = 0;
     char* low_raw = first_raw;
     if (first_raw != NULL && strcmp(first_raw, "repeat") == 0) {
       char* repetitions_raw = strtok(NULL, " \t\r\n");
@@ -55,12 +57,23 @@ int main(void)
         return 2;
       }
       low_raw = strtok(NULL, " \t\r\n");
+    } else if (first_raw != NULL && strcmp(first_raw, "shifted") == 0) {
+      shifted = 1;
+      char* repetitions_raw = strtok(NULL, " \t\r\n");
+      char* shift_raw = strtok(NULL, " \t\r\n");
+      if (repetitions_raw == NULL || shift_raw == NULL ||
+          !parse_u64(repetitions_raw, &repetitions) || repetitions == 0 ||
+          !parse_u64(shift_raw, &shift)) {
+        fprintf(stderr, "shifted request must be: shifted COUNT SHIFT LOW HIGH_EXCLUSIVE THREADS\n");
+        return 2;
+      }
+      low_raw = strtok(NULL, " \t\r\n");
     }
     char* high_raw = strtok(NULL, " \t\r\n");
     char* threads_raw = strtok(NULL, " \t\r\n");
     char* extra = strtok(NULL, " \t\r\n");
     if (low_raw == NULL || high_raw == NULL || threads_raw == NULL || extra != NULL) {
-      fprintf(stderr, "request must be: LOW HIGH_EXCLUSIVE THREADS or repeat COUNT LOW HIGH_EXCLUSIVE THREADS\n");
+      fprintf(stderr, "request must be: LOW HIGH_EXCLUSIVE THREADS, repeat COUNT LOW HIGH_EXCLUSIVE THREADS, or shifted COUNT SHIFT LOW HIGH_EXCLUSIVE THREADS\n");
       return 2;
     }
 
@@ -81,11 +94,26 @@ int main(void)
       primesieve_set_num_threads(threads);
 
     for (uint64_t index = 0; index < repetitions; index++) {
+      uint64_t request_low = low;
+      uint64_t request_high = high;
+      if (shifted) {
+        if (shift != 0 && index > UINT64_MAX / shift) {
+          fprintf(stderr, "shifted request offset overflowed u64\n");
+          return 6;
+        }
+        uint64_t offset = shift * index;
+        if (low > UINT64_MAX - offset || high > UINT64_MAX - offset) {
+          fprintf(stderr, "shifted request range overflowed u64\n");
+          return 6;
+        }
+        request_low = low + offset;
+        request_high = high + offset;
+      }
       errno = 0;
-      uint64_t count = primesieve_count_primes(low, high - 1);
+      uint64_t count = primesieve_count_primes(request_low, request_high - 1);
       if (count == PRIMESIEVE_ERROR && errno == EDOM) {
         fprintf(stderr, "primesieve_count_primes failed for [%" PRIu64 ", %" PRIu64 ")\n",
-                low, high);
+                request_low, request_high);
         return 5;
       }
 

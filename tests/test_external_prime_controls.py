@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 from pathlib import Path
 from types import SimpleNamespace
 
@@ -9,28 +10,37 @@ import pytest
 from scripts import benchmark_prime_external_controls
 from scripts.benchmark_prime_external_controls import (
     CircleVariant,
+    CIRCLE_COUNT_SERVER_SMALL_PREFIX_PI_CACHE_DEFAULT_LIMIT,
+    CIRCLE_COUNT_SERVER_SMALL_PREFIX_PI_CACHE_LIMIT_ENV,
+    CIRCLE_COUNT_SERVER_SMALL_PREFIX_PI_CACHE_MAX_LIMIT,
     ExternalBenchRow,
     Measurement,
     any_external_baseline_available,
     build_run_metadata,
+    circle_count_server_small_prefix_pi_cache_limit,
     circle_measurement_name,
     count_server_command,
     count_server_request,
     circle_prime_command,
     circle_server_measurement_name,
     external_baseline_enabled,
+    external_baseline_selected,
     measure_interleaved,
     median,
     parse_circle_count_modes,
     parse_external_baselines,
     parse_circle_variants,
     parse_segment_size_list,
+    primecount_pi_server_measurement,
     primecount_command,
     primesieve_count_server_measurement,
     primesieve_command,
     required_external_tools_missing,
     sample_metric_fields,
+    selected_circle_prime_binary,
+    selected_circle_prime_count_binary,
     selected_external_baselines_missing,
+    small_prefix_pi_cache_profile,
     speedup_row,
 )
 
@@ -144,6 +154,17 @@ def test_count_server_default_command_and_request_use_server_defaults() -> None:
         default_threads=8,
         default_count_mode="default",
     ) == ["circle-prime", "count-server", "--threads", "8"]
+    assert count_server_command(
+        Path("circle-prime"),
+        default_threads=8,
+        warm_prefix_pi_cache=True,
+    ) == [
+        "circle-prime",
+        "count-server",
+        "--threads",
+        "8",
+        "--warm-prefix-pi-cache",
+    ]
     assert (
         count_server_request(
             1_000_000_000_000,
@@ -155,6 +176,49 @@ def test_count_server_default_command_and_request_use_server_defaults() -> None:
         )
         == "1000000000000 1000010000000\n"
     )
+
+
+def test_count_server_small_prefix_cache_limit_env_policy(monkeypatch) -> None:
+    monkeypatch.delenv(CIRCLE_COUNT_SERVER_SMALL_PREFIX_PI_CACHE_LIMIT_ENV, raising=False)
+    assert (
+        circle_count_server_small_prefix_pi_cache_limit()
+        == CIRCLE_COUNT_SERVER_SMALL_PREFIX_PI_CACHE_DEFAULT_LIMIT
+    )
+
+    monkeypatch.setenv(CIRCLE_COUNT_SERVER_SMALL_PREFIX_PI_CACHE_LIMIT_ENV, "bad")
+    assert (
+        circle_count_server_small_prefix_pi_cache_limit()
+        == CIRCLE_COUNT_SERVER_SMALL_PREFIX_PI_CACHE_DEFAULT_LIMIT
+    )
+
+    monkeypatch.setenv(CIRCLE_COUNT_SERVER_SMALL_PREFIX_PI_CACHE_LIMIT_ENV, "-1")
+    assert (
+        circle_count_server_small_prefix_pi_cache_limit()
+        == CIRCLE_COUNT_SERVER_SMALL_PREFIX_PI_CACHE_DEFAULT_LIMIT
+    )
+
+    monkeypatch.setenv(CIRCLE_COUNT_SERVER_SMALL_PREFIX_PI_CACHE_LIMIT_ENV, "0")
+    assert circle_count_server_small_prefix_pi_cache_limit() == 0
+
+    monkeypatch.setenv(CIRCLE_COUNT_SERVER_SMALL_PREFIX_PI_CACHE_LIMIT_ENV, "2000000000")
+    assert circle_count_server_small_prefix_pi_cache_limit() == 2_000_000_000
+
+    monkeypatch.setenv(CIRCLE_COUNT_SERVER_SMALL_PREFIX_PI_CACHE_LIMIT_ENV, "999999999999")
+    assert (
+        circle_count_server_small_prefix_pi_cache_limit()
+        == CIRCLE_COUNT_SERVER_SMALL_PREFIX_PI_CACHE_MAX_LIMIT
+    )
+
+
+def test_small_prefix_cache_profile_estimates_memory() -> None:
+    assert small_prefix_pi_cache_profile(1_000_000_000) == {
+        "limit": 1_000_000_000,
+        "odd_count": 499_999_999,
+        "word_count": 7_812_500,
+        "estimated_bytes": 93_750_004,
+    }
+    assert small_prefix_pi_cache_profile(2_000_000_000)["estimated_bytes"] == 187_500_004
+    assert small_prefix_pi_cache_profile(3_000_000_000)["estimated_bytes"] == 281_250_004
 
 
 def test_count_server_explicit_request_keeps_variant_fields() -> None:
@@ -383,6 +447,7 @@ def test_speedup_row_combines_sample_stability_with_baseline() -> None:
 
 
 def test_external_metadata_records_thread_policy_and_commands(monkeypatch) -> None:
+    monkeypatch.delenv(CIRCLE_COUNT_SERVER_SMALL_PREFIX_PI_CACHE_LIMIT_ENV, raising=False)
     monkeypatch.setattr(
         benchmark_prime_external_controls,
         "circle_prime_package_metadata",
@@ -391,6 +456,8 @@ def test_external_metadata_records_thread_policy_and_commands(monkeypatch) -> No
     args = SimpleNamespace(
         rounds=5,
         batch_size=3,
+        batch_request_profile="shifted",
+        batch_shift=1000,
         warmup_rounds=1,
         segment_size=131072,
         circle_threads=8,
@@ -399,6 +466,7 @@ def test_external_metadata_records_thread_policy_and_commands(monkeypatch) -> No
         include_circle_server=True,
         circle_server_only=False,
         include_primesieve_count_server=True,
+        include_primecount_pi_server=True,
     )
 
     metadata = build_run_metadata(
@@ -410,17 +478,21 @@ def test_external_metadata_records_thread_policy_and_commands(monkeypatch) -> No
         primesieve="/opt/bin/primesieve",
         primecount="/opt/bin/primecount",
         primesieve_count_server=Path("target/prime-controls/primesieve-count-server"),
+        primecount_pi_server=Path("target/prime-controls/primecount-pi-server"),
         row_count=6,
     )
 
     assert metadata["rounds"] == 5
     assert metadata["batch_size"] == 3
+    assert metadata["batch_request_profile"] == "shifted"
+    assert metadata["batch_shift"] == 1000
     assert metadata["warmup_rounds"] == 1
     assert metadata["row_count"] == 6
     assert metadata["interleaved"] is False
     assert metadata["include_circle_server"] is True
     assert metadata["circle_server_only"] is False
     assert metadata["include_primesieve_count_server"] is True
+    assert metadata["include_primecount_pi_server"] is True
     assert metadata["requested_segment_sizes"] == [131072]
     assert metadata["thread_policy"]["circle_requested_threads"] == 8
     assert metadata["thread_policy"]["external_requested_threads"] == 4
@@ -429,10 +501,35 @@ def test_external_metadata_records_thread_policy_and_commands(monkeypatch) -> No
         "primesieve",
         "primesieve-library",
     ]
+    assert metadata["tools"]["circle_count_server"] == {
+        "available": True,
+        "path": "target/release/circle-prime",
+        "method": "persistent count-server requests",
+        "small_prefix_pi_cache_limit": 2_000_000_000,
+        "small_prefix_pi_cache_default_limit": 2_000_000_000,
+        "small_prefix_pi_cache_max_limit": 3_000_000_000,
+        "small_prefix_pi_cache_limit_env": "CIRCLE_PRIME_SMALL_PREFIX_PI_CACHE_LIMIT",
+        "small_prefix_pi_cache_estimated_bytes": 187_500_004,
+        "small_prefix_pi_cache_default_estimated_bytes": 187_500_004,
+        "small_prefix_pi_cache_max_estimated_bytes": 281_250_004,
+        "small_prefix_pi_cache_scope": (
+            "prefix-pi count-server ranges with HIGH-1 at or below the limit"
+        ),
+        "small_prefix_pi_cache_warmup": (
+            "eligible prefix-pi count-server rows pass --warm-prefix-pi-cache "
+            "before reading timed requests"
+        ),
+        "small_prefix_pi_cache_warmup_profiles": [],
+    }
     assert metadata["tools"]["primesieve_count_server"]["available"] is True
     assert (
         metadata["tools"]["primesieve_count_server"]["method"]
         == "primesieve_count_primes(LOW, HIGH-1)"
+    )
+    assert metadata["tools"]["primecount_pi_server"]["available"] is True
+    assert (
+        metadata["tools"]["primecount_pi_server"]["method"]
+        == "primecount_pi(HIGH-1)-primecount_pi(LOW-1)"
     )
     assert metadata["ranges"][0] == {"low": 0, "high": 1000, "span": 1000}
     first_commands = metadata["range_commands"][0]
@@ -474,12 +571,82 @@ def test_external_metadata_records_thread_policy_and_commands(monkeypatch) -> No
     assert first_commands["primesieve_count_server"] == [
         "target/prime-controls/primesieve-count-server"
     ]
+    assert first_commands["primecount_pi_server"] == [
+        "target/prime-controls/primecount-pi-server"
+    ]
     assert "primecount_low" not in first_commands
     assert metadata["range_commands"][1]["primecount_low"] == [
         "/opt/bin/primecount",
         "99",
         "--threads=4",
     ]
+
+
+def test_external_metadata_fingerprints_circle_binary_and_defaults(
+    monkeypatch, tmp_path: Path
+) -> None:
+    defaults_path = tmp_path / "prime_engine_defaults.json"
+    defaults_path.write_text('{"parallel_segment_size": 131072}\n')
+    circle_prime = tmp_path / "circle-prime"
+    circle_prime.write_bytes(b"circle-prime-test-binary")
+    monkeypatch.setattr(
+        benchmark_prime_external_controls,
+        "PRIME_ENGINE_DEFAULTS",
+        defaults_path,
+    )
+    monkeypatch.setattr(
+        benchmark_prime_external_controls,
+        "circle_prime_package_metadata",
+        lambda cargo: {"name": "circle-prime", "version": "0.1.0"},
+    )
+    args = SimpleNamespace(
+        rounds=1,
+        batch_size=1,
+        warmup_rounds=0,
+        segment_size=131072,
+        circle_threads=8,
+        external_threads=8,
+        require_tool=[],
+        include_circle_server=False,
+        circle_server_only=False,
+        include_primesieve_count_server=False,
+        include_primecount_pi_server=False,
+    )
+
+    metadata = build_run_metadata(
+        args=args,
+        ranges=[(0, 1000)],
+        started_at_utc="2026-01-01T00:00:00Z",
+        cargo=None,
+        circle_prime=circle_prime,
+        primesieve=None,
+        primecount=None,
+        row_count=1,
+    )
+
+    assert metadata["circle_prime_defaults"]["sha256"] == hashlib.sha256(
+        defaults_path.read_bytes()
+    ).hexdigest()
+    binary = metadata["tools"]["circle_prime"]["binary"]
+    assert binary["sha256"] == hashlib.sha256(circle_prime.read_bytes()).hexdigest()
+    assert metadata["tools"]["circle_prime"]["defaults"]["sha256"] == metadata[
+        "circle_prime_defaults"
+    ]["sha256"]
+
+
+def test_circle_binary_overrides_use_selected_files(tmp_path: Path) -> None:
+    circle_prime = tmp_path / "circle-prime"
+    circle_prime_count = tmp_path / "circle-prime-count"
+    circle_prime.write_bytes(b"circle-prime")
+    circle_prime_count.write_bytes(b"circle-prime-count")
+
+    assert selected_circle_prime_binary(None, circle_prime) == circle_prime
+    assert selected_circle_prime_count_binary(None, circle_prime_count) == circle_prime_count
+
+    with pytest.raises(FileNotFoundError):
+        selected_circle_prime_binary(None, tmp_path / "missing-circle-prime")
+    with pytest.raises(FileNotFoundError):
+        selected_circle_prime_count_binary(None, tmp_path / "missing-circle-prime-count")
 
 
 def test_external_baseline_selection_filters_metadata_commands(monkeypatch) -> None:
@@ -502,6 +669,7 @@ def test_external_baseline_selection_filters_metadata_commands(monkeypatch) -> N
         include_circle_server=False,
         circle_server_only=False,
         include_primesieve_count_server=True,
+        include_primecount_pi_server=False,
         external_baselines="external_primesieve_count_server",
     )
 
@@ -514,6 +682,7 @@ def test_external_baseline_selection_filters_metadata_commands(monkeypatch) -> N
         primesieve="/opt/bin/primesieve",
         primecount="/opt/bin/primecount",
         primesieve_count_server=Path("target/prime-controls/primesieve-count-server"),
+        primecount_pi_server=Path("target/prime-controls/primecount-pi-server"),
         external_baselines={"external_primesieve_count_server"},
         row_count=2,
     )
@@ -526,6 +695,7 @@ def test_external_baseline_selection_filters_metadata_commands(monkeypatch) -> N
     assert "primesieve" not in commands
     assert "primecount_high" not in commands
     assert "primecount_low" not in commands
+    assert "primecount_pi_server" not in commands
 
 
 def test_external_metadata_records_count_server_request_shape(monkeypatch) -> None:
@@ -755,19 +925,28 @@ def test_required_external_tools_reports_only_missing_tools() -> None:
         primesieve="/opt/bin/primesieve",
         primecount="/opt/bin/primecount",
         primesieve_library=Path("target/prime-controls/primesieve-count-server"),
+        primecount_library=Path("target/prime-controls/primecount-pi-server"),
     ) == []
     assert required_external_tools_missing(
-        ["primesieve", "primecount", "primesieve", "primesieve-library"],
+        [
+            "primesieve",
+            "primecount",
+            "primesieve",
+            "primesieve-library",
+            "primecount-library",
+        ],
         primesieve="/opt/bin/primesieve",
         primecount=None,
         primesieve_library=None,
-    ) == ["primecount", "primesieve-library"]
+        primecount_library=None,
+    ) == ["primecount", "primecount-library", "primesieve-library"]
     assert required_external_tools_missing(
-        ["primesieve", "primecount", "primesieve-library"],
+        ["primesieve", "primecount", "primesieve-library", "primecount-library"],
         primesieve=None,
         primecount=None,
         primesieve_library=None,
-    ) == ["primecount", "primesieve", "primesieve-library"]
+        primecount_library=None,
+    ) == ["primecount", "primecount-library", "primesieve", "primesieve-library"]
 
 
 def test_primesieve_count_server_measurement_uses_half_open_range(monkeypatch) -> None:
@@ -792,6 +971,21 @@ def test_primesieve_count_server_measurement_uses_half_open_range(monkeypatch) -
         ) -> list[int]:
             requests.extend((low, high, threads) for _ in range(repetitions))
             return [168] * repetitions
+
+        def count_shifted_many(
+            self,
+            low: int,
+            high: int,
+            threads: int,
+            repetitions: int,
+            shift: int,
+        ) -> list[int]:
+            span = high - low
+            requests.extend(
+                (low + index * shift, low + index * shift + span, threads)
+                for index in range(repetitions)
+            )
+            return [168, 169, 170][:repetitions]
 
         def close(self) -> None:
             nonlocal closed
@@ -822,6 +1016,93 @@ def test_primesieve_count_server_measurement_uses_half_open_range(monkeypatch) -
         (10, 1000, 8),
         (10, 1000, 8),
         (10, 1000, 8),
+    ]
+    assert measurement.run_shifted_batch is not None
+    assert measurement.run_shifted_batch(3, 1000) == 170
+    assert requests[-3:] == [
+        (10, 1000, 8),
+        (1010, 2000, 8),
+        (2010, 3000, 8),
+    ]
+    assert measurement.close is not None
+    measurement.close()
+    assert closed is True
+
+
+def test_primecount_pi_server_measurement_uses_half_open_range(monkeypatch) -> None:
+    requests: list[tuple[int, int, int]] = []
+    closed = False
+
+    class FakePrimeRangeServerClient:
+        def __init__(self, command: list[str], label: str) -> None:
+            assert command == ["target/prime-controls/primecount-pi-server"]
+            assert label == "libprimecount pi helper"
+
+        def count(self, low: int, high: int, threads: int) -> int:
+            requests.append((low, high, threads))
+            return 168
+
+        def count_many(
+            self,
+            low: int,
+            high: int,
+            threads: int,
+            repetitions: int,
+        ) -> list[int]:
+            requests.extend((low, high, threads) for _ in range(repetitions))
+            return [168] * repetitions
+
+        def count_shifted_many(
+            self,
+            low: int,
+            high: int,
+            threads: int,
+            repetitions: int,
+            shift: int,
+        ) -> list[int]:
+            span = high - low
+            requests.extend(
+                (low + index * shift, low + index * shift + span, threads)
+                for index in range(repetitions)
+            )
+            return [168, 169, 170][:repetitions]
+
+        def close(self) -> None:
+            nonlocal closed
+            closed = True
+
+    monkeypatch.setattr(
+        benchmark_prime_external_controls,
+        "PrimeRangeServerClient",
+        FakePrimeRangeServerClient,
+    )
+
+    measurement = primecount_pi_server_measurement(
+        Path("target/prime-controls/primecount-pi-server"),
+        10,
+        1000,
+        8,
+    )
+
+    assert measurement.name == "external_primecount_pi_diff_server"
+    assert measurement.run_once() == 168
+    assert measurement.run_once() == 168
+    assert requests == [(10, 1000, 8), (10, 1000, 8)]
+    assert measurement.run_batch is not None
+    assert measurement.run_batch(3) == 168
+    assert requests == [
+        (10, 1000, 8),
+        (10, 1000, 8),
+        (10, 1000, 8),
+        (10, 1000, 8),
+        (10, 1000, 8),
+    ]
+    assert measurement.run_shifted_batch is not None
+    assert measurement.run_shifted_batch(3, 1000) == 170
+    assert requests[-3:] == [
+        (10, 1000, 8),
+        (1010, 2000, 8),
+        (2010, 3000, 8),
     ]
     assert measurement.close is not None
     measurement.close()
@@ -950,6 +1231,83 @@ def test_interleaved_measurement_batches_and_reports_per_request_samples() -> No
     assert all(sample.result == 168 for sample in samples)
 
 
+def test_measure_interleaved_shifted_batches_use_shifted_runner() -> None:
+    calls: list[tuple[int, int]] = []
+
+    def run_shifted_batch(batch_size: int, shift: int) -> int:
+        calls.append((batch_size, shift))
+        return 1_000 + (batch_size - 1) * shift
+
+    rows, samples = measure_interleaved(
+        [
+            Measurement(
+                name="circle_prime_server_default_count",
+                low=1_000_000,
+                high=1_010_000,
+                segment_size=131072,
+                threads=8,
+                requested_threads=8,
+                run_once=lambda: 0,
+                run_shifted_batch=run_shifted_batch,
+                count_mode="segmented",
+            )
+        ],
+        rounds=2,
+        batch_size=3,
+        batch_request_profile="shifted",
+        batch_shift=10_000,
+    )
+
+    assert calls == [(3, 10_000), (3, 10_000)]
+    assert rows[0].result == 21_000
+    assert [sample.result for sample in samples] == [21_000, 21_000]
+
+
+def test_measure_interleaved_shifted_batches_default_to_span_shift() -> None:
+    shifts: list[int] = []
+
+    rows, _ = measure_interleaved(
+        [
+            Measurement(
+                name="external_primesieve_count_server",
+                low=100,
+                high=150,
+                segment_size=0,
+                threads=8,
+                requested_threads=8,
+                run_once=lambda: 0,
+                run_shifted_batch=lambda batch_size, shift: shifts.append(shift) or 7,
+            )
+        ],
+        rounds=1,
+        batch_size=2,
+        batch_request_profile="shifted",
+    )
+
+    assert shifts == [50]
+    assert rows[0].result == 7
+
+
+def test_measure_interleaved_shifted_requires_shifted_runner() -> None:
+    measurement = Measurement(
+        name="external_primesieve_count",
+        low=100,
+        high=150,
+        segment_size=0,
+        threads=8,
+        requested_threads=8,
+        run_once=lambda: 7,
+    )
+
+    with pytest.raises(ValueError, match="does not support shifted batch"):
+        measure_interleaved(
+            [measurement],
+            rounds=1,
+            batch_size=2,
+            batch_request_profile="shifted",
+        )
+
+
 def test_parse_external_baselines_validates_and_deduplicates() -> None:
     assert parse_external_baselines(None) is None
     assert parse_external_baselines(
@@ -958,33 +1316,59 @@ def test_parse_external_baselines_validates_and_deduplicates() -> None:
     assert parse_external_baselines(
         "external_primesieve_count,external_primecount_pi_diff"
     ) == {"external_primesieve_count", "external_primecount_pi_diff"}
+    assert parse_external_baselines(
+        "external_primecount_pi_diff_server,external_primesieve_count_server"
+    ) == {"external_primecount_pi_diff_server", "external_primesieve_count_server"}
 
     with pytest.raises(argparse.ArgumentTypeError):
         parse_external_baselines("external_unknown")
 
 
 def test_external_baseline_availability_helpers_are_explicit() -> None:
-    selected = {"external_primecount_pi_diff", "external_primesieve_count_server"}
+    selected = {
+        "external_primecount_pi_diff",
+        "external_primecount_pi_diff_server",
+        "external_primesieve_count_server",
+    }
 
     assert selected_external_baselines_missing(
         selected,
         primesieve="/opt/bin/primesieve",
         primecount=None,
         primesieve_library=None,
-    ) == ["external_primecount_pi_diff", "external_primesieve_count_server"]
+        primecount_library=None,
+    ) == [
+        "external_primecount_pi_diff",
+        "external_primecount_pi_diff_server",
+        "external_primesieve_count_server",
+    ]
     assert any_external_baseline_available(
         {"external_primesieve_count"},
         primesieve="/opt/bin/primesieve",
         primecount=None,
         primesieve_library=None,
+        primecount_library=None,
     )
     assert not any_external_baseline_available(
         {"external_primesieve_count_server"},
         primesieve="/opt/bin/primesieve",
         primecount="/opt/bin/primecount",
         primesieve_library=None,
+        primecount_library=None,
+    )
+    assert any_external_baseline_available(
+        {"external_primecount_pi_diff_server"},
+        primesieve=None,
+        primecount=None,
+        primesieve_library=None,
+        primecount_library=Path("target/prime-controls/primecount-pi-server"),
     )
     assert external_baseline_enabled(None, "external_primesieve_count")
+    assert not external_baseline_selected(None, "external_primecount_pi_diff_server")
+    assert external_baseline_selected(
+        {"external_primecount_pi_diff_server"},
+        "external_primecount_pi_diff_server",
+    )
     assert not external_baseline_enabled(
         {"external_primesieve_count_server"},
         "external_primesieve_count",

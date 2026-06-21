@@ -1,0 +1,157 @@
+# Prime Fuzzy Hybrid
+
+This lane trains a very small bit-level neural prime classifier beside the
+deterministic Circle prime engine. The neural model is deliberately treated as
+an ordering hint, not as a proof source.
+
+The active contract is:
+
+- Input is binary bits, least significant bit first.
+- Labels come from a deterministic primality labeler, either the built-in
+  u64 Miller-Rabin reference or the Rust `circle-prime test --json` CLI.
+- The model may rank candidates for "find any prime in this window".
+- A reported prime is accepted only after deterministic verification.
+- Exact count, enumeration, and next-prime claims may not discard candidates
+  based only on a neural score.
+- Lean supports the deterministic proof boundary through
+  `Circle.Core.Horizon`; it does not prove the learned weights.
+
+Run the fast smoke experiment:
+
+```bash
+make prime-engine-fuzzy-hybrid-smoke
+make prime-engine-fuzzy-hybrid-any-smoke
+make prime-engine-fuzzy-hybrid-next-smoke
+```
+
+Or run the script directly:
+
+```bash
+python scripts/prime_fuzzy_hybrid.py \
+  --summary \
+  --json-out sidecars/PRIME_ENGINE/results/prime_fuzzy_hybrid_smoke_latest.json \
+  --bit-width 21 \
+  --train-low 900000 \
+  --train-high 1000000 \
+  --eval-low 1000000 \
+  --eval-high 1100000 \
+  --train-samples 1024 \
+  --eval-samples 512 \
+  --epochs 80 \
+  --residue-moduli 3,5,7,11,13,17,19,23 \
+  --search-start 1000000 \
+  --search-window 512 \
+  --top-k 32 \
+  --search-runs 16 \
+  --search-stride 4096
+```
+
+Run the exact-next control benchmark:
+
+```bash
+python scripts/benchmark_prime_fuzzy_hybrid_next.py \
+  --summary \
+  --starts 1000000,1004096,1008192 \
+  --rounds 3 \
+  --batch-size 8 \
+  --warmup-rounds 1 \
+  --top-k 8 \
+  --output sidecars/PRIME_ENGINE/results/prime_fuzzy_hybrid_next_latest.csv \
+  --sample-output sidecars/PRIME_ENGINE/results/prime_fuzzy_hybrid_next_samples_latest.csv \
+  --metadata-output sidecars/PRIME_ENGINE/results/prime_fuzzy_hybrid_next_latest.json
+```
+
+Run the any-prime control benchmark:
+
+```bash
+python scripts/benchmark_prime_fuzzy_hybrid_any.py \
+  --summary \
+  --starts 4295061710,4295087310,4295135570 \
+  --rounds 3 \
+  --batch-size 8 \
+  --warmup-rounds 1 \
+  --bit-width 33 \
+  --train-low 4294900000 \
+  --train-high 4295300000 \
+  --search-window 2048 \
+  --top-k 16 \
+  --score-limit 64 \
+  --output sidecars/PRIME_ENGINE/results/prime_fuzzy_hybrid_any_latest.csv \
+  --sample-output sidecars/PRIME_ENGINE/results/prime_fuzzy_hybrid_any_samples_latest.csv \
+  --metadata-output sidecars/PRIME_ENGINE/results/prime_fuzzy_hybrid_any_latest.json
+```
+
+That benchmark writes a Rust-readable model file to
+`target/prime-controls/prime-fuzzy-hybrid-model.txt` and includes two hybrid
+rows:
+
+- `circle_fuzzy_hybrid_python_exact_next`
+- `circle_fuzzy_hybrid_rust_server_exact_next`
+
+The Rust row runs the same trained model through:
+
+```bash
+circle-prime fuzzy-server target/prime-controls/prime-fuzzy-hybrid-model.txt \
+  --mode exact-next \
+  --window 512 \
+  --top-k 8
+```
+
+The Makefile target also runs `scripts/check_prime_fuzzy_hybrid_next.py` to
+validate row coverage, result agreement, proof-contract metadata, tool versions,
+current milestone wins over the Python hybrid and deterministic Python
+reference, and conservative non-toy floors against Circle `next-server`,
+`libprimesieve` generate, and `libprimecount`.
+
+For labels from the Rust Circle solver:
+
+```bash
+cargo build --quiet -p circle-prime --bin circle-prime
+python scripts/prime_fuzzy_hybrid.py \
+  --labeler circle-prime \
+  --circle-prime-bin target/debug/circle-prime \
+  --summary \
+  --json-out sidecars/PRIME_ENGINE/results/prime_fuzzy_hybrid_circle_latest.json \
+  --bit-width 16
+```
+
+There are two different scores to keep separate:
+
+- `prime-engine-fuzzy-hybrid-smoke` measures loose "find any prime in this
+  window" ordering. It can show whether the model is learning useful ranking
+  signal, but it is not a next-prime speed claim.
+- `prime-engine-fuzzy-hybrid-any-smoke` measures wall-clock any-prime search on
+  starts with longer deterministic gaps. The fuzzy row may report a later prime
+  than the next-prime controls, but every reported prime must be
+  deterministically verified and inside the bounded window. The Rust server
+  scores only the configured prefix budget before fallback; this keeps neural
+  overhead bounded.
+- `prime-engine-fuzzy-hybrid-next-smoke` measures exact next-prime semantics.
+  The neural hint may be checked first, but the result is accepted only after a
+  deterministic next-prime proof path certifies the result, either through
+  Circle's static exact tables or by verifying every earlier deterministic
+  wheel candidate in the bounded window. This target compares both the Python
+  hybrid path and the Rust `fuzzy-server` path with deterministic Python MR64,
+  Circle `next-server`, `libprimesieve`, and `libprimecount` controls.
+  In exact-next mode, `top_k` is the early-candidate scoring budget; the best
+  scored hint is compared with the deterministic result for diagnostics, while
+  the deterministic next-prime proof path controls the accepted result.
+
+The first promotion score is deterministic checks for the loose ordering lane.
+The exact-next benchmark is expected to expose overhead until the Rust
+implementation can use the learned signal without weakening the proof boundary
+or adding more deterministic checks than the baseline path.
+The default smoke gate is intentionally below a victory claim for Circle and
+`primesieve`; it exists to keep the lane attached to real competitors while
+iteration continues.
+
+Near-term promotion requirements:
+
+- Keep the model tiny enough that inference is cheaper than one meaningful
+  deterministic primality check.
+- Verify every accepted prime through the deterministic Rust path.
+- Record false positives, false negatives, precision, recall, and F1 on
+  held-out ranges.
+- Compare against existing prime-engine controls before claiming speed.
+- Add a Lean-facing wrapper theorem only for the deterministic acceptance rule,
+  not for model quality.

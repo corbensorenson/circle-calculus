@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import argparse
 import csv
+import hashlib
 import json
 import subprocess
 import sys
@@ -40,6 +41,7 @@ DEFAULT_EXTERNAL_HIGH_OFFSET_TIGHT_METADATA = (
 DEFAULT_EXTERNAL_HIGH_OFFSET_CONFIRMATION = (
     RESULTS_DIR / "prime_engine_high_offset_confirmation_latest.json"
 )
+PRIME_ENGINE_DEFAULTS = ROOT / "rust" / "circle-prime" / "prime_engine_defaults.json"
 DEFAULT_TUNING = RESULTS_DIR / "prime_engine_tuning_latest.json"
 DEFAULT_OUTPUT_JSON = RESULTS_DIR / "prime_engine_default_calibration_latest.json"
 DEFAULT_OUTPUT_MD = RESULTS_DIR / "prime_engine_default_calibration_latest.md"
@@ -145,6 +147,14 @@ def main() -> int:
         action="store_true",
         help="Exit nonzero when current defaults are slower than tolerance or lack evidence.",
     )
+    parser.add_argument(
+        "--require-current-high-offset-confirmation-inputs",
+        action="store_true",
+        help=(
+            "Exit nonzero when high-offset confirmation inputs do not carry "
+            "binary/default fingerprints matching the current build."
+        ),
+    )
     args = parser.parse_args()
 
     if args.tolerance < 0:
@@ -184,6 +194,17 @@ def main() -> int:
     external_high_offset_confirmation = read_json_optional(
         args.external_high_offset_confirmation
     )
+    if args.require_current_high_offset_confirmation_inputs:
+        failures = current_confirmation_input_failures(
+            external_high_offset_confirmation,
+            circle_prime=args.circle_prime,
+            defaults_path=PRIME_ENGINE_DEFAULTS,
+            label="external high-offset confirmation",
+        )
+        if failures:
+            for failure in failures:
+                print(f"ERROR: {failure}", file=sys.stderr)
+            return 1
     (
         external_high_offset_confirmation_rows,
         external_high_offset_confirmation_sample_rows,
@@ -1126,7 +1147,92 @@ def summarize_external_mode_confirmation(summary: dict[str, Any] | None) -> dict
         "observed_group_count": summary.get("observed_group_count", 0),
         "confirmed_count": summary.get("confirmed_count", 0),
         "unconfirmed_count": summary.get("unconfirmed_count", 0),
+        "input_metadata": summarize_confirmation_input_metadata(summary),
     }
+
+
+def summarize_confirmation_input_metadata(summary: dict[str, Any]) -> list[dict[str, Any]]:
+    rows = []
+    for row in summary.get("input_metadata", []):
+        circle_prime = row.get("circle_prime") or {}
+        binary = circle_prime.get("binary") or {}
+        defaults = row.get("circle_prime_defaults") or circle_prime.get("defaults") or {}
+        rows.append(
+            {
+                "input": row.get("input"),
+                "metadata": row.get("metadata"),
+                "metadata_available": row.get("metadata_available"),
+                "started_at_utc": row.get("started_at_utc"),
+                "finished_at_utc": row.get("finished_at_utc"),
+                "rounds": row.get("rounds"),
+                "batch_size": row.get("batch_size"),
+                "warmup_rounds": row.get("warmup_rounds"),
+                "circle_binary_sha256": binary.get("sha256"),
+                "circle_binary_modified_at_utc": binary.get("modified_at_utc"),
+                "defaults_sha256": defaults.get("sha256"),
+                "defaults_modified_at_utc": defaults.get("modified_at_utc"),
+            }
+        )
+    return rows
+
+
+def current_confirmation_input_failures(
+    summary: dict[str, Any] | None,
+    *,
+    circle_prime: Path,
+    defaults_path: Path,
+    label: str,
+) -> list[str]:
+    if summary is None:
+        return []
+    input_metadata = summary.get("input_metadata") or []
+    if not input_metadata:
+        return [
+            f"{label} lacks input_metadata fingerprints; rerun the confirmation target."
+        ]
+    current_binary = file_sha256(circle_prime)
+    current_defaults = file_sha256(defaults_path)
+    failures = []
+    for index, row in enumerate(input_metadata, start=1):
+        source = row.get("input") or f"input #{index}"
+        if not row.get("metadata_available", True):
+            failures.append(f"{label} input {source} has no metadata JSON.")
+        circle_prime_meta = row.get("circle_prime") or {}
+        binary_meta = circle_prime_meta.get("binary") or {}
+        defaults_meta = (
+            row.get("circle_prime_defaults") or circle_prime_meta.get("defaults") or {}
+        )
+        binary_sha = binary_meta.get("sha256")
+        defaults_sha = defaults_meta.get("sha256")
+        if not binary_sha:
+            failures.append(f"{label} input {source} lacks a circle-prime binary hash.")
+        elif current_binary is None:
+            failures.append(f"current circle-prime binary is missing: {circle_prime}")
+        elif binary_sha != current_binary:
+            failures.append(
+                f"{label} input {source} was produced by circle-prime "
+                f"{short_hash(binary_sha)}, current binary is {short_hash(current_binary)}."
+            )
+        if not defaults_sha:
+            failures.append(f"{label} input {source} lacks a defaults hash.")
+        elif current_defaults is None:
+            failures.append(f"current defaults file is missing: {defaults_path}")
+        elif defaults_sha != current_defaults:
+            failures.append(
+                f"{label} input {source} used defaults {short_hash(defaults_sha)}, "
+                f"current defaults are {short_hash(current_defaults)}."
+            )
+    return failures
+
+
+def file_sha256(path: Path) -> str | None:
+    if not path.exists():
+        return None
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def short_hash(value: str) -> str:
+    return value[:12]
 
 
 def summarize_tuning_metadata(summary: dict[str, Any] | None) -> dict[str, Any]:

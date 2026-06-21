@@ -1562,6 +1562,228 @@
           "status": "proved"
         },
         {
+          "id": "CC-T0080",
+          "lean_name": "Circle.nextPrimeHorizonResultUpTo_some_iff",
+          "name": "Next prime horizon result for found candidate",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0081",
+          "lean_name": "Circle.nextPrimeHorizonResultUpTo_none_iff",
+          "name": "Next prime horizon result for no candidate",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0082",
+          "lean_name": "Circle.oldScanCrosses_iff_chordCrosses_of_sorted",
+          "name": "Old antinode scan reduces to chord interleaving",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0083",
+          "lean_name": "Circle.primeAngleStride_of_prime",
+          "name": "Prime angle stride on prime circle",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0084",
+          "lean_name": "Circle.primeChordPathCount_examples",
+          "name": "Prime chord path count examples",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0085",
+          "lean_name": "Circle.fullChordNetworkAntinodeCount_eq_certificate_card",
+          "name": "Full chord network antinode count formula",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0086",
+          "lean_name": "Circle.fullChordNetworkAntinodeCount_prime_examples",
+          "name": "Full chord network antinode count examples",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0087",
+          "lean_name": "Circle.subcoil_count_eq_gcd",
+          "name": "Subcoil count equals gcd",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0088",
+          "lean_name": "Circle.prime_subcoil_count_one",
+          "name": "Prime subcoil count one",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0089",
+          "lean_name": "Circle.fullCoilNetworkStride_iff_prime_or_composite",
+          "name": "Full coil-network stride partition",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0090",
+          "lean_name": "Circle.primeCircle_fullNetworkStride_is_prime",
+          "name": "Prime circle full network strides are prime network strides",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0091",
+          "lean_name": "Circle.spokeStride_not_nonSpokeForwardStride",
+          "name": "Midpoint spokes are excluded from forward non-spoke strides",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0092",
+          "lean_name": "Circle.factorSubcoilCopies_mul",
+          "name": "Factor subcoil copies multiply back to host",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0093",
+          "lean_name": "Circle.factorSubcoilCopies_18_examples",
+          "name": "Factor subcoil copy examples",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0094",
+          "lean_name": "Circle.coilMapTotalNodes_18_4",
+          "name": "Coil map 18 by 4 has 72 represented nodes",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0095",
+          "lean_name": "Circle.coilMapBlockWidth",
+          "name": "Coil map block width",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0096",
+          "lean_name": "Circle.Applications.temporalCoilStride_of_prime",
+          "name": "Temporal coil stride from prime window",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0097",
+          "lean_name": "Circle.Applications.temporalPrimeLadder_examples",
+          "name": "Temporal prime ladder examples",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0098",
+          "lean_name": "Circle.Applications.temporalStrideSet29_examples",
+          "name": "Temporal stride set 29 examples",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0099",
+          "lean_name": "Circle.Applications.temporalAbyss59EndpointNodeEdges16000",
+          "name": "Temporal abyss endpoint node edge example",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0100",
+          "lean_name": "Circle.Applications.temporalAbyss59InteriorNodeEdges16000",
+          "name": "Temporal abyss interior node edge example",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0101",
+          "lean_name": "Circle.Applications.temporalAbyss59TotalDirectedEdges16000",
+          "name": "Temporal abyss total directed edge example",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0102",
+          "lean_name": "Circle.whitePaperPrimeAngleSkip_fullCoil",
+          "name": "White-paper prime angle skip is full coil",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0103",
+          "lean_name": "Circle.whitePaperPrimeAngleSkip_of_prime",
+          "name": "Prime node count makes every forward skip prime",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0104",
+          "lean_name": "Circle.whitePaperPrimeAngleSkips12_eq",
+          "name": "White-paper prime angle skips for 12",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0105",
+          "lean_name": "Circle.whitePaperPrimeAngleSkips13_eq",
+          "name": "White-paper prime angle skips for 13",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0106",
+          "lean_name": "Circle.Applications.treeLLMRootQuestionCount_prime",
+          "name": "TreeLLM root count is prime",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0107",
+          "lean_name": "Circle.Applications.treeLLMPathIdBits_byte_aligned",
+          "name": "TreeLLM path-id bits are byte-aligned",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0108",
+          "lean_name": "Circle.Applications.treeLLM76TokenBytes_eq",
+          "name": "TreeLLM 76-byte token layout sum",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0109",
+          "lean_name": "Circle.Applications.treeLLM80TokenBytes_eq",
+          "name": "TreeLLM 80-byte token layout sum",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0110",
+          "lean_name": "Circle.Applications.treeLLMInitialPayloadFits32Bytes",
+          "name": "TreeLLM initial payload fits 32 bytes",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0111",
+          "lean_name": "Circle.Applications.treeLLMV8SemanticVectorBytes_eq",
+          "name": "TreeLLM v8 semantic vector layout sum",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0112",
+          "lean_name": "Circle.Applications.treeLLMNonSensoryAnchorCount_eq",
+          "name": "TreeLLM non-sensory anchor count",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0113",
+          "lean_name": "Circle.Applications.treeLLMSensoryAnchorCapacity_le_total",
+          "name": "TreeLLM sensory anchors fit total anchors",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0114",
+          "lean_name": "Circle.Applications.treeLLMSpeculativeHopSpan_nonempty",
+          "name": "TreeLLM speculative hop span is nonempty",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0115",
+          "lean_name": "Circle.Applications.mlxRotaryConfig512_8_4_16_wellFormed",
+          "name": "MLX rotary config 512 8 4 16 well formed",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0116",
+          "lean_name": "Circle.Applications.mlxRotaryConfig512_8_4_0_effectiveFullHead",
+          "name": "MLX zero RoPE dims default to full head",
+          "status": "proved"
+        },
+        {
           "id": "GEN-T0002",
           "lean_name": "Circle.Generative.coilOrbitGenerator_regenerates_orbit",
           "name": "Circle.Generative.coilOrbitGenerator_regenerates_orbit",
@@ -1915,6 +2137,60 @@
           "status": "proved"
         },
         {
+          "id": "CC-T0083",
+          "lean_name": "Circle.primeAngleStride_of_prime",
+          "name": "Prime angle stride on prime circle",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0087",
+          "lean_name": "Circle.subcoil_count_eq_gcd",
+          "name": "Subcoil count equals gcd",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0088",
+          "lean_name": "Circle.prime_subcoil_count_one",
+          "name": "Prime subcoil count one",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0089",
+          "lean_name": "Circle.fullCoilNetworkStride_iff_prime_or_composite",
+          "name": "Full coil-network stride partition",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0090",
+          "lean_name": "Circle.primeCircle_fullNetworkStride_is_prime",
+          "name": "Prime circle full network strides are prime network strides",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0102",
+          "lean_name": "Circle.whitePaperPrimeAngleSkip_fullCoil",
+          "name": "White-paper prime angle skip is full coil",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0103",
+          "lean_name": "Circle.whitePaperPrimeAngleSkip_of_prime",
+          "name": "Prime node count makes every forward skip prime",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0104",
+          "lean_name": "Circle.whitePaperPrimeAngleSkips12_eq",
+          "name": "White-paper prime angle skips for 12",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0105",
+          "lean_name": "Circle.whitePaperPrimeAngleSkips13_eq",
+          "name": "White-paper prime angle skips for 13",
+          "status": "proved"
+        },
+        {
           "id": "GEN-T0006",
           "lean_name": "Circle.Generative.orbitDecompositionGenerator_generatedOrbits_length",
           "name": "Circle.Generative.orbitDecompositionGenerator_generatedOrbits_length",
@@ -2092,6 +2368,84 @@
           "lean_name": "Circle.primeHorizonRangeCount_eq_filter_card",
           "name": "Prime horizon range count is filter cardinality",
           "status": "proved"
+        },
+        {
+          "id": "CC-T0080",
+          "lean_name": "Circle.nextPrimeHorizonResultUpTo_some_iff",
+          "name": "Next prime horizon result for found candidate",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0081",
+          "lean_name": "Circle.nextPrimeHorizonResultUpTo_none_iff",
+          "name": "Next prime horizon result for no candidate",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0083",
+          "lean_name": "Circle.primeAngleStride_of_prime",
+          "name": "Prime angle stride on prime circle",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0084",
+          "lean_name": "Circle.primeChordPathCount_examples",
+          "name": "Prime chord path count examples",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0086",
+          "lean_name": "Circle.fullChordNetworkAntinodeCount_prime_examples",
+          "name": "Full chord network antinode count examples",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0088",
+          "lean_name": "Circle.prime_subcoil_count_one",
+          "name": "Prime subcoil count one",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0090",
+          "lean_name": "Circle.primeCircle_fullNetworkStride_is_prime",
+          "name": "Prime circle full network strides are prime network strides",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0096",
+          "lean_name": "Circle.Applications.temporalCoilStride_of_prime",
+          "name": "Temporal coil stride from prime window",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0097",
+          "lean_name": "Circle.Applications.temporalPrimeLadder_examples",
+          "name": "Temporal prime ladder examples",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0098",
+          "lean_name": "Circle.Applications.temporalStrideSet29_examples",
+          "name": "Temporal stride set 29 examples",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0103",
+          "lean_name": "Circle.whitePaperPrimeAngleSkip_of_prime",
+          "name": "Prime node count makes every forward skip prime",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0105",
+          "lean_name": "Circle.whitePaperPrimeAngleSkips13_eq",
+          "name": "White-paper prime angle skips for 13",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0106",
+          "lean_name": "Circle.Applications.treeLLMRootQuestionCount_prime",
+          "name": "TreeLLM root count is prime",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -2200,6 +2554,138 @@
           "lean_name": "Circle.sameOrbit_nat_iff_modEq_gcd",
           "name": "Same orbit iff gcd congruence of natural representatives",
           "status": "proved"
+        },
+        {
+          "id": "CC-T0082",
+          "lean_name": "Circle.oldScanCrosses_iff_chordCrosses_of_sorted",
+          "name": "Old antinode scan reduces to chord interleaving",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0085",
+          "lean_name": "Circle.fullChordNetworkAntinodeCount_eq_certificate_card",
+          "name": "Full chord network antinode count formula",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0086",
+          "lean_name": "Circle.fullChordNetworkAntinodeCount_prime_examples",
+          "name": "Full chord network antinode count examples",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0087",
+          "lean_name": "Circle.subcoil_count_eq_gcd",
+          "name": "Subcoil count equals gcd",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0088",
+          "lean_name": "Circle.prime_subcoil_count_one",
+          "name": "Prime subcoil count one",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0089",
+          "lean_name": "Circle.fullCoilNetworkStride_iff_prime_or_composite",
+          "name": "Full coil-network stride partition",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0090",
+          "lean_name": "Circle.primeCircle_fullNetworkStride_is_prime",
+          "name": "Prime circle full network strides are prime network strides",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0091",
+          "lean_name": "Circle.spokeStride_not_nonSpokeForwardStride",
+          "name": "Midpoint spokes are excluded from forward non-spoke strides",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0092",
+          "lean_name": "Circle.factorSubcoilCopies_mul",
+          "name": "Factor subcoil copies multiply back to host",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0093",
+          "lean_name": "Circle.factorSubcoilCopies_18_examples",
+          "name": "Factor subcoil copy examples",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0094",
+          "lean_name": "Circle.coilMapTotalNodes_18_4",
+          "name": "Coil map 18 by 4 has 72 represented nodes",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0095",
+          "lean_name": "Circle.coilMapBlockWidth",
+          "name": "Coil map block width",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0096",
+          "lean_name": "Circle.Applications.temporalCoilStride_of_prime",
+          "name": "Temporal coil stride from prime window",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0097",
+          "lean_name": "Circle.Applications.temporalPrimeLadder_examples",
+          "name": "Temporal prime ladder examples",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0098",
+          "lean_name": "Circle.Applications.temporalStrideSet29_examples",
+          "name": "Temporal stride set 29 examples",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0099",
+          "lean_name": "Circle.Applications.temporalAbyss59EndpointNodeEdges16000",
+          "name": "Temporal abyss endpoint node edge example",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0100",
+          "lean_name": "Circle.Applications.temporalAbyss59InteriorNodeEdges16000",
+          "name": "Temporal abyss interior node edge example",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0101",
+          "lean_name": "Circle.Applications.temporalAbyss59TotalDirectedEdges16000",
+          "name": "Temporal abyss total directed edge example",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0102",
+          "lean_name": "Circle.whitePaperPrimeAngleSkip_fullCoil",
+          "name": "White-paper prime angle skip is full coil",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0103",
+          "lean_name": "Circle.whitePaperPrimeAngleSkip_of_prime",
+          "name": "Prime node count makes every forward skip prime",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0104",
+          "lean_name": "Circle.whitePaperPrimeAngleSkips12_eq",
+          "name": "White-paper prime angle skips for 12",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0105",
+          "lean_name": "Circle.whitePaperPrimeAngleSkips13_eq",
+          "name": "White-paper prime angle skips for 13",
+          "status": "proved"
         }
       ],
       "used_by_widgets": [
@@ -2282,6 +2768,30 @@
           "id": "CC-T0061",
           "lean_name": "Circle.sameOrbit_nat_iff_modEq_gcd",
           "name": "Same orbit iff gcd congruence of natural representatives",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0087",
+          "lean_name": "Circle.subcoil_count_eq_gcd",
+          "name": "Subcoil count equals gcd",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0088",
+          "lean_name": "Circle.prime_subcoil_count_one",
+          "name": "Prime subcoil count one",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0092",
+          "lean_name": "Circle.factorSubcoilCopies_mul",
+          "name": "Factor subcoil copies multiply back to host",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0093",
+          "lean_name": "Circle.factorSubcoilCopies_18_examples",
+          "name": "Factor subcoil copy examples",
           "status": "proved"
         },
         {

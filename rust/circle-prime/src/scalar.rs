@@ -1,4 +1,7 @@
-use crate::tables::{STATIC_BASE_PRIMES_U64, STATIC_BASE_PRIME_LIMIT};
+use crate::tables::{
+    STATIC_BASE_PRIMES_U64, STATIC_BASE_PRIME_INDEX_BLOCK_SIZE,
+    STATIC_BASE_PRIME_INDEX_BY_1024_BLOCK, STATIC_BASE_PRIME_LIMIT,
+};
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum PrimeStatus {
@@ -63,13 +66,14 @@ impl NextPrimeSearch {
             .as_ref()
             .map_or_else(|| "null".to_string(), PrimeDecision::to_json);
         format!(
-            "{{\"start\":{},\"status\":\"{}\",\"prime\":{},\"candidate_count\":{},\"decision\":{},\"proof_contract\":{}}}",
+            "{{\"start\":{},\"status\":\"{}\",\"prime\":{},\"candidate_count\":{},\"decision\":{},\"proof_contract\":{},\"next_proof_contract\":{}}}",
             self.start,
             status,
             optional_u64_json(self.prime),
             self.candidate_count,
             decision,
-            prime_horizon_proof_contract_json()
+            prime_horizon_proof_contract_json(),
+            next_prime_proof_contract_json()
         )
     }
 }
@@ -88,7 +92,13 @@ pub const PRIME_RANGE_COUNT_LEAN_NAMES: [&str; 2] = [
     "Circle.mem_primeHorizonsInRange_iff",
     "Circle.primeHorizonRangeCount_eq_filter_card",
 ];
+pub const NEXT_PRIME_THEOREM_IDS: [&str; 2] = ["CC-T0080", "CC-T0081"];
+pub const NEXT_PRIME_LEAN_NAMES: [&str; 2] = [
+    "Circle.nextPrimeHorizonResultUpTo_some_iff",
+    "Circle.nextPrimeHorizonResultUpTo_none_iff",
+];
 pub const SMALL_PRIME_HORIZONS: [u64; 12] = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37];
+const SMALL_PRIME_HORIZON_MAX: u64 = 37;
 const WHEEL30_FILTERED_SMALL_PRIME_HORIZONS: [u64; 9] = [7, 11, 13, 17, 19, 23, 29, 31, 37];
 #[cfg(test)]
 const NEXT_PRIME_WHEEL30_RESIDUES: [u64; 8] = [1, 7, 11, 13, 17, 19, 23, 29];
@@ -98,6 +108,11 @@ const NEXT_PRIME_WHEEL30_DELTA_BY_RESIDUE: [u64; 30] = [
 ];
 const NEXT_PRIME_WHEEL30_INDEX_BY_RESIDUE: [usize; 30] = [
     0, 0, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 4, 4, 4, 4, 5, 5, 6, 6, 6, 6, 7, 7, 7, 7, 7, 7,
+];
+const SMALL_NEXT_PRIME_THRESHOLDS: [u64; 42] = [
+    41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97, 101, 103, 107, 109, 113, 127, 131, 137,
+    139, 149, 151, 157, 163, 167, 173, 179, 181, 191, 193, 197, 199, 211, 223, 227, 229, 233, 239,
+    241, 251,
 ];
 pub const ANGLE_BUNDLE_HORIZON_PRODUCTS: [u64; 1] = [
     433_601_713_048_867_373, // 41..79
@@ -111,6 +126,10 @@ pub fn prime_horizon_proof_contract_json() -> &'static str {
 
 pub fn prime_range_count_proof_contract_json() -> &'static str {
     "{\"name\":\"prime_horizon_range_count_spec\",\"lean_module\":\"Circle.Core.Horizon\",\"theorem_ids\":[\"CC-T0078\",\"CC-T0079\"],\"lean_names\":[\"Circle.mem_primeHorizonsInRange_iff\",\"Circle.primeHorizonRangeCount_eq_filter_card\"],\"rust_domain\":\"u64_exact_arithmetic\",\"scope\":\"Lean specifies the half-open prime-horizon range-count target; Rust count modes implement the finite interval cardinality with exact u64 arithmetic and externally checked controls.\"}"
+}
+
+pub fn next_prime_proof_contract_json() -> &'static str {
+    "{\"name\":\"prime_horizon_next_search_spec\",\"lean_module\":\"Circle.Core.Horizon\",\"theorem_ids\":[\"CC-T0080\",\"CC-T0081\"],\"lean_names\":[\"Circle.nextPrimeHorizonResultUpTo_some_iff\",\"Circle.nextPrimeHorizonResultUpTo_none_iff\"],\"rust_domain\":\"u64_exact_arithmetic\",\"scope\":\"Lean specifies found and not-found next-prime results over a finite domain ceiling; Rust implements the u64 search with exact arithmetic and externally checked controls.\"}"
 }
 
 fn optional_u64_json(value: Option<u64>) -> String {
@@ -277,15 +296,17 @@ fn classify_after_small_horizon_checks(n: u64) -> PrimeDecision {
 }
 
 pub fn next_prime_u64(start: u64) -> NextPrimeSearch {
-    for q in SMALL_PRIME_HORIZONS {
-        if start <= q {
-            let decision = is_prime_u64(q);
-            return NextPrimeSearch {
-                start,
-                prime: Some(q),
-                candidate_count: 1,
-                decision: Some(decision),
-            };
+    if start <= SMALL_PRIME_HORIZON_MAX {
+        for q in SMALL_PRIME_HORIZONS {
+            if start <= q {
+                let decision = is_prime_u64(q);
+                return NextPrimeSearch {
+                    start,
+                    prime: Some(q),
+                    candidate_count: 1,
+                    decision: Some(decision),
+                };
+            }
         }
     }
 
@@ -327,11 +348,49 @@ pub fn next_prime_u64(start: u64) -> NextPrimeSearch {
     }
 }
 
-fn next_prime_from_static_table(start: u64) -> Option<NextPrimeSearch> {
-    if start > STATIC_BASE_PRIME_LIMIT {
+pub fn next_prime_value_u64(start: u64) -> Option<u64> {
+    if start <= SMALL_PRIME_HORIZON_MAX {
+        for q in SMALL_PRIME_HORIZONS {
+            if start <= q {
+                return Some(q);
+            }
+        }
+    }
+
+    if let Some(prime) = next_prime_value_from_small_thresholds(start) {
+        return Some(prime);
+    }
+
+    if let Some(prime) = next_prime_value_from_static_table(start) {
+        return Some(prime);
+    }
+
+    let (mut candidate, mut wheel_index) = first_wheel30_candidate_at_or_above(start)?;
+    loop {
+        if is_prime_wheel30_candidate_value_u64(candidate) {
+            return Some(candidate);
+        }
+        let gap = NEXT_PRIME_WHEEL30_GAPS[wheel_index];
+        candidate = candidate.checked_add(gap)?;
+        wheel_index = (wheel_index + 1) % NEXT_PRIME_WHEEL30_GAPS.len();
+    }
+}
+
+#[inline]
+fn next_prime_value_from_small_thresholds(start: u64) -> Option<u64> {
+    if start
+        > *SMALL_NEXT_PRIME_THRESHOLDS
+            .last()
+            .expect("small next-prime thresholds are nonempty")
+    {
         return None;
     }
-    let table_index = STATIC_BASE_PRIMES_U64.partition_point(|&prime| prime < start);
+    let index = SMALL_NEXT_PRIME_THRESHOLDS.partition_point(|&prime| prime < start);
+    SMALL_NEXT_PRIME_THRESHOLDS.get(index).copied()
+}
+
+fn next_prime_from_static_table(start: u64) -> Option<NextPrimeSearch> {
+    let table_index = static_prime_table_lower_bound_index(start)?;
     let &prime = STATIC_BASE_PRIMES_U64.get(table_index)?;
     let candidate_count = wheel30_candidate_count_inclusive(start, prime)?;
     Some(NextPrimeSearch {
@@ -348,6 +407,62 @@ fn next_prime_from_static_table(start: u64) -> Option<NextPrimeSearch> {
             checked_horizon_bound: Some(prime.isqrt()),
         }),
     })
+}
+
+fn next_prime_value_from_static_table(start: u64) -> Option<u64> {
+    if start > STATIC_BASE_PRIME_LIMIT {
+        return None;
+    }
+    let table_index = static_prime_table_lower_bound_index(start)?;
+    STATIC_BASE_PRIMES_U64.get(table_index).copied()
+}
+
+#[inline]
+fn static_prime_table_lower_bound_index(start: u64) -> Option<usize> {
+    if start > STATIC_BASE_PRIME_LIMIT {
+        return None;
+    }
+    let block = start as usize / STATIC_BASE_PRIME_INDEX_BLOCK_SIZE;
+    let lower = STATIC_BASE_PRIME_INDEX_BY_1024_BLOCK
+        .get(block)
+        .copied()
+        .map(|index| index as usize)?;
+    let upper = STATIC_BASE_PRIME_INDEX_BY_1024_BLOCK
+        .get(block + 1)
+        .copied()
+        .map_or(STATIC_BASE_PRIMES_U64.len(), |index| index as usize);
+    let local_index = STATIC_BASE_PRIMES_U64[lower..upper].partition_point(|&prime| prime < start);
+    Some(lower + local_index)
+}
+
+#[inline]
+fn is_prime_wheel30_candidate_value_u64(n: u64) -> bool {
+    debug_assert!(n > *SMALL_PRIME_HORIZONS.last().expect("small primes exist"));
+    debug_assert!(is_wheel30_residue(n));
+
+    for q in WHEEL30_FILTERED_SMALL_PRIME_HORIZONS {
+        if n % q == 0 {
+            return false;
+        }
+    }
+
+    for bundle in ANGLE_BUNDLE_HORIZON_PRODUCTS {
+        let factor = gcd_u64(n, bundle);
+        if factor > 1 && factor < n {
+            return false;
+        }
+    }
+
+    let mut d = n - 1;
+    let mut s = 0u32;
+    while d % 2 == 0 {
+        d /= 2;
+        s += 1;
+    }
+
+    MR64_BASES
+        .into_iter()
+        .all(|base| miller_rabin_round(n, base, d, s))
 }
 
 fn wheel30_candidate_count_inclusive(start: u64, end: u64) -> Option<u64> {
@@ -554,6 +669,36 @@ mod tests {
     }
 
     #[test]
+    fn next_prime_value_matches_structured_search() {
+        for start in [
+            0,
+            2,
+            38,
+            41,
+            42,
+            90,
+            98,
+            250,
+            251,
+            252,
+            1_000_000,
+            STATIC_BASE_PRIME_LIMIT,
+            STATIC_BASE_PRIME_LIMIT + 1,
+            4_294_967_000,
+            1_000_000_000_000,
+            18_446_744_073_709_551_500,
+            18_446_744_073_709_551_558,
+            u64::MAX,
+        ] {
+            assert_eq!(
+                next_prime_value_u64(start),
+                next_prime_u64(start).prime,
+                "start={start}"
+            );
+        }
+    }
+
+    #[test]
     fn static_prime_table_path_declines_after_last_table_prime() {
         let last_static_prime = *STATIC_BASE_PRIMES_U64.last().expect("static primes");
         assert_eq!(
@@ -574,6 +719,29 @@ mod tests {
             search.decision.as_ref().map(|decision| decision.method),
             Some("static_prime_table")
         );
+    }
+
+    #[test]
+    fn static_prime_table_block_index_matches_full_lower_bound() {
+        for start in [
+            0,
+            2,
+            251,
+            1023,
+            1024,
+            1025,
+            1_000_000,
+            1_000_003,
+            1_000_004,
+            STATIC_BASE_PRIME_LIMIT - 1,
+            STATIC_BASE_PRIME_LIMIT,
+        ] {
+            assert_eq!(
+                static_prime_table_lower_bound_index(start),
+                Some(STATIC_BASE_PRIMES_U64.partition_point(|&prime| prime < start)),
+                "start={start}"
+            );
+        }
     }
 
     #[test]

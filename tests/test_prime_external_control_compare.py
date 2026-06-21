@@ -166,6 +166,50 @@ def test_comparison_failures_detects_regressions_and_result_mismatch() -> None:
     assert any("best speedup regressed" in failure for failure in failures)
 
 
+def test_noisy_baseline_median_regression_can_be_allowed_at_parity_floor() -> None:
+    row = ExternalComparison(
+        key=speedup_row().key,
+        baseline_result=664_579,
+        candidate_result=664_579,
+        baseline_best_speedup=1.400,
+        candidate_best_speedup=1.300,
+        baseline_median_speedup=1.300,
+        candidate_median_speedup=1.010,
+        baseline_sample_stability="noisy",
+        candidate_sample_stability="stable",
+    )
+
+    assert not comparison_failures(
+        [row],
+        min_median_speedup_ratio=0.90,
+        min_best_speedup_ratio=0.85,
+        allow_noisy_baseline_median_regression_when_candidate_speedup_at_least=1.0,
+    )
+
+
+def test_noisy_baseline_median_regression_bypass_requires_stable_candidate() -> None:
+    row = ExternalComparison(
+        key=speedup_row().key,
+        baseline_result=664_579,
+        candidate_result=664_579,
+        baseline_best_speedup=1.400,
+        candidate_best_speedup=1.300,
+        baseline_median_speedup=1.300,
+        candidate_median_speedup=1.010,
+        baseline_sample_stability="noisy",
+        candidate_sample_stability="noisy",
+    )
+
+    failures = comparison_failures(
+        [row],
+        min_median_speedup_ratio=0.90,
+        min_best_speedup_ratio=0.85,
+        allow_noisy_baseline_median_regression_when_candidate_speedup_at_least=1.0,
+    )
+
+    assert any("median speedup regressed" in failure for failure in failures)
+
+
 def test_count_mode_change_is_reported_without_default_failure() -> None:
     baseline_row = speedup_row(count_mode="segmented")
     candidate_row = speedup_row(
@@ -264,6 +308,77 @@ def test_name_filter_matches_adaptive_default_comparison_name() -> None:
         "external_primesieve_count",
     )
     assert comparisons[0].candidate_median_speedup == 1.200
+
+
+def test_count_binary_default_keeps_separate_comparison_key() -> None:
+    full_cli = speedup_row(
+        name="circle_prime_parallel_default_count_8t",
+        segment_size=1_310_720,
+        best_speedup=0.900,
+        median_speedup=0.910,
+        count_mode="presieve13",
+    )
+    count_binary = speedup_row(
+        name="circle_prime_count_binary_parallel_default_count_8t",
+        segment_size=1_310_720,
+        best_speedup=0.930,
+        median_speedup=0.940,
+        count_mode="presieve13",
+    )
+
+    rows = {full_cli.key: full_cli, count_binary.key: count_binary}
+
+    assert len(rows) == 2
+    comparisons = compare_speedup_rows(
+        baseline_rows=rows,
+        candidate_rows=rows,
+        names={"circle_prime_count_binary_default_count"},
+        baselines={"external_primesieve_count"},
+    )
+
+    assert len(comparisons) == 1
+    assert comparisons[0].key[0] == "circle_prime_count_binary_default_count"
+    assert comparisons[0].candidate_median_speedup == 0.940
+
+
+def test_count_binary_server_default_keeps_separate_comparison_key() -> None:
+    count_binary = speedup_row(
+        name="circle_prime_count_binary_parallel_default_count_8t",
+        segment_size=1_310_720,
+        best_speedup=0.930,
+        median_speedup=0.940,
+        count_mode="presieve13",
+    )
+    count_binary_server = speedup_row(
+        name="circle_prime_count_binary_server_parallel_default_count_8t",
+        segment_size=1_310_720,
+        best_speedup=3.100,
+        median_speedup=3.200,
+        count_mode="presieve13",
+    )
+
+    rows = {count_binary.key: count_binary, count_binary_server.key: count_binary_server}
+
+    assert len(rows) == 2
+    count_binary_comparisons = compare_speedup_rows(
+        baseline_rows=rows,
+        candidate_rows=rows,
+        names={"circle_prime_count_binary_default_count"},
+        baselines={"external_primesieve_count"},
+    )
+    server_comparisons = compare_speedup_rows(
+        baseline_rows=rows,
+        candidate_rows=rows,
+        names={"circle_prime_count_binary_server_parallel_default_count_8t"},
+        baselines={"external_primesieve_count"},
+    )
+
+    assert len(count_binary_comparisons) == 1
+    assert count_binary_comparisons[0].key[0] == "circle_prime_count_binary_default_count"
+    assert count_binary_comparisons[0].candidate_median_speedup == 0.940
+    assert len(server_comparisons) == 1
+    assert server_comparisons[0].key[0] == "circle_prime_count_binary_server_default_count"
+    assert server_comparisons[0].candidate_median_speedup == 3.200
 
 
 def test_adaptive_server_default_rows_keep_separate_comparison_key() -> None:
@@ -585,6 +700,72 @@ def test_noisy_samples_can_be_allowed_for_material_median_win() -> None:
             min_best_speedup_ratio=0.90,
             require_stable_samples=True,
             allow_noisy_when_median_speedup_at_least=2.5,
+        )
+    )
+
+
+def test_best_speedup_regression_can_be_allowed_for_material_median_win() -> None:
+    comparisons = [
+        ExternalComparison(
+            key=speedup_row().key,
+            baseline_result=664_579,
+            candidate_result=664_579,
+            baseline_best_speedup=100.0,
+            candidate_best_speedup=80.0,
+            baseline_median_speedup=10.0,
+            candidate_median_speedup=12.0,
+        )
+    ]
+
+    assert (
+        comparison_failures(
+            comparisons,
+            min_median_speedup_ratio=0.90,
+            min_best_speedup_ratio=0.85,
+            allow_best_regression_when_median_speedup_at_least=5.0,
+        )
+        == []
+    )
+    assert any(
+        "best speedup regressed" in failure
+        for failure in comparison_failures(
+            comparisons,
+            min_median_speedup_ratio=0.90,
+            min_best_speedup_ratio=0.85,
+            allow_best_regression_when_median_speedup_at_least=15.0,
+        )
+    )
+
+
+def test_median_speedup_regression_can_be_allowed_for_material_median_win() -> None:
+    comparisons = [
+        ExternalComparison(
+            key=speedup_row().key,
+            baseline_result=664_579,
+            candidate_result=664_579,
+            baseline_best_speedup=100.0,
+            candidate_best_speedup=80.0,
+            baseline_median_speedup=10.0,
+            candidate_median_speedup=8.0,
+        )
+    ]
+
+    assert (
+        comparison_failures(
+            comparisons,
+            min_median_speedup_ratio=0.90,
+            min_best_speedup_ratio=0.0,
+            allow_median_regression_when_median_speedup_at_least=5.0,
+        )
+        == []
+    )
+    assert any(
+        "median speedup regressed" in failure
+        for failure in comparison_failures(
+            comparisons,
+            min_median_speedup_ratio=0.90,
+            min_best_speedup_ratio=0.0,
+            allow_median_regression_when_median_speedup_at_least=9.0,
         )
     )
 

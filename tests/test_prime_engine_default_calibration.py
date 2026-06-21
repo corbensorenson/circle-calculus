@@ -1,9 +1,11 @@
 from __future__ import annotations
 
 import json
+from pathlib import Path
 
 from scripts.calibrate_prime_engine_defaults import (
     build_calibration,
+    current_confirmation_input_failures,
     read_external_mode_confirmation_input_rows,
     render_markdown,
     sample_spread_text,
@@ -1211,3 +1213,85 @@ def test_confirmation_input_rows_load_csv_and_samples(tmp_path) -> None:
     assert rows[0]["count_mode"] == "dynamic"
     assert rows[0]["segment_size"] == "98304"
     assert samples[0]["elapsed_ms"] == "3.0"
+
+
+def test_current_confirmation_input_fingerprints_match(tmp_path: Path) -> None:
+    binary = tmp_path / "circle-prime"
+    defaults = tmp_path / "prime_engine_defaults.json"
+    binary.write_bytes(b"circle-binary")
+    defaults.write_text('{"segment": 1507328}\n')
+    summary = {
+        "input_metadata": [
+            {
+                "input": "confirm.csv",
+                "metadata_available": True,
+                "circle_prime": {
+                    "binary": {"sha256": sha256_hex(binary)},
+                    "defaults": {"sha256": sha256_hex(defaults)},
+                },
+            }
+        ]
+    }
+
+    assert (
+        current_confirmation_input_failures(
+            summary,
+            circle_prime=binary,
+            defaults_path=defaults,
+            label="high-offset confirmation",
+        )
+        == []
+    )
+
+
+def test_current_confirmation_input_fails_without_provenance(tmp_path: Path) -> None:
+    binary = tmp_path / "circle-prime"
+    defaults = tmp_path / "prime_engine_defaults.json"
+    binary.write_bytes(b"circle-binary")
+    defaults.write_text('{"segment": 1507328}\n')
+
+    failures = current_confirmation_input_failures(
+        {"input_metadata": []},
+        circle_prime=binary,
+        defaults_path=defaults,
+        label="high-offset confirmation",
+    )
+
+    assert failures == [
+        "high-offset confirmation lacks input_metadata fingerprints; rerun the confirmation target."
+    ]
+
+
+def test_current_confirmation_input_fails_on_defaults_mismatch(tmp_path: Path) -> None:
+    binary = tmp_path / "circle-prime"
+    defaults = tmp_path / "prime_engine_defaults.json"
+    binary.write_bytes(b"circle-binary")
+    defaults.write_text('{"segment": 1507328}\n')
+    summary = {
+        "input_metadata": [
+            {
+                "input": "confirm.csv",
+                "metadata_available": True,
+                "circle_prime": {
+                    "binary": {"sha256": sha256_hex(binary)},
+                    "defaults": {"sha256": "0" * 64},
+                },
+            }
+        ]
+    }
+
+    failures = current_confirmation_input_failures(
+        summary,
+        circle_prime=binary,
+        defaults_path=defaults,
+        label="high-offset confirmation",
+    )
+
+    assert len(failures) == 1
+    assert "used defaults 000000000000" in failures[0]
+
+
+def sha256_hex(path: Path) -> str:
+    import hashlib
+
+    return hashlib.sha256(path.read_bytes()).hexdigest()

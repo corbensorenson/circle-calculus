@@ -46,6 +46,29 @@ def circle_prime_bin() -> Path:
     return binary
 
 
+@pytest.fixture(scope="session")
+def circle_prime_count_bin() -> Path:
+    cargo = cargo_or_skip()
+    subprocess.run(
+        [
+            cargo,
+            "build",
+            "--quiet",
+            "-p",
+            "circle-prime",
+            "--bin",
+            "circle-prime-count",
+        ],
+        cwd=ROOT,
+        check=True,
+    )
+    suffix = ".exe" if sys.platform == "win32" else ""
+    binary = ROOT / "target" / "debug" / f"circle-prime-count{suffix}"
+    if not binary.exists():
+        raise AssertionError(f"expected built binary at {binary}")
+    return binary
+
+
 def run_circle_prime(binary: Path, *args: str) -> str:
     completed = subprocess.run(
         [str(binary), *args],
@@ -138,6 +161,16 @@ def assert_prime_range_count_proof_contract(payload: dict) -> None:
     assert contract["rust_domain"] == "u64_exact_arithmetic"
 
 
+def assert_next_prime_proof_contract(payload: dict) -> None:
+    contract = payload["next_proof_contract"]
+    assert contract["name"] == "prime_horizon_next_search_spec"
+    assert contract["lean_module"] == "Circle.Core.Horizon"
+    assert contract["theorem_ids"] == ["CC-T0080", "CC-T0081"]
+    assert "Circle.nextPrimeHorizonResultUpTo_some_iff" in contract["lean_names"]
+    assert "Circle.nextPrimeHorizonResultUpTo_none_iff" in contract["lean_names"]
+    assert contract["rust_domain"] == "u64_exact_arithmetic"
+
+
 def test_rust_prime_cli_classifies_known_values(circle_prime_bin: Path) -> None:
     prime = json.loads(run_circle_prime(circle_prime_bin, "test", "97", "--json"))
     assert prime["status"] == "prime"
@@ -154,7 +187,93 @@ def test_rust_prime_cli_finds_next_prime(circle_prime_bin: Path) -> None:
     assert payload["candidate_count"] == 1
     assert payload["decision"]["status"] == "prime"
     assert_prime_horizon_proof_contract(payload)
+    assert_next_prime_proof_contract(payload)
     assert_prime_horizon_proof_contract(payload["decision"])
+
+
+def test_rust_prime_cli_fuzzy_search_certifies_exact_next(
+    circle_prime_bin: Path,
+    tmp_path: Path,
+) -> None:
+    model = tmp_path / "tiny-model.txt"
+    model.write_text(
+        "\n".join(
+            [
+                "circle_fuzzy_model_v0",
+                "bit_width 8",
+                "residue_moduli none",
+                "weights 0,0,0,0,0,0,0,0",
+                "bias 0",
+                "",
+            ]
+        )
+    )
+
+    payload = json.loads(
+        run_circle_prime(
+            circle_prime_bin,
+            "fuzzy-search",
+            str(model),
+            "100",
+            "--mode",
+            "exact-next",
+            "--window",
+            "32",
+            "--top-k",
+            "4",
+            "--json",
+        )
+    )
+
+    assert payload["search_kind"] == "rust_fuzzy_exact_next_prime_in_window"
+    assert payload["reported_prime"] == 101
+    assert payload["baseline_first_prime"] == 101
+    assert payload["reported_prime_is_baseline_first_prime"] is True
+    assert payload["exact_next_certified"] is True
+    assert payload["hybrid_proof_contract"]["neural_role"] == "candidate_ordering_only"
+    assert payload["hybrid_proof_contract"]["deterministic_prefilter"].startswith("2/3/5")
+    assert_prime_horizon_proof_contract(payload)
+    assert_next_prime_proof_contract(payload)
+
+
+def test_rust_prime_cli_fuzzy_server_handles_repeated_exact_next(
+    circle_prime_bin: Path,
+    tmp_path: Path,
+) -> None:
+    model = tmp_path / "tiny-model.txt"
+    model.write_text(
+        "\n".join(
+            [
+                "circle_fuzzy_model_v0",
+                "bit_width 8",
+                "residue_moduli none",
+                "weights 0,0,0,0,0,0,0,0",
+                "bias 0",
+                "",
+            ]
+        )
+    )
+
+    completed = subprocess.run(
+        [
+            str(circle_prime_bin),
+            "fuzzy-server",
+            str(model),
+            "--mode",
+            "exact-next",
+            "--window",
+            "32",
+            "--top-k",
+            "4",
+        ],
+        cwd=ROOT,
+        input="100 3\nquit\n",
+        text=True,
+        capture_output=True,
+        check=True,
+    )
+
+    assert completed.stdout.splitlines() == ["101", "101", "101"]
 
 
 def test_rust_prime_cli_next_server_handles_repeated_requests(
@@ -186,6 +305,7 @@ def test_rust_prime_cli_next_server_json_reports_proof_contract(
     assert payload["status"] == "found"
     assert payload["prime"] == 101
     assert_prime_horizon_proof_contract(payload)
+    assert_next_prime_proof_contract(payload)
     assert_prime_horizon_proof_contract(payload["decision"])
 
 
@@ -203,6 +323,7 @@ def test_rust_prime_cli_reports_no_next_prime_in_u64_domain(
     assert payload["prime"] is None
     assert payload["decision"] is None
     assert_prime_horizon_proof_contract(payload)
+    assert_next_prime_proof_contract(payload)
 
 
 def test_rust_prime_cli_counts_reference_range(circle_prime_bin: Path) -> None:
@@ -373,15 +494,475 @@ def test_rust_prime_cli_uses_threaded_high_offset_segment_default(
     )
     payload = json.loads(output)
     assert payload["count"] == 361726
-    assert payload["segment_size"] == DEFAULTS["parallel_very_high_offset_segment_size"]
-    assert payload["count_mode"] == DEFAULTS["parallel_very_high_offset_count_mode"]
+    assert payload["segment_size"] == DEFAULTS["parallel_edge_high_offset_segment_size"]
+    assert payload["count_mode"] == DEFAULTS["parallel_edge_high_offset_count_mode"]
     assert payload["threads"] == effective_threads_for_mode(
         10_000_000,
-        DEFAULTS["parallel_very_high_offset_segment_size"],
+        DEFAULTS["parallel_edge_high_offset_segment_size"],
         8,
-        DEFAULTS["parallel_very_high_offset_count_mode"],
+        DEFAULTS["parallel_edge_high_offset_count_mode"],
     )
     assert payload["requested_threads"] == 8
+
+
+def test_rust_prime_count_binary_matches_high_offset_default(
+    circle_prime_bin: Path,
+    circle_prime_count_bin: Path,
+) -> None:
+    full_payload = json.loads(
+        run_circle_prime(
+            circle_prime_bin,
+            "range",
+            "1000000000000",
+            "1000010000000",
+            "--count",
+            "--json",
+            "--threads",
+            "8",
+        )
+    )
+    count_payload = json.loads(
+        run_circle_prime(
+            circle_prime_count_bin,
+            "1000000000000",
+            "1000010000000",
+            "--json",
+            "--threads",
+            "8",
+        )
+    )
+    assert count_payload["count"] == full_payload["count"] == 361726
+    assert count_payload["segment_size"] == full_payload["segment_size"]
+    assert count_payload["threads"] == full_payload["threads"]
+    assert count_payload["requested_threads"] == full_payload["requested_threads"]
+    assert count_payload["count_mode"] == full_payload["count_mode"]
+    assert_prime_range_count_proof_contract(count_payload)
+
+
+def test_rust_prime_count_binary_explicit_default_uses_adaptive_mode(
+    circle_prime_count_bin: Path,
+) -> None:
+    omitted_payload = json.loads(
+        run_circle_prime(
+            circle_prime_count_bin,
+            "1500000000000",
+            "1500010000000",
+            "--json",
+            "--threads",
+            "8",
+        )
+    )
+    explicit_payload = json.loads(
+        run_circle_prime(
+            circle_prime_count_bin,
+            "1500000000000",
+            "1500010000000",
+            "--json",
+            "--threads",
+            "8",
+            "--count-mode",
+            "default",
+        )
+    )
+    assert omitted_payload["count"] == explicit_payload["count"]
+    assert omitted_payload["segment_size"] == explicit_payload["segment_size"]
+    assert omitted_payload["threads"] == explicit_payload["threads"]
+    assert omitted_payload["count_mode"] == DEFAULTS["parallel_lower_high_offset_count_mode"]
+    assert explicit_payload["count_mode"] == omitted_payload["count_mode"]
+    assert_prime_range_count_proof_contract(explicit_payload)
+
+
+def test_rust_prime_count_binary_supports_explicit_segmented_mode(
+    circle_prime_bin: Path,
+    circle_prime_count_bin: Path,
+) -> None:
+    full_payload = json.loads(
+        run_circle_prime(
+            circle_prime_bin,
+            "range",
+            "1000000000000",
+            "1000010000000",
+            "--count",
+            "--json",
+            "--segment-size",
+            "1310720",
+            "--threads",
+            "8",
+            "--count-mode",
+            "segmented",
+        )
+    )
+    count_payload = json.loads(
+        run_circle_prime(
+            circle_prime_count_bin,
+            "1000000000000",
+            "1000010000000",
+            "--json",
+            "--segment-size",
+            "1310720",
+            "--threads",
+            "8",
+            "--count-mode",
+            "segmented",
+        )
+    )
+
+    assert count_payload["count"] == full_payload["count"] == 361726
+    assert count_payload["segment_size"] == 1310720
+    assert count_payload["threads"] == full_payload["threads"] == 8
+    assert count_payload["requested_threads"] == full_payload["requested_threads"] == 8
+    assert count_payload["count_mode"] == full_payload["count_mode"] == "segmented"
+    assert_prime_range_count_proof_contract(count_payload)
+
+
+@pytest.mark.parametrize("count_mode", ["balanced", "dynamic"])
+def test_rust_prime_count_binary_matches_full_cli_split_modes(
+    circle_prime_bin: Path,
+    circle_prime_count_bin: Path,
+    count_mode: str,
+) -> None:
+    full_payload = json.loads(
+        run_circle_prime(
+            circle_prime_bin,
+            "range",
+            "0",
+            "1000000",
+            "--count",
+            "--json",
+            "--segment-size",
+            "65536",
+            "--threads",
+            "4",
+            "--count-mode",
+            count_mode,
+        )
+    )
+    count_payload = json.loads(
+        run_circle_prime(
+            circle_prime_count_bin,
+            "0",
+            "1000000",
+            "--json",
+            "--segment-size",
+            "65536",
+            "--threads",
+            "4",
+            "--count-mode",
+            count_mode,
+        )
+    )
+
+    assert count_payload["count"] == full_payload["count"] == 78498
+    assert count_payload["segment_size"] == 65536
+    assert count_payload["threads"] == full_payload["threads"]
+    assert count_payload["requested_threads"] == full_payload["requested_threads"] == 4
+    assert count_payload["count_mode"] == full_payload["count_mode"] == count_mode
+    assert_prime_range_count_proof_contract(count_payload)
+
+
+def test_rust_prime_count_binary_server_handles_repeated_requests(
+    circle_prime_count_bin: Path,
+) -> None:
+    completed = subprocess.run(
+        [
+            str(circle_prime_count_bin),
+            "count-server",
+            "--threads",
+            "8",
+        ],
+        cwd=ROOT,
+        input=(
+            "1000000000000 1000010000000\n"
+            "repeat 2 1000000000000 1000010000000 1310720 8 presieve13\n"
+            "quit\n"
+        ),
+        text=True,
+        capture_output=True,
+        check=True,
+    )
+    assert completed.stdout.splitlines() == ["361726", "361726", "361726"]
+
+
+def test_rust_prime_count_binary_server_handles_segmented_requests(
+    circle_prime_count_bin: Path,
+) -> None:
+    completed = subprocess.run(
+        [
+            str(circle_prime_count_bin),
+            "count-server",
+            "--json",
+            "--threads",
+            "8",
+        ],
+        cwd=ROOT,
+        input=(
+            "1000000000000 1000010000000 1310720 8 segmented\n"
+            "quit\n"
+        ),
+        text=True,
+        capture_output=True,
+        check=True,
+    )
+    payload = json.loads(completed.stdout)
+
+    assert payload["count"] == 361726
+    assert payload["segment_size"] == 1310720
+    assert payload["threads"] == 8
+    assert payload["requested_threads"] == 8
+    assert payload["count_mode"] == "segmented"
+    assert_prime_range_count_proof_contract(payload)
+
+
+def test_rust_prime_count_binary_server_handles_shifted_requests(
+    circle_prime_count_bin: Path,
+) -> None:
+    low = 1_000_000_000_000
+    high = 1_000_010_000_000
+    shift = 10_000_000
+    repetitions = 3
+    segment_size = DEFAULTS["parallel_edge_high_offset_segment_size"]
+    count_mode = DEFAULTS["parallel_edge_high_offset_count_mode"]
+    expected = [
+        run_circle_prime(
+            circle_prime_count_bin,
+            str(low + shift * index),
+            str(high + shift * index),
+            "--segment-size",
+            str(segment_size),
+            "--threads",
+            "8",
+            "--count-mode",
+            count_mode,
+        ).strip()
+        for index in range(repetitions)
+    ]
+
+    completed = subprocess.run(
+        [
+            str(circle_prime_count_bin),
+            "count-server",
+            "--threads",
+            "8",
+        ],
+        cwd=ROOT,
+        input=(
+            f"shifted {repetitions} {shift} {low} {high} "
+            f"{segment_size} 8 {count_mode}\n"
+            "quit\n"
+        ),
+        text=True,
+        capture_output=True,
+        check=True,
+    )
+
+    assert completed.stdout.splitlines() == expected
+
+
+def test_rust_prime_count_binary_server_handles_shifted_presieve17_requests(
+    circle_prime_count_bin: Path,
+) -> None:
+    low = 1_500_000_000_000
+    high = 1_500_010_000_000
+    shift = 10_000_000
+    repetitions = 3
+    segment_size = 1_310_720
+    count_mode = "presieve17"
+    expected = [
+        run_circle_prime(
+            circle_prime_count_bin,
+            str(low + shift * index),
+            str(high + shift * index),
+            "--segment-size",
+            str(segment_size),
+            "--threads",
+            "8",
+            "--count-mode",
+            count_mode,
+        ).strip()
+        for index in range(repetitions)
+    ]
+
+    completed = subprocess.run(
+        [
+            str(circle_prime_count_bin),
+            "count-server",
+            "--threads",
+            "8",
+        ],
+        cwd=ROOT,
+        input=(
+            f"shifted {repetitions} {shift} {low} {high} "
+            f"{segment_size} 8 {count_mode}\n"
+            "quit\n"
+        ),
+        text=True,
+        capture_output=True,
+        check=True,
+    )
+
+    assert completed.stdout.splitlines() == expected
+
+
+def test_rust_prime_count_binary_server_shifted_presieve17_json_reports_contract(
+    circle_prime_count_bin: Path,
+) -> None:
+    low = 1_500_000_000_000
+    high = 1_500_010_000_000
+    shift = 10_000_000
+    repetitions = 2
+    segment_size = 1_310_720
+    completed = subprocess.run(
+        [
+            str(circle_prime_count_bin),
+            "count-server",
+            "--json",
+            "--threads",
+            "8",
+        ],
+        cwd=ROOT,
+        input=(
+            f"shifted {repetitions} {shift} {low} {high} "
+            f"{segment_size} 8 presieve17\n"
+            "quit\n"
+        ),
+        text=True,
+        capture_output=True,
+        check=True,
+    )
+    payloads = [json.loads(line) for line in completed.stdout.splitlines()]
+
+    assert len(payloads) == repetitions
+    assert [payload["low"] for payload in payloads] == [
+        low + shift * index for index in range(repetitions)
+    ]
+    for payload in payloads:
+        assert payload["segment_size"] == segment_size
+        assert payload["threads"] == 8
+        assert payload["requested_threads"] == 8
+        assert payload["count_mode"] == "presieve17"
+        assert_prime_range_count_proof_contract(payload)
+
+
+def test_rust_prime_count_binary_server_shifted_default_uses_edge_plan(
+    circle_prime_count_bin: Path,
+) -> None:
+    low = 1_000_000_000_000
+    high = 1_000_010_000_000
+    shift = 10_000_000
+    repetitions = 2
+    expected_counts = [
+        int(
+            run_circle_prime(
+                circle_prime_count_bin,
+                str(low + shift * index),
+                str(high + shift * index),
+                "--threads",
+                "8",
+            ).strip()
+        )
+        for index in range(repetitions)
+    ]
+    completed = subprocess.run(
+        [
+            str(circle_prime_count_bin),
+            "count-server",
+            "--json",
+            "--threads",
+            "8",
+        ],
+        cwd=ROOT,
+        input=f"shifted {repetitions} {shift} {low} {high}\nquit\n",
+        text=True,
+        capture_output=True,
+        check=True,
+    )
+    payloads = [json.loads(line) for line in completed.stdout.splitlines()]
+
+    assert [payload["low"] for payload in payloads] == [
+        low + shift * index for index in range(repetitions)
+    ]
+    assert [payload["count"] for payload in payloads] == expected_counts
+    for payload in payloads:
+        assert payload["segment_size"] == 1_638_400
+        assert payload["threads"] == 7
+        assert payload["requested_threads"] == 8
+        assert payload["count_mode"] == "presieve13"
+        assert_prime_range_count_proof_contract(payload)
+
+
+def test_rust_prime_count_binary_server_shifted_default_uses_lower_high_plan(
+    circle_prime_count_bin: Path,
+) -> None:
+    low = 1_500_000_000_000
+    high = 1_500_010_000_000
+    shift = 10_000_000
+    repetitions = 2
+    expected_counts = [
+        int(
+            run_circle_prime(
+                circle_prime_count_bin,
+                str(low + shift * index),
+                str(high + shift * index),
+                "--segment-size",
+                "1835008",
+                "--threads",
+                "8",
+                "--count-mode",
+                "presieve13",
+            ).strip()
+        )
+        for index in range(repetitions)
+    ]
+    completed = subprocess.run(
+        [
+            str(circle_prime_count_bin),
+            "count-server",
+            "--json",
+            "--threads",
+            "8",
+        ],
+        cwd=ROOT,
+        input=f"shifted {repetitions} {shift} {low} {high}\nquit\n",
+        text=True,
+        capture_output=True,
+        check=True,
+    )
+    payloads = [json.loads(line) for line in completed.stdout.splitlines()]
+
+    assert [payload["low"] for payload in payloads] == [
+        low + shift * index for index in range(repetitions)
+    ]
+    assert [payload["count"] for payload in payloads] == expected_counts
+    for payload in payloads:
+        assert payload["segment_size"] == 1_835_008
+        assert payload["threads"] == 6
+        assert payload["requested_threads"] == 8
+        assert payload["count_mode"] == "presieve13"
+        assert_prime_range_count_proof_contract(payload)
+
+
+def test_rust_prime_count_binary_server_json_reports_count_contract(
+    circle_prime_count_bin: Path,
+) -> None:
+    completed = subprocess.run(
+        [
+            str(circle_prime_count_bin),
+            "count-server",
+            "--json",
+            "--threads",
+            "8",
+        ],
+        cwd=ROOT,
+        input="1000000000000 1000010000000\nquit\n",
+        text=True,
+        capture_output=True,
+        check=True,
+    )
+    payload = json.loads(completed.stdout)
+    assert payload["count"] == 361726
+    assert payload["segment_size"] == DEFAULTS["parallel_edge_high_offset_segment_size"]
+    assert payload["count_mode"] == DEFAULTS["parallel_edge_high_offset_count_mode"]
+    assert_prime_range_count_proof_contract(payload)
 
 
 def test_rust_prime_cli_recommends_count_defaults(circle_prime_bin: Path) -> None:
@@ -498,11 +1079,11 @@ def test_rust_prime_cli_recommends_high_offset_count_defaults(
     )
     payload = json.loads(output)
     assert payload["count"] is True
-    assert payload["segment_size"] == DEFAULTS["parallel_very_high_offset_segment_size"]
+    assert payload["segment_size"] == DEFAULTS["parallel_edge_high_offset_segment_size"]
     assert payload["count_mode"] == DEFAULTS["parallel_edge_high_offset_count_mode"]
     assert payload["threads"] == effective_threads_for_mode(
         10_000_000,
-        DEFAULTS["parallel_very_high_offset_segment_size"],
+        DEFAULTS["parallel_edge_high_offset_segment_size"],
         8,
         DEFAULTS["parallel_edge_high_offset_count_mode"],
     )

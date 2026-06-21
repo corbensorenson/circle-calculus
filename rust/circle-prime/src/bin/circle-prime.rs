@@ -1,26 +1,35 @@
+use std::convert::TryFrom;
 use std::env;
+use std::fs;
 use std::io::{self, BufRead, Write};
 use std::process;
 use std::sync::mpsc;
 use std::thread::{self, JoinHandle};
 
 use circle_prime::{
-    effective_parallel_thread_count, effective_prefix_pi_thread_count, inspect_horizon,
-    is_prime_u64, next_prime_u64, prime_count_in_range, prime_count_in_range_hybrid_wheel30_marks,
-    prime_count_in_range_hybrid_wheel30_marks_parallel, prime_count_in_range_parallel,
-    prime_count_in_range_parallel_balanced, prime_count_in_range_parallel_dynamic,
-    prime_count_in_range_prefix_pi, prime_count_in_range_prefix_pi_parallel,
-    prime_count_in_range_presieve13, prime_count_in_range_presieve13_parallel,
-    prime_count_in_range_presieve13_with_scratch, prime_count_in_range_presieve17,
-    prime_count_in_range_presieve17_parallel, prime_count_in_range_presieve17_with_scratch,
+    effective_parallel_thread_count, effective_prefix_pi_thread_count,
+    fuzzy_any_prime_value_with_score_limit, fuzzy_search_with_score_limit, inspect_horizon,
+    is_prime_u64, next_prime_u64, next_prime_value_u64, prime_count_in_range,
+    prime_count_in_range_hybrid_wheel30_marks, prime_count_in_range_hybrid_wheel30_marks_parallel,
+    prime_count_in_range_parallel, prime_count_in_range_parallel_balanced,
+    prime_count_in_range_parallel_dynamic, prime_count_in_range_prefix_pi,
+    prime_count_in_range_prefix_pi_parallel, prime_count_in_range_presieve13,
+    prime_count_in_range_presieve13_parallel, prime_count_in_range_presieve13_with_scratch,
+    prime_count_in_range_presieve17, prime_count_in_range_presieve17_parallel,
+    prime_count_in_range_presieve17_with_scratch, prime_count_in_range_small_prefix_pi,
     prime_count_in_range_wheel30_marks, prime_count_in_range_wheel30_marks_parallel,
-    prime_count_in_range_with_scratch, prime_horizon_proof_contract_json,
+    prime_count_in_range_with_scratch, prime_count_shifted_single_segment_presieve13_with_scratch,
+    prime_count_shifted_single_segment_presieve17_with_scratch, prime_horizon_proof_contract_json,
     prime_range_count_proof_contract_json, primes_in_range, recommended_count_mode,
-    recommended_count_segment_size, recommended_segment_size, PrimeCountScratch,
-    BASE_PRIME_CACHE_LIMIT,
+    recommended_count_segment_size, recommended_segment_size, warm_small_prefix_pi_cache,
+    FuzzyPrimeModel, FuzzySearchMode, PrimeCountScratch, BASE_PRIME_CACHE_LIMIT,
+    PARALLEL_EDGE_HIGH_OFFSET_MIN_BASE_LIMIT, PARALLEL_LOWER_HIGH_OFFSET_BASE_LIMIT,
+    PARALLEL_LOWER_HIGH_OFFSET_MIN_BASE_LIMIT,
 };
 
 const MAX_INSPECT_N: u128 = 100_000;
+const SHIFTED_EDGE_HIGH_OFFSET_SEGMENT_SIZE: u64 = 1_638_400;
+const SHIFTED_LOWER_HIGH_OFFSET_SEGMENT_SIZE: u64 = 1_835_008;
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 enum CountMode {
     Segmented,
@@ -105,6 +114,8 @@ fn run(args: Vec<String>) -> Result<(), String> {
         "test" => test_command(&args[1..]),
         "next" => next_command(&args[1..]),
         "next-server" => next_server_command(&args[1..]),
+        "fuzzy-search" => fuzzy_search_command(&args[1..]),
+        "fuzzy-server" => fuzzy_server_command(&args[1..]),
         "range" => range_command(&args[1..]),
         "count-server" => count_server_command(&args[1..]),
         "recommend" => recommend_command(&args[1..]),
@@ -116,15 +127,160 @@ fn run(args: Vec<String>) -> Result<(), String> {
     }
 }
 
+fn fuzzy_search_command(args: &[String]) -> Result<(), String> {
+    let model_path = required_arg(args, 0, "fuzzy-search requires MODEL START")?;
+    let start = required_arg(args, 1, "fuzzy-search requires MODEL START")?
+        .parse::<u64>()
+        .map_err(|_| "fuzzy-search START must fit in u64".to_string())?;
+    let mode = optional_value(args, "--mode")
+        .map(FuzzySearchMode::parse)
+        .transpose()?
+        .unwrap_or(FuzzySearchMode::ExactNext);
+    let window = optional_value(args, "--window")
+        .map(|value| {
+            value
+                .parse::<u64>()
+                .map_err(|_| "--window must fit in u64".to_string())
+        })
+        .transpose()?
+        .unwrap_or(512);
+    let top_k = optional_value(args, "--top-k")
+        .map(|value| {
+            value
+                .parse::<usize>()
+                .map_err(|_| "--top-k must fit in usize".to_string())
+        })
+        .transpose()?
+        .unwrap_or(32);
+    let score_limit = optional_value(args, "--score-limit")
+        .map(|value| {
+            value
+                .parse::<usize>()
+                .map_err(|_| "--score-limit must fit in usize".to_string())
+        })
+        .transpose()?
+        .unwrap_or(usize::MAX);
+    let json = args.iter().any(|arg| arg == "--json");
+    let raw_model = fs::read_to_string(model_path)
+        .map_err(|err| format!("failed to read fuzzy model {model_path:?}: {err}"))?;
+    let model = FuzzyPrimeModel::from_text(&raw_model)?;
+    let search = fuzzy_search_with_score_limit(&model, mode, start, window, top_k, score_limit)?;
+    if json {
+        println!("{}", search.to_json(&model));
+    } else if let Some(prime) = search.reported_prime {
+        println!("{prime}");
+    } else {
+        println!("none");
+    }
+    Ok(())
+}
+
+fn fuzzy_server_command(args: &[String]) -> Result<(), String> {
+    let model_path = required_arg(args, 0, "fuzzy-server requires MODEL")?;
+    let mode = optional_value(args, "--mode")
+        .map(FuzzySearchMode::parse)
+        .transpose()?
+        .unwrap_or(FuzzySearchMode::ExactNext);
+    let window = optional_value(args, "--window")
+        .map(|value| {
+            value
+                .parse::<u64>()
+                .map_err(|_| "--window must fit in u64".to_string())
+        })
+        .transpose()?
+        .unwrap_or(512);
+    let top_k = optional_value(args, "--top-k")
+        .map(|value| {
+            value
+                .parse::<usize>()
+                .map_err(|_| "--top-k must fit in usize".to_string())
+        })
+        .transpose()?
+        .unwrap_or(32);
+    let score_limit = optional_value(args, "--score-limit")
+        .map(|value| {
+            value
+                .parse::<usize>()
+                .map_err(|_| "--score-limit must fit in usize".to_string())
+        })
+        .transpose()?
+        .unwrap_or(usize::MAX);
+    let json = args.iter().any(|arg| arg == "--json");
+    let raw_model = fs::read_to_string(model_path)
+        .map_err(|err| format!("failed to read fuzzy model {model_path:?}: {err}"))?;
+    let model = FuzzyPrimeModel::from_text(&raw_model)?;
+    let stdin = io::stdin();
+    let mut reader = stdin.lock();
+    let mut stdout = io::BufWriter::new(io::stdout().lock());
+    let mut buffer = Vec::with_capacity(32);
+    loop {
+        buffer.clear();
+        let bytes_read = reader
+            .read_until(b'\n', &mut buffer)
+            .map_err(|err| format!("failed to read request: {err}"))?;
+        if bytes_read == 0 {
+            break;
+        }
+        let request = trim_ascii_bytes(&buffer);
+        if request.is_empty() {
+            continue;
+        }
+        if request == b"quit" || request == b"exit" {
+            break;
+        }
+        let (start, repetitions) = parse_next_server_request_ascii(request)?;
+        for _ in 0..repetitions {
+            if json {
+                let search =
+                    fuzzy_search_with_score_limit(&model, mode, start, window, top_k, score_limit)?;
+                writeln!(stdout, "{}", search.to_json(&model))
+                    .map_err(|err| format!("failed to write response: {err}"))?;
+            } else {
+                let prime = match mode {
+                    FuzzySearchMode::AnyPrime => fuzzy_any_prime_value_with_score_limit(
+                        &model,
+                        start,
+                        window,
+                        top_k,
+                        score_limit,
+                    )?,
+                    FuzzySearchMode::ExactNext => {
+                        fuzzy_search_with_score_limit(
+                            &model,
+                            mode,
+                            start,
+                            window,
+                            top_k,
+                            score_limit,
+                        )?
+                        .reported_prime
+                    }
+                };
+                if let Some(prime) = prime {
+                    write_u64_line(&mut stdout, prime)?;
+                } else {
+                    stdout
+                        .write_all(b"none\n")
+                        .map_err(|err| format!("failed to write response: {err}"))?;
+                }
+            }
+        }
+        stdout
+            .flush()
+            .map_err(|err| format!("failed to flush response: {err}"))?;
+    }
+    Ok(())
+}
+
 fn next_command(args: &[String]) -> Result<(), String> {
     let start = required_arg(args, 0, "next requires N")?
         .parse::<u64>()
         .map_err(|_| "next N must fit in the documented u64 domain".to_string())?;
     let json = args.iter().any(|arg| arg == "--json");
-    let search = next_prime_u64(start);
     if json {
+        let search = next_prime_u64(start);
         println!("{}", search.to_json());
-    } else if let Some(prime) = search.prime {
+    } else if let Some(prime) = next_prime_value_u64(start) {
         println!("{prime}");
     } else {
         println!("none");
@@ -154,17 +310,21 @@ fn next_server_command(args: &[String]) -> Result<(), String> {
             break;
         }
         let (start, repetitions) = parse_next_server_request_ascii(request)?;
-        for _ in 0..repetitions {
-            let search = next_prime_u64(start);
-            if json {
+        if json {
+            for _ in 0..repetitions {
+                let search = next_prime_u64(start);
                 writeln!(stdout, "{}", search.to_json())
                     .map_err(|err| format!("failed to write response: {err}"))?;
-            } else if let Some(prime) = search.prime {
-                writeln!(stdout, "{prime}")
-                    .map_err(|err| format!("failed to write response: {err}"))?;
-            } else {
-                writeln!(stdout, "none")
-                    .map_err(|err| format!("failed to write response: {err}"))?;
+            }
+        } else {
+            for _ in 0..repetitions {
+                if let Some(prime) = next_prime_value_u64(start) {
+                    write_u64_line(&mut stdout, prime)?;
+                } else {
+                    stdout
+                        .write_all(b"none\n")
+                        .map_err(|err| format!("failed to write response: {err}"))?;
+                }
             }
         }
         stdout
@@ -234,6 +394,37 @@ fn parse_next_server_request_ascii(bytes: &[u8]) -> Result<(u64, usize), String>
         return Err("next-server request COUNT must be positive".to_string());
     }
     Ok((start, repetitions))
+}
+
+fn write_u64_line<W: Write>(writer: &mut W, mut value: u64) -> Result<(), String> {
+    if value < 100 {
+        let mut buffer = [0u8; 3];
+        if value < 10 {
+            buffer[0] = b'0' + value as u8;
+            buffer[1] = b'\n';
+            return writer
+                .write_all(&buffer[..2])
+                .map_err(|err| format!("failed to write response: {err}"));
+        }
+        buffer[0] = b'0' + (value / 10) as u8;
+        buffer[1] = b'0' + (value % 10) as u8;
+        buffer[2] = b'\n';
+        return writer
+            .write_all(&buffer)
+            .map_err(|err| format!("failed to write response: {err}"));
+    }
+
+    let mut buffer = [0u8; 21];
+    buffer[20] = b'\n';
+    let mut index = 20;
+    while value != 0 {
+        index -= 1;
+        buffer[index] = b'0' + (value % 10) as u8;
+        value /= 10;
+    }
+    writer
+        .write_all(&buffer[index..])
+        .map_err(|err| format!("failed to write response: {err}"))
 }
 
 fn inspect_command(args: &[String]) -> Result<(), String> {
@@ -526,6 +717,9 @@ fn count_server_command(args: &[String]) -> Result<(), String> {
         .map(CountMode::parse)
         .transpose()?;
     let json = args.iter().any(|arg| arg == "--json");
+    if args.iter().any(|arg| arg == "--warm-prefix-pi-cache") {
+        warm_small_prefix_pi_cache();
+    }
 
     let stdin = io::stdin();
     let mut reader = stdin.lock();
@@ -550,22 +744,40 @@ fn count_server_command(args: &[String]) -> Result<(), String> {
         if request == "quit" || request == "exit" {
             break;
         }
-        let (inner_request, repetitions) = count_server_repeated_request(request)?;
-        for _ in 0..repetitions {
-            let response = count_server_response_with_pool(
-                &inner_request,
-                default_segment_size,
-                default_threads,
-                default_count_mode,
-                Some(&mut worker_pool),
-                Some(&mut plan_cache),
-            )?;
-            if json {
-                writeln!(stdout, "{}", response.to_json())
-                    .map_err(|err| format!("failed to write response: {err}"))?;
-            } else {
-                writeln!(stdout, "{}", response.count)
-                    .map_err(|err| format!("failed to write response: {err}"))?;
+        let batch_request = count_server_batch_request(request)?;
+        match batch_request {
+            CountServerBatchRequest::Identical {
+                inner_request,
+                repetitions,
+            } => {
+                for _ in 0..repetitions {
+                    let response = count_server_response_with_pool(
+                        &inner_request,
+                        default_segment_size,
+                        default_threads,
+                        default_count_mode,
+                        Some(&mut worker_pool),
+                        Some(&mut plan_cache),
+                    )?;
+                    write_count_server_response(&mut stdout, response, json)?;
+                }
+            }
+            CountServerBatchRequest::Shifted {
+                inner_request,
+                repetitions,
+                shift,
+            } => {
+                let parsed = parse_count_server_request(&inner_request, default_threads)?;
+                for response in count_server_shifted_responses_with_pool(
+                    parsed,
+                    default_segment_size,
+                    default_count_mode,
+                    Some(&mut worker_pool),
+                    repetitions,
+                    shift,
+                )? {
+                    write_count_server_response(&mut stdout, response, json)?;
+                }
             }
         }
         stdout
@@ -678,6 +890,31 @@ fn count_server_response_with_pool(
     mut worker_pool: Option<&mut CountServerWorkerPool>,
     mut plan_cache: Option<&mut Option<CountServerPlanCache>>,
 ) -> Result<CountServerResponse, String> {
+    let parsed = parse_count_server_request(request, default_threads)?;
+    count_server_response_for_bounds(
+        parsed,
+        parsed.low,
+        parsed.high,
+        default_segment_size,
+        default_count_mode,
+        worker_pool.as_deref_mut(),
+        plan_cache.as_deref_mut(),
+    )
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+struct ParsedCountServerRequest {
+    low: u64,
+    high: u64,
+    requested_threads: usize,
+    explicit_segment_size: Option<u64>,
+    explicit_count_mode: Option<CountMode>,
+}
+
+fn parse_count_server_request(
+    request: &str,
+    default_threads: usize,
+) -> Result<ParsedCountServerRequest, String> {
     let mut fields = request.split_whitespace();
     let Some(low_field) = fields.next() else {
         return Err(
@@ -727,11 +964,29 @@ fn count_server_response_with_pool(
     let explicit_count_mode = count_mode_field
         .map(|value| CountMode::parse(value))
         .transpose()?;
-    let plan = if explicit_segment_size.is_none() && explicit_count_mode.is_none() {
+    Ok(ParsedCountServerRequest {
+        low,
+        high,
+        requested_threads,
+        explicit_segment_size,
+        explicit_count_mode,
+    })
+}
+
+fn count_server_response_for_bounds(
+    parsed: ParsedCountServerRequest,
+    low: u64,
+    high: u64,
+    default_segment_size: Option<u64>,
+    default_count_mode: Option<CountMode>,
+    mut worker_pool: Option<&mut CountServerWorkerPool>,
+    mut plan_cache: Option<&mut Option<CountServerPlanCache>>,
+) -> Result<CountServerResponse, String> {
+    let plan = if parsed.explicit_segment_size.is_none() && parsed.explicit_count_mode.is_none() {
         count_server_cached_plan(
             low,
             high,
-            requested_threads,
+            parsed.requested_threads,
             default_segment_size,
             default_count_mode,
             plan_cache.as_deref_mut(),
@@ -740,10 +995,10 @@ fn count_server_response_with_pool(
         resolve_count_server_plan(
             low,
             high,
-            requested_threads,
-            explicit_segment_size,
+            parsed.requested_threads,
+            parsed.explicit_segment_size,
             default_segment_size,
-            explicit_count_mode,
+            parsed.explicit_count_mode,
             default_count_mode,
         )
     };
@@ -784,9 +1039,196 @@ fn count_server_response_with_pool(
         count,
         segment_size: plan.segment_size,
         threads: plan.worker_threads,
-        requested_threads,
+        requested_threads: parsed.requested_threads,
         count_mode: plan.count_mode,
     })
+}
+
+fn count_server_shifted_responses_with_pool(
+    parsed: ParsedCountServerRequest,
+    default_segment_size: Option<u64>,
+    default_count_mode: Option<CountMode>,
+    mut worker_pool: Option<&mut CountServerWorkerPool>,
+    repetitions: usize,
+    shift: u64,
+) -> Result<Vec<CountServerResponse>, String> {
+    if repetitions == 0 {
+        return Ok(Vec::new());
+    }
+    let (_, final_high) = shifted_bounds(parsed.low, parsed.high, shift, repetitions - 1)?;
+    let mut bounds = Vec::with_capacity(repetitions);
+    let mut plans = Vec::with_capacity(repetitions);
+    for index in 0..repetitions {
+        let (low, high) = shifted_bounds(parsed.low, parsed.high, shift, index)?;
+        let plan = resolve_count_server_shifted_plan(
+            low,
+            high,
+            final_high,
+            parsed.requested_threads,
+            parsed.explicit_segment_size,
+            default_segment_size,
+            parsed.explicit_count_mode,
+            default_count_mode,
+        );
+        bounds.push((low, high));
+        plans.push(plan);
+    }
+
+    if let (Some(pool), Some(first_plan)) = (worker_pool.as_deref_mut(), plans.first().copied()) {
+        if plans.iter().all(|&plan| plan == first_plan) {
+            if let Some(counts) = count_range_shifted_with_server_pool(
+                pool,
+                parsed.low,
+                parsed.high,
+                first_plan.segment_size,
+                first_plan.worker_threads,
+                first_plan.count_mode,
+                repetitions,
+                shift,
+            )
+            .map_err(|err| format!("range sieve failed: {err:?}"))?
+            {
+                return Ok(bounds
+                    .into_iter()
+                    .zip(counts)
+                    .map(|((low, high), count)| CountServerResponse {
+                        low,
+                        high,
+                        count,
+                        segment_size: first_plan.segment_size,
+                        threads: first_plan.worker_threads,
+                        requested_threads: parsed.requested_threads,
+                        count_mode: first_plan.count_mode,
+                    })
+                    .collect());
+            }
+        }
+    }
+
+    let mut responses = Vec::with_capacity(repetitions);
+    for ((low, high), plan) in bounds.into_iter().zip(plans) {
+        let count = count_range_with_mode(
+            low,
+            high,
+            plan.segment_size,
+            plan.worker_threads,
+            plan.count_mode,
+        )
+        .map_err(|err| format!("range sieve failed: {err:?}"))?;
+        responses.push(CountServerResponse {
+            low,
+            high,
+            count,
+            segment_size: plan.segment_size,
+            threads: plan.worker_threads,
+            requested_threads: parsed.requested_threads,
+            count_mode: plan.count_mode,
+        });
+    }
+    Ok(responses)
+}
+
+fn write_count_server_response<W: Write>(
+    stdout: &mut W,
+    response: CountServerResponse,
+    json: bool,
+) -> Result<(), String> {
+    if json {
+        writeln!(stdout, "{}", response.to_json())
+            .map_err(|err| format!("failed to write response: {err}"))
+    } else {
+        writeln!(stdout, "{}", response.count)
+            .map_err(|err| format!("failed to write response: {err}"))
+    }
+}
+
+enum CountServerBatchRequest {
+    Identical {
+        inner_request: String,
+        repetitions: usize,
+    },
+    Shifted {
+        inner_request: String,
+        repetitions: usize,
+        shift: u64,
+    },
+}
+
+fn count_server_batch_request(request: &str) -> Result<CountServerBatchRequest, String> {
+    let mut fields = request.split_whitespace();
+    if fields.next() != Some("shifted") {
+        let (inner_request, repetitions) = count_server_repeated_request(request)?;
+        return Ok(CountServerBatchRequest::Identical {
+            inner_request,
+            repetitions,
+        });
+    }
+    let Some(count_field) = fields.next() else {
+        return Err("shifted request must be: shifted COUNT SHIFT LOW HIGH ...".to_string());
+    };
+    let repetitions = count_field
+        .parse::<usize>()
+        .map_err(|_| "shifted COUNT must fit in usize".to_string())?;
+    if repetitions == 0 {
+        return Err("shifted COUNT must be positive".to_string());
+    }
+    let Some(shift_field) = fields.next() else {
+        return Err("shifted request must be: shifted COUNT SHIFT LOW HIGH ...".to_string());
+    };
+    let shift = shift_field
+        .parse::<u64>()
+        .map_err(|_| "shifted SHIFT must fit in u64".to_string())?;
+    let inner_fields = fields.collect::<Vec<_>>();
+    if inner_fields.is_empty() {
+        return Err("shifted request must include an inner count-server request".to_string());
+    }
+    Ok(CountServerBatchRequest::Shifted {
+        inner_request: inner_fields.join(" "),
+        repetitions,
+        shift,
+    })
+}
+
+#[cfg(test)]
+fn count_server_shifted_inner_request(
+    inner_request: &str,
+    shift: u64,
+    index: usize,
+) -> Result<String, String> {
+    let mut fields = inner_request.split_whitespace();
+    let Some(low_field) = fields.next() else {
+        return Err("shifted request must include LOW HIGH ...".to_string());
+    };
+    let Some(high_field) = fields.next() else {
+        return Err("shifted request must include LOW HIGH ...".to_string());
+    };
+    let low = low_field
+        .parse::<u64>()
+        .map_err(|_| "LOW must fit in u64".to_string())?;
+    let high = high_field
+        .parse::<u64>()
+        .map_err(|_| "HIGH must fit in u64".to_string())?;
+    let (shifted_low, shifted_high) = shifted_bounds(low, high, shift, index)?;
+    let mut shifted = format!("{shifted_low} {shifted_high}");
+    for field in fields {
+        shifted.push(' ');
+        shifted.push_str(field);
+    }
+    Ok(shifted)
+}
+
+fn shifted_bounds(low: u64, high: u64, shift: u64, index: usize) -> Result<(u64, u64), String> {
+    let index = u64::try_from(index).map_err(|_| "shifted request index overflowed u64")?;
+    let delta = shift
+        .checked_mul(index)
+        .ok_or_else(|| "shifted request offset overflowed u64".to_string())?;
+    let shifted_low = low
+        .checked_add(delta)
+        .ok_or_else(|| "shifted LOW overflowed u64".to_string())?;
+    let shifted_high = high
+        .checked_add(delta)
+        .ok_or_else(|| "shifted HIGH overflowed u64".to_string())?;
+    Ok((shifted_low, shifted_high))
 }
 
 fn count_server_repeated_request(request: &str) -> Result<(String, usize), String> {
@@ -892,11 +1334,81 @@ fn resolve_count_server_plan(
     }
 }
 
+fn resolve_count_server_shifted_plan(
+    low: u64,
+    high: u64,
+    final_high: u64,
+    requested_threads: usize,
+    explicit_segment_size: Option<u64>,
+    default_segment_size: Option<u64>,
+    explicit_count_mode: Option<CountMode>,
+    default_count_mode: Option<CountMode>,
+) -> CountServerPlan {
+    if explicit_segment_size.is_none()
+        && default_segment_size.is_none()
+        && explicit_count_mode.is_none()
+        && default_count_mode.is_none()
+        && requested_threads >= 7
+        && high > low
+    {
+        let span = high - low;
+        let base_limit = (high - 1).isqrt();
+        let final_base_limit = (final_high - 1).isqrt();
+        if span <= 16_000_000
+            && base_limit >= PARALLEL_EDGE_HIGH_OFFSET_MIN_BASE_LIMIT
+            && final_base_limit < PARALLEL_LOWER_HIGH_OFFSET_MIN_BASE_LIMIT
+        {
+            let count_mode = CountMode::Presieve13;
+            let segment_size = SHIFTED_EDGE_HIGH_OFFSET_SEGMENT_SIZE;
+            let worker_threads = count_mode.effective_threads(
+                low,
+                high,
+                effective_parallel_thread_count(low, high, segment_size, requested_threads),
+                requested_threads,
+            );
+            return CountServerPlan {
+                segment_size,
+                worker_threads,
+                count_mode,
+            };
+        }
+        if span <= 16_000_000
+            && base_limit >= PARALLEL_LOWER_HIGH_OFFSET_MIN_BASE_LIMIT
+            && final_base_limit < PARALLEL_LOWER_HIGH_OFFSET_BASE_LIMIT
+        {
+            let count_mode = CountMode::Presieve13;
+            let segment_size = SHIFTED_LOWER_HIGH_OFFSET_SEGMENT_SIZE;
+            let worker_threads = count_mode.effective_threads(
+                low,
+                high,
+                effective_parallel_thread_count(low, high, segment_size, requested_threads),
+                requested_threads,
+            );
+            return CountServerPlan {
+                segment_size,
+                worker_threads,
+                count_mode,
+            };
+        }
+    }
+
+    resolve_count_server_plan(
+        low,
+        high,
+        requested_threads,
+        explicit_segment_size,
+        default_segment_size,
+        explicit_count_mode,
+        default_count_mode,
+    )
+}
+
 struct CountServerWorkerPool {
     senders: Vec<mpsc::Sender<CountServerWorkerCommand>>,
     handles: Vec<JoinHandle<()>>,
-    result_sender: mpsc::Sender<Result<usize, circle_prime::RangeError>>,
-    result_receiver: mpsc::Receiver<Result<usize, circle_prime::RangeError>>,
+    result_sender: mpsc::Sender<Result<CountServerWorkerReply, circle_prime::RangeError>>,
+    result_receiver: mpsc::Receiver<Result<CountServerWorkerReply, circle_prime::RangeError>>,
+    caller_scratch: PrimeCountScratch,
 }
 
 impl CountServerWorkerPool {
@@ -907,6 +1419,7 @@ impl CountServerWorkerPool {
             handles: Vec::new(),
             result_sender,
             result_receiver,
+            caller_scratch: PrimeCountScratch::new(),
         }
     }
 
@@ -916,8 +1429,12 @@ impl CountServerWorkerPool {
         segment_size: u64,
         count_mode: CountMode,
     ) -> Result<usize, circle_prime::RangeError> {
-        self.ensure_worker_count(chunks.len());
-        for (worker_index, &(low, high)) in chunks.iter().enumerate() {
+        let Some((&caller_chunk, worker_chunks)) = chunks.split_first() else {
+            return Ok(0);
+        };
+
+        self.ensure_worker_count(worker_chunks.len());
+        for (worker_index, &(low, high)) in worker_chunks.iter().enumerate() {
             self.senders[worker_index]
                 .send(CountServerWorkerCommand::Count {
                     low,
@@ -928,14 +1445,84 @@ impl CountServerWorkerPool {
                 .map_err(|_| circle_prime::RangeError::WorkerPanic)?;
         }
 
-        let mut total = 0usize;
-        for _ in chunks {
-            total += self
+        let mut total = count_range_with_mode_scratch(
+            caller_chunk.0,
+            caller_chunk.1,
+            segment_size,
+            1,
+            count_mode,
+            &mut self.caller_scratch,
+        )?;
+        for _ in worker_chunks {
+            match self
                 .result_receiver
                 .recv()
-                .map_err(|_| circle_prime::RangeError::WorkerPanic)??;
+                .map_err(|_| circle_prime::RangeError::WorkerPanic)??
+            {
+                CountServerWorkerReply::Count(count) => total += count,
+                CountServerWorkerReply::Shifted(_) => {
+                    return Err(circle_prime::RangeError::WorkerPanic);
+                }
+            }
         }
         Ok(total)
+    }
+
+    fn count_shifted_chunks(
+        &mut self,
+        chunks: &[(u64, u64)],
+        segment_size: u64,
+        count_mode: CountMode,
+        repetitions: usize,
+        shift: u64,
+    ) -> Result<Vec<usize>, circle_prime::RangeError> {
+        let Some((&caller_chunk, worker_chunks)) = chunks.split_first() else {
+            return Ok(vec![0; repetitions]);
+        };
+
+        self.ensure_worker_count(worker_chunks.len());
+        for (worker_index, &(low, high)) in worker_chunks.iter().enumerate() {
+            self.senders[worker_index]
+                .send(CountServerWorkerCommand::ShiftedCount {
+                    low,
+                    high,
+                    segment_size,
+                    count_mode,
+                    repetitions,
+                    shift,
+                })
+                .map_err(|_| circle_prime::RangeError::WorkerPanic)?;
+        }
+
+        let mut totals = count_shifted_range_with_mode_scratch(
+            caller_chunk.0,
+            caller_chunk.1,
+            segment_size,
+            count_mode,
+            repetitions,
+            shift,
+            &mut self.caller_scratch,
+        )?;
+        for _ in worker_chunks {
+            match self
+                .result_receiver
+                .recv()
+                .map_err(|_| circle_prime::RangeError::WorkerPanic)??
+            {
+                CountServerWorkerReply::Shifted(counts) => {
+                    if counts.len() != totals.len() {
+                        return Err(circle_prime::RangeError::WorkerPanic);
+                    }
+                    for (total, count) in totals.iter_mut().zip(counts) {
+                        *total += count;
+                    }
+                }
+                CountServerWorkerReply::Count(_) => {
+                    return Err(circle_prime::RangeError::WorkerPanic)
+                }
+            }
+        }
+        Ok(totals)
     }
 
     fn ensure_worker_count(&mut self, worker_count: usize) {
@@ -967,12 +1554,25 @@ enum CountServerWorkerCommand {
         segment_size: u64,
         count_mode: CountMode,
     },
+    ShiftedCount {
+        low: u64,
+        high: u64,
+        segment_size: u64,
+        count_mode: CountMode,
+        repetitions: usize,
+        shift: u64,
+    },
     Stop,
+}
+
+enum CountServerWorkerReply {
+    Count(usize),
+    Shifted(Vec<usize>),
 }
 
 fn count_server_worker_loop(
     receiver: mpsc::Receiver<CountServerWorkerCommand>,
-    result_sender: mpsc::Sender<Result<usize, circle_prime::RangeError>>,
+    result_sender: mpsc::Sender<Result<CountServerWorkerReply, circle_prime::RangeError>>,
 ) {
     let mut scratch = PrimeCountScratch::new();
     while let Ok(command) = receiver.recv() {
@@ -991,7 +1591,26 @@ fn count_server_worker_loop(
                     count_mode,
                     &mut scratch,
                 );
-                let _ = result_sender.send(result);
+                let _ = result_sender.send(result.map(CountServerWorkerReply::Count));
+            }
+            CountServerWorkerCommand::ShiftedCount {
+                low,
+                high,
+                segment_size,
+                count_mode,
+                repetitions,
+                shift,
+            } => {
+                let result = count_shifted_range_with_mode_scratch(
+                    low,
+                    high,
+                    segment_size,
+                    count_mode,
+                    repetitions,
+                    shift,
+                    &mut scratch,
+                );
+                let _ = result_sender.send(result.map(CountServerWorkerReply::Shifted));
             }
             CountServerWorkerCommand::Stop => break,
         }
@@ -1006,6 +1625,9 @@ fn count_range_with_server_pool(
     worker_threads: usize,
     mode: CountMode,
 ) -> Result<Option<usize>, circle_prime::RangeError> {
+    if mode == CountMode::PrefixPi {
+        return Ok(prime_count_in_range_small_prefix_pi(low, high));
+    }
     if worker_threads <= 1
         || high <= low
         || segment_size == 0
@@ -1020,6 +1642,50 @@ fn count_range_with_server_pool(
         return Ok(None);
     }
     pool.count_chunks(&chunks, segment_size, mode).map(Some)
+}
+
+fn count_range_shifted_with_server_pool(
+    pool: &mut CountServerWorkerPool,
+    low: u64,
+    high: u64,
+    segment_size: u64,
+    worker_threads: usize,
+    mode: CountMode,
+    repetitions: usize,
+    shift: u64,
+) -> Result<Option<Vec<usize>>, circle_prime::RangeError> {
+    if repetitions == 0 {
+        return Ok(Some(Vec::new()));
+    }
+    if mode == CountMode::PrefixPi {
+        let mut counts = Vec::with_capacity(repetitions);
+        for index in 0..repetitions {
+            let (request_low, request_high) = shifted_bounds_range_error(low, high, shift, index)?;
+            counts.push(
+                prime_count_in_range_small_prefix_pi(request_low, request_high)
+                    .ok_or(circle_prime::RangeError::BaseLimitTooLarge)?,
+            );
+        }
+        return Ok(Some(counts));
+    }
+    if worker_threads <= 1
+        || high <= low
+        || segment_size == 0
+        || !mode.supports_server_worker_pool()
+    {
+        return Ok(None);
+    }
+    let (_, final_high) = shifted_bounds_range_error(low, high, shift, repetitions - 1)?;
+    if (final_high - 1).isqrt() > BASE_PRIME_CACHE_LIMIT {
+        return Ok(None);
+    }
+
+    let chunks = split_range_evenly(low, high, worker_threads);
+    if chunks.len() <= 1 {
+        return Ok(None);
+    }
+    pool.count_shifted_chunks(&chunks, segment_size, mode, repetitions, shift)
+        .map(Some)
 }
 
 fn split_range_evenly(low: u64, high: u64, parts: usize) -> Vec<(u64, u64)> {
@@ -1136,6 +1802,74 @@ fn count_range_with_mode_scratch(
     }
 }
 
+fn count_shifted_range_with_mode_scratch(
+    low: u64,
+    high: u64,
+    segment_size: u64,
+    mode: CountMode,
+    repetitions: usize,
+    shift: u64,
+    scratch: &mut PrimeCountScratch,
+) -> Result<Vec<usize>, circle_prime::RangeError> {
+    if mode == CountMode::Presieve13 {
+        if let Some(counts) = prime_count_shifted_single_segment_presieve13_with_scratch(
+            low,
+            high,
+            segment_size,
+            repetitions,
+            shift,
+            scratch,
+        )? {
+            return Ok(counts);
+        }
+    }
+    if mode == CountMode::Presieve17 {
+        if let Some(counts) = prime_count_shifted_single_segment_presieve17_with_scratch(
+            low,
+            high,
+            segment_size,
+            repetitions,
+            shift,
+            scratch,
+        )? {
+            return Ok(counts);
+        }
+    }
+
+    let mut counts = Vec::with_capacity(repetitions);
+    for index in 0..repetitions {
+        let (request_low, request_high) = shifted_bounds_range_error(low, high, shift, index)?;
+        counts.push(count_range_with_mode_scratch(
+            request_low,
+            request_high,
+            segment_size,
+            1,
+            mode,
+            scratch,
+        )?);
+    }
+    Ok(counts)
+}
+
+fn shifted_bounds_range_error(
+    low: u64,
+    high: u64,
+    shift: u64,
+    index: usize,
+) -> Result<(u64, u64), circle_prime::RangeError> {
+    let index = u64::try_from(index).map_err(|_| circle_prime::RangeError::SegmentTooLarge)?;
+    let delta = shift
+        .checked_mul(index)
+        .ok_or(circle_prime::RangeError::SegmentTooLarge)?;
+    let shifted_low = low
+        .checked_add(delta)
+        .ok_or(circle_prime::RangeError::SegmentTooLarge)?;
+    let shifted_high = high
+        .checked_add(delta)
+        .ok_or(circle_prime::RangeError::SegmentTooLarge)?;
+    Ok((shifted_low, shifted_high))
+}
+
 fn required_arg<'a>(args: &'a [String], index: usize, message: &str) -> Result<&'a str, String> {
     args.get(index)
         .map(String::as_str)
@@ -1172,12 +1906,15 @@ fn usage() -> String {
         "  circle-prime test N [--json]",
         "  circle-prime next N [--json]",
         "  circle-prime next-server [--json]",
+        "  circle-prime fuzzy-search MODEL START [--mode exact-next|any-prime] [--window N] [--top-k N] [--json]",
+        "  circle-prime fuzzy-server MODEL [--mode exact-next|any-prime] [--window N] [--top-k N] [--json]",
         "  circle-prime recommend LOW HIGH [--count] [--json] [--threads N]",
         "  circle-prime range LOW HIGH [--count] [--json] [--segment-size N] [--threads N] [--count-mode MODE]",
-        "  circle-prime count-server [--segment-size N] [--threads N] [--count-mode MODE] [--json]",
+        "  circle-prime count-server [--segment-size N] [--threads N] [--count-mode MODE] [--warm-prefix-pi-cache] [--json]",
         "",
         "next-server reads START or START COUNT lines from stdin and writes one next prime, none, or JSON object per requested search.",
-        "count-server reads LOW HIGH [SEGMENT_SIZE] [THREADS] [COUNT_MODE] or repeat COUNT LOW HIGH ... lines from stdin and writes one count or JSON object per requested count.",
+        "fuzzy-search/fuzzy-server read a tiny exported model, use it only to rank candidates, and accept reported primes only after deterministic verification. exact-next mode also verifies every earlier candidate in the bounded window.",
+        "count-server reads LOW HIGH [SEGMENT_SIZE] [THREADS] [COUNT_MODE], repeat COUNT LOW HIGH ..., or shifted COUNT SHIFT LOW HIGH ... lines from stdin and writes one count or JSON object per requested count. --warm-prefix-pi-cache prebuilds the reusable small-prefix pi table before reading requests.",
         "count modes: segmented, balanced, dynamic, prefix-pi, presieve13, presieve17, wheel30-mark, hybrid-wheel30-mark",
     ]
     .join("\n")
@@ -1215,8 +1952,34 @@ mod tests {
             count_server_repeated_request("repeat 3 0 1000 64 1 segmented").unwrap(),
             ("0 1000 64 1 segmented".to_string(), 3)
         );
+        match count_server_batch_request("shifted 3 1000 0 1000 64 1 segmented").unwrap() {
+            CountServerBatchRequest::Shifted {
+                inner_request,
+                repetitions,
+                shift,
+            } => {
+                assert_eq!(inner_request, "0 1000 64 1 segmented");
+                assert_eq!(repetitions, 3);
+                assert_eq!(shift, 1000);
+            }
+            CountServerBatchRequest::Identical { .. } => {
+                panic!("shifted request should parse as shifted")
+            }
+        }
+        assert_eq!(
+            count_server_shifted_inner_request("0 1000 64 1 segmented", 1000, 2).unwrap(),
+            "2000 3000 64 1 segmented"
+        );
         assert!(count_server_repeated_request("repeat 0 0 1000").is_err());
         assert!(count_server_repeated_request("repeat 3").is_err());
+        assert!(count_server_batch_request("shifted 0 1000 0 1000").is_err());
+        assert!(count_server_batch_request("shifted 3").is_err());
+        assert!(count_server_shifted_inner_request(
+            "18446744073709551615 18446744073709551615",
+            1,
+            1
+        )
+        .is_err());
     }
 
     #[test]
@@ -1317,6 +2080,140 @@ mod tests {
     }
 
     #[test]
+    fn count_server_shifted_batch_uses_worker_pool_and_matches_direct_counts() {
+        let mut pool = CountServerWorkerPool::new();
+        let parsed =
+            parse_count_server_request("0 100000 65536 4 presieve13", 1).expect("valid request");
+        let responses = count_server_shifted_responses_with_pool(
+            parsed,
+            None,
+            None,
+            Some(&mut pool),
+            3,
+            10_000,
+        )
+        .expect("shifted batch should succeed");
+
+        assert_eq!(
+            responses
+                .iter()
+                .map(|response| (response.low, response.high))
+                .collect::<Vec<_>>(),
+            vec![(0, 100_000), (10_000, 110_000), (20_000, 120_000)]
+        );
+        for response in responses {
+            let direct = count_range_with_mode(
+                response.low,
+                response.high,
+                response.segment_size,
+                response.threads,
+                response.count_mode,
+            )
+            .expect("direct count should succeed");
+            assert_eq!(response.count, direct);
+        }
+    }
+
+    #[test]
+    fn shifted_default_plan_uses_measured_edge_high_offset_candidate() {
+        let low = 1_000_000_000_000;
+        let high = 1_000_010_000_000;
+        let final_high = high + 79 * 10_000_000;
+
+        let normal = resolve_count_server_plan(low, high, 8, None, None, None, None);
+        let shifted =
+            resolve_count_server_shifted_plan(low, high, final_high, 8, None, None, None, None);
+
+        assert_eq!(normal.segment_size, 1_310_720);
+        assert_eq!(normal.worker_threads, 8);
+        assert_eq!(normal.count_mode, CountMode::Presieve13);
+        assert_eq!(shifted.segment_size, SHIFTED_EDGE_HIGH_OFFSET_SEGMENT_SIZE);
+        assert_eq!(shifted.worker_threads, 7);
+        assert_eq!(shifted.count_mode, CountMode::Presieve13);
+    }
+
+    #[test]
+    fn shifted_default_plan_respects_explicit_overrides_and_lower_band() {
+        let edge_low = 1_000_000_000_000;
+        let edge_high = 1_000_010_000_000;
+        let edge_final_high = edge_high + 79 * 10_000_000;
+        let explicit = resolve_count_server_shifted_plan(
+            edge_low,
+            edge_high,
+            edge_final_high,
+            8,
+            Some(65_536),
+            None,
+            Some(CountMode::Segmented),
+            None,
+        );
+        assert_eq!(explicit.segment_size, 65_536);
+        assert_eq!(explicit.count_mode, CountMode::Segmented);
+
+        let lower_low = 1_500_000_000_000;
+        let lower_high = 1_500_010_000_000;
+        let lower_final_high = lower_high + 79 * 10_000_000;
+        let lower = resolve_count_server_shifted_plan(
+            lower_low,
+            lower_high,
+            lower_final_high,
+            8,
+            None,
+            None,
+            None,
+            None,
+        );
+        assert_eq!(lower.segment_size, SHIFTED_LOWER_HIGH_OFFSET_SEGMENT_SIZE);
+        assert_eq!(lower.worker_threads, 6);
+        assert_eq!(lower.count_mode, CountMode::Presieve13);
+    }
+
+    #[test]
+    fn shifted_worker_pool_declines_when_last_shift_exceeds_base_cache() {
+        let mut pool = CountServerWorkerPool::new();
+        let cache_boundary_square = BASE_PRIME_CACHE_LIMIT * BASE_PRIME_CACHE_LIMIT;
+        let low = cache_boundary_square - 3_000_000;
+        let high = cache_boundary_square + 1;
+        let next_square_gap = 2 * BASE_PRIME_CACHE_LIMIT + 1;
+
+        assert_eq!((high - 1).isqrt(), BASE_PRIME_CACHE_LIMIT);
+        assert!((high + next_square_gap - 1).isqrt() > BASE_PRIME_CACHE_LIMIT);
+
+        let result = count_range_shifted_with_server_pool(
+            &mut pool,
+            low,
+            high,
+            1_500_000,
+            2,
+            CountMode::Presieve13,
+            2,
+            next_square_gap,
+        )
+        .expect("eligibility check should not fail");
+
+        assert_eq!(result, None);
+    }
+
+    #[test]
+    fn shifted_worker_pool_declines_empty_range_before_final_high_check() {
+        let mut pool = CountServerWorkerPool::new();
+
+        let result = count_range_shifted_with_server_pool(
+            &mut pool,
+            0,
+            0,
+            65_536,
+            4,
+            CountMode::Presieve13,
+            2,
+            1,
+        )
+        .expect("empty range should decline worker pool without underflow");
+
+        assert_eq!(result, None);
+    }
+
+    #[test]
     fn next_server_ascii_parser_trims_and_rejects_invalid_requests() {
         assert_eq!(trim_ascii_bytes(b" \t90\r\n"), b"90");
         assert_eq!(parse_u64_ascii(trim_ascii_bytes(b" \t90\r\n")).unwrap(), 90);
@@ -1332,5 +2229,14 @@ mod tests {
         assert!(parse_u64_ascii(b"18446744073709551616").is_err());
         assert!(parse_next_server_request_ascii(b"90 0").is_err());
         assert!(parse_next_server_request_ascii(b"90 50 extra").is_err());
+    }
+
+    #[test]
+    fn next_server_u64_writer_matches_decimal_lines() {
+        for value in [0, 7, 97, 1000, u64::MAX] {
+            let mut output = Vec::new();
+            write_u64_line(&mut output, value).expect("u64 line write should succeed");
+            assert_eq!(output, format!("{value}\n").as_bytes(), "value={value}");
+        }
     }
 }

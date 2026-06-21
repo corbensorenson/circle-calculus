@@ -4,11 +4,14 @@ import pytest
 
 from scripts.check_prime_proof_contract import (
     EXPECTED_LEAN_MODULE,
+    EXPECTED_NEXT_THEOREM_IDS,
     EXPECTED_RUST_DOMAIN,
     EXPECTED_THEOREM_IDS,
     LeanSourceIndex,
     check_contract_against_manifest,
+    check_next_contract_against_manifest,
     compare_contracts,
+    read_line_server_consistent_contract_field,
     read_line_server_contract_field,
 )
 
@@ -40,8 +43,40 @@ def manifest_by_id() -> dict:
     }
 
 
+def next_contract() -> dict:
+    return {
+        "name": "prime_horizon_next_search_spec",
+        "lean_module": EXPECTED_LEAN_MODULE,
+        "theorem_ids": EXPECTED_NEXT_THEOREM_IDS,
+        "lean_names": [
+            "Circle.nextPrimeHorizonResultUpTo_some_iff",
+            "Circle.nextPrimeHorizonResultUpTo_none_iff",
+        ],
+        "rust_domain": EXPECTED_RUST_DOMAIN,
+        "scope": "Lean proves the next-prime result spec; Rust supplies exact arithmetic.",
+    }
+
+
+def next_manifest_by_id() -> dict:
+    return {
+        theorem_id: {"id": theorem_id, "status": "proved", "lean_name": lean_name}
+        for theorem_id, lean_name in zip(
+            EXPECTED_NEXT_THEOREM_IDS,
+            next_contract()["lean_names"],
+        )
+    }
+
+
 def test_contract_matches_manifest() -> None:
     check_contract_against_manifest(contract(), manifest_by_id(), "test")
+
+
+def test_next_contract_matches_manifest() -> None:
+    check_next_contract_against_manifest(
+        next_contract(),
+        next_manifest_by_id(),
+        "next",
+    )
 
 
 def test_contract_matches_manifest_and_lean_source(tmp_path) -> None:
@@ -56,6 +91,8 @@ def test_contract_matches_manifest_and_lean_source(tmp_path) -> None:
                 "theorem primeHorizon_iff_no_sqrt_contained := by trivial",
                 "theorem primeHorizon_of_no_sqrt_contained := by trivial",
                 "theorem not_primeHorizon_has_sqrt_contained := by trivial",
+                "theorem nextPrimeHorizonResultUpTo_some_iff := by trivial",
+                "theorem nextPrimeHorizonResultUpTo_none_iff := by trivial",
                 "end Circle",
                 "",
             ]
@@ -66,6 +103,12 @@ def test_contract_matches_manifest_and_lean_source(tmp_path) -> None:
         contract(),
         manifest_by_id(),
         "test",
+        LeanSourceIndex(tmp_path),
+    )
+    check_next_contract_against_manifest(
+        next_contract(),
+        next_manifest_by_id(),
+        "next",
         LeanSourceIndex(tmp_path),
     )
 
@@ -143,3 +186,52 @@ def test_read_line_server_contract_field_reads_first_json_response(monkeypatch) 
     ) == {
         "name": "prime_horizon_range_count_spec"
     }
+
+
+def test_read_line_server_consistent_contract_field_checks_every_response(
+    monkeypatch,
+) -> None:
+    class Completed:
+        stdout = (
+            '{"count":168,'
+            '"count_proof_contract":{"name":"prime_horizon_range_count_spec"}}\n'
+            '{"count":167,'
+            '"count_proof_contract":{"name":"prime_horizon_range_count_spec"}}\n'
+        )
+
+    def fake_run(command, **kwargs):
+        assert command[-1] == "--json"
+        assert kwargs["input"].startswith("shifted 2")
+        return Completed()
+
+    monkeypatch.setattr("scripts.check_prime_proof_contract.subprocess.run", fake_run)
+
+    assert read_line_server_consistent_contract_field(
+        ["circle-prime-count", "count-server", "--json"],
+        "shifted 2 100 1000000000000 1000000010000\nquit\n",
+        "count_proof_contract",
+    ) == {
+        "name": "prime_horizon_range_count_spec"
+    }
+
+
+def test_read_line_server_consistent_contract_field_rejects_response_drift(
+    monkeypatch,
+) -> None:
+    class Completed:
+        stdout = (
+            '{"count_proof_contract":{"name":"prime_horizon_range_count_spec"}}\n'
+            '{"count_proof_contract":{"name":"wrong"}}\n'
+        )
+
+    def fake_run(command, **kwargs):
+        return Completed()
+
+    monkeypatch.setattr("scripts.check_prime_proof_contract.subprocess.run", fake_run)
+
+    with pytest.raises(AssertionError, match="changed between line-server responses"):
+        read_line_server_consistent_contract_field(
+            ["circle-prime-count", "count-server", "--json"],
+            "shifted 2 100 1000000000000 1000000010000\nquit\n",
+            "count_proof_contract",
+        )

@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import hashlib
 import sys
 from pathlib import Path
 from types import SimpleNamespace
@@ -141,6 +142,53 @@ def test_next_interleaved_measurement_rotates_and_summarizes_samples() -> None:
     ]
     assert rows[0].result == 101
     assert rows[0].candidate_count == 1
+    assert rows[0].sample_count == 2
+
+
+def test_next_interleaved_warmup_is_unrecorded() -> None:
+    calls: list[str] = []
+
+    def runner(name: str, result: int):
+        def run_once() -> int:
+            calls.append(name)
+            return result
+
+        return run_once
+
+    rows, samples = measure_interleaved_next(
+        [
+            NextMeasurement(
+                name="circle_prime_next_prime",
+                start=100,
+                batch_size=4,
+                threads=1,
+                requested_threads=1,
+                candidate_count=1,
+                run_once=runner("circle", 101),
+            ),
+            NextMeasurement(
+                name="external_primesieve_next_prime",
+                start=100,
+                batch_size=4,
+                threads=8,
+                requested_threads=8,
+                candidate_count=0,
+                run_once=runner("primesieve", 101),
+            ),
+        ],
+        rounds=2,
+        warmup_rounds=1,
+    )
+
+    assert calls == [
+        "circle",
+        "primesieve",
+        "circle",
+        "primesieve",
+        "primesieve",
+        "circle",
+    ]
+    assert len(samples) == 4
     assert rows[0].sample_count == 2
     assert rows[0].sample_stability in {"stable", "noisy"}
     assert len(samples) == 4
@@ -286,6 +334,92 @@ def test_measure_start_interleaved_can_use_primesieve_library_server(monkeypatch
     assert len(samples) == 4
 
 
+def test_measure_start_interleaved_can_use_primesieve_iterator_server(monkeypatch) -> None:
+    def measurement(name: str, result: int) -> NextMeasurement:
+        return NextMeasurement(
+            name=name,
+            start=100,
+            batch_size=2,
+            threads=1,
+            requested_threads=1,
+            candidate_count=1 if name.startswith("circle_prime") else 0,
+            run_once=lambda: result,
+        )
+
+    monkeypatch.setattr(
+        next_bench,
+        "circle_next_measurement",
+        lambda circle_prime, start, batch_size: measurement("circle_prime_next_prime", 101),
+    )
+    monkeypatch.setattr(
+        next_bench,
+        "primesieve_iterator_server_measurement",
+        lambda server, start, batch_size: measurement(
+            "external_primesieve_iterator_next_server", 101
+        ),
+    )
+
+    rows, samples = measure_start_interleaved(
+        circle_prime=Path("circle-prime"),
+        primesieve=None,
+        primecount=None,
+        primesieve_library_server=None,
+        primesieve_iterator_server=Path("primesieve-iterator-next-server"),
+        start=100,
+        batch_size=2,
+        external_threads=8,
+        rounds=2,
+    )
+
+    assert [row.baseline for row in rows if row.kind == "speedup"] == [
+        "external_primesieve_iterator_next_server"
+    ]
+    assert len(samples) == 4
+
+
+def test_measure_start_interleaved_can_use_primecount_library_server(monkeypatch) -> None:
+    def measurement(name: str, result: int) -> NextMeasurement:
+        return NextMeasurement(
+            name=name,
+            start=100,
+            batch_size=2,
+            threads=1,
+            requested_threads=1,
+            candidate_count=1 if name.startswith("circle_prime") else 0,
+            run_once=lambda: result,
+        )
+
+    monkeypatch.setattr(
+        next_bench,
+        "circle_next_measurement",
+        lambda circle_prime, start, batch_size: measurement("circle_prime_next_prime", 101),
+    )
+    monkeypatch.setattr(
+        next_bench,
+        "primecount_next_server_measurement",
+        lambda server, start, batch_size, external_threads: measurement(
+            "external_primecount_next_server", 101
+        ),
+    )
+
+    rows, samples = measure_start_interleaved(
+        circle_prime=Path("circle-prime"),
+        primesieve=None,
+        primecount=None,
+        primesieve_library_server=None,
+        primecount_library_server=Path("primecount-next-server"),
+        start=100,
+        batch_size=2,
+        external_threads=8,
+        rounds=2,
+    )
+
+    assert [row.baseline for row in rows if row.kind == "speedup"] == [
+        "external_primecount_next_server"
+    ]
+    assert len(samples) == 4
+
+
 def test_measure_start_interleaved_can_skip_cold_cli_rows_for_server_lane(
     monkeypatch,
 ) -> None:
@@ -353,7 +487,13 @@ def test_measure_start_interleaved_can_skip_cold_cli_rows_for_server_lane(
     assert len(samples) == 4
 
 
-def test_next_metadata_records_commands_and_tools(monkeypatch) -> None:
+def test_next_metadata_records_commands_tools_and_fingerprints(
+    monkeypatch, tmp_path: Path
+) -> None:
+    defaults_path = tmp_path / "prime_engine_defaults.json"
+    defaults_path.write_text('{"next": true}\n')
+    defaults_hash = hashlib.sha256(defaults_path.read_bytes()).hexdigest()
+    monkeypatch.setattr(next_bench, "PRIME_ENGINE_DEFAULTS", defaults_path)
     monkeypatch.setattr(
         next_bench,
         "circle_prime_metadata",
@@ -362,6 +502,8 @@ def test_next_metadata_records_commands_and_tools(monkeypatch) -> None:
             "path": str(circle_prime),
             "package_name": "circle-prime",
             "version": "0.1.0",
+            "binary": {"sha256": "a" * 64},
+            "defaults": {"sha256": defaults_hash},
         },
     )
     monkeypatch.setattr(
@@ -376,14 +518,24 @@ def test_next_metadata_records_commands_and_tools(monkeypatch) -> None:
     args = SimpleNamespace(
         rounds=5,
         batch_size=2,
+        warmup_rounds=1,
         sample_output=Path("samples.csv"),
         external_threads=8,
-        require_tool=["primesieve", "primecount", "primesieve-library"],
+        require_tool=[
+            "primesieve",
+            "primecount",
+            "primesieve-library",
+            "primesieve-iterator-library",
+            "primecount-library",
+        ],
         include_circle_server=True,
         server_only=False,
         include_primecount=True,
+        include_primecount_library_server=True,
         include_primesieve_library_server=True,
+        include_primesieve_iterator_server=True,
         primecount_max_start=1_000_000_000_000,
+        primecount_library_max_start=1_000_000_000_000,
         primesieve_library_max_start=2**64 - 1,
     )
 
@@ -396,29 +548,50 @@ def test_next_metadata_records_commands_and_tools(monkeypatch) -> None:
         primesieve="/opt/bin/primesieve",
         primecount="/opt/bin/primecount",
         primesieve_library_server=Path("target/prime-controls/primesieve-next-server"),
+        primesieve_iterator_server=Path(
+            "target/prime-controls/primesieve-iterator-next-server"
+        ),
+        primecount_library_server=Path("target/prime-controls/primecount-next-server"),
         row_count=6,
     )
 
     assert metadata["rounds"] == 5
     assert metadata["batch_size"] == 2
+    assert metadata["warmup_rounds"] == 1
     assert metadata["server_only"] is False
     assert metadata["include_circle_server"] is True
     assert metadata["include_primecount"] is True
     assert metadata["primecount_max_start"] == 1_000_000_000_000
+    assert metadata["include_primecount_library_server"] is True
+    assert metadata["primecount_library_max_start"] == 1_000_000_000_000
     assert metadata["include_primesieve_library_server"] is True
+    assert metadata["include_primesieve_iterator_server"] is True
     assert metadata["primesieve_library_max_start"] == 2**64 - 1
     assert metadata["row_count"] == 6
     assert metadata["starts"] == [97, 100]
     assert metadata["sample_output"] == "samples.csv"
+    assert metadata["circle_prime_defaults"]["sha256"] == defaults_hash
+    assert metadata["tools"]["circle_prime"]["binary"]["sha256"] == "a" * 64
+    assert metadata["tools"]["circle_prime"]["defaults"]["sha256"] == defaults_hash
     assert metadata["required_external_tools"] == [
         "primecount",
+        "primecount-library",
         "primesieve",
+        "primesieve-iterator-library",
         "primesieve-library",
     ]
     assert metadata["tools"]["primesieve_library_server"]["available"] is True
+    assert metadata["tools"]["primesieve_iterator_server"]["available"] is True
+    assert metadata["tools"]["primecount_library_server"]["available"] is True
     assert (
         metadata["tools"]["primesieve_library_server"]["method"]
         == "primesieve_generate_n_primes(1, START, UINT64_PRIMES)"
+    )
+    assert metadata["tools"]["primesieve_iterator_server"]["method"] == (
+        "primesieve::iterator.jump_to(START).next_prime()"
+    )
+    assert metadata["tools"]["primecount_library_server"]["method"] == (
+        "primecount_pi(START-1) then primecount_nth_prime(pi+1)"
     )
     assert metadata["thread_policy"]["external_requested_threads"] == 8
     assert metadata["commands"][0]["circle"] == [
@@ -440,6 +613,13 @@ def test_next_metadata_records_commands_and_tools(monkeypatch) -> None:
     ]
     assert metadata["commands"][0]["primesieve_library_server"] == [
         "target/prime-controls/primesieve-next-server"
+    ]
+    assert metadata["commands"][0]["primesieve_iterator_server"] == [
+        "target/prime-controls/primesieve-iterator-next-server"
+    ]
+    assert metadata["commands"][0]["primecount_library_server"] == [
+        "target/prime-controls/primecount-next-server",
+        "8",
     ]
     assert metadata["commands"][0]["primecount_pi"] == [
         "/opt/bin/primecount",

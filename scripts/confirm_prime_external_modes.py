@@ -235,6 +235,7 @@ def main() -> int:
     baseline_priority = split_csv(args.baseline_priority)
     if not baseline_priority:
         parser.error("--baseline-priority must include at least one value")
+    input_metadata = confirmation_input_metadata(inputs, metadata_inputs)
 
     grouped = read_recommendations_by_source(
         inputs=inputs,
@@ -248,6 +249,7 @@ def main() -> int:
         require_stable_samples=not args.allow_unstable,
         generated_at_utc=datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
         inputs=[str(path) for path in inputs],
+        input_metadata=input_metadata,
         batch_size=args.batch_size if args.runs else None,
     )
     args.output_json.parent.mkdir(parents=True, exist_ok=True)
@@ -363,6 +365,7 @@ def build_confirmation(
     require_stable_samples: bool,
     generated_at_utc: str,
     inputs: list[str],
+    input_metadata: list[dict[str, Any]] | None = None,
     batch_size: int | None = None,
 ) -> dict[str, Any]:
     grouped: dict[tuple[int, int, str], list[dict[str, Any]]] = {}
@@ -395,6 +398,7 @@ def build_confirmation(
     return {
         "generated_at_utc": generated_at_utc,
         "inputs": inputs,
+        "input_metadata": input_metadata or [],
         "batch_size": batch_size,
         "baseline_priority": baseline_priority,
         "min_confirmations": min_confirmations,
@@ -514,6 +518,41 @@ def confirm_identities(
     return identities
 
 
+def confirmation_input_metadata(
+    inputs: list[Path],
+    metadata_inputs: list[Path],
+) -> list[dict[str, Any]]:
+    summaries: list[dict[str, Any]] = []
+    for csv_path, metadata_path in zip(inputs, metadata_inputs):
+        metadata = read_json_optional(metadata_path)
+        summary: dict[str, Any] = {
+            "input": str(csv_path),
+            "metadata": str(metadata_path),
+            "metadata_available": metadata is not None,
+        }
+        if metadata is not None:
+            circle_prime = metadata.get("tools", {}).get("circle_prime", {})
+            summary.update(
+                {
+                    "started_at_utc": metadata.get("started_at_utc"),
+                    "finished_at_utc": metadata.get("finished_at_utc"),
+                    "rounds": metadata.get("rounds"),
+                    "batch_size": metadata.get("batch_size"),
+                    "warmup_rounds": metadata.get("warmup_rounds"),
+                    "circle_variants": metadata.get("circle_variants", []),
+                    "external_baselines": metadata.get("external_baselines", []),
+                    "thread_policy": metadata.get("thread_policy", {}),
+                    "circle_prime": circle_prime,
+                    "circle_prime_defaults": (
+                        metadata.get("circle_prime_defaults")
+                        or circle_prime.get("defaults")
+                    ),
+                }
+            )
+        summaries.append(summary)
+    return summaries
+
+
 def row_is_confirmation_eligible(
     row: dict[str, Any],
     *,
@@ -560,6 +599,27 @@ def render_markdown(confirmation: dict[str, Any]) -> str:
             "Fresh-run count requests per timed sample: "
             f"`{confirmation['batch_size']}`"
         )
+    if confirmation.get("input_metadata"):
+        lines.extend(
+            [
+                "",
+                "## Input Provenance",
+                "",
+                "| Input | Finished | Rounds | Batch | Circle Binary | Defaults |",
+                "| --- | --- | ---: | ---: | --- | --- |",
+            ]
+        )
+        for row in confirmation["input_metadata"]:
+            circle_prime = row.get("circle_prime") or {}
+            binary = circle_prime.get("binary") or {}
+            defaults = row.get("circle_prime_defaults") or {}
+            lines.append(
+                f"| `{Path(row['input']).name}` | "
+                f"`{row.get('finished_at_utc') or '-'}` | "
+                f"{row.get('rounds') or '-'} | {row.get('batch_size') or '-'} | "
+                f"`{short_hash(binary.get('sha256'))}` | "
+                f"`{short_hash(defaults.get('sha256'))}` |"
+            )
     lines.extend(
         [
             "",
@@ -614,6 +674,12 @@ def render_markdown(confirmation: dict[str, Any]) -> str:
             )
         lines.append("")
     return "\n".join(lines).rstrip() + "\n"
+
+
+def short_hash(value: str | None) -> str:
+    if not value:
+        return "-"
+    return value[:12]
 
 
 def infer_metadata_path(csv_path: Path) -> Path:

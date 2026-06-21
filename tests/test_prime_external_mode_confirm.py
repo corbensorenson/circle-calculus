@@ -5,6 +5,7 @@ from pathlib import Path
 
 from scripts.confirm_prime_external_modes import (
     build_confirmation,
+    confirmation_input_metadata,
     fresh_sweep_command,
     render_markdown,
     run_fresh_sweeps,
@@ -96,6 +97,51 @@ def test_build_confirmation_requires_repeated_stable_winner() -> None:
     assert "Median Speedups" in markdown
     assert "Identity Evidence" in markdown
     assert "Fresh-run count requests per timed sample: `3`" in markdown
+
+
+def test_build_confirmation_records_input_metadata_provenance(tmp_path: Path) -> None:
+    csv_path = tmp_path / "confirm.csv"
+    metadata_path = tmp_path / "confirm.json"
+    metadata_path.write_text(
+        """{
+  "started_at_utc": "2026-01-01T00:00:00Z",
+  "finished_at_utc": "2026-01-01T00:00:02Z",
+  "rounds": 9,
+  "batch_size": 20,
+  "warmup_rounds": 2,
+  "circle_variants": [{"count_mode": "default", "segment_size": 0}],
+  "external_baselines": ["external_primesieve_count_server"],
+  "thread_policy": {"circle_requested_threads": 8},
+  "circle_prime_defaults": {"sha256": "0123456789abcdef"},
+  "tools": {
+    "circle_prime": {
+      "binary": {"sha256": "abcdef0123456789"},
+      "defaults": {"sha256": "ignored"}
+    }
+  }
+}
+"""
+    )
+    input_metadata = confirmation_input_metadata([csv_path], [metadata_path])
+
+    confirmation = build_confirmation(
+        [recommendation(source=str(csv_path))],
+        baseline_priority=["external_primesieve_count"],
+        min_confirmations=1,
+        require_stable_samples=True,
+        generated_at_utc="2026-01-01T00:00:03Z",
+        inputs=[str(csv_path)],
+        input_metadata=input_metadata,
+    )
+
+    row = confirmation["input_metadata"][0]
+    assert row["input"] == str(csv_path)
+    assert row["finished_at_utc"] == "2026-01-01T00:00:02Z"
+    assert row["circle_prime_defaults"]["sha256"] == "0123456789abcdef"
+    markdown = render_markdown(confirmation)
+    assert "Input Provenance" in markdown
+    assert "`abcdef012345`" in markdown
+    assert "`0123456789ab`" in markdown
 
 
 def test_build_confirmation_rejects_noisy_repeat_by_default() -> None:

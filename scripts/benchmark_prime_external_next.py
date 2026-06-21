@@ -16,10 +16,14 @@ if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
 from scripts.benchmark_prime_external_controls import (
+    PRIME_ENGINE_DEFAULTS,
     ROOT,
+    autodetect_primecount_include_dir,
+    autodetect_primecount_lib_dir,
     build_circle_prime,
     circle_prime_metadata,
     external_tool_metadata,
+    file_fingerprint,
     median,
     parse_integer_output,
     require_cargo,
@@ -34,6 +38,16 @@ PRIMESIEVE_NEXT_SERVER_SOURCE = (
     ROOT / "sidecars" / "PRIME_ENGINE" / "controls" / "primesieve_next_server.c"
 )
 PRIMESIEVE_NEXT_SERVER_BINARY = ROOT / "target" / "prime-controls" / "primesieve-next-server"
+PRIMESIEVE_ITERATOR_NEXT_SERVER_SOURCE = (
+    ROOT / "sidecars" / "PRIME_ENGINE" / "controls" / "primesieve_iterator_next_server.cpp"
+)
+PRIMESIEVE_ITERATOR_NEXT_SERVER_BINARY = (
+    ROOT / "target" / "prime-controls" / "primesieve-iterator-next-server"
+)
+PRIMECOUNT_NEXT_SERVER_SOURCE = (
+    ROOT / "sidecars" / "PRIME_ENGINE" / "controls" / "primecount_next_server.c"
+)
+PRIMECOUNT_NEXT_SERVER_BINARY = ROOT / "target" / "prime-controls" / "primecount-next-server"
 
 
 @dataclass(frozen=True)
@@ -107,6 +121,15 @@ def main() -> int:
         ),
     )
     parser.add_argument(
+        "--warmup-rounds",
+        type=int,
+        default=0,
+        help=(
+            "Run this many unrecorded interleaved warmup passes before timing. "
+            "Useful for persistent server lanes where first requests can dominate noise."
+        ),
+    )
+    parser.add_argument(
         "--external-threads",
         type=int,
         default=0,
@@ -131,11 +154,37 @@ def main() -> int:
         help="Largest START value eligible for the optional primecount next-prime control.",
     )
     parser.add_argument(
+        "--include-primecount-library-server",
+        action="store_true",
+        help=(
+            "Also benchmark a persistent repo helper linked against libprimecount "
+            "and using primecount_pi(START-1) followed by primecount_nth_prime."
+        ),
+    )
+    parser.add_argument(
+        "--primecount-library-max-start",
+        type=int,
+        default=1_000_000_000_000,
+        help=(
+            "Largest START value eligible for the optional libprimecount helper. "
+            "Keep this bounded for routine short runs because pi(x) dominates "
+            "large next-prime probes."
+        ),
+    )
+    parser.add_argument(
         "--include-primesieve-library-server",
         action="store_true",
         help=(
             "Also benchmark a persistent repo helper linked against libprimesieve "
             "and using primesieve_generate_n_primes(1, START)."
+        ),
+    )
+    parser.add_argument(
+        "--include-primesieve-iterator-server",
+        action="store_true",
+        help=(
+            "Also benchmark a persistent C++ repo helper linked against libprimesieve "
+            "and using primesieve::iterator.jump_to(START).next_prime()."
         ),
     )
     parser.add_argument(
@@ -153,6 +202,11 @@ def main() -> int:
         help="C compiler used to build the optional libprimesieve helper.",
     )
     parser.add_argument(
+        "--cxx",
+        default="c++",
+        help="C++ compiler used to build the optional libprimesieve iterator helper.",
+    )
+    parser.add_argument(
         "--primesieve-include-dir",
         type=Path,
         help="Optional include directory containing primesieve.h.",
@@ -161,6 +215,16 @@ def main() -> int:
         "--primesieve-lib-dir",
         type=Path,
         help="Optional library directory containing libprimesieve.",
+    )
+    parser.add_argument(
+        "--primecount-include-dir",
+        type=Path,
+        help="Optional include directory containing primecount.h.",
+    )
+    parser.add_argument(
+        "--primecount-lib-dir",
+        type=Path,
+        help="Optional library directory containing libprimecount.",
     )
     parser.add_argument(
         "--include-circle-server",
@@ -181,7 +245,13 @@ def main() -> int:
     parser.add_argument("--metadata-output", type=Path)
     parser.add_argument(
         "--require-tool",
-        choices=("primesieve", "primecount", "primesieve-library"),
+        choices=(
+            "primesieve",
+            "primecount",
+            "primesieve-library",
+            "primesieve-iterator-library",
+            "primecount-library",
+        ),
         action="append",
         default=[],
         help="Fail if the named external next-prime control is unavailable.",
@@ -192,10 +262,14 @@ def main() -> int:
         parser.error("--rounds must be positive")
     if args.batch_size <= 0:
         parser.error("--batch-size must be positive")
+    if args.warmup_rounds < 0:
+        parser.error("--warmup-rounds must be nonnegative")
     if args.external_threads < 0:
         parser.error("--external-threads must be nonnegative")
     if args.primecount_max_start < 0:
         parser.error("--primecount-max-start must be nonnegative")
+    if args.primecount_library_max_start < 0:
+        parser.error("--primecount-library-max-start must be nonnegative")
     if args.primesieve_library_max_start < 0:
         parser.error("--primesieve-library-max-start must be nonnegative")
 
@@ -204,6 +278,7 @@ def main() -> int:
     if args.server_only:
         args.include_circle_server = True
         args.include_primesieve_library_server = True
+        args.include_primesieve_iterator_server = True
 
     primesieve = shutil.which("primesieve")
     include_primecount = (
@@ -229,12 +304,48 @@ def main() -> int:
                     f"{primesieve_library_error}",
                     file=sys.stderr,
                 )
+    include_primesieve_iterator_server = (
+        args.include_primesieve_iterator_server
+        or "primesieve-iterator-library" in args.require_tool
+    )
+    primesieve_iterator_server: Path | None = None
+    primesieve_iterator_error: str | None = None
+    if include_primesieve_iterator_server:
+        try:
+            primesieve_iterator_server = build_primesieve_iterator_next_server(args)
+        except Exception as exc:
+            primesieve_iterator_error = str(exc)
+            if "primesieve-iterator-library" not in args.require_tool:
+                print(
+                    "skipping libprimesieve iterator next-prime helper: "
+                    f"{primesieve_iterator_error}",
+                    file=sys.stderr,
+                )
+    include_primecount_library_server = (
+        args.include_primecount_library_server
+        or "primecount-library" in args.require_tool
+    )
+    primecount_library_server: Path | None = None
+    primecount_library_error: str | None = None
+    if include_primecount_library_server:
+        try:
+            primecount_library_server = build_primecount_next_server(args)
+        except Exception as exc:
+            primecount_library_error = str(exc)
+            if "primecount-library" not in args.require_tool:
+                print(
+                    "skipping libprimecount next-prime helper: "
+                    f"{primecount_library_error}",
+                    file=sys.stderr,
+                )
     missing_required = [
         tool
         for tool, path in [
             ("primesieve", primesieve),
             ("primecount", primecount),
             ("primesieve-library", primesieve_library_server),
+            ("primesieve-iterator-library", primesieve_iterator_server),
+            ("primecount-library", primecount_library_server),
         ]
         if tool in args.require_tool and path is None
     ]
@@ -249,6 +360,10 @@ def main() -> int:
             primecount=primecount,
             primesieve_library_server=primesieve_library_server,
             primesieve_library_error=primesieve_library_error,
+            primesieve_iterator_server=primesieve_iterator_server,
+            primesieve_iterator_error=primesieve_iterator_error,
+            primecount_library_server=primecount_library_server,
+            primecount_library_error=primecount_library_error,
             row_count=0,
         )
         emit_metadata(metadata, args.metadata_output)
@@ -258,7 +373,13 @@ def main() -> int:
             + "; install with `brew install primesieve primecount`"
         )
         raise RuntimeError(message)
-    if primesieve is None and primecount is None and primesieve_library_server is None:
+    if (
+        primesieve is None
+        and primecount is None
+        and primesieve_library_server is None
+        and primesieve_iterator_server is None
+        and primecount_library_server is None
+    ):
         metadata = build_run_metadata(
             args=args,
             starts=starts,
@@ -269,6 +390,10 @@ def main() -> int:
             primecount=None,
             primesieve_library_server=None,
             primesieve_library_error=primesieve_library_error,
+            primesieve_iterator_server=None,
+            primesieve_iterator_error=primesieve_iterator_error,
+            primecount_library_server=primecount_library_server,
+            primecount_library_error=primecount_library_error,
             row_count=0,
         )
         emit_metadata(metadata, args.metadata_output)
@@ -289,14 +414,18 @@ def main() -> int:
             primesieve=primesieve,
             primecount=primecount,
             primesieve_library_server=primesieve_library_server,
+            primesieve_iterator_server=primesieve_iterator_server,
+            primecount_library_server=primecount_library_server,
             start=start,
             batch_size=args.batch_size,
             external_threads=args.external_threads,
             rounds=args.rounds,
+            warmup_rounds=args.warmup_rounds,
             include_circle_server=args.include_circle_server,
             include_circle_cli=not args.server_only,
             include_primesieve_cli=not args.server_only,
             primecount_max_start=args.primecount_max_start,
+            primecount_library_max_start=args.primecount_library_max_start,
             primesieve_library_max_start=args.primesieve_library_max_start,
         )
         rows.extend(start_rows)
@@ -314,6 +443,10 @@ def main() -> int:
         primecount=primecount,
         primesieve_library_server=primesieve_library_server,
         primesieve_library_error=primesieve_library_error,
+        primesieve_iterator_server=primesieve_iterator_server,
+        primesieve_iterator_error=primesieve_iterator_error,
+        primecount_library_server=primecount_library_server,
+        primecount_library_error=primecount_library_error,
         row_count=len(rows),
     )
     emit_metadata(metadata, args.metadata_output)
@@ -380,6 +513,96 @@ def build_primesieve_next_server(args: argparse.Namespace) -> Path:
     return PRIMESIEVE_NEXT_SERVER_BINARY
 
 
+def build_primesieve_iterator_next_server(args: argparse.Namespace) -> Path:
+    compiler = shutil.which(args.cxx)
+    if compiler is None:
+        raise RuntimeError(f"C++ compiler {args.cxx!r} was not found")
+    if not PRIMESIEVE_ITERATOR_NEXT_SERVER_SOURCE.exists():
+        raise RuntimeError(f"missing helper source: {PRIMESIEVE_ITERATOR_NEXT_SERVER_SOURCE}")
+
+    include_dir = args.primesieve_include_dir or autodetect_primesieve_include_dir()
+    lib_dir = args.primesieve_lib_dir or autodetect_primesieve_lib_dir()
+    PRIMESIEVE_ITERATOR_NEXT_SERVER_BINARY.parent.mkdir(parents=True, exist_ok=True)
+
+    command = [
+        compiler,
+        "-O3",
+        "-std=c++17",
+        "-Wall",
+        "-Wextra",
+    ]
+    if include_dir is not None:
+        command.append(f"-I{include_dir}")
+    command.extend(
+        [
+            str(PRIMESIEVE_ITERATOR_NEXT_SERVER_SOURCE),
+            "-o",
+            str(PRIMESIEVE_ITERATOR_NEXT_SERVER_BINARY),
+        ]
+    )
+    if lib_dir is not None:
+        command.append(f"-L{lib_dir}")
+    command.append("-lprimesieve")
+    if lib_dir is not None:
+        command.append(f"-Wl,-rpath,{lib_dir}")
+
+    completed = subprocess.run(
+        command,
+        cwd=ROOT,
+        text=True,
+        capture_output=True,
+    )
+    if completed.returncode != 0:
+        detail = (completed.stderr or completed.stdout).strip()
+        raise RuntimeError(
+            "failed to build libprimesieve iterator next-prime helper"
+            + (f": {detail}" if detail else "")
+        )
+    return PRIMESIEVE_ITERATOR_NEXT_SERVER_BINARY
+
+
+def build_primecount_next_server(args: argparse.Namespace) -> Path:
+    compiler = shutil.which(args.cc)
+    if compiler is None:
+        raise RuntimeError(f"C compiler {args.cc!r} was not found")
+    if not PRIMECOUNT_NEXT_SERVER_SOURCE.exists():
+        raise RuntimeError(f"missing helper source: {PRIMECOUNT_NEXT_SERVER_SOURCE}")
+
+    include_dir = args.primecount_include_dir or autodetect_primecount_include_dir()
+    lib_dir = args.primecount_lib_dir or autodetect_primecount_lib_dir()
+    PRIMECOUNT_NEXT_SERVER_BINARY.parent.mkdir(parents=True, exist_ok=True)
+
+    command = [
+        compiler,
+        "-O3",
+        "-std=c11",
+        "-Wall",
+        "-Wextra",
+    ]
+    if include_dir is not None:
+        command.append(f"-I{include_dir}")
+    command.extend([str(PRIMECOUNT_NEXT_SERVER_SOURCE), "-o", str(PRIMECOUNT_NEXT_SERVER_BINARY)])
+    if lib_dir is not None:
+        command.append(f"-L{lib_dir}")
+    command.append("-lprimecount")
+    if lib_dir is not None:
+        command.append(f"-Wl,-rpath,{lib_dir}")
+
+    completed = subprocess.run(
+        command,
+        cwd=ROOT,
+        text=True,
+        capture_output=True,
+    )
+    if completed.returncode != 0:
+        detail = (completed.stderr or completed.stdout).strip()
+        raise RuntimeError(
+            "failed to build libprimecount next-prime helper"
+            + (f": {detail}" if detail else "")
+        )
+    return PRIMECOUNT_NEXT_SERVER_BINARY
+
+
 def autodetect_primesieve_include_dir() -> Path | None:
     for directory in [
         Path("/opt/homebrew/opt/primesieve/include"),
@@ -417,14 +640,18 @@ def measure_start_interleaved(
     primesieve: str | None,
     primecount: str | None,
     primesieve_library_server: Path | None,
+    primesieve_iterator_server: Path | None = None,
     start: int,
     batch_size: int,
     external_threads: int,
     rounds: int,
+    warmup_rounds: int = 0,
+    primecount_library_server: Path | None = None,
     include_circle_server: bool = False,
     include_circle_cli: bool = True,
     include_primesieve_cli: bool = True,
     primecount_max_start: int = 1_000_000_000_000,
+    primecount_library_max_start: int = 1_000_000_000_000,
     primesieve_library_max_start: int = 2**64 - 1,
 ) -> tuple[list[NextBenchRow], list[NextBenchSample]]:
     measurements = []
@@ -444,14 +671,35 @@ def measure_start_interleaved(
                 batch_size,
             )
         )
+    if primesieve_iterator_server is not None and start <= primesieve_library_max_start:
+        measurements.append(
+            primesieve_iterator_server_measurement(
+                primesieve_iterator_server,
+                start,
+                batch_size,
+            )
+        )
     if primecount is not None and start <= primecount_max_start:
         measurements.append(
             primecount_next_measurement(primecount, start, batch_size, external_threads)
         )
+    if primecount_library_server is not None and start <= primecount_library_max_start:
+        measurements.append(
+            primecount_next_server_measurement(
+                primecount_library_server,
+                start,
+                batch_size,
+                external_threads,
+            )
+        )
     if not any(measurement.name.startswith("external_") for measurement in measurements):
         raise ValueError(f"no external next-prime control selected for start={start}")
     try:
-        timing_rows, samples = measure_interleaved_next(measurements, rounds)
+        timing_rows, samples = measure_interleaved_next(
+            measurements,
+            rounds,
+            warmup_rounds=warmup_rounds,
+        )
     finally:
         for measurement in measurements:
             if measurement.close is not None:
@@ -772,6 +1020,82 @@ def primesieve_generate_server_measurement(
     )
 
 
+def primesieve_iterator_server_measurement(
+    binary: Path,
+    start: int,
+    batch_size: int,
+) -> NextMeasurement:
+    client = PrimeLineServerClient(
+        [str(binary)],
+        "libprimesieve iterator next-prime helper",
+    )
+    expected_prime: int | None = None
+
+    def run_once() -> int:
+        nonlocal expected_prime
+        results = client.next_primes(start, batch_size)
+        for result in results:
+            if expected_prime is None:
+                expected_prime = result
+            elif result != expected_prime:
+                raise AssertionError(
+                    "libprimesieve iterator result changed for "
+                    f"start={start}: expected {expected_prime}, got {result}"
+                )
+        return results[-1] if results else 0
+
+    return NextMeasurement(
+        name="external_primesieve_iterator_next_server",
+        start=start,
+        batch_size=batch_size,
+        threads=1,
+        requested_threads=1,
+        candidate_count=0,
+        run_once=run_once,
+        close=client.close,
+    )
+
+
+def primecount_next_server_measurement(
+    binary: Path,
+    start: int,
+    batch_size: int,
+    threads: int,
+) -> NextMeasurement:
+    command = [str(binary)]
+    if threads > 0:
+        command.append(str(threads))
+    client = PrimeLineServerClient(
+        command,
+        "libprimecount pi+nth-prime next-prime helper",
+    )
+    expected_prime: int | None = None
+
+    def run_once() -> int:
+        nonlocal expected_prime
+        results = client.next_primes(start, batch_size)
+        for result in results:
+            if expected_prime is None:
+                expected_prime = result
+            elif result != expected_prime:
+                raise AssertionError(
+                    "libprimecount next-prime result changed for "
+                    f"start={start}: expected {expected_prime}, got {result}"
+                )
+        return results[-1] if results else 0
+
+    return NextMeasurement(
+        name="external_primecount_next_server",
+        start=start,
+        batch_size=batch_size,
+        threads=threads,
+        requested_threads=threads,
+        candidate_count=0,
+        run_once=run_once,
+        close=client.close,
+    )
+
+
 def primesieve_next_command(binary: str, start: int, threads: int) -> list[str]:
     predecessor = max(start - 1, 1)
     command = [binary, "1", str(predecessor), "--nth-prime", "--quiet"]
@@ -823,10 +1147,21 @@ def run_primecount_next_prime(binary: str, start: int, threads: int) -> int:
 def measure_interleaved_next(
     measurements: list[NextMeasurement],
     rounds: int,
+    *,
+    warmup_rounds: int = 0,
 ) -> tuple[list[NextBenchRow], list[NextBenchSample]]:
     timings: dict[str, list[float]] = {measurement_key(m): [] for m in measurements}
     results: dict[str, int] = {}
     samples: list[NextBenchSample] = []
+    for round_index in range(warmup_rounds):
+        for measurement in rotated(measurements, round_index):
+            result = measurement.run_once()
+            key = measurement_key(measurement)
+            expected = results.setdefault(key, result)
+            if result != expected:
+                raise AssertionError(
+                    f"{measurement.name} result changed during warmup"
+                )
     for round_index in range(rounds):
         for measurement in rotated(measurements, round_index):
             key = measurement_key(measurement)
@@ -1011,7 +1346,11 @@ def build_run_metadata(
     primecount: str | None,
     primesieve_library_server: Path | None,
     row_count: int,
+    primecount_library_server: Path | None = None,
+    primesieve_iterator_server: Path | None = None,
     primesieve_library_error: str | None = None,
+    primesieve_iterator_error: str | None = None,
+    primecount_library_error: str | None = None,
 ) -> dict[str, Any]:
     circle_binary = circle_prime or ROOT / "target" / "release" / "circle-prime"
     return {
@@ -1020,6 +1359,7 @@ def build_run_metadata(
         "row_count": row_count,
         "rounds": args.rounds,
         "batch_size": args.batch_size,
+        "warmup_rounds": int(getattr(args, "warmup_rounds", 0)),
         "server_only": bool(getattr(args, "server_only", False)),
         "include_circle_server": bool(getattr(args, "include_circle_server", False)),
         "include_primecount": bool(
@@ -1027,15 +1367,27 @@ def build_run_metadata(
             and (getattr(args, "include_primecount", False) or "primecount" in args.require_tool)
         ),
         "primecount_max_start": int(getattr(args, "primecount_max_start", 0)),
+        "include_primecount_library_server": bool(
+            getattr(args, "include_primecount_library_server", False)
+            or "primecount-library" in args.require_tool
+        ),
+        "primecount_library_max_start": int(
+            getattr(args, "primecount_library_max_start", 0)
+        ),
         "include_primesieve_library_server": bool(
             getattr(args, "include_primesieve_library_server", False)
             or "primesieve-library" in args.require_tool
+        ),
+        "include_primesieve_iterator_server": bool(
+            getattr(args, "include_primesieve_iterator_server", False)
+            or "primesieve-iterator-library" in args.require_tool
         ),
         "primesieve_library_max_start": int(
             getattr(args, "primesieve_library_max_start", 0)
         ),
         "starts": starts,
         "sample_output": str(args.sample_output) if args.sample_output is not None else None,
+        "circle_prime_defaults": file_fingerprint(PRIME_ENGINE_DEFAULTS),
         "thread_policy": {
             "circle_requested_threads": 1,
             "external_requested_threads": args.external_threads,
@@ -1053,9 +1405,37 @@ def build_run_metadata(
                     if primesieve_library_server is not None
                     else None
                 ),
+                "binary": file_fingerprint(primesieve_library_server),
                 "source": str(PRIMESIEVE_NEXT_SERVER_SOURCE),
+                "source_fingerprint": file_fingerprint(PRIMESIEVE_NEXT_SERVER_SOURCE),
                 "method": "primesieve_generate_n_primes(1, START, UINT64_PRIMES)",
                 "error": primesieve_library_error,
+            },
+            "primesieve_iterator_server": {
+                "available": primesieve_iterator_server is not None,
+                "path": (
+                    str(primesieve_iterator_server)
+                    if primesieve_iterator_server is not None
+                    else None
+                ),
+                "binary": file_fingerprint(primesieve_iterator_server),
+                "source": str(PRIMESIEVE_ITERATOR_NEXT_SERVER_SOURCE),
+                "source_fingerprint": file_fingerprint(PRIMESIEVE_ITERATOR_NEXT_SERVER_SOURCE),
+                "method": "primesieve::iterator.jump_to(START).next_prime()",
+                "error": primesieve_iterator_error,
+            },
+            "primecount_library_server": {
+                "available": primecount_library_server is not None,
+                "path": (
+                    str(primecount_library_server)
+                    if primecount_library_server is not None
+                    else None
+                ),
+                "binary": file_fingerprint(primecount_library_server),
+                "source": str(PRIMECOUNT_NEXT_SERVER_SOURCE),
+                "source_fingerprint": file_fingerprint(PRIMECOUNT_NEXT_SERVER_SOURCE),
+                "method": "primecount_pi(START-1) then primecount_nth_prime(pi+1)",
+                "error": primecount_library_error,
             },
         },
         "commands": [
@@ -1075,6 +1455,12 @@ def build_run_metadata(
                     and start <= args.primesieve_library_max_start
                     else None
                 ),
+                "primesieve_iterator_server": (
+                    [str(primesieve_iterator_server)]
+                    if primesieve_iterator_server is not None
+                    and start <= args.primesieve_library_max_start
+                    else None
+                ),
                 "primecount_pi": (
                     primecount_pi_command(primecount, start, args.external_threads)
                     if primecount is not None and start <= args.primecount_max_start
@@ -1088,6 +1474,17 @@ def build_run_metadata(
                         else []
                     )
                     if primecount is not None and start <= args.primecount_max_start
+                    else None
+                ),
+                "primecount_library_server": (
+                    [str(primecount_library_server)]
+                    + (
+                        [str(args.external_threads)]
+                        if args.external_threads > 0
+                        else []
+                    )
+                    if primecount_library_server is not None
+                    and start <= args.primecount_library_max_start
                     else None
                 ),
             }

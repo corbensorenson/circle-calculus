@@ -370,6 +370,31 @@ def test_next_comparison_failures_can_require_stable_samples() -> None:
     ]
 
 
+def test_next_comparison_failures_can_bypass_noisy_material_win() -> None:
+    comparisons = [
+        NextComparison(
+            key=speedup_row(name="circle_prime_server_next_prime").key,
+            baseline_result=1_000_000_000_039,
+            candidate_result=1_000_000_000_039,
+            baseline_candidate_count=12,
+            candidate_candidate_count=12,
+            baseline_best_speedup=1.6,
+            candidate_best_speedup=1.7,
+            baseline_median_speedup=1.6,
+            candidate_median_speedup=1.8,
+            candidate_sample_stability="noisy",
+        )
+    ]
+
+    assert not comparison_failures(
+        comparisons,
+        min_median_speedup_ratio=0.85,
+        min_best_speedup_ratio=0.85,
+        require_stable_samples=True,
+        allow_noisy_when_median_speedup_at_least=1.5,
+    )
+
+
 def test_render_next_comparison_table_marks_result_status() -> None:
     rendered = render_comparison_table(
         [
