@@ -110,6 +110,16 @@ def test_package_metadata_exposes_unified_ai_certifier() -> None:
     assert 'circle-ai-certify = "circle_math.cli:contract_certify_main"' in pyproject
 
 
+def test_generated_public_api_reference_lists_console_scripts() -> None:
+    reference = (ROOT / "docs" / "generated" / "PUBLIC_API_REFERENCE.md").read_text()
+    assert "## Package Console Scripts" in reference
+    assert "| `circle-ai-certify` | `circle_math.cli:contract_certify_main` |" in reference
+    assert (
+        "| `circle-ai-contract-receipt` | `circle_math.cli:contract_receipt_main` |"
+        in reference
+    )
+
+
 def test_package_cli_contract_receipt_json() -> None:
     result = subprocess.run(
         [

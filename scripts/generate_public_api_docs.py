@@ -31,6 +31,7 @@ DECL_RE = re.compile(
 IMPORT_RE = re.compile(r"^\s*import\s+([A-Za-z0-9_.]+)")
 PUB_MOD_RE = re.compile(r"^\s*pub\s+mod\s+([A-Za-z0-9_]+)\s*;")
 PUB_USE_RE = re.compile(r"^\s*pub\s+use\s+(.+?);")
+SCRIPT_RE = re.compile(r'^\s*([A-Za-z0-9_.-]+)\s*=\s*"([^"]+)"\s*$')
 
 
 def module_to_path(module: str) -> Path:
@@ -89,6 +90,39 @@ def python_rows(module_name: str) -> list[str]:
             kind = "value"
             summary = type(value).__name__
         rows.append(f"| `{name}` | {kind} | {summary} |")
+    rows.append("")
+    return rows
+
+
+def package_console_scripts() -> list[tuple[str, str]]:
+    pyproject = ROOT / "pyproject.toml"
+    if not pyproject.exists():
+        return []
+    scripts: list[tuple[str, str]] = []
+    in_scripts = False
+    for line in pyproject.read_text(encoding="utf-8").splitlines():
+        stripped = line.strip()
+        if stripped == "[project.scripts]":
+            in_scripts = True
+            continue
+        if in_scripts and stripped.startswith("[") and stripped.endswith("]"):
+            break
+        if not in_scripts or not stripped or stripped.startswith("#"):
+            continue
+        match = SCRIPT_RE.match(line)
+        if match:
+            scripts.append((match.group(1), match.group(2)))
+    return scripts
+
+
+def console_script_rows() -> list[str]:
+    rows = ["## Package Console Scripts", ""]
+    scripts = package_console_scripts()
+    if not scripts:
+        return rows + ["No package console scripts found.", ""]
+    rows.extend(["| Command | Entry Point |", "| --- | --- |"])
+    for command, entrypoint in scripts:
+        rows.append(f"| `{command}` | `{entrypoint}` |")
     rows.append("")
     return rows
 
@@ -170,6 +204,7 @@ def main() -> int:
     ]
     for module_name in PYTHON_MODULES:
         lines.extend(python_rows(module_name))
+    lines.extend(console_script_rows())
     lines.extend(lean_rows())
     lines.extend(rust_rows())
     OUT.write_text("\n".join(lines).rstrip() + "\n")

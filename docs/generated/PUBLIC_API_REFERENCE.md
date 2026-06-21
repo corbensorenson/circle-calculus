@@ -106,6 +106,16 @@ model-quality results.
 | `canonical_contract_kind` | function | `canonical_contract_kind(kind: 'str') -> 'str'` |
 | `receipt_summary_lines` | function | `receipt_summary_lines(receipt: 'Mapping[str, Any]') -> 'list[str]'` |
 
+## Package Console Scripts
+
+| Command | Entry Point |
+| --- | --- |
+| `circle-ai-certify` | `circle_math.cli:contract_certify_main` |
+| `circle-ai-contract-ready` | `circle_math.cli:contract_ready_main` |
+| `circle-ai-contract-receipt` | `circle_math.cli:contract_receipt_main` |
+| `circle-rope-certify` | `circle_math.cli:rope_certify_main` |
+| `circle-sparse-attention-certify` | `circle_math.cli:sparse_attention_certify_main` |
+
 ## Lean Stable Import Surfaces
 
 ### `Circle.Core`
