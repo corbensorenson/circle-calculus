@@ -1989,6 +1989,62 @@ def build_contract_receipt_file_check_report(
     return report
 
 
+def build_contract_receipt_gate_report(
+    receipt: Mapping[str, Any],
+    pack: Mapping[str, Any],
+    *,
+    receipt_path: str = "<in-memory-receipt>",
+    required_statuses: Sequence[str] = (),
+    required_decision_verdicts: Sequence[str] = (),
+    required_assurance_levels: Sequence[str] = (),
+    require_passed: bool = False,
+) -> dict[str, Any]:
+    """Build the public pack-aware gate report for an in-memory receipt.
+
+    This is the Python API counterpart to ``scripts/check_circle_ai_receipt.py``.
+    Downstream callers that already have a receipt object should use this helper
+    instead of shelling out or treating ``decision`` as a standalone proof.
+    """
+
+    return build_contract_receipt_file_check_report(
+        receipt,
+        pack,
+        receipt_path=receipt_path,
+        required_statuses=required_statuses,
+        required_decision_verdicts=required_decision_verdicts,
+        required_assurance_levels=required_assurance_levels,
+        require_passed=require_passed,
+    )
+
+
+def require_contract_receipt_gate(
+    receipt: Mapping[str, Any],
+    pack: Mapping[str, Any],
+    *,
+    receipt_path: str = "<in-memory-receipt>",
+    required_statuses: Sequence[str] = (),
+    required_decision_verdicts: Sequence[str] = (),
+    required_assurance_levels: Sequence[str] = (),
+    require_passed: bool = False,
+) -> dict[str, Any]:
+    """Return a gate report or raise ``ValueError`` with its failures."""
+
+    report = build_contract_receipt_gate_report(
+        receipt,
+        pack,
+        receipt_path=receipt_path,
+        required_statuses=required_statuses,
+        required_decision_verdicts=required_decision_verdicts,
+        required_assurance_levels=required_assurance_levels,
+        require_passed=require_passed,
+    )
+    if report["ok"]:
+        return report
+    raise ValueError(
+        "Circle AI contract receipt gate failed: " + "; ".join(report["failures"])
+    )
+
+
 def receipt_summary_lines(receipt: Mapping[str, Any]) -> list[str]:
     """Return a compact text summary for humans."""
 

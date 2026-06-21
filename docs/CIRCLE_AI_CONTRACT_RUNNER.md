@@ -238,6 +238,7 @@ future sharper theorem.
 ```python
 from circle_math.applications import (
     build_contract_receipt_file_check_report,
+    build_contract_receipt_gate_report,
     build_contract_request,
     build_contract_request_validation_report,
     build_validated_contract_receipt,
@@ -245,6 +246,7 @@ from circle_math.applications import (
     validate_contract_request,
     validate_contract_receipt_against_pack,
     load_contract_pack,
+    require_contract_receipt_gate,
 )
 
 pack = load_contract_pack("site/data/generated/circle_ai_contract_pack.json")
@@ -276,9 +278,28 @@ check_report = build_contract_receipt_file_check_report(
     pack,
     receipt_path="reports/rope_receipt.json",
     required_statuses=("proved",),
+    required_decision_verdicts=("passed",),
+    required_assurance_levels=("mixed_theorem_and_computation",),
     require_passed=True,
 )
 assert check_report["ok"] is True
+gate_report = build_contract_receipt_gate_report(
+    receipt,
+    pack,
+    required_statuses=("proved",),
+    required_decision_verdicts=("passed",),
+    required_assurance_levels=("mixed_theorem_and_computation",),
+    require_passed=True,
+)
+assert gate_report["ok"] is True
+require_contract_receipt_gate(
+    receipt,
+    pack,
+    required_statuses=("proved",),
+    required_decision_verdicts=("passed",),
+    required_assurance_levels=("mixed_theorem_and_computation",),
+    require_passed=True,
+)
 
 request = {
     "schema_id": "circle_calculus.ai_contract_request.v0",

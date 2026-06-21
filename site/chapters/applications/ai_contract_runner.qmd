@@ -258,9 +258,9 @@ python scripts/check_circle_ai_receipt.py reports/rope_receipt.json \
 This is the smallest downstream CI check. It validates the receipt JSON Schema,
 the in-process receipt shape, the receipt fingerprint, the loaded contract-pack
 fingerprint, the contract fingerprint, theorem-id membership in the loaded
-contract, and the optional status/pass gates. It does not run Lean; it verifies
-that the receipt still points at the public contract pack it claims to use. The
-checker validates its own report against
+contract, and the optional status, decision, assurance, and pass gates. It does
+not run Lean; it verifies that the receipt still points at the public contract
+pack it claims to use. The checker validates its own report against
 `site/data/generated/circle_ai_contract_receipt_file_check.schema.json` and can
 write that report to disk for audit logs.
 
@@ -274,25 +274,28 @@ schema, and its contract kind must match the receipt kind.
 Read every receipt in this order:
 
 1. `kind`: which contract family was used;
-2. `normalized_request`: what parameters the tool actually checked;
-3. `status` and `request_passed`: whether the request was accepted, rejected, undecided, numerical-only, or outside scope;
-4. `evidence`: the family-specific certificate fields;
-5. `proof_status.theorem_ids`: the proof trail;
-6. `proof_layers`: proved versus computed versus numerical-only fields;
-7. `recommendations` and `validation_commands`: how a downstream tool should
+2. `decision`: the stable downstream verdict and assurance level;
+3. `normalized_request`: what parameters the tool actually checked;
+4. `status` and `request_passed`: whether the request was accepted, rejected, undecided, numerical-only, or outside scope;
+5. `evidence`: the family-specific certificate fields;
+6. `proof_status.theorem_ids`: the proof trail;
+7. `proof_layers`: proved versus computed versus numerical-only fields;
+8. `recommendations` and `validation_commands`: how a downstream tool should
    act on and recheck the receipt;
-8. `request_content_fingerprint` and `normalized_request_fingerprint`: stable
+9. `request_content_fingerprint` and `normalized_request_fingerprint`: stable
    hashes for audit logs, caches, and stale-receipt detection;
-9. `not_claimed`: what the receipt deliberately does not prove.
+10. `not_claimed`: what the receipt deliberately does not prove.
 
 ## Python API
 
 ```python
 from circle_math.applications import (
     build_contract_receipt_file_check_report,
+    build_contract_receipt_gate_report,
     build_contract_request,
     build_contract_request_validation_report,
     load_contract_pack,
+    require_contract_receipt_gate,
     build_validated_contract_receipt,
     build_validated_contract_receipt_from_request,
     validate_contract_request,
@@ -323,9 +326,28 @@ check_report = build_contract_receipt_file_check_report(
     pack,
     receipt_path="reports/kv_receipt.json",
     required_statuses=("proved",),
+    required_decision_verdicts=("passed",),
+    required_assurance_levels=("theorem_backed",),
     require_passed=True,
 )
 assert check_report["ok"] is True
+gate_report = build_contract_receipt_gate_report(
+    receipt,
+    pack,
+    required_statuses=("proved",),
+    required_decision_verdicts=("passed",),
+    required_assurance_levels=("theorem_backed",),
+    require_passed=True,
+)
+assert gate_report["ok"] is True
+require_contract_receipt_gate(
+    receipt,
+    pack,
+    required_statuses=("proved",),
+    required_decision_verdicts=("passed",),
+    required_assurance_levels=("theorem_backed",),
+    require_passed=True,
+)
 ```
 
 The request-file object can be used directly from Python:

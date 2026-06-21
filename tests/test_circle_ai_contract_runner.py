@@ -13,6 +13,7 @@ from circle_math.applications import (
     build_contract_receipt,
     build_contract_receipt_file_check_json_schema,
     build_contract_receipt_file_check_report,
+    build_contract_receipt_gate_report,
     build_contract_receipt_json_schema,
     build_contract_receipt_from_request,
     build_contract_request,
@@ -28,6 +29,7 @@ from circle_math.applications import (
     build_validated_contract_receipt,
     build_validated_contract_receipt_from_request,
     receipt_summary_lines,
+    require_contract_receipt_gate,
     validate_contract_request,
     validate_contract_receipt,
     validate_contract_receipt_against_pack,
@@ -727,6 +729,48 @@ def test_receipt_file_check_report_public_api(contract_pack: dict) -> None:
         "did not match required assurance set" in failure
         for failure in decision_failed["failures"]
     )
+
+
+def test_receipt_gate_report_public_api(contract_pack: dict) -> None:
+    receipt = build_rope_receipt(
+        context=131072,
+        requested_margin="1/328459",
+        pack=contract_pack,
+    )
+
+    report = build_contract_receipt_gate_report(
+        receipt,
+        contract_pack,
+        required_statuses=("proved",),
+        required_decision_verdicts=("passed",),
+        required_assurance_levels=("mixed_theorem_and_computation",),
+        require_passed=True,
+    )
+
+    jsonschema.validate(report, build_contract_receipt_file_check_json_schema())
+    assert report["ok"] is True
+    assert report["summaries"][0]["path"] == "<in-memory-receipt>"
+    assert report["gate_policy"] == {
+        "allowed_statuses": ["proved"],
+        "allowed_decision_verdicts": ["passed"],
+        "allowed_assurance_levels": ["mixed_theorem_and_computation"],
+        "require_passed": True,
+    }
+    assert require_contract_receipt_gate(
+        receipt,
+        contract_pack,
+        required_statuses=("proved",),
+        required_decision_verdicts=("passed",),
+        required_assurance_levels=("mixed_theorem_and_computation",),
+        require_passed=True,
+    )["ok"] is True
+
+    with pytest.raises(ValueError, match="required decision set"):
+        require_contract_receipt_gate(
+            receipt,
+            contract_pack,
+            required_decision_verdicts=("failed",),
+        )
 
 
 def test_receipt_file_check_report_rejects_invalid_api_inputs(
