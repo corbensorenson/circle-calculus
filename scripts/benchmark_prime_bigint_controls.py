@@ -8,6 +8,7 @@ import statistics
 import subprocess
 import sys
 import time
+from contextlib import ExitStack
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Callable, TypeVar
@@ -114,6 +115,15 @@ def parse_args() -> argparse.Namespace:
         help="Scored prefix budget for Circle big-fuzzy-search smoke rows.",
     )
     parser.add_argument(
+        "--server-batch-size",
+        type=int,
+        default=16,
+        help=(
+            "Repeated requests sent per measured sample to persistent Circle "
+            "BigUint servers; timings are reported per request."
+        ),
+    )
+    parser.add_argument(
         "--output",
         type=Path,
         default=RESULTS_DIR / "prime_bigint_controls_latest.csv",
@@ -147,8 +157,14 @@ def next_cases() -> list[NextCase]:
     ]
 
 
-def timed(fn: Callable[[], T], *, warmup_rounds: int, bench_rounds: int) -> SampleSet:
-    if warmup_rounds < 0 or bench_rounds <= 0:
+def timed(
+    fn: Callable[[], T],
+    *,
+    warmup_rounds: int,
+    bench_rounds: int,
+    sample_divisor: int = 1,
+) -> SampleSet:
+    if warmup_rounds < 0 or bench_rounds <= 0 or sample_divisor <= 0:
         raise ValueError("warmup_rounds must be >= 0 and bench_rounds must be positive")
     last: object = None
     for _ in range(warmup_rounds):
@@ -157,8 +173,63 @@ def timed(fn: Callable[[], T], *, warmup_rounds: int, bench_rounds: int) -> Samp
     for _ in range(bench_rounds):
         started = time.perf_counter_ns()
         last = fn()
-        samples.append((time.perf_counter_ns() - started) / 1_000_000.0)
+        samples.append(((time.perf_counter_ns() - started) / 1_000_000.0) / sample_divisor)
     return SampleSet(last, samples)
+
+
+class LineServer:
+    def __init__(self, argv: list[str]) -> None:
+        self.argv = argv
+        self.process = subprocess.Popen(
+            argv,
+            cwd=ROOT,
+            stdin=subprocess.PIPE,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True,
+            bufsize=1,
+        )
+        if self.process.stdin is None or self.process.stdout is None:
+            raise RuntimeError(f"failed to open line server pipes: {argv}")
+
+    def request(self, value: int, count: int) -> list[str]:
+        if count <= 0:
+            raise ValueError("server request count must be positive")
+        assert self.process.stdin is not None
+        assert self.process.stdout is not None
+        self.process.stdin.write(f"{value} {count}\n")
+        self.process.stdin.flush()
+        lines = []
+        for _ in range(count):
+            line = self.process.stdout.readline()
+            if line == "":
+                stderr = ""
+                if self.process.stderr is not None:
+                    stderr = self.process.stderr.read()
+                raise RuntimeError(
+                    f"server exited while reading response from {self.argv}: {stderr}"
+                )
+            lines.append(line.strip())
+        return lines
+
+    def close(self) -> None:
+        if self.process.poll() is None and self.process.stdin is not None:
+            try:
+                self.process.stdin.write("quit\n")
+                self.process.stdin.flush()
+            except BrokenPipeError:
+                pass
+        try:
+            self.process.wait(timeout=5)
+        except subprocess.TimeoutExpired:
+            self.process.kill()
+            self.process.wait(timeout=5)
+
+    def __enter__(self) -> "LineServer":
+        return self
+
+    def __exit__(self, exc_type: object, exc: object, tb: object) -> None:
+        self.close()
 
 
 def run_circle_json(binary: Path, *args: str) -> dict[str, object]:
@@ -179,6 +250,17 @@ def circle_big_test(binary: Path, n: int, mr_rounds: int) -> bool:
     return payload["status"] in {"prime", "probable_prime"}
 
 
+def circle_big_test_server(server: LineServer, n: int, batch_size: int) -> bool:
+    lines = server.request(n, batch_size)
+    if any(line != lines[0] for line in lines):
+        raise RuntimeError(f"big-test-server returned inconsistent batch: {lines}")
+    if lines[0] in {"prime", "probable_prime"}:
+        return True
+    if lines[0] == "composite":
+        return False
+    raise RuntimeError(f"could not parse big-test-server response: {lines[0]!r}")
+
+
 def circle_big_next(binary: Path, start: int, mr_rounds: int, max_candidates: int) -> int | None:
     payload = run_circle_json(
         binary,
@@ -192,6 +274,13 @@ def circle_big_next(binary: Path, start: int, mr_rounds: int, max_candidates: in
     )
     prime = payload.get("prime")
     return int(prime) if prime is not None else None
+
+
+def circle_big_next_server(server: LineServer, start: int, batch_size: int) -> int | None:
+    lines = server.request(start, batch_size)
+    if any(line != lines[0] for line in lines):
+        raise RuntimeError(f"big-next-server returned inconsistent batch: {lines}")
+    return None if lines[0] == "none" else int(lines[0])
 
 
 def circle_big_fuzzy_any(
@@ -220,6 +309,17 @@ def circle_big_fuzzy_any(
     )
     prime = payload.get("reported_prime")
     return int(prime) if prime is not None else None
+
+
+def circle_big_fuzzy_any_server(
+    server: LineServer,
+    start: int,
+    batch_size: int,
+) -> int | None:
+    lines = server.request(start, batch_size)
+    if any(line != lines[0] for line in lines):
+        raise RuntimeError(f"big-fuzzy-server returned inconsistent batch: {lines}")
+    return None if lines[0] == "none" else int(lines[0])
 
 
 def openssl_prime(binary: str, n: int, mr_rounds: int) -> bool:
@@ -326,6 +426,8 @@ def main() -> int:
         )
     if args.mr_rounds <= 0:
         raise SystemExit("--mr-rounds must be positive")
+    if args.server_batch_size <= 0:
+        raise SystemExit("--server-batch-size must be positive")
 
     max_bits = max([case.n.bit_length() for case in prime_cases()] + [521])
     model_path = ROOT / "target" / "prime-controls" / "prime-big-fuzzy-model.txt"
@@ -334,106 +436,174 @@ def main() -> int:
     rows: list[dict[str, object]] = []
     failures: list[str] = []
 
-    for case in prime_cases():
-        circle = timed(
-            lambda case=case: circle_big_test(
-                args.circle_prime_bin, case.n, args.mr_rounds
-            ),
-            warmup_rounds=args.warmup_rounds,
-            bench_rounds=args.bench_rounds,
-        )
-        openssl = timed(
-            lambda case=case: openssl_prime(args.openssl_bin, case.n, args.mr_rounds),
-            warmup_rounds=args.warmup_rounds,
-            bench_rounds=args.bench_rounds,
-        )
-        sympy_result = timed(
-            lambda case=case: bool(sympy.isprime(case.n)),
-            warmup_rounds=args.warmup_rounds,
-            bench_rounds=args.bench_rounds,
-        )
-        for engine, sample_set in [
-            ("circle_big_test", circle),
-            ("openssl_prime", openssl),
-            ("sympy_isprime", sympy_result),
-        ]:
-            agreed = sample_set.result == case.expected_prime
-            if not agreed:
-                failures.append(
-                    f"{engine} disagreed on {case.name}: "
-                    f"got {sample_set.result}, expected {case.expected_prime}"
-                )
-            add_row(
-                rows,
-                operation="prime_test",
-                case=case.name,
-                bits=case.n.bit_length(),
-                engine=engine,
-                sample_set=sample_set,
-                expected=case.expected_prime,
-                agreed=agreed,
-                mr_rounds=args.mr_rounds,
+    with ExitStack() as stack:
+        circle_test_server = stack.enter_context(
+            LineServer(
+                [
+                    str(args.circle_prime_bin),
+                    "big-test-server",
+                    "--rounds",
+                    str(args.mr_rounds),
+                ]
             )
+        )
+        circle_next_server = stack.enter_context(
+            LineServer(
+                [
+                    str(args.circle_prime_bin),
+                    "big-next-server",
+                    "--rounds",
+                    str(args.mr_rounds),
+                    "--max-candidates",
+                    str(args.max_candidates),
+                ]
+            )
+        )
+        circle_fuzzy_server = stack.enter_context(
+            LineServer(
+                [
+                    str(args.circle_prime_bin),
+                    "big-fuzzy-server",
+                    str(model_path),
+                    "--candidate-window",
+                    str(args.candidate_window),
+                    "--top-k",
+                    str(args.top_k),
+                    "--score-limit",
+                    str(args.score_limit),
+                    "--rounds",
+                    str(args.mr_rounds),
+                ]
+            )
+        )
 
-    for case in next_cases():
-        expected = sympy_next_prime_at_or_above(case.start)
-        circle = timed(
-            lambda case=case: circle_big_next(
-                args.circle_prime_bin,
-                case.start,
-                args.mr_rounds,
-                args.max_candidates,
-            ),
-            warmup_rounds=args.warmup_rounds,
-            bench_rounds=args.bench_rounds,
-        )
-        sympy_next = timed(
-            lambda case=case: sympy_next_prime_at_or_above(case.start),
-            warmup_rounds=args.warmup_rounds,
-            bench_rounds=args.bench_rounds,
-        )
-        fuzzy = timed(
-            lambda case=case: circle_big_fuzzy_any(
-                args.circle_prime_bin,
-                model_path,
-                case.start,
-                args.mr_rounds,
-                args.candidate_window,
-                args.top_k,
-                args.score_limit,
-            ),
-            warmup_rounds=args.warmup_rounds,
-            bench_rounds=args.bench_rounds,
-        )
-        for engine, sample_set, require_exact in [
-            ("circle_big_next", circle, True),
-            ("sympy_nextprime", sympy_next, True),
-            ("circle_big_fuzzy_any", fuzzy, False),
-        ]:
-            if require_exact:
-                agreed = sample_set.result == expected
-            else:
-                agreed = (
-                    isinstance(sample_set.result, int)
-                    and sample_set.result >= case.start
-                    and bool(sympy.isprime(sample_set.result))
-                )
-            if not agreed:
-                failures.append(
-                    f"{engine} disagreed on {case.name}: "
-                    f"got {sample_set.result}, expected {expected}"
-                )
-            add_row(
-                rows,
-                operation="next_search" if require_exact else "fuzzy_any_search",
-                case=case.name,
-                bits=case.start.bit_length(),
-                engine=engine,
-                sample_set=sample_set,
-                expected=expected,
-                agreed=agreed,
-                mr_rounds=args.mr_rounds,
+        for case in prime_cases():
+            circle = timed(
+                lambda case=case: circle_big_test(
+                    args.circle_prime_bin, case.n, args.mr_rounds
+                ),
+                warmup_rounds=args.warmup_rounds,
+                bench_rounds=args.bench_rounds,
             )
+            circle_server = timed(
+                lambda case=case: circle_big_test_server(
+                    circle_test_server, case.n, args.server_batch_size
+                ),
+                warmup_rounds=args.warmup_rounds,
+                bench_rounds=args.bench_rounds,
+                sample_divisor=args.server_batch_size,
+            )
+            openssl = timed(
+                lambda case=case: openssl_prime(args.openssl_bin, case.n, args.mr_rounds),
+                warmup_rounds=args.warmup_rounds,
+                bench_rounds=args.bench_rounds,
+            )
+            sympy_result = timed(
+                lambda case=case: bool(sympy.isprime(case.n)),
+                warmup_rounds=args.warmup_rounds,
+                bench_rounds=args.bench_rounds,
+            )
+            for engine, sample_set in [
+                ("circle_big_test", circle),
+                ("circle_big_test_server", circle_server),
+                ("openssl_prime", openssl),
+                ("sympy_isprime", sympy_result),
+            ]:
+                agreed = sample_set.result == case.expected_prime
+                if not agreed:
+                    failures.append(
+                        f"{engine} disagreed on {case.name}: "
+                        f"got {sample_set.result}, expected {case.expected_prime}"
+                    )
+                add_row(
+                    rows,
+                    operation="prime_test",
+                    case=case.name,
+                    bits=case.n.bit_length(),
+                    engine=engine,
+                    sample_set=sample_set,
+                    expected=case.expected_prime,
+                    agreed=agreed,
+                    mr_rounds=args.mr_rounds,
+                )
+
+        for case in next_cases():
+            expected = sympy_next_prime_at_or_above(case.start)
+            circle = timed(
+                lambda case=case: circle_big_next(
+                    args.circle_prime_bin,
+                    case.start,
+                    args.mr_rounds,
+                    args.max_candidates,
+                ),
+                warmup_rounds=args.warmup_rounds,
+                bench_rounds=args.bench_rounds,
+            )
+            circle_server = timed(
+                lambda case=case: circle_big_next_server(
+                    circle_next_server, case.start, args.server_batch_size
+                ),
+                warmup_rounds=args.warmup_rounds,
+                bench_rounds=args.bench_rounds,
+                sample_divisor=args.server_batch_size,
+            )
+            sympy_next = timed(
+                lambda case=case: sympy_next_prime_at_or_above(case.start),
+                warmup_rounds=args.warmup_rounds,
+                bench_rounds=args.bench_rounds,
+            )
+            fuzzy = timed(
+                lambda case=case: circle_big_fuzzy_any(
+                    args.circle_prime_bin,
+                    model_path,
+                    case.start,
+                    args.mr_rounds,
+                    args.candidate_window,
+                    args.top_k,
+                    args.score_limit,
+                ),
+                warmup_rounds=args.warmup_rounds,
+                bench_rounds=args.bench_rounds,
+            )
+            fuzzy_server = timed(
+                lambda case=case: circle_big_fuzzy_any_server(
+                    circle_fuzzy_server, case.start, args.server_batch_size
+                ),
+                warmup_rounds=args.warmup_rounds,
+                bench_rounds=args.bench_rounds,
+                sample_divisor=args.server_batch_size,
+            )
+            for engine, sample_set, require_exact in [
+                ("circle_big_next", circle, True),
+                ("circle_big_next_server", circle_server, True),
+                ("sympy_nextprime", sympy_next, True),
+                ("circle_big_fuzzy_any", fuzzy, False),
+                ("circle_big_fuzzy_any_server", fuzzy_server, False),
+            ]:
+                if require_exact:
+                    agreed = sample_set.result == expected
+                else:
+                    agreed = (
+                        isinstance(sample_set.result, int)
+                        and sample_set.result >= case.start
+                        and bool(sympy.isprime(sample_set.result))
+                    )
+                if not agreed:
+                    failures.append(
+                        f"{engine} disagreed on {case.name}: "
+                        f"got {sample_set.result}, expected {expected}"
+                    )
+                add_row(
+                    rows,
+                    operation="next_search" if require_exact else "fuzzy_any_search",
+                    case=case.name,
+                    bits=case.start.bit_length(),
+                    engine=engine,
+                    sample_set=sample_set,
+                    expected=expected,
+                    agreed=agreed,
+                    mr_rounds=args.mr_rounds,
+                )
 
     args.output.parent.mkdir(parents=True, exist_ok=True)
     with args.output.open("w", newline="") as handle:
@@ -466,6 +636,8 @@ def main() -> int:
         "candidate_window": args.candidate_window,
         "top_k": args.top_k,
         "score_limit": args.score_limit,
+        "server_batch_size": args.server_batch_size,
+        "circle_server_protocol": "stdin lines: N or N COUNT; non-json response per request",
         "circle_prime": file_fingerprint(args.circle_prime_bin),
         "big_fuzzy_model": file_fingerprint(model_path),
         "tools": {

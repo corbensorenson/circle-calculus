@@ -6,20 +6,23 @@ use std::process;
 use std::sync::mpsc;
 use std::thread::{self, JoinHandle};
 
+use num_bigint::BigUint;
+
 use circle_prime::{
-    big_fuzzy_any_prime_search, effective_parallel_thread_count, effective_prefix_pi_thread_count,
-    fuzzy_any_prime_value_with_score_limit, fuzzy_search_with_score_limit, inspect_horizon,
-    is_prime_u64, is_probable_prime_biguint, next_prime_u64, next_prime_value_u64,
-    next_probable_prime_biguint, parse_biguint, prime_count_in_range,
-    prime_count_in_range_hybrid_wheel30_marks, prime_count_in_range_hybrid_wheel30_marks_parallel,
-    prime_count_in_range_parallel, prime_count_in_range_parallel_balanced,
-    prime_count_in_range_parallel_dynamic, prime_count_in_range_prefix_pi,
-    prime_count_in_range_prefix_pi_parallel, prime_count_in_range_presieve13,
-    prime_count_in_range_presieve13_parallel, prime_count_in_range_presieve13_with_scratch,
-    prime_count_in_range_presieve17, prime_count_in_range_presieve17_parallel,
-    prime_count_in_range_presieve17_with_scratch, prime_count_in_range_small_prefix_pi,
-    prime_count_in_range_wheel30_marks, prime_count_in_range_wheel30_marks_parallel,
-    prime_count_in_range_with_scratch, prime_count_shifted_single_segment_presieve13_with_scratch,
+    big_fuzzy_any_prime_search, big_fuzzy_any_prime_value, effective_parallel_thread_count,
+    effective_prefix_pi_thread_count, fuzzy_any_prime_value_with_score_limit,
+    fuzzy_search_with_score_limit, inspect_horizon, is_prime_u64, is_probable_prime_biguint,
+    next_prime_u64, next_prime_value_u64, next_probable_prime_biguint, parse_biguint,
+    prime_count_in_range, prime_count_in_range_hybrid_wheel30_marks,
+    prime_count_in_range_hybrid_wheel30_marks_parallel, prime_count_in_range_parallel,
+    prime_count_in_range_parallel_balanced, prime_count_in_range_parallel_dynamic,
+    prime_count_in_range_prefix_pi, prime_count_in_range_prefix_pi_parallel,
+    prime_count_in_range_presieve13, prime_count_in_range_presieve13_parallel,
+    prime_count_in_range_presieve13_with_scratch, prime_count_in_range_presieve17,
+    prime_count_in_range_presieve17_parallel, prime_count_in_range_presieve17_with_scratch,
+    prime_count_in_range_small_prefix_pi, prime_count_in_range_wheel30_marks,
+    prime_count_in_range_wheel30_marks_parallel, prime_count_in_range_with_scratch,
+    prime_count_shifted_single_segment_presieve13_with_scratch,
     prime_count_shifted_single_segment_presieve17_with_scratch, prime_horizon_proof_contract_json,
     prime_range_count_proof_contract_json, primes_in_range, recommended_count_mode,
     recommended_count_segment_size, recommended_segment_size, warm_small_prefix_pi_cache,
@@ -119,6 +122,9 @@ fn run(args: Vec<String>) -> Result<(), String> {
         "big-test" => big_test_command(&args[1..]),
         "big-next" => big_next_command(&args[1..]),
         "big-fuzzy-search" => big_fuzzy_search_command(&args[1..]),
+        "big-test-server" => big_test_server_command(&args[1..]),
+        "big-next-server" => big_next_server_command(&args[1..]),
+        "big-fuzzy-server" => big_fuzzy_server_command(&args[1..]),
         "fuzzy-search" => fuzzy_search_command(&args[1..]),
         "fuzzy-server" => fuzzy_server_command(&args[1..]),
         "range" => range_command(&args[1..]),
@@ -156,6 +162,51 @@ fn big_test_command(args: &[String]) -> Result<(), String> {
     Ok(())
 }
 
+fn big_test_server_command(args: &[String]) -> Result<(), String> {
+    let rounds = big_rounds_arg(args)?;
+    let json = args.iter().any(|arg| arg == "--json");
+    let stdin = io::stdin();
+    let mut reader = stdin.lock();
+    let mut stdout = io::BufWriter::new(io::stdout().lock());
+    let mut buffer = Vec::with_capacity(256);
+    loop {
+        buffer.clear();
+        let bytes_read = reader
+            .read_until(b'\n', &mut buffer)
+            .map_err(|err| format!("failed to read request: {err}"))?;
+        if bytes_read == 0 {
+            break;
+        }
+        let request = trim_ascii_bytes(&buffer);
+        if request.is_empty() {
+            continue;
+        }
+        if request == b"quit" || request == b"exit" {
+            break;
+        }
+        let (n, repetitions) = parse_big_server_request(request, "big-test-server")?;
+        for _ in 0..repetitions {
+            let decision = is_probable_prime_biguint(&n, rounds)?;
+            if json {
+                writeln!(stdout, "{}", decision.to_json())
+                    .map_err(|err| format!("failed to write response: {err}"))?;
+            } else {
+                let status = match decision.status {
+                    circle_prime::BigPrimeStatus::Composite => "composite",
+                    circle_prime::BigPrimeStatus::Prime => "prime",
+                    circle_prime::BigPrimeStatus::ProbablePrime => "probable_prime",
+                };
+                writeln!(stdout, "{status}")
+                    .map_err(|err| format!("failed to write response: {err}"))?;
+            }
+        }
+        stdout
+            .flush()
+            .map_err(|err| format!("failed to flush response: {err}"))?;
+    }
+    Ok(())
+}
+
 fn big_next_command(args: &[String]) -> Result<(), String> {
     let start = parse_biguint(required_arg(args, 0, "big-next requires START")?)?;
     let rounds = big_rounds_arg(args)?;
@@ -175,6 +226,58 @@ fn big_next_command(args: &[String]) -> Result<(), String> {
         println!("{prime}");
     } else {
         println!("none");
+    }
+    Ok(())
+}
+
+fn big_next_server_command(args: &[String]) -> Result<(), String> {
+    let rounds = big_rounds_arg(args)?;
+    let max_candidates = optional_value(args, "--max-candidates")
+        .map(|value| {
+            value
+                .parse::<u64>()
+                .map_err(|_| "--max-candidates must fit in u64".to_string())
+        })
+        .transpose()?
+        .unwrap_or(DEFAULT_BIG_NEXT_MAX_CANDIDATES);
+    let json = args.iter().any(|arg| arg == "--json");
+    let stdin = io::stdin();
+    let mut reader = stdin.lock();
+    let mut stdout = io::BufWriter::new(io::stdout().lock());
+    let mut buffer = Vec::with_capacity(256);
+    loop {
+        buffer.clear();
+        let bytes_read = reader
+            .read_until(b'\n', &mut buffer)
+            .map_err(|err| format!("failed to read request: {err}"))?;
+        if bytes_read == 0 {
+            break;
+        }
+        let request = trim_ascii_bytes(&buffer);
+        if request.is_empty() {
+            continue;
+        }
+        if request == b"quit" || request == b"exit" {
+            break;
+        }
+        let (start, repetitions) = parse_big_server_request(request, "big-next-server")?;
+        for _ in 0..repetitions {
+            let search = next_probable_prime_biguint(&start, rounds, max_candidates)?;
+            if json {
+                writeln!(stdout, "{}", search.to_json())
+                    .map_err(|err| format!("failed to write response: {err}"))?;
+            } else if let Some(prime) = search.prime {
+                writeln!(stdout, "{prime}")
+                    .map_err(|err| format!("failed to write response: {err}"))?;
+            } else {
+                stdout
+                    .write_all(b"none\n")
+                    .map_err(|err| format!("failed to write response: {err}"))?;
+            }
+        }
+        stdout
+            .flush()
+            .map_err(|err| format!("failed to flush response: {err}"))?;
     }
     Ok(())
 }
@@ -215,14 +318,115 @@ fn big_fuzzy_search_command(args: &[String]) -> Result<(), String> {
     let raw_model = fs::read_to_string(model_path)
         .map_err(|err| format!("failed to read fuzzy model {model_path:?}: {err}"))?;
     let model = BigFuzzyPrimeModel::from_text(&raw_model)?;
-    let search =
-        big_fuzzy_any_prime_search(&model, &start, candidate_window, top_k, score_limit, rounds)?;
     if json {
+        let search = big_fuzzy_any_prime_search(
+            &model,
+            &start,
+            candidate_window,
+            top_k,
+            score_limit,
+            rounds,
+        )?;
         println!("{}", search.to_json(&model));
-    } else if let Some(prime) = search.reported_prime {
-        println!("{prime}");
     } else {
-        println!("none");
+        match big_fuzzy_any_prime_value(
+            &model,
+            &start,
+            candidate_window,
+            top_k,
+            score_limit,
+            rounds,
+        )? {
+            Some(prime) => println!("{prime}"),
+            None => println!("none"),
+        }
+    }
+    Ok(())
+}
+
+fn big_fuzzy_server_command(args: &[String]) -> Result<(), String> {
+    let model_path = required_arg(args, 0, "big-fuzzy-server requires MODEL")?;
+    let rounds = big_rounds_arg(args)?;
+    let candidate_window = optional_value(args, "--candidate-window")
+        .map(|value| {
+            value
+                .parse::<usize>()
+                .map_err(|_| "--candidate-window must fit in usize".to_string())
+        })
+        .transpose()?
+        .unwrap_or(DEFAULT_BIG_FUZZY_CANDIDATE_WINDOW);
+    let top_k = optional_value(args, "--top-k")
+        .map(|value| {
+            value
+                .parse::<usize>()
+                .map_err(|_| "--top-k must fit in usize".to_string())
+        })
+        .transpose()?
+        .unwrap_or(32);
+    let score_limit = optional_value(args, "--score-limit")
+        .map(|value| {
+            value
+                .parse::<usize>()
+                .map_err(|_| "--score-limit must fit in usize".to_string())
+        })
+        .transpose()?
+        .unwrap_or(usize::MAX);
+    let json = args.iter().any(|arg| arg == "--json");
+    let raw_model = fs::read_to_string(model_path)
+        .map_err(|err| format!("failed to read fuzzy model {model_path:?}: {err}"))?;
+    let model = BigFuzzyPrimeModel::from_text(&raw_model)?;
+    let stdin = io::stdin();
+    let mut reader = stdin.lock();
+    let mut stdout = io::BufWriter::new(io::stdout().lock());
+    let mut buffer = Vec::with_capacity(256);
+    loop {
+        buffer.clear();
+        let bytes_read = reader
+            .read_until(b'\n', &mut buffer)
+            .map_err(|err| format!("failed to read request: {err}"))?;
+        if bytes_read == 0 {
+            break;
+        }
+        let request = trim_ascii_bytes(&buffer);
+        if request.is_empty() {
+            continue;
+        }
+        if request == b"quit" || request == b"exit" {
+            break;
+        }
+        let (start, repetitions) = parse_big_server_request(request, "big-fuzzy-server")?;
+        for _ in 0..repetitions {
+            if json {
+                let search = big_fuzzy_any_prime_search(
+                    &model,
+                    &start,
+                    candidate_window,
+                    top_k,
+                    score_limit,
+                    rounds,
+                )?;
+                writeln!(stdout, "{}", search.to_json(&model))
+                    .map_err(|err| format!("failed to write response: {err}"))?;
+            } else {
+                match big_fuzzy_any_prime_value(
+                    &model,
+                    &start,
+                    candidate_window,
+                    top_k,
+                    score_limit,
+                    rounds,
+                )? {
+                    Some(prime) => writeln!(stdout, "{prime}")
+                        .map_err(|err| format!("failed to write response: {err}"))?,
+                    None => stdout
+                        .write_all(b"none\n")
+                        .map_err(|err| format!("failed to write response: {err}"))?,
+                }
+            }
+        }
+        stdout
+            .flush()
+            .map_err(|err| format!("failed to flush response: {err}"))?;
     }
     Ok(())
 }
@@ -505,6 +709,33 @@ fn parse_next_server_request_ascii(bytes: &[u8]) -> Result<(u64, usize), String>
         return Err("next-server request COUNT must be positive".to_string());
     }
     Ok((start, repetitions))
+}
+
+fn parse_big_server_request(bytes: &[u8], command: &str) -> Result<(BigUint, usize), String> {
+    let request =
+        std::str::from_utf8(bytes).map_err(|_| format!("{command} request must be valid UTF-8"))?;
+    let mut parts = request.split_whitespace();
+    let n = parse_biguint(
+        parts
+            .next()
+            .ok_or_else(|| format!("{command} request must include N"))?,
+    )?;
+    let repetitions = match parts.next() {
+        Some(raw) if !raw.is_empty() => raw
+            .parse::<usize>()
+            .map_err(|_| format!("{command} COUNT must fit in usize"))?,
+        Some(_) => {
+            return Err(format!("{command} request COUNT must be positive"));
+        }
+        None => 1,
+    };
+    if parts.next().is_some() {
+        return Err(format!("{command} request must be N or N COUNT"));
+    }
+    if repetitions == 0 {
+        return Err(format!("{command} request COUNT must be positive"));
+    }
+    Ok((n, repetitions))
 }
 
 fn write_u64_line<W: Write>(writer: &mut W, mut value: u64) -> Result<(), String> {
@@ -2020,6 +2251,9 @@ fn usage() -> String {
         "  circle-prime big-test N [--rounds N] [--json]",
         "  circle-prime big-next START [--rounds N] [--max-candidates N] [--json]",
         "  circle-prime big-fuzzy-search MODEL START [--candidate-window N] [--top-k N] [--score-limit N] [--rounds N] [--json]",
+        "  circle-prime big-test-server [--rounds N] [--json]",
+        "  circle-prime big-next-server [--rounds N] [--max-candidates N] [--json]",
+        "  circle-prime big-fuzzy-server MODEL [--candidate-window N] [--top-k N] [--score-limit N] [--rounds N] [--json]",
         "  circle-prime fuzzy-search MODEL START [--mode exact-next|any-prime] [--window N] [--top-k N] [--json]",
         "  circle-prime fuzzy-server MODEL [--mode exact-next|any-prime] [--window N] [--top-k N] [--json]",
         "  circle-prime recommend LOW HIGH [--count] [--json] [--threads N]",
@@ -2027,6 +2261,7 @@ fn usage() -> String {
         "  circle-prime count-server [--segment-size N] [--threads N] [--count-mode MODE] [--warm-prefix-pi-cache] [--json]",
         "",
         "next-server reads START or START COUNT lines from stdin and writes one next prime, none, or JSON object per requested search.",
+        "big-test-server, big-next-server, and big-fuzzy-server read N or N COUNT lines from stdin and keep the arbitrary-precision engine hot between requests.",
         "big-test/big-next use arbitrary-precision BigUint arithmetic. Results above u64 are probable-prime decisions from fixed Miller-Rabin bases, not formal primality certificates.",
         "big-fuzzy-search uses a tiny bit/residue model only to rank arbitrary-precision candidates; every reported candidate still passes the configured BigUint probable-prime verifier.",
         "fuzzy-search/fuzzy-server read a tiny exported model, use it only to rank candidates, and accept reported primes only after deterministic verification. exact-next mode also verifies every earlier candidate in the bounded window.",

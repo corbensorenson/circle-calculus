@@ -1,5 +1,5 @@
 use num_bigint::BigUint;
-use num_traits::{One, ToPrimitive, Zero};
+use num_traits::{One, ToPrimitive};
 
 use crate::scalar::{is_prime_u64, PrimeStatus};
 
@@ -16,6 +16,7 @@ const BIG_SMALL_PRIME_TRIAL_DIVISORS: [u64; 64] = [
     197, 199, 211, 223, 227, 229, 233, 239, 241, 251, 257, 263, 269, 271, 277, 281, 283, 293, 307,
     311,
 ];
+const BIG_SMALL_PRIME_TRIAL_DIVISOR_COUNT: usize = BIG_SMALL_PRIME_TRIAL_DIVISORS.len();
 const BIG_MILLER_RABIN_BASES: [u64; 64] = BIG_SMALL_PRIME_TRIAL_DIVISORS;
 const MAX_BIG_FUZZY_BIT_WIDTH: u32 = 16_384;
 
@@ -238,9 +239,10 @@ impl BigFuzzyPrimeModel {
                 z += self.weights[index as usize];
             }
         }
+        let digits = n.to_u64_digits();
         let residue_offset = self.bit_width as usize;
         for (index, &modulus) in self.residue_moduli.iter().enumerate() {
-            if biguint_mod_u64(n, modulus) != 0 {
+            if biguint_digits_mod_u64(&digits, modulus) != 0 {
                 z += self.weights[residue_offset + index];
             }
         }
@@ -354,22 +356,9 @@ pub fn is_probable_prime_biguint(n: &BigUint, rounds: usize) -> Result<BigPrimeD
         });
     }
 
+    let digits = n.to_u64_digits();
     for &prime in &BIG_SMALL_PRIME_TRIAL_DIVISORS {
-        let prime_big = BigUint::from(prime);
-        if n == &prime_big {
-            return Ok(BigPrimeDecision {
-                n: n.clone(),
-                status: BigPrimeStatus::Prime,
-                method: "small_prime_table",
-                stage: "exact_small_prime",
-                factor: None,
-                witness_base: None,
-                checked_small_prime_limit: prime,
-                miller_rabin_rounds: 0,
-                bit_length: n.bits(),
-            });
-        }
-        if biguint_mod_u64(n, prime) == 0 {
+        if biguint_digits_mod_u64(&digits, prime) == 0 {
             return Ok(BigPrimeDecision {
                 n: n.clone(),
                 status: BigPrimeStatus::Composite,
@@ -453,22 +442,27 @@ pub fn next_probable_prime_biguint(
     let seven = BigUint::from(7u64);
     let search_start = if start < &seven { &seven } else { start };
     let (mut candidate, mut wheel_index) = first_big_wheel30_candidate_at_or_above(search_start);
+    let mut small_prime_residues = small_prime_trial_residues(&candidate);
     let mut candidate_count = 0u64;
     while candidate_count < max_candidates {
         candidate_count += 1;
-        let decision = is_probable_prime_biguint(&candidate, rounds)?;
-        if decision.is_prime_like() {
-            let exact_certified = decision.is_exact_prime();
-            return Ok(BigNextPrimeSearch {
-                start: start.clone(),
-                prime: Some(candidate),
-                candidate_count,
-                max_candidates,
-                exact_certified,
-                decision: Some(decision),
-            });
+        if first_small_factor_from_residues(&small_prime_residues).is_none() {
+            let decision = is_probable_prime_biguint(&candidate, rounds)?;
+            if decision.is_prime_like() {
+                let exact_certified = decision.is_exact_prime();
+                return Ok(BigNextPrimeSearch {
+                    start: start.clone(),
+                    prime: Some(candidate),
+                    candidate_count,
+                    max_candidates,
+                    exact_certified,
+                    decision: Some(decision),
+                });
+            }
         }
-        candidate += BigUint::from(BIG_WHEEL30_GAPS[wheel_index]);
+        let gap = BIG_WHEEL30_GAPS[wheel_index];
+        candidate += BigUint::from(gap);
+        advance_small_prime_trial_residues(&mut small_prime_residues, gap);
         wheel_index = (wheel_index + 1) % BIG_WHEEL30_GAPS.len();
     }
     Ok(BigNextPrimeSearch {
@@ -525,6 +519,32 @@ pub fn big_fuzzy_any_prime_search(
     })
 }
 
+pub fn big_fuzzy_any_prime_value(
+    model: &BigFuzzyPrimeModel,
+    start: &BigUint,
+    candidate_window: usize,
+    top_k: usize,
+    score_limit: usize,
+    rounds: usize,
+) -> Result<Option<BigUint>, String> {
+    validate_big_miller_rabin_rounds(rounds)?;
+    if candidate_window == 0 {
+        return Err("big fuzzy candidate window must be positive".to_string());
+    }
+    if top_k == 0 {
+        return Err("big fuzzy top_k must be positive".to_string());
+    }
+    if score_limit == 0 {
+        return Err("big fuzzy score_limit must be positive".to_string());
+    }
+    let candidates = big_candidate_sequence(start, candidate_window);
+    let effective_score_limit = score_limit.min(candidates.len());
+    Ok(
+        big_fuzzy_any_prime_core(model, &candidates, top_k, effective_score_limit, rounds)?
+            .reported_prime,
+    )
+}
+
 fn validate_big_miller_rabin_rounds(rounds: usize) -> Result<(), String> {
     if rounds == 0 {
         return Err("Miller-Rabin rounds must be positive".to_string());
@@ -546,10 +566,7 @@ fn miller_rabin_round_biguint(
     n_minus_one: &BigUint,
 ) -> bool {
     let one = BigUint::one();
-    let a = BigUint::from(base) % n;
-    if a.is_zero() {
-        return true;
-    }
+    let a = BigUint::from(base);
 
     let mut x = a.modpow(d, n);
     if x == one || x == *n_minus_one {
@@ -678,11 +695,49 @@ fn first_big_wheel30_candidate_at_or_above(start: &BigUint) -> (BigUint, usize) 
     (candidate, index)
 }
 
+fn small_prime_trial_residues(n: &BigUint) -> [u64; BIG_SMALL_PRIME_TRIAL_DIVISOR_COUNT] {
+    let digits = n.to_u64_digits();
+    let mut residues = [0u64; BIG_SMALL_PRIME_TRIAL_DIVISOR_COUNT];
+    for (index, &prime) in BIG_SMALL_PRIME_TRIAL_DIVISORS.iter().enumerate() {
+        residues[index] = biguint_digits_mod_u64(&digits, prime);
+    }
+    residues
+}
+
+fn first_small_factor_from_residues(
+    residues: &[u64; BIG_SMALL_PRIME_TRIAL_DIVISOR_COUNT],
+) -> Option<u64> {
+    BIG_SMALL_PRIME_TRIAL_DIVISORS
+        .iter()
+        .zip(residues.iter())
+        .find_map(|(&prime, &residue)| (residue == 0).then_some(prime))
+}
+
+fn advance_small_prime_trial_residues(
+    residues: &mut [u64; BIG_SMALL_PRIME_TRIAL_DIVISOR_COUNT],
+    gap: u64,
+) {
+    for (residue, &prime) in residues
+        .iter_mut()
+        .zip(BIG_SMALL_PRIME_TRIAL_DIVISORS.iter())
+    {
+        *residue += gap;
+        if *residue >= prime {
+            *residue %= prime;
+        }
+    }
+}
+
 fn biguint_mod_u64(n: &BigUint, modulus: u64) -> u64 {
+    let digits = n.to_u64_digits();
+    biguint_digits_mod_u64(&digits, modulus)
+}
+
+fn biguint_digits_mod_u64(digits: &[u64], modulus: u64) -> u64 {
     debug_assert!(modulus > 0);
     let modulus = u128::from(modulus);
     let mut remainder = 0u128;
-    for limb in n.to_u64_digits().iter().rev() {
+    for limb in digits.iter().rev() {
         remainder = (((remainder << 64) + u128::from(*limb)) % modulus) as u128;
     }
     remainder as u64

@@ -276,6 +276,80 @@ def test_rust_prime_cli_big_fuzzy_search_uses_probable_verifier(
     assert payload["hybrid_proof_contract"]["neural_role"] == "candidate_ordering_only"
 
 
+def test_rust_prime_cli_big_servers_handle_repeated_requests(
+    circle_prime_bin: Path,
+    tmp_path: Path,
+) -> None:
+    mersenne_127 = str((1 << 127) - 1)
+    completed = subprocess.run(
+        [str(circle_prime_bin), "big-test-server", "--rounds", "16"],
+        cwd=ROOT,
+        input=f"{mersenne_127} 2\nquit\n",
+        check=True,
+        text=True,
+        capture_output=True,
+    )
+    assert completed.stdout.splitlines() == ["probable_prime", "probable_prime"]
+
+    completed = subprocess.run(
+        [
+            str(circle_prime_bin),
+            "big-next-server",
+            "--rounds",
+            "16",
+            "--max-candidates",
+            "1024",
+        ],
+        cwd=ROOT,
+        input=f"{1 << 128} 2\nquit\n",
+        check=True,
+        text=True,
+        capture_output=True,
+    )
+    next_lines = completed.stdout.splitlines()
+    assert len(next_lines) == 2
+    assert next_lines[0] == next_lines[1]
+    assert int(next_lines[0]) >= 1 << 128
+
+    model = tmp_path / "big-model.txt"
+    model.write_text(
+        "\n".join(
+            [
+                "circle_fuzzy_model_v0",
+                "bit_width 128",
+                "residue_moduli 3,5,7",
+                "weights " + ",".join(["0"] * 131),
+                "bias 0",
+                "",
+            ]
+        )
+    )
+    completed = subprocess.run(
+        [
+            str(circle_prime_bin),
+            "big-fuzzy-server",
+            str(model),
+            "--candidate-window",
+            "128",
+            "--top-k",
+            "8",
+            "--score-limit",
+            "32",
+            "--rounds",
+            "16",
+        ],
+        cwd=ROOT,
+        input=f"{1 << 127} 2\nquit\n",
+        check=True,
+        text=True,
+        capture_output=True,
+    )
+    fuzzy_lines = completed.stdout.splitlines()
+    assert len(fuzzy_lines) == 2
+    assert fuzzy_lines[0] == fuzzy_lines[1]
+    assert int(fuzzy_lines[0]) >= 1 << 127
+
+
 def test_rust_prime_cli_fuzzy_search_certifies_exact_next(
     circle_prime_bin: Path,
     tmp_path: Path,

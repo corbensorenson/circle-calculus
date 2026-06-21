@@ -220,6 +220,7 @@ CIRCLE_PRIME_BIGINT_MAX_CANDIDATES ?= 4096
 CIRCLE_PRIME_BIGINT_CANDIDATE_WINDOW ?= 512
 CIRCLE_PRIME_BIGINT_TOP_K ?= 16
 CIRCLE_PRIME_BIGINT_SCORE_LIMIT ?= 128
+CIRCLE_PRIME_BIGINT_SERVER_BATCH_SIZE ?= 16
 CIRCLE_PRIME_BIGINT_OUTPUT ?= sidecars/PRIME_ENGINE/results/prime_bigint_controls_latest.csv
 CIRCLE_PRIME_BIGINT_METADATA ?= sidecars/PRIME_ENGINE/results/prime_bigint_controls_latest.json
 CIRCLE_PRIME_HIGH_OFFSET_HOT_COLD_ROUNDS ?= 7
@@ -566,7 +567,7 @@ prime-engine-fuzzy-hybrid-next-smoke:
 
 prime-engine-bigint-smoke:
 	cargo build --release -p circle-prime --bin circle-prime
-	python scripts/benchmark_prime_bigint_controls.py --summary --circle-prime-bin target/release/circle-prime --bench-rounds $(CIRCLE_PRIME_BIGINT_BENCH_ROUNDS) --warmup-rounds $(CIRCLE_PRIME_BIGINT_WARMUP_ROUNDS) --mr-rounds $(CIRCLE_PRIME_BIGINT_MR_ROUNDS) --max-candidates $(CIRCLE_PRIME_BIGINT_MAX_CANDIDATES) --candidate-window $(CIRCLE_PRIME_BIGINT_CANDIDATE_WINDOW) --top-k $(CIRCLE_PRIME_BIGINT_TOP_K) --score-limit $(CIRCLE_PRIME_BIGINT_SCORE_LIMIT) --output $(CIRCLE_PRIME_BIGINT_OUTPUT) --metadata-output $(CIRCLE_PRIME_BIGINT_METADATA)
+	python scripts/benchmark_prime_bigint_controls.py --summary --circle-prime-bin target/release/circle-prime --bench-rounds $(CIRCLE_PRIME_BIGINT_BENCH_ROUNDS) --warmup-rounds $(CIRCLE_PRIME_BIGINT_WARMUP_ROUNDS) --mr-rounds $(CIRCLE_PRIME_BIGINT_MR_ROUNDS) --max-candidates $(CIRCLE_PRIME_BIGINT_MAX_CANDIDATES) --candidate-window $(CIRCLE_PRIME_BIGINT_CANDIDATE_WINDOW) --top-k $(CIRCLE_PRIME_BIGINT_TOP_K) --score-limit $(CIRCLE_PRIME_BIGINT_SCORE_LIMIT) --server-batch-size $(CIRCLE_PRIME_BIGINT_SERVER_BATCH_SIZE) --output $(CIRCLE_PRIME_BIGINT_OUTPUT) --metadata-output $(CIRCLE_PRIME_BIGINT_METADATA)
 
 prime-engine-competitive-short:
 	$(MAKE) prime-engine-external-correctness

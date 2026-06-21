@@ -159,6 +159,13 @@ circle-prime big-fuzzy-search MODEL START \
   --score-limit 128 \
   --rounds 64 \
   --json
+circle-prime big-test-server --rounds 64
+circle-prime big-next-server --rounds 64 --max-candidates 1000000
+circle-prime big-fuzzy-server MODEL \
+  --candidate-window 512 \
+  --top-k 16 \
+  --score-limit 128 \
+  --rounds 64
 ```
 
 This path is deliberately not merged into the u64 proof contract. For inputs
@@ -183,23 +190,35 @@ make prime-engine-bigint-smoke
 That target compares Circle `big-test` against OpenSSL `prime -checks N` and
 SymPy `isprime` on known 127/255/256/521-bit prime/composite cases, then
 compares `big-next` against SymPy `nextprime`. It also runs a fuzzy any-prime
-search smoke and verifies the reported candidate with SymPy. The output lives
-at `sidecars/PRIME_ENGINE/results/prime_bigint_controls_latest.csv` with
-metadata in `prime_bigint_controls_latest.json`.
+search smoke and verifies the reported candidate with SymPy. The benchmark
+records both cold one-shot CLI rows and hot `big-*-server` rows; use the hot
+server rows for engine tuning because they remove process startup from the
+measurement. The output lives at
+`sidecars/PRIME_ENGINE/results/prime_bigint_controls_latest.csv` with metadata
+in `prime_bigint_controls_latest.json`.
 
 Current local smoke status from 2026-06-21:
 
 - 16-round `prime-engine-bigint-smoke` agrees with OpenSSL and SymPy on every
   selected large-prime case.
-- In the subprocess benchmark, Circle `big-test` is faster than OpenSSL
-  `prime -checks 16` on the selected 127/255/256/521-bit cases, but SymPy
-  `isprime` is faster on all of them.
-- A single-sample 64-check probe still agrees on every case; Circle is competitive
-  with OpenSSL through the 255/256-bit cases, loses to OpenSSL on the 521-bit
-  Mersenne prime, and remains slower than SymPy for these cases.
-- Circle `big-next` and BigUint fuzzy any-prime search agree with SymPy on the
-  selected 127-bit and near-255-bit starts, but SymPy `nextprime` is faster in
-  the current local subprocess benchmark.
+- Hot Circle `big-test-server` is faster than OpenSSL `prime -checks 16` on
+  every selected 127/255/256/521-bit primality case. Latest medians include
+  `0.595 ms` for the Curve25519 prime, `0.657 ms` for the secp256k1 field
+  prime, and `2.465 ms` for the 521-bit Mersenne prime. SymPy `isprime`
+  remains faster on most raw primality checks, though Circle is now close on
+  the Curve25519 case in this local smoke.
+- Hot Circle `big-next-server` agrees with SymPy on the selected 127-bit and
+  near-255-bit starts. It is still slower than SymPy on the 127-bit start
+  (`0.237 ms` versus `0.175 ms`), but is faster than SymPy on the near-255-bit
+  start (`0.991 ms` versus `1.715 ms`) in the latest 16-round smoke.
+- A single-sample 64-check probe still agrees on every case. Hot Circle
+  `big-test-server` beats OpenSSL on every selected primality check at that
+  setting, including the 521-bit Mersenne prime, but remains slower than SymPy.
+- BigUint fuzzy any-prime search is correct in the smoke and its value-only
+  server path now skips diagnostic baseline scans. It beats SymPy on the
+  near-255-bit any-prime case (`1.104 ms` versus SymPy next-prime at
+  `1.715 ms`), but remains slower than deterministic `big-next-server`; it is
+  not promoted as a deterministic-speed win yet.
 
 Near-term promotion requirements:
 
