@@ -549,6 +549,32 @@ def _receipt_gate_failures(receipt: dict[str, Any], args: argparse.Namespace) ->
     return failures
 
 
+def _artifact_summary_line(args: argparse.Namespace) -> str | None:
+    artifacts = [
+        ("request_json", args.request_out),
+        ("request_validation_report", args.request_validation_report_out),
+        ("receipt_json", args.json_out),
+        ("receipt_check", args.receipt_check_out),
+        ("gate_report", args.gate_report_out),
+        ("certification_bundle", args.certification_bundle_out),
+        ("certification_bundle_check", args.certification_bundle_check_out),
+    ]
+    model_config_import_report_out = getattr(
+        args,
+        "model_config_import_report_out",
+        None,
+    )
+    artifacts.insert(2, ("model_config_import_report", model_config_import_report_out))
+    written = [
+        f"{label}={_display_path(path)}"
+        for label, path in artifacts
+        if path is not None
+    ]
+    if not written:
+        return None
+    return "artifacts=" + " ".join(written)
+
+
 def main() -> int:
     args = parse_args()
     if (
@@ -740,6 +766,9 @@ def main() -> int:
     else:
         for line in receipt_summary_lines(receipt):
             print(line)
+        artifact_line = _artifact_summary_line(args)
+        if artifact_line is not None:
+            print(artifact_line)
     for failure in gate_failures:
         print(f"receipt_gate_failure={failure}", file=sys.stderr)
     return 0 if not gate_failures else 1

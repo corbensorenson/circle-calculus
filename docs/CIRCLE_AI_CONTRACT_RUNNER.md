@@ -190,6 +190,8 @@ python scripts/circle_ai_certify.py rope \
 
 The bundle-check report is validated against
 `site/data/generated/circle_ai_contract_certification_bundle_file_check.schema.json`.
+In text mode, the certifier prints an `artifacts=` line listing every request,
+receipt, gate, bundle, or check file written by that invocation.
 
 Copyable starting points live under:
 

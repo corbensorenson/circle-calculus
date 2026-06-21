@@ -2114,6 +2114,77 @@ def test_circle_ai_certify_cli_writes_certification_bundle_check_report(
     )
 
 
+def test_circle_ai_certify_cli_text_output_lists_written_artifacts(
+    tmp_path: Path,
+) -> None:
+    request_path = tmp_path / "request.json"
+    request_validation_path = tmp_path / "request_validation.json"
+    receipt_path = tmp_path / "receipt.json"
+    receipt_check_path = tmp_path / "receipt_check.json"
+    gate_report_path = tmp_path / "gate_report.json"
+    bundle_path = tmp_path / "certification_bundle.json"
+    bundle_check_path = tmp_path / "certification_bundle_check.json"
+
+    result = subprocess.run(
+        [
+            sys.executable,
+            str(SCRIPT),
+            "rope",
+            "--context",
+            "131072",
+            "--requested-margin",
+            "1/328459",
+            "--request-out",
+            str(request_path),
+            "--request-validation-report-out",
+            str(request_validation_path),
+            "--json-out",
+            str(receipt_path),
+            "--receipt-check-out",
+            str(receipt_check_path),
+            "--gate-report-out",
+            str(gate_report_path),
+            "--certification-bundle-out",
+            str(bundle_path),
+            "--certification-bundle-check-out",
+            str(bundle_check_path),
+            "--require-status",
+            "proved",
+            "--require-decision",
+            "passed",
+            "--require-assurance",
+            "mixed_theorem_and_computation",
+            "--require-passed",
+        ],
+        cwd=ROOT,
+        check=True,
+        text=True,
+        capture_output=True,
+    )
+
+    assert "circle_ai_contract_receipt=proved" in result.stdout
+    artifact_line = next(
+        line for line in result.stdout.splitlines() if line.startswith("artifacts=")
+    )
+    assert f"request_json={request_path}" in artifact_line
+    assert f"request_validation_report={request_validation_path}" in artifact_line
+    assert f"receipt_json={receipt_path}" in artifact_line
+    assert f"receipt_check={receipt_check_path}" in artifact_line
+    assert f"gate_report={gate_report_path}" in artifact_line
+    assert f"certification_bundle={bundle_path}" in artifact_line
+    assert f"certification_bundle_check={bundle_check_path}" in artifact_line
+    for path in (
+        request_path,
+        request_validation_path,
+        receipt_path,
+        receipt_check_path,
+        gate_report_path,
+        bundle_path,
+        bundle_check_path,
+    ):
+        assert path.exists()
+
+
 def test_circle_ai_certify_cli_writes_model_config_certification_bundle(
     tmp_path: Path,
 ) -> None:

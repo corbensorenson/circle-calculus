@@ -263,6 +263,9 @@ python scripts/circle_ai_certify.py rope \
   --require-passed
 ```
 
+In text mode, the certifier prints an `artifacts=` line listing every request,
+receipt, gate, bundle, or check file written by that invocation.
+
 Checked-in examples are available for all four runner surfaces:
 
 ```text
