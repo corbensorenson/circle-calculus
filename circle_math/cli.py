@@ -19,6 +19,7 @@ from .ai_contracts import (
     build_contract_pack,
     build_rope_model_config_import_report,
     build_validated_contract_receipt,
+    build_validated_contract_receipt_from_request,
     build_validated_rope_receipt_from_model_config,
     canonical_contract_kind,
     receipt_summary_lines,
@@ -195,7 +196,6 @@ def contract_receipt_main() -> int:
     )
     parser.add_argument(
         "--kind",
-        required=True,
         help=(
             "Contract kind or alias. Public kinds: "
             + ", ".join(SUPPORTED_CONTRACT_KINDS)
@@ -209,6 +209,14 @@ def contract_receipt_main() -> int:
         "--parameters-file",
         type=Path,
         help="Path to a JSON object containing contract parameters.",
+    )
+    parser.add_argument(
+        "--request-file",
+        type=Path,
+        help=(
+            "Path to a versioned circle_calculus.ai_contract_request.v0 JSON "
+            "object. When present, kind and parameters are read from the file."
+        ),
     )
     parser.add_argument(
         "--model-config-file",
@@ -275,7 +283,37 @@ def contract_receipt_main() -> int:
     args = parser.parse_args()
 
     pack = build_contract_pack() if args.pack is None else load_contract_pack(args.pack)
-    if args.model_config_file is not None:
+    if args.request_file is not None:
+        if args.parameters is not None or args.parameters_file is not None:
+            parser.error("use either --request-file or parameter JSON, not both")
+        if args.model_config_file is not None:
+            parser.error("use either --request-file or --model-config-file, not both")
+        if args.model_config_import_report_out is not None:
+            parser.error("--model-config-import-report-out requires --model-config-file")
+        request = _load_json_object_from_args(
+            parser,
+            inline_json=None,
+            json_file=args.request_file,
+            label="request",
+        )
+        if args.kind is not None:
+            try:
+                requested_kind = canonical_contract_kind(str(request.get("kind", "")))
+                cli_kind = canonical_contract_kind(args.kind)
+            except ValueError as exc:
+                parser.error(str(exc))
+            if requested_kind != cli_kind:
+                parser.error(
+                    f"--kind {args.kind!r} does not match request kind "
+                    f"{request.get('kind')!r}"
+                )
+        try:
+            receipt = build_validated_contract_receipt_from_request(request, pack=pack)
+        except ValueError as exc:
+            parser.error(str(exc))
+    elif args.model_config_file is not None:
+        if args.kind is None:
+            parser.error("--kind is required unless --request-file is used")
         if args.parameters is not None or args.parameters_file is not None:
             parser.error(
                 "use either --model-config-file or parameter JSON, not both"
@@ -315,6 +353,8 @@ def contract_receipt_main() -> int:
         except ValueError as exc:
             parser.error(str(exc))
     else:
+        if args.kind is None:
+            parser.error("--kind is required unless --request-file is used")
         if args.model_config_import_report_out is not None:
             parser.error("--model-config-import-report-out requires --model-config-file")
         parameters = _load_json_object_from_args(

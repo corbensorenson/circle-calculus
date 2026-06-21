@@ -3,15 +3,20 @@ from __future__ import annotations
 import json
 import subprocess
 import sys
+from pathlib import Path
 
 from circle_math.core import finite_orbit, finite_period, is_full_coil
 from circle_math.ai_contracts import (
     CONTRACT_PACK_SCHEMA_ID,
     build_contract_pack,
     build_rope_request_parameters_from_model_config,
+    build_validated_contract_receipt_from_request,
     build_validated_rope_receipt_from_model_config,
 )
 from circle_math.contracts import contract_kinds, readiness_summary
+
+
+ROOT = Path(__file__).resolve().parents[1]
 
 
 def test_stable_core_api_examples() -> None:
@@ -50,6 +55,18 @@ def test_stable_rope_model_config_api_builds_receipt() -> None:
     assert receipt["request"]["parameters"]["context"] == 4096
     assert receipt["normalized_request"]["head_dim"] == 128
     assert receipt["normalized_request"]["context_length"] == 4096
+    assert receipt["proof_status"]["all_theorem_ids_proved"] is True
+
+
+def test_stable_request_api_builds_kv_cache_receipt() -> None:
+    request = json.loads(
+        (ROOT / "examples" / "circle_ai_requests" / "kv_cache_request.json").read_text()
+    )
+
+    receipt = build_validated_contract_receipt_from_request(request)
+    assert receipt["kind"] == "kv_cache_ring_buffer"
+    assert receipt["request"]["parameters"]["cache_size"] == 16
+    assert receipt["request"]["parameters"]["request_id"] == "example_read_request"
     assert receipt["proof_status"]["all_theorem_ids_proved"] is True
 
 
@@ -120,6 +137,40 @@ def test_package_cli_contract_receipt_json() -> None:
     assert receipt["kind"] == "sparse_attention_coverage"
     assert receipt["status"] == "proved"
     assert receipt["request_passed"] is True
+    assert receipt["proof_status"]["all_theorem_ids_proved"] is True
+
+
+def test_package_cli_contract_receipt_from_request_file(tmp_path) -> None:
+    request_out = tmp_path / "request.json"
+    request_file = ROOT / "examples" / "circle_ai_requests" / "kv_cache_request.json"
+
+    result = subprocess.run(
+        [
+            sys.executable,
+            "-c",
+            (
+                "import sys; "
+                "from circle_math.cli import contract_receipt_main; "
+                "sys.exit(contract_receipt_main())"
+            ),
+            "--request-file",
+            str(request_file),
+            "--request-out",
+            str(request_out),
+            "--format",
+            "json",
+        ],
+        text=True,
+        capture_output=True,
+        check=True,
+    )
+    receipt = json.loads(result.stdout)
+    request = json.loads(request_file.read_text())
+    saved_request = json.loads(request_out.read_text())
+    assert receipt["kind"] == "kv_cache_ring_buffer"
+    assert receipt["request"] == saved_request
+    assert saved_request["kind"] == "kv_cache_ring_buffer"
+    assert saved_request["parameters"] == request["parameters"]
     assert receipt["proof_status"]["all_theorem_ids_proved"] is True
 
 

@@ -82,6 +82,11 @@ circle-ai-contract-receipt \
   --format json
 
 circle-ai-contract-receipt \
+  --request-file examples/circle_ai_requests/kv_cache_request.json \
+  --request-out /tmp/circle_kv_request.json \
+  --format json
+
+circle-ai-contract-receipt \
   --kind sparse-attention \
   --parameters '{"context": 9, "strides": [3, 4, 7], "path_length": 2, "local_window": 2}' \
   --format json
