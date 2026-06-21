@@ -938,7 +938,23 @@ def test_receipt_schema_exposes_runner_metadata() -> None:
     assert "normalized_request_fingerprint" in schema["required"]
     assert schema["properties"]["proof_layers"]["required"] == list(PROOF_LAYER_BUCKETS)
     assert schema["properties"]["recommendations"]["minItems"] == 1
+    assert schema["properties"]["recommendations"]["uniqueItems"] is True
     assert schema["properties"]["validation_commands"]["minItems"] == 1
+    assert schema["properties"]["validation_commands"]["uniqueItems"] is True
+    assert schema["properties"]["not_claimed"]["minItems"] == 1
+    assert schema["properties"]["not_claimed"]["uniqueItems"] is True
+    assert (
+        schema["properties"]["proof_status"]["properties"]["theorem_ids"][
+            "uniqueItems"
+        ]
+        is True
+    )
+    assert (
+        schema["properties"]["proof_layers"]["properties"]["proved_fields"][
+            "uniqueItems"
+        ]
+        is True
+    )
 
 
 def test_receipt_schema_rejects_missing_proof_layer_bucket(
@@ -952,6 +968,36 @@ def test_receipt_schema_rejects_missing_proof_layer_bucket(
     jsonschema.Draft202012Validator.check_schema(schema)
     with pytest.raises(jsonschema.ValidationError):
         jsonschema.validate(receipt, schema)
+
+
+def test_receipt_schema_rejects_duplicate_theorem_and_layer_fields(
+    contract_pack: dict,
+) -> None:
+    schema = build_contract_receipt_json_schema()
+    receipt = build_rope_receipt(pack=contract_pack)
+
+    duplicate_theorem = json.loads(json.dumps(receipt))
+    duplicate_theorem["proof_status"]["theorem_ids"].append(
+        duplicate_theorem["proof_status"]["theorem_ids"][0]
+    )
+    duplicate_theorem["proof_status"]["theorem_count"] += 1
+    duplicate_theorem["receipt_content_fingerprint"] = _receipt_fingerprint(
+        duplicate_theorem
+    )
+
+    duplicate_layer = json.loads(json.dumps(receipt))
+    duplicate_layer["proof_layers"]["proved_fields"].append(
+        duplicate_layer["proof_layers"]["proved_fields"][0]
+    )
+    duplicate_layer["receipt_content_fingerprint"] = _receipt_fingerprint(
+        duplicate_layer
+    )
+
+    jsonschema.Draft202012Validator.check_schema(schema)
+    with pytest.raises(jsonschema.ValidationError):
+        jsonschema.validate(duplicate_theorem, schema)
+    with pytest.raises(jsonschema.ValidationError):
+        jsonschema.validate(duplicate_layer, schema)
 
     receipt_with_extra_key = build_rope_receipt(pack=contract_pack)
     receipt_with_extra_key["proof_statuz"] = {}

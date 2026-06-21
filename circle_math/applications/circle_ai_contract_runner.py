@@ -2142,10 +2142,21 @@ def build_contract_receipt_file_check_json_schema() -> dict[str, Any]:
 
 
 def build_contract_receipt_json_schema() -> dict[str, Any]:
-    string_list = {"type": "array", "items": {"type": "string"}}
+    unique_string_list = {
+        "type": "array",
+        "items": {"type": "string"},
+        "uniqueItems": True,
+    }
+    nonempty_unique_string_list = {
+        "type": "array",
+        "items": {"type": "string"},
+        "minItems": 1,
+        "uniqueItems": True,
+    }
     proof_layer_bucket = {
         "type": "array",
         "items": {"type": "string", "minLength": 1},
+        "uniqueItems": True,
     }
     request_schema = {
         key: value
@@ -2209,12 +2220,12 @@ def build_contract_receipt_json_schema() -> dict[str, Any]:
                     "unproved_theorem_ids",
                 ],
                 "properties": {
-                    "theorem_ids": string_list,
+                    "theorem_ids": nonempty_unique_string_list,
                     "theorem_count": {"type": "integer", "minimum": 0},
                     "all_theorem_ids_resolved": {"type": "boolean"},
                     "all_theorem_ids_proved": {"type": "boolean"},
-                    "unresolved_theorem_ids": string_list,
-                    "unproved_theorem_ids": string_list,
+                    "unresolved_theorem_ids": unique_string_list,
+                    "unproved_theorem_ids": unique_string_list,
                 },
                 "additionalProperties": True,
             },
@@ -2230,14 +2241,16 @@ def build_contract_receipt_json_schema() -> dict[str, Any]:
                 "type": "array",
                 "items": {"type": "object"},
                 "minItems": 1,
+                "uniqueItems": True,
             },
             "validation_commands": {
                 "type": "array",
                 "items": {"type": "string", "minLength": 1},
                 "minItems": 1,
+                "uniqueItems": True,
             },
             "support": {"type": "object"},
-            "not_claimed": string_list,
+            "not_claimed": nonempty_unique_string_list,
             "content_fingerprint_algorithm": {"const": FINGERPRINT_ALGORITHM},
             "receipt_content_fingerprint": {
                 "type": "string",

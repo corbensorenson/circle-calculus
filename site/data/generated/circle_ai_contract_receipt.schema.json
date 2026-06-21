@@ -35,7 +35,9 @@
       "items": {
         "type": "string"
       },
-      "type": "array"
+      "minItems": 1,
+      "type": "array",
+      "uniqueItems": true
     },
     "proof_layers": {
       "additionalProperties": true,
@@ -45,28 +47,32 @@
             "minLength": 1,
             "type": "string"
           },
-          "type": "array"
+          "type": "array",
+          "uniqueItems": true
         },
         "numerical_only_fields": {
           "items": {
             "minLength": 1,
             "type": "string"
           },
-          "type": "array"
+          "type": "array",
+          "uniqueItems": true
         },
         "proved_fields": {
           "items": {
             "minLength": 1,
             "type": "string"
           },
-          "type": "array"
+          "type": "array",
+          "uniqueItems": true
         },
         "unsupported_fields": {
           "items": {
             "minLength": 1,
             "type": "string"
           },
-          "type": "array"
+          "type": "array",
+          "uniqueItems": true
         }
       },
       "required": [
@@ -94,19 +100,23 @@
           "items": {
             "type": "string"
           },
-          "type": "array"
+          "minItems": 1,
+          "type": "array",
+          "uniqueItems": true
         },
         "unproved_theorem_ids": {
           "items": {
             "type": "string"
           },
-          "type": "array"
+          "type": "array",
+          "uniqueItems": true
         },
         "unresolved_theorem_ids": {
           "items": {
             "type": "string"
           },
-          "type": "array"
+          "type": "array",
+          "uniqueItems": true
         }
       },
       "required": [
@@ -128,7 +138,8 @@
         "type": "object"
       },
       "minItems": 1,
-      "type": "array"
+      "type": "array",
+      "uniqueItems": true
     },
     "request": {
       "additionalProperties": false,
@@ -384,7 +395,8 @@
         "type": "string"
       },
       "minItems": 1,
-      "type": "array"
+      "type": "array",
+      "uniqueItems": true
     }
   },
   "required": [
