@@ -14,6 +14,8 @@ from fractions import Fraction
 from pathlib import Path
 from typing import Any, Iterable, Mapping, Sequence
 
+import jsonschema
+
 from .circle_ai import (
     certify_kv_cache_adapter_request_trace,
     certify_kv_cache_batch,
@@ -3397,6 +3399,264 @@ def build_contract_certification_bundle_file_check_json_schema() -> dict[str, An
         },
         "additionalProperties": False,
     }
+
+
+def _append_certification_bundle_consistency_failures(
+    *,
+    bundle: Mapping[str, Any],
+    path_failures: list[str],
+) -> None:
+    if bundle.get("failure_count") != len(bundle.get("failures", [])):
+        path_failures.append("bundle failure_count does not match failures length")
+    if bundle.get("ok") is not True:
+        details = "; ".join(str(failure) for failure in bundle.get("failures", ()))
+        path_failures.append(
+            "bundle ok was not true" + (f": {details}" if details else "")
+        )
+
+    request_validation = bundle.get("request_validation_report")
+    if isinstance(request_validation, Mapping):
+        jsonschema.validate(
+            request_validation,
+            build_contract_request_validation_json_schema(),
+        )
+        if request_validation.get("request_content_fingerprint") != bundle.get(
+            "request_content_fingerprint"
+        ):
+            path_failures.append(
+                "request validation fingerprint does not match bundle request"
+            )
+        if request_validation.get("ok") is not True:
+            path_failures.append("request validation report ok was not true")
+
+    receipt = bundle.get("receipt")
+    if isinstance(receipt, Mapping):
+        if receipt.get("normalized_request_fingerprint") != bundle.get(
+            "normalized_request_fingerprint"
+        ):
+            path_failures.append(
+                "receipt normalized_request_fingerprint does not match bundle"
+            )
+        if receipt.get("receipt_content_fingerprint") != bundle.get(
+            "receipt_content_fingerprint"
+        ):
+            path_failures.append("receipt_content_fingerprint does not match bundle")
+    else:
+        path_failures.append("bundle receipt was null")
+
+    gate_report = bundle.get("gate_report")
+    if isinstance(gate_report, Mapping):
+        jsonschema.validate(
+            gate_report,
+            build_contract_receipt_file_check_json_schema(),
+        )
+        if gate_report.get("gate_policy") != bundle.get("gate_policy"):
+            path_failures.append("embedded gate_report policy does not match bundle")
+        if gate_report.get("failure_count") != len(gate_report.get("failures", [])):
+            path_failures.append(
+                "embedded gate_report failure_count does not match failures length"
+            )
+        if gate_report.get("ok") != (gate_report.get("failure_count") == 0):
+            path_failures.append("embedded gate_report ok disagrees with failure_count")
+        summaries = gate_report.get("summaries")
+        if isinstance(receipt, Mapping) and isinstance(summaries, list):
+            if len(summaries) != 1:
+                path_failures.append("embedded gate_report must have one summary")
+            elif summaries[0].get("receipt_content_fingerprint") != receipt.get(
+                "receipt_content_fingerprint"
+            ):
+                path_failures.append(
+                    "embedded gate_report receipt fingerprint does not match receipt"
+                )
+    else:
+        path_failures.append("bundle gate_report was null")
+
+    policy = bundle.get("gate_policy")
+    decision = receipt.get("decision") if isinstance(receipt, Mapping) else None
+    if isinstance(policy, Mapping) and isinstance(receipt, Mapping):
+        allowed_statuses = tuple(policy.get("allowed_statuses", ()))
+        if allowed_statuses and receipt.get("status") not in allowed_statuses:
+            path_failures.append(
+                "embedded gate policy status check failed: "
+                f"{receipt.get('status')!r} not in {list(allowed_statuses)!r}"
+            )
+        allowed_verdicts = tuple(policy.get("allowed_decision_verdicts", ()))
+        decision_verdict = (
+            decision.get("verdict") if isinstance(decision, Mapping) else None
+        )
+        if allowed_verdicts and decision_verdict not in allowed_verdicts:
+            path_failures.append(
+                "embedded gate policy decision check failed: "
+                f"{decision_verdict!r} not in {list(allowed_verdicts)!r}"
+            )
+        allowed_assurances = tuple(policy.get("allowed_assurance_levels", ()))
+        decision_assurance = (
+            decision.get("assurance") if isinstance(decision, Mapping) else None
+        )
+        if allowed_assurances and decision_assurance not in allowed_assurances:
+            path_failures.append(
+                "embedded gate policy assurance check failed: "
+                f"{decision_assurance!r} not in {list(allowed_assurances)!r}"
+            )
+        if (
+            policy.get("require_passed") is True
+            and receipt.get("request_passed") is not True
+        ):
+            path_failures.append(
+                "embedded gate policy pass check failed: request_passed was not true"
+            )
+
+    import_report = bundle.get("model_config_import_report")
+    if import_report is None:
+        return
+    if isinstance(import_report, Mapping):
+        jsonschema.validate(import_report, build_rope_model_config_import_json_schema())
+        if import_report.get("request_content_fingerprint") != bundle.get(
+            "request_content_fingerprint"
+        ):
+            path_failures.append(
+                "model config import request fingerprint does not match bundle"
+            )
+        if isinstance(receipt, Mapping) and import_report.get("request") != receipt.get(
+            "request"
+        ):
+            path_failures.append("model config import request does not match receipt")
+        if import_report.get("ok") is not True:
+            path_failures.append("model config import report ok was not true")
+    else:
+        path_failures.append("model_config_import_report was not an object or null")
+
+
+def build_contract_certification_bundle_file_check_report(
+    bundle: Mapping[str, Any],
+    pack: Mapping[str, Any],
+    *,
+    bundle_path: str,
+    required_statuses: Sequence[str] = (),
+    required_decision_verdicts: Sequence[str] = (),
+    required_assurance_levels: Sequence[str] = (),
+    require_passed: bool = False,
+) -> dict[str, Any]:
+    """Build a saved-certification-bundle validation report.
+
+    This is the public API equivalent of
+    ``scripts/check_circle_ai_certification_bundle.py`` for callers that
+    already have a bundle object in memory.
+    """
+
+    if not isinstance(bundle_path, str) or not bundle_path:
+        raise ValueError("bundle_path must be a non-empty string")
+    _validate_receipt_gate_policy(
+        required_statuses=required_statuses,
+        required_decision_verdicts=required_decision_verdicts,
+        required_assurance_levels=required_assurance_levels,
+    )
+
+    summaries: list[dict[str, Any]] = []
+    path_failures: list[str] = []
+    try:
+        jsonschema.validate(bundle, build_contract_certification_bundle_json_schema())
+        receipt = bundle.get("receipt")
+        if isinstance(receipt, Mapping):
+            receipt_report = build_contract_receipt_file_check_report(
+                receipt,
+                pack,
+                receipt_path=f"{bundle_path}::receipt",
+                required_statuses=required_statuses,
+                required_decision_verdicts=required_decision_verdicts,
+                required_assurance_levels=required_assurance_levels,
+                require_passed=require_passed,
+            )
+            path_failures.extend(receipt_report["failures"])
+        else:
+            receipt_report = {"summaries": [], "failures": []}
+        _append_certification_bundle_consistency_failures(
+            bundle=bundle,
+            path_failures=path_failures,
+        )
+        if receipt_report["summaries"]:
+            receipt_summary = dict(receipt_report["summaries"][0])
+            import_report = bundle.get("model_config_import_report")
+            has_import_report = isinstance(import_report, Mapping)
+            summaries.append(
+                {
+                    "path": bundle_path,
+                    "bundle_ok": bool(bundle.get("ok")),
+                    "bundle_failure_count": int(bundle.get("failure_count", 0)),
+                    "request_validation_ok": bool(
+                        bundle["request_validation_report"].get("ok")
+                    ),
+                    "gate_report_ok": (
+                        bundle["gate_report"].get("ok")
+                        if isinstance(bundle.get("gate_report"), Mapping)
+                        else None
+                    ),
+                    "has_model_config_import_report": has_import_report,
+                    "model_config_fingerprint": (
+                        import_report.get("model_config_fingerprint")
+                        if has_import_report
+                        else None
+                    ),
+                    "model_config_request_content_fingerprint": (
+                        import_report.get("request_content_fingerprint")
+                        if has_import_report
+                        else None
+                    ),
+                    "kind": receipt_summary["kind"],
+                    "contract_id": receipt_summary["contract_id"],
+                    "content_fingerprint_algorithm": receipt_summary[
+                        "content_fingerprint_algorithm"
+                    ],
+                    "contract_pack_fingerprint": receipt_summary[
+                        "contract_pack_fingerprint"
+                    ],
+                    "contract_content_fingerprint": receipt_summary[
+                        "contract_content_fingerprint"
+                    ],
+                    "status": receipt_summary["status"],
+                    "request_passed": receipt_summary["request_passed"],
+                    "decision_verdict": receipt_summary["decision_verdict"],
+                    "decision_assurance": receipt_summary["decision_assurance"],
+                    "theorem_count": receipt_summary["theorem_count"],
+                    "normalized_request": receipt_summary["normalized_request"],
+                    "bundle_request_content_fingerprint": bundle[
+                        "request_content_fingerprint"
+                    ],
+                    "receipt_request_content_fingerprint": receipt_summary[
+                        "request_content_fingerprint"
+                    ],
+                    "normalized_request_fingerprint": receipt_summary[
+                        "normalized_request_fingerprint"
+                    ],
+                    "receipt_content_fingerprint": receipt_summary[
+                        "receipt_content_fingerprint"
+                    ],
+                    "failure_count": len(path_failures),
+                }
+            )
+    except (ValueError, jsonschema.ValidationError, jsonschema.SchemaError) as exc:
+        path_failures.append(str(exc))
+
+    failures = [f"{bundle_path}: {failure}" for failure in path_failures]
+    report = {
+        "schema_id": CERTIFICATION_BUNDLE_FILE_CHECK_SCHEMA_ID,
+        "ok": not failures,
+        "bundle_count": 1,
+        "failure_count": len(failures),
+        "failures": failures,
+        "gate_policy": _receipt_gate_policy(
+            required_statuses=required_statuses,
+            required_decision_verdicts=required_decision_verdicts,
+            required_assurance_levels=required_assurance_levels,
+            require_passed=require_passed,
+        ),
+        "summaries": summaries,
+    }
+    jsonschema.validate(
+        report,
+        build_contract_certification_bundle_file_check_json_schema(),
+    )
+    return report
 
 
 def build_contract_receipt_json_schema() -> dict[str, Any]:

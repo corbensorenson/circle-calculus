@@ -9,6 +9,7 @@ import jsonschema
 
 from circle_math.applications import (
     build_contract_certification_bundle,
+    build_contract_certification_bundle_file_check_report,
     build_contract_certification_bundle_file_check_json_schema,
     build_contract_request,
     build_rope_model_config_import_report,
@@ -26,6 +27,87 @@ STANDARD_ROPE_MODEL_CONFIG = (
 
 def _write_bundle(path: Path, bundle: dict) -> None:
     path.write_text(json.dumps(bundle, indent=2, sort_keys=True) + "\n")
+
+
+def test_certification_bundle_file_check_public_api_accepts_bundle() -> None:
+    pack = load_contract_pack(PACK)
+    request = build_contract_request(
+        "rope",
+        {
+            "context": 131072,
+            "requested_margin": "1/328459",
+        },
+    )
+    bundle = build_contract_certification_bundle(
+        request,
+        pack=pack,
+        required_statuses=("proved",),
+        required_decision_verdicts=("passed",),
+        required_assurance_levels=("mixed_theorem_and_computation",),
+        require_passed=True,
+    )
+
+    report = build_contract_certification_bundle_file_check_report(
+        bundle,
+        pack,
+        bundle_path="reports/rope_certification_bundle.json",
+        required_statuses=("proved",),
+        required_decision_verdicts=("passed",),
+        required_assurance_levels=("mixed_theorem_and_computation",),
+        require_passed=True,
+    )
+
+    jsonschema.validate(
+        report,
+        build_contract_certification_bundle_file_check_json_schema(),
+    )
+    assert report["ok"] is True
+    assert report["bundle_count"] == 1
+    assert report["summaries"][0]["path"] == (
+        "reports/rope_certification_bundle.json"
+    )
+    assert report["summaries"][0]["bundle_request_content_fingerprint"] == (
+        bundle["request_content_fingerprint"]
+    )
+    assert report["summaries"][0]["receipt_content_fingerprint"] == (
+        bundle["receipt_content_fingerprint"]
+    )
+
+
+def test_certification_bundle_file_check_public_api_enforces_embedded_policy() -> None:
+    pack = load_contract_pack(PACK)
+    request = build_contract_request(
+        "rope",
+        {
+            "context": 131072,
+            "requested_margin": "1/328458",
+        },
+    )
+    bundle = build_contract_certification_bundle(request, pack=pack)
+    embedded_policy = {
+        "allowed_statuses": ["proved"],
+        "allowed_decision_verdicts": [],
+        "allowed_assurance_levels": [],
+        "require_passed": False,
+    }
+    bundle["gate_policy"] = embedded_policy
+    bundle["gate_report"]["gate_policy"] = embedded_policy
+
+    report = build_contract_certification_bundle_file_check_report(
+        bundle,
+        pack,
+        bundle_path="reports/rope_certification_bundle.json",
+    )
+
+    jsonschema.validate(
+        report,
+        build_contract_certification_bundle_file_check_json_schema(),
+    )
+    assert report["ok"] is False
+    assert any(
+        "embedded gate policy status check failed" in failure
+        for failure in report["failures"]
+    )
 
 
 def test_check_circle_ai_certification_bundle_accepts_model_config_bundle(

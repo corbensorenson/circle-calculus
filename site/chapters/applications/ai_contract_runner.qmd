@@ -369,6 +369,7 @@ Read every receipt in this order:
 ```python
 from circle_math.applications import (
     build_contract_certification_bundle,
+    build_contract_certification_bundle_file_check_report,
     build_contract_receipt_file_check_report,
     build_contract_receipt_gate_report,
     build_contract_request,
@@ -476,6 +477,16 @@ bundle = build_contract_certification_bundle(
 assert bundle["request_validation_report"]["ok"] is True
 assert bundle["receipt"] == receipt
 assert bundle["gate_report"]["ok"] is True
+bundle_check_report = build_contract_certification_bundle_file_check_report(
+    bundle,
+    pack,
+    bundle_path="reports/sparse_attention_certification_bundle.json",
+    required_statuses=("proved",),
+    required_decision_verdicts=("passed",),
+    required_assurance_levels=("theorem_backed",),
+    require_passed=True,
+)
+assert bundle_check_report["ok"] is True
 ```
 
 The bundle's top-level `request_content_fingerprint` hashes the submitted
