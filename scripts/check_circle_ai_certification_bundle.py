@@ -143,6 +143,41 @@ def _append_bundle_consistency_failures(
     else:
         path_failures.append("bundle gate_report was null")
 
+    policy = bundle.get("gate_policy")
+    decision = receipt.get("decision") if isinstance(receipt, dict) else None
+    if isinstance(policy, dict) and isinstance(receipt, dict):
+        allowed_statuses = tuple(policy.get("allowed_statuses", ()))
+        if allowed_statuses and receipt.get("status") not in allowed_statuses:
+            path_failures.append(
+                "embedded gate policy status check failed: "
+                f"{receipt.get('status')!r} not in {list(allowed_statuses)!r}"
+            )
+        allowed_verdicts = tuple(policy.get("allowed_decision_verdicts", ()))
+        decision_verdict = (
+            decision.get("verdict") if isinstance(decision, dict) else None
+        )
+        if allowed_verdicts and decision_verdict not in allowed_verdicts:
+            path_failures.append(
+                "embedded gate policy decision check failed: "
+                f"{decision_verdict!r} not in {list(allowed_verdicts)!r}"
+            )
+        allowed_assurances = tuple(policy.get("allowed_assurance_levels", ()))
+        decision_assurance = (
+            decision.get("assurance") if isinstance(decision, dict) else None
+        )
+        if allowed_assurances and decision_assurance not in allowed_assurances:
+            path_failures.append(
+                "embedded gate policy assurance check failed: "
+                f"{decision_assurance!r} not in {list(allowed_assurances)!r}"
+            )
+        if (
+            policy.get("require_passed") is True
+            and receipt.get("request_passed") is not True
+        ):
+            path_failures.append(
+                "embedded gate policy pass check failed: request_passed was not true"
+            )
+
     import_report = bundle.get("model_config_import_report")
     if import_report is None:
         return

@@ -147,6 +147,56 @@ def test_check_circle_ai_certification_bundle_rejects_status_gate(
     assert "did not match required status set" in payload["failures"][0]
 
 
+def test_check_circle_ai_certification_bundle_enforces_embedded_gate_policy(
+    tmp_path: Path,
+) -> None:
+    bundle_path = tmp_path / "rope_embedded_gate_certification_bundle.json"
+    pack = load_contract_pack(PACK)
+    request = build_contract_request(
+        "rope",
+        {
+            "context": 131072,
+            "requested_margin": "1/328458",
+        },
+    )
+    bundle = build_contract_certification_bundle(request, pack=pack)
+    embedded_policy = {
+        "allowed_statuses": ["proved"],
+        "allowed_decision_verdicts": [],
+        "allowed_assurance_levels": [],
+        "require_passed": False,
+    }
+    bundle["gate_policy"] = embedded_policy
+    bundle["gate_report"]["gate_policy"] = embedded_policy
+    _write_bundle(bundle_path, bundle)
+
+    result = subprocess.run(
+        [
+            sys.executable,
+            str(SCRIPT),
+            str(bundle_path),
+            "--format",
+            "json",
+        ],
+        cwd=ROOT,
+        check=False,
+        text=True,
+        capture_output=True,
+    )
+
+    payload = json.loads(result.stdout)
+    jsonschema.validate(
+        payload,
+        build_contract_certification_bundle_file_check_json_schema(),
+    )
+    assert result.returncode == 1
+    assert payload["ok"] is False
+    assert any(
+        "embedded gate policy status check failed" in failure
+        for failure in payload["failures"]
+    )
+
+
 def test_check_circle_ai_certification_bundle_rejects_tampered_fingerprint(
     tmp_path: Path,
 ) -> None:
