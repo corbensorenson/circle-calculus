@@ -2460,6 +2460,37 @@ def test_circle_ai_certify_cli_artifact_dir_writes_standard_audit_set(
     assert manifest_policy_report["ok"] is True
     assert manifest_policy_report["pin_policy"] == manifest_cli_report["pin_policy"]
 
+    replay_artifact_dir = tmp_path / "replay_artifacts"
+    subprocess.run(
+        [
+            sys.executable,
+            str(SCRIPT),
+            "rope",
+            "--model-config",
+            str(STANDARD_ROPE_MODEL_CONFIG),
+            "--requested-margin",
+            "1/328459",
+            "--artifact-dir",
+            str(replay_artifact_dir),
+            "--pin-policy",
+            str(expected_paths["artifact_manifest_check"]),
+        ],
+        cwd=ROOT,
+        check=True,
+        text=True,
+        capture_output=True,
+    )
+    replay_manifest_check = json.loads(
+        (
+            replay_artifact_dir
+            / f"{prefix}_artifact_manifest_check.json"
+        ).read_text()
+    )
+    assert replay_manifest_check["ok"] is True
+    assert replay_manifest_check["pin_policy"] == artifact_manifest_check[
+        "pin_policy"
+    ]
+
     missing_pin_cli = subprocess.run(
         [
             sys.executable,

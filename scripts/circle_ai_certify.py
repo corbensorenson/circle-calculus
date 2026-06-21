@@ -376,6 +376,17 @@ def add_common_options(parser: argparse.ArgumentParser) -> None:
             "--artifact-manifest-check-out or --artifact-dir."
         ),
     )
+    parser.add_argument(
+        "--pin-policy",
+        type=Path,
+        help=(
+            "Load artifact dependency pins from a JSON object shaped like a "
+            "check report pin_policy block. A whole prior check report is also "
+            "accepted. Explicit --require-* flags are merged with loaded pins. "
+            "Requires --artifact-manifest-check-out or --artifact-dir when the "
+            "loaded policy is non-empty."
+        ),
+    )
 
 
 def parse_args() -> argparse.Namespace:
@@ -848,6 +859,133 @@ def _parse_normalized_param_pin(raw: str) -> tuple[str, Any]:
     return key, value
 
 
+def _load_artifact_pin_policy(path: Path | None) -> dict[str, Any]:
+    if path is None:
+        return {}
+    payload = _load_json_object(path, label="artifact pin policy")
+    if "pin_policy" in payload:
+        policy = payload["pin_policy"]
+        if not isinstance(policy, dict):
+            raise ValueError(f"{path} pin_policy must be a JSON object")
+        return policy
+    return payload
+
+
+def _policy_string_tuple(policy: dict[str, Any], key: str) -> tuple[str, ...]:
+    values = policy.get(key, [])
+    if not isinstance(values, list) or not all(
+        isinstance(value, str) for value in values
+    ):
+        raise ValueError(f"pin policy {key} must be a list of strings")
+    return tuple(values)
+
+
+def _policy_normalized_params(
+    policy: dict[str, Any],
+) -> tuple[tuple[str, Any], ...]:
+    values = policy.get("required_normalized_params", [])
+    if not isinstance(values, list):
+        raise ValueError(
+            "pin policy required_normalized_params must be a list of objects"
+        )
+    pins: list[tuple[str, Any]] = []
+    for item in values:
+        if not isinstance(item, dict):
+            raise ValueError(
+                "pin policy required_normalized_params must be a list of objects"
+            )
+        key = item.get("key")
+        if not isinstance(key, str) or not key:
+            raise ValueError(
+                "pin policy required_normalized_params entries need a string key"
+            )
+        if "value" not in item:
+            raise ValueError(
+                "pin policy required_normalized_params entries need a value"
+            )
+        pins.append((key, item["value"]))
+    return tuple(pins)
+
+
+def _merge_strings(*groups: tuple[str, ...]) -> tuple[str, ...]:
+    merged: list[str] = []
+    seen: set[str] = set()
+    for group in groups:
+        for value in group:
+            if value not in seen:
+                seen.add(value)
+                merged.append(value)
+    return tuple(merged)
+
+
+def _value_marker(value: Any) -> str:
+    try:
+        return json.dumps(value, sort_keys=True, separators=(",", ":"))
+    except TypeError:
+        return repr(value)
+
+
+def _merge_normalized_params(
+    *groups: tuple[tuple[str, Any], ...],
+) -> tuple[tuple[str, Any], ...]:
+    merged: list[tuple[str, Any]] = []
+    seen: set[tuple[str, str]] = set()
+    for group in groups:
+        for key, value in group:
+            marker = (key, _value_marker(value))
+            if marker not in seen:
+                seen.add(marker)
+                merged.append((key, value))
+    return tuple(merged)
+
+
+def _merge_artifact_pin_policy(
+    args: argparse.Namespace,
+    cli_normalized_params: tuple[tuple[str, Any], ...],
+) -> None:
+    policy = _load_artifact_pin_policy(args.pin_policy)
+    args.require_kind = list(
+        _merge_strings(
+            _policy_string_tuple(policy, "required_kinds"),
+            tuple(args.require_kind),
+        )
+    )
+    args.require_theorem_id = list(
+        _merge_strings(
+            _policy_string_tuple(policy, "required_theorem_ids"),
+            tuple(args.require_theorem_id),
+        )
+    )
+    args.require_evidence_field = list(
+        _merge_strings(
+            _policy_string_tuple(policy, "required_evidence_fields"),
+            tuple(args.require_evidence_field),
+        )
+    )
+    args.require_recommendation_id = list(
+        _merge_strings(
+            _policy_string_tuple(policy, "required_recommendation_ids"),
+            tuple(args.require_recommendation_id),
+        )
+    )
+    args.require_validation_command = list(
+        _merge_strings(
+            _policy_string_tuple(policy, "required_validation_commands"),
+            tuple(args.require_validation_command),
+        )
+    )
+    args.require_model_config_fingerprint = list(
+        _merge_strings(
+            _policy_string_tuple(policy, "required_model_config_fingerprints"),
+            tuple(args.require_model_config_fingerprint),
+        )
+    )
+    args.required_normalized_params = _merge_normalized_params(
+        _policy_normalized_params(policy),
+        cli_normalized_params,
+    )
+
+
 def _artifact_pin_policy(args: argparse.Namespace) -> dict[str, Any]:
     normalized_params = [
         {"key": key, "value": value}
@@ -875,7 +1013,7 @@ def _has_artifact_pin_requirements(args: argparse.Namespace) -> bool:
             args.require_recommendation_id,
             args.require_validation_command,
             args.require_model_config_fingerprint,
-            args.require_normalized_param,
+            getattr(args, "required_normalized_params", ()),
         )
     )
 
@@ -1170,10 +1308,11 @@ def main() -> int:
     args = parse_args()
     _apply_artifact_dir_defaults(args)
     try:
-        args.required_normalized_params = tuple(
+        cli_required_normalized_params = tuple(
             _parse_normalized_param_pin(raw)
             for raw in args.require_normalized_param
         )
+        _merge_artifact_pin_policy(args, cli_required_normalized_params)
     except ValueError as exc:
         raise SystemExit(str(exc))
     if (

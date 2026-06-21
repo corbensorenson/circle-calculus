@@ -333,6 +333,9 @@ dependencies, so audit logs show both what was required and what was observed.
 Reuse that policy later with `--pin-policy reports/check_report.json`; the
 checker accepts either the whole report or just the `pin_policy` object, and
 explicit `--require-*` flags are merged with the loaded pins.
+`scripts/circle_ai_certify.py --artifact-dir ... --pin-policy
+reports/check_report.json` accepts the same shape when regenerating a contract
+artifact set under a previously saved dependency policy.
 
 Checked-in examples are available for all four runner surfaces:
 
