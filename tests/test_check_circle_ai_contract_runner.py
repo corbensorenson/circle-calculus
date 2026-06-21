@@ -33,6 +33,12 @@ CERTIFICATION_BUNDLE_SCHEMA = (
     / "generated"
     / "circle_ai_contract_certification_bundle.schema.json"
 )
+CERTIFICATION_BUNDLE_CHECK_SCHEMA = (
+    Path("site")
+    / "data"
+    / "generated"
+    / "circle_ai_contract_certification_bundle_file_check.schema.json"
+)
 CONTRACT_PACK = Path("site") / "data" / "generated" / "circle_ai_contract_pack.json"
 FINGERPRINT_ALGORITHM = "sha256-json-v1"
 FINGERPRINT_KEYS = {
@@ -56,6 +62,10 @@ def _request_validation_schema() -> dict:
 
 def _certification_bundle_schema() -> dict:
     return json.loads(CERTIFICATION_BUNDLE_SCHEMA.read_text())
+
+
+def _certification_bundle_check_schema() -> dict:
+    return json.loads(CERTIFICATION_BUNDLE_CHECK_SCHEMA.read_text())
 
 
 def _strip_fingerprint_fields(value: object) -> object:
@@ -171,6 +181,10 @@ def test_check_circle_ai_contract_runner_emits_json_report() -> None:
         summary["certification_bundle_path"] is None
         for summary in payload["summaries"]
     )
+    assert all(
+        summary["certification_bundle_check_path"] is None
+        for summary in payload["summaries"]
+    )
     assert all(summary["normalized_request"] for summary in payload["summaries"])
     assert any(
         summary["normalized_request"].get("head_dim") == 128
@@ -200,6 +214,7 @@ def test_check_circle_ai_contract_runner_writes_receipts(tmp_path: Path) -> None
     import_report_dir = tmp_path / "imports"
     request_validation_dir = tmp_path / "request_validation"
     certification_bundle_dir = tmp_path / "certification_bundles"
+    certification_bundle_check_dir = tmp_path / "certification_bundle_checks"
 
     result = subprocess.run(
         [
@@ -213,6 +228,8 @@ def test_check_circle_ai_contract_runner_writes_receipts(tmp_path: Path) -> None
             str(request_validation_dir),
             "--certification-bundle-out-dir",
             str(certification_bundle_dir),
+            "--certification-bundle-check-out-dir",
+            str(certification_bundle_check_dir),
             "--format",
             "json",
         ],
@@ -238,6 +255,12 @@ def test_check_circle_ai_contract_runner_writes_receipts(tmp_path: Path) -> None
     ]
     assert len(certification_bundle_paths) == 6
     assert all(path.exists() for path in certification_bundle_paths)
+    certification_bundle_check_paths = [
+        Path(summary["certification_bundle_check_path"])
+        for summary in payload["summaries"]
+    ]
+    assert len(certification_bundle_check_paths) == 6
+    assert all(path.exists() for path in certification_bundle_check_paths)
     for summary in payload["summaries"]:
         validation_report = json.loads(
             Path(summary["request_validation_report_path"]).read_text()
@@ -258,6 +281,20 @@ def test_check_circle_ai_contract_runner_writes_receipts(tmp_path: Path) -> None
         bundle = json.loads(Path(summary["certification_bundle_path"]).read_text())
         jsonschema.validate(bundle, _certification_bundle_schema())
         assert bundle["ok"] is True
+        bundle_check = json.loads(
+            Path(summary["certification_bundle_check_path"]).read_text()
+        )
+        jsonschema.validate(bundle_check, _certification_bundle_check_schema())
+        assert bundle_check["ok"] is True
+        assert bundle_check["summaries"][0]["path"] == summary[
+            "certification_bundle_path"
+        ]
+        assert bundle_check["summaries"][0][
+            "bundle_request_content_fingerprint"
+        ] == bundle["request_content_fingerprint"]
+        assert bundle_check["summaries"][0]["receipt_content_fingerprint"] == summary[
+            "receipt_content_fingerprint"
+        ]
         if summary["source_type"] == "request":
             assert bundle["request_content_fingerprint"] == summary[
                 "source_content_fingerprint"
@@ -333,6 +370,7 @@ def test_check_circle_ai_contract_runner_writes_report_file(tmp_path: Path) -> N
     import_report_dir = tmp_path / "imports"
     request_validation_dir = tmp_path / "request_validation"
     certification_bundle_dir = tmp_path / "certification_bundles"
+    certification_bundle_check_dir = tmp_path / "certification_bundle_checks"
 
     result = subprocess.run(
         [
@@ -346,6 +384,8 @@ def test_check_circle_ai_contract_runner_writes_report_file(tmp_path: Path) -> N
             str(request_validation_dir),
             "--certification-bundle-out-dir",
             str(certification_bundle_dir),
+            "--certification-bundle-check-out-dir",
+            str(certification_bundle_check_dir),
             "--report-out",
             str(report_path),
         ],
@@ -364,6 +404,9 @@ def test_check_circle_ai_contract_runner_writes_report_file(tmp_path: Path) -> N
         summary["request_validation_report_path"] for summary in payload["summaries"]
     )
     assert all(summary["certification_bundle_path"] for summary in payload["summaries"])
+    assert all(
+        summary["certification_bundle_check_path"] for summary in payload["summaries"]
+    )
     assert all(summary["source_content_fingerprint"] for summary in payload["summaries"])
     model_config_summary = next(
         summary
@@ -383,6 +426,31 @@ def test_check_circle_ai_contract_runner_writes_report_file(tmp_path: Path) -> N
         "source": "default",
         "note": "round",
     }
+
+
+def test_check_circle_ai_contract_runner_bundle_check_requires_bundle_dir(
+    tmp_path: Path,
+) -> None:
+    result = subprocess.run(
+        [
+            sys.executable,
+            "scripts/check_circle_ai_contract_runner.py",
+            "--certification-bundle-check-out-dir",
+            str(tmp_path / "certification_bundle_checks"),
+            "--format",
+            "json",
+        ],
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+
+    assert result.returncode == 1
+    assert result.stdout == ""
+    assert (
+        "certification_bundle_check_out_dir requires certification_bundle_out_dir"
+        in result.stderr
+    )
 
 
 def test_check_circle_ai_contract_runner_accepts_batch_gate() -> None:

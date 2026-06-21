@@ -287,6 +287,7 @@ python scripts/check_circle_ai_contract_runner.py \
   --model-config-import-report-out-dir reports/circle_ai_imports \
   --request-validation-report-out-dir reports/circle_ai_request_validation \
   --certification-bundle-out-dir reports/circle_ai_certification_bundles \
+  --certification-bundle-check-out-dir reports/circle_ai_certification_bundle_checks \
   --report-out reports/circle_ai_runner_check.json \
   --require-status proved \
   --require-decision passed \
@@ -314,6 +315,8 @@ should be saved for every request before the receipt step.
 Use `--certification-bundle-out-dir` when each checked request/model config
 should write a portable bundle containing preflight, receipt, gate report, and
 any model-config import provenance.
+Use `--certification-bundle-check-out-dir` with it when the batch should also
+write a schema-validated verification report for every bundle.
 By default the batch includes both request-file examples and standard RoPE
 model-config examples, currently including 128k examples at RoPE bases `10000`
 and `500000`.

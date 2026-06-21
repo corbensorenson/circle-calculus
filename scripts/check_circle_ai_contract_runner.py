@@ -18,6 +18,8 @@ if str(ROOT) not in sys.path:
 
 from circle_math.applications import (  # noqa: E402
     build_contract_certification_bundle,
+    build_contract_certification_bundle_file_check_json_schema,
+    build_contract_certification_bundle_file_check_report,
     build_contract_certification_bundle_json_schema,
     build_contract_request_validation_report,
     build_contract_runner_check_json_schema,
@@ -62,6 +64,13 @@ DEFAULT_CERTIFICATION_BUNDLE_SCHEMA = (
     / "data"
     / "generated"
     / "circle_ai_contract_certification_bundle.schema.json"
+)
+DEFAULT_CERTIFICATION_BUNDLE_CHECK_SCHEMA = (
+    ROOT
+    / "site"
+    / "data"
+    / "generated"
+    / "circle_ai_contract_certification_bundle_file_check.schema.json"
 )
 
 
@@ -114,6 +123,7 @@ def _summary_from_receipt(
     model_config_parameter_sources: dict[str, Any] | None,
     request_validation_report_path: Path | None,
     certification_bundle_path: Path | None,
+    certification_bundle_check_path: Path | None,
     receipt_path: Path | None,
     receipt: dict[str, Any],
 ) -> dict[str, Any]:
@@ -138,6 +148,11 @@ def _summary_from_receipt(
             None
             if certification_bundle_path is None
             else _display_path(certification_bundle_path)
+        ),
+        "certification_bundle_check_path": (
+            None
+            if certification_bundle_check_path is None
+            else _display_path(certification_bundle_check_path)
         ),
         "receipt_path": None if receipt_path is None else _display_path(receipt_path),
         "kind": receipt["kind"],
@@ -207,10 +222,12 @@ def check_runner_examples(
     receipt_schema_path: Path = DEFAULT_RECEIPT_SCHEMA,
     runner_check_schema_path: Path = DEFAULT_RUNNER_CHECK_SCHEMA,
     certification_bundle_schema_path: Path = DEFAULT_CERTIFICATION_BUNDLE_SCHEMA,
+    certification_bundle_check_schema_path: Path = DEFAULT_CERTIFICATION_BUNDLE_CHECK_SCHEMA,
     receipt_out_dir: Path | None = None,
     model_config_import_report_out_dir: Path | None = None,
     request_validation_report_out_dir: Path | None = None,
     certification_bundle_out_dir: Path | None = None,
+    certification_bundle_check_out_dir: Path | None = None,
     required_statuses: tuple[str, ...] = (),
     required_decision_verdicts: tuple[str, ...] = (),
     required_assurance_levels: tuple[str, ...] = (),
@@ -222,15 +239,31 @@ def check_runner_examples(
     receipt_schema = _json(receipt_schema_path)
     runner_check_schema = _json(runner_check_schema_path)
     certification_bundle_schema = _json(certification_bundle_schema_path)
+    certification_bundle_check_schema = _json(certification_bundle_check_schema_path)
     jsonschema.Draft202012Validator.check_schema(request_schema)
     jsonschema.Draft202012Validator.check_schema(request_validation_schema)
     jsonschema.Draft202012Validator.check_schema(model_config_import_schema)
     jsonschema.Draft202012Validator.check_schema(receipt_schema)
     jsonschema.Draft202012Validator.check_schema(runner_check_schema)
     jsonschema.Draft202012Validator.check_schema(certification_bundle_schema)
+    jsonschema.Draft202012Validator.check_schema(certification_bundle_check_schema)
+    if (
+        certification_bundle_check_out_dir is not None
+        and certification_bundle_out_dir is None
+    ):
+        raise ValueError(
+            "certification_bundle_check_out_dir requires certification_bundle_out_dir"
+        )
     if certification_bundle_schema != build_contract_certification_bundle_json_schema():
         raise jsonschema.SchemaError(
             "certification-bundle schema drifted from application builder"
+        )
+    if (
+        certification_bundle_check_schema
+        != build_contract_certification_bundle_file_check_json_schema()
+    ):
+        raise jsonschema.SchemaError(
+            "certification-bundle check schema drifted from application builder"
         )
     pack = load_contract_pack(pack_path)
     summaries: list[dict[str, Any]] = []
@@ -260,6 +293,7 @@ def check_runner_examples(
                 receipt_path = receipt_out_dir / f"{path.stem.removesuffix('_request')}_receipt.json"
                 _write_json(receipt_path, receipt)
             certification_bundle_path = None
+            certification_bundle_check_path = None
             if certification_bundle_out_dir is not None:
                 certification_bundle_path = (
                     certification_bundle_out_dir
@@ -280,6 +314,22 @@ def check_runner_examples(
                 )
                 jsonschema.validate(bundle, certification_bundle_schema)
                 _write_json(certification_bundle_path, bundle)
+                if certification_bundle_check_out_dir is not None:
+                    certification_bundle_check_path = (
+                        certification_bundle_check_out_dir
+                        / f"{path.stem.removesuffix('_request')}_certification_bundle_check.json"
+                    )
+                    bundle_check = build_contract_certification_bundle_file_check_report(
+                        bundle,
+                        pack=pack,
+                        bundle_path=_display_path(certification_bundle_path),
+                        required_statuses=required_statuses,
+                        required_decision_verdicts=required_decision_verdicts,
+                        required_assurance_levels=required_assurance_levels,
+                        require_passed=require_passed,
+                    )
+                    jsonschema.validate(bundle_check, certification_bundle_check_schema)
+                    _write_json(certification_bundle_check_path, bundle_check)
             summary = _summary_from_receipt(
                 source_type="request",
                 source_path=path,
@@ -289,6 +339,7 @@ def check_runner_examples(
                 model_config_parameter_sources=None,
                 request_validation_report_path=validation_report_path,
                 certification_bundle_path=certification_bundle_path,
+                certification_bundle_check_path=certification_bundle_check_path,
                 receipt_path=receipt_path,
                 receipt=receipt,
             )
@@ -350,6 +401,7 @@ def check_runner_examples(
                 _write_json(request_path, request)
                 _write_json(receipt_path, receipt)
             certification_bundle_path = None
+            certification_bundle_check_path = None
             if certification_bundle_out_dir is not None:
                 certification_bundle_path = (
                     certification_bundle_out_dir
@@ -371,6 +423,22 @@ def check_runner_examples(
                 )
                 jsonschema.validate(bundle, certification_bundle_schema)
                 _write_json(certification_bundle_path, bundle)
+                if certification_bundle_check_out_dir is not None:
+                    certification_bundle_check_path = (
+                        certification_bundle_check_out_dir
+                        / f"{path.stem}_certification_bundle_check.json"
+                    )
+                    bundle_check = build_contract_certification_bundle_file_check_report(
+                        bundle,
+                        pack=pack,
+                        bundle_path=_display_path(certification_bundle_path),
+                        required_statuses=required_statuses,
+                        required_decision_verdicts=required_decision_verdicts,
+                        required_assurance_levels=required_assurance_levels,
+                        require_passed=require_passed,
+                    )
+                    jsonschema.validate(bundle_check, certification_bundle_check_schema)
+                    _write_json(certification_bundle_check_path, bundle_check)
             summary = _summary_from_receipt(
                 source_type="model_config",
                 source_path=path,
@@ -380,6 +448,7 @@ def check_runner_examples(
                 model_config_parameter_sources=import_report["parameter_sources"],
                 request_validation_report_path=validation_report_path,
                 certification_bundle_path=certification_bundle_path,
+                certification_bundle_check_path=certification_bundle_check_path,
                 receipt_path=receipt_path,
                 receipt=receipt,
             )
@@ -474,6 +543,15 @@ def main() -> int:
             "written by --certification-bundle-out-dir."
         ),
     )
+    parser.add_argument(
+        "--certification-bundle-check-schema",
+        type=Path,
+        default=DEFAULT_CERTIFICATION_BUNDLE_CHECK_SCHEMA,
+        help=(
+            "Generated JSON Schema used to validate bundle-check reports "
+            "written by --certification-bundle-check-out-dir."
+        ),
+    )
     parser.add_argument("--format", choices=("text", "json"), default="text")
     parser.add_argument(
         "--receipt-out-dir",
@@ -502,6 +580,14 @@ def main() -> int:
         help=(
             "Optional directory where schema-validated certification bundles "
             "are written for every checked request/model config."
+        ),
+    )
+    parser.add_argument(
+        "--certification-bundle-check-out-dir",
+        type=Path,
+        help=(
+            "Optional directory where schema-validated certification-bundle "
+            "check reports are written. Requires --certification-bundle-out-dir."
         ),
     )
     parser.add_argument(
@@ -561,10 +647,12 @@ def main() -> int:
         receipt_schema_path=args.receipt_schema,
         runner_check_schema_path=args.runner_check_schema,
         certification_bundle_schema_path=args.certification_bundle_schema,
+        certification_bundle_check_schema_path=args.certification_bundle_check_schema,
         receipt_out_dir=args.receipt_out_dir,
         model_config_import_report_out_dir=args.model_config_import_report_out_dir,
         request_validation_report_out_dir=args.request_validation_report_out_dir,
         certification_bundle_out_dir=args.certification_bundle_out_dir,
+        certification_bundle_check_out_dir=args.certification_bundle_check_out_dir,
         required_statuses=tuple(args.require_status),
         required_decision_verdicts=tuple(args.require_decision),
         required_assurance_levels=tuple(args.require_assurance),
@@ -594,6 +682,7 @@ def main() -> int:
                 f"import_report={summary['model_config_import_report_path']} "
                 f"request_validation={summary['request_validation_report_path']} "
                 f"bundle={summary['certification_bundle_path']} "
+                f"bundle_check={summary['certification_bundle_check_path']} "
                 f"status={summary['status']} "
                 f"passed={summary['request_passed']} "
                 f"decision={summary['decision_verdict']} "

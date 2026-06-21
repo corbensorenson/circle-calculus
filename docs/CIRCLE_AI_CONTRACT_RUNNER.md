@@ -215,6 +215,7 @@ python scripts/check_circle_ai_contract_runner.py \
   --model-config-import-report-out-dir reports/circle_ai_imports \
   --request-validation-report-out-dir reports/circle_ai_request_validation \
   --certification-bundle-out-dir reports/circle_ai_certification_bundles \
+  --certification-bundle-check-out-dir reports/circle_ai_certification_bundle_checks \
   --report-out reports/circle_ai_runner_check.json \
   --require-status proved \
   --require-decision passed \
@@ -240,6 +241,10 @@ receipt.
 When `--certification-bundle-out-dir` is set, every summary also points to a
 schema-validated certification bundle containing the preflight report, receipt,
 gate report, and any model-config import provenance.
+When `--certification-bundle-check-out-dir` is also set, every summary points to
+a schema-validated verification report for that bundle. This is useful when a
+batch job should leave both portable artifacts and CI-readable pass/fail
+evidence beside them.
 By default it checks both `examples/circle_ai_requests/*.json` request files and
 `examples/circle_ai_model_configs/*.json` standard RoPE model configs, currently
 including 128k examples at RoPE bases `10000` and `500000`. Model config

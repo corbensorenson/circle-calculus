@@ -1738,6 +1738,7 @@ def test_runner_check_report_schema_accepts_public_report() -> None:
                 "model_config_parameter_sources": None,
                 "request_validation_report_path": None,
                 "certification_bundle_path": None,
+                "certification_bundle_check_path": None,
                 "receipt_path": None,
                 "kind": "rope_position_distinguishability",
                 "status": "proved",
