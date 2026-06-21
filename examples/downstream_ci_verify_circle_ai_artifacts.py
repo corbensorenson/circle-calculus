@@ -284,6 +284,43 @@ def _receipt_consistency_failures(
     return failures
 
 
+def _load_receipt_artifact(
+    *,
+    artifacts_by_label: dict[str, dict[str, Any]],
+    manifest_path: Path,
+    base_dir: Path | None,
+) -> dict[str, Any] | None:
+    receipt_artifact = artifacts_by_label.get("receipt_json")
+    if receipt_artifact is None:
+        return None
+    raw_path = receipt_artifact.get("path")
+    if not isinstance(raw_path, str):
+        return None
+    receipt_path = _resolve_existing_artifact(
+        raw_path,
+        manifest_path=manifest_path,
+        base_dir=base_dir,
+    )
+    if receipt_path is None:
+        return None
+    try:
+        return _load_json_object(receipt_path)
+    except (OSError, ValueError, json.JSONDecodeError, UnicodeDecodeError):
+        return None
+
+
+def _receipt_theorem_ids(receipt: dict[str, Any] | None) -> list[str]:
+    if receipt is None:
+        return []
+    proof_status = receipt.get("proof_status")
+    if not isinstance(proof_status, dict):
+        return []
+    theorem_ids = proof_status.get("theorem_ids")
+    if not isinstance(theorem_ids, list):
+        return []
+    return [theorem_id for theorem_id in theorem_ids if isinstance(theorem_id, str)]
+
+
 def _manifest_check_report(
     *,
     manifest_path: Path,
@@ -368,6 +405,12 @@ def verify_manifest(
             base_dir=base_dir,
         )
     )
+    receipt = _load_receipt_artifact(
+        artifacts_by_label=artifacts_by_label,
+        manifest_path=path,
+        base_dir=base_dir,
+    )
+    receipt_theorem_ids = _receipt_theorem_ids(receipt)
 
     status = manifest.get("status")
     decision = manifest.get("decision_verdict")
@@ -404,6 +447,8 @@ def verify_manifest(
         "declared_artifact_count": declared_count,
         "artifact_labels": labels,
         "artifact_reports": artifact_reports,
+        "theorem_count": len(receipt_theorem_ids),
+        "theorem_ids": receipt_theorem_ids,
         "request_content_fingerprint": manifest.get("request_content_fingerprint"),
         "normalized_request_fingerprint": manifest.get(
             "normalized_request_fingerprint"
@@ -433,6 +478,7 @@ def verify_manifests(
     *,
     base_dir: Path | None,
     required_kinds: list[str],
+    required_theorem_ids: list[str],
     required_statuses: list[str],
     required_decisions: list[str],
     required_assurances: list[str],
@@ -472,6 +518,18 @@ def verify_manifests(
     for kind in required_kinds:
         if kind not in kind_counts:
             failures.append(f"required contract kind is missing: {kind}")
+    observed_theorem_ids = sorted(
+        {
+            theorem_id
+            for summary in summaries
+            for theorem_id in summary.get("theorem_ids", [])
+            if isinstance(theorem_id, str)
+        }
+    )
+    observed_theorem_id_set = set(observed_theorem_ids)
+    for theorem_id in required_theorem_ids:
+        if theorem_id not in observed_theorem_id_set:
+            failures.append(f"required receipt theorem id is missing: {theorem_id}")
     return {
         "schema_id": EXAMPLE_SCHEMA_ID,
         "accepted": not failures,
@@ -481,6 +539,8 @@ def verify_manifests(
         "required_kinds": required_kinds,
         "observed_kinds": sorted(set(observed_kinds)),
         "kind_counts": kind_counts,
+        "required_theorem_ids": required_theorem_ids,
+        "observed_theorem_id_count": len(observed_theorem_ids),
         "required_statuses": required_statuses,
         "required_decisions": required_decisions,
         "required_assurances": required_assurances,
@@ -562,6 +622,15 @@ def main() -> int:
         help="Require at least one artifact manifest for this contract kind.",
     )
     parser.add_argument(
+        "--require-theorem-id",
+        action="append",
+        default=[],
+        help=(
+            "Require at least one saved receipt artifact to cite this theorem id. "
+            "May be repeated."
+        ),
+    )
+    parser.add_argument(
         "--require-decision",
         action="append",
         default=[],
@@ -596,6 +665,7 @@ def main() -> int:
             args.manifests,
             base_dir=args.base_dir,
             required_kinds=args.require_kind,
+            required_theorem_ids=args.require_theorem_id,
             required_statuses=args.require_status,
             required_decisions=args.require_decision,
             required_assurances=args.require_assurance,

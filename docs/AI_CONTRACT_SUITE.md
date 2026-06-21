@@ -650,6 +650,7 @@ manifest-check report without importing Circle or `jsonschema`:
 python examples/downstream_ci_verify_circle_ai_artifacts.py \
   reports/rope_contract/standard_rope_config_artifact_manifest.json \
   --require-kind rope_position_distinguishability \
+  --require-theorem-id AIRA-T0239 \
   --require-status proved \
   --require-decision passed \
   --require-assurance mixed_theorem_and_computation \
@@ -658,7 +659,9 @@ python examples/downstream_ci_verify_circle_ai_artifacts.py \
 ```
 
 A multi-contract CI job can pass several `*_artifact_manifest.json` files and
-repeat `--require-kind` for every contract family that must be present.
+repeat `--require-kind` for every contract family that must be present. Add
+`--require-theorem-id` for theorem ids that downstream code explicitly depends
+on.
 
 A downstream project should fail fast if the readiness index or contract-level
 `ready_for_downstream_fixture_use` is false. That gate only means the public

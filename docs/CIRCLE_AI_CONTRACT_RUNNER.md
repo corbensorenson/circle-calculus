@@ -234,6 +234,8 @@ adopt one gate shape across all four current contract families.
 When a downstream job emits multiple manifests, add `--require-kind` for each
 contract family that must be present; the verifier fails if any required family
 is missing.
+Add `--require-theorem-id THEOREM_ID` when the downstream job depends on a
+specific theorem appearing in at least one saved receipt artifact.
 
 Copyable starting points live under:
 

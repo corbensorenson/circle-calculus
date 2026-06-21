@@ -250,6 +250,12 @@ def test_standalone_artifact_verifier_accepts_multi_contract_kind_gate(
         for kind in expected_kinds
         for arg in ("--require-kind", kind)
     ]
+    required_theorem_ids = ["AIRA-T0239", "AIM-T0060", "AIT-T0016", "AIM-T0159"]
+    require_theorem_args = [
+        arg
+        for theorem_id in required_theorem_ids
+        for arg in ("--require-theorem-id", theorem_id)
+    ]
 
     result = subprocess.run(
         [
@@ -269,6 +275,7 @@ def test_standalone_artifact_verifier_accepts_multi_contract_kind_gate(
             "--require-passed",
             "--require-manifest-check",
             *require_kind_args,
+            *require_theorem_args,
         ],
         cwd=ROOT,
         check=True,
@@ -283,6 +290,8 @@ def test_standalone_artifact_verifier_accepts_multi_contract_kind_gate(
     assert payload["required_kinds"] == expected_kinds
     assert payload["observed_kinds"] == sorted(expected_kinds)
     assert payload["kind_counts"] == {kind: 1 for kind in sorted(expected_kinds)}
+    assert payload["required_theorem_ids"] == required_theorem_ids
+    assert payload["observed_theorem_id_count"] >= len(required_theorem_ids)
 
 
 def test_standalone_artifact_verifier_rejects_missing_required_kind(
@@ -313,6 +322,38 @@ def test_standalone_artifact_verifier_rejects_missing_required_kind(
     assert payload["observed_kinds"] == ["rope_position_distinguishability"]
     assert any(
         "required contract kind is missing" in failure
+        for failure in payload["failures"]
+    )
+
+
+def test_standalone_artifact_verifier_rejects_missing_required_theorem_id(
+    tmp_path: Path,
+) -> None:
+    manifest_path, _ = _emit_standard_rope_artifacts(tmp_path)
+
+    result = subprocess.run(
+        [
+            sys.executable,
+            str(SCRIPT),
+            str(manifest_path),
+            "--format",
+            "json",
+            "--require-theorem-id",
+            "NONEXISTENT-T0000",
+        ],
+        cwd=ROOT,
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+
+    assert result.returncode == 4
+    payload = json.loads(result.stderr)
+    assert payload["accepted"] is False
+    assert payload["required_theorem_ids"] == ["NONEXISTENT-T0000"]
+    assert payload["observed_theorem_id_count"] > 0
+    assert any(
+        "required receipt theorem id is missing" in failure
         for failure in payload["failures"]
     )
 
