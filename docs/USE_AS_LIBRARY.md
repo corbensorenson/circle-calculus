@@ -123,6 +123,10 @@ the request should come from checked-in JSON. Use `--request-out` to save the
 exact versioned Circle request and `--model-config-import-report-out` to save
 the parameter-source audit report for a RoPE model config.
 
+Non-default `rope_scaling` values are rejected by the standard-RoPE importer.
+That rejection is intentional: scaled-RoPE variants need separate theorem
+coverage before the CLI may certify them as standard RoPE.
+
 The richer repository maintenance commands under `scripts/` are still the
 source-tree tools for generating and validating all artifacts.
 

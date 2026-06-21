@@ -111,6 +111,9 @@ For RoPE model configs, add `--request-out` and
 `--model-config-import-report-out` when you want the exact Circle request and
 the parameter-source audit report saved beside the receipt.
 
+Non-default `rope_scaling` values are rejected by this standard-RoPE importer
+until there is separate theorem coverage for the scaled variant.
+
 ## Lean Imports
 
 ```lean
