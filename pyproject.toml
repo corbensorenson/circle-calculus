@@ -54,6 +54,7 @@ Documentation = "https://corbensorenson.github.io/circle-calculus/"
 Issues = "https://github.com/corbensorenson/circle-calculus/issues"
 
 [project.scripts]
+circle-ai-certify = "circle_math.cli:contract_certify_main"
 circle-ai-contract-ready = "circle_math.cli:contract_ready_main"
 circle-ai-contract-receipt = "circle_math.cli:contract_receipt_main"
 circle-rope-certify = "circle_math.cli:rope_certify_main"

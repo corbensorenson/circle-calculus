@@ -64,6 +64,10 @@ Metadata 2.4 support.
 The package exposes these console scripts:
 
 ```bash
+circle-ai-certify rope --model-config-file examples/circle_ai_model_configs/standard_rope_config.json --format json
+circle-ai-certify kv-cache --cache-size 16 --current 31 --token 20 --batch-tokens 20,24,29,31 --sink-size 4 --require-passed
+circle-ai-certify sparse-attention --context 9 --strides 3,4,7 --path-length 2 --local-window 2
+circle-ai-certify recurrence --format json
 circle-ai-contract-ready --kind sparse_attention_coverage
 circle-ai-contract-receipt --kind rope --model-config-file examples/circle_ai_model_configs/standard_rope_config.json
 circle-ai-contract-receipt --kind sparse-attention --parameters '{"context": 9, "strides": [3, 4, 7], "path_length": 2, "local_window": 2}'

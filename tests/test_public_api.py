@@ -89,10 +89,11 @@ def test_package_console_script_target_functions() -> None:
             sys.executable,
             "-c",
             (
-                "from circle_math.cli import contract_ready_main, "
+                "from circle_math.cli import contract_certify_main, contract_ready_main, "
                 "contract_receipt_main, rope_certify_main, "
                 "sparse_attention_certify_main; "
-                "print(callable(contract_ready_main), callable(rope_certify_main), "
+                "print(callable(contract_certify_main), callable(contract_ready_main), "
+                "callable(rope_certify_main), "
                 "callable(sparse_attention_certify_main), "
                 "callable(contract_receipt_main))"
             ),
@@ -101,7 +102,12 @@ def test_package_console_script_target_functions() -> None:
         capture_output=True,
         check=True,
     )
-    assert result.stdout.strip() == "True True True True"
+    assert result.stdout.strip() == "True True True True True"
+
+
+def test_package_metadata_exposes_unified_ai_certifier() -> None:
+    pyproject = (ROOT / "pyproject.toml").read_text()
+    assert 'circle-ai-certify = "circle_math.cli:contract_certify_main"' in pyproject
 
 
 def test_package_cli_contract_receipt_json() -> None:
@@ -138,6 +144,141 @@ def test_package_cli_contract_receipt_json() -> None:
     assert receipt["status"] == "proved"
     assert receipt["request_passed"] is True
     assert receipt["proof_status"]["all_theorem_ids_proved"] is True
+
+
+def test_package_cli_unified_certify_rope_model_config(
+    tmp_path,
+) -> None:
+    config_path = tmp_path / "config.json"
+    request_path = tmp_path / "request.json"
+    import_report_path = tmp_path / "import_report.json"
+    config_path.write_text(
+        json.dumps(
+            {
+                "hidden_size": 4096,
+                "num_attention_heads": 32,
+                "max_position_embeddings": 4096,
+                "rope_theta": 10000.0,
+            }
+        )
+    )
+
+    result = subprocess.run(
+        [
+            sys.executable,
+            "-c",
+            (
+                "import sys; "
+                "from circle_math.cli import contract_certify_main; "
+                "sys.exit(contract_certify_main())"
+            ),
+            "rope",
+            "--model-config-file",
+            str(config_path),
+            "--request-out",
+            str(request_path),
+            "--model-config-import-report-out",
+            str(import_report_path),
+            "--format",
+            "json",
+        ],
+        text=True,
+        capture_output=True,
+        check=True,
+    )
+    receipt = json.loads(result.stdout)
+    assert receipt["kind"] == "rope_position_distinguishability"
+    assert receipt["request"]["parameters"]["head_dim"] == 128
+    assert receipt["request"]["parameters"]["context"] == 4096
+    assert receipt["proof_status"]["all_theorem_ids_proved"] is True
+    assert json.loads(request_path.read_text()) == receipt["request"]
+    import_report = json.loads(import_report_path.read_text())
+    assert import_report["ok"] is True
+    assert import_report["request"] == receipt["request"]
+
+
+def test_package_cli_unified_certify_request_file_gate() -> None:
+    request_file = ROOT / "examples" / "circle_ai_requests" / "kv_cache_request.json"
+
+    result = subprocess.run(
+        [
+            sys.executable,
+            "-c",
+            (
+                "import sys; "
+                "from circle_math.cli import contract_certify_main; "
+                "sys.exit(contract_certify_main())"
+            ),
+            "request",
+            "--request-file",
+            str(request_file),
+            "--require-passed",
+            "--require-status",
+            "proved",
+            "--require-decision",
+            "passed",
+            "--format",
+            "json",
+        ],
+        text=True,
+        capture_output=True,
+        check=True,
+    )
+    receipt = json.loads(result.stdout)
+    assert receipt["kind"] == "kv_cache_ring_buffer"
+    assert receipt["request_passed"] is True
+
+
+def test_package_cli_unified_certify_sparse_and_recurrence() -> None:
+    sparse_result = subprocess.run(
+        [
+            sys.executable,
+            "-c",
+            (
+                "import sys; "
+                "from circle_math.cli import contract_certify_main; "
+                "sys.exit(contract_certify_main())"
+            ),
+            "sparse-attention",
+            "--context",
+            "9",
+            "--strides",
+            "3,4,7",
+            "--path-length",
+            "2",
+            "--local-window",
+            "2",
+            "--format",
+            "json",
+        ],
+        text=True,
+        capture_output=True,
+        check=True,
+    )
+    sparse_receipt = json.loads(sparse_result.stdout)
+    assert sparse_receipt["kind"] == "sparse_attention_coverage"
+    assert sparse_receipt["request_passed"] is True
+
+    recurrence_result = subprocess.run(
+        [
+            sys.executable,
+            "-c",
+            (
+                "import sys; "
+                "from circle_math.cli import contract_certify_main; "
+                "sys.exit(contract_certify_main())"
+            ),
+            "recurrence",
+            "--format",
+            "json",
+        ],
+        text=True,
+        capture_output=True,
+        check=True,
+    )
+    recurrence_receipt = json.loads(recurrence_result.stdout)
+    assert recurrence_receipt["kind"] == "recurrence_schedule"
+    assert recurrence_receipt["request_passed"] is True
 
 
 def test_package_cli_contract_receipt_from_request_file(tmp_path) -> None:

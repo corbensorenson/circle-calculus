@@ -71,7 +71,34 @@ contract = require_ready_contract(pack, "sparse_attention_coverage")
 print(contract["id"])
 ```
 
-The installed CLI exposes the same receipt path for shell users:
+The installed CLI exposes a guided subcommand runner for shell users:
+
+```bash
+circle-ai-certify rope \
+  --model-config-file examples/circle_ai_model_configs/standard_rope_config.json \
+  --request-out /tmp/circle_rope_request.json \
+  --model-config-import-report-out /tmp/circle_rope_import_report.json \
+  --format json
+
+circle-ai-certify kv-cache \
+  --cache-size 16 \
+  --current 31 \
+  --token 20 \
+  --batch-tokens 20,24,29,31 \
+  --sink-size 4 \
+  --require-passed \
+  --format json
+
+circle-ai-certify sparse-attention \
+  --context 9 \
+  --strides 3,4,7 \
+  --path-length 2 \
+  --local-window 2 \
+  --format json
+```
+
+The lower-level installed receipt command accepts kind aliases plus JSON
+parameters directly:
 
 ```bash
 circle-ai-contract-receipt \

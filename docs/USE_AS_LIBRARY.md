@@ -109,6 +109,10 @@ After `python -m pip install -e .`, these package-native entry points are
 available:
 
 ```bash
+circle-ai-certify rope --model-config-file examples/circle_ai_model_configs/standard_rope_config.json --request-out /tmp/circle_rope_request.json --model-config-import-report-out /tmp/circle_rope_import_report.json --format json
+circle-ai-certify kv-cache --cache-size 16 --current 31 --token 20 --batch-tokens 20,24,29,31 --sink-size 4 --require-passed --format json
+circle-ai-certify sparse-attention --context 9 --strides 3,4,7 --path-length 2 --local-window 2 --format json
+circle-ai-certify recurrence --format json
 circle-ai-contract-ready --kind sparse_attention_coverage
 circle-ai-contract-receipt --kind rope --model-config-file examples/circle_ai_model_configs/standard_rope_config.json --request-out /tmp/circle_rope_request.json --model-config-import-report-out /tmp/circle_rope_import_report.json
 circle-ai-contract-receipt --request-file examples/circle_ai_requests/kv_cache_request.json --request-out /tmp/circle_kv_request.json
@@ -118,12 +122,15 @@ circle-rope-certify --preset llama_style_10000_4k
 circle-sparse-attention-certify --context 9 --strides 3,4,7 --path-length 2 --local-window 2
 ```
 
-`circle-ai-contract-receipt` is the installed-package path for producing a
-theorem-linked receipt without using the repository-only scripts. It accepts
-`--model-config-file` for standard RoPE configs and `--parameters-file` when
-the request should come from checked-in JSON. Use `--request-out` to save the
-exact versioned Circle request and `--model-config-import-report-out` to save
-the parameter-source audit report for a RoPE model config.
+`circle-ai-certify` is the installed-package path for guided RoPE, KV-cache,
+sparse-attention, recurrence, and request-file receipts without using the
+repository-only scripts. It accepts `--model-config-file` for standard RoPE
+configs and writes the same theorem-linked receipt shape as the lower-level
+receipt command. Use `--request-out` to save the exact versioned Circle request
+and `--model-config-import-report-out` to save the parameter-source audit
+report for a RoPE model config.
+`circle-ai-contract-receipt` remains available when callers already have a kind
+alias and JSON parameter object.
 Use `--request-file` when the input is already a versioned Circle request for
 RoPE, KV-cache, sparse attention, or recurrence.
 Use `--require-passed`, `--require-status`, `--require-decision`, and

@@ -18,6 +18,7 @@ from .ai_contracts import (
     CONTRACT_PACK_SCHEMA_ID,
     SUPPORTED_CONTRACT_KINDS,
     build_contract_pack,
+    build_contract_request,
     build_rope_model_config_import_report,
     build_validated_contract_receipt,
     build_validated_contract_receipt_from_request,
@@ -209,6 +210,269 @@ def _receipt_gate_failures(receipt: dict[str, Any], args: argparse.Namespace) ->
             f"{decision.get('assurance')!r} is not in {tuple(args.require_assurance)!r}"
         )
     return failures
+
+
+def _parse_int_csv(raw: str) -> tuple[int, ...]:
+    if not raw.strip():
+        return ()
+    return tuple(
+        int(part.strip())
+        for part in raw.replace(";", ",").split(",")
+        if part.strip()
+    )
+
+
+def _parse_positive_int_csv(raw: str) -> tuple[int, ...]:
+    values = _parse_int_csv(raw)
+    if not values:
+        raise argparse.ArgumentTypeError("value must contain at least one integer")
+    if any(value <= 0 for value in values):
+        raise argparse.ArgumentTypeError("all values must be positive")
+    return values
+
+
+def _add_certify_common_options(parser: argparse.ArgumentParser) -> None:
+    parser.add_argument("--pack", type=Path, default=None)
+    parser.add_argument("--request-out", type=Path)
+    parser.add_argument("--json-out", type=Path)
+    parser.add_argument("--format", choices=("text", "json"), default="text")
+    parser.add_argument(
+        "--require-passed",
+        action="store_true",
+        help="Return nonzero unless the emitted receipt has request_passed=true.",
+    )
+    parser.add_argument(
+        "--require-status",
+        action="append",
+        choices=("proved", "impossible", "undecided", "numerical_only", "outside_scope"),
+        default=[],
+    )
+    parser.add_argument(
+        "--require-decision",
+        action="append",
+        choices=("passed", "failed", "undecided", "numerical_only", "outside_scope"),
+        default=[],
+    )
+    parser.add_argument(
+        "--require-assurance",
+        action="append",
+        choices=(
+            "theorem_backed",
+            "mixed_theorem_and_computation",
+            "numerical_only",
+            "unsupported",
+            "undecided",
+        ),
+        default=[],
+    )
+
+
+def _certify_pack_from_args(args: argparse.Namespace) -> dict[str, Any]:
+    return build_contract_pack() if args.pack is None else load_contract_pack(args.pack)
+
+
+def _certify_print_and_gate(
+    receipt: dict[str, Any],
+    args: argparse.Namespace,
+) -> int:
+    if args.request_out is not None:
+        _write_json_file(args.request_out, receipt["request"])
+    if args.json_out is not None:
+        _write_json_file(args.json_out, receipt)
+    gate_failures = _receipt_gate_failures(receipt, args)
+    if args.format == "json":
+        print(json.dumps(receipt, indent=2, sort_keys=True))
+    else:
+        for line in receipt_summary_lines(receipt):
+            print(line)
+    for failure in gate_failures:
+        print(f"contract receipt gate failed: {failure}", file=sys.stderr)
+    return 2 if gate_failures else 0
+
+
+def contract_certify_main() -> int:
+    """Issue theorem-linked AI contract receipts from package-native subcommands."""
+    parser = argparse.ArgumentParser(
+        description=(
+            "Issue theorem-linked Circle AI contract receipts from user "
+            "parameters, model configs, or versioned request JSON. For the "
+            "full repository audit bundle generator, use scripts/circle_ai_certify.py."
+        )
+    )
+    subparsers = parser.add_subparsers(dest="command", required=True)
+
+    request_parser = subparsers.add_parser(
+        "request",
+        help="Issue a receipt from a circle_calculus.ai_contract_request.v0 file.",
+    )
+    _add_certify_common_options(request_parser)
+    request_parser.add_argument(
+        "--request-file",
+        "--request-json",
+        dest="request_file",
+        required=True,
+        type=Path,
+        help="Path to a versioned Circle AI contract request JSON object.",
+    )
+
+    rope_parser = subparsers.add_parser(
+        "rope",
+        help="Issue a RoPE position-distinguishability receipt.",
+    )
+    _add_certify_common_options(rope_parser)
+    rope_parser.add_argument("--model-config-file", "--model-config", type=Path)
+    rope_parser.add_argument("--model-config-import-report-out", type=Path)
+    rope_parser.add_argument("--head-dim", type=int, default=None)
+    rope_parser.add_argument("--base", type=float, default=None)
+    rope_parser.add_argument("--context", type=int, default=None)
+    rope_parser.add_argument("--tolerance", type=float, default=None)
+    rope_parser.add_argument(
+        "--discretization",
+        choices=("round", "floor", "ceil"),
+        default=None,
+    )
+    rope_parser.add_argument("--requested-margin", default=None)
+
+    kv_parser = subparsers.add_parser(
+        "kv-cache",
+        help="Issue a KV-cache ring-buffer freshness receipt.",
+    )
+    _add_certify_common_options(kv_parser)
+    kv_parser.add_argument("--cache-size", required=True, type=int)
+    kv_parser.add_argument("--current", required=True, type=int)
+    kv_parser.add_argument("--token", required=True, type=int)
+    kv_parser.add_argument("--batch-tokens", type=_parse_int_csv, default=())
+    kv_parser.add_argument("--sink-size", type=int, default=0)
+    kv_parser.add_argument("--request-id", default="read_request")
+
+    sparse_parser = subparsers.add_parser(
+        "sparse-attention",
+        help="Issue a sparse-attention local-window plus stride-family receipt.",
+    )
+    _add_certify_common_options(sparse_parser)
+    sparse_parser.add_argument("--context", required=True, type=int)
+    sparse_parser.add_argument("--strides", required=True, type=_parse_positive_int_csv)
+    sparse_parser.add_argument("--path-length", required=True, type=int)
+    sparse_parser.add_argument("--local-window", required=True, type=int)
+
+    recurrence_parser = subparsers.add_parser(
+        "recurrence",
+        help="Issue a finite looped/recursive schedule receipt.",
+    )
+    _add_certify_common_options(recurrence_parser)
+    recurrence_parser.add_argument("--loop-period", type=int, default=5)
+    recurrence_parser.add_argument("--sample-index", type=int, default=8)
+    recurrence_parser.add_argument("--max-loops", type=int, default=7)
+    recurrence_parser.add_argument("--token-count", type=int, default=8)
+    recurrence_parser.add_argument("--selected-block-start", type=int, default=2)
+    recurrence_parser.add_argument("--selected-block-width", type=int, default=3)
+    recurrence_parser.add_argument("--shift-passes", type=int, default=3)
+
+    args = parser.parse_args()
+    pack = _certify_pack_from_args(args)
+    try:
+        if args.command == "request":
+            request = _load_json_object_from_args(
+                request_parser,
+                inline_json=None,
+                json_file=args.request_file,
+                label="request",
+            )
+            receipt = build_validated_contract_receipt_from_request(request, pack=pack)
+        elif args.command == "rope":
+            if args.model_config_file is not None:
+                config = _load_json_object_from_args(
+                    rope_parser,
+                    inline_json=None,
+                    json_file=args.model_config_file,
+                    label="model-config",
+                )
+                import_report = build_rope_model_config_import_report(
+                    config,
+                    head_dim=args.head_dim,
+                    base=args.base,
+                    context=args.context,
+                    tolerance=args.tolerance,
+                    discretization=args.discretization,
+                    requested_margin=args.requested_margin,
+                )
+                if args.model_config_import_report_out is not None:
+                    _write_json_file(args.model_config_import_report_out, import_report)
+                if not import_report["ok"]:
+                    rope_parser.error("; ".join(import_report["failures"]))
+                receipt = build_validated_rope_receipt_from_model_config(
+                    config,
+                    head_dim=args.head_dim,
+                    base=args.base,
+                    context=args.context,
+                    tolerance=args.tolerance,
+                    discretization=args.discretization,
+                    requested_margin=args.requested_margin,
+                    pack=pack,
+                )
+            else:
+                request = build_contract_request(
+                    "rope",
+                    {
+                        "head_dim": 128 if args.head_dim is None else args.head_dim,
+                        "base": 10000.0 if args.base is None else args.base,
+                        "context": 32768 if args.context is None else args.context,
+                        "tolerance": 1e-6 if args.tolerance is None else args.tolerance,
+                        "discretization": (
+                            "round"
+                            if args.discretization is None
+                            else args.discretization
+                        ),
+                        "requested_margin": args.requested_margin,
+                    },
+                )
+                receipt = build_validated_contract_receipt_from_request(
+                    request,
+                    pack=pack,
+                )
+        elif args.command == "kv-cache":
+            request = build_contract_request(
+                "kv-cache",
+                {
+                    "cache_size": args.cache_size,
+                    "current": args.current,
+                    "token": args.token,
+                    "batch_tokens": args.batch_tokens,
+                    "sink_size": args.sink_size,
+                    "request_id": args.request_id,
+                },
+            )
+            receipt = build_validated_contract_receipt_from_request(request, pack=pack)
+        elif args.command == "sparse-attention":
+            request = build_contract_request(
+                "sparse-attention",
+                {
+                    "context": args.context,
+                    "strides": args.strides,
+                    "path_length": args.path_length,
+                    "local_window": args.local_window,
+                },
+            )
+            receipt = build_validated_contract_receipt_from_request(request, pack=pack)
+        elif args.command == "recurrence":
+            request = build_contract_request(
+                "recurrence",
+                {
+                    "loop_period": args.loop_period,
+                    "sample_index": args.sample_index,
+                    "max_loops": args.max_loops,
+                    "token_count": args.token_count,
+                    "selected_block_start": args.selected_block_start,
+                    "selected_block_width": args.selected_block_width,
+                    "shift_passes": args.shift_passes,
+                },
+            )
+            receipt = build_validated_contract_receipt_from_request(request, pack=pack)
+        else:
+            parser.error(f"unsupported command: {args.command}")
+    except ValueError as exc:
+        parser.error(str(exc))
+    return _certify_print_and_gate(receipt, args)
 
 
 def contract_receipt_main() -> int:
@@ -439,6 +703,7 @@ def contract_receipt_main() -> int:
 
 
 __all__ = [
+    "contract_certify_main",
     "contract_ready_main",
     "contract_receipt_main",
     "rope_certify_main",

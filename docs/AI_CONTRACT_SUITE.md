@@ -13,11 +13,11 @@ The guided suite starts with four flagship contracts:
 | Sparse-attention coverage | Which positive lags are covered, which are gaps, and what budget/count facts explain the plan? | `scripts/stride_family_certify.py` | `site/chapters/applications/sparse_attention_contract.qmd` |
 | Looped recurrence schedules | Which loop depth, exit step, active work count, inactive-token count, and whole-period shift invariants does a finite recurrence plan expose? | `scripts/recurrence_schedule_certify.py` | `site/chapters/applications/looped_recurrence_contracts.qmd` |
 
-Use `scripts/circle_ai_certify.py` when you want one consistent receipt schema
-for your own parameters instead of the family-specific reports:
+Use the installed `circle-ai-certify` command when you want one consistent
+receipt schema for your own parameters instead of the family-specific reports:
 
 ```bash
-python scripts/circle_ai_certify.py rope \
+circle-ai-certify rope \
   --head-dim 128 \
   --base 10000 \
   --context 131072 \
@@ -29,12 +29,12 @@ For standard RoPE model configs, the same runner can infer parameters from a
 `config.json`:
 
 ```bash
-python scripts/circle_ai_certify.py rope \
-  --model-config examples/circle_ai_model_configs/standard_rope_config.json \
+circle-ai-certify rope \
+  --model-config-file examples/circle_ai_model_configs/standard_rope_config.json \
   --requested-margin 1/328459 \
   --format json \
   --request-out reports/rope_request.json \
-  --json-out reports/rope_receipt.json \
+  --model-config-import-report-out reports/rope_import.json \
   --require-status proved \
   --require-decision passed \
   --require-assurance mixed_theorem_and_computation \
@@ -59,6 +59,9 @@ Those handoff checkers can also require embedded receipt theorem ids, evidence
 fields, recommendation ids, validation commands, and normalized request
 parameters, so downstream CI can fail on missing dependencies without parsing
 the receipt by hand.
+Use `python scripts/circle_ai_certify.py` when you need repository-only audit
+artifacts such as request-validation reports, receipt-check reports, replay
+checks, certification bundles, artifact manifests, or artifact pin policies.
 Add `--gate-report-out reports/rope_gate.json` when CI needs a compact
 schema-validated JSON gate report without saving the full receipt. Use
 `--json-out reports/rope_receipt.json --receipt-check-out

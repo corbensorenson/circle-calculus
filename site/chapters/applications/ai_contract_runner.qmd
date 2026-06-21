@@ -39,7 +39,7 @@ the theorem manifests plus generated contract pack remain the status source.
 RoPE / KV-cache / sparse attention / recurrence schedule
         |
         v
-python scripts/circle_ai_certify.py ...
+circle-ai-certify ...
         |
         v
 contract receipt
@@ -70,7 +70,7 @@ model-quality claims, or real-data usefulness claims.
 Start with the RoPE flagship contract:
 
 ```bash
-python scripts/circle_ai_certify.py rope \
+circle-ai-certify rope \
   --head-dim 128 \
   --base 10000 \
   --context 131072 \
@@ -81,12 +81,12 @@ If you already have a standard RoPE model `config.json`, import the common
 fields directly:
 
 ```bash
-python scripts/circle_ai_certify.py rope \
-  --model-config examples/circle_ai_model_configs/standard_rope_config.json \
+circle-ai-certify rope \
+  --model-config-file examples/circle_ai_model_configs/standard_rope_config.json \
   --requested-margin 1/328459 \
   --format json \
   --request-out reports/rope_request.json \
-  --json-out reports/rope_receipt.json \
+  --model-config-import-report-out reports/rope_import.json \
   --require-status proved \
   --require-decision passed \
   --require-assurance mixed_theorem_and_computation \
@@ -112,10 +112,14 @@ the receipt, so downstream tools can pin it before rerunning or auditing the
 certificate.
 The `--require-*` flags are CI gates: the receipt is still printed or written,
 then the command exits nonzero if the requested status/pass policy is not met.
-Use `--gate-report-out reports/rope_gate.json` when CI needs a compact
-schema-validated pass/fail report for the emitted receipt. This does not require
-saving the full receipt. Use `--json-out` plus `--receipt-check-out` when the
-audit trail should also point at a saved receipt file.
+Use `--json-out reports/rope_receipt.json` when CI also needs the receipt saved
+as a file.
+
+The repository-only `python scripts/circle_ai_certify.py` runner adds heavier
+audit outputs such as request-validation reports, gate reports, receipt checks,
+receipt-replay checks, certification bundles, artifact manifests, and pin-policy
+checks. Use that script when a handoff needs the full audit bundle rather than a
+single installed-package receipt.
 
 Expected shape:
 
