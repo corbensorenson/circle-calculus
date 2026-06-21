@@ -191,6 +191,12 @@ field. This keeps the StreamingLLM-style sink-token contract visible without
 claiming retrieval quality, throughput, memory savings, or serving-stack
 correctness.
 
+For recurrence requests, the human receipt includes `recurrence_post_period=`
+and `recurrence_periodic_shift=` lines. These expose the post-period work-saving
+extension and the whole-period token-shift invariants as finite schedule facts.
+They do not claim better reasoning, adaptive-exit quality, speed, or model
+performance.
+
 Use `--format json` when another project will consume the result:
 
 ```bash

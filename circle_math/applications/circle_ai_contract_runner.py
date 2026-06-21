@@ -1589,7 +1589,16 @@ def build_recurrence_receipt(
                 "fields.active_token_count_trace",
                 "fields.total_active_token_work",
                 "fields.scheduled_work_saving",
+                "fields.scheduled_work_saving_accounting",
+                "fields.active_inactive_work_accounting",
+                "fields.scheduled_work_saving_positive",
+                "fields.post_period_multi_extension_scheduled_work_saving",
+                "fields.post_period_multi_extension_active_work_unchanged",
                 "fields.periodic_shift_required_steps_invariant",
+                "fields.periodic_shift_recurrence_budget_invariant",
+                "fields.periodic_shift_training_free_budget_invariant",
+                "fields.periodic_shift_exit_step_invariant",
+                "fields.periodic_shift_overthinking_boundary_invariant",
                 "fields.periodic_shift_active_at_step_invariant",
             ],
             "computed_fields": [],
@@ -3066,6 +3075,27 @@ def receipt_summary_lines(receipt: Mapping[str, Any]) -> list[str]:
             f"active={fields['total_active_token_work']} "
             f"inactive={fields['total_inactive_token_work']} "
             f"saving={fields['scheduled_work_saving']}"
+        )
+        lines.append(
+            "recurrence_post_period="
+            f"horizon={fields['post_period_multi_extension_horizon_steps']} "
+            "extra_steps="
+            f"{fields['post_period_extra_steps']} "
+            "saving="
+            f"{fields['post_period_multi_extension_scheduled_work_saving']} "
+            "active_work_unchanged="
+            f"{fields['post_period_multi_extension_active_work_unchanged']}"
+        )
+        lines.append(
+            "recurrence_periodic_shift="
+            f"base_token={fields['periodic_shift_base_token']} "
+            f"passes={fields['periodic_shift_passes']} "
+            f"shift={fields['periodic_shift_amount']} "
+            f"shifted_token={fields['periodic_shifted_token']} "
+            "required_steps_invariant="
+            f"{fields['periodic_shift_required_steps_invariant']} "
+            "active_at_step_invariant="
+            f"{fields['periodic_shift_active_at_step_invariant']}"
         )
     lines.append(f"not_claimed={'; '.join(receipt['not_claimed'])}")
     return lines

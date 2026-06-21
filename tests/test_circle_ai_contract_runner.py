@@ -491,6 +491,31 @@ def test_kv_sparse_and_recurrence_receipts_preserve_family_semantics(
     fields = recurrence["evidence"]["fields"]
     assert fields["scheduled_work_saving"] > 0
     assert fields["periodic_shift_required_steps_invariant"] is True
+    assert "fields.post_period_multi_extension_scheduled_work_saving" in recurrence[
+        "proof_layers"
+    ]["proved_fields"]
+    assert "fields.periodic_shift_recurrence_budget_invariant" in recurrence[
+        "proof_layers"
+    ]["proved_fields"]
+    recurrence_lines = receipt_summary_lines(recurrence)
+    post_period_line = next(
+        line
+        for line in recurrence_lines
+        if line.startswith("recurrence_post_period=")
+    )
+    periodic_shift_line = next(
+        line
+        for line in recurrence_lines
+        if line.startswith("recurrence_periodic_shift=")
+    )
+    assert "horizon=8" in post_period_line
+    assert "extra_steps=3" in post_period_line
+    assert "saving=43" in post_period_line
+    assert "active_work_unchanged=True" in post_period_line
+    assert "base_token=7" in periodic_shift_line
+    assert "shifted_token=22" in periodic_shift_line
+    assert "required_steps_invariant=True" in periodic_shift_line
+    assert "active_at_step_invariant=True" in periodic_shift_line
     assert recurrence["proof_status"]["all_theorem_ids_proved"] is True
 
 
