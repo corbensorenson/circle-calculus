@@ -1377,6 +1377,20 @@ def build_kv_cache_receipt(
     theorem_ids.extend(live_window["theorem_ids"])
     theorem_ids.extend(live_window_request["theorem_ids"])
     theorem_ids.extend(live_window_request["fixture_theorem_ids"])
+    proved_fields = [
+        "window_certificate",
+        "batch_certificate",
+        "adapter_request_trace_certificate",
+        "live_window_certificate",
+        "live_window_request_certificate",
+    ]
+    unsupported_fields = [
+        "paging policy",
+        "throughput",
+        "memory saving",
+        "retrieval quality",
+        "implementation correctness",
+    ]
     if sink_size:
         sink_window = asdict(
             certify_kv_cache_sink_window(
@@ -1388,6 +1402,11 @@ def build_kv_cache_receipt(
         evidence["sink_window_certificate"] = sink_window
         theorem_ids.extend(sink_window["theorem_ids"])
         theorem_ids.extend(sink_window["fixture_theorem_ids"])
+        proved_fields.append("sink_window_certificate")
+    else:
+        unsupported_fields.append(
+            "sink_window_certificate requires positive sink_size"
+        )
     return _base_receipt(
         kind="kv_cache_ring_buffer",
         request_parameters={
@@ -1411,23 +1430,10 @@ def build_kv_cache_receipt(
         evidence=evidence,
         theorem_ids=theorem_ids,
         proof_layers={
-            "proved_fields": [
-                "window_certificate",
-                "batch_certificate",
-                "adapter_request_trace_certificate",
-                "live_window_certificate",
-                "live_window_request_certificate",
-                "sink_window_certificate",
-            ],
+            "proved_fields": proved_fields,
             "computed_fields": [],
             "numerical_only_fields": [],
-            "unsupported_fields": [
-                "paging policy",
-                "throughput",
-                "memory saving",
-                "retrieval quality",
-                "implementation correctness",
-            ],
+            "unsupported_fields": unsupported_fields,
         },
         not_claimed=[
             "This is a proof-carrying finite ring-buffer indexing, retained-window, "
@@ -2996,6 +3002,20 @@ def receipt_summary_lines(receipt: Mapping[str, Any]) -> list[str]:
             f"full_coverage={live['full_coverage_contract']} "
             f"start={live['start']} length={live['length']}"
         )
+        sink = evidence.get("sink_window_certificate")
+        if isinstance(sink, dict):
+            lines.append(
+                "kv_cache_sink_window="
+                f"sink_size={sink['sink_size']} "
+                f"token_count={sink['token_count']} "
+                f"token_bound={sink['token_count_bound']} "
+                f"exact_policy={sink['generated_tokens_exact_policy']} "
+                f"tokens_distinct={sink['tokens_distinct']} "
+                "sink_tokens_retained="
+                f"{sink['sink_tokens_retained_by_policy']} "
+                "sink_tokens_outside_rolling="
+                f"{sink['sink_tokens_outside_ordinary_rolling_window']}"
+            )
     elif kind == "sparse_attention_coverage":
         lines.append(
             "sparse_attention="

@@ -396,6 +396,7 @@ def test_kv_sparse_and_recurrence_receipts_preserve_family_semantics(
         current=31,
         token=20,
         batch_tokens=(12, 20),
+        sink_size=4,
         request_id="stale_read",
         pack=contract_pack,
     )
@@ -418,7 +419,44 @@ def test_kv_sparse_and_recurrence_receipts_preserve_family_semantics(
     adapter = stale_kv["evidence"]["adapter_request_trace_certificate"]
     assert adapter["first_stale_token"] == 12
     assert adapter["stale_member_blocks_pass"] is True
+    assert "sink_window_certificate" in stale_kv["proof_layers"]["proved_fields"]
+    sink = stale_kv["evidence"]["sink_window_certificate"]
+    assert sink["sink_size"] == 4
+    assert sink["token_count"] == 20
+    assert sink["generated_tokens_exact_policy"] is True
+    assert sink["tokens_distinct"] is True
+    assert sink["sink_tokens_retained_by_policy"] is True
+    assert sink["sink_tokens_outside_ordinary_rolling_window"] is True
+    stale_kv_lines = receipt_summary_lines(stale_kv)
+    sink_line = next(
+        line for line in stale_kv_lines if line.startswith("kv_cache_sink_window=")
+    )
+    assert "sink_size=4" in sink_line
+    assert "exact_policy=True" in sink_line
+    assert "sink_tokens_retained=True" in sink_line
     assert stale_kv["proof_status"]["all_theorem_ids_proved"] is True
+
+    no_sink_kv = build_kv_cache_receipt(
+        cache_size=16,
+        current=31,
+        token=20,
+        batch_tokens=(12, 20),
+        sink_size=0,
+        request_id="stale_read_without_sink",
+        pack=contract_pack,
+    )
+    assert "sink_window_certificate" not in no_sink_kv["evidence"]
+    assert "sink_window_certificate" not in no_sink_kv["proof_layers"][
+        "proved_fields"
+    ]
+    assert any(
+        "sink_window_certificate requires positive sink_size" in field
+        for field in no_sink_kv["proof_layers"]["unsupported_fields"]
+    )
+    assert not any(
+        line.startswith("kv_cache_sink_window=")
+        for line in receipt_summary_lines(no_sink_kv)
+    )
 
     assert sparse["status"] == "proved"
     assert sparse["request_passed"] is False

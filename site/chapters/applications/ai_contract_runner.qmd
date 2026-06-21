@@ -183,6 +183,14 @@ frequency is standard channel 0, not an independent all-channel margin theorem.
 | Sparse attention | `python scripts/circle_ai_certify.py sparse-attention --context 120 --strides 7,13 --path-length 3 --local-window 4` | covered lags, uncovered gaps, repair windows, and candidate-budget fields |
 | Recurrence | `python scripts/circle_ai_certify.py recurrence` | finite loop budget, active work, inactive work, exit step, and whole-period shift invariants |
 
+For KV-cache requests with positive `--sink-size`, the human receipt includes a
+`kv_cache_sink_window=` line with the generated pinned-prefix plus rolling-window
+request size, exact-policy flag, distinct-token flag, and sink-token retention
+facts. When `sink_size = 0`, the sink certificate is not listed as a proved
+field. This keeps the StreamingLLM-style sink-token contract visible without
+claiming retrieval quality, throughput, memory savings, or serving-stack
+correctness.
+
 Use `--format json` when another project will consume the result:
 
 ```bash
