@@ -25365,6 +25365,325 @@
       "blocker": "",
       "canonical_status": "proved",
       "dictionary_dependencies": [
+        "CC-0001",
+        "CC-0101"
+      ],
+      "formal_statement": "forall {period left right : Nat}, left <= right -> Circle.Applications.phaseChannelCollision period left right <-> period | right - left",
+      "id": "CC-T0122",
+      "informal_statement": "For ordered positions, equality in one declared finite phase channel is equivalent to the declared period dividing the position gap.",
+      "lean_name": "Circle.Applications.phaseChannelCollision_iff_gap_dvd",
+      "lean_source": "Circle/Applications/PositionPhase.lean",
+      "lean_source_line": 40,
+      "name": "Phase-channel collision iff gap divisibility",
+      "original_status": "proved",
+      "paper_refs": [
+        "docs/POSITION_PHASE_CONTRACTS.md"
+      ],
+      "proof_notes": "Lean theorem is compiled in Circle/Applications/PositionPhase.lean from Nat.modEq_iff_dvd'.",
+      "python_tests": [],
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved",
+      "used_by_papers": [],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": []
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "CC-0001",
+        "CC-0101"
+      ],
+      "formal_statement": "forall {period left right : Nat}, left <= right -> Circle.Applications.phaseChannelDistinguishable period left right <-> not (period | right - left)",
+      "id": "CC-T0123",
+      "informal_statement": "For ordered positions, one declared finite phase channel distinguishes them exactly when its period does not divide the gap.",
+      "lean_name": "Circle.Applications.phaseChannelDistinguishable_iff_not_gap_dvd",
+      "lean_source": "Circle/Applications/PositionPhase.lean",
+      "lean_source_line": 47,
+      "name": "Phase-channel distinguishability iff gap nondivisibility",
+      "original_status": "proved",
+      "paper_refs": [
+        "docs/POSITION_PHASE_CONTRACTS.md"
+      ],
+      "proof_notes": "Lean theorem is compiled in Circle/Applications/PositionPhase.lean by negating the single-channel collision criterion.",
+      "python_tests": [],
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved",
+      "used_by_papers": [],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": []
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "CC-0001",
+        "CC-0101"
+      ],
+      "formal_statement": "forall {period context left right : Nat}, context <= period -> left < context -> right < context -> Circle.Applications.phaseChannelCollision period left right <-> left = right",
+      "id": "CC-T0124",
+      "informal_statement": "If the inspected context fits inside one declared period, then two in-context positions collide in that channel exactly when they are equal.",
+      "lean_name": "Circle.Applications.phaseChannelCollision_iff_eq_on_context",
+      "lean_source": "Circle/Applications/PositionPhase.lean",
+      "lean_source_line": 55,
+      "name": "Phase-channel context injectivity",
+      "original_status": "proved",
+      "paper_refs": [
+        "docs/POSITION_PHASE_CONTRACTS.md"
+      ],
+      "proof_notes": "Lean theorem is compiled in Circle/Applications/PositionPhase.lean by reducing both residues with Nat.mod_eq_of_lt.",
+      "python_tests": [],
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved",
+      "used_by_papers": [],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": []
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "CC-0001",
+        "CC-0101"
+      ],
+      "formal_statement": "forall {periods : List Nat} {left right : Nat}, left <= right -> Circle.Applications.phaseBankCollision periods left right <-> forall period, period in periods -> period | right - left",
+      "id": "CC-T0125",
+      "informal_statement": "For ordered positions, a finite phase bank collides exactly when every declared period divides the position gap.",
+      "lean_name": "Circle.Applications.phaseBankCollision_iff_forall_gap_dvd",
+      "lean_source": "Circle/Applications/PositionPhase.lean",
+      "lean_source_line": 77,
+      "name": "Phase-bank collision iff all declared periods divide gap",
+      "original_status": "proved",
+      "paper_refs": [
+        "docs/POSITION_PHASE_CONTRACTS.md"
+      ],
+      "proof_notes": "Lean theorem is compiled in Circle/Applications/PositionPhase.lean by applying the single-channel divisibility criterion pointwise over the bank.",
+      "python_tests": [],
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved",
+      "used_by_papers": [],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": []
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "CC-0001",
+        "CC-0101"
+      ],
+      "formal_statement": "forall {periods : List Nat} {left right : Nat}, left <= right -> Circle.Applications.phaseBankDistinguishable periods left right <-> exists period, period in periods and not (period | right - left)",
+      "id": "CC-T0126",
+      "informal_statement": "For ordered positions, a finite phase bank distinguishes them exactly when some declared period does not divide the position gap.",
+      "lean_name": "Circle.Applications.phaseBankDistinguishable_iff_exists_not_gap_dvd",
+      "lean_source": "Circle/Applications/PositionPhase.lean",
+      "lean_source_line": 92,
+      "name": "Phase-bank distinguishability iff some period does not divide gap",
+      "original_status": "proved",
+      "paper_refs": [
+        "docs/POSITION_PHASE_CONTRACTS.md"
+      ],
+      "proof_notes": "Lean theorem is compiled in Circle/Applications/PositionPhase.lean by existentially packaging a single-channel noncollision witness.",
+      "python_tests": [],
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved",
+      "used_by_papers": [],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": []
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "CC-0001",
+        "CC-0101"
+      ],
+      "formal_statement": "forall {periods : List Nat} {period context left right : Nat}, period in periods -> context <= period -> left < context -> right < context -> left != right -> Circle.Applications.phaseBankDistinguishable periods left right",
+      "id": "CC-T0127",
+      "informal_statement": "If a phase bank contains a declared period at least as large as the inspected context, then every unequal pair inside the context is distinguished.",
+      "lean_name": "Circle.Applications.phaseBankDistinguishable_of_period_ge_context",
+      "lean_source": "Circle/Applications/PositionPhase.lean",
+      "lean_source_line": 107,
+      "name": "Phase-bank period at context distinguishes unequal in-context positions",
+      "original_status": "proved",
+      "paper_refs": [
+        "docs/POSITION_PHASE_CONTRACTS.md"
+      ],
+      "proof_notes": "Lean theorem is compiled in Circle/Applications/PositionPhase.lean from the single-channel context injectivity criterion.",
+      "python_tests": [],
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved",
+      "used_by_papers": [],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": []
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "CC-0001",
+        "CC-0101"
+      ],
+      "formal_statement": "forall {periods extended : List Nat} {left right : Nat}, (forall period, period in periods -> period in extended) -> Circle.Applications.phaseBankCollision extended left right -> Circle.Applications.phaseBankCollision periods left right",
+      "id": "CC-T0128",
+      "informal_statement": "If a larger phase bank collides, then any declared subbank also collides.",
+      "lean_name": "Circle.Applications.phaseBankCollision_of_subset",
+      "lean_source": "Circle/Applications/PositionPhase.lean",
+      "lean_source_line": 119,
+      "name": "Phase-bank collision restricts to subbanks",
+      "original_status": "proved",
+      "paper_refs": [
+        "docs/POSITION_PHASE_CONTRACTS.md"
+      ],
+      "proof_notes": "Lean theorem is compiled in Circle/Applications/PositionPhase.lean by applying the larger-bank collision hypothesis through the subset witness.",
+      "python_tests": [],
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved",
+      "used_by_papers": [],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": []
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "CC-0001",
+        "CC-0101"
+      ],
+      "formal_statement": "forall {periods extended : List Nat} {left right : Nat}, (forall period, period in periods -> period in extended) -> Circle.Applications.phaseBankDistinguishable periods left right -> Circle.Applications.phaseBankDistinguishable extended left right",
+      "id": "CC-T0129",
+      "informal_statement": "A distinguishing channel in a subbank remains a distinguishing channel after adding more declared periods.",
+      "lean_name": "Circle.Applications.phaseBankDistinguishable_of_subset",
+      "lean_source": "Circle/Applications/PositionPhase.lean",
+      "lean_source_line": 129,
+      "name": "Phase-bank distinguishability is monotone under adding channels",
+      "original_status": "proved",
+      "paper_refs": [
+        "docs/POSITION_PHASE_CONTRACTS.md"
+      ],
+      "proof_notes": "Lean theorem is compiled in Circle/Applications/PositionPhase.lean by reusing the existing witness channel in the extended bank.",
+      "python_tests": [],
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved",
+      "used_by_papers": [],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": []
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "CC-0001",
+        "CC-0101"
+      ],
+      "formal_statement": "forall {xPeriods yPeriods : List Nat} {leftX rightX leftY rightY : Nat}, Circle.Applications.phaseGrid2DCollision xPeriods yPeriods leftX rightX leftY rightY <-> Circle.Applications.phaseBankCollision xPeriods leftX rightX and Circle.Applications.phaseBankCollision yPeriods leftY rightY",
+      "id": "CC-T0130",
+      "informal_statement": "A two-axis finite phase grid collides exactly when the x-axis bank collides and the y-axis bank collides.",
+      "lean_name": "Circle.Applications.phaseGrid2DCollision_iff_axes",
+      "lean_source": "Circle/Applications/PositionPhase.lean",
+      "lean_source_line": 148,
+      "name": "Two-axis phase-grid collision iff both axes collide",
+      "original_status": "proved",
+      "paper_refs": [
+        "docs/POSITION_PHASE_CONTRACTS.md"
+      ],
+      "proof_notes": "Lean theorem is compiled in Circle/Applications/PositionPhase.lean because the grid collision predicate is defined as the conjunction of axis-bank collisions.",
+      "python_tests": [],
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved",
+      "used_by_papers": [],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": []
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "CC-0001",
+        "CC-0101"
+      ],
+      "formal_statement": "forall {scale period : Nat}, 0 < scale -> 0 < period -> 0 < Circle.Applications.scaledPhasePeriod scale period",
+      "id": "CC-T0131",
+      "informal_statement": "Scaling a positive declared phase period by a positive integer yields a positive declared period.",
+      "lean_name": "Circle.Applications.scaledPhasePeriod_pos",
+      "lean_source": "Circle/Applications/PositionPhase.lean",
+      "lean_source_line": 165,
+      "name": "Positive phase-period scaling preserves positivity",
+      "original_status": "proved",
+      "paper_refs": [
+        "docs/POSITION_PHASE_CONTRACTS.md"
+      ],
+      "proof_notes": "Lean theorem is compiled in Circle/Applications/PositionPhase.lean by Nat.mul_pos.",
+      "python_tests": [],
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved",
+      "used_by_papers": [],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": []
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "CC-0001",
+        "CC-0101"
+      ],
+      "formal_statement": "forall {scale : Nat} {periods : List Nat}, 0 < scale -> (forall period, period in periods -> 0 < period) -> forall period, period in Circle.Applications.scaledPhasePeriodBank scale periods -> 0 < period",
+      "id": "CC-T0132",
+      "informal_statement": "A positive integer scale maps a phase bank of positive declared periods to another bank of positive declared periods.",
+      "lean_name": "Circle.Applications.scaledPhasePeriodBank_all_pos",
+      "lean_source": "Circle/Applications/PositionPhase.lean",
+      "lean_source_line": 173,
+      "name": "Positive phase-bank scaling preserves positive periods",
+      "original_status": "proved",
+      "paper_refs": [
+        "docs/POSITION_PHASE_CONTRACTS.md"
+      ],
+      "proof_notes": "Lean theorem is compiled in Circle/Applications/PositionPhase.lean by List.mem_map and the positive-period scaling theorem.",
+      "python_tests": [],
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved",
+      "used_by_papers": [],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": []
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
         "COMMON-0001",
         "COMMON-0002"
       ],

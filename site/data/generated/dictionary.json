@@ -425,6 +425,72 @@
           "status": "proved"
         },
         {
+          "id": "CC-T0122",
+          "lean_name": "Circle.Applications.phaseChannelCollision_iff_gap_dvd",
+          "name": "Phase-channel collision iff gap divisibility",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0123",
+          "lean_name": "Circle.Applications.phaseChannelDistinguishable_iff_not_gap_dvd",
+          "name": "Phase-channel distinguishability iff gap nondivisibility",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0124",
+          "lean_name": "Circle.Applications.phaseChannelCollision_iff_eq_on_context",
+          "name": "Phase-channel context injectivity",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0125",
+          "lean_name": "Circle.Applications.phaseBankCollision_iff_forall_gap_dvd",
+          "name": "Phase-bank collision iff all declared periods divide gap",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0126",
+          "lean_name": "Circle.Applications.phaseBankDistinguishable_iff_exists_not_gap_dvd",
+          "name": "Phase-bank distinguishability iff some period does not divide gap",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0127",
+          "lean_name": "Circle.Applications.phaseBankDistinguishable_of_period_ge_context",
+          "name": "Phase-bank period at context distinguishes unequal in-context positions",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0128",
+          "lean_name": "Circle.Applications.phaseBankCollision_of_subset",
+          "name": "Phase-bank collision restricts to subbanks",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0129",
+          "lean_name": "Circle.Applications.phaseBankDistinguishable_of_subset",
+          "name": "Phase-bank distinguishability is monotone under adding channels",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0130",
+          "lean_name": "Circle.Applications.phaseGrid2DCollision_iff_axes",
+          "name": "Two-axis phase-grid collision iff both axes collide",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0131",
+          "lean_name": "Circle.Applications.scaledPhasePeriod_pos",
+          "name": "Positive phase-period scaling preserves positivity",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0132",
+          "lean_name": "Circle.Applications.scaledPhasePeriodBank_all_pos",
+          "name": "Positive phase-bank scaling preserves positive periods",
+          "status": "proved"
+        },
+        {
           "id": "GEN-T0001",
           "lean_name": "Circle.Generative.finiteCircleGenerator_regenerates_nodes",
           "name": "Circle.Generative.finiteCircleGenerator_regenerates_nodes",
@@ -973,6 +1039,72 @@
           "id": "CC-T0121",
           "lean_name": "Circle.Applications.finiteFourierCoeff_circConv",
           "name": "Circulant convolution Fourier coefficient factorization",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0122",
+          "lean_name": "Circle.Applications.phaseChannelCollision_iff_gap_dvd",
+          "name": "Phase-channel collision iff gap divisibility",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0123",
+          "lean_name": "Circle.Applications.phaseChannelDistinguishable_iff_not_gap_dvd",
+          "name": "Phase-channel distinguishability iff gap nondivisibility",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0124",
+          "lean_name": "Circle.Applications.phaseChannelCollision_iff_eq_on_context",
+          "name": "Phase-channel context injectivity",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0125",
+          "lean_name": "Circle.Applications.phaseBankCollision_iff_forall_gap_dvd",
+          "name": "Phase-bank collision iff all declared periods divide gap",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0126",
+          "lean_name": "Circle.Applications.phaseBankDistinguishable_iff_exists_not_gap_dvd",
+          "name": "Phase-bank distinguishability iff some period does not divide gap",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0127",
+          "lean_name": "Circle.Applications.phaseBankDistinguishable_of_period_ge_context",
+          "name": "Phase-bank period at context distinguishes unequal in-context positions",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0128",
+          "lean_name": "Circle.Applications.phaseBankCollision_of_subset",
+          "name": "Phase-bank collision restricts to subbanks",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0129",
+          "lean_name": "Circle.Applications.phaseBankDistinguishable_of_subset",
+          "name": "Phase-bank distinguishability is monotone under adding channels",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0130",
+          "lean_name": "Circle.Applications.phaseGrid2DCollision_iff_axes",
+          "name": "Two-axis phase-grid collision iff both axes collide",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0131",
+          "lean_name": "Circle.Applications.scaledPhasePeriod_pos",
+          "name": "Positive phase-period scaling preserves positivity",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0132",
+          "lean_name": "Circle.Applications.scaledPhasePeriodBank_all_pos",
+          "name": "Positive phase-bank scaling preserves positive periods",
           "status": "proved"
         },
         {

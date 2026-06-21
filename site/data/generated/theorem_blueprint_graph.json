@@ -1,5 +1,5 @@
 {
-  "edge_count": 8306,
+  "edge_count": 8374,
   "edges": [
     {
       "kind": "cited_by_paper",
@@ -28788,6 +28788,346 @@
     },
     {
       "kind": "cited_by_paper",
+      "source": "CC-T0122",
+      "target": "paper:docs/POSITION_PHASE_BANKS"
+    },
+    {
+      "kind": "cited_by_paper",
+      "source": "CC-T0122",
+      "target": "paper:docs/POSITION_PHASE_CONTRACTS"
+    },
+    {
+      "kind": "declares",
+      "source": "CC-T0122",
+      "target": "lean:Circle.Applications.phaseChannelCollision_iff_gap_dvd"
+    },
+    {
+      "kind": "declares",
+      "source": "CC-T0122",
+      "target": "lean:Circle.Applications.phaseChannelCollision_iff_gap_dvd"
+    },
+    {
+      "kind": "uses_dictionary",
+      "source": "CC-T0122",
+      "target": "dict:CC-0001"
+    },
+    {
+      "kind": "uses_dictionary",
+      "source": "CC-T0122",
+      "target": "dict:CC-0001"
+    },
+    {
+      "kind": "uses_dictionary",
+      "source": "CC-T0122",
+      "target": "dict:CC-0101"
+    },
+    {
+      "kind": "uses_dictionary",
+      "source": "CC-T0122",
+      "target": "dict:CC-0101"
+    },
+    {
+      "kind": "cited_by_paper",
+      "source": "CC-T0123",
+      "target": "paper:docs/POSITION_PHASE_BANKS"
+    },
+    {
+      "kind": "cited_by_paper",
+      "source": "CC-T0123",
+      "target": "paper:docs/POSITION_PHASE_CONTRACTS"
+    },
+    {
+      "kind": "declares",
+      "source": "CC-T0123",
+      "target": "lean:Circle.Applications.phaseBankCollision_iff_forall_gap_dvd"
+    },
+    {
+      "kind": "declares",
+      "source": "CC-T0123",
+      "target": "lean:Circle.Applications.phaseChannelDistinguishable_iff_not_gap_dvd"
+    },
+    {
+      "kind": "uses_dictionary",
+      "source": "CC-T0123",
+      "target": "dict:CC-0001"
+    },
+    {
+      "kind": "uses_dictionary",
+      "source": "CC-T0123",
+      "target": "dict:CC-0001"
+    },
+    {
+      "kind": "uses_dictionary",
+      "source": "CC-T0123",
+      "target": "dict:CC-0101"
+    },
+    {
+      "kind": "uses_dictionary",
+      "source": "CC-T0123",
+      "target": "dict:CC-0101"
+    },
+    {
+      "kind": "cited_by_paper",
+      "source": "CC-T0124",
+      "target": "paper:docs/POSITION_PHASE_BANKS"
+    },
+    {
+      "kind": "cited_by_paper",
+      "source": "CC-T0124",
+      "target": "paper:docs/POSITION_PHASE_CONTRACTS"
+    },
+    {
+      "kind": "declares",
+      "source": "CC-T0124",
+      "target": "lean:Circle.Applications.phaseBankDistinguishable_iff_exists_not_gap_dvd"
+    },
+    {
+      "kind": "declares",
+      "source": "CC-T0124",
+      "target": "lean:Circle.Applications.phaseChannelCollision_iff_eq_on_context"
+    },
+    {
+      "kind": "uses_dictionary",
+      "source": "CC-T0124",
+      "target": "dict:CC-0001"
+    },
+    {
+      "kind": "uses_dictionary",
+      "source": "CC-T0124",
+      "target": "dict:CC-0001"
+    },
+    {
+      "kind": "uses_dictionary",
+      "source": "CC-T0124",
+      "target": "dict:CC-0101"
+    },
+    {
+      "kind": "uses_dictionary",
+      "source": "CC-T0124",
+      "target": "dict:CC-0101"
+    },
+    {
+      "kind": "cited_by_paper",
+      "source": "CC-T0125",
+      "target": "paper:docs/POSITION_PHASE_BANKS"
+    },
+    {
+      "kind": "cited_by_paper",
+      "source": "CC-T0125",
+      "target": "paper:docs/POSITION_PHASE_CONTRACTS"
+    },
+    {
+      "kind": "declares",
+      "source": "CC-T0125",
+      "target": "lean:Circle.Applications.phaseBankCollision_iff_forall_gap_dvd"
+    },
+    {
+      "kind": "declares",
+      "source": "CC-T0125",
+      "target": "lean:Circle.Applications.phaseBankDistinguishable_of_subset"
+    },
+    {
+      "kind": "uses_dictionary",
+      "source": "CC-T0125",
+      "target": "dict:CC-0001"
+    },
+    {
+      "kind": "uses_dictionary",
+      "source": "CC-T0125",
+      "target": "dict:CC-0001"
+    },
+    {
+      "kind": "uses_dictionary",
+      "source": "CC-T0125",
+      "target": "dict:CC-0101"
+    },
+    {
+      "kind": "uses_dictionary",
+      "source": "CC-T0125",
+      "target": "dict:CC-0101"
+    },
+    {
+      "kind": "cited_by_paper",
+      "source": "CC-T0126",
+      "target": "paper:docs/POSITION_PHASE_BANKS"
+    },
+    {
+      "kind": "cited_by_paper",
+      "source": "CC-T0126",
+      "target": "paper:docs/POSITION_PHASE_CONTRACTS"
+    },
+    {
+      "kind": "declares",
+      "source": "CC-T0126",
+      "target": "lean:Circle.Applications.phaseBankDistinguishable_iff_exists_not_gap_dvd"
+    },
+    {
+      "kind": "declares",
+      "source": "CC-T0126",
+      "target": "lean:Circle.Applications.phaseGrid2DCollision_iff_axes"
+    },
+    {
+      "kind": "uses_dictionary",
+      "source": "CC-T0126",
+      "target": "dict:CC-0001"
+    },
+    {
+      "kind": "uses_dictionary",
+      "source": "CC-T0126",
+      "target": "dict:CC-0001"
+    },
+    {
+      "kind": "uses_dictionary",
+      "source": "CC-T0126",
+      "target": "dict:CC-0101"
+    },
+    {
+      "kind": "uses_dictionary",
+      "source": "CC-T0126",
+      "target": "dict:CC-0101"
+    },
+    {
+      "kind": "cited_by_paper",
+      "source": "CC-T0127",
+      "target": "paper:docs/POSITION_PHASE_BANKS"
+    },
+    {
+      "kind": "cited_by_paper",
+      "source": "CC-T0127",
+      "target": "paper:docs/POSITION_PHASE_CONTRACTS"
+    },
+    {
+      "kind": "declares",
+      "source": "CC-T0127",
+      "target": "lean:Circle.Applications.phaseBankDistinguishable_of_period_ge_context"
+    },
+    {
+      "kind": "declares",
+      "source": "CC-T0127",
+      "target": "lean:Circle.Applications.scaledPhasePeriodBank_all_pos"
+    },
+    {
+      "kind": "uses_dictionary",
+      "source": "CC-T0127",
+      "target": "dict:CC-0001"
+    },
+    {
+      "kind": "uses_dictionary",
+      "source": "CC-T0127",
+      "target": "dict:CC-0001"
+    },
+    {
+      "kind": "uses_dictionary",
+      "source": "CC-T0127",
+      "target": "dict:CC-0101"
+    },
+    {
+      "kind": "uses_dictionary",
+      "source": "CC-T0127",
+      "target": "dict:CC-0101"
+    },
+    {
+      "kind": "cited_by_paper",
+      "source": "CC-T0128",
+      "target": "paper:docs/POSITION_PHASE_CONTRACTS"
+    },
+    {
+      "kind": "declares",
+      "source": "CC-T0128",
+      "target": "lean:Circle.Applications.phaseBankCollision_of_subset"
+    },
+    {
+      "kind": "uses_dictionary",
+      "source": "CC-T0128",
+      "target": "dict:CC-0001"
+    },
+    {
+      "kind": "uses_dictionary",
+      "source": "CC-T0128",
+      "target": "dict:CC-0101"
+    },
+    {
+      "kind": "cited_by_paper",
+      "source": "CC-T0129",
+      "target": "paper:docs/POSITION_PHASE_CONTRACTS"
+    },
+    {
+      "kind": "declares",
+      "source": "CC-T0129",
+      "target": "lean:Circle.Applications.phaseBankDistinguishable_of_subset"
+    },
+    {
+      "kind": "uses_dictionary",
+      "source": "CC-T0129",
+      "target": "dict:CC-0001"
+    },
+    {
+      "kind": "uses_dictionary",
+      "source": "CC-T0129",
+      "target": "dict:CC-0101"
+    },
+    {
+      "kind": "cited_by_paper",
+      "source": "CC-T0130",
+      "target": "paper:docs/POSITION_PHASE_CONTRACTS"
+    },
+    {
+      "kind": "declares",
+      "source": "CC-T0130",
+      "target": "lean:Circle.Applications.phaseGrid2DCollision_iff_axes"
+    },
+    {
+      "kind": "uses_dictionary",
+      "source": "CC-T0130",
+      "target": "dict:CC-0001"
+    },
+    {
+      "kind": "uses_dictionary",
+      "source": "CC-T0130",
+      "target": "dict:CC-0101"
+    },
+    {
+      "kind": "cited_by_paper",
+      "source": "CC-T0131",
+      "target": "paper:docs/POSITION_PHASE_CONTRACTS"
+    },
+    {
+      "kind": "declares",
+      "source": "CC-T0131",
+      "target": "lean:Circle.Applications.scaledPhasePeriod_pos"
+    },
+    {
+      "kind": "uses_dictionary",
+      "source": "CC-T0131",
+      "target": "dict:CC-0001"
+    },
+    {
+      "kind": "uses_dictionary",
+      "source": "CC-T0131",
+      "target": "dict:CC-0101"
+    },
+    {
+      "kind": "cited_by_paper",
+      "source": "CC-T0132",
+      "target": "paper:docs/POSITION_PHASE_CONTRACTS"
+    },
+    {
+      "kind": "declares",
+      "source": "CC-T0132",
+      "target": "lean:Circle.Applications.scaledPhasePeriodBank_all_pos"
+    },
+    {
+      "kind": "uses_dictionary",
+      "source": "CC-T0132",
+      "target": "dict:CC-0001"
+    },
+    {
+      "kind": "uses_dictionary",
+      "source": "CC-T0132",
+      "target": "dict:CC-0101"
+    },
+    {
+      "kind": "cited_by_paper",
       "source": "COMMON-T0001",
       "target": "paper:docs/COMPLETION_ROADMAP"
     },
@@ -41533,7 +41873,7 @@
     }
   ],
   "kind": "manifest_evidence_graph",
-  "node_count": 2153,
+  "node_count": 2177,
   "nodes": [
     {
       "id": "AIA-T0001",
@@ -47168,6 +47508,94 @@
       "status": "proved"
     },
     {
+      "id": "CC-T0122",
+      "kind": "theorem",
+      "lean_name": "Circle.Applications.phaseChannelCollision_iff_gap_dvd",
+      "name": "Phase-channel collision iff gap divisibility",
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved"
+    },
+    {
+      "id": "CC-T0123",
+      "kind": "theorem",
+      "lean_name": "Circle.Applications.phaseChannelDistinguishable_iff_not_gap_dvd",
+      "name": "Phase-channel distinguishability iff gap nondivisibility",
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved"
+    },
+    {
+      "id": "CC-T0124",
+      "kind": "theorem",
+      "lean_name": "Circle.Applications.phaseChannelCollision_iff_eq_on_context",
+      "name": "Phase-channel context injectivity",
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved"
+    },
+    {
+      "id": "CC-T0125",
+      "kind": "theorem",
+      "lean_name": "Circle.Applications.phaseBankCollision_iff_forall_gap_dvd",
+      "name": "Phase-bank collision iff all declared periods divide gap",
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved"
+    },
+    {
+      "id": "CC-T0126",
+      "kind": "theorem",
+      "lean_name": "Circle.Applications.phaseBankDistinguishable_iff_exists_not_gap_dvd",
+      "name": "Phase-bank distinguishability iff some period does not divide gap",
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved"
+    },
+    {
+      "id": "CC-T0127",
+      "kind": "theorem",
+      "lean_name": "Circle.Applications.phaseBankDistinguishable_of_period_ge_context",
+      "name": "Phase-bank period at context distinguishes unequal in-context positions",
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved"
+    },
+    {
+      "id": "CC-T0128",
+      "kind": "theorem",
+      "lean_name": "Circle.Applications.phaseBankCollision_of_subset",
+      "name": "Phase-bank collision restricts to subbanks",
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved"
+    },
+    {
+      "id": "CC-T0129",
+      "kind": "theorem",
+      "lean_name": "Circle.Applications.phaseBankDistinguishable_of_subset",
+      "name": "Phase-bank distinguishability is monotone under adding channels",
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved"
+    },
+    {
+      "id": "CC-T0130",
+      "kind": "theorem",
+      "lean_name": "Circle.Applications.phaseGrid2DCollision_iff_axes",
+      "name": "Two-axis phase-grid collision iff both axes collide",
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved"
+    },
+    {
+      "id": "CC-T0131",
+      "kind": "theorem",
+      "lean_name": "Circle.Applications.scaledPhasePeriod_pos",
+      "name": "Positive phase-period scaling preserves positivity",
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved"
+    },
+    {
+      "id": "CC-T0132",
+      "kind": "theorem",
+      "lean_name": "Circle.Applications.scaledPhasePeriodBank_all_pos",
+      "name": "Positive phase-bank scaling preserves positive periods",
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved"
+    },
+    {
       "id": "COMMON-T0001",
       "kind": "theorem",
       "lean_name": "Circle.Common.eulerCharacteristic",
@@ -52543,6 +52971,62 @@
       "source": "Circle/Applications/RoPECertifier.lean"
     },
     {
+      "id": "lean:Circle.Applications.phaseBankCollision_iff_forall_gap_dvd",
+      "kind": "lean_declaration",
+      "lean_name": "Circle.Applications.phaseBankCollision_iff_forall_gap_dvd",
+      "line": 77,
+      "source": "Circle/Applications/PositionPhase.lean"
+    },
+    {
+      "id": "lean:Circle.Applications.phaseBankCollision_of_subset",
+      "kind": "lean_declaration",
+      "lean_name": "Circle.Applications.phaseBankCollision_of_subset",
+      "line": 119,
+      "source": "Circle/Applications/PositionPhase.lean"
+    },
+    {
+      "id": "lean:Circle.Applications.phaseBankDistinguishable_iff_exists_not_gap_dvd",
+      "kind": "lean_declaration",
+      "lean_name": "Circle.Applications.phaseBankDistinguishable_iff_exists_not_gap_dvd",
+      "line": 92,
+      "source": "Circle/Applications/PositionPhase.lean"
+    },
+    {
+      "id": "lean:Circle.Applications.phaseBankDistinguishable_of_period_ge_context",
+      "kind": "lean_declaration",
+      "lean_name": "Circle.Applications.phaseBankDistinguishable_of_period_ge_context",
+      "line": 107,
+      "source": "Circle/Applications/PositionPhase.lean"
+    },
+    {
+      "id": "lean:Circle.Applications.phaseBankDistinguishable_of_subset",
+      "kind": "lean_declaration",
+      "lean_name": "Circle.Applications.phaseBankDistinguishable_of_subset",
+      "line": 129,
+      "source": "Circle/Applications/PositionPhase.lean"
+    },
+    {
+      "id": "lean:Circle.Applications.phaseChannelCollision_iff_eq_on_context",
+      "kind": "lean_declaration",
+      "lean_name": "Circle.Applications.phaseChannelCollision_iff_eq_on_context",
+      "line": 55,
+      "source": "Circle/Applications/PositionPhase.lean"
+    },
+    {
+      "id": "lean:Circle.Applications.phaseChannelCollision_iff_gap_dvd",
+      "kind": "lean_declaration",
+      "lean_name": "Circle.Applications.phaseChannelCollision_iff_gap_dvd",
+      "line": 40,
+      "source": "Circle/Applications/PositionPhase.lean"
+    },
+    {
+      "id": "lean:Circle.Applications.phaseChannelDistinguishable_iff_not_gap_dvd",
+      "kind": "lean_declaration",
+      "lean_name": "Circle.Applications.phaseChannelDistinguishable_iff_not_gap_dvd",
+      "line": 47,
+      "source": "Circle/Applications/PositionPhase.lean"
+    },
+    {
       "id": "lean:Circle.Applications.phaseChannel_add_mul_period",
       "kind": "lean_declaration",
       "lean_name": "Circle.Applications.phaseChannel_add_mul_period",
@@ -52611,6 +53095,13 @@
       "lean_name": "Circle.Applications.phaseCoordinate_zero",
       "line": 37,
       "source": "Circle/Applications/CoilData.lean"
+    },
+    {
+      "id": "lean:Circle.Applications.phaseGrid2DCollision_iff_axes",
+      "kind": "lean_declaration",
+      "lean_name": "Circle.Applications.phaseGrid2DCollision_iff_axes",
+      "line": 148,
+      "source": "Circle/Applications/PositionPhase.lean"
     },
     {
       "id": "lean:Circle.Applications.positionResidue_add_mul_period",
@@ -53801,6 +54292,20 @@
       "lean_name": "Circle.Applications.roundRobinSlot_zero",
       "line": 30,
       "source": "Circle/Applications/CoilSystems.lean"
+    },
+    {
+      "id": "lean:Circle.Applications.scaledPhasePeriodBank_all_pos",
+      "kind": "lean_declaration",
+      "lean_name": "Circle.Applications.scaledPhasePeriodBank_all_pos",
+      "line": 173,
+      "source": "Circle/Applications/PositionPhase.lean"
+    },
+    {
+      "id": "lean:Circle.Applications.scaledPhasePeriod_pos",
+      "kind": "lean_declaration",
+      "lean_name": "Circle.Applications.scaledPhasePeriod_pos",
+      "line": 165,
+      "source": "Circle/Applications/PositionPhase.lean"
     },
     {
       "id": "lean:Circle.Applications.scheduledWorkSaving_add_extra_eq_add_mul_tokenCount_of_loopPeriod_le_steps",
@@ -57009,6 +57514,16 @@
       "paper_id": "docs/GOOGLE_DRIVE_CIRCLE_IDEAS_AUDIT"
     },
     {
+      "id": "paper:docs/POSITION_PHASE_BANKS",
+      "kind": "paper",
+      "paper_id": "docs/POSITION_PHASE_BANKS"
+    },
+    {
+      "id": "paper:docs/POSITION_PHASE_CONTRACTS",
+      "kind": "paper",
+      "paper_id": "docs/POSITION_PHASE_CONTRACTS"
+    },
+    {
       "id": "paper:docs/PRIME_ENGINE",
       "kind": "paper",
       "paper_id": "docs/PRIME_ENGINE"
@@ -57264,7 +57779,7 @@
   "status_counts": {
     "lean_proved": 852,
     "lean_stated": 1,
-    "proved": 121
+    "proved": 132
   },
-  "theorem_count": 974
+  "theorem_count": 985
 }
