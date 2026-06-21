@@ -22,6 +22,7 @@ Run the fast smoke experiment:
 make prime-engine-fuzzy-hybrid-smoke
 make prime-engine-fuzzy-hybrid-any-smoke
 make prime-engine-fuzzy-hybrid-next-smoke
+make prime-engine-bigint-smoke
 ```
 
 Or run the script directly:
@@ -145,6 +146,61 @@ The default smoke gate is intentionally below a victory claim for Circle and
 `primesieve`; it exists to keep the lane attached to real competitors while
 iteration continues.
 
+## Arbitrary-Precision Lane
+
+The Rust CLI now has a separate arbitrary-precision path:
+
+```bash
+circle-prime big-test N --rounds 64 --json
+circle-prime big-next START --rounds 64 --max-candidates 1000000 --json
+circle-prime big-fuzzy-search MODEL START \
+  --candidate-window 512 \
+  --top-k 16 \
+  --score-limit 128 \
+  --rounds 64 \
+  --json
+```
+
+This path is deliberately not merged into the u64 proof contract. For inputs
+that fit in `u64`, `big-test` delegates to the exact deterministic classifier.
+For larger `BigUint` inputs, accepted candidates are probable primes from
+trial division plus configured fixed Miller-Rabin bases. Composite results are
+exact when a small factor or Miller-Rabin witness is found; prime results above
+`u64` are not formal primality certificates yet.
+
+`big-fuzzy-search` keeps the same safety rule as the smaller fuzzy lane: the
+model only ranks candidates, and every reported candidate must pass the
+BigUint probable-prime verifier. Its JSON reports
+`deterministically_verified=false` for large probable-prime results so the
+boundary is visible in benchmark artifacts.
+
+Run the large-prime control smoke:
+
+```bash
+make prime-engine-bigint-smoke
+```
+
+That target compares Circle `big-test` against OpenSSL `prime -checks N` and
+SymPy `isprime` on known 127/255/256/521-bit prime/composite cases, then
+compares `big-next` against SymPy `nextprime`. It also runs a fuzzy any-prime
+search smoke and verifies the reported candidate with SymPy. The output lives
+at `sidecars/PRIME_ENGINE/results/prime_bigint_controls_latest.csv` with
+metadata in `prime_bigint_controls_latest.json`.
+
+Current local smoke status from 2026-06-21:
+
+- 16-round `prime-engine-bigint-smoke` agrees with OpenSSL and SymPy on every
+  selected large-prime case.
+- In the subprocess benchmark, Circle `big-test` is faster than OpenSSL
+  `prime -checks 16` on the selected 127/255/256/521-bit cases, but SymPy
+  `isprime` is faster on all of them.
+- A single-sample 64-check probe still agrees on every case; Circle is competitive
+  with OpenSSL through the 255/256-bit cases, loses to OpenSSL on the 521-bit
+  Mersenne prime, and remains slower than SymPy for these cases.
+- Circle `big-next` and BigUint fuzzy any-prime search agree with SymPy on the
+  selected 127-bit and near-255-bit starts, but SymPy `nextprime` is faster in
+  the current local subprocess benchmark.
+
 Near-term promotion requirements:
 
 - Keep the model tiny enough that inference is cheaper than one meaningful
@@ -155,3 +211,6 @@ Near-term promotion requirements:
 - Compare against existing prime-engine controls before claiming speed.
 - Add a Lean-facing wrapper theorem only for the deterministic acceptance rule,
   not for model quality.
+- For arbitrary-precision claims, add a certificate path such as Pratt,
+  Pocklington, ECPP, or an externally checkable certificate before saying
+  "proved prime" above `u64`.

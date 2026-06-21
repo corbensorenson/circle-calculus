@@ -11,6 +11,7 @@ make prime-engine-competitive-status
 make prime-engine-competitive-short
 make prime-engine-fuzzy-hybrid-smoke
 make prime-engine-fuzzy-hybrid-next-smoke
+make prime-engine-bigint-smoke
 make prime-engine-proof-contract
 make prime-engine-benchmark-record
 make prime-engine-external-controls
@@ -98,6 +99,13 @@ permission.
 The checker requires wins over the Python lanes and conservative floors against
 Circle `next-server`, `libprimesieve` generate, and `libprimecount`; those
 floors are guardrails, not victory claims.
+
+`make prime-engine-bigint-smoke` is the arbitrary-precision smoke gate. It
+builds the release `circle-prime` binary, checks `big-test` on known
+127/255/256/521-bit prime/composite cases against OpenSSL `prime -checks N`
+and SymPy `isprime`, checks `big-next` against SymPy `nextprime`, and runs a
+BigUint fuzzy any-prime smoke. This lane reports probable-prime status above
+`u64`; it is not a Lean-certified primality certificate yet.
 
 `make prime-engine-high-offset-shifted-hot-server` is the harder diagnostic for
 the same high-offset lane. It keeps the server processes hot, but advances each

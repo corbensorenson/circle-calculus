@@ -7,9 +7,10 @@ use std::sync::mpsc;
 use std::thread::{self, JoinHandle};
 
 use circle_prime::{
-    effective_parallel_thread_count, effective_prefix_pi_thread_count,
+    big_fuzzy_any_prime_search, effective_parallel_thread_count, effective_prefix_pi_thread_count,
     fuzzy_any_prime_value_with_score_limit, fuzzy_search_with_score_limit, inspect_horizon,
-    is_prime_u64, next_prime_u64, next_prime_value_u64, prime_count_in_range,
+    is_prime_u64, is_probable_prime_biguint, next_prime_u64, next_prime_value_u64,
+    next_probable_prime_biguint, parse_biguint, prime_count_in_range,
     prime_count_in_range_hybrid_wheel30_marks, prime_count_in_range_hybrid_wheel30_marks_parallel,
     prime_count_in_range_parallel, prime_count_in_range_parallel_balanced,
     prime_count_in_range_parallel_dynamic, prime_count_in_range_prefix_pi,
@@ -22,9 +23,10 @@ use circle_prime::{
     prime_count_shifted_single_segment_presieve17_with_scratch, prime_horizon_proof_contract_json,
     prime_range_count_proof_contract_json, primes_in_range, recommended_count_mode,
     recommended_count_segment_size, recommended_segment_size, warm_small_prefix_pi_cache,
-    FuzzyPrimeModel, FuzzySearchMode, PrimeCountScratch, BASE_PRIME_CACHE_LIMIT,
-    PARALLEL_EDGE_HIGH_OFFSET_MIN_BASE_LIMIT, PARALLEL_LOWER_HIGH_OFFSET_BASE_LIMIT,
-    PARALLEL_LOWER_HIGH_OFFSET_MIN_BASE_LIMIT,
+    BigFuzzyPrimeModel, FuzzyPrimeModel, FuzzySearchMode, PrimeCountScratch,
+    BASE_PRIME_CACHE_LIMIT, DEFAULT_BIG_FUZZY_CANDIDATE_WINDOW, DEFAULT_BIG_MILLER_RABIN_ROUNDS,
+    DEFAULT_BIG_NEXT_MAX_CANDIDATES, PARALLEL_EDGE_HIGH_OFFSET_MIN_BASE_LIMIT,
+    PARALLEL_LOWER_HIGH_OFFSET_BASE_LIMIT, PARALLEL_LOWER_HIGH_OFFSET_MIN_BASE_LIMIT,
 };
 
 const MAX_INSPECT_N: u128 = 100_000;
@@ -114,6 +116,9 @@ fn run(args: Vec<String>) -> Result<(), String> {
         "test" => test_command(&args[1..]),
         "next" => next_command(&args[1..]),
         "next-server" => next_server_command(&args[1..]),
+        "big-test" => big_test_command(&args[1..]),
+        "big-next" => big_next_command(&args[1..]),
+        "big-fuzzy-search" => big_fuzzy_search_command(&args[1..]),
         "fuzzy-search" => fuzzy_search_command(&args[1..]),
         "fuzzy-server" => fuzzy_server_command(&args[1..]),
         "range" => range_command(&args[1..]),
@@ -125,6 +130,101 @@ fn run(args: Vec<String>) -> Result<(), String> {
         }
         _ => Err(usage()),
     }
+}
+
+fn big_test_command(args: &[String]) -> Result<(), String> {
+    let n = parse_biguint(required_arg(args, 0, "big-test requires N")?)?;
+    let rounds = big_rounds_arg(args)?;
+    let json = args.iter().any(|arg| arg == "--json");
+    let decision = is_probable_prime_biguint(&n, rounds)?;
+    if json {
+        println!("{}", decision.to_json());
+    } else {
+        println!("n = {}", decision.n);
+        println!("bit_length = {}", decision.bit_length);
+        println!("status = {:?}", decision.status);
+        println!("method = {}", decision.method);
+        println!("stage = {}", decision.stage);
+        println!("miller_rabin_rounds = {}", decision.miller_rabin_rounds);
+        if let Some(factor) = decision.factor {
+            println!("factor = {factor}");
+        }
+        if let Some(base) = decision.witness_base {
+            println!("witness_base = {base}");
+        }
+    }
+    Ok(())
+}
+
+fn big_next_command(args: &[String]) -> Result<(), String> {
+    let start = parse_biguint(required_arg(args, 0, "big-next requires START")?)?;
+    let rounds = big_rounds_arg(args)?;
+    let max_candidates = optional_value(args, "--max-candidates")
+        .map(|value| {
+            value
+                .parse::<u64>()
+                .map_err(|_| "--max-candidates must fit in u64".to_string())
+        })
+        .transpose()?
+        .unwrap_or(DEFAULT_BIG_NEXT_MAX_CANDIDATES);
+    let json = args.iter().any(|arg| arg == "--json");
+    let search = next_probable_prime_biguint(&start, rounds, max_candidates)?;
+    if json {
+        println!("{}", search.to_json());
+    } else if let Some(prime) = search.prime {
+        println!("{prime}");
+    } else {
+        println!("none");
+    }
+    Ok(())
+}
+
+fn big_fuzzy_search_command(args: &[String]) -> Result<(), String> {
+    let model_path = required_arg(args, 0, "big-fuzzy-search requires MODEL START")?;
+    let start = parse_biguint(required_arg(
+        args,
+        1,
+        "big-fuzzy-search requires MODEL START",
+    )?)?;
+    let rounds = big_rounds_arg(args)?;
+    let candidate_window = optional_value(args, "--candidate-window")
+        .map(|value| {
+            value
+                .parse::<usize>()
+                .map_err(|_| "--candidate-window must fit in usize".to_string())
+        })
+        .transpose()?
+        .unwrap_or(DEFAULT_BIG_FUZZY_CANDIDATE_WINDOW);
+    let top_k = optional_value(args, "--top-k")
+        .map(|value| {
+            value
+                .parse::<usize>()
+                .map_err(|_| "--top-k must fit in usize".to_string())
+        })
+        .transpose()?
+        .unwrap_or(32);
+    let score_limit = optional_value(args, "--score-limit")
+        .map(|value| {
+            value
+                .parse::<usize>()
+                .map_err(|_| "--score-limit must fit in usize".to_string())
+        })
+        .transpose()?
+        .unwrap_or(usize::MAX);
+    let json = args.iter().any(|arg| arg == "--json");
+    let raw_model = fs::read_to_string(model_path)
+        .map_err(|err| format!("failed to read fuzzy model {model_path:?}: {err}"))?;
+    let model = BigFuzzyPrimeModel::from_text(&raw_model)?;
+    let search =
+        big_fuzzy_any_prime_search(&model, &start, candidate_window, top_k, score_limit, rounds)?;
+    if json {
+        println!("{}", search.to_json(&model));
+    } else if let Some(prime) = search.reported_prime {
+        println!("{prime}");
+    } else {
+        println!("none");
+    }
+    Ok(())
 }
 
 fn fuzzy_search_command(args: &[String]) -> Result<(), String> {
@@ -173,6 +273,17 @@ fn fuzzy_search_command(args: &[String]) -> Result<(), String> {
         println!("none");
     }
     Ok(())
+}
+
+fn big_rounds_arg(args: &[String]) -> Result<usize, String> {
+    optional_value(args, "--rounds")
+        .map(|value| {
+            value
+                .parse::<usize>()
+                .map_err(|_| "--rounds must fit in usize".to_string())
+        })
+        .transpose()
+        .map(|rounds| rounds.unwrap_or(DEFAULT_BIG_MILLER_RABIN_ROUNDS))
 }
 
 fn fuzzy_server_command(args: &[String]) -> Result<(), String> {
@@ -1906,6 +2017,9 @@ fn usage() -> String {
         "  circle-prime test N [--json]",
         "  circle-prime next N [--json]",
         "  circle-prime next-server [--json]",
+        "  circle-prime big-test N [--rounds N] [--json]",
+        "  circle-prime big-next START [--rounds N] [--max-candidates N] [--json]",
+        "  circle-prime big-fuzzy-search MODEL START [--candidate-window N] [--top-k N] [--score-limit N] [--rounds N] [--json]",
         "  circle-prime fuzzy-search MODEL START [--mode exact-next|any-prime] [--window N] [--top-k N] [--json]",
         "  circle-prime fuzzy-server MODEL [--mode exact-next|any-prime] [--window N] [--top-k N] [--json]",
         "  circle-prime recommend LOW HIGH [--count] [--json] [--threads N]",
@@ -1913,6 +2027,8 @@ fn usage() -> String {
         "  circle-prime count-server [--segment-size N] [--threads N] [--count-mode MODE] [--warm-prefix-pi-cache] [--json]",
         "",
         "next-server reads START or START COUNT lines from stdin and writes one next prime, none, or JSON object per requested search.",
+        "big-test/big-next use arbitrary-precision BigUint arithmetic. Results above u64 are probable-prime decisions from fixed Miller-Rabin bases, not formal primality certificates.",
+        "big-fuzzy-search uses a tiny bit/residue model only to rank arbitrary-precision candidates; every reported candidate still passes the configured BigUint probable-prime verifier.",
         "fuzzy-search/fuzzy-server read a tiny exported model, use it only to rank candidates, and accept reported primes only after deterministic verification. exact-next mode also verifies every earlier candidate in the bounded window.",
         "count-server reads LOW HIGH [SEGMENT_SIZE] [THREADS] [COUNT_MODE], repeat COUNT LOW HIGH ..., or shifted COUNT SHIFT LOW HIGH ... lines from stdin and writes one count or JSON object per requested count. --warm-prefix-pi-cache prebuilds the reusable small-prefix pi table before reading requests.",
         "count modes: segmented, balanced, dynamic, prefix-pi, presieve13, presieve17, wheel30-mark, hybrid-wheel30-mark",

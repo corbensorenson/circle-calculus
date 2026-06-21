@@ -16,6 +16,8 @@ name = "circle_prime"
 path = "src/lib.rs"
 
 [dependencies]
+num-bigint = "0.4"
+num-traits = "0.2"
 primal = "0.3.3"
 
 [[bin]]

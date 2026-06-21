@@ -191,6 +191,91 @@ def test_rust_prime_cli_finds_next_prime(circle_prime_bin: Path) -> None:
     assert_prime_horizon_proof_contract(payload["decision"])
 
 
+def test_rust_prime_cli_big_test_marks_large_prime_probable(
+    circle_prime_bin: Path,
+) -> None:
+    mersenne_127 = str((1 << 127) - 1)
+    payload = json.loads(
+        run_circle_prime(
+            circle_prime_bin,
+            "big-test",
+            mersenne_127,
+            "--rounds",
+            "16",
+            "--json",
+        )
+    )
+    assert payload["n"] == mersenne_127
+    assert payload["bit_length"] == 127
+    assert payload["status"] == "probable_prime"
+    assert payload["proof_contract"]["rust_domain"] == (
+        "arbitrary_precision_biguint_probable_prime"
+    )
+    assert "certificate" in " ".join(payload["proof_contract"]["not_claimed"])
+
+
+def test_rust_prime_cli_big_next_finds_probable_prime(
+    circle_prime_bin: Path,
+) -> None:
+    start = str(1 << 128)
+    payload = json.loads(
+        run_circle_prime(
+            circle_prime_bin,
+            "big-next",
+            start,
+            "--rounds",
+            "16",
+            "--max-candidates",
+            "1024",
+            "--json",
+        )
+    )
+    assert payload["status"] == "found"
+    assert int(payload["prime"]) >= int(start)
+    assert payload["decision"]["status"] == "probable_prime"
+    assert payload["exact_certified"] is False
+
+
+def test_rust_prime_cli_big_fuzzy_search_uses_probable_verifier(
+    circle_prime_bin: Path,
+    tmp_path: Path,
+) -> None:
+    model = tmp_path / "big-model.txt"
+    model.write_text(
+        "\n".join(
+            [
+                "circle_fuzzy_model_v0",
+                "bit_width 128",
+                "residue_moduli 3,5,7",
+                "weights " + ",".join(["0"] * 131),
+                "bias 0",
+                "",
+            ]
+        )
+    )
+    payload = json.loads(
+        run_circle_prime(
+            circle_prime_bin,
+            "big-fuzzy-search",
+            str(model),
+            str(1 << 127),
+            "--candidate-window",
+            "128",
+            "--top-k",
+            "8",
+            "--score-limit",
+            "32",
+            "--rounds",
+            "16",
+            "--json",
+        )
+    )
+    assert payload["reported_prime"] is not None
+    assert payload["probable_prime_verified"] is True
+    assert payload["deterministically_verified"] is False
+    assert payload["hybrid_proof_contract"]["neural_role"] == "candidate_ordering_only"
+
+
 def test_rust_prime_cli_fuzzy_search_certifies_exact_next(
     circle_prime_bin: Path,
     tmp_path: Path,
