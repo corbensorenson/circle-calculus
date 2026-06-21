@@ -321,6 +321,31 @@ def _receipt_theorem_ids(receipt: dict[str, Any] | None) -> list[str]:
     return [theorem_id for theorem_id in theorem_ids if isinstance(theorem_id, str)]
 
 
+def _receipt_evidence_fields(receipt: dict[str, Any] | None) -> list[str]:
+    if receipt is None:
+        return []
+    evidence = receipt.get("evidence")
+    if not isinstance(evidence, dict):
+        return []
+    return sorted(key for key in evidence if isinstance(key, str))
+
+
+def _receipt_recommendation_ids(receipt: dict[str, Any] | None) -> list[str]:
+    if receipt is None:
+        return []
+    recommendations = receipt.get("recommendations")
+    if not isinstance(recommendations, list):
+        return []
+    ids: list[str] = []
+    for recommendation in recommendations:
+        if not isinstance(recommendation, dict):
+            continue
+        recommendation_id = recommendation.get("id")
+        if isinstance(recommendation_id, str):
+            ids.append(recommendation_id)
+    return ids
+
+
 def _manifest_check_report(
     *,
     manifest_path: Path,
@@ -411,6 +436,8 @@ def verify_manifest(
         base_dir=base_dir,
     )
     receipt_theorem_ids = _receipt_theorem_ids(receipt)
+    receipt_evidence_fields = _receipt_evidence_fields(receipt)
+    receipt_recommendation_ids = _receipt_recommendation_ids(receipt)
 
     status = manifest.get("status")
     decision = manifest.get("decision_verdict")
@@ -449,6 +476,9 @@ def verify_manifest(
         "artifact_reports": artifact_reports,
         "theorem_count": len(receipt_theorem_ids),
         "theorem_ids": receipt_theorem_ids,
+        "evidence_field_count": len(receipt_evidence_fields),
+        "evidence_fields": receipt_evidence_fields,
+        "recommendation_ids": receipt_recommendation_ids,
         "request_content_fingerprint": manifest.get("request_content_fingerprint"),
         "normalized_request_fingerprint": manifest.get(
             "normalized_request_fingerprint"
@@ -479,6 +509,8 @@ def verify_manifests(
     base_dir: Path | None,
     required_kinds: list[str],
     required_theorem_ids: list[str],
+    required_evidence_fields: list[str],
+    required_recommendation_ids: list[str],
     required_statuses: list[str],
     required_decisions: list[str],
     required_assurances: list[str],
@@ -530,6 +562,32 @@ def verify_manifests(
     for theorem_id in required_theorem_ids:
         if theorem_id not in observed_theorem_id_set:
             failures.append(f"required receipt theorem id is missing: {theorem_id}")
+    observed_evidence_fields = sorted(
+        {
+            field
+            for summary in summaries
+            for field in summary.get("evidence_fields", [])
+            if isinstance(field, str)
+        }
+    )
+    observed_evidence_field_set = set(observed_evidence_fields)
+    for field in required_evidence_fields:
+        if field not in observed_evidence_field_set:
+            failures.append(f"required receipt evidence field is missing: {field}")
+    observed_recommendation_ids = sorted(
+        {
+            recommendation_id
+            for summary in summaries
+            for recommendation_id in summary.get("recommendation_ids", [])
+            if isinstance(recommendation_id, str)
+        }
+    )
+    observed_recommendation_id_set = set(observed_recommendation_ids)
+    for recommendation_id in required_recommendation_ids:
+        if recommendation_id not in observed_recommendation_id_set:
+            failures.append(
+                f"required receipt recommendation id is missing: {recommendation_id}"
+            )
     return {
         "schema_id": EXAMPLE_SCHEMA_ID,
         "accepted": not failures,
@@ -541,6 +599,10 @@ def verify_manifests(
         "kind_counts": kind_counts,
         "required_theorem_ids": required_theorem_ids,
         "observed_theorem_id_count": len(observed_theorem_ids),
+        "required_evidence_fields": required_evidence_fields,
+        "observed_evidence_field_count": len(observed_evidence_fields),
+        "required_recommendation_ids": required_recommendation_ids,
+        "observed_recommendation_id_count": len(observed_recommendation_ids),
         "required_statuses": required_statuses,
         "required_decisions": required_decisions,
         "required_assurances": required_assurances,
@@ -631,6 +693,24 @@ def main() -> int:
         ),
     )
     parser.add_argument(
+        "--require-evidence-field",
+        action="append",
+        default=[],
+        help=(
+            "Require at least one saved receipt artifact to expose this top-level "
+            "evidence field. May be repeated."
+        ),
+    )
+    parser.add_argument(
+        "--require-recommendation-id",
+        action="append",
+        default=[],
+        help=(
+            "Require at least one saved receipt artifact to expose this planner "
+            "recommendation id. May be repeated."
+        ),
+    )
+    parser.add_argument(
         "--require-decision",
         action="append",
         default=[],
@@ -666,6 +746,8 @@ def main() -> int:
             base_dir=args.base_dir,
             required_kinds=args.require_kind,
             required_theorem_ids=args.require_theorem_id,
+            required_evidence_fields=args.require_evidence_field,
+            required_recommendation_ids=args.require_recommendation_id,
             required_statuses=args.require_status,
             required_decisions=args.require_decision,
             required_assurances=args.require_assurance,

@@ -236,6 +236,8 @@ contract family that must be present; the verifier fails if any required family
 is missing.
 Add `--require-theorem-id THEOREM_ID` when the downstream job depends on a
 specific theorem appearing in at least one saved receipt artifact.
+Add `--require-evidence-field FIELD` or `--require-recommendation-id ID` when
+automation consumes a specific receipt field or planner recommendation.
 
 Copyable starting points live under:
 

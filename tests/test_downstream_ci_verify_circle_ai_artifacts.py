@@ -256,6 +256,28 @@ def test_standalone_artifact_verifier_accepts_multi_contract_kind_gate(
         for theorem_id in required_theorem_ids
         for arg in ("--require-theorem-id", theorem_id)
     ]
+    required_evidence_fields = [
+        "real_phase_dirichlet_guardrail",
+        "sink_window_certificate",
+        "covered_lag_count",
+        "fields",
+    ]
+    require_evidence_args = [
+        arg
+        for field in required_evidence_fields
+        for arg in ("--require-evidence-field", field)
+    ]
+    required_recommendation_ids = [
+        "ROPE-USE-D19-MARGIN-FRONTIER",
+        "KV-USE-SINK-ROLLING-WINDOW-REQUEST",
+        "SPARSE-INTERVAL-REPAIR-PATH",
+        "RECURRENCE-REUSE-WHOLE-PERIOD-SHIFT",
+    ]
+    require_recommendation_args = [
+        arg
+        for recommendation_id in required_recommendation_ids
+        for arg in ("--require-recommendation-id", recommendation_id)
+    ]
 
     result = subprocess.run(
         [
@@ -276,6 +298,8 @@ def test_standalone_artifact_verifier_accepts_multi_contract_kind_gate(
             "--require-manifest-check",
             *require_kind_args,
             *require_theorem_args,
+            *require_evidence_args,
+            *require_recommendation_args,
         ],
         cwd=ROOT,
         check=True,
@@ -292,6 +316,12 @@ def test_standalone_artifact_verifier_accepts_multi_contract_kind_gate(
     assert payload["kind_counts"] == {kind: 1 for kind in sorted(expected_kinds)}
     assert payload["required_theorem_ids"] == required_theorem_ids
     assert payload["observed_theorem_id_count"] >= len(required_theorem_ids)
+    assert payload["required_evidence_fields"] == required_evidence_fields
+    assert payload["observed_evidence_field_count"] >= len(required_evidence_fields)
+    assert payload["required_recommendation_ids"] == required_recommendation_ids
+    assert payload["observed_recommendation_id_count"] >= len(
+        required_recommendation_ids
+    )
 
 
 def test_standalone_artifact_verifier_rejects_missing_required_kind(
@@ -354,6 +384,46 @@ def test_standalone_artifact_verifier_rejects_missing_required_theorem_id(
     assert payload["observed_theorem_id_count"] > 0
     assert any(
         "required receipt theorem id is missing" in failure
+        for failure in payload["failures"]
+    )
+
+
+def test_standalone_artifact_verifier_rejects_missing_field_and_recommendation(
+    tmp_path: Path,
+) -> None:
+    manifest_path, _ = _emit_standard_rope_artifacts(tmp_path)
+
+    result = subprocess.run(
+        [
+            sys.executable,
+            str(SCRIPT),
+            str(manifest_path),
+            "--format",
+            "json",
+            "--require-evidence-field",
+            "nonexistent_evidence_field",
+            "--require-recommendation-id",
+            "NONEXISTENT-RECOMMENDATION",
+        ],
+        cwd=ROOT,
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+
+    assert result.returncode == 4
+    payload = json.loads(result.stderr)
+    assert payload["accepted"] is False
+    assert payload["required_evidence_fields"] == ["nonexistent_evidence_field"]
+    assert payload["observed_evidence_field_count"] > 0
+    assert payload["required_recommendation_ids"] == ["NONEXISTENT-RECOMMENDATION"]
+    assert payload["observed_recommendation_id_count"] > 0
+    assert any(
+        "required receipt evidence field is missing" in failure
+        for failure in payload["failures"]
+    )
+    assert any(
+        "required receipt recommendation id is missing" in failure
         for failure in payload["failures"]
     )
 
