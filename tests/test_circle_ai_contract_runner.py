@@ -1250,7 +1250,18 @@ def test_request_api_reports_malformed_requests() -> None:
         "request contains unsupported keys: paramaters" in failure
         for failure in validate_contract_request(typo_top_level)
     )
-    assert build_contract_request_validation_report(typo_parameter) == {
+    typo_parameter_report = build_contract_request_validation_report(typo_parameter)
+    assert typo_parameter_report["content_fingerprint_algorithm"] == "sha256-json-v1"
+    assert len(typo_parameter_report["request_content_fingerprint"]) == 64
+    assert {
+        key: value
+        for key, value in typo_parameter_report.items()
+        if key
+        not in {
+            "content_fingerprint_algorithm",
+            "request_content_fingerprint",
+        }
+    } == {
         "schema_id": "circle_calculus.ai_contract_request_validation.v0",
         "request_schema_id": "circle_calculus.ai_contract_request.v0",
         "ok": False,
@@ -1545,6 +1556,7 @@ def test_runner_check_report_schema_accepts_public_report() -> None:
                 "source_content_fingerprint": "3" * 64,
                 "request_path": "examples/circle_ai_requests/rope_request.json",
                 "model_config_import_report_path": None,
+                "model_config_parameter_sources": None,
                 "request_validation_report_path": None,
                 "receipt_path": None,
                 "kind": "rope_position_distinguishability",
@@ -1666,6 +1678,7 @@ def test_circle_ai_certify_cli_imports_checked_in_model_config(
     request_path = tmp_path / "request.json"
     receipt_path = tmp_path / "receipt.json"
     import_report_path = tmp_path / "rope_model_config_import.json"
+    validation_report_path = tmp_path / "request_validation.json"
 
     result = subprocess.run(
         [
@@ -1682,6 +1695,8 @@ def test_circle_ai_certify_cli_imports_checked_in_model_config(
             str(receipt_path),
             "--model-config-import-report-out",
             str(import_report_path),
+            "--request-validation-report-out",
+            str(validation_report_path),
             "--require-status",
             "proved",
             "--require-decision",
@@ -1702,10 +1717,20 @@ def test_circle_ai_certify_cli_imports_checked_in_model_config(
     saved_request = json.loads(request_path.read_text())
     saved_receipt = json.loads(receipt_path.read_text())
     import_report = json.loads(import_report_path.read_text())
+    validation_report = json.loads(validation_report_path.read_text())
     assert payload == saved_receipt
     jsonschema.validate(import_report, build_rope_model_config_import_json_schema())
+    jsonschema.validate(
+        validation_report,
+        build_contract_request_validation_json_schema(),
+    )
     assert import_report["ok"] is True
     assert import_report["request"] == saved_request
+    assert validation_report["ok"] is True
+    assert validation_report["canonical_kind"] == "rope_position_distinguishability"
+    assert validation_report["request_content_fingerprint"] == saved_receipt[
+        "request_content_fingerprint"
+    ]
     assert import_report["parameter_sources"]["head_dim"]["source"] == (
         "derived_config_fields"
     )

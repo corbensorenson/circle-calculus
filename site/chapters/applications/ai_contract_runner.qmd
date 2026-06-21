@@ -167,6 +167,10 @@ python scripts/circle_ai_certify.py sparse-attention \
   --require-status proved
 ```
 
+Add `--request-validation-report-out reports/request_validation.json` when a
+single-config run should also save the schema-validated preflight report for the
+exact request that produced the receipt.
+
 For a project that already stores configs as files, use the request schema:
 
 ```json

@@ -89,6 +89,24 @@ def add_common_options(parser: argparse.ArgumentParser) -> None:
         ),
     )
     parser.add_argument(
+        "--request-validation-report-out",
+        type=Path,
+        help=(
+            "Optional path for a schema-validated request preflight report for "
+            "the exact request used by this run."
+        ),
+    )
+    parser.add_argument(
+        "--request-validation-schema",
+        type=Path,
+        default=DEFAULT_REQUEST_VALIDATION_SCHEMA,
+        help=(
+            "Generated JSON Schema used to validate request preflight reports. "
+            "Defaults to "
+            "site/data/generated/circle_ai_contract_request_validation.schema.json."
+        ),
+    )
+    parser.add_argument(
         "--receipt-check-out",
         type=Path,
         help=(
@@ -198,16 +216,6 @@ def parse_args() -> argparse.Namespace:
         "--validate-only",
         action="store_true",
         help="Validate the request file and exit without issuing a receipt.",
-    )
-    request.add_argument(
-        "--request-validation-schema",
-        type=Path,
-        default=DEFAULT_REQUEST_VALIDATION_SCHEMA,
-        help=(
-            "Generated JSON Schema used to validate validate-only reports. "
-            "Defaults to "
-            "site/data/generated/circle_ai_contract_request_validation.schema.json."
-        ),
     )
 
     rope = subparsers.add_parser(
@@ -326,22 +334,13 @@ def _display_path(path: Path | None) -> str:
         return str(path)
 
 
-def _receipt_from_request_json(
-    path: Path,
-    *,
-    pack: dict[str, Any] | None,
+def _validated_request_validation_report(
+    request: dict[str, Any],
+    schema_path: Path,
 ) -> dict[str, Any]:
-    try:
-        return build_validated_contract_receipt_from_request(
-            _load_request_json(path),
-            pack=pack,
-        )
-    except ValueError as exc:
-        raise SystemExit(str(exc)) from exc
-
-
-def _request_validation_report(path: Path) -> dict[str, Any]:
-    return build_contract_request_validation_report(_load_request_json(path))
+    report = build_contract_request_validation_report(request)
+    _validate_request_validation_report(report, schema_path)
+    return report
 
 
 def _validate_request_validation_report(
@@ -489,8 +488,9 @@ def main() -> int:
             "a saved receipt file"
         )
     if args.kind == "request":
+        request_object = _load_request_json(args.request_json)
         if args.request_out is not None:
-            write_json(args.request_out, _load_request_json(args.request_json))
+            write_json(args.request_out, request_object)
         if args.validate_only:
             if (
                 args.require_status
@@ -505,11 +505,12 @@ def main() -> int:
                     "--require-passed, --receipt-check-out, and "
                     "--gate-report-out require a receipt; omit --validate-only"
                 )
-            report = _request_validation_report(args.request_json)
-            _validate_request_validation_report(
-                report,
+            report = _validated_request_validation_report(
+                request_object,
                 args.request_validation_schema,
             )
+            if args.request_validation_report_out is not None:
+                write_json(args.request_validation_report_out, report)
             if args.json_out is not None:
                 write_json(args.json_out, report)
             if args.format == "json":
@@ -524,8 +525,20 @@ def main() -> int:
                 for failure in report["failures"]:
                     print(f"failure={failure}", file=sys.stderr)
             return 0 if report["ok"] else 1
+        if args.request_validation_report_out is not None:
+            report = _validated_request_validation_report(
+                request_object,
+                args.request_validation_schema,
+            )
+            write_json(args.request_validation_report_out, report)
         pack = _pack_from_args(args)
-        receipt = _receipt_from_request_json(args.request_json, pack=pack)
+        try:
+            receipt = build_validated_contract_receipt_from_request(
+                request_object,
+                pack=pack,
+            )
+        except ValueError as exc:
+            raise SystemExit(str(exc)) from exc
     else:
         pack = _pack_from_args(args)
         try:
@@ -556,6 +569,12 @@ def main() -> int:
                 request = build_contract_request(args.kind, _parameters_from_args(args))
             if args.request_out is not None:
                 write_json(args.request_out, request)
+            if args.request_validation_report_out is not None:
+                report = _validated_request_validation_report(
+                    request,
+                    args.request_validation_schema,
+                )
+                write_json(args.request_validation_report_out, report)
             receipt = build_validated_contract_receipt_from_request(request, pack=pack)
         except ValueError as exc:
             raise SystemExit(str(exc)) from exc
