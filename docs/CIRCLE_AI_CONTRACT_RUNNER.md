@@ -177,7 +177,9 @@ python scripts/check_circle_ai_contract_runner.py \
 The batch checker records its gate policy in
 `circle_ai_runner_check.json`. If any receipt violates `--require-status`,
 `--require-decision`, `--require-assurance`, or `--require-passed`, the report
-is still written with the receipt summaries and the command exits nonzero.
+is still written with the receipt summaries and the command exits nonzero. Each
+summary includes the `normalized_request` object so downstream CI can compare
+the certified parameters without reopening every receipt file.
 By default it checks both `examples/circle_ai_requests/*.json` request files and
 `examples/circle_ai_model_configs/*.json` standard RoPE model configs. Model
 config examples are first converted into versioned Circle request JSON, then

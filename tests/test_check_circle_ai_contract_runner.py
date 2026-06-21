@@ -129,6 +129,12 @@ def test_check_circle_ai_contract_runner_emits_json_report() -> None:
         len(summary["request_content_fingerprint"]) == 64
         for summary in payload["summaries"]
     )
+    assert all(summary["normalized_request"] for summary in payload["summaries"])
+    assert any(
+        summary["normalized_request"].get("head_dim") == 128
+        for summary in payload["summaries"]
+        if summary["kind"] == "rope_position_distinguishability"
+    )
     assert all(summary["decision_verdict"] for summary in payload["summaries"])
     assert all(summary["decision_assurance"] for summary in payload["summaries"])
     assert {summary["source_type"] for summary in payload["summaries"]} == {
@@ -161,9 +167,15 @@ def test_check_circle_ai_contract_runner_writes_receipts(tmp_path: Path) -> None
     assert all(path.exists() for path in receipt_paths)
     for path in receipt_paths:
         receipt = json.loads(path.read_text())
+        matching_summary = next(
+            summary
+            for summary in payload["summaries"]
+            if Path(summary["receipt_path"]) == path
+        )
         assert receipt["schema_id"] == "circle_calculus.ai_contract_receipt.v0"
         assert receipt["decision"]["claim_status"] == receipt["status"]
         assert receipt["decision"]["request_passed"] == receipt["request_passed"]
+        assert matching_summary["normalized_request"] == receipt["normalized_request"]
         assert len(receipt["receipt_content_fingerprint"]) == 64
         assert receipt["proof_status"]["all_theorem_ids_proved"] is True
 

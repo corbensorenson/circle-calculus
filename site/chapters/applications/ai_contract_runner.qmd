@@ -257,8 +257,8 @@ python scripts/check_circle_ai_contract_runner.py \
 The report file uses schema id `circle_calculus.ai_contract_runner_check.v0` and
 records the source type, source path, optional generated request path, optional
 receipt path, status, theorem count, recommendation count,
-validation-command count, decision verdict, assurance level, and fingerprints
-for each checked item.
+validation-command count, decision verdict, assurance level, the
+`normalized_request` parameters, and fingerprints for each checked item.
 It also records the batch gate policy. If a receipt violates the required
 status, decision, assurance, or pass condition, the checker still writes the
 report and exits nonzero.

@@ -109,6 +109,7 @@ def _summary_from_receipt(
         "theorem_count": receipt["proof_status"]["theorem_count"],
         "recommendation_count": len(receipt["recommendations"]),
         "validation_command_count": len(receipt["validation_commands"]),
+        "normalized_request": receipt["normalized_request"],
         "request_content_fingerprint": receipt["request_content_fingerprint"],
         "normalized_request_fingerprint": receipt["normalized_request_fingerprint"],
         "receipt_content_fingerprint": receipt["receipt_content_fingerprint"],

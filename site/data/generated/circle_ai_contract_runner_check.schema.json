@@ -104,6 +104,10 @@
               "recurrence_schedule"
             ]
           },
+          "normalized_request": {
+            "minProperties": 1,
+            "type": "object"
+          },
           "normalized_request_fingerprint": {
             "pattern": "^[0-9a-f]{64}$",
             "type": "string"
@@ -179,6 +183,7 @@
           "theorem_count",
           "recommendation_count",
           "validation_command_count",
+          "normalized_request",
           "request_content_fingerprint",
           "normalized_request_fingerprint",
           "receipt_content_fingerprint"
