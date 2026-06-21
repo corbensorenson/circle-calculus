@@ -168,6 +168,11 @@ contract = require_ready_contract(pack, "sparse_attention_coverage")
 print(contract["id"])
 ```
 
+When installed as a Python package, Circle Calculus includes
+`circle_math/data/generated/theorem_status_index.json` as a compact theorem
+status fallback. That package data lets contract readiness resolve theorem ids
+when the source repository's `manifests/` directory is not available.
+
 The installed CLI exposes a guided subcommand runner for shell users:
 
 ```bash

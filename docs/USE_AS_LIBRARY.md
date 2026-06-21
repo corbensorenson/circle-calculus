@@ -286,6 +286,10 @@ receipt command. Use `--request-out` to save the exact versioned Circle request
 and `--request-validation-report-out` to save the schema-validated request
 preflight report. Use `--model-config-import-report-out` to save the
 parameter-source audit report for a RoPE model config.
+Installed wheels carry a generated theorem-status snapshot under
+`circle_math/data/generated/theorem_status_index.json`, so contract readiness
+can still resolve theorem ids when the repository `manifests/` directory is not
+present.
 `circle-ai-contract-receipt` remains available when callers already have a kind
 alias and JSON parameter object.
 Use `--request-file` when the input is already a versioned Circle request for

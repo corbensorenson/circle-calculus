@@ -23,6 +23,7 @@ from circle_math.ai_contracts import (
     build_validated_contract_receipt_from_request,
     build_validated_rope_receipt_from_model_config,
 )
+from circle_math.applications import circle_ai_contracts as contract_pack_module
 from circle_math.applications import (
     CIRCLE_AI_CONTRACT_COMPACT_RECEIPT_SCHEMA_ID,
     CIRCLE_AI_CONTRACT_RECEIPT_SCHEMA_ID,
@@ -72,6 +73,33 @@ def test_stable_contract_api_pack_readiness() -> None:
     sparse = readiness_summary(pack, "sparse_attention_coverage")
     assert sparse.ready_for_downstream_fixture_use is True
     assert sparse.all_theorem_ids_proved is True
+
+
+def test_contract_pack_uses_packaged_theorem_status_index_without_repo_manifests(
+    monkeypatch,
+    tmp_path,
+) -> None:
+    monkeypatch.setattr(contract_pack_module, "ROOT", tmp_path)
+    contract_pack_module._repo_manifest_entry_index.cache_clear()
+    contract_pack_module._packaged_manifest_entry_index.cache_clear()
+    contract_pack_module._manifest_entry_index.cache_clear()
+    try:
+        pack = contract_pack_module.build_contract_pack()
+        sparse = readiness_summary(pack, "sparse_attention_coverage")
+        sparse_contract = next(
+            contract
+            for contract in pack["contracts"]
+            if contract["kind"] == "sparse_attention_coverage"
+        )
+        assert sparse.ready_for_downstream_fixture_use is True
+        assert sparse.all_theorem_ids_proved is True
+        assert sparse_contract["proof_status"]["source"] == (
+            "circle_math/data/generated/theorem_status_index.json"
+        )
+    finally:
+        contract_pack_module._repo_manifest_entry_index.cache_clear()
+        contract_pack_module._packaged_manifest_entry_index.cache_clear()
+        contract_pack_module._manifest_entry_index.cache_clear()
 
 
 def test_stable_rope_model_config_api_builds_receipt() -> None:

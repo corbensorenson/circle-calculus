@@ -67,3 +67,6 @@ python_files = ["test_*.py"]
 [tool.setuptools.packages.find]
 where = ["."]
 include = ["circle_math*"]
+
+[tool.setuptools.package-data]
+circle_math = ["data/**/*.json"]

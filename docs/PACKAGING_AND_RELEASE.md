@@ -26,6 +26,30 @@ cargo doc -p circle-prime --no-deps
 
 Use `make check` before a release-grade commit when time allows.
 
+## Current v0.1 RC Dry-Run Evidence
+
+Recorded locally on 2026-06-21:
+
+- `python scripts/export_circle_ai_contracts.py` regenerated the public
+  contract pack, JSON Schemas, and packaged theorem-status index.
+- `make public-api-docs` regenerated `docs/generated/PUBLIC_API_REFERENCE.md`.
+- `python -m pytest tests/test_public_api.py -q` passed:
+  `27 passed in 151.21s`.
+- Clean Python artifact check passed with `build 1.2.1`, `twine 6.2.0`,
+  `pkginfo 1.12.1.2`, and `packaging 26.2`: `python -m build` followed by
+  `python -m twine check dist/*`.
+- Clean wheel smoke passed in `/tmp/circle-calculus-wheel-smoke-3`: importing
+  `circle_math.core`, building the contract pack, checking sparse-attention
+  readiness, building a RoPE receipt, and running installed
+  `circle-ai-certify sparse-attention --context 9 --strides 3,4,7
+  --path-length 2 --local-window 2 --format compact-json`.
+- `cargo doc -p circle-prime --no-deps` passed and generated
+  `target/doc/circle_prime/index.html`.
+- `COPYFILE_DISABLE=1 cargo package -p circle-prime --allow-dirty` passed
+  after clearing generated macOS `.DS_Store` metadata under `target/package`.
+- `cargo test -p circle-prime` passed: `116 passed; 1 ignored` library tests,
+  `14` `circle-prime` binary tests, and `3` benchmark-filter tests.
+
 ## Lean / Reservoir Readiness
 
 The Lake package metadata should include:
@@ -60,6 +84,10 @@ python -m twine check dist/*
 The Python metadata uses an SPDX license expression and therefore emits
 `Metadata-Version: 2.4`; use `twine>=6.2` or another verifier with
 Metadata 2.4 support.
+The wheel also includes `circle_math/data/generated/theorem_status_index.json`
+as package data so contract-pack readiness can resolve theorem ids outside a
+repo checkout. Regenerate it with `python scripts/export_circle_ai_contracts.py`
+before building a release artifact.
 
 The package exposes these console scripts:
 

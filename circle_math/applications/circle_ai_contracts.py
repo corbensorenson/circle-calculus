@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+from importlib import resources as importlib_resources
 from fractions import Fraction
 from functools import lru_cache
 from pathlib import Path
@@ -42,6 +43,13 @@ from .theseus_hive_contracts import seed_rule_contract as build_theseus_seed_rul
 SCHEMA_ID = "circle_calculus.ai_contract_pack.v0"
 ROOT = Path(__file__).resolve().parents[2]
 PROVED_STATUSES = ("lean_proved", "proved")
+PACKAGED_THEOREM_STATUS_INDEX_SCHEMA_ID = (
+    "circle_calculus.packaged_theorem_status_index.v0"
+)
+PACKAGED_THEOREM_STATUS_INDEX_RESOURCE = "data/generated/theorem_status_index.json"
+PACKAGED_THEOREM_STATUS_INDEX_SOURCE = (
+    f"circle_math/{PACKAGED_THEOREM_STATUS_INDEX_RESOURCE}"
+)
 FINGERPRINT_ALGORITHM = "sha256-json-v1"
 FINGERPRINT_KEYS = {
     "content_fingerprint",
@@ -1469,7 +1477,7 @@ def _walk_manifest_entries(value: object) -> list[dict[str, Any]]:
 
 
 @lru_cache(maxsize=1)
-def _manifest_entry_index() -> dict[str, dict[str, Any]]:
+def _repo_manifest_entry_index() -> dict[str, dict[str, Any]]:
     entries: dict[str, dict[str, Any]] = {}
     for path in sorted((ROOT / "manifests").glob("**/*.yaml")):
         data = yaml.safe_load(path.read_text()) or {}
@@ -1478,6 +1486,76 @@ def _manifest_entry_index() -> dict[str, dict[str, Any]]:
             if isinstance(entry_id, str) and entry_id not in entries:
                 entries[entry_id] = entry
     return entries
+
+
+def _theorem_status_snapshot_record(entry: dict[str, Any]) -> dict[str, Any]:
+    return {
+        "id": entry["id"],
+        "status": str(entry.get("status", "")).strip(),
+        "canonical_status": entry.get("canonical_status"),
+        "lean_name": entry.get("lean_name"),
+        "lean_source": entry.get("lean_source"),
+        "source_manifest": entry.get("source_manifest"),
+    }
+
+
+@lru_cache(maxsize=1)
+def _packaged_manifest_entry_index() -> dict[str, dict[str, Any]]:
+    try:
+        resource = importlib_resources.files("circle_math").joinpath(
+            PACKAGED_THEOREM_STATUS_INDEX_RESOURCE
+        )
+        payload = json.loads(resource.read_text(encoding="utf-8"))
+    except (AttributeError, FileNotFoundError, json.JSONDecodeError, OSError):
+        return {}
+    if payload.get("schema_id") != PACKAGED_THEOREM_STATUS_INDEX_SCHEMA_ID:
+        return {}
+    entries: dict[str, dict[str, Any]] = {}
+    for entry in payload.get("theorems", []):
+        if not isinstance(entry, dict):
+            continue
+        entry_id = entry.get("id")
+        if isinstance(entry_id, str) and entry_id not in entries:
+            entries[entry_id] = entry
+    return entries
+
+
+@lru_cache(maxsize=1)
+def _manifest_entry_index() -> dict[str, dict[str, Any]]:
+    repo_entries = _repo_manifest_entry_index()
+    if repo_entries:
+        return repo_entries
+    return _packaged_manifest_entry_index()
+
+
+def _manifest_entry_index_source() -> str:
+    if _repo_manifest_entry_index():
+        return "manifests/**/*.yaml"
+    if _packaged_manifest_entry_index():
+        return PACKAGED_THEOREM_STATUS_INDEX_SOURCE
+    return "unavailable"
+
+
+def build_packaged_theorem_status_index() -> dict[str, Any]:
+    """Return the compact theorem-status snapshot bundled in Python wheels."""
+    entries = _repo_manifest_entry_index() or _packaged_manifest_entry_index()
+    theorems = [
+        _theorem_status_snapshot_record(entry)
+        for _, entry in sorted(entries.items())
+        if isinstance(entry.get("id"), str)
+    ]
+    return {
+        "schema_id": PACKAGED_THEOREM_STATUS_INDEX_SCHEMA_ID,
+        "source": "manifests/**/*.yaml",
+        "claim_boundary": (
+            "This package data records theorem ids, Lean declaration names, and "
+            "manifest proof statuses. It is a wheel-install fallback for contract "
+            "readiness checks, not a replacement for auditing the Lean sources."
+        ),
+        "proved_statuses": list(PROVED_STATUSES),
+        "theorem_count": len(theorems),
+        "theorems": theorems,
+    }
 
 
 def _proof_status_for(theorem_ids: list[str] | tuple[str, ...]) -> dict[str, Any]:
@@ -1510,7 +1588,7 @@ def _proof_status_for(theorem_ids: list[str] | tuple[str, ...]) -> dict[str, Any
             "lean_name": entry.get("lean_name"),
         })
     return {
-        "source": "manifests/**/*.yaml",
+        "source": _manifest_entry_index_source(),
         "proved_statuses": list(PROVED_STATUSES),
         "theorem_count": len(theorem_records),
         "all_theorem_ids_resolved": not unresolved,

@@ -271,6 +271,10 @@ circle-sparse-attention-certify --context 9 --strides 3,4,7 --path-length 2 --lo
 `circle-ai-certify` is the guided installed command for normal downstream
 receipts. The richer repository maintenance commands under `scripts/` remain
 the source tools for generating and validating every audit artifact.
+Installed wheels carry a generated theorem-status snapshot under
+`circle_math/data/generated/theorem_status_index.json`, so contract readiness
+can still resolve theorem ids when the repository `manifests/` directory is not
+present.
 
 For RoPE model configs, add `--request-out` and
 `--request-validation-report-out` when you want the exact Circle request and
