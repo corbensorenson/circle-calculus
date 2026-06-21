@@ -29,6 +29,7 @@ from .ai_contracts import (
 from .applications import (
     CIRCLE_AI_CONTRACT_CERTIFICATION_BUNDLE_FILE_CHECK_SCHEMA_ID,
     CIRCLE_AI_CONTRACT_CERTIFICATION_BUNDLE_SCHEMA_ID,
+    CIRCLE_AI_CONTRACT_COMPACT_RECEIPT_SCHEMA_ID,
     CIRCLE_AI_CONTRACT_RECEIPT_FILE_CHECK_SCHEMA_ID,
     CIRCLE_AI_CONTRACT_RECEIPT_REPLAY_CHECK_SCHEMA_ID,
     CIRCLE_AI_CONTRACT_RECEIPT_SCHEMA_ID,
@@ -43,6 +44,7 @@ from .applications import (
     build_contract_receipt_gate_report,
     build_contract_request_validation_report,
     build_contract_receipt_replay_check_report,
+    build_compact_contract_receipt,
 )
 from .applications.circle_ai import certify_stride_family_coverage
 from .applications.rope_certifier import (
@@ -278,6 +280,14 @@ def _add_certify_common_options(parser: argparse.ArgumentParser) -> None:
     )
     parser.add_argument("--json-out", type=Path)
     parser.add_argument(
+        "--compact-json-out",
+        type=Path,
+        help=(
+            "Optional compact downstream-consumer receipt JSON. --json-out "
+            "continues to write the full audit receipt."
+        ),
+    )
+    parser.add_argument(
         "--gate-report-out",
         type=Path,
         help=(
@@ -332,7 +342,11 @@ def _add_certify_common_options(parser: argparse.ArgumentParser) -> None:
             "the files it names."
         ),
     )
-    parser.add_argument("--format", choices=("text", "json"), default="text")
+    parser.add_argument(
+        "--format",
+        choices=("text", "json", "compact-json"),
+        default="text",
+    )
     parser.add_argument(
         "--require-passed",
         action="store_true",
@@ -435,6 +449,13 @@ def _apply_certify_artifact_dir_defaults(args: argparse.Namespace) -> None:
     _fill_certify_artifact_path(args, "json_out", artifact_dir, prefix, "receipt")
     _fill_certify_artifact_path(
         args,
+        "compact_json_out",
+        artifact_dir,
+        prefix,
+        "compact_receipt",
+    )
+    _fill_certify_artifact_path(
+        args,
         "receipt_check_out",
         artifact_dir,
         prefix,
@@ -495,6 +516,11 @@ def _certify_artifact_paths(
             CIRCLE_AI_CONTRACT_REQUEST_VALIDATION_SCHEMA_ID,
         ),
         ("receipt_json", args.json_out, CIRCLE_AI_CONTRACT_RECEIPT_SCHEMA_ID),
+        (
+            "compact_receipt_json",
+            args.compact_json_out,
+            CIRCLE_AI_CONTRACT_COMPACT_RECEIPT_SCHEMA_ID,
+        ),
         (
             "receipt_check",
             args.receipt_check_out,
@@ -567,6 +593,11 @@ def _certify_print_and_gate(
         )
     if args.json_out is not None:
         _write_json_file(args.json_out, receipt)
+    compact_receipt = None
+    if args.format == "compact-json" or args.compact_json_out is not None:
+        compact_receipt = build_compact_contract_receipt(receipt)
+        if args.compact_json_out is not None:
+            _write_json_file(args.compact_json_out, compact_receipt)
     receipt_path = (
         str(args.json_out) if args.json_out is not None else "<in-memory-receipt>"
     )
@@ -644,6 +675,9 @@ def _certify_print_and_gate(
     gate_failures = _receipt_gate_failures(receipt, args)
     if args.format == "json":
         print(json.dumps(receipt, indent=2, sort_keys=True))
+    elif args.format == "compact-json":
+        assert compact_receipt is not None
+        print(json.dumps(compact_receipt, indent=2, sort_keys=True))
     else:
         for line in receipt_summary_lines(receipt):
             print(line)

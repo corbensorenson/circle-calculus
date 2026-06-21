@@ -24,6 +24,7 @@ from circle_math.ai_contracts import (
     build_validated_rope_receipt_from_model_config,
 )
 from circle_math.applications import (
+    CIRCLE_AI_CONTRACT_COMPACT_RECEIPT_SCHEMA_ID,
     CIRCLE_AI_CONTRACT_RECEIPT_SCHEMA_ID,
     build_contract_artifact_manifest,
     build_contract_artifact_manifest_file_check_report,
@@ -328,6 +329,48 @@ def test_package_cli_unified_certify_request_file_gate() -> None:
     assert receipt["request_passed"] is True
 
 
+def test_package_cli_unified_certify_compact_json(tmp_path) -> None:
+    compact_path = tmp_path / "compact_receipt.json"
+    result = subprocess.run(
+        [
+            sys.executable,
+            "-c",
+            (
+                "import sys; "
+                "from circle_math.cli import contract_certify_main; "
+                "sys.exit(contract_certify_main())"
+            ),
+            "sparse-attention",
+            "--context",
+            "9",
+            "--strides",
+            "3,4,7",
+            "--path-length",
+            "2",
+            "--local-window",
+            "2",
+            "--format",
+            "compact-json",
+            "--compact-json-out",
+            str(compact_path),
+        ],
+        text=True,
+        capture_output=True,
+        check=True,
+    )
+    compact = json.loads(result.stdout)
+    saved = json.loads(compact_path.read_text())
+    assert compact == saved
+    assert compact["schema_id"] == "circle_calculus.ai_contract_compact_receipt.v0"
+    assert compact["kind"] == "sparse_attention_coverage"
+    assert compact["status"] == "proved"
+    assert compact["request_passed"] is True
+    assert compact["proof_status_summary"]["all_theorem_ids_proved"] is True
+    assert "evidence" not in compact
+    assert compact["selected_evidence"]["coverage_complete"] is True
+    assert compact["fingerprints"]["receipt_content_fingerprint"]
+
+
 def test_package_cli_unified_certify_writes_gate_and_replay_reports(tmp_path) -> None:
     receipt_path = tmp_path / "receipt.json"
     gate_path = tmp_path / "gate.json"
@@ -522,6 +565,7 @@ def test_package_cli_unified_certify_artifact_dir_writes_full_bundle(
         "request": artifact_dir / "loop-check_request.json",
         "request_validation": artifact_dir / "loop-check_request_validation.json",
         "receipt": artifact_dir / "loop-check_receipt.json",
+        "compact_receipt": artifact_dir / "loop-check_compact_receipt.json",
         "receipt_check": artifact_dir / "loop-check_receipt_check.json",
         "receipt_replay_check": artifact_dir / "loop-check_receipt_replay_check.json",
         "gate_report": artifact_dir / "loop-check_gate_report.json",
@@ -536,10 +580,15 @@ def test_package_cli_unified_certify_artifact_dir_writes_full_bundle(
     }
     assert all(path.exists() for path in expected_paths.values())
     manifest = json.loads(expected_paths["artifact_manifest"].read_text())
+    compact_receipt = json.loads(expected_paths["compact_receipt"].read_text())
     manifest_check = json.loads(expected_paths["artifact_manifest_check"].read_text())
     assert manifest["artifact_prefix"] == "loop-check"
     assert manifest["artifact_dir"] == str(artifact_dir)
-    assert manifest["artifact_count"] == 8
+    assert manifest["artifact_count"] == 9
+    assert compact_receipt["schema_id"] == CIRCLE_AI_CONTRACT_COMPACT_RECEIPT_SCHEMA_ID
+    assert compact_receipt["fingerprints"]["receipt_content_fingerprint"] == receipt[
+        "receipt_content_fingerprint"
+    ]
     assert manifest_check["ok"] is True
 
 
