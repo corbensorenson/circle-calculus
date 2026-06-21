@@ -46,11 +46,17 @@ from .rope_certifier import (
 REQUEST_SCHEMA_ID = "circle_calculus.ai_contract_request.v0"
 RECEIPT_SCHEMA_ID = "circle_calculus.ai_contract_receipt.v0"
 REQUEST_VALIDATION_SCHEMA_ID = "circle_calculus.ai_contract_request_validation.v0"
+ROPE_MODEL_CONFIG_IMPORT_SCHEMA_ID = (
+    "circle_calculus.rope_model_config_import.v0"
+)
 RUNNER_CHECK_SCHEMA_ID = "circle_calculus.ai_contract_runner_check.v0"
 RECEIPT_FILE_CHECK_SCHEMA_ID = "circle_calculus.ai_contract_receipt_file_check.v0"
 REQUEST_SCHEMA_PATH = "site/data/generated/circle_ai_contract_request.schema.json"
 REQUEST_VALIDATION_SCHEMA_PATH = (
     "site/data/generated/circle_ai_contract_request_validation.schema.json"
+)
+ROPE_MODEL_CONFIG_IMPORT_SCHEMA_PATH = (
+    "site/data/generated/circle_ai_rope_model_config_import.schema.json"
 )
 RECEIPT_SCHEMA_PATH = "site/data/generated/circle_ai_contract_receipt.schema.json"
 RUNNER_CHECK_SCHEMA_PATH = (
@@ -426,6 +432,65 @@ def build_rope_contract_request_from_model_config(
         requested_margin=requested_margin,
     )
     return build_contract_request("rope", parameters)
+
+
+def _unsupported_rope_model_config_fields(config: Any) -> list[str]:
+    if not isinstance(config, Mapping):
+        return []
+    fields: list[str] = []
+    rope_scaling = config.get("rope_scaling")
+    if rope_scaling not in (None, False):
+        if isinstance(rope_scaling, Mapping):
+            rope_type = rope_scaling.get("rope_type", rope_scaling.get("type"))
+            if rope_type in (None, "default", "none"):
+                return fields
+        fields.append("rope_scaling")
+    return fields
+
+
+def build_rope_model_config_import_report(
+    config: Mapping[str, Any],
+    *,
+    head_dim: int | None = None,
+    base: float | None = None,
+    context: int | None = None,
+    tolerance: float | None = None,
+    discretization: str | None = None,
+    requested_margin: str | Fraction | None = None,
+) -> dict[str, Any]:
+    """Return a machine-readable standard-RoPE import report for a config."""
+
+    request: dict[str, Any] | None = None
+    failures: list[str] = []
+    try:
+        request = build_rope_contract_request_from_model_config(
+            config,
+            head_dim=head_dim,
+            base=base,
+            context=context,
+            tolerance=tolerance,
+            discretization=discretization,
+            requested_margin=requested_margin,
+        )
+    except ValueError as exc:
+        failures.append(str(exc))
+    return {
+        "schema_id": ROPE_MODEL_CONFIG_IMPORT_SCHEMA_ID,
+        "request_schema_id": REQUEST_SCHEMA_ID,
+        "kind": "rope_position_distinguishability",
+        "ok": not failures,
+        "failure_count": len(failures),
+        "failures": failures,
+        "unsupported_model_config_fields": _unsupported_rope_model_config_fields(
+            config
+        ),
+        "request": request,
+        "notes": [
+            "This report only covers conversion to Circle's standard-RoPE request frontier.",
+            "A successful import is not a proof; the emitted request still needs a receipt.",
+            "Unsupported model-config features must not be silently certified as standard RoPE.",
+        ],
+    }
 
 
 def _default_pack(pack: Mapping[str, Any] | None) -> dict[str, Any]:
@@ -2465,6 +2530,47 @@ def build_contract_request_validation_json_schema() -> dict[str, Any]:
             },
             "failure_count": {"type": "integer", "minimum": 0},
             "failures": string_list,
+        },
+        "additionalProperties": False,
+    }
+
+
+def build_rope_model_config_import_json_schema() -> dict[str, Any]:
+    string_list = {"type": "array", "items": {"type": "string"}}
+    return {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "$id": (
+            "https://circle-calculus.local/schemas/"
+            "circle_ai_rope_model_config_import.schema.json"
+        ),
+        "title": "Circle AI RoPE Model Config Import Report",
+        "type": "object",
+        "required": [
+            "schema_id",
+            "request_schema_id",
+            "kind",
+            "ok",
+            "failure_count",
+            "failures",
+            "unsupported_model_config_fields",
+            "request",
+            "notes",
+        ],
+        "properties": {
+            "schema_id": {"const": ROPE_MODEL_CONFIG_IMPORT_SCHEMA_ID},
+            "request_schema_id": {"const": REQUEST_SCHEMA_ID},
+            "kind": {"const": "rope_position_distinguishability"},
+            "ok": {"type": "boolean"},
+            "failure_count": {"type": "integer", "minimum": 0},
+            "failures": string_list,
+            "unsupported_model_config_fields": string_list,
+            "request": {
+                "anyOf": [
+                    build_contract_request_json_schema(),
+                    {"type": "null"},
+                ],
+            },
+            "notes": string_list,
         },
         "additionalProperties": False,
     }

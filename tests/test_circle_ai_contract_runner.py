@@ -24,6 +24,8 @@ from circle_math.applications import (
     build_kv_cache_receipt,
     build_recurrence_receipt,
     build_rope_contract_request_from_model_config,
+    build_rope_model_config_import_json_schema,
+    build_rope_model_config_import_report,
     build_rope_request_parameters_from_model_config,
     build_rope_receipt,
     build_sparse_attention_receipt,
@@ -1032,6 +1034,38 @@ def test_rope_model_config_import_rejects_unproved_scaling_metadata() -> None:
         )
 
 
+def test_rope_model_config_import_report_schema_classifies_scaling() -> None:
+    schema = build_rope_model_config_import_json_schema()
+    standard = build_rope_model_config_import_report(
+        {
+            "hidden_size": 4096,
+            "num_attention_heads": 32,
+            "rope_theta": 10000.0,
+            "max_position_embeddings": 131072,
+        },
+        requested_margin="1/328459",
+    )
+    scaled = build_rope_model_config_import_report(
+        {
+            "hidden_size": 4096,
+            "num_attention_heads": 32,
+            "rope_theta": 500000.0,
+            "max_position_embeddings": 131072,
+            "rope_scaling": {"rope_type": "llama3", "factor": 8.0},
+        },
+        requested_margin="1/328459",
+    )
+
+    jsonschema.validate(standard, schema)
+    jsonschema.validate(scaled, schema)
+    assert standard["ok"] is True
+    assert standard["request"]["kind"] == "rope_position_distinguishability"
+    assert scaled["ok"] is False
+    assert scaled["request"] is None
+    assert scaled["unsupported_model_config_fields"] == ["rope_scaling"]
+    assert "rope_scaling is outside" in scaled["failures"][0]
+
+
 def test_rope_model_config_import_rejects_odd_head_dim() -> None:
     with pytest.raises(ValueError, match="must be even"):
         build_rope_request_parameters_from_model_config(
@@ -1454,6 +1488,11 @@ def test_runner_check_report_schema_accepts_public_report() -> None:
                 "theorem_count": 43,
                 "recommendation_count": 2,
                 "validation_command_count": 2,
+                "normalized_request": {
+                    "head_dim": 128,
+                    "base": 10000.0,
+                    "context_length": 131072,
+                },
                 "request_content_fingerprint": "0" * 64,
                 "normalized_request_fingerprint": "1" * 64,
                 "receipt_content_fingerprint": "2" * 64,
@@ -1819,6 +1858,7 @@ def test_circle_ai_certify_cli_rejects_scaled_rope_model_config(
     tmp_path: Path,
 ) -> None:
     config_path = tmp_path / "config.json"
+    report_path = tmp_path / "rope_model_config_import.json"
     config_path.write_text(
         json.dumps(
             {
@@ -1840,6 +1880,8 @@ def test_circle_ai_certify_cli_rejects_scaled_rope_model_config(
             "rope",
             "--model-config",
             str(config_path),
+            "--model-config-import-report-out",
+            str(report_path),
             "--format",
             "json",
         ],
@@ -1851,6 +1893,11 @@ def test_circle_ai_certify_cli_rejects_scaled_rope_model_config(
 
     assert result.returncode == 1
     assert "rope_scaling is outside" in result.stderr
+    report = json.loads(report_path.read_text())
+    jsonschema.validate(report, build_rope_model_config_import_json_schema())
+    assert report["ok"] is False
+    assert report["request"] is None
+    assert report["unsupported_model_config_fields"] == ["rope_scaling"]
 
 
 def test_circle_ai_certify_cli_accepts_request_json(tmp_path: Path) -> None:

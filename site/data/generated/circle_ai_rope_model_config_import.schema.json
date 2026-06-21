@@ -1,0 +1,285 @@
+{
+  "$id": "https://circle-calculus.local/schemas/circle_ai_rope_model_config_import.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "failure_count": {
+      "minimum": 0,
+      "type": "integer"
+    },
+    "failures": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "kind": {
+      "const": "rope_position_distinguishability"
+    },
+    "notes": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "ok": {
+      "type": "boolean"
+    },
+    "request": {
+      "anyOf": [
+        {
+          "$id": "https://circle-calculus.local/schemas/circle_ai_contract_request.schema.json",
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "additionalProperties": false,
+          "oneOf": [
+            {
+              "properties": {
+                "kind": {
+                  "enum": [
+                    "rope",
+                    "rope_position_distinguishability"
+                  ]
+                },
+                "parameters": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "base": {
+                      "exclusiveMinimum": 0,
+                      "type": "number"
+                    },
+                    "context": {
+                      "minimum": 1,
+                      "type": "integer"
+                    },
+                    "discretization": {
+                      "enum": [
+                        "round",
+                        "floor",
+                        "ceil"
+                      ]
+                    },
+                    "head_dim": {
+                      "minimum": 2,
+                      "multipleOf": 2,
+                      "type": "integer"
+                    },
+                    "requested_margin": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "tolerance": {
+                      "minimum": 0,
+                      "type": "number"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            {
+              "properties": {
+                "kind": {
+                  "enum": [
+                    "kv",
+                    "kv-cache",
+                    "kv_cache",
+                    "kv_cache_ring_buffer"
+                  ]
+                },
+                "parameters": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "batch_tokens": {
+                      "items": {
+                        "type": "integer"
+                      },
+                      "type": "array"
+                    },
+                    "cache_size": {
+                      "minimum": 1,
+                      "type": "integer"
+                    },
+                    "current": {
+                      "minimum": 0,
+                      "type": "integer"
+                    },
+                    "request_id": {
+                      "minLength": 1,
+                      "type": "string"
+                    },
+                    "sink_size": {
+                      "minimum": 0,
+                      "type": "integer"
+                    },
+                    "token": {
+                      "minimum": 0,
+                      "type": "integer"
+                    }
+                  },
+                  "required": [
+                    "cache_size",
+                    "current",
+                    "token"
+                  ],
+                  "type": "object"
+                }
+              }
+            },
+            {
+              "properties": {
+                "kind": {
+                  "enum": [
+                    "sparse",
+                    "sparse-attention",
+                    "sparse_attention",
+                    "sparse_attention_coverage"
+                  ]
+                },
+                "parameters": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "context": {
+                      "minimum": 1,
+                      "type": "integer"
+                    },
+                    "local_window": {
+                      "minimum": 0,
+                      "type": "integer"
+                    },
+                    "path_length": {
+                      "minimum": 0,
+                      "type": "integer"
+                    },
+                    "strides": {
+                      "items": {
+                        "minimum": 1,
+                        "type": "integer"
+                      },
+                      "minItems": 1,
+                      "type": "array"
+                    }
+                  },
+                  "required": [
+                    "context",
+                    "strides",
+                    "path_length",
+                    "local_window"
+                  ],
+                  "type": "object"
+                }
+              }
+            },
+            {
+              "properties": {
+                "kind": {
+                  "enum": [
+                    "recurrence",
+                    "recurrence-schedule",
+                    "recurrence_schedule"
+                  ]
+                },
+                "parameters": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "loop_period": {
+                      "minimum": 1,
+                      "type": "integer"
+                    },
+                    "max_loops": {
+                      "minimum": 1,
+                      "type": "integer"
+                    },
+                    "sample_index": {
+                      "minimum": 0,
+                      "type": "integer"
+                    },
+                    "selected_block_start": {
+                      "minimum": 0,
+                      "type": "integer"
+                    },
+                    "selected_block_width": {
+                      "minimum": 1,
+                      "type": "integer"
+                    },
+                    "shift_passes": {
+                      "minimum": 0,
+                      "type": "integer"
+                    },
+                    "token_count": {
+                      "minimum": 1,
+                      "type": "integer"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            }
+          ],
+          "properties": {
+            "kind": {
+              "enum": [
+                "kv",
+                "kv-cache",
+                "kv_cache",
+                "kv_cache_ring_buffer",
+                "recurrence",
+                "recurrence-schedule",
+                "recurrence_schedule",
+                "rope",
+                "rope_position_distinguishability",
+                "sparse",
+                "sparse-attention",
+                "sparse_attention",
+                "sparse_attention_coverage"
+              ]
+            },
+            "parameters": {
+              "minProperties": 0,
+              "type": "object"
+            },
+            "schema_id": {
+              "const": "circle_calculus.ai_contract_request.v0"
+            }
+          },
+          "required": [
+            "schema_id",
+            "kind",
+            "parameters"
+          ],
+          "title": "Circle AI Contract Request",
+          "type": "object"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "request_schema_id": {
+      "const": "circle_calculus.ai_contract_request.v0"
+    },
+    "schema_id": {
+      "const": "circle_calculus.rope_model_config_import.v0"
+    },
+    "unsupported_model_config_fields": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    }
+  },
+  "required": [
+    "schema_id",
+    "request_schema_id",
+    "kind",
+    "ok",
+    "failure_count",
+    "failures",
+    "unsupported_model_config_fields",
+    "request",
+    "notes"
+  ],
+  "title": "Circle AI RoPE Model Config Import Report",
+  "type": "object"
+}

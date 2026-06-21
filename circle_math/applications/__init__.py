@@ -42,6 +42,8 @@ from .circle_ai_contract_runner import (
     build_kv_cache_receipt,
     build_recurrence_receipt,
     build_rope_contract_request_from_model_config,
+    build_rope_model_config_import_json_schema,
+    build_rope_model_config_import_report,
     build_rope_request_parameters_from_model_config,
     build_rope_receipt,
     build_sparse_attention_receipt,

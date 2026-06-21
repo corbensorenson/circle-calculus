@@ -23,6 +23,8 @@ from circle_math.applications import (  # noqa: E402
     build_contract_request,
     build_contract_request_validation_report,
     build_contract_request_validation_json_schema,
+    build_rope_model_config_import_json_schema,
+    build_rope_model_config_import_report,
     build_rope_request_parameters_from_model_config,
     build_validated_contract_receipt,
     build_validated_contract_receipt_from_request,
@@ -35,6 +37,7 @@ from circle_math.applications.circle_ai_contract_runner import (  # noqa: E402
     RECEIPT_FILE_CHECK_SCHEMA_PATH,
     RECEIPT_SCHEMA_PATH,
     REQUEST_VALIDATION_SCHEMA_PATH,
+    ROPE_MODEL_CONFIG_IMPORT_SCHEMA_PATH,
 )
 
 
@@ -46,6 +49,7 @@ RECEIPT_STATUS_VALUES = (
     "outside_scope",
 )
 DEFAULT_REQUEST_VALIDATION_SCHEMA = ROOT / REQUEST_VALIDATION_SCHEMA_PATH
+DEFAULT_ROPE_MODEL_CONFIG_IMPORT_SCHEMA = ROOT / ROPE_MODEL_CONFIG_IMPORT_SCHEMA_PATH
 DEFAULT_RECEIPT_SCHEMA = ROOT / RECEIPT_SCHEMA_PATH
 DEFAULT_RECEIPT_CHECK_SCHEMA = ROOT / RECEIPT_FILE_CHECK_SCHEMA_PATH
 DEFAULT_PACK_PATH = ROOT / "site" / "data" / "generated" / "circle_ai_contract_pack.json"
@@ -221,6 +225,24 @@ def parse_args() -> argparse.Namespace:
             "and context. Explicit flags override inferred values."
         ),
     )
+    rope.add_argument(
+        "--model-config-import-report-out",
+        type=Path,
+        help=(
+            "Optional path for a schema-validated report describing whether "
+            "the model config converted into a standard-RoPE Circle request."
+        ),
+    )
+    rope.add_argument(
+        "--model-config-import-schema",
+        type=Path,
+        default=DEFAULT_ROPE_MODEL_CONFIG_IMPORT_SCHEMA,
+        help=(
+            "Generated JSON Schema used to validate --model-config-import-report-out. "
+            "Defaults to "
+            "site/data/generated/circle_ai_rope_model_config_import.schema.json."
+        ),
+    )
     rope.add_argument("--head-dim", type=int)
     rope.add_argument("--base", type=float)
     rope.add_argument("--context", type=int)
@@ -339,6 +361,20 @@ def _validate_request_validation_report(
         )
 
 
+def _validate_rope_model_config_import_report(
+    report: dict[str, Any],
+    schema_path: Path,
+) -> None:
+    schema = _load_json_object(schema_path, label="RoPE model config import schema")
+    jsonschema.Draft202012Validator.check_schema(schema)
+    jsonschema.validate(report, schema)
+    generated_schema = build_rope_model_config_import_json_schema()
+    if schema != generated_schema:
+        raise jsonschema.SchemaError(
+            "RoPE model config import schema drifted from application builder"
+        )
+
+
 def _validate_receipt_schema(receipt: dict[str, Any], schema_path: Path) -> None:
     schema = _load_json_object(schema_path, label="receipt schema")
     jsonschema.Draft202012Validator.check_schema(schema)
@@ -453,6 +489,11 @@ def _receipt_gate_failures(receipt: dict[str, Any], args: argparse.Namespace) ->
 
 def main() -> int:
     args = parse_args()
+    if (
+        getattr(args, "model_config_import_report_out", None) is not None
+        and getattr(args, "model_config", None) is None
+    ):
+        raise SystemExit("--model-config-import-report-out requires --model-config")
     if args.receipt_check_out is not None and args.json_out is None:
         raise SystemExit(
             "--receipt-check-out requires --json-out so the report points at "
@@ -499,6 +540,25 @@ def main() -> int:
     else:
         pack = _pack_from_args(args)
         try:
+            if args.kind == "rope" and args.model_config is not None:
+                config = _load_json_object(args.model_config, label="model config JSON")
+                import_report = build_rope_model_config_import_report(
+                    config,
+                    head_dim=args.head_dim,
+                    base=args.base,
+                    context=args.context,
+                    tolerance=args.tolerance,
+                    discretization=args.discretization,
+                    requested_margin=args.requested_margin,
+                )
+                if args.model_config_import_report_out is not None:
+                    _validate_rope_model_config_import_report(
+                        import_report,
+                        args.model_config_import_schema,
+                    )
+                    write_json(args.model_config_import_report_out, import_report)
+                if not import_report["ok"]:
+                    raise ValueError("; ".join(import_report["failures"]))
             request = build_contract_request(args.kind, _parameters_from_args(args))
             if args.request_out is not None:
                 write_json(args.request_out, request)

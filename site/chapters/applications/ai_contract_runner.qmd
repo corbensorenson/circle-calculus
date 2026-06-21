@@ -99,6 +99,10 @@ CLI flags override inferred values. Non-default `rope_scaling` metadata is
 rejected because the current receipt does not prove scaled-RoPE semantics.
 `head_dim` must be even because the current RoPE contract models rotary
 dimension pairs.
+Use `--model-config-import-report-out reports/rope_import.json` when CI needs a
+schema-validated explanation of whether a real config converted into the
+standard-RoPE request frontier. That report is not a receipt and does not prove
+scaled-RoPE behavior.
 The saved request is the exact versioned Circle request object used to produce
 the receipt, so downstream tools can pin it before rerunning or auditing the
 certificate.
@@ -428,6 +432,7 @@ The generated request and receipt schemas live at:
 ```text
 site/data/generated/circle_ai_contract_request.schema.json
 site/data/generated/circle_ai_contract_request_validation.schema.json
+site/data/generated/circle_ai_rope_model_config_import.schema.json
 site/data/generated/circle_ai_contract_receipt.schema.json
 site/data/generated/circle_ai_contract_runner_check.schema.json
 site/data/generated/circle_ai_contract_receipt_file_check.schema.json

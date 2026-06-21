@@ -44,6 +44,9 @@ python scripts/circle_ai_certify.py rope \
 This imports only the standard-RoPE fields used by the current theorem-backed
 receipt. Non-default `rope_scaling` metadata is rejected instead of being
 treated as covered by the proof status.
+Use `--model-config-import-report-out reports/rope_import.json` to save a
+schema-validated explanation when a real model config cannot be imported into
+the standard-RoPE request frontier.
 The `--require-*` flags are optional CI gates: the receipt is still emitted, but
 the command exits nonzero if the requested status, decision, assurance, or pass
 policy is not met.

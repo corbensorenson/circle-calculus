@@ -69,6 +69,10 @@ fields. Explicit `--head-dim`, `--base`, `--context`, `--tolerance`, and
 metadata is rejected rather than treated as proved by the current standard-RoPE
 contract. `head_dim` must be even because the current RoPE contract models
 rotary dimension pairs.
+Use `--model-config-import-report-out PATH` to write a schema-validated import
+report even when a real config contains unsupported fields such as non-default
+`rope_scaling`. That report is not a receipt; it says whether the config could
+be converted into the standard-RoPE request frontier.
 The copyable fixture is
 `examples/circle_ai_model_configs/standard_rope_config.json`.
 
@@ -372,6 +376,7 @@ and written to:
 ```text
 site/data/generated/circle_ai_contract_request.schema.json
 site/data/generated/circle_ai_contract_request_validation.schema.json
+site/data/generated/circle_ai_rope_model_config_import.schema.json
 site/data/generated/circle_ai_contract_receipt.schema.json
 site/data/generated/circle_ai_contract_runner_check.schema.json
 site/data/generated/circle_ai_contract_receipt_file_check.schema.json

@@ -26,12 +26,14 @@ from circle_math.applications.circle_ai_contract_runner import (
     RECEIPT_FILE_CHECK_SCHEMA_PATH as CONTRACT_RECEIPT_FILE_CHECK_SCHEMA_PATH,
     REQUEST_SCHEMA_PATH as CONTRACT_RUNNER_REQUEST_SCHEMA_PATH,
     REQUEST_VALIDATION_SCHEMA_PATH as CONTRACT_RUNNER_REQUEST_VALIDATION_SCHEMA_PATH,
+    ROPE_MODEL_CONFIG_IMPORT_SCHEMA_PATH,
     RUNNER_CHECK_SCHEMA_PATH as CONTRACT_RUNNER_CHECK_SCHEMA_PATH,
     build_contract_runner_check_json_schema,
     build_contract_receipt_file_check_json_schema,
     build_contract_receipt_json_schema,
     build_contract_request_json_schema,
     build_contract_request_validation_json_schema,
+    build_rope_model_config_import_json_schema,
 )
 
 
@@ -48,6 +50,7 @@ DEFAULT_CONTRACT_RUNNER_REQUEST_VALIDATION_SCHEMA_OUT = (
 )
 DEFAULT_CONTRACT_RUNNER_RECEIPT_SCHEMA_OUT = ROOT / CONTRACT_RUNNER_RECEIPT_SCHEMA_PATH
 DEFAULT_CONTRACT_RUNNER_CHECK_SCHEMA_OUT = ROOT / CONTRACT_RUNNER_CHECK_SCHEMA_PATH
+DEFAULT_ROPE_MODEL_CONFIG_IMPORT_SCHEMA_OUT = ROOT / ROPE_MODEL_CONFIG_IMPORT_SCHEMA_PATH
 DEFAULT_CONTRACT_RECEIPT_FILE_CHECK_SCHEMA_OUT = (
     ROOT / CONTRACT_RECEIPT_FILE_CHECK_SCHEMA_PATH
 )
@@ -137,6 +140,15 @@ def main() -> int:
         ),
     )
     parser.add_argument(
+        "--rope-model-config-import-schema-out",
+        default=str(DEFAULT_ROPE_MODEL_CONFIG_IMPORT_SCHEMA_OUT),
+        help=(
+            "Output JSON Schema path for standard-RoPE model config import "
+            "reports. Defaults to "
+            "site/data/generated/circle_ai_rope_model_config_import.schema.json."
+        ),
+    )
+    parser.add_argument(
         "--contract-receipt-file-check-schema-out",
         default=str(DEFAULT_CONTRACT_RECEIPT_FILE_CHECK_SCHEMA_OUT),
         help=(
@@ -179,6 +191,11 @@ def main() -> int:
     runner_check_schema_out = Path(args.contract_runner_check_schema_out)
     if not runner_check_schema_out.is_absolute():
         runner_check_schema_out = ROOT / runner_check_schema_out
+    rope_model_config_import_schema_out = Path(
+        args.rope_model_config_import_schema_out
+    )
+    if not rope_model_config_import_schema_out.is_absolute():
+        rope_model_config_import_schema_out = ROOT / rope_model_config_import_schema_out
     receipt_file_check_schema_out = Path(args.contract_receipt_file_check_schema_out)
     if not receipt_file_check_schema_out.is_absolute():
         receipt_file_check_schema_out = ROOT / receipt_file_check_schema_out
@@ -192,6 +209,7 @@ def main() -> int:
     runner_receipt_schema_out.parent.mkdir(parents=True, exist_ok=True)
     runner_request_validation_schema_out.parent.mkdir(parents=True, exist_ok=True)
     runner_check_schema_out.parent.mkdir(parents=True, exist_ok=True)
+    rope_model_config_import_schema_out.parent.mkdir(parents=True, exist_ok=True)
     receipt_file_check_schema_out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(json.dumps(build_contract_pack(), indent=2, sort_keys=True) + "\n")
     schema_out.write_text(
@@ -240,6 +258,14 @@ def main() -> int:
     runner_check_schema_out.write_text(
         json.dumps(
             build_contract_runner_check_json_schema(),
+            indent=2,
+            sort_keys=True,
+        )
+        + "\n"
+    )
+    rope_model_config_import_schema_out.write_text(
+        json.dumps(
+            build_rope_model_config_import_json_schema(),
             indent=2,
             sort_keys=True,
         )
@@ -300,6 +326,14 @@ def main() -> int:
     except ValueError:
         display_runner_check_schema_path = runner_check_schema_out
     try:
+        display_rope_model_config_import_schema_path = (
+            rope_model_config_import_schema_out.relative_to(ROOT)
+        )
+    except ValueError:
+        display_rope_model_config_import_schema_path = (
+            rope_model_config_import_schema_out
+        )
+    try:
         display_receipt_file_check_schema_path = (
             receipt_file_check_schema_out.relative_to(ROOT)
         )
@@ -315,6 +349,7 @@ def main() -> int:
     print(f"wrote {display_runner_request_validation_schema_path}")
     print(f"wrote {display_runner_receipt_schema_path}")
     print(f"wrote {display_runner_check_schema_path}")
+    print(f"wrote {display_rope_model_config_import_schema_path}")
     print(f"wrote {display_receipt_file_check_schema_path}")
     return 0
 
