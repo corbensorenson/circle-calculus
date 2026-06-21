@@ -47,6 +47,11 @@ treated as covered by the proof status.
 The `--require-*` flags are optional CI gates: the receipt is still emitted, but
 the command exits nonzero if the requested status, decision, assurance, or pass
 policy is not met.
+Add `--gate-report-out reports/rope_gate.json` when CI needs a compact
+schema-validated JSON gate report without saving the full receipt. Use
+`--json-out reports/rope_receipt.json --receipt-check-out
+reports/rope_receipt_check.json` when the audit log should point at a saved
+receipt file.
 
 The runner receipt schema is `circle_calculus.ai_contract_receipt.v0`; the
 request schema is `circle_calculus.ai_contract_request.v0`; the request

@@ -1653,6 +1653,55 @@ def test_circle_ai_certify_cli_receipt_check_requires_saved_receipt(
     assert not report_path.exists()
 
 
+def test_circle_ai_certify_cli_writes_in_memory_gate_report(
+    tmp_path: Path,
+) -> None:
+    report_path = tmp_path / "gate_report.json"
+
+    result = subprocess.run(
+        [
+            sys.executable,
+            str(SCRIPT),
+            "rope",
+            "--context",
+            "131072",
+            "--requested-margin",
+            "1/328459",
+            "--gate-report-out",
+            str(report_path),
+            "--require-status",
+            "proved",
+            "--require-decision",
+            "passed",
+            "--require-assurance",
+            "mixed_theorem_and_computation",
+            "--require-passed",
+        ],
+        cwd=ROOT,
+        check=True,
+        text=True,
+        capture_output=True,
+    )
+
+    report = json.loads(report_path.read_text())
+    jsonschema.validate(report, build_contract_receipt_file_check_json_schema())
+    assert "circle_ai_contract_receipt=proved" in result.stdout
+    assert report["ok"] is True
+    assert report["receipt_count"] == 1
+    assert report["gate_policy"] == {
+        "allowed_statuses": ["proved"],
+        "allowed_decision_verdicts": ["passed"],
+        "allowed_assurance_levels": ["mixed_theorem_and_computation"],
+        "require_passed": True,
+    }
+    assert report["summaries"][0]["path"] == "<in-memory-receipt>"
+    assert report["summaries"][0]["kind"] == "rope_position_distinguishability"
+    assert report["summaries"][0]["decision_verdict"] == "passed"
+    assert report["summaries"][0]["decision_assurance"] == (
+        "mixed_theorem_and_computation"
+    )
+
+
 def test_circle_ai_certify_cli_rejects_scaled_rope_model_config(
     tmp_path: Path,
 ) -> None:
@@ -2000,6 +2049,8 @@ def test_circle_ai_certify_cli_validate_only_rejects_receipt_gate_options(
             "passed",
             "--require-assurance",
             "theorem_backed",
+            "--gate-report-out",
+            str(tmp_path / "gate_report.json"),
         ],
         cwd=ROOT,
         check=False,

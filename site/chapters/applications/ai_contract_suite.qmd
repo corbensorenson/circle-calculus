@@ -178,6 +178,25 @@ are `decision`, `normalized_request`, `evidence`, `proof_status`,
 [AI Contract Runner](ai_contract_runner.qmd) lesson before wiring the JSON into
 another project.
 
+For CI, add gates directly to the runner:
+
+```bash
+python scripts/circle_ai_certify.py rope \
+  --head-dim 128 \
+  --base 10000 \
+  --context 131072 \
+  --requested-margin 1/328459 \
+  --gate-report-out reports/rope_gate.json \
+  --require-status proved \
+  --require-decision passed \
+  --require-assurance mixed_theorem_and_computation \
+  --require-passed
+```
+
+`--gate-report-out` writes the schema-validated pass/fail report for the
+in-memory receipt. Use `--json-out` plus `--receipt-check-out` when an audit log
+should also retain the full receipt JSON.
+
 `make circle-ai-contracts-check` validates the generated JSON artifact itself: schema id, required contract keys, minimum fields, theorem ids, proof-status metadata, dictionary ids, source paths, quickstart docs, Living Book pages, and Python entrypoint paths.
 
 <details>

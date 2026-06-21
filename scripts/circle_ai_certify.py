@@ -18,6 +18,7 @@ if str(ROOT) not in sys.path:
 from circle_math.applications import (  # noqa: E402
     build_contract_receipt_file_check_json_schema,
     build_contract_receipt_file_check_report,
+    build_contract_receipt_gate_report,
     build_contract_receipt_json_schema,
     build_contract_request,
     build_contract_request_validation_report,
@@ -94,12 +95,21 @@ def add_common_options(parser: argparse.ArgumentParser) -> None:
         ),
     )
     parser.add_argument(
+        "--gate-report-out",
+        type=Path,
+        help=(
+            "Optional path for a schema-validated in-memory gate report for "
+            "the emitted receipt. Unlike --receipt-check-out, this does not "
+            "require --json-out."
+        ),
+    )
+    parser.add_argument(
         "--receipt-check-schema",
         type=Path,
         default=DEFAULT_RECEIPT_CHECK_SCHEMA,
         help=(
-            "Generated JSON Schema used to validate --receipt-check-out reports. "
-            "Defaults to "
+            "Generated JSON Schema used to validate --receipt-check-out and "
+            "--gate-report-out reports. Defaults to "
             "site/data/generated/circle_ai_contract_receipt_file_check.schema.json."
         ),
     )
@@ -458,11 +468,12 @@ def main() -> int:
                 or args.require_assurance
                 or args.require_passed
                 or args.receipt_check_out
+                or args.gate_report_out
             ):
                 raise SystemExit(
                     "--require-status, --require-decision, --require-assurance, "
-                    "--require-passed, and --receipt-check-out require a receipt; "
-                    "omit --validate-only"
+                    "--require-passed, --receipt-check-out, and "
+                    "--gate-report-out require a receipt; omit --validate-only"
                 )
             report = _request_validation_report(args.request_json)
             _validate_request_validation_report(
@@ -515,6 +526,22 @@ def main() -> int:
         )
         _validate_receipt_check_report(check_report, args.receipt_check_schema)
         write_json(args.receipt_check_out, check_report)
+    if args.gate_report_out is not None:
+        gate_report = build_contract_receipt_gate_report(
+            receipt,
+            pack=pack,
+            receipt_path=(
+                _display_path(args.json_out)
+                if args.json_out is not None
+                else "<in-memory-receipt>"
+            ),
+            required_statuses=tuple(args.require_status),
+            required_decision_verdicts=tuple(args.require_decision),
+            required_assurance_levels=tuple(args.require_assurance),
+            require_passed=args.require_passed,
+        )
+        _validate_receipt_check_report(gate_report, args.receipt_check_schema)
+        write_json(args.gate_report_out, gate_report)
     if args.format == "json":
         print(json.dumps(receipt, indent=2, sort_keys=True))
     else:

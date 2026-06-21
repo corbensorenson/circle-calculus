@@ -56,6 +56,10 @@ For CI gates, add `--require-status STATUS`, `--require-decision VERDICT`,
 or writes the receipt, then exits nonzero if the emitted receipt does not match
 the required status, decision verdict, assurance level, or if `request_passed`
 is not `true`.
+Add `--gate-report-out PATH` when CI also needs a schema-validated JSON gate
+report but does not need to save the full receipt. Add `--receipt-check-out
+PATH` with `--json-out PATH` when the report should point at a saved receipt
+file for audit logs.
 
 For standard RoPE model configs, `--model-config` infers `head_dim` from
 `head_dim` or `hidden_size / num_attention_heads`, `base` from `rope_theta`
@@ -123,6 +127,24 @@ different generated pack.
 Use `--receipt-check-out` with `--json-out` to write the same schema-validated
 pack-aware check report that a later `scripts/check_circle_ai_receipt.py` run
 would produce for the saved receipt.
+Use `--gate-report-out` without `--json-out` to write the same gate shape for
+the in-memory receipt:
+
+```bash
+python scripts/circle_ai_certify.py rope \
+  --head-dim 128 \
+  --base 10000 \
+  --context 131072 \
+  --requested-margin 1/328459 \
+  --gate-report-out reports/rope_gate.json \
+  --require-status proved \
+  --require-decision passed \
+  --require-assurance mixed_theorem_and_computation \
+  --require-passed
+```
+
+Both report paths are validated against
+`site/data/generated/circle_ai_contract_receipt_file_check.schema.json`.
 
 Copyable starting points live under:
 
