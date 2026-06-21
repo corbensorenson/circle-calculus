@@ -5,6 +5,8 @@ import subprocess
 import sys
 from pathlib import Path
 
+import pytest
+
 
 ROOT = Path(__file__).resolve().parents[1]
 CERTIFIER = ROOT / "scripts" / "circle_ai_certify.py"
@@ -12,20 +14,31 @@ SCRIPT = ROOT / "examples" / "downstream_ci_verify_circle_ai_artifacts.py"
 STANDARD_ROPE_MODEL_CONFIG = (
     ROOT / "examples" / "circle_ai_model_configs" / "standard_rope_config.json"
 )
+BASE_REQUIRED_LABELS = {
+    "request_json",
+    "request_validation_report",
+    "receipt_json",
+    "receipt_check",
+    "gate_report",
+    "certification_bundle",
+    "certification_bundle_check",
+}
 
 
-def _emit_standard_rope_artifacts(tmp_path: Path) -> tuple[Path, dict[str, Path]]:
-    artifact_dir = tmp_path / "artifacts"
-    prefix = "standard_rope_config"
+def _emit_standard_artifacts(
+    tmp_path: Path,
+    *,
+    slug: str,
+    subcommand_args: list[str],
+    prefix: str,
+    required_assurance: str,
+) -> tuple[Path, dict[str, Path]]:
+    artifact_dir = tmp_path / f"{slug}_artifacts"
     subprocess.run(
         [
             sys.executable,
             str(CERTIFIER),
-            "rope",
-            "--model-config",
-            str(STANDARD_ROPE_MODEL_CONFIG),
-            "--requested-margin",
-            "1/328459",
+            *subcommand_args,
             "--artifact-dir",
             str(artifact_dir),
             "--require-status",
@@ -33,7 +46,7 @@ def _emit_standard_rope_artifacts(tmp_path: Path) -> tuple[Path, dict[str, Path]
             "--require-decision",
             "passed",
             "--require-assurance",
-            "mixed_theorem_and_computation",
+            required_assurance,
             "--require-passed",
         ],
         cwd=ROOT,
@@ -47,10 +60,116 @@ def _emit_standard_rope_artifacts(tmp_path: Path) -> tuple[Path, dict[str, Path]
     }
 
 
-def test_standalone_artifact_verifier_accepts_standard_artifact_dir(
+def _emit_standard_rope_artifacts(tmp_path: Path) -> tuple[Path, dict[str, Path]]:
+    return _emit_standard_artifacts(
+        tmp_path,
+        slug="rope",
+        subcommand_args=[
+            "rope",
+            "--model-config",
+            str(STANDARD_ROPE_MODEL_CONFIG),
+            "--requested-margin",
+            "1/328459",
+        ],
+        prefix="standard_rope_config",
+        required_assurance="mixed_theorem_and_computation",
+    )
+
+
+@pytest.mark.parametrize(
+    (
+        "slug",
+        "subcommand_args",
+        "prefix",
+        "expected_kind",
+        "expected_assurance",
+        "expected_artifact_count",
+        "expected_labels",
+    ),
+    [
+        (
+            "rope",
+            [
+                "rope",
+                "--model-config",
+                str(STANDARD_ROPE_MODEL_CONFIG),
+                "--requested-margin",
+                "1/328459",
+            ],
+            "standard_rope_config",
+            "rope_position_distinguishability",
+            "mixed_theorem_and_computation",
+            8,
+            BASE_REQUIRED_LABELS | {"model_config_import_report"},
+        ),
+        (
+            "kv_cache",
+            [
+                "kv-cache",
+                "--cache-size",
+                "16",
+                "--current",
+                "31",
+                "--token",
+                "31",
+                "--batch-tokens",
+                "20,24,29,31",
+                "--sink-size",
+                "4",
+            ],
+            "kv_cache",
+            "kv_cache_ring_buffer",
+            "theorem_backed",
+            7,
+            BASE_REQUIRED_LABELS,
+        ),
+        (
+            "sparse_attention",
+            [
+                "sparse-attention",
+                "--context",
+                "32",
+                "--strides",
+                "5,11,17",
+                "--path-length",
+                "16",
+                "--local-window",
+                "9",
+            ],
+            "sparse_attention",
+            "sparse_attention_coverage",
+            "theorem_backed",
+            7,
+            BASE_REQUIRED_LABELS,
+        ),
+        (
+            "recurrence",
+            ["recurrence"],
+            "recurrence",
+            "recurrence_schedule",
+            "theorem_backed",
+            7,
+            BASE_REQUIRED_LABELS,
+        ),
+    ],
+)
+def test_standalone_artifact_verifier_accepts_standard_artifact_dirs(
     tmp_path: Path,
+    slug: str,
+    subcommand_args: list[str],
+    prefix: str,
+    expected_kind: str,
+    expected_assurance: str,
+    expected_artifact_count: int,
+    expected_labels: set[str],
 ) -> None:
-    manifest_path, paths = _emit_standard_rope_artifacts(tmp_path)
+    manifest_path, paths = _emit_standard_artifacts(
+        tmp_path,
+        slug=slug,
+        subcommand_args=subcommand_args,
+        prefix=prefix,
+        required_assurance=expected_assurance,
+    )
 
     result = subprocess.run(
         [
@@ -64,7 +183,7 @@ def test_standalone_artifact_verifier_accepts_standard_artifact_dir(
             "--require-decision",
             "passed",
             "--require-assurance",
-            "mixed_theorem_and_computation",
+            expected_assurance,
             "--require-passed",
             "--require-manifest-check",
             "--require-label",
@@ -87,24 +206,15 @@ def test_standalone_artifact_verifier_accepts_standard_artifact_dir(
     assert payload["failure_count"] == 0
     assert payload["require_manifest_check"] is True
     summary = payload["manifests"][0]
-    assert summary["kind"] == "rope_position_distinguishability"
+    assert summary["kind"] == expected_kind
     assert summary["status"] == "proved"
     assert summary["request_passed"] is True
     assert summary["decision_verdict"] == "passed"
-    assert summary["decision_assurance"] == "mixed_theorem_and_computation"
-    assert summary["artifact_count"] == 8
+    assert summary["decision_assurance"] == expected_assurance
+    assert summary["artifact_count"] == expected_artifact_count
     assert summary["manifest_check_present"] is True
     assert summary["manifest_check_ok"] is True
-    assert set(summary["artifact_labels"]) == {
-        "request_json",
-        "request_validation_report",
-        "model_config_import_report",
-        "receipt_json",
-        "receipt_check",
-        "gate_report",
-        "certification_bundle",
-        "certification_bundle_check",
-    }
+    assert set(summary["artifact_labels"]) == expected_labels
     assert Path(summary["manifest_check_path"]) == paths["manifest_check"]
     assert summary["receipt_content_fingerprint_short"]
     assert "mathematical proof" in payload["not_claimed"]

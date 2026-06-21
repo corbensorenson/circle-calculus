@@ -228,6 +228,9 @@ fields mirrored into the manifest.
 For a copyable standard-library-only downstream gate, use
 `examples/downstream_ci_verify_circle_ai_artifacts.py`; it performs the same
 artifact-integrity checks without importing Circle or `jsonschema`.
+The standard artifact-directory path and standalone verifier are covered for
+RoPE, KV-cache, sparse-attention, and recurrence receipts, so downstream CI can
+adopt one gate shape across all four current contract families.
 
 Copyable starting points live under:
 
