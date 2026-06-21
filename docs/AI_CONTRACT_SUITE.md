@@ -64,14 +64,16 @@ when present, and a CI-readable verification report for the bundle:
 python scripts/circle_ai_certify.py rope \
   --model-config examples/circle_ai_model_configs/standard_rope_config.json \
   --requested-margin 1/328459 \
-  --json-out reports/rope_receipt.json \
-  --certification-bundle-out reports/rope_certification_bundle.json \
-  --certification-bundle-check-out reports/rope_certification_bundle_check.json \
+  --artifact-dir reports/rope_contract \
   --require-status proved \
   --require-decision passed \
   --require-assurance mixed_theorem_and_computation \
   --require-passed
 ```
+
+`--artifact-dir` writes the request, request-validation report, model-config
+import report when present, receipt, receipt-check report, gate report,
+certification bundle, and bundle-check report with stable names.
 
 The runner receipt schema is `circle_calculus.ai_contract_receipt.v0`; the
 request schema is `circle_calculus.ai_contract_request.v0`; the request

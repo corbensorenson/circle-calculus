@@ -192,6 +192,22 @@ The bundle-check report is validated against
 `site/data/generated/circle_ai_contract_certification_bundle_file_check.schema.json`.
 In text mode, the certifier prints an `artifacts=` line listing every request,
 receipt, gate, bundle, or check file written by that invocation.
+Use `--artifact-dir reports/rope_contract` when you want the standard audit set
+without naming every file. It fills unset paths for:
+
+```text
+<prefix>_request.json
+<prefix>_request_validation.json
+<prefix>_model_config_import.json       # RoPE model-config runs only
+<prefix>_receipt.json
+<prefix>_receipt_check.json
+<prefix>_gate_report.json
+<prefix>_certification_bundle.json
+<prefix>_certification_bundle_check.json
+```
+
+The default prefix is the request or model-config filename stem when available,
+otherwise the contract family name. Use `--artifact-prefix` to override it.
 
 Copyable starting points live under:
 

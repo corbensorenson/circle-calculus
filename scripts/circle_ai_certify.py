@@ -107,6 +107,24 @@ def add_common_options(parser: argparse.ArgumentParser) -> None:
         ),
     )
     parser.add_argument(
+        "--artifact-dir",
+        type=Path,
+        help=(
+            "Optional directory where a standard audit artifact set is written. "
+            "For receipt-producing runs this fills unset output paths for "
+            "request, request-validation, receipt, receipt-check, gate, "
+            "certification-bundle, and certification-bundle-check JSON files."
+        ),
+    )
+    parser.add_argument(
+        "--artifact-prefix",
+        help=(
+            "Optional filename prefix to use with --artifact-dir. Defaults to "
+            "the request/model-config stem when available, otherwise the "
+            "contract family name."
+        ),
+    )
+    parser.add_argument(
         "--request-validation-schema",
         type=Path,
         default=DEFAULT_REQUEST_VALIDATION_SCHEMA,
@@ -516,6 +534,86 @@ def write_json(path: Path, payload: dict[str, Any]) -> None:
     path.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
 
 
+def _safe_artifact_prefix(raw: str) -> str:
+    safe = "".join(
+        char if char.isalnum() or char in {"-", "_", "."} else "_"
+        for char in raw.strip()
+    ).strip("._-")
+    return safe or "circle_ai_contract"
+
+
+def _default_artifact_prefix(args: argparse.Namespace) -> str:
+    if args.artifact_prefix:
+        return _safe_artifact_prefix(args.artifact_prefix)
+    if args.kind == "request":
+        return _safe_artifact_prefix(
+            Path(args.request_json).stem.removesuffix("_request")
+        )
+    if args.kind == "rope" and args.model_config is not None:
+        return _safe_artifact_prefix(Path(args.model_config).stem)
+    return {
+        "rope": "rope",
+        "kv-cache": "kv_cache",
+        "sparse-attention": "sparse_attention",
+        "recurrence": "recurrence",
+    }.get(args.kind, _safe_artifact_prefix(args.kind))
+
+
+def _fill_artifact_path(
+    args: argparse.Namespace,
+    attr: str,
+    artifact_dir: Path,
+    prefix: str,
+    suffix: str,
+) -> None:
+    if getattr(args, attr) is None:
+        setattr(args, attr, artifact_dir / f"{prefix}_{suffix}.json")
+
+
+def _apply_artifact_dir_defaults(args: argparse.Namespace) -> None:
+    if args.artifact_prefix and args.artifact_dir is None:
+        raise SystemExit("--artifact-prefix requires --artifact-dir")
+    if args.artifact_dir is None:
+        return
+    prefix = _default_artifact_prefix(args)
+    artifact_dir = args.artifact_dir
+    _fill_artifact_path(args, "request_out", artifact_dir, prefix, "request")
+    _fill_artifact_path(
+        args,
+        "request_validation_report_out",
+        artifact_dir,
+        prefix,
+        "request_validation",
+    )
+    if args.kind == "request" and args.validate_only:
+        return
+    if args.kind == "rope" and args.model_config is not None:
+        _fill_artifact_path(
+            args,
+            "model_config_import_report_out",
+            artifact_dir,
+            prefix,
+            "model_config_import",
+        )
+    _fill_artifact_path(args, "json_out", artifact_dir, prefix, "receipt")
+    _fill_artifact_path(args, "receipt_check_out", artifact_dir, prefix, "receipt_check")
+    _fill_artifact_path(args, "gate_report_out", artifact_dir, prefix, "gate_report")
+    _fill_artifact_path(
+        args,
+        "certification_bundle_out",
+        artifact_dir,
+        prefix,
+        "certification_bundle",
+    )
+    _fill_artifact_path(
+        args,
+        "certification_bundle_check_out",
+        artifact_dir,
+        prefix,
+        "certification_bundle_check",
+    )
+
+
 def _receipt_gate_failures(receipt: dict[str, Any], args: argparse.Namespace) -> list[str]:
     failures: list[str] = []
     if args.require_status and receipt.get("status") not in set(args.require_status):
@@ -577,6 +675,7 @@ def _artifact_summary_line(args: argparse.Namespace) -> str | None:
 
 def main() -> int:
     args = parse_args()
+    _apply_artifact_dir_defaults(args)
     if (
         getattr(args, "model_config_import_report_out", None) is not None
         and getattr(args, "model_config", None) is None
@@ -636,6 +735,9 @@ def main() -> int:
                     f"canonical_kind={report['canonical_kind']} "
                     f"failures={report['failure_count']}"
                 )
+                artifact_line = _artifact_summary_line(args)
+                if artifact_line is not None:
+                    print(artifact_line)
                 for failure in report["failures"]:
                     print(f"failure={failure}", file=sys.stderr)
             return 0 if report["ok"] else 1

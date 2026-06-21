@@ -151,18 +151,18 @@ python scripts/circle_ai_certify.py rope \
   --base 10000 \
   --context 131072 \
   --requested-margin 1/328459 \
-  --json-out reports/rope_receipt.json \
-  --certification-bundle-out reports/rope_certification_bundle.json \
-  --certification-bundle-check-out reports/rope_certification_bundle_check.json \
+  --artifact-dir reports/rope_contract \
   --require-status proved \
   --require-decision passed \
   --require-assurance mixed_theorem_and_computation \
   --require-passed
 ```
 
-That runner also supports `kv-cache`, `sparse-attention`, and `recurrence`. The
-receipt and bundle are theorem-linked audit artifacts; they do not claim better
-model quality, speed, memory, or deployment safety.
+That runner also supports `kv-cache`, `sparse-attention`, and `recurrence`.
+`--artifact-dir` writes the request, preflight report, receipt, gate report,
+certification bundle, and bundle-check report with stable names. The receipt
+and bundle are theorem-linked audit artifacts; they do not claim better model
+quality, speed, memory, or deployment safety.
 
 For the optional Theseus-Hive AI transfer compatibility lane, run:
 

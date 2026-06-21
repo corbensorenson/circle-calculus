@@ -2185,6 +2185,92 @@ def test_circle_ai_certify_cli_text_output_lists_written_artifacts(
         assert path.exists()
 
 
+def test_circle_ai_certify_cli_artifact_dir_writes_standard_audit_set(
+    tmp_path: Path,
+) -> None:
+    artifact_dir = tmp_path / "artifacts"
+    prefix = "standard_rope_config"
+    expected_paths = {
+        "request_json": artifact_dir / f"{prefix}_request.json",
+        "request_validation_report": artifact_dir
+        / f"{prefix}_request_validation.json",
+        "model_config_import_report": artifact_dir
+        / f"{prefix}_model_config_import.json",
+        "receipt_json": artifact_dir / f"{prefix}_receipt.json",
+        "receipt_check": artifact_dir / f"{prefix}_receipt_check.json",
+        "gate_report": artifact_dir / f"{prefix}_gate_report.json",
+        "certification_bundle": artifact_dir / f"{prefix}_certification_bundle.json",
+        "certification_bundle_check": artifact_dir
+        / f"{prefix}_certification_bundle_check.json",
+    }
+
+    result = subprocess.run(
+        [
+            sys.executable,
+            str(SCRIPT),
+            "rope",
+            "--model-config",
+            str(STANDARD_ROPE_MODEL_CONFIG),
+            "--requested-margin",
+            "1/328459",
+            "--artifact-dir",
+            str(artifact_dir),
+            "--require-status",
+            "proved",
+            "--require-decision",
+            "passed",
+            "--require-assurance",
+            "mixed_theorem_and_computation",
+            "--require-passed",
+        ],
+        cwd=ROOT,
+        check=True,
+        text=True,
+        capture_output=True,
+    )
+
+    artifact_line = next(
+        line for line in result.stdout.splitlines() if line.startswith("artifacts=")
+    )
+    for label, path in expected_paths.items():
+        assert path.exists()
+        assert f"{label}={path}" in artifact_line
+
+    request_validation = json.loads(
+        expected_paths["request_validation_report"].read_text()
+    )
+    model_config_import = json.loads(
+        expected_paths["model_config_import_report"].read_text()
+    )
+    receipt = json.loads(expected_paths["receipt_json"].read_text())
+    receipt_check = json.loads(expected_paths["receipt_check"].read_text())
+    gate_report = json.loads(expected_paths["gate_report"].read_text())
+    bundle = json.loads(expected_paths["certification_bundle"].read_text())
+    bundle_check = json.loads(expected_paths["certification_bundle_check"].read_text())
+
+    jsonschema.validate(
+        request_validation,
+        build_contract_request_validation_json_schema(),
+    )
+    jsonschema.validate(model_config_import, build_rope_model_config_import_json_schema())
+    jsonschema.validate(receipt, build_contract_receipt_json_schema())
+    jsonschema.validate(receipt_check, build_contract_receipt_file_check_json_schema())
+    jsonschema.validate(gate_report, build_contract_receipt_file_check_json_schema())
+    jsonschema.validate(bundle, build_contract_certification_bundle_json_schema())
+    jsonschema.validate(
+        bundle_check,
+        build_contract_certification_bundle_file_check_json_schema(),
+    )
+    assert request_validation["ok"] is True
+    assert model_config_import["ok"] is True
+    assert receipt["status"] == "proved"
+    assert receipt_check["ok"] is True
+    assert gate_report["ok"] is True
+    assert bundle["ok"] is True
+    assert bundle_check["ok"] is True
+    assert bundle["model_config_import_report"] == model_config_import
+
+
 def test_circle_ai_certify_cli_writes_model_config_certification_bundle(
     tmp_path: Path,
 ) -> None:
