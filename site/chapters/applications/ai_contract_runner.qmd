@@ -401,7 +401,10 @@ This is the preferred downstream CI check when the full certification bundle is
 available. It validates the bundle JSON Schema, request-validation report,
 embedded receipt against the loaded contract pack, embedded gate report,
 optional model-config import provenance, and the optional status, decision,
-assurance, and pass gates.
+assurance, pass, and model-config fingerprint gates. Add
+`--require-model-config-fingerprint FINGERPRINT` with the
+`model_config_fingerprint` from the embedded import report when the bundle came
+from an imported RoPE `config.json`.
 
 Validate a receipt file after it has been handed to another project:
 

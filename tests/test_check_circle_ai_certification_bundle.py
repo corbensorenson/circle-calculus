@@ -143,6 +143,8 @@ def test_check_circle_ai_certification_bundle_accepts_model_config_bundle(
             "--require-assurance",
             "mixed_theorem_and_computation",
             "--require-passed",
+            "--require-model-config-fingerprint",
+            import_report["model_config_fingerprint"],
             "--report-out",
             str(report_path),
             "--format",
@@ -185,6 +187,51 @@ def test_check_circle_ai_certification_bundle_accepts_model_config_bundle(
         "receipt_content_fingerprint"
     ]
     assert json.loads(report_path.read_text()) == payload
+
+
+def test_check_circle_ai_certification_bundle_rejects_missing_model_config_fingerprint(
+    tmp_path: Path,
+) -> None:
+    bundle_path = tmp_path / "rope_certification_bundle.json"
+    pack = load_contract_pack(PACK)
+    import_report = build_rope_model_config_import_report(
+        json.loads(STANDARD_ROPE_MODEL_CONFIG.read_text(encoding="utf-8")),
+        requested_margin="1/328459",
+    )
+    bundle = build_contract_certification_bundle(
+        import_report["request"],
+        pack=pack,
+        model_config_import_report=import_report,
+    )
+    _write_bundle(bundle_path, bundle)
+
+    result = subprocess.run(
+        [
+            sys.executable,
+            str(SCRIPT),
+            str(bundle_path),
+            "--require-model-config-fingerprint",
+            "0" * 64,
+            "--format",
+            "json",
+        ],
+        cwd=ROOT,
+        check=False,
+        text=True,
+        capture_output=True,
+    )
+
+    payload = json.loads(result.stdout)
+    jsonschema.validate(
+        payload,
+        build_contract_certification_bundle_file_check_json_schema(),
+    )
+    assert result.returncode == 1
+    assert payload["ok"] is False
+    assert any(
+        "required model config fingerprint is missing" in failure
+        for failure in payload["failures"]
+    )
 
 
 def test_check_circle_ai_certification_bundle_rejects_status_gate(

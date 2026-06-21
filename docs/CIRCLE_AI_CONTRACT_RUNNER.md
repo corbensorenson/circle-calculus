@@ -331,8 +331,11 @@ python scripts/check_circle_ai_certification_bundle.py \
 This checker validates the bundle JSON Schema, request-validation report,
 embedded receipt against the loaded contract pack, embedded gate report,
 optional model-config import provenance, and optional status, decision,
-assurance, or pass gates. It is the preferred CI-facing command when a
-downstream project stores the full certification bundle rather than just the
+assurance, pass, or model-config fingerprint gates. Add
+`--require-model-config-fingerprint FINGERPRINT` with the
+`model_config_fingerprint` from the embedded import report when the bundle came
+from an imported RoPE `config.json`. It is the preferred CI-facing command when
+a downstream project stores the full certification bundle rather than just the
 receipt.
 
 Validate a saved receipt file that another project has already produced:

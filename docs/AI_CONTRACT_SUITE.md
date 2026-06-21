@@ -53,8 +53,8 @@ the command exits nonzero if the requested status, decision, assurance, or pass
 policy is not met.
 For model-config imports, pin the source `config.json` by passing the
 `model_config_fingerprint` from the import report to
-`--require-model-config-fingerprint` in the artifact-manifest checker or
-standalone downstream verifier.
+`--require-model-config-fingerprint` in the certification-bundle checker,
+artifact-manifest checker, or standalone downstream verifier.
 Add `--gate-report-out reports/rope_gate.json` when CI needs a compact
 schema-validated JSON gate report without saving the full receipt. Use
 `--json-out reports/rope_receipt.json --receipt-check-out

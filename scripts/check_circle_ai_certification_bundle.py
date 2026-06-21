@@ -75,6 +75,24 @@ def _validate_schema_file(
     return schema
 
 
+def _model_config_fingerprint_pin_failures(
+    summaries: list[dict[str, Any]],
+    *,
+    required_model_config_fingerprints: tuple[str, ...],
+) -> list[str]:
+    observed = {
+        fingerprint
+        for summary in summaries
+        for fingerprint in (summary.get("model_config_fingerprint"),)
+        if isinstance(fingerprint, str)
+    }
+    return [
+        f"required model config fingerprint is missing: {fingerprint}"
+        for fingerprint in required_model_config_fingerprints
+        if fingerprint not in observed
+    ]
+
+
 def check_certification_bundle_files(
     *,
     bundle_paths: tuple[Path, ...],
@@ -87,6 +105,7 @@ def check_certification_bundle_files(
     required_decision_verdicts: tuple[str, ...] = (),
     required_assurance_levels: tuple[str, ...] = (),
     require_passed: bool = False,
+    required_model_config_fingerprints: tuple[str, ...] = (),
 ) -> dict[str, Any]:
     _validate_schema_file(
         bundle_schema_path,
@@ -135,6 +154,12 @@ def check_certification_bundle_files(
         ) as exc:
             failures.append(f"{path}: {exc}")
 
+    failures.extend(
+        _model_config_fingerprint_pin_failures(
+            summaries,
+            required_model_config_fingerprints=required_model_config_fingerprints,
+        )
+    )
     report = {
         "schema_id": CHECK_SCHEMA_ID,
         "ok": not failures,
@@ -219,6 +244,15 @@ def main() -> int:
         action="store_true",
         help="Exit nonzero unless every embedded receipt has request_passed=true.",
     )
+    parser.add_argument(
+        "--require-model-config-fingerprint",
+        action="append",
+        default=[],
+        help=(
+            "Require at least one embedded RoPE model-config import report to "
+            "expose this source config SHA-256 fingerprint."
+        ),
+    )
     args = parser.parse_args()
 
     report = check_certification_bundle_files(
@@ -232,6 +266,9 @@ def main() -> int:
         required_decision_verdicts=tuple(args.require_decision),
         required_assurance_levels=tuple(args.require_assurance),
         require_passed=args.require_passed,
+        required_model_config_fingerprints=tuple(
+            args.require_model_config_fingerprint
+        ),
     )
     if args.report_out is not None:
         _write_json(args.report_out, report)

@@ -198,7 +198,11 @@ in-memory receipt. Use `--json-out` plus `--receipt-check-out` when an audit log
 should also retain the full receipt JSON. Use `--certification-bundle-out` plus
 `--certification-bundle-check-out` when the audit log should retain the full
 request preflight, theorem-linked receipt, gate report, model-config provenance
-when present, and a CI-readable verification report for the bundle:
+when present, and a CI-readable verification report for the bundle.
+For model-config imports, pass the `model_config_fingerprint` from the import
+report to `--require-model-config-fingerprint` in the certification-bundle
+checker, artifact-manifest checker, or standalone downstream verifier when CI
+must pin the source `config.json`.
 
 ```bash
 python scripts/circle_ai_certify.py rope \
