@@ -74,9 +74,13 @@ Use `--certification-bundle-out reports/rope_bundle.json` plus
 installed CLI should retain the full request preflight, theorem-linked receipt,
 gate report, model-config provenance when present, and a CI-readable
 verification report for the bundle.
+Use `--artifact-manifest-out reports/rope_manifest.json` plus
+`--artifact-manifest-check-out reports/rope_manifest_check.json` when the
+installed CLI should fingerprint every sidecar it wrote and produce a
+CI-readable manifest verification report.
 Use `python scripts/circle_ai_certify.py` when you need repository-only audit
-artifacts such as standalone request-validation reports, artifact manifests,
-artifact pin policies, or whole-directory artifact bundles:
+workflows such as artifact-dir default naming, artifact pin policies, or
+whole-directory artifact bundles:
 
 ```bash
 python scripts/circle_ai_certify.py rope \

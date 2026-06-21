@@ -100,6 +100,8 @@ circle-ai-certify sparse-attention \
   --receipt-replay-check-out /tmp/circle_sparse_replay.json \
   --certification-bundle-out /tmp/circle_sparse_bundle.json \
   --certification-bundle-check-out /tmp/circle_sparse_bundle_check.json \
+  --artifact-manifest-out /tmp/circle_sparse_manifest.json \
+  --artifact-manifest-check-out /tmp/circle_sparse_manifest_check.json \
   --format json
 ```
 
@@ -111,7 +113,10 @@ the receipt from the embedded request and compare stable fingerprints. Use
 a standalone JSON artifact. Use
 `--certification-bundle-out` and `--certification-bundle-check-out` when the
 handoff should carry the request preflight, theorem-linked receipt, gate
-report, and bundle validation result as one archived object.
+report, and bundle validation result as one archived object. Use
+`--artifact-manifest-out` and `--artifact-manifest-check-out` when the handoff
+also needs file fingerprints and a manifest self-check for every sidecar this
+invocation wrote.
 
 The lower-level installed receipt command accepts kind aliases plus JSON
 parameters directly:

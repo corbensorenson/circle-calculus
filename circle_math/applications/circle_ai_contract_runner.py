@@ -3713,6 +3713,112 @@ def _file_sha256_or_none(path: Path) -> str | None:
     return digest.hexdigest()
 
 
+def _artifact_manifest_status_fields(
+    *,
+    receipt: Mapping[str, Any] | None,
+    request_validation_report: Mapping[str, Any] | None,
+) -> dict[str, Any]:
+    if receipt is not None:
+        decision = receipt.get("decision")
+        decision_dict = decision if isinstance(decision, Mapping) else {}
+        return {
+            "kind": receipt.get("kind"),
+            "status": receipt.get("status"),
+            "request_passed": receipt.get("request_passed"),
+            "decision_verdict": decision_dict.get("verdict"),
+            "decision_assurance": decision_dict.get("assurance"),
+            "request_content_fingerprint": receipt.get("request_content_fingerprint"),
+            "normalized_request_fingerprint": receipt.get(
+                "normalized_request_fingerprint"
+            ),
+            "receipt_content_fingerprint": receipt.get("receipt_content_fingerprint"),
+        }
+    if request_validation_report is not None:
+        return {
+            "kind": request_validation_report.get("canonical_kind"),
+            "status": None,
+            "request_passed": None,
+            "decision_verdict": None,
+            "decision_assurance": None,
+            "request_content_fingerprint": request_validation_report.get(
+                "request_content_fingerprint"
+            ),
+            "normalized_request_fingerprint": None,
+            "receipt_content_fingerprint": None,
+        }
+    return {
+        "kind": None,
+        "status": None,
+        "request_passed": None,
+        "decision_verdict": None,
+        "decision_assurance": None,
+        "request_content_fingerprint": None,
+        "normalized_request_fingerprint": None,
+        "receipt_content_fingerprint": None,
+    }
+
+
+def build_contract_artifact_manifest(
+    artifact_paths: Sequence[tuple[str, str | Path, str | None]],
+    *,
+    artifact_prefix: str,
+    artifact_dir: str | Path | None = None,
+    receipt: Mapping[str, Any] | None = None,
+    request_validation_report: Mapping[str, Any] | None = None,
+    required_statuses: Sequence[str] = (),
+    required_decision_verdicts: Sequence[str] = (),
+    required_assurance_levels: Sequence[str] = (),
+    require_passed: bool = False,
+) -> dict[str, Any]:
+    """Build a schema-shaped artifact manifest for written contract sidecars.
+
+    ``artifact_paths`` contains ``(label, path, content_schema_id)`` triples.
+    The builder records file existence and SHA-256 fingerprints, then mirrors
+    the receipt or request-preflight status fields needed by downstream CI.
+    """
+
+    if not isinstance(artifact_prefix, str) or not artifact_prefix:
+        raise ValueError("artifact_prefix must be a non-empty string")
+    _validate_receipt_gate_policy(
+        required_statuses=required_statuses,
+        required_decision_verdicts=required_decision_verdicts,
+        required_assurance_levels=required_assurance_levels,
+    )
+    artifacts: list[dict[str, Any]] = []
+    for label, raw_path, schema_id in artifact_paths:
+        if not isinstance(label, str) or not label:
+            raise ValueError("artifact labels must be non-empty strings")
+        path = Path(raw_path)
+        artifacts.append(
+            {
+                "label": label,
+                "path": str(path),
+                "exists": path.exists(),
+                "sha256": _file_sha256_or_none(path),
+                "content_schema_id": schema_id,
+            }
+        )
+    status_fields = _artifact_manifest_status_fields(
+        receipt=receipt,
+        request_validation_report=request_validation_report,
+    )
+    return {
+        "schema_id": ARTIFACT_MANIFEST_SCHEMA_ID,
+        "artifact_fingerprint_algorithm": "sha256-file-v1",
+        "artifact_prefix": artifact_prefix,
+        "artifact_dir": None if artifact_dir is None else str(Path(artifact_dir)),
+        "gate_policy": _receipt_gate_policy(
+            required_statuses=required_statuses,
+            required_decision_verdicts=required_decision_verdicts,
+            required_assurance_levels=required_assurance_levels,
+            require_passed=require_passed,
+        ),
+        "artifact_count": len(artifacts),
+        "artifacts": artifacts,
+        **status_fields,
+    }
+
+
 def _display_manifest_check_path(path: Path) -> str:
     try:
         return str(path.relative_to(Path.cwd()))

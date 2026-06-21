@@ -27,6 +27,16 @@ from .ai_contracts import (
     receipt_summary_lines,
 )
 from .applications import (
+    CIRCLE_AI_CONTRACT_CERTIFICATION_BUNDLE_FILE_CHECK_SCHEMA_ID,
+    CIRCLE_AI_CONTRACT_CERTIFICATION_BUNDLE_SCHEMA_ID,
+    CIRCLE_AI_CONTRACT_RECEIPT_FILE_CHECK_SCHEMA_ID,
+    CIRCLE_AI_CONTRACT_RECEIPT_REPLAY_CHECK_SCHEMA_ID,
+    CIRCLE_AI_CONTRACT_RECEIPT_SCHEMA_ID,
+    CIRCLE_AI_CONTRACT_REQUEST_SCHEMA_ID,
+    CIRCLE_AI_CONTRACT_REQUEST_VALIDATION_SCHEMA_ID,
+    CIRCLE_AI_ROPE_MODEL_CONFIG_IMPORT_SCHEMA_ID,
+    build_contract_artifact_manifest,
+    build_contract_artifact_manifest_file_check_report,
     build_contract_certification_bundle,
     build_contract_certification_bundle_file_check_report,
     build_contract_receipt_file_check_report,
@@ -290,6 +300,22 @@ def _add_certify_common_options(parser: argparse.ArgumentParser) -> None:
             "Optional JSON report validating the emitted certification bundle."
         ),
     )
+    parser.add_argument(
+        "--artifact-manifest-out",
+        type=Path,
+        help=(
+            "Optional JSON manifest fingerprinting the sidecar files emitted "
+            "by this certifier invocation."
+        ),
+    )
+    parser.add_argument(
+        "--artifact-manifest-check-out",
+        type=Path,
+        help=(
+            "Optional JSON report validating the emitted artifact manifest and "
+            "the files it names."
+        ),
+    )
     parser.add_argument("--format", choices=("text", "json"), default="text")
     parser.add_argument(
         "--require-passed",
@@ -326,6 +352,67 @@ def _certify_pack_from_args(args: argparse.Namespace) -> dict[str, Any]:
     return build_contract_pack() if args.pack is None else load_contract_pack(args.pack)
 
 
+def _certify_artifact_paths(
+    args: argparse.Namespace,
+) -> list[tuple[str, Path, str | None]]:
+    artifacts = [
+        ("request_json", args.request_out, CIRCLE_AI_CONTRACT_REQUEST_SCHEMA_ID),
+        (
+            "request_validation_report",
+            args.request_validation_report_out,
+            CIRCLE_AI_CONTRACT_REQUEST_VALIDATION_SCHEMA_ID,
+        ),
+        ("receipt_json", args.json_out, CIRCLE_AI_CONTRACT_RECEIPT_SCHEMA_ID),
+        (
+            "receipt_check",
+            args.receipt_check_out,
+            CIRCLE_AI_CONTRACT_RECEIPT_FILE_CHECK_SCHEMA_ID,
+        ),
+        (
+            "receipt_replay_check",
+            args.receipt_replay_check_out,
+            CIRCLE_AI_CONTRACT_RECEIPT_REPLAY_CHECK_SCHEMA_ID,
+        ),
+        ("gate_report", args.gate_report_out, CIRCLE_AI_CONTRACT_RECEIPT_FILE_CHECK_SCHEMA_ID),
+        (
+            "certification_bundle",
+            args.certification_bundle_out,
+            CIRCLE_AI_CONTRACT_CERTIFICATION_BUNDLE_SCHEMA_ID,
+        ),
+        (
+            "certification_bundle_check",
+            args.certification_bundle_check_out,
+            CIRCLE_AI_CONTRACT_CERTIFICATION_BUNDLE_FILE_CHECK_SCHEMA_ID,
+        ),
+    ]
+    model_config_import_report_out = getattr(
+        args,
+        "model_config_import_report_out",
+        None,
+    )
+    artifacts.insert(
+        2,
+        (
+            "model_config_import_report",
+            model_config_import_report_out,
+            CIRCLE_AI_ROPE_MODEL_CONFIG_IMPORT_SCHEMA_ID,
+        ),
+    )
+    return [
+        (label, path, schema_id)
+        for label, path, schema_id in artifacts
+        if path is not None
+    ]
+
+
+def _certify_artifact_prefix(args: argparse.Namespace, receipt: dict[str, Any]) -> str:
+    kind = receipt.get("kind")
+    if isinstance(kind, str) and kind:
+        return kind
+    command = getattr(args, "command", "circle_ai_contract")
+    return str(command).replace("-", "_")
+
+
 def _certify_print_and_gate(
     receipt: dict[str, Any],
     pack: dict[str, Any],
@@ -336,6 +423,7 @@ def _certify_print_and_gate(
 ) -> int:
     if args.request_out is not None:
         _write_json_file(args.request_out, receipt["request"])
+    request_validation_report: dict[str, Any] | None = None
     if args.request_validation_report_out is not None:
         request_validation_report = build_contract_request_validation_report(request)
         _write_json_file(
@@ -399,6 +487,24 @@ def _certify_print_and_gate(
                 require_passed=args.require_passed,
             )
             _write_json_file(args.certification_bundle_check_out, bundle_check)
+    if args.artifact_manifest_out is not None:
+        manifest = build_contract_artifact_manifest(
+            _certify_artifact_paths(args),
+            artifact_prefix=_certify_artifact_prefix(args, receipt),
+            receipt=receipt,
+            request_validation_report=request_validation_report,
+            required_statuses=tuple(args.require_status),
+            required_decision_verdicts=tuple(args.require_decision),
+            required_assurance_levels=tuple(args.require_assurance),
+            require_passed=args.require_passed,
+        )
+        _write_json_file(args.artifact_manifest_out, manifest)
+        if args.artifact_manifest_check_out is not None:
+            manifest_check = build_contract_artifact_manifest_file_check_report(
+                manifest,
+                manifest_path=str(args.artifact_manifest_out),
+            )
+            _write_json_file(args.artifact_manifest_check_out, manifest_check)
     gate_failures = _receipt_gate_failures(receipt, args)
     if args.format == "json":
         print(json.dumps(receipt, indent=2, sort_keys=True))
@@ -495,6 +601,13 @@ def contract_certify_main() -> int:
     ):
         parser.error(
             "--certification-bundle-check-out requires --certification-bundle-out"
+        )
+    if (
+        args.artifact_manifest_check_out is not None
+        and args.artifact_manifest_out is None
+    ):
+        parser.error(
+            "--artifact-manifest-check-out requires --artifact-manifest-out"
         )
     pack = _certify_pack_from_args(args)
     model_config_import_report: dict[str, Any] | None = None

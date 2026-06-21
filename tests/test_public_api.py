@@ -13,6 +13,11 @@ from circle_math.ai_contracts import (
     build_validated_contract_receipt_from_request,
     build_validated_rope_receipt_from_model_config,
 )
+from circle_math.applications import (
+    CIRCLE_AI_CONTRACT_RECEIPT_SCHEMA_ID,
+    build_contract_artifact_manifest,
+    build_contract_artifact_manifest_file_check_report,
+)
 from circle_math.contracts import contract_kinds, readiness_summary
 
 
@@ -68,6 +73,37 @@ def test_stable_request_api_builds_kv_cache_receipt() -> None:
     assert receipt["request"]["parameters"]["cache_size"] == 16
     assert receipt["request"]["parameters"]["request_id"] == "example_read_request"
     assert receipt["proof_status"]["all_theorem_ids_proved"] is True
+
+
+def test_stable_artifact_manifest_public_api(tmp_path) -> None:
+    request = json.loads(
+        (ROOT / "examples" / "circle_ai_requests" / "kv_cache_request.json").read_text()
+    )
+    receipt = build_validated_contract_receipt_from_request(request)
+    receipt_path = tmp_path / "receipt.json"
+    manifest_path = tmp_path / "artifact_manifest.json"
+    receipt_path.write_text(json.dumps(receipt))
+
+    manifest = build_contract_artifact_manifest(
+        [("receipt_json", receipt_path, CIRCLE_AI_CONTRACT_RECEIPT_SCHEMA_ID)],
+        artifact_prefix="kv_cache_ring_buffer",
+        receipt=receipt,
+        required_statuses=("proved",),
+        require_passed=True,
+    )
+    manifest_path.write_text(json.dumps(manifest))
+    report = build_contract_artifact_manifest_file_check_report(
+        manifest,
+        manifest_path=manifest_path,
+    )
+
+    assert manifest["schema_id"] == "circle_calculus.ai_contract_artifact_manifest.v0"
+    assert manifest["artifact_count"] == 1
+    assert manifest["artifacts"][0]["sha256"]
+    assert report["schema_id"] == (
+        "circle_calculus.ai_contract_artifact_manifest_file_check.v0"
+    )
+    assert report["ok"] is True
 
 
 def test_package_cli_contract_ready_json() -> None:
@@ -268,6 +304,8 @@ def test_package_cli_unified_certify_writes_gate_and_replay_reports(tmp_path) ->
     replay_path = tmp_path / "replay.json"
     bundle_path = tmp_path / "bundle.json"
     bundle_check_path = tmp_path / "bundle_check.json"
+    manifest_path = tmp_path / "artifact_manifest.json"
+    manifest_check_path = tmp_path / "artifact_manifest_check.json"
 
     result = subprocess.run(
         [
@@ -299,6 +337,10 @@ def test_package_cli_unified_certify_writes_gate_and_replay_reports(tmp_path) ->
             str(bundle_path),
             "--certification-bundle-check-out",
             str(bundle_check_path),
+            "--artifact-manifest-out",
+            str(manifest_path),
+            "--artifact-manifest-check-out",
+            str(manifest_check_path),
             "--require-passed",
             "--require-status",
             "proved",
@@ -316,6 +358,8 @@ def test_package_cli_unified_certify_writes_gate_and_replay_reports(tmp_path) ->
     replay_report = json.loads(replay_path.read_text())
     bundle = json.loads(bundle_path.read_text())
     bundle_check = json.loads(bundle_check_path.read_text())
+    manifest = json.loads(manifest_path.read_text())
+    manifest_check = json.loads(manifest_check_path.read_text())
 
     assert receipt == saved_receipt
     assert gate_report["schema_id"] == "circle_calculus.ai_contract_receipt_file_check.v0"
@@ -340,6 +384,24 @@ def test_package_cli_unified_certify_writes_gate_and_replay_reports(tmp_path) ->
         == "circle_calculus.ai_contract_certification_bundle_file_check.v0"
     )
     assert bundle_check["ok"] is True
+    assert manifest["schema_id"] == "circle_calculus.ai_contract_artifact_manifest.v0"
+    assert manifest["kind"] == "sparse_attention_coverage"
+    assert manifest["status"] == "proved"
+    assert manifest["gate_policy"]["require_passed"] is True
+    artifact_labels = {artifact["label"] for artifact in manifest["artifacts"]}
+    assert {
+        "receipt_json",
+        "receipt_check",
+        "receipt_replay_check",
+        "gate_report",
+        "certification_bundle",
+        "certification_bundle_check",
+    } <= artifact_labels
+    assert (
+        manifest_check["schema_id"]
+        == "circle_calculus.ai_contract_artifact_manifest_file_check.v0"
+    )
+    assert manifest_check["ok"] is True
 
 
 def test_package_cli_unified_certify_rejects_bundle_check_without_bundle(
@@ -364,6 +426,32 @@ def test_package_cli_unified_certify_rejects_bundle_check_without_bundle(
     assert result.returncode == 2
     assert (
         "--certification-bundle-check-out requires --certification-bundle-out"
+        in result.stderr
+    )
+
+
+def test_package_cli_unified_certify_rejects_manifest_check_without_manifest(
+    tmp_path,
+) -> None:
+    result = subprocess.run(
+        [
+            sys.executable,
+            "-c",
+            (
+                "import sys; "
+                "from circle_math.cli import contract_certify_main; "
+                "sys.exit(contract_certify_main())"
+            ),
+            "recurrence",
+            "--artifact-manifest-check-out",
+            str(tmp_path / "artifact_manifest_check.json"),
+        ],
+        text=True,
+        capture_output=True,
+    )
+    assert result.returncode == 2
+    assert (
+        "--artifact-manifest-check-out requires --artifact-manifest-out"
         in result.stderr
     )
 

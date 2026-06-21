@@ -143,7 +143,9 @@ Use `--gate-report-out`, `--receipt-check-out`, and
 receipt diagnostics without using repository-only scripts. Use
 `--certification-bundle-out` with `--certification-bundle-check-out` when the
 installed CLI should also archive a request-validation, receipt, gate, and
-bundle-check handoff object.
+bundle-check handoff object. Use `--artifact-manifest-out` with
+`--artifact-manifest-check-out` when it should also fingerprint the sidecar
+files and verify the manifest.
 
 Non-default `rope_scaling` values are rejected by the standard-RoPE importer.
 That rejection is intentional: scaled-RoPE variants need separate theorem

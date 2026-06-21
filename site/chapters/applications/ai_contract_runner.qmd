@@ -127,12 +127,16 @@ Use `--certification-bundle-out reports/rope_bundle.json` with
 installed command should also archive the request preflight, theorem-linked
 receipt, gate report, model-config provenance when present, and bundle
 verification result.
+Use `--artifact-manifest-out reports/rope_manifest.json` with
+`--artifact-manifest-check-out reports/rope_manifest_check.json` when the
+installed command should fingerprint every sidecar file it wrote and verify
+the manifest.
 
 The repository-only `python scripts/circle_ai_certify.py` runner adds heavier
-audit outputs such as standalone request-validation reports, artifact
-manifests, pin-policy checks, and whole-directory artifact bundles. Use that
-script when a handoff needs the full repository audit trail rather than a
-single installed-package receipt or certification bundle.
+audit workflows such as artifact-dir default naming, pin-policy checks, and
+whole-directory artifact bundles. Use that script when a handoff needs the full
+repository audit trail rather than a single installed-package receipt,
+certification bundle, or explicit artifact manifest.
 
 Expected shape:
 
