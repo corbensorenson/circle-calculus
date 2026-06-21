@@ -2956,6 +2956,16 @@ def receipt_summary_lines(receipt: Mapping[str, Any]) -> list[str]:
                 f"margin={classifier['requested_margin']} "
                 f"context={classifier['requested_context']}"
             )
+        bank_bridge = evidence.get("standard_channel0_d19_bank_bridge")
+        if isinstance(bank_bridge, dict):
+            lines.append(
+                "rope_d19_bank_bridge="
+                f"applies={bank_bridge['applies']} "
+                f"theorem_backed={bank_bridge['theorem_backed']} "
+                f"radian_bank_form={bank_bridge['radian_bank_form']} "
+                f"bank_shape={bank_bridge['bank_shape']} "
+                f"status={bank_bridge['request_status']}"
+            )
         guardrail = evidence.get("real_phase_dirichlet_guardrail")
         if isinstance(guardrail, dict):
             lines.append(

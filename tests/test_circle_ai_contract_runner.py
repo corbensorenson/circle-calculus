@@ -366,6 +366,9 @@ def test_receipt_summary_lines_surface_proof_layer_counts(
 
     proof_layer_line = next(line for line in lines if line.startswith("proof_layers="))
     decision_line = next(line for line in lines if line.startswith("decision="))
+    bank_bridge_line = next(
+        line for line in lines if line.startswith("rope_d19_bank_bridge=")
+    )
     proof_layers = receipt["proof_layers"]
     assert f"proved_fields={len(proof_layers['proved_fields'])}" in proof_layer_line
     assert f"computed_fields={len(proof_layers['computed_fields'])}" in proof_layer_line
@@ -379,6 +382,10 @@ def test_receipt_summary_lines_surface_proof_layer_counts(
     )
     assert "verdict=passed" in decision_line
     assert "assurance=mixed_theorem_and_computation" in decision_line
+    assert "applies=True" in bank_bridge_line
+    assert "theorem_backed=True" in bank_bridge_line
+    assert "radian_bank_form=True" in bank_bridge_line
+    assert "bank_shape=standard_channel0_first" in bank_bridge_line
 
 
 def test_kv_sparse_and_recurrence_receipts_preserve_family_semantics(
