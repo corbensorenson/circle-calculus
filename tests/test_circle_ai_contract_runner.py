@@ -102,6 +102,24 @@ def _pack_content_fingerprint(value: object) -> str:
 
 def _refresh_pack_fingerprints(pack: dict) -> None:
     for contract in pack["contracts"]:
+        theorem_ids = contract.get("theorem_ids")
+        proof_status = contract.get("proof_status")
+        if isinstance(theorem_ids, list) and isinstance(proof_status, dict):
+            theorem_id_set = set(theorem_ids)
+            theorems = proof_status.get("theorems")
+            if isinstance(theorems, list):
+                proof_status["theorems"] = [
+                    theorem
+                    for theorem in theorems
+                    if isinstance(theorem, dict)
+                    and theorem.get("id") in theorem_id_set
+                ]
+            proof_status["theorem_count"] = len(theorem_ids)
+            readiness = pack.get("contract_readiness_index", {}).get(
+                contract.get("kind")
+            )
+            if isinstance(readiness, dict):
+                readiness["theorem_count"] = len(theorem_ids)
         contract["content_fingerprint_algorithm"] = PACK_FINGERPRINT_ALGORITHM
         contract["content_fingerprint"] = _pack_content_fingerprint(contract)
     pack["contract_fingerprint_index"] = {
@@ -394,6 +412,62 @@ def test_receipt_validator_requires_typed_proof_layer_buckets(
     assert any(
         "proof layer field appears in multiple buckets" in failure
         and duplicate_layer_field["proof_layers"]["proved_fields"][0] in failure
+        for failure in failures
+    )
+
+    wrong_theorem_count = json.loads(json.dumps(receipt))
+    wrong_theorem_count["proof_status"]["theorem_count"] += 1
+    wrong_theorem_count["receipt_content_fingerprint"] = _receipt_fingerprint(
+        wrong_theorem_count
+    )
+    failures = validate_contract_receipt(wrong_theorem_count)
+    assert any(
+        "proof_status.theorem_count must equal len(theorem_ids)" in failure
+        for failure in failures
+    )
+
+    mismatched_recommendations = json.loads(json.dumps(receipt))
+    mismatched_recommendations["recommendations"][0]["id"] = "WRONG"
+    mismatched_recommendations["receipt_content_fingerprint"] = _receipt_fingerprint(
+        mismatched_recommendations
+    )
+    failures = validate_contract_receipt(mismatched_recommendations)
+    assert any(
+        "recommendations must match support.planner_recommendations" in failure
+        for failure in failures
+    )
+
+    mismatched_validation_commands = json.loads(json.dumps(receipt))
+    mismatched_validation_commands["validation_commands"][0] = "python wrong.py"
+    mismatched_validation_commands["receipt_content_fingerprint"] = (
+        _receipt_fingerprint(mismatched_validation_commands)
+    )
+    failures = validate_contract_receipt(mismatched_validation_commands)
+    assert any(
+        "validation_commands must match support.validation_commands" in failure
+        for failure in failures
+    )
+
+    mismatched_support_contract_id = json.loads(json.dumps(receipt))
+    mismatched_support_contract_id["support"]["contract_id"] = "WRONG"
+    mismatched_support_contract_id["receipt_content_fingerprint"] = (
+        _receipt_fingerprint(mismatched_support_contract_id)
+    )
+    failures = validate_contract_receipt(mismatched_support_contract_id)
+    assert any(
+        "support.contract_id must match receipt contract_id" in failure
+        for failure in failures
+    )
+
+    wrong_support_theorem_count = json.loads(json.dumps(receipt))
+    wrong_support_theorem_count["support"]["contract_theorem_count"] += 1
+    wrong_support_theorem_count["receipt_content_fingerprint"] = _receipt_fingerprint(
+        wrong_support_theorem_count
+    )
+    failures = validate_contract_receipt(wrong_support_theorem_count)
+    assert any(
+        "support.contract_theorem_count must equal len(contract_theorem_ids)"
+        in failure
         for failure in failures
     )
 

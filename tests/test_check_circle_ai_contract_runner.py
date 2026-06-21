@@ -51,6 +51,24 @@ def _json_fingerprint(value: object) -> str:
 
 def _refresh_pack_fingerprints(pack: dict) -> None:
     for contract in pack["contracts"]:
+        theorem_ids = contract.get("theorem_ids")
+        proof_status = contract.get("proof_status")
+        if isinstance(theorem_ids, list) and isinstance(proof_status, dict):
+            theorem_id_set = set(theorem_ids)
+            theorems = proof_status.get("theorems")
+            if isinstance(theorems, list):
+                proof_status["theorems"] = [
+                    theorem
+                    for theorem in theorems
+                    if isinstance(theorem, dict)
+                    and theorem.get("id") in theorem_id_set
+                ]
+            proof_status["theorem_count"] = len(theorem_ids)
+            readiness = pack.get("contract_readiness_index", {}).get(
+                contract.get("kind")
+            )
+            if isinstance(readiness, dict):
+                readiness["theorem_count"] = len(theorem_ids)
         contract["content_fingerprint_algorithm"] = FINGERPRINT_ALGORITHM
         contract["content_fingerprint"] = _json_fingerprint(contract)
     pack["contract_fingerprint_index"] = {

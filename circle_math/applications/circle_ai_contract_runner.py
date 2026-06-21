@@ -1481,8 +1481,13 @@ def validate_contract_receipt(receipt: Mapping[str, Any]) -> list[str]:
         theorem_ids = proof_status.get("theorem_ids")
         if not isinstance(theorem_ids, list) or not theorem_ids:
             failures.append("proof_status.theorem_ids must be a non-empty list")
-        if not isinstance(proof_status.get("theorem_count"), int):
+        theorem_count = proof_status.get("theorem_count")
+        if not isinstance(theorem_count, int):
             failures.append("proof_status.theorem_count must be an integer")
+        elif isinstance(theorem_ids, list) and theorem_count != len(theorem_ids):
+            failures.append(
+                "proof_status.theorem_count must equal len(theorem_ids)"
+            )
         if proof_status.get("all_theorem_ids_resolved") is not True:
             failures.append("all receipt theorem ids must resolve in the contract pack")
         if status in {"proved", "impossible"} and proof_status.get(
@@ -1495,22 +1500,47 @@ def validate_contract_receipt(receipt: Mapping[str, Any]) -> list[str]:
     else:
         if not support.get("contract_id"):
             failures.append("support.contract_id must be present")
+        elif receipt.get("contract_id") != support.get("contract_id"):
+            failures.append("support.contract_id must match receipt contract_id")
         if support.get("ready_for_downstream_fixture_use") is not True:
             failures.append("support.ready_for_downstream_fixture_use must be true")
         if not support.get("contract_pack_fingerprint"):
             failures.append("support.contract_pack_fingerprint must be present")
         if not support.get("contract_content_fingerprint"):
             failures.append("support.contract_content_fingerprint must be present")
+        contract_theorem_ids = support.get("contract_theorem_ids")
+        contract_theorem_count = support.get("contract_theorem_count")
+        if (
+            isinstance(contract_theorem_ids, list)
+            and isinstance(contract_theorem_count, int)
+            and contract_theorem_count != len(contract_theorem_ids)
+        ):
+            failures.append(
+                "support.contract_theorem_count must equal "
+                "len(contract_theorem_ids)"
+            )
     recommendations = receipt.get("recommendations")
     if not isinstance(recommendations, list) or not recommendations:
         failures.append("recommendations must be a non-empty list")
     elif not all(isinstance(recommendation, dict) for recommendation in recommendations):
         failures.append("recommendations must contain objects")
+    elif (
+        isinstance(support, dict)
+        and isinstance(support.get("planner_recommendations"), list)
+        and recommendations != support["planner_recommendations"]
+    ):
+        failures.append("recommendations must match support.planner_recommendations")
     validation_commands = receipt.get("validation_commands")
     if not isinstance(validation_commands, list) or not validation_commands:
         failures.append("validation_commands must be a non-empty list")
     elif not all(isinstance(command, str) and command for command in validation_commands):
         failures.append("validation_commands must contain non-empty strings")
+    elif (
+        isinstance(support, dict)
+        and isinstance(support.get("validation_commands"), list)
+        and validation_commands != support["validation_commands"]
+    ):
+        failures.append("validation_commands must match support.validation_commands")
     if not isinstance(receipt.get("not_claimed"), list) or not receipt.get(
         "not_claimed"
     ):
