@@ -77,6 +77,7 @@ The installed CLI exposes a guided subcommand runner for shell users:
 circle-ai-certify rope \
   --model-config-file examples/circle_ai_model_configs/standard_rope_config.json \
   --request-out /tmp/circle_rope_request.json \
+  --request-validation-report-out /tmp/circle_rope_request_validation.json \
   --model-config-import-report-out /tmp/circle_rope_import_report.json \
   --format json
 
@@ -106,6 +107,8 @@ Use `--gate-report-out` when downstream CI needs a compact machine-readable
 pass/fail report, `--receipt-check-out` when it wants a pack-aware receipt
 validation artifact, and `--receipt-replay-check-out` when it wants to rebuild
 the receipt from the embedded request and compare stable fingerprints. Use
+`--request-validation-report-out` when it wants the request preflight saved as
+a standalone JSON artifact. Use
 `--certification-bundle-out` and `--certification-bundle-check-out` when the
 handoff should carry the request preflight, theorem-linked receipt, gate
 report, and bundle validation result as one archived object.

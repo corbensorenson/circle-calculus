@@ -34,6 +34,7 @@ circle-ai-certify rope \
   --requested-margin 1/328459 \
   --format json \
   --request-out reports/rope_request.json \
+  --request-validation-report-out reports/rope_request_validation.json \
   --model-config-import-report-out reports/rope_import.json \
   --require-status proved \
   --require-decision passed \
@@ -48,6 +49,9 @@ Use `--model-config-import-report-out reports/rope_import.json` to save a
 schema-validated explanation when a real model config cannot be imported into
 the standard-RoPE request frontier. The report carries source-config and
 request fingerprints for downstream audit logs.
+Use `--request-validation-report-out reports/rope_request_validation.json` when
+CI should archive the schema-validated preflight report for the exact request
+that produced the receipt.
 The `--require-*` flags are optional CI gates: the receipt is still emitted, but
 the command exits nonzero if the requested status, decision, assurance, or pass
 policy is not met.

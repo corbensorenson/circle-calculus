@@ -31,6 +31,7 @@ from .applications import (
     build_contract_certification_bundle_file_check_report,
     build_contract_receipt_file_check_report,
     build_contract_receipt_gate_report,
+    build_contract_request_validation_report,
     build_contract_receipt_replay_check_report,
 )
 from .applications.circle_ai import certify_stride_family_coverage
@@ -241,6 +242,14 @@ def _parse_positive_int_csv(raw: str) -> tuple[int, ...]:
 def _add_certify_common_options(parser: argparse.ArgumentParser) -> None:
     parser.add_argument("--pack", type=Path, default=None)
     parser.add_argument("--request-out", type=Path)
+    parser.add_argument(
+        "--request-validation-report-out",
+        type=Path,
+        help=(
+            "Optional JSON report validating the exact contract request used "
+            "to build the receipt."
+        ),
+    )
     parser.add_argument("--json-out", type=Path)
     parser.add_argument(
         "--gate-report-out",
@@ -327,6 +336,12 @@ def _certify_print_and_gate(
 ) -> int:
     if args.request_out is not None:
         _write_json_file(args.request_out, receipt["request"])
+    if args.request_validation_report_out is not None:
+        request_validation_report = build_contract_request_validation_report(request)
+        _write_json_file(
+            args.request_validation_report_out,
+            request_validation_report,
+        )
     if args.json_out is not None:
         _write_json_file(args.json_out, receipt)
     receipt_path = (

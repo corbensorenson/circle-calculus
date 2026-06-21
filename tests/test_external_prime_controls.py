@@ -446,13 +446,15 @@ def test_speedup_row_combines_sample_stability_with_baseline() -> None:
     assert row.sample_stability == "noisy"
 
 
-def test_external_metadata_records_thread_policy_and_commands(monkeypatch) -> None:
+def test_external_metadata_records_thread_policy_and_commands(monkeypatch, tmp_path) -> None:
     monkeypatch.delenv(CIRCLE_COUNT_SERVER_SMALL_PREFIX_PI_CACHE_LIMIT_ENV, raising=False)
     monkeypatch.setattr(
         benchmark_prime_external_controls,
         "circle_prime_package_metadata",
         lambda cargo: {"name": "circle-prime", "version": "0.1.0"},
     )
+    circle_prime = tmp_path / "circle-prime"
+    circle_prime.write_text("#!/bin/sh\n")
     args = SimpleNamespace(
         rounds=5,
         batch_size=3,
@@ -474,7 +476,7 @@ def test_external_metadata_records_thread_policy_and_commands(monkeypatch) -> No
         ranges=[(0, 1000), (100, 200)],
         started_at_utc="2026-01-01T00:00:00Z",
         cargo=None,
-        circle_prime=Path("target/release/circle-prime"),
+        circle_prime=circle_prime,
         primesieve="/opt/bin/primesieve",
         primecount="/opt/bin/primecount",
         primesieve_count_server=Path("target/prime-controls/primesieve-count-server"),
@@ -503,7 +505,7 @@ def test_external_metadata_records_thread_policy_and_commands(monkeypatch) -> No
     ]
     assert metadata["tools"]["circle_count_server"] == {
         "available": True,
-        "path": "target/release/circle-prime",
+        "path": str(circle_prime),
         "method": "persistent count-server requests",
         "small_prefix_pi_cache_limit": 2_000_000_000,
         "small_prefix_pi_cache_default_limit": 2_000_000_000,
@@ -534,7 +536,7 @@ def test_external_metadata_records_thread_policy_and_commands(monkeypatch) -> No
     assert metadata["ranges"][0] == {"low": 0, "high": 1000, "span": 1000}
     first_commands = metadata["range_commands"][0]
     assert first_commands["circle_timing"] == [
-        "target/release/circle-prime",
+        str(circle_prime),
         "range",
         "0",
         "1000",
@@ -547,11 +549,11 @@ def test_external_metadata_records_thread_policy_and_commands(monkeypatch) -> No
         "segmented",
     ]
     assert first_commands["circle_count_server"] == [
-        "target/release/circle-prime",
+        str(circle_prime),
         "count-server",
     ]
     assert first_commands["circle_variants"][0]["count_server"] == {
-        "command": ["target/release/circle-prime", "count-server"],
+        "command": [str(circle_prime), "count-server"],
         "uses_server_defaults": False,
         "request": "0 1000 131072 8 segmented",
     }

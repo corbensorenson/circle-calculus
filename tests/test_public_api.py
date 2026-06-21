@@ -161,6 +161,7 @@ def test_package_cli_unified_certify_rope_model_config(
 ) -> None:
     config_path = tmp_path / "config.json"
     request_path = tmp_path / "request.json"
+    request_validation_path = tmp_path / "request_validation.json"
     import_report_path = tmp_path / "import_report.json"
     bundle_path = tmp_path / "bundle.json"
     config_path.write_text(
@@ -188,6 +189,8 @@ def test_package_cli_unified_certify_rope_model_config(
             str(config_path),
             "--request-out",
             str(request_path),
+            "--request-validation-report-out",
+            str(request_validation_path),
             "--model-config-import-report-out",
             str(import_report_path),
             "--certification-bundle-out",
@@ -205,6 +208,15 @@ def test_package_cli_unified_certify_rope_model_config(
     assert receipt["request"]["parameters"]["context"] == 4096
     assert receipt["proof_status"]["all_theorem_ids_proved"] is True
     assert json.loads(request_path.read_text()) == receipt["request"]
+    request_validation_report = json.loads(request_validation_path.read_text())
+    assert (
+        request_validation_report["schema_id"]
+        == "circle_calculus.ai_contract_request_validation.v0"
+    )
+    assert request_validation_report["ok"] is True
+    assert request_validation_report["request_content_fingerprint"] == receipt[
+        "request_content_fingerprint"
+    ]
     import_report = json.loads(import_report_path.read_text())
     assert import_report["ok"] is True
     assert import_report["request"] == receipt["request"]

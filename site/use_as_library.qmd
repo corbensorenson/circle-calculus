@@ -97,7 +97,7 @@ After installing the package in editable mode:
 
 ```bash
 python -m pip install -e .
-circle-ai-certify rope --model-config-file examples/circle_ai_model_configs/standard_rope_config.json --format json
+circle-ai-certify rope --model-config-file examples/circle_ai_model_configs/standard_rope_config.json --request-out /tmp/circle_rope_request.json --request-validation-report-out /tmp/circle_rope_request_validation.json --model-config-import-report-out /tmp/circle_rope_import_report.json --format json
 circle-ai-certify kv-cache --cache-size 16 --current 31 --token 20 --batch-tokens 20,24,29,31 --sink-size 4 --require-passed --format json
 circle-ai-certify sparse-attention --context 9 --strides 3,4,7 --path-length 2 --local-window 2 --format json
 circle-ai-certify recurrence --format json
@@ -114,8 +114,9 @@ receipts. The richer repository maintenance commands under `scripts/` remain
 the source tools for generating and validating every audit artifact.
 
 For RoPE model configs, add `--request-out` and
-`--model-config-import-report-out` when you want the exact Circle request and
-the parameter-source audit report saved beside the receipt.
+`--request-validation-report-out` when you want the exact Circle request and
+its schema-validated preflight report saved beside the receipt. Add
+`--model-config-import-report-out` for the parameter-source audit report.
 For KV-cache, sparse attention, recurrence, and already-normalized RoPE
 requests, use `--request-file` with a
 `circle_calculus.ai_contract_request.v0` JSON object.

@@ -65,6 +65,7 @@ The package exposes these console scripts:
 
 ```bash
 circle-ai-certify rope --model-config-file examples/circle_ai_model_configs/standard_rope_config.json --format json
+circle-ai-certify rope --model-config-file examples/circle_ai_model_configs/standard_rope_config.json --request-out /tmp/circle_rope_request.json --request-validation-report-out /tmp/circle_rope_request_validation.json --model-config-import-report-out /tmp/circle_rope_import_report.json --certification-bundle-out /tmp/circle_rope_bundle.json --certification-bundle-check-out /tmp/circle_rope_bundle_check.json --format json
 circle-ai-certify kv-cache --cache-size 16 --current 31 --token 20 --batch-tokens 20,24,29,31 --sink-size 4 --require-passed
 circle-ai-certify sparse-attention --context 9 --strides 3,4,7 --path-length 2 --local-window 2
 circle-ai-certify recurrence --format json
