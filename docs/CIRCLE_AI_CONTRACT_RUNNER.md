@@ -213,7 +213,11 @@ The default prefix is the request or model-config filename stem when available,
 otherwise the contract family name. Use `--artifact-prefix` to override it. The
 manifest indexes the generated files, their schema ids, and their file SHA-256
 hashes. The manifest-check report re-hashes those indexed files and verifies
-the manifest's mirrored receipt status fields.
+the manifest's mirrored receipt status fields. When a
+`_receipt_replay_check.json` sidecar is present, the manifest-check report also
+requires that replay report to be `ok`, that its replay command matches the
+embedded request, that all replay comparison fields match, and that its original
+and replayed receipt fingerprints match the saved receipt.
 Pass the dependency-pin flags below directly to `scripts/circle_ai_certify.py`
 with `--artifact-dir` when the first generated `_artifact_manifest_check.json`
 should already carry and enforce the reusable `pin_policy`.
@@ -228,7 +232,9 @@ python scripts/check_circle_ai_artifact_manifest.py \
 
 The checker validates the manifest schema, referenced file existence,
 SHA-256 fingerprints, declared content schema ids, and the receipt summary
-fields mirrored into the manifest.
+fields mirrored into the manifest. It also audits any saved replay-check sidecar
+against the receipt fingerprint, so stale replay reports fail the whole artifact
+directory instead of being silently listed as extra files.
 It also accepts `--require-kind`, `--require-theorem-id`,
 `--require-evidence-field`, `--require-recommendation-id`, and
 `--require-validation-command` for first-party CI jobs that need the same

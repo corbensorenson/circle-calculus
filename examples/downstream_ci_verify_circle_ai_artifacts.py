@@ -51,6 +51,7 @@ EXPECTED_SCHEMA_BY_LABEL = {
     "model_config_import_report": "circle_calculus.rope_model_config_import.v0",
     "receipt_json": "circle_calculus.ai_contract_receipt.v0",
     "receipt_check": "circle_calculus.ai_contract_receipt_file_check.v0",
+    "receipt_replay_check": "circle_calculus.ai_contract_receipt_replay_check.v0",
     "gate_report": "circle_calculus.ai_contract_receipt_file_check.v0",
     "certification_bundle": "circle_calculus.ai_contract_certification_bundle.v0",
     "certification_bundle_check": (
@@ -490,6 +491,128 @@ def _load_model_config_import_artifact(
         return None
 
 
+def _receipt_replay_artifact_summary_and_failures(
+    *,
+    manifest: dict[str, Any],
+    artifacts_by_label: dict[str, dict[str, Any]],
+    manifest_path: Path,
+    base_dir: Path | None,
+    receipt: dict[str, Any] | None,
+) -> tuple[dict[str, Any], list[str]]:
+    replay_artifact = artifacts_by_label.get("receipt_replay_check")
+    summary: dict[str, Any] = {
+        "receipt_replay_check_present": replay_artifact is not None,
+        "receipt_replay_check_schema_id": None,
+        "receipt_replay_check_ok": None,
+        "receipt_replay_check_failure_count": None,
+        "receipt_replay_check_replay_command_matches_request": None,
+        "receipt_replay_check_all_replay_fields_match": None,
+        "receipt_replay_check_original_receipt_fingerprint": None,
+        "receipt_replay_check_replayed_receipt_fingerprint": None,
+        "receipt_replay_check_fingerprints_match_receipt": None,
+    }
+    if replay_artifact is None:
+        return summary, []
+    raw_path = replay_artifact.get("path")
+    if not isinstance(raw_path, str):
+        return summary, ["receipt_replay_check path is not a string"]
+    replay_path = _resolve_existing_artifact(
+        raw_path,
+        manifest_path=manifest_path,
+        base_dir=base_dir,
+    )
+    if replay_path is None:
+        return summary, [f"receipt_replay_check artifact is missing: {raw_path}"]
+    try:
+        payload = _load_json_object(replay_path)
+    except (OSError, ValueError, json.JSONDecodeError, UnicodeDecodeError) as exc:
+        return summary, [f"receipt_replay_check artifact is unreadable: {exc}"]
+
+    schema_id = payload.get("schema_id")
+    summary["receipt_replay_check_schema_id"] = (
+        schema_id if isinstance(schema_id, str) else None
+    )
+    ok = payload.get("ok")
+    failure_count = payload.get("failure_count")
+    replay_command_matches = payload.get("replay_command_matches_request")
+    comparison = payload.get("comparison")
+    all_fields_match = (
+        comparison.get("all_replay_fields_match")
+        if isinstance(comparison, dict)
+        else None
+    )
+    summary["receipt_replay_check_ok"] = ok if isinstance(ok, bool) else None
+    summary["receipt_replay_check_failure_count"] = (
+        failure_count if isinstance(failure_count, int) else None
+    )
+    summary["receipt_replay_check_replay_command_matches_request"] = (
+        replay_command_matches if isinstance(replay_command_matches, bool) else None
+    )
+    summary["receipt_replay_check_all_replay_fields_match"] = (
+        all_fields_match if isinstance(all_fields_match, bool) else None
+    )
+
+    expected_fingerprint = (
+        receipt.get("receipt_content_fingerprint")
+        if isinstance(receipt, dict)
+        else manifest.get("receipt_content_fingerprint")
+    )
+    expected_fingerprint = (
+        expected_fingerprint if isinstance(expected_fingerprint, str) else None
+    )
+    original = payload.get("original")
+    replayed = payload.get("replayed")
+    original_fingerprint = (
+        original.get("receipt_content_fingerprint")
+        if isinstance(original, dict)
+        else None
+    )
+    replayed_fingerprint = (
+        replayed.get("receipt_content_fingerprint")
+        if isinstance(replayed, dict)
+        else None
+    )
+    original_fingerprint = (
+        original_fingerprint if isinstance(original_fingerprint, str) else None
+    )
+    replayed_fingerprint = (
+        replayed_fingerprint if isinstance(replayed_fingerprint, str) else None
+    )
+    summary["receipt_replay_check_original_receipt_fingerprint"] = original_fingerprint
+    summary["receipt_replay_check_replayed_receipt_fingerprint"] = replayed_fingerprint
+    summary["receipt_replay_check_fingerprints_match_receipt"] = (
+        None
+        if expected_fingerprint is None
+        else original_fingerprint == expected_fingerprint
+        and replayed_fingerprint == expected_fingerprint
+    )
+
+    failures: list[str] = []
+    if schema_id != EXPECTED_SCHEMA_BY_LABEL["receipt_replay_check"]:
+        failures.append("receipt_replay_check schema_id is unexpected")
+    if ok is not True:
+        failures.append("receipt_replay_check report ok was not true")
+    if replay_command_matches is not True:
+        failures.append(
+            "receipt_replay_check replay_command_matches_request was not true"
+        )
+    if all_fields_match is not True:
+        failures.append(
+            "receipt_replay_check comparison.all_replay_fields_match was not true"
+        )
+    if expected_fingerprint is not None and original_fingerprint != expected_fingerprint:
+        failures.append(
+            "receipt_replay_check original receipt_content_fingerprint does not "
+            "match receipt_json"
+        )
+    if expected_fingerprint is not None and replayed_fingerprint != expected_fingerprint:
+        failures.append(
+            "receipt_replay_check replayed receipt_content_fingerprint does not "
+            "match receipt_json"
+        )
+    return summary, failures
+
+
 def _receipt_theorem_ids(receipt: dict[str, Any] | None) -> list[str]:
     if receipt is None:
         return []
@@ -642,6 +765,16 @@ def verify_manifest(
         if isinstance(model_config_import, dict)
         else []
     )
+    receipt_replay_summary, receipt_replay_failures = (
+        _receipt_replay_artifact_summary_and_failures(
+            manifest=manifest,
+            artifacts_by_label=artifacts_by_label,
+            manifest_path=path,
+            base_dir=base_dir,
+            receipt=receipt,
+        )
+    )
+    failures.extend(receipt_replay_failures)
 
     status = manifest.get("status")
     decision = manifest.get("decision_verdict")
@@ -714,6 +847,7 @@ def verify_manifest(
             "normalized_request_fingerprint"
         ),
         "receipt_content_fingerprint": manifest.get("receipt_content_fingerprint"),
+        **receipt_replay_summary,
         "request_content_fingerprint_short": _short(
             manifest.get("request_content_fingerprint")
         ),

@@ -178,7 +178,11 @@ and acceptance-receipt schema sidecar
 `site/data/generated/circle_ai_contract_acceptance_receipt.schema.json`, plus the
 standalone rejection-report schema sidecar
 `site/data/generated/circle_ai_downstream_rejection_report.schema.json`. The pack uses
-schema id `circle_calculus.ai_contract_pack.v0` and contains the four flagship
+the replay-check sidecar as part of the standard artifact-directory audit: the
+manifest checker now rejects a package when the replay report is not `ok`, when
+its replay command no longer matches the embedded request, or when its original
+or replayed receipt fingerprint does not match the saved receipt.
+The pack schema id is `circle_calculus.ai_contract_pack.v0` and it contains the four flagship
 records above plus five broader integration fixtures for strided fanout, cyclic
 memory, multicoil phase features, circulant/block-cyclic mixers, and seed-rule
 regeneration with finite storage accounting for the public

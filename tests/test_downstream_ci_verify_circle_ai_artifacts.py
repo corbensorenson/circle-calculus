@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import hashlib
 import json
 import subprocess
 import sys
@@ -19,6 +20,7 @@ BASE_REQUIRED_LABELS = {
     "request_validation_report",
     "receipt_json",
     "receipt_check",
+    "receipt_replay_check",
     "gate_report",
     "certification_bundle",
     "certification_bundle_check",
@@ -36,7 +38,7 @@ STANDARD_ARTIFACT_CASES = [
         "standard_rope_config",
         "rope_position_distinguishability",
         "mixed_theorem_and_computation",
-        8,
+        9,
         BASE_REQUIRED_LABELS | {"model_config_import_report"},
     ),
     (
@@ -57,7 +59,7 @@ STANDARD_ARTIFACT_CASES = [
         "kv_cache",
         "kv_cache_ring_buffer",
         "theorem_backed",
-        7,
+        8,
         BASE_REQUIRED_LABELS,
     ),
     (
@@ -76,7 +78,7 @@ STANDARD_ARTIFACT_CASES = [
         "sparse_attention",
         "sparse_attention_coverage",
         "theorem_backed",
-        7,
+        8,
         BASE_REQUIRED_LABELS,
     ),
     (
@@ -85,7 +87,7 @@ STANDARD_ARTIFACT_CASES = [
         "recurrence",
         "recurrence_schedule",
         "theorem_backed",
-        7,
+        8,
         BASE_REQUIRED_LABELS,
     ),
 ]
@@ -231,6 +233,10 @@ def test_standalone_artifact_verifier_accepts_standard_artifact_dirs(
         assert summary["model_config_fingerprint"] is None
         assert summary["unsupported_model_config_fields"] == []
     assert summary["receipt_content_fingerprint_short"]
+    assert summary["receipt_replay_check_present"] is True
+    assert summary["receipt_replay_check_ok"] is True
+    assert summary["receipt_replay_check_all_replay_fields_match"] is True
+    assert summary["receipt_replay_check_fingerprints_match_receipt"] is True
     assert "mathematical proof" in payload["not_claimed"]
 
 
@@ -442,6 +448,53 @@ def test_standalone_artifact_verifier_accepts_multi_contract_kind_gate(
     policy_payload = json.loads(policy_result.stdout)
     assert policy_payload["accepted"] is True
     assert policy_payload["pin_policy"] == expected_pin_policy
+
+
+def test_standalone_artifact_verifier_rejects_stale_receipt_replay_sidecar(
+    tmp_path: Path,
+) -> None:
+    manifest_path, _paths = _emit_standard_rope_artifacts(tmp_path)
+    artifact_dir = manifest_path.parent
+    replay_path = artifact_dir / "standard_rope_config_receipt_replay_check.json"
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    replay_check = json.loads(replay_path.read_text(encoding="utf-8"))
+    replay_check["replayed"]["receipt_content_fingerprint"] = "0" * 64
+    replay_path.write_text(
+        json.dumps(replay_check, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+    )
+    for artifact in manifest["artifacts"]:
+        if artifact["label"] == "receipt_replay_check":
+            artifact["sha256"] = hashlib.sha256(replay_path.read_bytes()).hexdigest()
+    manifest_path.write_text(
+        json.dumps(manifest, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+    )
+
+    result = subprocess.run(
+        [
+            sys.executable,
+            str(SCRIPT),
+            str(manifest_path),
+            "--format",
+            "json",
+        ],
+        cwd=ROOT,
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+
+    assert result.returncode == 4
+    payload = json.loads(result.stderr)
+    assert payload["accepted"] is False
+    summary = payload["manifests"][0]
+    assert summary["receipt_replay_check_present"] is True
+    assert summary["receipt_replay_check_ok"] is True
+    assert summary["receipt_replay_check_fingerprints_match_receipt"] is False
+    assert "receipt_replay_check replayed receipt_content_fingerprint" in "\n".join(
+        payload["failures"]
+    )
 
 
 def test_standalone_artifact_verifier_rejects_missing_required_kind(

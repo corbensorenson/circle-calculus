@@ -363,6 +363,68 @@
               }
             ]
           },
+          "receipt_replay_check_all_replay_fields_match": {
+            "type": [
+              "boolean",
+              "null"
+            ]
+          },
+          "receipt_replay_check_failure_count": {
+            "minimum": 0,
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "receipt_replay_check_fingerprints_match_receipt": {
+            "type": [
+              "boolean",
+              "null"
+            ]
+          },
+          "receipt_replay_check_ok": {
+            "type": [
+              "boolean",
+              "null"
+            ]
+          },
+          "receipt_replay_check_original_receipt_fingerprint": {
+            "anyOf": [
+              {
+                "pattern": "^[0-9a-f]{64}$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "receipt_replay_check_present": {
+            "type": "boolean"
+          },
+          "receipt_replay_check_replay_command_matches_request": {
+            "type": [
+              "boolean",
+              "null"
+            ]
+          },
+          "receipt_replay_check_replayed_receipt_fingerprint": {
+            "anyOf": [
+              {
+                "pattern": "^[0-9a-f]{64}$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "receipt_replay_check_schema_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
           "recommendation_ids": {
             "items": {
               "type": "string"
@@ -453,6 +515,15 @@
           "request_content_fingerprint",
           "normalized_request_fingerprint",
           "receipt_content_fingerprint",
+          "receipt_replay_check_present",
+          "receipt_replay_check_schema_id",
+          "receipt_replay_check_ok",
+          "receipt_replay_check_failure_count",
+          "receipt_replay_check_replay_command_matches_request",
+          "receipt_replay_check_all_replay_fields_match",
+          "receipt_replay_check_original_receipt_fingerprint",
+          "receipt_replay_check_replayed_receipt_fingerprint",
+          "receipt_replay_check_fingerprints_match_receipt",
           "theorem_count",
           "theorem_ids",
           "evidence_field_count",

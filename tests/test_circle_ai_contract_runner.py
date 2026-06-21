@@ -2514,6 +2514,21 @@ def test_circle_ai_certify_cli_artifact_dir_writes_standard_audit_set(
     assert artifact_manifest_report["summaries"][0][
         "unsupported_model_config_fields"
     ] == []
+    assert artifact_manifest_report["summaries"][0][
+        "receipt_replay_check_present"
+    ] is True
+    assert artifact_manifest_report["summaries"][0][
+        "receipt_replay_check_ok"
+    ] is True
+    assert artifact_manifest_report["summaries"][0][
+        "receipt_replay_check_replay_command_matches_request"
+    ] is True
+    assert artifact_manifest_report["summaries"][0][
+        "receipt_replay_check_all_replay_fields_match"
+    ] is True
+    assert artifact_manifest_report["summaries"][0][
+        "receipt_replay_check_fingerprints_match_receipt"
+    ] is True
 
     assert artifact_manifest_check["summaries"][0]["artifact_count"] == 9
     assert artifact_manifest_check["summaries"][0]["failure_count"] == 0
@@ -2722,6 +2737,68 @@ def test_circle_ai_certify_cli_artifact_dir_writes_standard_audit_set(
     )
     assert stale_cli.returncode == 1
     assert "sha256 mismatch" in stale_cli.stderr
+
+
+def test_artifact_manifest_check_rejects_stale_receipt_replay_sidecar(
+    tmp_path: Path,
+) -> None:
+    artifact_dir = tmp_path / "artifacts"
+    prefix = "standard_rope_config"
+    subprocess.run(
+        [
+            sys.executable,
+            str(SCRIPT),
+            "rope",
+            "--model-config",
+            str(STANDARD_ROPE_MODEL_CONFIG),
+            "--requested-margin",
+            "1/328459",
+            "--artifact-dir",
+            str(artifact_dir),
+            "--require-status",
+            "proved",
+            "--require-decision",
+            "passed",
+            "--require-assurance",
+            "mixed_theorem_and_computation",
+            "--require-passed",
+        ],
+        cwd=ROOT,
+        check=True,
+        text=True,
+        capture_output=True,
+    )
+
+    manifest_path = artifact_dir / f"{prefix}_artifact_manifest.json"
+    replay_path = artifact_dir / f"{prefix}_receipt_replay_check.json"
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    replay_check = json.loads(replay_path.read_text(encoding="utf-8"))
+    replay_check["original"]["receipt_content_fingerprint"] = "0" * 64
+    replay_path.write_text(
+        json.dumps(replay_check, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+    )
+    for artifact in manifest["artifacts"]:
+        if artifact["label"] == "receipt_replay_check":
+            artifact["sha256"] = hashlib.sha256(replay_path.read_bytes()).hexdigest()
+
+    report = build_contract_artifact_manifest_file_check_report(
+        manifest,
+        manifest_path=manifest_path,
+    )
+    jsonschema.validate(
+        report,
+        build_contract_artifact_manifest_file_check_json_schema(),
+    )
+    assert report["ok"] is False
+    assert report["summaries"][0]["receipt_replay_check_present"] is True
+    assert report["summaries"][0]["receipt_replay_check_ok"] is True
+    assert report["summaries"][0][
+        "receipt_replay_check_fingerprints_match_receipt"
+    ] is False
+    assert "receipt_replay_check original receipt_content_fingerprint" in "\n".join(
+        report["failures"]
+    )
 
 
 def test_circle_ai_certify_cli_writes_model_config_certification_bundle(
