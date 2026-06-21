@@ -2196,6 +2196,11 @@ def test_circle_ai_certify_cli_artifact_dir_writes_standard_audit_set(
 ) -> None:
     artifact_dir = tmp_path / "artifacts"
     prefix = "standard_rope_config"
+    model_config = json.loads(STANDARD_ROPE_MODEL_CONFIG.read_text(encoding="utf-8"))
+    model_config_fingerprint = build_rope_model_config_import_report(
+        model_config,
+        requested_margin="1/328459",
+    )["model_config_fingerprint"]
     expected_paths = {
         "request_json": artifact_dir / f"{prefix}_request.json",
         "request_validation_report": artifact_dir
@@ -2231,6 +2236,20 @@ def test_circle_ai_certify_cli_artifact_dir_writes_standard_audit_set(
             "--require-assurance",
             "mixed_theorem_and_computation",
             "--require-passed",
+            "--require-kind",
+            "rope_position_distinguishability",
+            "--require-theorem-id",
+            "AIRA-T0239",
+            "--require-evidence-field",
+            "real_phase_dirichlet_guardrail",
+            "--require-recommendation-id",
+            "ROPE-USE-D19-MARGIN-FRONTIER",
+            "--require-model-config-fingerprint",
+            model_config_fingerprint,
+            "--require-normalized-param",
+            "head_dim=128",
+            "--require-normalized-param",
+            "context_length=131072",
         ],
         cwd=ROOT,
         check=True,
@@ -2354,6 +2373,18 @@ def test_circle_ai_certify_cli_artifact_dir_writes_standard_audit_set(
 
     assert artifact_manifest_check["summaries"][0]["artifact_count"] == 8
     assert artifact_manifest_check["summaries"][0]["failure_count"] == 0
+    assert artifact_manifest_check["pin_policy"] == {
+        "required_kinds": ["rope_position_distinguishability"],
+        "required_theorem_ids": ["AIRA-T0239"],
+        "required_evidence_fields": ["real_phase_dirichlet_guardrail"],
+        "required_recommendation_ids": ["ROPE-USE-D19-MARGIN-FRONTIER"],
+        "required_validation_commands": [],
+        "required_model_config_fingerprints": [model_config_fingerprint],
+        "required_normalized_params": [
+            {"key": "head_dim", "value": 128},
+            {"key": "context_length", "value": 131072},
+        ],
+    }
 
     manifest_check_path = artifact_dir / f"{prefix}_artifact_manifest_recheck.json"
     manifest_cli = subprocess.run(

@@ -286,6 +286,9 @@ otherwise the contract family name. Use `--artifact-prefix` to override it. The
 manifest indexes the generated files, their schema ids, and their file SHA-256
 hashes. The manifest-check report re-hashes those indexed files and verifies
 the manifest's mirrored receipt status fields.
+Pass the dependency-pin flags below directly to `scripts/circle_ai_certify.py`
+with `--artifact-dir` when the first generated `_artifact_manifest_check.json`
+should already carry and enforce the reusable `pin_policy`.
 
 Verify the whole artifact directory from the manifest:
 

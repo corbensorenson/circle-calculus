@@ -305,6 +305,77 @@ def add_common_options(parser: argparse.ArgumentParser) -> None:
         action="store_true",
         help="Exit nonzero unless the emitted receipt has request_passed=true.",
     )
+    parser.add_argument(
+        "--require-kind",
+        action="append",
+        default=[],
+        help=(
+            "Require the emitted artifact-manifest check report to include this "
+            "contract kind. Requires --artifact-manifest-check-out or "
+            "--artifact-dir."
+        ),
+    )
+    parser.add_argument(
+        "--require-theorem-id",
+        action="append",
+        default=[],
+        help=(
+            "Require the emitted artifact-manifest check report to include this "
+            "theorem id. Requires --artifact-manifest-check-out or "
+            "--artifact-dir."
+        ),
+    )
+    parser.add_argument(
+        "--require-evidence-field",
+        action="append",
+        default=[],
+        help=(
+            "Require the emitted artifact-manifest check report to include this "
+            "receipt evidence field. Requires --artifact-manifest-check-out or "
+            "--artifact-dir."
+        ),
+    )
+    parser.add_argument(
+        "--require-recommendation-id",
+        action="append",
+        default=[],
+        help=(
+            "Require the emitted artifact-manifest check report to include this "
+            "planner recommendation id. Requires --artifact-manifest-check-out "
+            "or --artifact-dir."
+        ),
+    )
+    parser.add_argument(
+        "--require-validation-command",
+        action="append",
+        default=[],
+        help=(
+            "Require the emitted artifact-manifest check report to include this "
+            "exact validation command. Requires --artifact-manifest-check-out "
+            "or --artifact-dir."
+        ),
+    )
+    parser.add_argument(
+        "--require-model-config-fingerprint",
+        action="append",
+        default=[],
+        help=(
+            "Require the emitted artifact-manifest check report to include this "
+            "RoPE model-config SHA-256 fingerprint. Requires "
+            "--artifact-manifest-check-out or --artifact-dir."
+        ),
+    )
+    parser.add_argument(
+        "--require-normalized-param",
+        action="append",
+        default=[],
+        metavar="KEY=JSON_VALUE",
+        help=(
+            "Require the emitted artifact-manifest check report to include this "
+            "top-level normalized_request parameter value. Requires "
+            "--artifact-manifest-check-out or --artifact-dir."
+        ),
+    )
 
 
 def parse_args() -> argparse.Namespace:
@@ -757,6 +828,149 @@ def _artifact_gate_policy(args: argparse.Namespace) -> dict[str, Any]:
     }
 
 
+def _parse_normalized_param_pin(raw: str) -> tuple[str, Any]:
+    if "=" not in raw:
+        raise ValueError(
+            "--require-normalized-param must be KEY=JSON_VALUE, for example "
+            "head_dim=128"
+        )
+    key, raw_value = raw.split("=", 1)
+    key = key.strip()
+    if not key:
+        raise ValueError("--require-normalized-param key must be non-empty")
+    raw_value = raw_value.strip()
+    if not raw_value:
+        raise ValueError("--require-normalized-param value must be non-empty")
+    try:
+        value = json.loads(raw_value)
+    except json.JSONDecodeError:
+        value = raw_value
+    return key, value
+
+
+def _artifact_pin_policy(args: argparse.Namespace) -> dict[str, Any]:
+    normalized_params = [
+        {"key": key, "value": value}
+        for key, value in getattr(args, "required_normalized_params", ())
+    ]
+    return {
+        "required_kinds": list(args.require_kind),
+        "required_theorem_ids": list(args.require_theorem_id),
+        "required_evidence_fields": list(args.require_evidence_field),
+        "required_recommendation_ids": list(args.require_recommendation_id),
+        "required_validation_commands": list(args.require_validation_command),
+        "required_model_config_fingerprints": list(
+            args.require_model_config_fingerprint
+        ),
+        "required_normalized_params": normalized_params,
+    }
+
+
+def _has_artifact_pin_requirements(args: argparse.Namespace) -> bool:
+    return any(
+        (
+            args.require_kind,
+            args.require_theorem_id,
+            args.require_evidence_field,
+            args.require_recommendation_id,
+            args.require_validation_command,
+            args.require_model_config_fingerprint,
+            args.require_normalized_param,
+        )
+    )
+
+
+def _artifact_pin_failures(
+    summaries: list[dict[str, Any]],
+    args: argparse.Namespace,
+) -> list[str]:
+    failures: list[str] = []
+    observed_kinds = {
+        summary["kind"] for summary in summaries if isinstance(summary.get("kind"), str)
+    }
+    observed_theorem_ids = {
+        theorem_id
+        for summary in summaries
+        for theorem_id in summary.get("theorem_ids", [])
+        if isinstance(theorem_id, str)
+    }
+    observed_evidence_fields = {
+        field
+        for summary in summaries
+        for field in summary.get("evidence_fields", [])
+        if isinstance(field, str)
+    }
+    observed_recommendation_ids = {
+        recommendation_id
+        for summary in summaries
+        for recommendation_id in summary.get("recommendation_ids", [])
+        if isinstance(recommendation_id, str)
+    }
+    observed_validation_commands = {
+        command
+        for summary in summaries
+        for command in summary.get("validation_commands", [])
+        if isinstance(command, str)
+    }
+    observed_model_config_fingerprints = {
+        fingerprint
+        for summary in summaries
+        for fingerprint in (summary.get("model_config_fingerprint"),)
+        if isinstance(fingerprint, str)
+    }
+
+    for kind in args.require_kind:
+        if kind not in observed_kinds:
+            failures.append(f"required contract kind is missing: {kind}")
+    for theorem_id in args.require_theorem_id:
+        if theorem_id not in observed_theorem_ids:
+            failures.append(f"required receipt theorem id is missing: {theorem_id}")
+    for field in args.require_evidence_field:
+        if field not in observed_evidence_fields:
+            failures.append(f"required receipt evidence field is missing: {field}")
+    for recommendation_id in args.require_recommendation_id:
+        if recommendation_id not in observed_recommendation_ids:
+            failures.append(
+                f"required receipt recommendation id is missing: {recommendation_id}"
+            )
+    for command in args.require_validation_command:
+        if command not in observed_validation_commands:
+            failures.append(f"required receipt validation command is missing: {command}")
+    for fingerprint in args.require_model_config_fingerprint:
+        if fingerprint not in observed_model_config_fingerprints:
+            failures.append(
+                f"required model config fingerprint is missing: {fingerprint}"
+            )
+    for key, value in getattr(args, "required_normalized_params", ()):
+        if not any(
+            isinstance(summary.get("normalized_request"), dict)
+            and summary["normalized_request"].get(key) == value
+            for summary in summaries
+        ):
+            failures.append(
+                f"required normalized request parameter is missing: {key}={value!r}"
+            )
+    return failures
+
+
+def _apply_artifact_pin_policy(
+    report: dict[str, Any],
+    args: argparse.Namespace,
+) -> list[str]:
+    report["pin_policy"] = _artifact_pin_policy(args)
+    summaries = report.get("summaries")
+    pin_failures = _artifact_pin_failures(
+        summaries if isinstance(summaries, list) else [],
+        args,
+    )
+    if pin_failures:
+        failures = report.setdefault("failures", [])
+        failures.extend(pin_failures)
+        report["failure_count"] = len(failures)
+        report["ok"] = False
+    return pin_failures
+
+
 def _artifact_status_fields(
     *,
     receipt: dict[str, Any] | None,
@@ -866,9 +1080,9 @@ def _write_artifact_manifest(
     *,
     receipt: dict[str, Any] | None,
     request_validation_report: dict[str, Any] | None,
-) -> None:
+) -> list[str]:
     if args.artifact_manifest_out is None:
-        return
+        return []
     manifest = _build_artifact_manifest(
         args,
         receipt=receipt,
@@ -881,11 +1095,14 @@ def _write_artifact_manifest(
             manifest,
             manifest_path=args.artifact_manifest_out,
         )
+        pin_failures = _apply_artifact_pin_policy(manifest_check_report, args)
         _validate_artifact_manifest_check_report(
             manifest_check_report,
             args.artifact_manifest_check_schema,
         )
         write_json(args.artifact_manifest_check_out, manifest_check_report)
+        return pin_failures
+    return []
 
 
 def _receipt_gate_failures(receipt: dict[str, Any], args: argparse.Namespace) -> list[str]:
@@ -952,6 +1169,21 @@ def _artifact_summary_line(args: argparse.Namespace) -> str | None:
 def main() -> int:
     args = parse_args()
     _apply_artifact_dir_defaults(args)
+    try:
+        args.required_normalized_params = tuple(
+            _parse_normalized_param_pin(raw)
+            for raw in args.require_normalized_param
+        )
+    except ValueError as exc:
+        raise SystemExit(str(exc))
+    if (
+        _has_artifact_pin_requirements(args)
+        and args.artifact_manifest_check_out is None
+    ):
+        raise SystemExit(
+            "artifact dependency pin requirements need "
+            "--artifact-manifest-check-out or --artifact-dir"
+        )
     if (
         getattr(args, "model_config_import_report_out", None) is not None
         and getattr(args, "model_config", None) is None
@@ -1007,7 +1239,7 @@ def main() -> int:
                 write_json(args.request_validation_report_out, report)
             if args.json_out is not None:
                 write_json(args.json_out, report)
-            _write_artifact_manifest(
+            artifact_failures = _write_artifact_manifest(
                 args,
                 receipt=None,
                 request_validation_report=report,
@@ -1026,7 +1258,12 @@ def main() -> int:
                     print(artifact_line)
                 for failure in report["failures"]:
                     print(f"failure={failure}", file=sys.stderr)
-            return 0 if report["ok"] else 1
+                for failure in artifact_failures:
+                    print(
+                        f"artifact_manifest_check_failure={failure}",
+                        file=sys.stderr,
+                    )
+            return 0 if report["ok"] and not artifact_failures else 1
         if args.request_validation_report_out is not None:
             report = _validated_request_validation_report(
                 request_object,
@@ -1149,7 +1386,7 @@ def main() -> int:
                 args.certification_bundle_check_schema,
             )
             write_json(args.certification_bundle_check_out, bundle_check_report)
-    _write_artifact_manifest(
+    artifact_failures = _write_artifact_manifest(
         args,
         receipt=receipt,
         request_validation_report=None,
@@ -1164,7 +1401,9 @@ def main() -> int:
             print(artifact_line)
     for failure in gate_failures:
         print(f"receipt_gate_failure={failure}", file=sys.stderr)
-    return 0 if not gate_failures else 1
+    for failure in artifact_failures:
+        print(f"artifact_manifest_check_failure={failure}", file=sys.stderr)
+    return 0 if not gate_failures and not artifact_failures else 1
 
 
 if __name__ == "__main__":
