@@ -169,6 +169,16 @@ def test_check_circle_ai_contract_runner_emits_json_report() -> None:
         "request",
         "model_config",
     }
+    assert all(
+        summary["model_config_parameter_sources"] is None
+        for summary in payload["summaries"]
+        if summary["source_type"] == "request"
+    )
+    assert all(
+        summary["model_config_parameter_sources"]
+        for summary in payload["summaries"]
+        if summary["source_type"] == "model_config"
+    )
 
 
 def test_check_circle_ai_contract_runner_writes_receipts(tmp_path: Path) -> None:
@@ -248,6 +258,10 @@ def test_check_circle_ai_contract_runner_writes_receipts(tmp_path: Path) -> None
         assert import_report["request"]["parameters"]["context"] == summary[
             "normalized_request"
         ]["context_length"]
+        assert (
+            import_report["parameter_sources"]
+            == summary["model_config_parameter_sources"]
+        )
     for path in receipt_paths:
         receipt = json.loads(path.read_text())
         matching_summary = next(
@@ -304,6 +318,17 @@ def test_check_circle_ai_contract_runner_writes_report_file(tmp_path: Path) -> N
     )
     assert model_config_summary["request_path"]
     assert model_config_summary["model_config_import_report_path"]
+    assert model_config_summary["model_config_parameter_sources"]["head_dim"][
+        "source"
+    ] == "derived_config_fields"
+    assert model_config_summary["model_config_parameter_sources"]["base"] == {
+        "source": "config_field",
+        "field": "rope_theta",
+    }
+    assert model_config_summary["model_config_parameter_sources"]["discretization"] == {
+        "source": "default",
+        "note": "round",
+    }
 
 
 def test_check_circle_ai_contract_runner_accepts_batch_gate() -> None:

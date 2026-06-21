@@ -2757,6 +2757,49 @@ def build_rope_model_config_import_json_schema() -> dict[str, Any]:
 def build_contract_runner_check_json_schema() -> dict[str, Any]:
     string_list = {"type": "array", "items": {"type": "string"}}
     fingerprint = {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+    parameter_source = {
+        "type": "object",
+        "required": ["source"],
+        "properties": {
+            "source": {
+                "enum": [
+                    "override",
+                    "config_field",
+                    "derived_config_fields",
+                    "default",
+                    "missing",
+                    "omitted",
+                ],
+            },
+            "field": {"type": "string", "minLength": 1},
+            "fields": {
+                "type": "array",
+                "items": {"type": "string", "minLength": 1},
+            },
+            "note": {"type": "string", "minLength": 1},
+        },
+        "additionalProperties": False,
+    }
+    model_config_parameter_sources = {
+        "type": "object",
+        "required": [
+            "head_dim",
+            "base",
+            "context",
+            "tolerance",
+            "discretization",
+            "requested_margin",
+        ],
+        "properties": {
+            "head_dim": parameter_source,
+            "base": parameter_source,
+            "context": parameter_source,
+            "tolerance": parameter_source,
+            "discretization": parameter_source,
+            "requested_margin": parameter_source,
+        },
+        "additionalProperties": False,
+    }
     summary = {
         "type": "object",
         "required": [
@@ -2765,6 +2808,7 @@ def build_contract_runner_check_json_schema() -> dict[str, Any]:
             "source_content_fingerprint",
             "request_path",
             "model_config_import_report_path",
+            "model_config_parameter_sources",
             "request_validation_report_path",
             "receipt_path",
             "kind",
@@ -2786,6 +2830,9 @@ def build_contract_runner_check_json_schema() -> dict[str, Any]:
             "source_content_fingerprint": fingerprint,
             "request_path": {"type": ["string", "null"]},
             "model_config_import_report_path": {"type": ["string", "null"]},
+            "model_config_parameter_sources": {
+                "anyOf": [model_config_parameter_sources, {"type": "null"}],
+            },
             "request_validation_report_path": {"type": ["string", "null"]},
             "receipt_path": {"type": ["string", "null"]},
             "kind": {"enum": list(SUPPORTED_CONTRACT_KINDS)},

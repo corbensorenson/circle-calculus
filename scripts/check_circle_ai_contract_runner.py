@@ -102,6 +102,7 @@ def _summary_from_receipt(
     source: dict[str, Any],
     request_path: Path | None,
     model_config_import_report_path: Path | None,
+    model_config_parameter_sources: dict[str, Any] | None,
     request_validation_report_path: Path | None,
     receipt_path: Path | None,
     receipt: dict[str, Any],
@@ -117,6 +118,7 @@ def _summary_from_receipt(
             if model_config_import_report_path is None
             else _display_path(model_config_import_report_path)
         ),
+        "model_config_parameter_sources": model_config_parameter_sources,
         "request_validation_report_path": (
             None
             if request_validation_report_path is None
@@ -240,6 +242,7 @@ def check_runner_examples(
                 source=request,
                 request_path=path,
                 model_config_import_report_path=None,
+                model_config_parameter_sources=None,
                 request_validation_report_path=validation_report_path,
                 receipt_path=receipt_path,
                 receipt=receipt,
@@ -307,6 +310,7 @@ def check_runner_examples(
                 source=config,
                 request_path=request_path,
                 model_config_import_report_path=import_report_path,
+                model_config_parameter_sources=import_report["parameter_sources"],
                 request_validation_report_path=validation_report_path,
                 receipt_path=receipt_path,
                 receipt=receipt,

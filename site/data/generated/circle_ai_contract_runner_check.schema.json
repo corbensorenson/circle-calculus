@@ -110,6 +110,231 @@
               "null"
             ]
           },
+          "model_config_parameter_sources": {
+            "anyOf": [
+              {
+                "additionalProperties": false,
+                "properties": {
+                  "base": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "field": {
+                        "minLength": 1,
+                        "type": "string"
+                      },
+                      "fields": {
+                        "items": {
+                          "minLength": 1,
+                          "type": "string"
+                        },
+                        "type": "array"
+                      },
+                      "note": {
+                        "minLength": 1,
+                        "type": "string"
+                      },
+                      "source": {
+                        "enum": [
+                          "override",
+                          "config_field",
+                          "derived_config_fields",
+                          "default",
+                          "missing",
+                          "omitted"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "source"
+                    ],
+                    "type": "object"
+                  },
+                  "context": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "field": {
+                        "minLength": 1,
+                        "type": "string"
+                      },
+                      "fields": {
+                        "items": {
+                          "minLength": 1,
+                          "type": "string"
+                        },
+                        "type": "array"
+                      },
+                      "note": {
+                        "minLength": 1,
+                        "type": "string"
+                      },
+                      "source": {
+                        "enum": [
+                          "override",
+                          "config_field",
+                          "derived_config_fields",
+                          "default",
+                          "missing",
+                          "omitted"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "source"
+                    ],
+                    "type": "object"
+                  },
+                  "discretization": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "field": {
+                        "minLength": 1,
+                        "type": "string"
+                      },
+                      "fields": {
+                        "items": {
+                          "minLength": 1,
+                          "type": "string"
+                        },
+                        "type": "array"
+                      },
+                      "note": {
+                        "minLength": 1,
+                        "type": "string"
+                      },
+                      "source": {
+                        "enum": [
+                          "override",
+                          "config_field",
+                          "derived_config_fields",
+                          "default",
+                          "missing",
+                          "omitted"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "source"
+                    ],
+                    "type": "object"
+                  },
+                  "head_dim": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "field": {
+                        "minLength": 1,
+                        "type": "string"
+                      },
+                      "fields": {
+                        "items": {
+                          "minLength": 1,
+                          "type": "string"
+                        },
+                        "type": "array"
+                      },
+                      "note": {
+                        "minLength": 1,
+                        "type": "string"
+                      },
+                      "source": {
+                        "enum": [
+                          "override",
+                          "config_field",
+                          "derived_config_fields",
+                          "default",
+                          "missing",
+                          "omitted"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "source"
+                    ],
+                    "type": "object"
+                  },
+                  "requested_margin": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "field": {
+                        "minLength": 1,
+                        "type": "string"
+                      },
+                      "fields": {
+                        "items": {
+                          "minLength": 1,
+                          "type": "string"
+                        },
+                        "type": "array"
+                      },
+                      "note": {
+                        "minLength": 1,
+                        "type": "string"
+                      },
+                      "source": {
+                        "enum": [
+                          "override",
+                          "config_field",
+                          "derived_config_fields",
+                          "default",
+                          "missing",
+                          "omitted"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "source"
+                    ],
+                    "type": "object"
+                  },
+                  "tolerance": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "field": {
+                        "minLength": 1,
+                        "type": "string"
+                      },
+                      "fields": {
+                        "items": {
+                          "minLength": 1,
+                          "type": "string"
+                        },
+                        "type": "array"
+                      },
+                      "note": {
+                        "minLength": 1,
+                        "type": "string"
+                      },
+                      "source": {
+                        "enum": [
+                          "override",
+                          "config_field",
+                          "derived_config_fields",
+                          "default",
+                          "missing",
+                          "omitted"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "source"
+                    ],
+                    "type": "object"
+                  }
+                },
+                "required": [
+                  "head_dim",
+                  "base",
+                  "context",
+                  "tolerance",
+                  "discretization",
+                  "requested_margin"
+                ],
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
           "normalized_request": {
             "minProperties": 1,
             "type": "object"
@@ -192,6 +417,7 @@
           "source_content_fingerprint",
           "request_path",
           "model_config_import_report_path",
+          "model_config_parameter_sources",
           "request_validation_report_path",
           "receipt_path",
           "kind",

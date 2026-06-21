@@ -195,10 +195,12 @@ is still written with the receipt summaries and the command exits nonzero. Each
 summary includes the `normalized_request` object so downstream CI can compare
 the certified parameters without reopening every receipt file. Each summary
 also includes `source_content_fingerprint` so request files and model configs
-can be pinned in audit logs. When
-`--model-config-import-report-out-dir` is set, model-config summaries also point
-to the schema-validated import report that converted the config into a Circle
-request.
+can be pinned in audit logs. Model-config summaries also inline
+`model_config_parameter_sources`, so audit logs can show which request values
+were overridden, read from config fields, derived, defaulted, or omitted without
+reopening the import sidecar. When `--model-config-import-report-out-dir` is set,
+model-config summaries also point to the schema-validated import report that
+converted the config into a Circle request.
 When `--request-validation-report-out-dir` is set, every summary also points to
 the schema-validated preflight report for the exact request that produced the
 receipt.
