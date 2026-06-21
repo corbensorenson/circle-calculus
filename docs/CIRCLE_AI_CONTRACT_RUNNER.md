@@ -108,6 +108,10 @@ Every emitted receipt is checked against
 `site/data/generated/circle_ai_contract_receipt.schema.json` before it is
 printed or written. Use `--receipt-schema` to pin a generated schema path in a
 downstream project.
+By default, emitted receipts are issued against
+`site/data/generated/circle_ai_contract_pack.json`, the same public pack used by
+the saved-receipt verifier. Use `--pack` only when intentionally testing a
+different generated pack.
 
 Copyable starting points live under:
 

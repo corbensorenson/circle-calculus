@@ -41,6 +41,7 @@ RECEIPT_STATUS_VALUES = (
 )
 DEFAULT_REQUEST_VALIDATION_SCHEMA = ROOT / REQUEST_VALIDATION_SCHEMA_PATH
 DEFAULT_RECEIPT_SCHEMA = ROOT / RECEIPT_SCHEMA_PATH
+DEFAULT_PACK_PATH = ROOT / "site" / "data" / "generated" / "circle_ai_contract_pack.json"
 
 
 def parse_tokens(raw: str) -> tuple[int, ...]:
@@ -81,9 +82,11 @@ def add_common_options(parser: argparse.ArgumentParser) -> None:
     parser.add_argument(
         "--pack",
         type=Path,
+        default=DEFAULT_PACK_PATH,
         help=(
-            "Optional generated contract-pack path. Defaults to building the "
-            "pack in memory from repository sources."
+            "Generated contract-pack path used to issue receipts. Defaults "
+            "to site/data/generated/circle_ai_contract_pack.json so emitted "
+            "receipts match the public pack used by downstream verifiers."
         ),
     )
     parser.add_argument(

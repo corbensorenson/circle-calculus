@@ -35,6 +35,7 @@ SCRIPT = ROOT / "scripts" / "circle_ai_certify.py"
 STANDARD_ROPE_MODEL_CONFIG = (
     ROOT / "examples" / "circle_ai_model_configs" / "standard_rope_config.json"
 )
+PUBLIC_CONTRACT_PACK = ROOT / "site" / "data" / "generated" / "circle_ai_contract_pack.json"
 PROOF_LAYER_BUCKETS = (
     "proved_fields",
     "computed_fields",
@@ -775,6 +776,10 @@ def test_circle_ai_certify_cli_emits_json_receipt() -> None:
     assert payload["status"] == "proved"
     assert payload["request_passed"] is True
     assert payload["proof_status"]["all_theorem_ids_proved"] is True
+    public_pack = json.loads(PUBLIC_CONTRACT_PACK.read_text())
+    assert payload["support"]["contract_pack_fingerprint"] == public_pack[
+        "pack_content_fingerprint"
+    ]
     assert payload["evidence"]["standard_channel0_d19_request_classifier"][
         "request_status"
     ] == "proved"
