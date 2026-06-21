@@ -507,6 +507,20 @@ def test_rust_prime_cli_next_server_handles_repeated_requests(
     assert completed.stdout.splitlines() == ["97", "1000003"]
 
 
+def test_rust_prime_cli_next_server_handles_shifted_batch_requests(
+    circle_prime_bin: Path,
+) -> None:
+    completed = subprocess.run(
+        [str(circle_prime_bin), "next-server"],
+        cwd=ROOT,
+        input="shifted 3 10 90\n",
+        text=True,
+        capture_output=True,
+        check=True,
+    )
+    assert completed.stdout.splitlines() == ["97", "101", "113"]
+
+
 def test_rust_prime_cli_next_server_json_reports_proof_contract(
     circle_prime_bin: Path,
 ) -> None:

@@ -8,38 +8,86 @@
 
 #include <primecount.h>
 
-static int parse_request(const char* raw, uint64_t* start, uint64_t* repetitions)
+typedef struct {
+  uint64_t start;
+  uint64_t repetitions;
+  uint64_t shift;
+  int shifted;
+} NextRequest;
+
+static void skip_spaces(const char** cursor)
 {
+  while (**cursor == ' ' || **cursor == '\t')
+    (*cursor)++;
+}
+
+static int at_line_end(const char* cursor)
+{
+  while (*cursor == ' ' || *cursor == '\t' || *cursor == '\r' || *cursor == '\n')
+    cursor++;
+  return *cursor == '\0';
+}
+
+static int parse_u64_field(const char** cursor, uint64_t* value)
+{
+  skip_spaces(cursor);
+  if (**cursor == '-')
+    return 0;
   errno = 0;
   char* end = NULL;
-  unsigned long long parsed_start = strtoull(raw, &end, 10);
-  if (errno != 0 || end == raw)
+  unsigned long long parsed = strtoull(*cursor, &end, 10);
+  if (errno != 0 || end == *cursor || parsed > UINT64_MAX)
     return 0;
+  *cursor = end;
+  *value = (uint64_t) parsed;
+  return 1;
+}
 
-  while (*end == ' ' || *end == '\t')
-    end++;
+static int parse_request(const char* raw, NextRequest* request)
+{
+  const char* cursor = raw;
+  skip_spaces(&cursor);
+  request->start = 0;
+  request->repetitions = 1;
+  request->shift = 0;
+  request->shifted = 0;
 
-  unsigned long long parsed_repetitions = 1;
-  if (*end != '\0' && *end != '\r' && *end != '\n') {
-    errno = 0;
-    char* repetition_end = NULL;
-    parsed_repetitions = strtoull(end, &repetition_end, 10);
-    if (errno != 0 || repetition_end == end || parsed_repetitions == 0)
+  if (strncmp(cursor, "shifted", 7) == 0 && (cursor[7] == ' ' || cursor[7] == '\t')) {
+    cursor += 7;
+    request->shifted = 1;
+    if (!parse_u64_field(&cursor, &request->repetitions) || request->repetitions == 0)
       return 0;
-    end = repetition_end;
-    while (*end == ' ' || *end == '\t' || *end == '\r' || *end == '\n')
-      end++;
-    if (*end != '\0')
+    if (!parse_u64_field(&cursor, &request->shift))
       return 0;
-  } else {
-    while (*end == '\r' || *end == '\n')
-      end++;
-    if (*end != '\0')
+    if (!parse_u64_field(&cursor, &request->start))
       return 0;
+    return at_line_end(cursor);
   }
 
-  *start = (uint64_t) parsed_start;
-  *repetitions = (uint64_t) parsed_repetitions;
+  if (!parse_u64_field(&cursor, &request->start))
+    return 0;
+  skip_spaces(&cursor);
+  if (!at_line_end(cursor)) {
+    if (!parse_u64_field(&cursor, &request->repetitions) || request->repetitions == 0)
+      return 0;
+    if (!at_line_end(cursor))
+      return 0;
+  }
+  return 1;
+}
+
+static int request_start_at(const NextRequest* request, uint64_t index, uint64_t* start)
+{
+  if (!request->shifted) {
+    *start = request->start;
+    return 1;
+  }
+  if (request->shift != 0 && index > UINT64_MAX / request->shift)
+    return 0;
+  uint64_t offset = request->shift * index;
+  if (request->start > UINT64_MAX - offset)
+    return 0;
+  *start = request->start + offset;
   return 1;
 }
 
@@ -99,14 +147,18 @@ int main(int argc, char** argv)
     if (strcmp(line, "quit\n") == 0 || strcmp(line, "exit\n") == 0)
       break;
 
-    uint64_t start = 0;
-    uint64_t repetitions = 1;
-    if (!parse_request(line, &start, &repetitions)) {
-      fprintf(stderr, "request must be a u64 START value or START COUNT\n");
+    NextRequest request;
+    if (!parse_request(line, &request)) {
+      fprintf(stderr, "request must be a u64 START value, START COUNT, or shifted COUNT SHIFT START\n");
       return 3;
     }
 
-    for (uint64_t index = 0; index < repetitions; index++) {
+    for (uint64_t index = 0; index < request.repetitions; index++) {
+      uint64_t start = 0;
+      if (!request_start_at(&request, index, &start)) {
+        fprintf(stderr, "shifted next-prime request overflowed u64\n");
+        return 3;
+      }
       errno = 0;
       int64_t prime = next_prime_at_or_above(start);
       if (prime < 0) {

@@ -11,38 +11,84 @@
 
 namespace {
 
-bool parse_request(const char* raw, uint64_t* start, uint64_t* repetitions)
+struct NextRequest {
+  uint64_t start = 0;
+  uint64_t repetitions = 1;
+  uint64_t shift = 0;
+  bool shifted = false;
+};
+
+void skip_spaces(const char** cursor)
 {
+  while (**cursor == ' ' || **cursor == '\t')
+    (*cursor)++;
+}
+
+bool at_line_end(const char* cursor)
+{
+  while (*cursor == ' ' || *cursor == '\t' || *cursor == '\r' || *cursor == '\n')
+    cursor++;
+  return *cursor == '\0';
+}
+
+bool parse_u64_field(const char** cursor, uint64_t* value)
+{
+  skip_spaces(cursor);
+  if (**cursor == '-')
+    return false;
   errno = 0;
   char* end = nullptr;
-  unsigned long long parsed_start = std::strtoull(raw, &end, 10);
-  if (errno != 0 || end == raw)
+  unsigned long long parsed = std::strtoull(*cursor, &end, 10);
+  if (errno != 0 || end == *cursor || parsed > std::numeric_limits<uint64_t>::max())
     return false;
+  *cursor = end;
+  *value = static_cast<uint64_t>(parsed);
+  return true;
+}
 
-  while (*end == ' ' || *end == '\t')
-    end++;
+bool parse_request(const char* raw, NextRequest* request)
+{
+  const char* cursor = raw;
+  skip_spaces(&cursor);
+  *request = NextRequest{};
 
-  unsigned long long parsed_repetitions = 1;
-  if (*end != '\0' && *end != '\r' && *end != '\n') {
-    errno = 0;
-    char* repetition_end = nullptr;
-    parsed_repetitions = std::strtoull(end, &repetition_end, 10);
-    if (errno != 0 || repetition_end == end || parsed_repetitions == 0)
+  if (std::strncmp(cursor, "shifted", 7) == 0 && (cursor[7] == ' ' || cursor[7] == '\t')) {
+    cursor += 7;
+    request->shifted = true;
+    if (!parse_u64_field(&cursor, &request->repetitions) || request->repetitions == 0)
       return false;
-    end = repetition_end;
-    while (*end == ' ' || *end == '\t' || *end == '\r' || *end == '\n')
-      end++;
-    if (*end != '\0')
+    if (!parse_u64_field(&cursor, &request->shift))
       return false;
-  } else {
-    while (*end == '\r' || *end == '\n')
-      end++;
-    if (*end != '\0')
+    if (!parse_u64_field(&cursor, &request->start))
       return false;
+    return at_line_end(cursor);
   }
 
-  *start = static_cast<uint64_t>(parsed_start);
-  *repetitions = static_cast<uint64_t>(parsed_repetitions);
+  if (!parse_u64_field(&cursor, &request->start))
+    return false;
+  skip_spaces(&cursor);
+  if (!at_line_end(cursor)) {
+    if (!parse_u64_field(&cursor, &request->repetitions) || request->repetitions == 0)
+      return false;
+    if (!at_line_end(cursor))
+      return false;
+  }
+  return true;
+}
+
+bool request_start_at(const NextRequest& request, uint64_t index, uint64_t* start)
+{
+  if (!request.shifted) {
+    *start = request.start;
+    return true;
+  }
+  const uint64_t max = std::numeric_limits<uint64_t>::max();
+  if (request.shift != 0 && index > max / request.shift)
+    return false;
+  uint64_t offset = request.shift * index;
+  if (request.start > max - offset)
+    return false;
+  *start = request.start + offset;
   return true;
 }
 
@@ -64,14 +110,18 @@ int main()
       if (std::strcmp(line, "quit\n") == 0 || std::strcmp(line, "exit\n") == 0)
         break;
 
-      uint64_t start = 0;
-      uint64_t repetitions = 1;
-      if (!parse_request(line, &start, &repetitions)) {
-        std::cerr << "request must be a u64 START value or START COUNT\n";
+      NextRequest request;
+      if (!parse_request(line, &request)) {
+        std::cerr << "request must be a u64 START value, START COUNT, or shifted COUNT SHIFT START\n";
         return 2;
       }
 
-      for (uint64_t index = 0; index < repetitions; index++) {
+      for (uint64_t index = 0; index < request.repetitions; index++) {
+        uint64_t start = 0;
+        if (!request_start_at(request, index, &start)) {
+          std::cerr << "shifted next-prime request overflowed u64\n";
+          return 2;
+        }
         iterator.jump_to(start, stop_hint_for(start));
         std::cout << iterator.next_prime() << '\n';
       }

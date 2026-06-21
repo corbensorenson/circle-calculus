@@ -674,29 +674,73 @@ fn next_server_command(args: &[String]) -> Result<(), String> {
         if request == b"quit" || request == b"exit" {
             break;
         }
-        let (start, repetitions) = parse_next_server_request_ascii(request)?;
-        if json {
-            for _ in 0..repetitions {
-                let search = next_prime_u64(start);
-                writeln!(stdout, "{}", search.to_json())
-                    .map_err(|err| format!("failed to write response: {err}"))?;
-            }
-        } else {
-            for _ in 0..repetitions {
-                if let Some(prime) = next_prime_value_u64(start) {
-                    write_u64_line(&mut stdout, prime)?;
-                } else {
-                    stdout
-                        .write_all(b"none\n")
-                        .map_err(|err| format!("failed to write response: {err}"))?;
-                }
-            }
-        }
+        let batch = parse_next_server_batch_request_ascii(request)?;
+        write_next_server_batch_responses(&mut stdout, batch, json)?;
         stdout
             .flush()
             .map_err(|err| format!("failed to flush response: {err}"))?;
     }
     Ok(())
+}
+
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+enum NextServerBatchRequest {
+    Repeat {
+        start: u64,
+        repetitions: usize,
+    },
+    Shifted {
+        start: u64,
+        repetitions: usize,
+        shift: u64,
+    },
+}
+
+impl NextServerBatchRequest {
+    fn repetitions(self) -> usize {
+        match self {
+            Self::Repeat { repetitions, .. } | Self::Shifted { repetitions, .. } => repetitions,
+        }
+    }
+
+    fn start_at(self, index: usize) -> Result<u64, String> {
+        match self {
+            Self::Repeat { start, .. } => Ok(start),
+            Self::Shifted { start, shift, .. } => shifted_next_server_start(start, shift, index),
+        }
+    }
+}
+
+fn write_next_server_batch_responses<W: Write>(
+    stdout: &mut W,
+    batch: NextServerBatchRequest,
+    json: bool,
+) -> Result<(), String> {
+    for index in 0..batch.repetitions() {
+        let start = batch.start_at(index)?;
+        if json {
+            let search = next_prime_u64(start);
+            writeln!(stdout, "{}", search.to_json())
+                .map_err(|err| format!("failed to write response: {err}"))?;
+        } else if let Some(prime) = next_prime_value_u64(start) {
+            write_u64_line(stdout, prime)?;
+        } else {
+            stdout
+                .write_all(b"none\n")
+                .map_err(|err| format!("failed to write response: {err}"))?;
+        }
+    }
+    Ok(())
+}
+
+fn shifted_next_server_start(start: u64, shift: u64, index: usize) -> Result<u64, String> {
+    let index = u64::try_from(index).map_err(|_| "shifted next-server index overflowed u64")?;
+    let offset = shift
+        .checked_mul(index)
+        .ok_or_else(|| "shifted next-server offset overflowed u64".to_string())?;
+    start
+        .checked_add(offset)
+        .ok_or_else(|| "shifted next-server START overflowed u64".to_string())
 }
 
 fn trim_ascii_bytes(mut bytes: &[u8]) -> &[u8] {
@@ -732,21 +776,52 @@ fn parse_u64_ascii(bytes: &[u8]) -> Result<u64, String> {
     Ok(value)
 }
 
-fn parse_next_server_request_ascii(bytes: &[u8]) -> Result<(u64, usize), String> {
+fn parse_next_server_request_count_ascii(bytes: &[u8]) -> Result<usize, String> {
+    let count = parse_u64_ascii(bytes)?;
+    let count =
+        usize::try_from(count).map_err(|_| "next-server COUNT must fit in usize".to_string())?;
+    if count == 0 {
+        return Err("next-server request COUNT must be positive".to_string());
+    }
+    Ok(count)
+}
+
+fn parse_next_server_batch_request_ascii(
+    bytes: &[u8],
+) -> Result<NextServerBatchRequest, String> {
     let mut parts = bytes
         .split(|byte| matches!(byte, b' ' | b'\t'))
         .filter(|part| !part.is_empty());
-    let start = parse_u64_ascii(
-        parts
-            .next()
-            .ok_or_else(|| "next-server request must include START".to_string())?,
-    )?;
-    let repetitions = match parts.next() {
-        Some(raw) if !raw.is_empty() => {
-            let repetitions = parse_u64_ascii(raw)?;
-            usize::try_from(repetitions)
-                .map_err(|_| "next-server COUNT must fit in usize".to_string())?
+    let first = parts
+        .next()
+        .ok_or_else(|| "next-server request must include START".to_string())?;
+    if first == b"shifted" {
+        let repetitions = parse_next_server_request_count_ascii(
+            parts.next().ok_or_else(|| {
+                "shifted next-server request must be: shifted COUNT SHIFT START".to_string()
+            })?,
+        )?;
+        let shift = parse_u64_ascii(parts.next().ok_or_else(|| {
+            "shifted next-server request must be: shifted COUNT SHIFT START".to_string()
+        })?)?;
+        let start = parse_u64_ascii(parts.next().ok_or_else(|| {
+            "shifted next-server request must be: shifted COUNT SHIFT START".to_string()
+        })?)?;
+        if parts.next().is_some() {
+            return Err(
+                "shifted next-server request must be: shifted COUNT SHIFT START".to_string(),
+            );
         }
+        return Ok(NextServerBatchRequest::Shifted {
+            start,
+            repetitions,
+            shift,
+        });
+    }
+
+    let start = parse_u64_ascii(first)?;
+    let repetitions = match parts.next() {
+        Some(raw) if !raw.is_empty() => parse_next_server_request_count_ascii(raw)?,
         Some(_) => {
             return Err("next-server request COUNT must be positive".to_string());
         }
@@ -755,10 +830,16 @@ fn parse_next_server_request_ascii(bytes: &[u8]) -> Result<(u64, usize), String>
     if parts.next().is_some() {
         return Err("next-server request must be START or START COUNT".to_string());
     }
-    if repetitions == 0 {
-        return Err("next-server request COUNT must be positive".to_string());
+    Ok(NextServerBatchRequest::Repeat { start, repetitions })
+}
+
+fn parse_next_server_request_ascii(bytes: &[u8]) -> Result<(u64, usize), String> {
+    match parse_next_server_batch_request_ascii(bytes)? {
+        NextServerBatchRequest::Repeat { start, repetitions } => Ok((start, repetitions)),
+        NextServerBatchRequest::Shifted { .. } => {
+            Err("next-server request must be START or START COUNT".to_string())
+        }
     }
-    Ok((start, repetitions))
 }
 
 fn parse_big_server_request(bytes: &[u8], command: &str) -> Result<(BigUint, usize), String> {
@@ -2310,7 +2391,7 @@ fn usage() -> String {
         "  circle-prime range LOW HIGH [--count] [--json] [--segment-size N] [--threads N] [--count-mode MODE]",
         "  circle-prime count-server [--segment-size N] [--threads N] [--count-mode MODE] [--warm-prefix-pi-cache] [--json]",
         "",
-        "next-server reads START or START COUNT lines from stdin and writes one next prime, none, or JSON object per requested search.",
+        "next-server reads START, START COUNT, or shifted COUNT SHIFT START lines from stdin and writes one next prime, none, or JSON object per requested search.",
         "big-test-server, big-next-server, and big-fuzzy-server read N or N COUNT lines from stdin and keep the arbitrary-precision engine hot between requests.",
         "big-test/big-next use arbitrary-precision BigUint arithmetic. --profile mr uses fixed Miller-Rabin bases; --profile bpsw uses base-2 Miller-Rabin plus strong Lucas-Selfridge. Results above u64 are probable-prime decisions, not formal primality certificates.",
         "big-fuzzy-search uses a tiny bit/residue model only to rank arbitrary-precision candidates; every reported candidate still passes the configured BigUint probable-prime verifier.",
@@ -2625,11 +2706,26 @@ mod tests {
             parse_next_server_request_ascii(b"90   50").unwrap(),
             (90, 50)
         );
+        assert_eq!(
+            parse_next_server_batch_request_ascii(b"shifted 3 10 90").unwrap(),
+            NextServerBatchRequest::Shifted {
+                start: 90,
+                repetitions: 3,
+                shift: 10
+            }
+        );
+        assert_eq!(
+            shifted_next_server_start(90, 10, 2).expect("shifted start should fit"),
+            110
+        );
         assert!(parse_u64_ascii(b"").is_err());
         assert!(parse_u64_ascii(b"12x").is_err());
         assert!(parse_u64_ascii(b"18446744073709551616").is_err());
         assert!(parse_next_server_request_ascii(b"90 0").is_err());
         assert!(parse_next_server_request_ascii(b"90 50 extra").is_err());
+        assert!(parse_next_server_batch_request_ascii(b"shifted 0 10 90").is_err());
+        assert!(parse_next_server_batch_request_ascii(b"shifted 3 10").is_err());
+        assert!(shifted_next_server_start(u64::MAX, 1, 1).is_err());
     }
 
     #[test]

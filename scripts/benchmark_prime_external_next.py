@@ -781,6 +781,21 @@ class NextServerClient:
         assert self.process.stdout is not None
         self.process.stdin.write(next_server_request_line(start, count))
         self.process.stdin.flush()
+        return self._read_next_prime_responses(start, count)
+
+    def next_primes_shifted(self, start: int, count: int, shift: int) -> list[int]:
+        if count <= 0:
+            return []
+        if shift < 0:
+            raise ValueError("shift must be nonnegative")
+        assert self.process.stdin is not None
+        assert self.process.stdout is not None
+        self.process.stdin.write(next_server_shifted_request_line(start, count, shift))
+        self.process.stdin.flush()
+        return self._read_next_prime_responses(start, count)
+
+    def _read_next_prime_responses(self, start: int, count: int) -> list[int]:
+        assert self.process.stdout is not None
         results = []
         for _ in range(count):
             response = self.process.stdout.readline()
@@ -947,6 +962,21 @@ class PrimeLineServerClient:
         assert self.process.stdout is not None
         self.process.stdin.write(next_server_request_line(start, count))
         self.process.stdin.flush()
+        return self._read_next_prime_responses(count)
+
+    def next_primes_shifted(self, start: int, count: int, shift: int) -> list[int]:
+        if count <= 0:
+            return []
+        if shift < 0:
+            raise ValueError("shift must be nonnegative")
+        assert self.process.stdin is not None
+        assert self.process.stdout is not None
+        self.process.stdin.write(next_server_shifted_request_line(start, count, shift))
+        self.process.stdin.flush()
+        return self._read_next_prime_responses(count)
+
+    def _read_next_prime_responses(self, count: int) -> list[int]:
+        assert self.process.stdout is not None
         results = []
         for _ in range(count):
             response = self.process.stdout.readline()
@@ -982,6 +1012,10 @@ class PrimeLineServerClient:
 
 def next_server_request_line(start: int, count: int) -> str:
     return f"{start}\n" if count == 1 else f"{start} {count}\n"
+
+
+def next_server_shifted_request_line(start: int, count: int, shift: int) -> str:
+    return f"shifted {count} {shift} {start}\n"
 
 
 def primesieve_generate_server_measurement(

@@ -216,14 +216,14 @@ Current local smoke status from 2026-06-21:
   prime, and `2.540 ms` for the 521-bit Mersenne prime under fixed-base MR.
 - Hot Circle BPSW agrees with SymPy on every selected case and is faster than
   the fixed-base MR profile on prime-heavy inputs. Latest medians include
-  `0.172 ms` for the 127-bit Mersenne prime, `0.628 ms` for the Curve25519
-  prime, `0.588 ms` for the secp256k1 field prime, and `0.858 ms` for the
+  `0.110 ms` for the 127-bit Mersenne prime, `0.616 ms` for the Curve25519
+  prime, `0.592 ms` for the secp256k1 field prime, and `0.825 ms` for the
   521-bit Mersenne prime. In this local smoke, BPSW beats SymPy on the
   521-bit Mersenne prime but still trails SymPy on the selected 127/255/256-bit
   raw primality checks.
 - Hot Circle BPSW `big-next-server` agrees with SymPy on the selected 127-bit
   and near-255-bit starts and beats SymPy on both in the latest 16-round smoke:
-  `0.104 ms` versus `0.182 ms` at `2^127`, and `1.085 ms` versus `1.756 ms`
+  `0.101 ms` versus `0.180 ms` at `2^127`, and `1.056 ms` versus `1.722 ms`
   near Curve25519.
 - A single-sample 64-check probe still agrees on every case. Hot Circle BPSW
   beats SymPy on the 127-bit and 521-bit Mersenne prime checks and on both

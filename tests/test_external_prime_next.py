@@ -14,6 +14,7 @@ from scripts.benchmark_prime_external_next import (
     measure_start_interleaved,
     measure_interleaved_next,
     next_server_request_line,
+    next_server_shifted_request_line,
     parse_starts,
     primecount_nth_prime_command,
     primecount_pi_command,
@@ -99,6 +100,7 @@ def test_prime_line_server_client_batches_repeated_requests() -> None:
 def test_next_server_request_line_uses_batch_protocol() -> None:
     assert next_server_request_line(100, 1) == "100\n"
     assert next_server_request_line(100, 3) == "100 3\n"
+    assert next_server_shifted_request_line(100, 3, 10) == "shifted 3 10 100\n"
 
 
 def test_next_interleaved_measurement_rotates_and_summarizes_samples() -> None:
