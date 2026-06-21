@@ -122,6 +122,7 @@ def _emit_standard_artifacts(
     )
     return artifact_dir / f"{prefix}_artifact_manifest.json", {
         "request": artifact_dir / f"{prefix}_request.json",
+        "receipt": artifact_dir / f"{prefix}_receipt.json",
         "manifest_check": artifact_dir / f"{prefix}_artifact_manifest_check.json",
     }
 
@@ -235,7 +236,7 @@ def test_standalone_artifact_verifier_accepts_multi_contract_kind_gate(
         _expected_artifact_count,
         _expected_labels,
     ) in STANDARD_ARTIFACT_CASES:
-        manifest_path, _paths = _emit_standard_artifacts(
+        manifest_path, paths = _emit_standard_artifacts(
             tmp_path,
             slug=slug,
             subcommand_args=subcommand_args,
@@ -244,6 +245,8 @@ def test_standalone_artifact_verifier_accepts_multi_contract_kind_gate(
         )
         manifests.append(manifest_path)
         expected_kinds.append(expected_kind)
+        receipt = json.loads(paths["receipt"].read_text(encoding="utf-8"))
+        assert receipt["validation_commands"]
 
     require_kind_args = [
         arg
@@ -278,6 +281,24 @@ def test_standalone_artifact_verifier_accepts_multi_contract_kind_gate(
         for recommendation_id in required_recommendation_ids
         for arg in ("--require-recommendation-id", recommendation_id)
     ]
+    required_validation_commands: list[str] = []
+    for (
+        slug,
+        _subcommand_args,
+        prefix,
+        _expected_kind,
+        _expected_assurance,
+        _expected_artifact_count,
+        _expected_labels,
+    ) in STANDARD_ARTIFACT_CASES:
+        receipt_path = tmp_path / f"{slug}_artifacts" / f"{prefix}_receipt.json"
+        receipt = json.loads(receipt_path.read_text(encoding="utf-8"))
+        required_validation_commands.append(receipt["validation_commands"][0])
+    require_validation_args = [
+        arg
+        for command in required_validation_commands
+        for arg in ("--require-validation-command", command)
+    ]
 
     result = subprocess.run(
         [
@@ -300,6 +321,7 @@ def test_standalone_artifact_verifier_accepts_multi_contract_kind_gate(
             *require_theorem_args,
             *require_evidence_args,
             *require_recommendation_args,
+            *require_validation_args,
         ],
         cwd=ROOT,
         check=True,
@@ -321,6 +343,10 @@ def test_standalone_artifact_verifier_accepts_multi_contract_kind_gate(
     assert payload["required_recommendation_ids"] == required_recommendation_ids
     assert payload["observed_recommendation_id_count"] >= len(
         required_recommendation_ids
+    )
+    assert payload["required_validation_commands"] == required_validation_commands
+    assert payload["observed_validation_command_count"] >= len(
+        required_validation_commands
     )
 
 
@@ -424,6 +450,40 @@ def test_standalone_artifact_verifier_rejects_missing_field_and_recommendation(
     )
     assert any(
         "required receipt recommendation id is missing" in failure
+        for failure in payload["failures"]
+    )
+
+
+def test_standalone_artifact_verifier_rejects_missing_validation_command(
+    tmp_path: Path,
+) -> None:
+    manifest_path, _ = _emit_standard_rope_artifacts(tmp_path)
+
+    result = subprocess.run(
+        [
+            sys.executable,
+            str(SCRIPT),
+            str(manifest_path),
+            "--format",
+            "json",
+            "--require-validation-command",
+            "python nonexistent_validation.py",
+        ],
+        cwd=ROOT,
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+
+    assert result.returncode == 4
+    payload = json.loads(result.stderr)
+    assert payload["accepted"] is False
+    assert payload["required_validation_commands"] == [
+        "python nonexistent_validation.py"
+    ]
+    assert payload["observed_validation_command_count"] > 0
+    assert any(
+        "required receipt validation command is missing" in failure
         for failure in payload["failures"]
     )
 

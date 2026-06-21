@@ -3291,6 +3291,8 @@ def build_contract_artifact_manifest_file_check_json_schema() -> dict[str, Any]:
             "evidence_field_count",
             "evidence_fields",
             "recommendation_ids",
+            "validation_command_count",
+            "validation_commands",
             "artifacts",
             "failure_count",
         ],
@@ -3324,6 +3326,8 @@ def build_contract_artifact_manifest_file_check_json_schema() -> dict[str, Any]:
             "evidence_field_count": {"type": "integer", "minimum": 0},
             "evidence_fields": string_list,
             "recommendation_ids": string_list,
+            "validation_command_count": {"type": "integer", "minimum": 0},
+            "validation_commands": string_list,
             "artifacts": {"type": "array", "items": artifact_summary},
             "failure_count": {"type": "integer", "minimum": 0},
         },
@@ -3542,6 +3546,17 @@ def _receipt_artifact_recommendation_ids(
     return ids
 
 
+def _receipt_artifact_validation_commands(
+    receipt: Mapping[str, Any] | None,
+) -> list[str]:
+    if receipt is None:
+        return []
+    commands = receipt.get("validation_commands")
+    if not isinstance(commands, list):
+        return []
+    return [command for command in commands if isinstance(command, str)]
+
+
 def build_contract_artifact_manifest_file_check_report(
     manifest: Mapping[str, Any],
     *,
@@ -3659,6 +3674,9 @@ def build_contract_artifact_manifest_file_check_report(
         receipt_recommendation_ids = _receipt_artifact_recommendation_ids(
             receipt_payload
         )
+        receipt_validation_commands = _receipt_artifact_validation_commands(
+            receipt_payload
+        )
         summary = {
             "path": _display_manifest_check_path(manifest_path),
             "kind": manifest.get("kind"),
@@ -3691,6 +3709,8 @@ def build_contract_artifact_manifest_file_check_report(
             "evidence_field_count": len(receipt_evidence_fields),
             "evidence_fields": receipt_evidence_fields,
             "recommendation_ids": receipt_recommendation_ids,
+            "validation_command_count": len(receipt_validation_commands),
+            "validation_commands": receipt_validation_commands,
             "artifacts": artifact_summaries,
             "failure_count": len(path_failures),
         }

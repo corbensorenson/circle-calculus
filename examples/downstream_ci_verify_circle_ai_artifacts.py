@@ -346,6 +346,15 @@ def _receipt_recommendation_ids(receipt: dict[str, Any] | None) -> list[str]:
     return ids
 
 
+def _receipt_validation_commands(receipt: dict[str, Any] | None) -> list[str]:
+    if receipt is None:
+        return []
+    commands = receipt.get("validation_commands")
+    if not isinstance(commands, list):
+        return []
+    return [command for command in commands if isinstance(command, str)]
+
+
 def _manifest_check_report(
     *,
     manifest_path: Path,
@@ -438,6 +447,7 @@ def verify_manifest(
     receipt_theorem_ids = _receipt_theorem_ids(receipt)
     receipt_evidence_fields = _receipt_evidence_fields(receipt)
     receipt_recommendation_ids = _receipt_recommendation_ids(receipt)
+    receipt_validation_commands = _receipt_validation_commands(receipt)
 
     status = manifest.get("status")
     decision = manifest.get("decision_verdict")
@@ -479,6 +489,8 @@ def verify_manifest(
         "evidence_field_count": len(receipt_evidence_fields),
         "evidence_fields": receipt_evidence_fields,
         "recommendation_ids": receipt_recommendation_ids,
+        "validation_command_count": len(receipt_validation_commands),
+        "validation_commands": receipt_validation_commands,
         "request_content_fingerprint": manifest.get("request_content_fingerprint"),
         "normalized_request_fingerprint": manifest.get(
             "normalized_request_fingerprint"
@@ -511,6 +523,7 @@ def verify_manifests(
     required_theorem_ids: list[str],
     required_evidence_fields: list[str],
     required_recommendation_ids: list[str],
+    required_validation_commands: list[str],
     required_statuses: list[str],
     required_decisions: list[str],
     required_assurances: list[str],
@@ -588,6 +601,20 @@ def verify_manifests(
             failures.append(
                 f"required receipt recommendation id is missing: {recommendation_id}"
             )
+    observed_validation_commands = sorted(
+        {
+            command
+            for summary in summaries
+            for command in summary.get("validation_commands", [])
+            if isinstance(command, str)
+        }
+    )
+    observed_validation_command_set = set(observed_validation_commands)
+    for command in required_validation_commands:
+        if command not in observed_validation_command_set:
+            failures.append(
+                f"required receipt validation command is missing: {command}"
+            )
     return {
         "schema_id": EXAMPLE_SCHEMA_ID,
         "accepted": not failures,
@@ -603,6 +630,8 @@ def verify_manifests(
         "observed_evidence_field_count": len(observed_evidence_fields),
         "required_recommendation_ids": required_recommendation_ids,
         "observed_recommendation_id_count": len(observed_recommendation_ids),
+        "required_validation_commands": required_validation_commands,
+        "observed_validation_command_count": len(observed_validation_commands),
         "required_statuses": required_statuses,
         "required_decisions": required_decisions,
         "required_assurances": required_assurances,
@@ -711,6 +740,15 @@ def main() -> int:
         ),
     )
     parser.add_argument(
+        "--require-validation-command",
+        action="append",
+        default=[],
+        help=(
+            "Require at least one saved receipt artifact to expose this exact "
+            "validation command. May be repeated."
+        ),
+    )
+    parser.add_argument(
         "--require-decision",
         action="append",
         default=[],
@@ -748,6 +786,7 @@ def main() -> int:
             required_theorem_ids=args.require_theorem_id,
             required_evidence_fields=args.require_evidence_field,
             required_recommendation_ids=args.require_recommendation_id,
+            required_validation_commands=args.require_validation_command,
             required_statuses=args.require_status,
             required_decisions=args.require_decision,
             required_assurances=args.require_assurance,

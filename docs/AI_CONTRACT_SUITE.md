@@ -653,6 +653,7 @@ python examples/downstream_ci_verify_circle_ai_artifacts.py \
   --require-theorem-id AIRA-T0239 \
   --require-evidence-field real_phase_dirichlet_guardrail \
   --require-recommendation-id ROPE-USE-D19-MARGIN-FRONTIER \
+  --require-validation-command "python scripts/rope_certify.py --preset llama_style_10000_4k --format json" \
   --require-status proved \
   --require-decision passed \
   --require-assurance mixed_theorem_and_computation \
@@ -664,7 +665,9 @@ A multi-contract CI job can pass several `*_artifact_manifest.json` files and
 repeat `--require-kind` for every contract family that must be present. Add
 `--require-theorem-id` for theorem ids that downstream code explicitly depends
 on, `--require-evidence-field` for receipt fields it reads, and
-`--require-recommendation-id` for planner actions it invokes.
+`--require-recommendation-id` for planner actions it invokes. Add
+`--require-validation-command` when CI depends on an exact receipt-emitted
+recheck command.
 
 A downstream project should fail fast if the readiness index or contract-level
 `ready_for_downstream_fixture_use` is false. That gate only means the public

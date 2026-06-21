@@ -2336,6 +2336,12 @@ def test_circle_ai_certify_cli_artifact_dir_writes_standard_audit_set(
     assert "ROPE-USE-D19-MARGIN-FRONTIER" in (
         artifact_manifest_report["summaries"][0]["recommendation_ids"]
     )
+    assert artifact_manifest_report["summaries"][0]["validation_command_count"] == (
+        len(receipt["validation_commands"])
+    )
+    assert receipt["validation_commands"][0] in (
+        artifact_manifest_report["summaries"][0]["validation_commands"]
+    )
 
     assert artifact_manifest_check["summaries"][0]["artifact_count"] == 8
     assert artifact_manifest_check["summaries"][0]["failure_count"] == 0
@@ -2356,6 +2362,8 @@ def test_circle_ai_certify_cli_artifact_dir_writes_standard_audit_set(
             "real_phase_dirichlet_guardrail",
             "--require-recommendation-id",
             "ROPE-USE-D19-MARGIN-FRONTIER",
+            "--require-validation-command",
+            receipt["validation_commands"][0],
         ],
         cwd=ROOT,
         check=True,
@@ -2388,6 +2396,24 @@ def test_circle_ai_certify_cli_artifact_dir_writes_standard_audit_set(
     )
     assert missing_pin_cli.returncode == 1
     assert "required receipt theorem id is missing" in missing_pin_cli.stderr
+
+    missing_command_cli = subprocess.run(
+        [
+            sys.executable,
+            str(ARTIFACT_MANIFEST_CHECK_SCRIPT),
+            str(expected_paths["artifact_manifest"]),
+            "--require-validation-command",
+            "python nonexistent_validation.py",
+        ],
+        cwd=ROOT,
+        check=False,
+        text=True,
+        capture_output=True,
+    )
+    assert missing_command_cli.returncode == 1
+    assert "required receipt validation command is missing" in (
+        missing_command_cli.stderr
+    )
 
     expected_paths["request_json"].write_text(
         expected_paths["request_json"].read_text() + "\n",

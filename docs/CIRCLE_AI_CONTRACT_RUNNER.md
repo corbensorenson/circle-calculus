@@ -226,8 +226,9 @@ The checker validates the manifest schema, referenced file existence,
 SHA-256 fingerprints, declared content schema ids, and the receipt summary
 fields mirrored into the manifest.
 It also accepts `--require-kind`, `--require-theorem-id`,
-`--require-evidence-field`, and `--require-recommendation-id` for first-party
-CI jobs that need the same policy pins as the copyable standalone verifier.
+`--require-evidence-field`, `--require-recommendation-id`, and
+`--require-validation-command` for first-party CI jobs that need the same
+policy pins as the copyable standalone verifier.
 For a copyable standard-library-only downstream gate, use
 `examples/downstream_ci_verify_circle_ai_artifacts.py`; it performs the same
 artifact-integrity checks without importing Circle or `jsonschema`.
@@ -241,6 +242,8 @@ Add `--require-theorem-id THEOREM_ID` when the downstream job depends on a
 specific theorem appearing in at least one saved receipt artifact.
 Add `--require-evidence-field FIELD` or `--require-recommendation-id ID` when
 automation consumes a specific receipt field or planner recommendation.
+Add `--require-validation-command COMMAND` when CI depends on an exact recheck
+command emitted by the receipt.
 
 Copyable starting points live under:
 

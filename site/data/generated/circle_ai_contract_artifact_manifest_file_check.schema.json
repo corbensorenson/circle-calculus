@@ -323,6 +323,16 @@
               "type": "string"
             },
             "type": "array"
+          },
+          "validation_command_count": {
+            "minimum": 0,
+            "type": "integer"
+          },
+          "validation_commands": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
           }
         },
         "required": [
@@ -349,6 +359,8 @@
           "evidence_field_count",
           "evidence_fields",
           "recommendation_ids",
+          "validation_command_count",
+          "validation_commands",
           "artifacts",
           "failure_count"
         ],
