@@ -1380,8 +1380,17 @@ def validate_contract_receipt(receipt: Mapping[str, Any]) -> list[str]:
     request = receipt.get("request")
     if not isinstance(request, dict):
         failures.append("request must be an object")
-    elif request.get("schema_id") != REQUEST_SCHEMA_ID:
-        failures.append("request.schema_id must match request_schema_id")
+    else:
+        for failure in validate_contract_request(request):
+            failures.append("request: " + failure)
+        request_kind = request.get("kind")
+        if isinstance(kind, str) and isinstance(request_kind, str):
+            try:
+                request_canonical = canonical_contract_kind(request_kind)
+            except ValueError:
+                request_canonical = None
+            if request_canonical is not None and request_canonical != kind:
+                failures.append("request.kind must match receipt kind")
     request_fingerprint = receipt.get("request_content_fingerprint")
     if not isinstance(request_fingerprint, str) or len(request_fingerprint) != 64:
         failures.append("request_content_fingerprint must be a sha256 hex string")
@@ -1984,6 +1993,11 @@ def build_contract_receipt_json_schema() -> dict[str, Any]:
         "type": "array",
         "items": {"type": "string", "minLength": 1},
     }
+    request_schema = {
+        key: value
+        for key, value in build_contract_request_json_schema().items()
+        if key not in {"$schema", "$id", "title"}
+    }
     return {
         "$schema": "https://json-schema.org/draft/2020-12/schema",
         "$id": "https://circle-calculus.local/schemas/circle_ai_contract_receipt.schema.json",
@@ -2019,7 +2033,7 @@ def build_contract_receipt_json_schema() -> dict[str, Any]:
             "contract_id": {"type": "string", "minLength": 1},
             "status": {"enum": list(STATUS_VALUES)},
             "request_passed": {"type": ["boolean", "null"]},
-            "request": {"type": "object"},
+            "request": request_schema,
             "request_content_fingerprint": {
                 "type": "string",
                 "pattern": "^[0-9a-f]{64}$",

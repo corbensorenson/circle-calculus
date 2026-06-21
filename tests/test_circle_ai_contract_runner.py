@@ -43,6 +43,15 @@ PROOF_LAYER_BUCKETS = (
 )
 
 
+def _json_fingerprint(value: dict) -> str:
+    payload = json.dumps(
+        value,
+        sort_keys=True,
+        separators=(",", ":"),
+    ).encode("utf-8")
+    return hashlib.sha256(payload).hexdigest()
+
+
 def _receipt_fingerprint(receipt: dict) -> str:
     def strip(value):
         if isinstance(value, dict):
@@ -55,12 +64,7 @@ def _receipt_fingerprint(receipt: dict) -> str:
             return [strip(child) for child in value]
         return value
 
-    payload = json.dumps(
-        strip(receipt),
-        sort_keys=True,
-        separators=(",", ":"),
-    ).encode("utf-8")
-    return hashlib.sha256(payload).hexdigest()
+    return _json_fingerprint(strip(receipt))
 
 
 @pytest.fixture(scope="module")
@@ -233,6 +237,35 @@ def test_dispatcher_aliases_and_fingerprint_validation(contract_pack: dict) -> N
     broken_request["receipt_content_fingerprint"] = "0" * 64
     failures = validate_contract_receipt(broken_request)
     assert any("request_content_fingerprint drifted" in failure for failure in failures)
+
+    malformed_request = json.loads(json.dumps(receipt))
+    malformed_request["request"]["paramaters"] = {}
+    malformed_request["request_content_fingerprint"] = _json_fingerprint(
+        malformed_request["request"]
+    )
+    malformed_request["receipt_content_fingerprint"] = _receipt_fingerprint(
+        malformed_request
+    )
+    failures = validate_contract_receipt(malformed_request)
+    assert any(
+        "request: request contains unsupported keys: paramaters" in failure
+        for failure in failures
+    )
+
+    wrong_request_kind = json.loads(json.dumps(receipt))
+    wrong_request_kind["request"] = {
+        "schema_id": "circle_calculus.ai_contract_request.v0",
+        "kind": "recurrence",
+        "parameters": {},
+    }
+    wrong_request_kind["request_content_fingerprint"] = _json_fingerprint(
+        wrong_request_kind["request"]
+    )
+    wrong_request_kind["receipt_content_fingerprint"] = _receipt_fingerprint(
+        wrong_request_kind
+    )
+    failures = validate_contract_receipt(wrong_request_kind)
+    assert any("request.kind must match receipt kind" in failure for failure in failures)
 
     broken_normalized = dict(receipt)
     broken_normalized["normalized_request"] = {
@@ -637,6 +670,17 @@ def test_receipt_schema_rejects_missing_proof_layer_bucket(
     )
     with pytest.raises(jsonschema.ValidationError):
         jsonschema.validate(receipt_with_extra_key, schema)
+
+    receipt_with_bad_request = build_rope_receipt(pack=contract_pack)
+    receipt_with_bad_request["request"]["paramaters"] = {}
+    receipt_with_bad_request["request_content_fingerprint"] = _json_fingerprint(
+        receipt_with_bad_request["request"]
+    )
+    receipt_with_bad_request["receipt_content_fingerprint"] = _receipt_fingerprint(
+        receipt_with_bad_request
+    )
+    with pytest.raises(jsonschema.ValidationError):
+        jsonschema.validate(receipt_with_bad_request, schema)
 
 
 def test_request_validation_report_schema_accepts_public_reports() -> None:

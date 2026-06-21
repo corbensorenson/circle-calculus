@@ -159,6 +159,8 @@ without running Lean.
 
 Receipt JSON is strict at the top level: unknown fields are rejected, while
 contract-specific details live under `evidence`, `support`, and `proof_layers`.
+The embedded `request` object is also validated against the public request
+schema, and its contract kind must match the receipt kind.
 
 ## Receipt Statuses
 
