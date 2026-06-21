@@ -193,6 +193,7 @@ python scripts/check_circle_ai_contract_runner.py \
   --receipt-out-dir reports/circle_ai_receipts \
   --model-config-import-report-out-dir reports/circle_ai_imports \
   --request-validation-report-out-dir reports/circle_ai_request_validation \
+  --certification-bundle-out-dir reports/circle_ai_certification_bundles \
   --report-out reports/circle_ai_runner_check.json \
   --require-status proved \
   --require-decision passed \
@@ -215,6 +216,9 @@ converted the config into a Circle request.
 When `--request-validation-report-out-dir` is set, every summary also points to
 the schema-validated preflight report for the exact request that produced the
 receipt.
+When `--certification-bundle-out-dir` is set, every summary also points to a
+schema-validated certification bundle containing the preflight report, receipt,
+gate report, and any model-config import provenance.
 By default it checks both `examples/circle_ai_requests/*.json` request files and
 `examples/circle_ai_model_configs/*.json` standard RoPE model configs, currently
 including 128k examples at RoPE bases `10000` and `500000`. Model config

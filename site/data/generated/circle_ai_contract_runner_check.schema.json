@@ -78,6 +78,12 @@
       "items": {
         "additionalProperties": false,
         "properties": {
+          "certification_bundle_path": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
           "decision_assurance": {
             "enum": [
               "theorem_backed",
@@ -419,6 +425,7 @@
           "model_config_import_report_path",
           "model_config_parameter_sources",
           "request_validation_report_path",
+          "certification_bundle_path",
           "receipt_path",
           "kind",
           "status",

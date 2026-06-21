@@ -267,6 +267,7 @@ python scripts/check_circle_ai_contract_runner.py \
   --receipt-out-dir reports/circle_ai_receipts \
   --model-config-import-report-out-dir reports/circle_ai_imports \
   --request-validation-report-out-dir reports/circle_ai_request_validation \
+  --certification-bundle-out-dir reports/circle_ai_certification_bundles \
   --report-out reports/circle_ai_runner_check.json \
   --require-status proved \
   --require-decision passed \
@@ -276,10 +277,11 @@ python scripts/check_circle_ai_contract_runner.py \
 The report file uses schema id `circle_calculus.ai_contract_runner_check.v0` and
 records the source type, source path, optional generated request path, optional
 model-config import-report path, optional request-validation report path,
-optional receipt path, status, theorem count, recommendation count,
-validation-command count, decision verdict, assurance level, the
-`normalized_request` parameters, the source-content fingerprint, and receipt
-fingerprints for each checked item. Model-config summaries also inline
+optional certification-bundle path, optional receipt path, status, theorem
+count, recommendation count, validation-command count, decision verdict,
+assurance level, the `normalized_request` parameters, the source-content
+fingerprint, and receipt fingerprints for each checked item. Model-config
+summaries also inline
 `model_config_parameter_sources`, so a reader can see which RoPE request values
 were overridden, read from config fields, derived, defaulted, or omitted without
 opening the import sidecar.
@@ -290,6 +292,9 @@ Use `--model-config-import-report-out-dir` when the model-config conversion
 itself should be saved as an audit artifact.
 Use `--request-validation-report-out-dir` when the request preflight report
 should be saved for every request before the receipt step.
+Use `--certification-bundle-out-dir` when each checked request/model config
+should write a portable bundle containing preflight, receipt, gate report, and
+any model-config import provenance.
 By default the batch includes both request-file examples and standard RoPE
 model-config examples, currently including 128k examples at RoPE bases `10000`
 and `500000`.
