@@ -181,7 +181,9 @@ standalone rejection-report schema sidecar
 the replay-check sidecar as part of the standard artifact-directory audit: the
 manifest checker now rejects a package when the replay report is not `ok`, when
 its replay command no longer matches the embedded request, or when its original
-or replayed receipt fingerprint does not match the saved receipt.
+or replayed receipt fingerprint does not match the saved receipt. The same
+artifact-directory check also audits the saved receipt-check, gate-report, and
+bundle-check sidecars against the manifest gate policy and receipt fingerprint.
 The pack schema id is `circle_calculus.ai_contract_pack.v0` and it contains the four flagship
 records above plus five broader integration fixtures for strided fanout, cyclic
 memory, multicoil phase features, circulant/block-cyclic mixers, and seed-rule

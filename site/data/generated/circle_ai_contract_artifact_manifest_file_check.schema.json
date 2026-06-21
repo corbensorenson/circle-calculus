@@ -452,6 +452,20 @@
             "minimum": 0,
             "type": "integer"
           },
+          "semantic_check_sidecar_count": {
+            "minimum": 0,
+            "type": "integer"
+          },
+          "semantic_check_sidecar_failure_count": {
+            "minimum": 0,
+            "type": "integer"
+          },
+          "semantic_check_sidecar_labels": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
           "status": {
             "enum": [
               "proved",
@@ -524,6 +538,9 @@
           "receipt_replay_check_original_receipt_fingerprint",
           "receipt_replay_check_replayed_receipt_fingerprint",
           "receipt_replay_check_fingerprints_match_receipt",
+          "semantic_check_sidecar_count",
+          "semantic_check_sidecar_labels",
+          "semantic_check_sidecar_failure_count",
           "theorem_count",
           "theorem_ids",
           "evidence_field_count",

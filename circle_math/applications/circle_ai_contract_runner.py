@@ -3584,6 +3584,9 @@ def build_contract_artifact_manifest_file_check_json_schema() -> dict[str, Any]:
             "receipt_replay_check_original_receipt_fingerprint",
             "receipt_replay_check_replayed_receipt_fingerprint",
             "receipt_replay_check_fingerprints_match_receipt",
+            "semantic_check_sidecar_count",
+            "semantic_check_sidecar_labels",
+            "semantic_check_sidecar_failure_count",
             "theorem_count",
             "theorem_ids",
             "evidence_field_count",
@@ -3641,6 +3644,12 @@ def build_contract_artifact_manifest_file_check_json_schema() -> dict[str, Any]:
             "receipt_replay_check_replayed_receipt_fingerprint": fingerprint,
             "receipt_replay_check_fingerprints_match_receipt": {
                 "type": ["boolean", "null"]
+            },
+            "semantic_check_sidecar_count": {"type": "integer", "minimum": 0},
+            "semantic_check_sidecar_labels": string_list,
+            "semantic_check_sidecar_failure_count": {
+                "type": "integer",
+                "minimum": 0,
             },
             "theorem_count": {"type": "integer", "minimum": 0},
             "theorem_ids": string_list,
@@ -4026,6 +4035,115 @@ def _receipt_replay_artifact_summary_and_failures(
     return summary, failures
 
 
+def _semantic_check_sidecar_summary_and_failures(
+    *,
+    artifact_by_label: Mapping[str, Mapping[str, Any]],
+    manifest: Mapping[str, Any],
+    manifest_path: Path,
+    receipt_payload: Mapping[str, Any] | None,
+) -> tuple[dict[str, Any], list[str]]:
+    expected_fingerprint = (
+        receipt_payload.get("receipt_content_fingerprint")
+        if isinstance(receipt_payload, Mapping)
+        else manifest.get("receipt_content_fingerprint")
+    )
+    expected_fingerprint = (
+        expected_fingerprint if isinstance(expected_fingerprint, str) else None
+    )
+    labels: list[str] = []
+    failures: list[str] = []
+
+    for label in ("receipt_check", "gate_report"):
+        if label not in artifact_by_label:
+            continue
+        labels.append(label)
+        payload = _load_artifact_payload_by_label(
+            artifact_by_label=artifact_by_label,
+            manifest_path=manifest_path,
+            label=label,
+        )
+        if payload is None:
+            failures.append(f"{label} artifact is not readable JSON")
+            continue
+        try:
+            jsonschema.validate(payload, build_contract_receipt_file_check_json_schema())
+        except (jsonschema.ValidationError, jsonschema.SchemaError) as exc:
+            failures.append(f"{label} schema validation failed: {exc}")
+        if payload.get("ok") is not True:
+            failures.append(f"{label} report ok was not true")
+        if payload.get("failure_count") != 0:
+            failures.append(f"{label} failure_count was not zero")
+        if payload.get("gate_policy") != manifest.get("gate_policy"):
+            failures.append(f"{label} gate_policy does not match artifact manifest")
+        summaries = payload.get("summaries")
+        if not isinstance(summaries, list) or len(summaries) != 1:
+            failures.append(f"{label} must have exactly one summary")
+            continue
+        summary = summaries[0]
+        if not isinstance(summary, Mapping):
+            failures.append(f"{label} summary was not an object")
+            continue
+        if (
+            expected_fingerprint is not None
+            and summary.get("receipt_content_fingerprint") != expected_fingerprint
+        ):
+            failures.append(
+                f"{label} receipt_content_fingerprint does not match receipt_json"
+            )
+
+    label = "certification_bundle_check"
+    if label in artifact_by_label:
+        labels.append(label)
+        payload = _load_artifact_payload_by_label(
+            artifact_by_label=artifact_by_label,
+            manifest_path=manifest_path,
+            label=label,
+        )
+        if payload is None:
+            failures.append(f"{label} artifact is not readable JSON")
+        else:
+            try:
+                jsonschema.validate(
+                    payload,
+                    build_contract_certification_bundle_file_check_json_schema(),
+                )
+            except (jsonschema.ValidationError, jsonschema.SchemaError) as exc:
+                failures.append(f"{label} schema validation failed: {exc}")
+            if payload.get("ok") is not True:
+                failures.append(f"{label} report ok was not true")
+            if payload.get("failure_count") != 0:
+                failures.append(f"{label} failure_count was not zero")
+            if payload.get("gate_policy") != manifest.get("gate_policy"):
+                failures.append(
+                    f"{label} gate_policy does not match artifact manifest"
+                )
+            summaries = payload.get("summaries")
+            if not isinstance(summaries, list) or len(summaries) != 1:
+                failures.append(f"{label} must have exactly one summary")
+            else:
+                summary = summaries[0]
+                if not isinstance(summary, Mapping):
+                    failures.append(f"{label} summary was not an object")
+                elif (
+                    expected_fingerprint is not None
+                    and summary.get("receipt_content_fingerprint")
+                    != expected_fingerprint
+                ):
+                    failures.append(
+                        f"{label} receipt_content_fingerprint does not match "
+                        "receipt_json"
+                    )
+
+    return (
+        {
+            "semantic_check_sidecar_count": len(labels),
+            "semantic_check_sidecar_labels": labels,
+            "semantic_check_sidecar_failure_count": len(failures),
+        },
+        failures,
+    )
+
+
 def build_contract_artifact_manifest_file_check_report(
     manifest: Mapping[str, Any],
     *,
@@ -4170,6 +4288,16 @@ def build_contract_artifact_manifest_file_check_report(
             receipt_payload=receipt_payload,
         )
         path_failures.extend(receipt_replay_failures)
+        (
+            semantic_sidecar_summary,
+            semantic_sidecar_failures,
+        ) = _semantic_check_sidecar_summary_and_failures(
+            artifact_by_label=artifact_by_label,
+            manifest=manifest,
+            manifest_path=manifest_path,
+            receipt_payload=receipt_payload,
+        )
+        path_failures.extend(semantic_sidecar_failures)
         summary = {
             "path": _display_manifest_check_path(manifest_path),
             "kind": manifest.get("kind"),
@@ -4217,6 +4345,7 @@ def build_contract_artifact_manifest_file_check_report(
                 "receipt_content_fingerprint"
             ),
             **receipt_replay_summary,
+            **semantic_sidecar_summary,
             "theorem_count": len(receipt_theorem_ids),
             "theorem_ids": receipt_theorem_ids,
             "evidence_field_count": len(receipt_evidence_fields),

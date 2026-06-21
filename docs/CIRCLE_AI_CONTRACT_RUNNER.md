@@ -217,7 +217,10 @@ the manifest's mirrored receipt status fields. When a
 `_receipt_replay_check.json` sidecar is present, the manifest-check report also
 requires that replay report to be `ok`, that its replay command matches the
 embedded request, that all replay comparison fields match, and that its original
-and replayed receipt fingerprints match the saved receipt.
+and replayed receipt fingerprints match the saved receipt. The saved
+`_receipt_check.json`, `_gate_report.json`, and
+`_certification_bundle_check.json` sidecars are also audited: each must be `ok`,
+use the manifest's gate policy, and point back to the same receipt fingerprint.
 Pass the dependency-pin flags below directly to `scripts/circle_ai_certify.py`
 with `--artifact-dir` when the first generated `_artifact_manifest_check.json`
 should already carry and enforce the reusable `pin_policy`.
@@ -234,7 +237,10 @@ The checker validates the manifest schema, referenced file existence,
 SHA-256 fingerprints, declared content schema ids, and the receipt summary
 fields mirrored into the manifest. It also audits any saved replay-check sidecar
 against the receipt fingerprint, so stale replay reports fail the whole artifact
-directory instead of being silently listed as extra files.
+directory instead of being silently listed as extra files. The receipt-check,
+gate-report, and bundle-check sidecars get the same semantic treatment: if a
+downstream job updates their file hash but leaves stale receipt facts inside,
+the manifest check still fails.
 It also accepts `--require-kind`, `--require-theorem-id`,
 `--require-evidence-field`, `--require-recommendation-id`, and
 `--require-validation-command` for first-party CI jobs that need the same

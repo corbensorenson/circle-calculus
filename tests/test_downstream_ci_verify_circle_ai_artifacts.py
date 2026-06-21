@@ -237,6 +237,13 @@ def test_standalone_artifact_verifier_accepts_standard_artifact_dirs(
     assert summary["receipt_replay_check_ok"] is True
     assert summary["receipt_replay_check_all_replay_fields_match"] is True
     assert summary["receipt_replay_check_fingerprints_match_receipt"] is True
+    assert summary["semantic_check_sidecar_count"] == 3
+    assert summary["semantic_check_sidecar_labels"] == [
+        "receipt_check",
+        "gate_report",
+        "certification_bundle_check",
+    ]
+    assert summary["semantic_check_sidecar_failure_count"] == 0
     assert "mathematical proof" in payload["not_claimed"]
 
 
@@ -493,6 +500,52 @@ def test_standalone_artifact_verifier_rejects_stale_receipt_replay_sidecar(
     assert summary["receipt_replay_check_ok"] is True
     assert summary["receipt_replay_check_fingerprints_match_receipt"] is False
     assert "receipt_replay_check replayed receipt_content_fingerprint" in "\n".join(
+        payload["failures"]
+    )
+
+
+def test_standalone_artifact_verifier_rejects_stale_gate_report_sidecar(
+    tmp_path: Path,
+) -> None:
+    manifest_path, _paths = _emit_standard_rope_artifacts(tmp_path)
+    artifact_dir = manifest_path.parent
+    gate_path = artifact_dir / "standard_rope_config_gate_report.json"
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    gate_report = json.loads(gate_path.read_text(encoding="utf-8"))
+    gate_report["summaries"][0]["receipt_content_fingerprint"] = "0" * 64
+    gate_path.write_text(
+        json.dumps(gate_report, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+    )
+    for artifact in manifest["artifacts"]:
+        if artifact["label"] == "gate_report":
+            artifact["sha256"] = hashlib.sha256(gate_path.read_bytes()).hexdigest()
+    manifest_path.write_text(
+        json.dumps(manifest, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+    )
+
+    result = subprocess.run(
+        [
+            sys.executable,
+            str(SCRIPT),
+            str(manifest_path),
+            "--format",
+            "json",
+        ],
+        cwd=ROOT,
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+
+    assert result.returncode == 4
+    payload = json.loads(result.stderr)
+    assert payload["accepted"] is False
+    summary = payload["manifests"][0]
+    assert summary["semantic_check_sidecar_count"] == 3
+    assert summary["semantic_check_sidecar_failure_count"] == 1
+    assert "gate_report receipt_content_fingerprint" in "\n".join(
         payload["failures"]
     )
 

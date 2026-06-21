@@ -613,6 +613,83 @@ def _receipt_replay_artifact_summary_and_failures(
     return summary, failures
 
 
+def _semantic_check_sidecar_summary_and_failures(
+    *,
+    manifest: dict[str, Any],
+    artifacts_by_label: dict[str, dict[str, Any]],
+    manifest_path: Path,
+    base_dir: Path | None,
+    receipt: dict[str, Any] | None,
+) -> tuple[dict[str, Any], list[str]]:
+    expected_fingerprint = (
+        receipt.get("receipt_content_fingerprint")
+        if isinstance(receipt, dict)
+        else manifest.get("receipt_content_fingerprint")
+    )
+    expected_fingerprint = (
+        expected_fingerprint if isinstance(expected_fingerprint, str) else None
+    )
+    labels: list[str] = []
+    failures: list[str] = []
+
+    for label in ("receipt_check", "gate_report", "certification_bundle_check"):
+        artifact = artifacts_by_label.get(label)
+        if artifact is None:
+            continue
+        labels.append(label)
+        raw_path = artifact.get("path")
+        if not isinstance(raw_path, str):
+            failures.append(f"{label} path is not a string")
+            continue
+        path = _resolve_existing_artifact(
+            raw_path,
+            manifest_path=manifest_path,
+            base_dir=base_dir,
+        )
+        if path is None:
+            failures.append(f"{label} artifact is missing: {raw_path}")
+            continue
+        try:
+            payload = _load_json_object(path)
+        except (OSError, ValueError, json.JSONDecodeError, UnicodeDecodeError) as exc:
+            failures.append(f"{label} artifact is unreadable: {exc}")
+            continue
+
+        expected_schema = EXPECTED_SCHEMA_BY_LABEL[label]
+        if payload.get("schema_id") != expected_schema:
+            failures.append(f"{label} schema_id is unexpected")
+        if payload.get("ok") is not True:
+            failures.append(f"{label} report ok was not true")
+        if payload.get("failure_count") != 0:
+            failures.append(f"{label} failure_count was not zero")
+        if payload.get("gate_policy") != manifest.get("gate_policy"):
+            failures.append(f"{label} gate_policy does not match artifact manifest")
+        summaries = payload.get("summaries")
+        if not isinstance(summaries, list) or len(summaries) != 1:
+            failures.append(f"{label} must have exactly one summary")
+            continue
+        summary = summaries[0]
+        if not isinstance(summary, dict):
+            failures.append(f"{label} summary was not an object")
+            continue
+        if (
+            expected_fingerprint is not None
+            and summary.get("receipt_content_fingerprint") != expected_fingerprint
+        ):
+            failures.append(
+                f"{label} receipt_content_fingerprint does not match receipt_json"
+            )
+
+    return (
+        {
+            "semantic_check_sidecar_count": len(labels),
+            "semantic_check_sidecar_labels": labels,
+            "semantic_check_sidecar_failure_count": len(failures),
+        },
+        failures,
+    )
+
+
 def _receipt_theorem_ids(receipt: dict[str, Any] | None) -> list[str]:
     if receipt is None:
         return []
@@ -775,6 +852,16 @@ def verify_manifest(
         )
     )
     failures.extend(receipt_replay_failures)
+    semantic_sidecar_summary, semantic_sidecar_failures = (
+        _semantic_check_sidecar_summary_and_failures(
+            manifest=manifest,
+            artifacts_by_label=artifacts_by_label,
+            manifest_path=path,
+            base_dir=base_dir,
+            receipt=receipt,
+        )
+    )
+    failures.extend(semantic_sidecar_failures)
 
     status = manifest.get("status")
     decision = manifest.get("decision_verdict")
@@ -848,6 +935,7 @@ def verify_manifest(
         ),
         "receipt_content_fingerprint": manifest.get("receipt_content_fingerprint"),
         **receipt_replay_summary,
+        **semantic_sidecar_summary,
         "request_content_fingerprint_short": _short(
             manifest.get("request_content_fingerprint")
         ),
