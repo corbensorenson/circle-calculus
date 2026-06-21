@@ -19,10 +19,9 @@ from circle_math.applications import (  # noqa: E402
     build_contract_request,
     build_contract_request_validation_report,
     build_contract_runner_check_json_schema,
-    build_contract_receipt_from_request,
     build_rope_request_parameters_from_model_config,
+    build_validated_contract_receipt_from_request,
     load_contract_pack,
-    validate_contract_receipt_against_pack,
     validate_contract_request,
 )
 from circle_math.applications.circle_ai_contract_runner import (  # noqa: E402
@@ -167,11 +166,7 @@ def check_runner_examples(
             if request_failures:
                 failures.append(f"{path}: " + "; ".join(request_failures))
                 continue
-            receipt = build_contract_receipt_from_request(request, pack=pack)
-            receipt_failures = validate_contract_receipt_against_pack(receipt, pack)
-            if receipt_failures:
-                failures.append(f"{path}: " + "; ".join(receipt_failures))
-                continue
+            receipt = build_validated_contract_receipt_from_request(request, pack=pack)
             jsonschema.validate(receipt, receipt_schema)
             receipt_path = None
             if receipt_out_dir is not None:
@@ -210,11 +205,7 @@ def check_runner_examples(
             if request_failures:
                 failures.append(f"{path}: " + "; ".join(request_failures))
                 continue
-            receipt = build_contract_receipt_from_request(request, pack=pack)
-            receipt_failures = validate_contract_receipt_against_pack(receipt, pack)
-            if receipt_failures:
-                failures.append(f"{path}: " + "; ".join(receipt_failures))
-                continue
+            receipt = build_validated_contract_receipt_from_request(request, pack=pack)
             jsonschema.validate(receipt, receipt_schema)
             request_path = None
             receipt_path = None

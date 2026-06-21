@@ -6,7 +6,7 @@ import sys
 from pathlib import Path
 
 from circle_math.applications import (
-    build_contract_receipt_from_request,
+    build_validated_contract_receipt_from_request,
     validate_contract_receipt,
     validate_contract_request,
 )
@@ -35,7 +35,7 @@ def test_circle_ai_request_examples_are_public_api_ready() -> None:
     for path in paths:
         request = json.loads(path.read_text(encoding="utf-8"))
         assert validate_contract_request(request) == []
-        receipt = build_contract_receipt_from_request(request, pack=pack)
+        receipt = build_validated_contract_receipt_from_request(request, pack=pack)
         assert validate_contract_receipt(receipt) == []
         assert receipt["request_schema_id"] == request["schema_id"]
         assert receipt["proof_status"]["all_theorem_ids_proved"] is True
