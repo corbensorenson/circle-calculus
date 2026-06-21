@@ -127,6 +127,8 @@ def test_package_cli_contract_receipt_from_rope_model_config_json(
     tmp_path,
 ) -> None:
     config_path = tmp_path / "config.json"
+    request_path = tmp_path / "request.json"
+    import_report_path = tmp_path / "import_report.json"
     config_path.write_text(
         json.dumps(
             {
@@ -151,6 +153,10 @@ def test_package_cli_contract_receipt_from_rope_model_config_json(
             "rope",
             "--model-config-file",
             str(config_path),
+            "--request-out",
+            str(request_path),
+            "--model-config-import-report-out",
+            str(import_report_path),
             "--format",
             "json",
         ],
@@ -163,3 +169,12 @@ def test_package_cli_contract_receipt_from_rope_model_config_json(
     assert receipt["request"]["parameters"]["head_dim"] == 128
     assert receipt["request"]["parameters"]["context"] == 4096
     assert receipt["proof_status"]["all_theorem_ids_proved"] is True
+    request = json.loads(request_path.read_text())
+    import_report = json.loads(import_report_path.read_text())
+    assert request == receipt["request"]
+    assert import_report["schema_id"] == "circle_calculus.rope_model_config_import.v0"
+    assert import_report["ok"] is True
+    assert import_report["request"] == request
+    assert import_report["request_content_fingerprint"] == receipt[
+        "request_content_fingerprint"
+    ]

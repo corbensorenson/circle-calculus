@@ -17,6 +17,7 @@ from .ai_contracts import (
     CONTRACT_PACK_SCHEMA_ID,
     SUPPORTED_CONTRACT_KINDS,
     build_contract_pack,
+    build_rope_model_config_import_report,
     build_validated_contract_receipt,
     build_validated_rope_receipt_from_model_config,
     canonical_contract_kind,
@@ -178,6 +179,11 @@ def _load_json_object_from_args(
     return payload
 
 
+def _write_json_file(path: Path, payload: Any) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n")
+
+
 def contract_receipt_main() -> int:
     """Build a theorem-linked public contract receipt from JSON parameters."""
     parser = argparse.ArgumentParser(
@@ -252,6 +258,19 @@ def contract_receipt_main() -> int:
         default=None,
         help="Optional exported contract pack path. Defaults to a fresh public pack.",
     )
+    parser.add_argument(
+        "--request-out",
+        type=Path,
+        help="Optional path for the exact versioned request JSON used by the receipt.",
+    )
+    parser.add_argument(
+        "--model-config-import-report-out",
+        type=Path,
+        help=(
+            "Optional path for the standard-RoPE model-config import report. "
+            "Only valid with --model-config-file."
+        ),
+    )
     parser.add_argument("--format", choices=("text", "json"), default="text")
     args = parser.parse_args()
 
@@ -269,6 +288,19 @@ def contract_receipt_main() -> int:
             json_file=args.model_config_file,
             label="model-config",
         )
+        import_report = build_rope_model_config_import_report(
+            model_config,
+            head_dim=args.head_dim,
+            base=args.base,
+            context=args.context,
+            tolerance=args.tolerance,
+            discretization=args.discretization,
+            requested_margin=args.requested_margin,
+        )
+        if args.model_config_import_report_out is not None:
+            _write_json_file(args.model_config_import_report_out, import_report)
+        if not import_report["ok"]:
+            parser.error("; ".join(import_report["failures"]))
         try:
             receipt = build_validated_rope_receipt_from_model_config(
                 model_config,
@@ -283,6 +315,8 @@ def contract_receipt_main() -> int:
         except ValueError as exc:
             parser.error(str(exc))
     else:
+        if args.model_config_import_report_out is not None:
+            parser.error("--model-config-import-report-out requires --model-config-file")
         parameters = _load_json_object_from_args(
             parser,
             inline_json=args.parameters,
@@ -293,6 +327,8 @@ def contract_receipt_main() -> int:
             receipt = build_validated_contract_receipt(args.kind, parameters, pack=pack)
         except ValueError as exc:
             parser.error(str(exc))
+    if args.request_out is not None:
+        _write_json_file(args.request_out, receipt["request"])
     if args.format == "json":
         print(json.dumps(receipt, indent=2, sort_keys=True))
     else:

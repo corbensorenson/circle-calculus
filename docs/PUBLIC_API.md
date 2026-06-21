@@ -77,6 +77,8 @@ The installed CLI exposes the same receipt path for shell users:
 circle-ai-contract-receipt \
   --kind rope \
   --model-config-file examples/circle_ai_model_configs/standard_rope_config.json \
+  --request-out /tmp/circle_rope_request.json \
+  --model-config-import-report-out /tmp/circle_rope_import_report.json \
   --format json
 
 circle-ai-contract-receipt \

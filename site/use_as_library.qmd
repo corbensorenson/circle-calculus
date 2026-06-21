@@ -107,6 +107,10 @@ circle-sparse-attention-certify --context 9 --strides 3,4,7 --path-length 2 --lo
 The richer repository maintenance commands under `scripts/` remain the source
 tools for generating and validating every artifact.
 
+For RoPE model configs, add `--request-out` and
+`--model-config-import-report-out` when you want the exact Circle request and
+the parameter-source audit report saved beside the receipt.
+
 ## Lean Imports
 
 ```lean

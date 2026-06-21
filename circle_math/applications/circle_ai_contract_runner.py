@@ -376,6 +376,7 @@ def build_rope_request_parameters_from_model_config(
         "context": resolved_context,
         "tolerance": resolved_tolerance,
         "discretization": resolved_discretization,
+        "requested_margin": None,
     }
     if requested_margin is not None:
         parameters["requested_margin"] = str(requested_margin)
