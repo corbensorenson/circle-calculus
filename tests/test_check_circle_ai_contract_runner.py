@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import hashlib
 import json
 import subprocess
 import sys
@@ -14,10 +15,54 @@ RUNNER_CHECK_SCHEMA = (
     / "generated"
     / "circle_ai_contract_runner_check.schema.json"
 )
+CONTRACT_PACK = Path("site") / "data" / "generated" / "circle_ai_contract_pack.json"
+FINGERPRINT_ALGORITHM = "sha256-json-v1"
+FINGERPRINT_KEYS = {
+    "content_fingerprint",
+    "pack_content_fingerprint",
+    "contract_fingerprint_index",
+}
 
 
 def _runner_check_schema() -> dict:
     return json.loads(RUNNER_CHECK_SCHEMA.read_text())
+
+
+def _strip_fingerprint_fields(value: object) -> object:
+    if isinstance(value, dict):
+        return {
+            key: _strip_fingerprint_fields(child)
+            for key, child in sorted(value.items())
+            if key not in FINGERPRINT_KEYS
+        }
+    if isinstance(value, list):
+        return [_strip_fingerprint_fields(child) for child in value]
+    return value
+
+
+def _json_fingerprint(value: object) -> str:
+    normalized = json.dumps(
+        _strip_fingerprint_fields(value),
+        sort_keys=True,
+        separators=(",", ":"),
+    ).encode("utf-8")
+    return hashlib.sha256(normalized).hexdigest()
+
+
+def _refresh_pack_fingerprints(pack: dict) -> None:
+    for contract in pack["contracts"]:
+        contract["content_fingerprint_algorithm"] = FINGERPRINT_ALGORITHM
+        contract["content_fingerprint"] = _json_fingerprint(contract)
+    pack["contract_fingerprint_index"] = {
+        contract["kind"]: {
+            "id": contract["id"],
+            "content_fingerprint_algorithm": FINGERPRINT_ALGORITHM,
+            "content_fingerprint": contract["content_fingerprint"],
+        }
+        for contract in pack["contracts"]
+    }
+    pack["content_fingerprint_algorithm"] = FINGERPRINT_ALGORITHM
+    pack["pack_content_fingerprint"] = _json_fingerprint(pack)
 
 
 def test_check_circle_ai_contract_runner_accepts_examples() -> None:
@@ -182,3 +227,45 @@ def test_check_circle_ai_contract_runner_rejects_batch_gate() -> None:
     }
     assert payload["failure_count"] == 5
     assert all("did not match required status set" in failure for failure in payload["failures"])
+
+
+def test_check_circle_ai_contract_runner_rejects_pack_missing_receipt_theorem(
+    tmp_path: Path,
+) -> None:
+    pack = json.loads(CONTRACT_PACK.read_text())
+    kv_contract = next(
+        contract
+        for contract in pack["contracts"]
+        if contract["kind"] == "kv_cache_ring_buffer"
+    )
+    theorem_ids = kv_contract["theorem_ids"]
+    assert "AIM-T0060" in theorem_ids
+    kv_contract["theorem_ids"] = [
+        theorem_id for theorem_id in theorem_ids if theorem_id != "AIM-T0060"
+    ]
+    _refresh_pack_fingerprints(pack)
+    stale_pack = tmp_path / "kv_missing_theorem_pack.json"
+    stale_pack.write_text(json.dumps(pack, indent=2, sort_keys=True) + "\n")
+
+    result = subprocess.run(
+        [
+            sys.executable,
+            "scripts/check_circle_ai_contract_runner.py",
+            "--pack",
+            str(stale_pack),
+            "--format",
+            "json",
+        ],
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+
+    payload = json.loads(result.stdout)
+    jsonschema.validate(payload, _runner_check_schema())
+    assert result.returncode == 1
+    assert payload["ok"] is False
+    assert any(
+        "receipt theorem ids are not in loaded contract: AIM-T0060" in failure
+        for failure in payload["failures"]
+    )

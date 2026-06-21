@@ -22,7 +22,7 @@ from circle_math.applications import (  # noqa: E402
     build_contract_receipt_from_request,
     build_rope_request_parameters_from_model_config,
     load_contract_pack,
-    validate_contract_receipt,
+    validate_contract_receipt_against_pack,
     validate_contract_request,
 )
 from circle_math.applications.circle_ai_contract_runner import (  # noqa: E402
@@ -168,7 +168,7 @@ def check_runner_examples(
                 failures.append(f"{path}: " + "; ".join(request_failures))
                 continue
             receipt = build_contract_receipt_from_request(request, pack=pack)
-            receipt_failures = validate_contract_receipt(receipt)
+            receipt_failures = validate_contract_receipt_against_pack(receipt, pack)
             if receipt_failures:
                 failures.append(f"{path}: " + "; ".join(receipt_failures))
                 continue
@@ -211,7 +211,7 @@ def check_runner_examples(
                 failures.append(f"{path}: " + "; ".join(request_failures))
                 continue
             receipt = build_contract_receipt_from_request(request, pack=pack)
-            receipt_failures = validate_contract_receipt(receipt)
+            receipt_failures = validate_contract_receipt_against_pack(receipt, pack)
             if receipt_failures:
                 failures.append(f"{path}: " + "; ".join(receipt_failures))
                 continue
