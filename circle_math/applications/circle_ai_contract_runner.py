@@ -1071,6 +1071,25 @@ def build_contract_receipt(
     raise ValueError(f"unsupported contract kind: {kind}")
 
 
+def build_validated_contract_receipt(
+    kind: str,
+    parameters: Mapping[str, Any],
+    *,
+    pack: Mapping[str, Any] | None = None,
+) -> dict[str, Any]:
+    """Build a receipt and validate it against the loaded contract pack."""
+
+    pack_dict = _default_pack(pack)
+    receipt = build_contract_receipt(kind, parameters, pack=pack_dict)
+    failures = validate_contract_receipt_against_pack(receipt, pack_dict)
+    if failures:
+        raise ValueError(
+            "invalid Circle AI contract receipt for loaded pack: "
+            + "; ".join(failures)
+        )
+    return receipt
+
+
 def _is_int(value: Any) -> bool:
     return isinstance(value, int) and not isinstance(value, bool)
 
@@ -1343,6 +1362,24 @@ def build_contract_receipt_from_request(
         raise ValueError(
             "invalid Circle AI contract request parameters: " + message
         ) from exc
+
+
+def build_validated_contract_receipt_from_request(
+    request: Mapping[str, Any],
+    *,
+    pack: Mapping[str, Any] | None = None,
+) -> dict[str, Any]:
+    """Build a request receipt and validate it against the loaded pack."""
+
+    pack_dict = _default_pack(pack)
+    receipt = build_contract_receipt_from_request(request, pack=pack_dict)
+    failures = validate_contract_receipt_against_pack(receipt, pack_dict)
+    if failures:
+        raise ValueError(
+            "invalid Circle AI contract receipt for loaded pack: "
+            + "; ".join(failures)
+        )
+    return receipt
 
 
 def validate_contract_receipt(receipt: Mapping[str, Any]) -> list[str]:

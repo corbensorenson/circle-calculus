@@ -16,18 +16,17 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from circle_math.applications import (  # noqa: E402
-    build_contract_receipt,
     build_contract_receipt_file_check_json_schema,
     build_contract_receipt_file_check_report,
-    build_contract_receipt_from_request,
     build_contract_receipt_json_schema,
     build_contract_request,
     build_contract_request_validation_report,
     build_contract_request_validation_json_schema,
     build_rope_request_parameters_from_model_config,
+    build_validated_contract_receipt,
+    build_validated_contract_receipt_from_request,
     load_contract_pack,
     receipt_summary_lines,
-    validate_contract_receipt_against_pack,
 )
 from circle_math.applications.circle_ai_contract_runner import (  # noqa: E402
     RECEIPT_FILE_CHECK_SCHEMA_PATH,
@@ -282,7 +281,10 @@ def _receipt_from_request_json(
     pack: dict[str, Any] | None,
 ) -> dict[str, Any]:
     try:
-        return build_contract_receipt_from_request(_load_request_json(path), pack=pack)
+        return build_validated_contract_receipt_from_request(
+            _load_request_json(path),
+            pack=pack,
+        )
     except ValueError as exc:
         raise SystemExit(str(exc)) from exc
 
@@ -443,7 +445,7 @@ def main() -> int:
             request = build_contract_request(args.kind, _parameters_from_args(args))
             if args.request_out is not None:
                 write_json(args.request_out, request)
-            receipt = build_contract_receipt(
+            receipt = build_validated_contract_receipt(
                 request["kind"],
                 request["parameters"],
                 pack=pack,
@@ -452,11 +454,6 @@ def main() -> int:
             raise SystemExit(str(exc)) from exc
     assert pack is not None
     _validate_receipt_schema(receipt, args.receipt_schema)
-    pack_failures = validate_contract_receipt_against_pack(receipt, pack)
-    if pack_failures:
-        raise SystemExit(
-            "receipt failed contract-pack validation: " + "; ".join(pack_failures)
-        )
     gate_failures = _receipt_gate_failures(receipt, args)
     if args.json_out is not None:
         write_json(args.json_out, receipt)

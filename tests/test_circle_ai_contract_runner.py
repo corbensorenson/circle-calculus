@@ -25,6 +25,8 @@ from circle_math.applications import (
     build_rope_request_parameters_from_model_config,
     build_rope_receipt,
     build_sparse_attention_receipt,
+    build_validated_contract_receipt,
+    build_validated_contract_receipt_from_request,
     receipt_summary_lines,
     validate_contract_request,
     validate_contract_receipt,
@@ -499,6 +501,71 @@ def test_request_api_validates_and_builds_receipts(contract_pack: dict) -> None:
     assert receipt["kind"] == "sparse_attention_coverage"
     assert receipt["request_passed"] is True
     assert validate_contract_receipt(receipt) == []
+
+
+def test_validated_receipt_api_builds_pack_checked_receipts(
+    contract_pack: dict,
+) -> None:
+    direct_receipt = build_validated_contract_receipt(
+        "sparse-attention",
+        {
+            "context": 9,
+            "strides": (2, 5),
+            "path_length": 4,
+            "local_window": 8,
+        },
+        pack=contract_pack,
+    )
+    request = build_contract_request(
+        "kv-cache",
+        {
+            "cache_size": 16,
+            "current": 31,
+            "token": 20,
+            "batch_tokens": (20, 24, 29, 31),
+            "sink_size": 4,
+        },
+    )
+    request_receipt = build_validated_contract_receipt_from_request(
+        request,
+        pack=contract_pack,
+    )
+
+    assert direct_receipt["kind"] == "sparse_attention_coverage"
+    assert request_receipt["kind"] == "kv_cache_ring_buffer"
+    assert validate_contract_receipt_against_pack(direct_receipt, contract_pack) == []
+    assert validate_contract_receipt_against_pack(request_receipt, contract_pack) == []
+
+
+def test_validated_request_receipt_api_rejects_pack_missing_receipt_theorem() -> None:
+    pack = json.loads(PUBLIC_CONTRACT_PACK.read_text())
+    kv_contract = next(
+        contract
+        for contract in pack["contracts"]
+        if contract["kind"] == "kv_cache_ring_buffer"
+    )
+    kv_contract["theorem_ids"] = [
+        theorem_id
+        for theorem_id in kv_contract["theorem_ids"]
+        if theorem_id != "AIM-T0060"
+    ]
+    _refresh_pack_fingerprints(pack)
+    request = build_contract_request(
+        "kv-cache",
+        {
+            "cache_size": 16,
+            "current": 31,
+            "token": 20,
+            "batch_tokens": (20, 24, 29, 31),
+            "sink_size": 4,
+        },
+    )
+
+    with pytest.raises(
+        ValueError,
+        match="receipt theorem ids are not in loaded contract: AIM-T0060",
+    ):
+        build_validated_contract_receipt_from_request(request, pack=pack)
 
 
 def test_request_api_builds_canonical_json_safe_requests() -> None:
@@ -1328,7 +1395,7 @@ def test_circle_ai_certify_cli_rejects_pack_missing_receipt_theorem(
 
     assert result.returncode == 1
     assert result.stdout == ""
-    assert "receipt failed contract-pack validation" in result.stderr
+    assert "invalid Circle AI contract receipt for loaded pack" in result.stderr
     assert "receipt theorem ids are not in loaded contract: AIM-T0060" in result.stderr
 
 
