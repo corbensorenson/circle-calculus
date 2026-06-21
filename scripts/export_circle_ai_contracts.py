@@ -22,6 +22,7 @@ from circle_math.applications.circle_ai_contracts import (
     build_downstream_rejection_report_json_schema,
 )
 from circle_math.applications.circle_ai_contract_runner import (
+    CERTIFICATION_BUNDLE_FILE_CHECK_SCHEMA_PATH as CONTRACT_CERTIFICATION_BUNDLE_FILE_CHECK_SCHEMA_PATH,
     CERTIFICATION_BUNDLE_SCHEMA_PATH as CONTRACT_CERTIFICATION_BUNDLE_SCHEMA_PATH,
     RECEIPT_SCHEMA_PATH as CONTRACT_RUNNER_RECEIPT_SCHEMA_PATH,
     RECEIPT_FILE_CHECK_SCHEMA_PATH as CONTRACT_RECEIPT_FILE_CHECK_SCHEMA_PATH,
@@ -29,6 +30,7 @@ from circle_math.applications.circle_ai_contract_runner import (
     REQUEST_VALIDATION_SCHEMA_PATH as CONTRACT_RUNNER_REQUEST_VALIDATION_SCHEMA_PATH,
     ROPE_MODEL_CONFIG_IMPORT_SCHEMA_PATH,
     RUNNER_CHECK_SCHEMA_PATH as CONTRACT_RUNNER_CHECK_SCHEMA_PATH,
+    build_contract_certification_bundle_file_check_json_schema,
     build_contract_certification_bundle_json_schema,
     build_contract_runner_check_json_schema,
     build_contract_receipt_file_check_json_schema,
@@ -58,6 +60,9 @@ DEFAULT_CONTRACT_RECEIPT_FILE_CHECK_SCHEMA_OUT = (
 )
 DEFAULT_CONTRACT_CERTIFICATION_BUNDLE_SCHEMA_OUT = (
     ROOT / CONTRACT_CERTIFICATION_BUNDLE_SCHEMA_PATH
+)
+DEFAULT_CONTRACT_CERTIFICATION_BUNDLE_FILE_CHECK_SCHEMA_OUT = (
+    ROOT / CONTRACT_CERTIFICATION_BUNDLE_FILE_CHECK_SCHEMA_PATH
 )
 
 
@@ -171,6 +176,16 @@ def main() -> int:
             "site/data/generated/circle_ai_contract_certification_bundle.schema.json."
         ),
     )
+    parser.add_argument(
+        "--contract-certification-bundle-file-check-schema-out",
+        default=str(DEFAULT_CONTRACT_CERTIFICATION_BUNDLE_FILE_CHECK_SCHEMA_OUT),
+        help=(
+            "Output JSON Schema path for saved certification-bundle check "
+            "reports. Defaults to "
+            "site/data/generated/"
+            "circle_ai_contract_certification_bundle_file_check.schema.json."
+        ),
+    )
     args = parser.parse_args()
 
     out = Path(args.out)
@@ -218,6 +233,13 @@ def main() -> int:
     )
     if not certification_bundle_schema_out.is_absolute():
         certification_bundle_schema_out = ROOT / certification_bundle_schema_out
+    certification_bundle_file_check_schema_out = Path(
+        args.contract_certification_bundle_file_check_schema_out
+    )
+    if not certification_bundle_file_check_schema_out.is_absolute():
+        certification_bundle_file_check_schema_out = (
+            ROOT / certification_bundle_file_check_schema_out
+        )
     out.parent.mkdir(parents=True, exist_ok=True)
     schema_out.parent.mkdir(parents=True, exist_ok=True)
     policy_schema_out.parent.mkdir(parents=True, exist_ok=True)
@@ -231,6 +253,10 @@ def main() -> int:
     rope_model_config_import_schema_out.parent.mkdir(parents=True, exist_ok=True)
     receipt_file_check_schema_out.parent.mkdir(parents=True, exist_ok=True)
     certification_bundle_schema_out.parent.mkdir(parents=True, exist_ok=True)
+    certification_bundle_file_check_schema_out.parent.mkdir(
+        parents=True,
+        exist_ok=True,
+    )
     out.write_text(json.dumps(build_contract_pack(), indent=2, sort_keys=True) + "\n")
     schema_out.write_text(
         json.dumps(build_contract_pack_json_schema(), indent=2, sort_keys=True) + "\n"
@@ -307,6 +333,14 @@ def main() -> int:
         )
         + "\n"
     )
+    certification_bundle_file_check_schema_out.write_text(
+        json.dumps(
+            build_contract_certification_bundle_file_check_json_schema(),
+            indent=2,
+            sort_keys=True,
+        )
+        + "\n"
+    )
     try:
         display_path = out.relative_to(ROOT)
     except ValueError:
@@ -373,6 +407,14 @@ def main() -> int:
         )
     except ValueError:
         display_certification_bundle_schema_path = certification_bundle_schema_out
+    try:
+        display_certification_bundle_file_check_schema_path = (
+            certification_bundle_file_check_schema_out.relative_to(ROOT)
+        )
+    except ValueError:
+        display_certification_bundle_file_check_schema_path = (
+            certification_bundle_file_check_schema_out
+        )
     print(f"wrote {display_path}")
     print(f"wrote {display_schema_path}")
     print(f"wrote {display_policy_schema_path}")
@@ -386,6 +428,7 @@ def main() -> int:
     print(f"wrote {display_rope_model_config_import_schema_path}")
     print(f"wrote {display_receipt_file_check_schema_path}")
     print(f"wrote {display_certification_bundle_schema_path}")
+    print(f"wrote {display_certification_bundle_file_check_schema_path}")
     return 0
 
 

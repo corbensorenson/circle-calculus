@@ -225,6 +225,26 @@ including 128k examples at RoPE bases `10000` and `500000`. Model config
 examples are first converted into versioned Circle request JSON, then checked
 by the same receipt path.
 
+Validate a saved certification bundle that another project has already
+produced:
+
+```bash
+python scripts/check_circle_ai_certification_bundle.py \
+  reports/rope_certification_bundle.json \
+  --require-status proved \
+  --require-decision passed \
+  --require-assurance mixed_theorem_and_computation \
+  --require-passed \
+  --report-out reports/rope_certification_bundle_check.json
+```
+
+This checker validates the bundle JSON Schema, request-validation report,
+embedded receipt against the loaded contract pack, embedded gate report,
+optional model-config import provenance, and optional status, decision,
+assurance, or pass gates. It is the preferred CI-facing command when a
+downstream project stores the full certification bundle rather than just the
+receipt.
+
 Validate a saved receipt file that another project has already produced:
 
 ```bash
@@ -439,6 +459,7 @@ site/data/generated/circle_ai_contract_receipt.schema.json
 site/data/generated/circle_ai_contract_runner_check.schema.json
 site/data/generated/circle_ai_contract_receipt_file_check.schema.json
 site/data/generated/circle_ai_contract_certification_bundle.schema.json
+site/data/generated/circle_ai_contract_certification_bundle_file_check.schema.json
 ```
 
 The request schema has contract-specific parameter shapes. RoPE and recurrence

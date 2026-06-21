@@ -1,0 +1,253 @@
+{
+  "$id": "https://circle-calculus.local/schemas/circle_ai_contract_certification_bundle_file_check.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "bundle_count": {
+      "minimum": 0,
+      "type": "integer"
+    },
+    "failure_count": {
+      "minimum": 0,
+      "type": "integer"
+    },
+    "failures": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "gate_policy": {
+      "additionalProperties": false,
+      "properties": {
+        "allowed_assurance_levels": {
+          "items": {
+            "enum": [
+              "theorem_backed",
+              "mixed_theorem_and_computation",
+              "numerical_only",
+              "unsupported",
+              "undecided"
+            ]
+          },
+          "type": "array"
+        },
+        "allowed_decision_verdicts": {
+          "items": {
+            "enum": [
+              "passed",
+              "failed",
+              "undecided",
+              "numerical_only",
+              "outside_scope"
+            ]
+          },
+          "type": "array"
+        },
+        "allowed_statuses": {
+          "items": {
+            "enum": [
+              "proved",
+              "impossible",
+              "undecided",
+              "numerical_only",
+              "outside_scope"
+            ]
+          },
+          "type": "array"
+        },
+        "require_passed": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "allowed_statuses",
+        "allowed_decision_verdicts",
+        "allowed_assurance_levels",
+        "require_passed"
+      ],
+      "type": "object"
+    },
+    "ok": {
+      "type": "boolean"
+    },
+    "schema_id": {
+      "const": "circle_calculus.ai_contract_certification_bundle_file_check.v0"
+    },
+    "summaries": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "bundle_failure_count": {
+            "minimum": 0,
+            "type": "integer"
+          },
+          "bundle_ok": {
+            "type": "boolean"
+          },
+          "bundle_request_content_fingerprint": {
+            "pattern": "^[0-9a-f]{64}$",
+            "type": "string"
+          },
+          "content_fingerprint_algorithm": {
+            "const": "sha256-json-v1"
+          },
+          "contract_content_fingerprint": {
+            "pattern": "^[0-9a-f]{64}$",
+            "type": "string"
+          },
+          "contract_id": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "contract_pack_fingerprint": {
+            "pattern": "^[0-9a-f]{64}$",
+            "type": "string"
+          },
+          "decision_assurance": {
+            "enum": [
+              "theorem_backed",
+              "mixed_theorem_and_computation",
+              "numerical_only",
+              "unsupported",
+              "undecided"
+            ]
+          },
+          "decision_verdict": {
+            "enum": [
+              "passed",
+              "failed",
+              "undecided",
+              "numerical_only",
+              "outside_scope"
+            ]
+          },
+          "failure_count": {
+            "minimum": 0,
+            "type": "integer"
+          },
+          "gate_report_ok": {
+            "type": [
+              "boolean",
+              "null"
+            ]
+          },
+          "has_model_config_import_report": {
+            "type": "boolean"
+          },
+          "kind": {
+            "enum": [
+              "rope_position_distinguishability",
+              "kv_cache_ring_buffer",
+              "sparse_attention_coverage",
+              "recurrence_schedule"
+            ]
+          },
+          "model_config_fingerprint": {
+            "anyOf": [
+              {
+                "pattern": "^[0-9a-f]{64}$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "model_config_request_content_fingerprint": {
+            "anyOf": [
+              {
+                "pattern": "^[0-9a-f]{64}$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "normalized_request": {
+            "minProperties": 1,
+            "type": "object"
+          },
+          "normalized_request_fingerprint": {
+            "pattern": "^[0-9a-f]{64}$",
+            "type": "string"
+          },
+          "path": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "receipt_content_fingerprint": {
+            "pattern": "^[0-9a-f]{64}$",
+            "type": "string"
+          },
+          "receipt_request_content_fingerprint": {
+            "pattern": "^[0-9a-f]{64}$",
+            "type": "string"
+          },
+          "request_passed": {
+            "type": [
+              "boolean",
+              "null"
+            ]
+          },
+          "request_validation_ok": {
+            "type": "boolean"
+          },
+          "status": {
+            "enum": [
+              "proved",
+              "impossible",
+              "undecided",
+              "numerical_only",
+              "outside_scope"
+            ]
+          },
+          "theorem_count": {
+            "minimum": 0,
+            "type": "integer"
+          }
+        },
+        "required": [
+          "path",
+          "bundle_ok",
+          "bundle_failure_count",
+          "request_validation_ok",
+          "gate_report_ok",
+          "has_model_config_import_report",
+          "model_config_fingerprint",
+          "model_config_request_content_fingerprint",
+          "kind",
+          "contract_id",
+          "content_fingerprint_algorithm",
+          "contract_pack_fingerprint",
+          "contract_content_fingerprint",
+          "status",
+          "request_passed",
+          "decision_verdict",
+          "decision_assurance",
+          "theorem_count",
+          "normalized_request",
+          "bundle_request_content_fingerprint",
+          "receipt_request_content_fingerprint",
+          "normalized_request_fingerprint",
+          "receipt_content_fingerprint",
+          "failure_count"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    }
+  },
+  "required": [
+    "schema_id",
+    "ok",
+    "bundle_count",
+    "failure_count",
+    "failures",
+    "gate_policy",
+    "summaries"
+  ],
+  "title": "Circle AI Contract Certification Bundle File Check Report",
+  "type": "object"
+}

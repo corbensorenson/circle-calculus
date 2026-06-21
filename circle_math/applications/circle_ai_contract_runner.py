@@ -54,6 +54,9 @@ RECEIPT_FILE_CHECK_SCHEMA_ID = "circle_calculus.ai_contract_receipt_file_check.v
 CERTIFICATION_BUNDLE_SCHEMA_ID = (
     "circle_calculus.ai_contract_certification_bundle.v0"
 )
+CERTIFICATION_BUNDLE_FILE_CHECK_SCHEMA_ID = (
+    "circle_calculus.ai_contract_certification_bundle_file_check.v0"
+)
 REQUEST_SCHEMA_PATH = "site/data/generated/circle_ai_contract_request.schema.json"
 REQUEST_VALIDATION_SCHEMA_PATH = (
     "site/data/generated/circle_ai_contract_request_validation.schema.json"
@@ -70,6 +73,10 @@ RECEIPT_FILE_CHECK_SCHEMA_PATH = (
 )
 CERTIFICATION_BUNDLE_SCHEMA_PATH = (
     "site/data/generated/circle_ai_contract_certification_bundle.schema.json"
+)
+CERTIFICATION_BUNDLE_FILE_CHECK_SCHEMA_PATH = (
+    "site/data/generated/"
+    "circle_ai_contract_certification_bundle_file_check.schema.json"
 )
 
 SUPPORTED_CONTRACT_KINDS = (
@@ -3267,6 +3274,126 @@ def build_contract_certification_bundle_json_schema() -> dict[str, Any]:
                     {"type": "null"},
                 ],
             },
+        },
+        "additionalProperties": False,
+    }
+
+
+def build_contract_certification_bundle_file_check_json_schema() -> dict[str, Any]:
+    string_list = {"type": "array", "items": {"type": "string"}}
+    fingerprint = {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+    nullable_fingerprint = {
+        "anyOf": [
+            fingerprint,
+            {"type": "null"},
+        ]
+    }
+    gate_policy = {
+        "type": "object",
+        "required": [
+            "allowed_statuses",
+            "allowed_decision_verdicts",
+            "allowed_assurance_levels",
+            "require_passed",
+        ],
+        "properties": {
+            "allowed_statuses": {
+                "type": "array",
+                "items": {"enum": list(STATUS_VALUES)},
+            },
+            "allowed_decision_verdicts": {
+                "type": "array",
+                "items": {"enum": list(DECISION_VERDICTS)},
+            },
+            "allowed_assurance_levels": {
+                "type": "array",
+                "items": {"enum": list(DECISION_ASSURANCE_LEVELS)},
+            },
+            "require_passed": {"type": "boolean"},
+        },
+        "additionalProperties": False,
+    }
+    summary = {
+        "type": "object",
+        "required": [
+            "path",
+            "bundle_ok",
+            "bundle_failure_count",
+            "request_validation_ok",
+            "gate_report_ok",
+            "has_model_config_import_report",
+            "model_config_fingerprint",
+            "model_config_request_content_fingerprint",
+            "kind",
+            "contract_id",
+            "content_fingerprint_algorithm",
+            "contract_pack_fingerprint",
+            "contract_content_fingerprint",
+            "status",
+            "request_passed",
+            "decision_verdict",
+            "decision_assurance",
+            "theorem_count",
+            "normalized_request",
+            "bundle_request_content_fingerprint",
+            "receipt_request_content_fingerprint",
+            "normalized_request_fingerprint",
+            "receipt_content_fingerprint",
+            "failure_count",
+        ],
+        "properties": {
+            "path": {"type": "string", "minLength": 1},
+            "bundle_ok": {"type": "boolean"},
+            "bundle_failure_count": {"type": "integer", "minimum": 0},
+            "request_validation_ok": {"type": "boolean"},
+            "gate_report_ok": {"type": ["boolean", "null"]},
+            "has_model_config_import_report": {"type": "boolean"},
+            "model_config_fingerprint": nullable_fingerprint,
+            "model_config_request_content_fingerprint": nullable_fingerprint,
+            "kind": {"enum": list(SUPPORTED_CONTRACT_KINDS)},
+            "contract_id": {"type": "string", "minLength": 1},
+            "content_fingerprint_algorithm": {"const": FINGERPRINT_ALGORITHM},
+            "contract_pack_fingerprint": fingerprint,
+            "contract_content_fingerprint": fingerprint,
+            "status": {"enum": list(STATUS_VALUES)},
+            "request_passed": {"type": ["boolean", "null"]},
+            "decision_verdict": {"enum": list(DECISION_VERDICTS)},
+            "decision_assurance": {"enum": list(DECISION_ASSURANCE_LEVELS)},
+            "theorem_count": {"type": "integer", "minimum": 0},
+            "normalized_request": {"type": "object", "minProperties": 1},
+            "bundle_request_content_fingerprint": fingerprint,
+            "receipt_request_content_fingerprint": fingerprint,
+            "normalized_request_fingerprint": fingerprint,
+            "receipt_content_fingerprint": fingerprint,
+            "failure_count": {"type": "integer", "minimum": 0},
+        },
+        "additionalProperties": False,
+    }
+    return {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "$id": (
+            "https://circle-calculus.local/schemas/"
+            "circle_ai_contract_certification_bundle_file_check.schema.json"
+        ),
+        "title": "Circle AI Contract Certification Bundle File Check Report",
+        "type": "object",
+        "required": [
+            "schema_id",
+            "ok",
+            "bundle_count",
+            "failure_count",
+            "failures",
+            "gate_policy",
+            "summaries",
+        ],
+        "properties": {
+            "schema_id": {"const": CERTIFICATION_BUNDLE_FILE_CHECK_SCHEMA_ID},
+            "ok": {"type": "boolean"},
+            "bundle_count": {"type": "integer", "minimum": 0},
+            "failure_count": {"type": "integer", "minimum": 0},
+            "failures": string_list,
+            "gate_policy": gate_policy,
+            "summaries": {"type": "array", "items": summary},
         },
         "additionalProperties": False,
     }

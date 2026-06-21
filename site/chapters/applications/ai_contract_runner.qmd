@@ -299,6 +299,25 @@ By default the batch includes both request-file examples and standard RoPE
 model-config examples, currently including 128k examples at RoPE bases `10000`
 and `500000`.
 
+Validate a saved certification bundle after it has been handed to another
+project:
+
+```bash
+python scripts/check_circle_ai_certification_bundle.py \
+  reports/rope_certification_bundle.json \
+  --require-status proved \
+  --require-decision passed \
+  --require-assurance mixed_theorem_and_computation \
+  --require-passed \
+  --report-out reports/rope_certification_bundle_check.json
+```
+
+This is the preferred downstream CI check when the full certification bundle is
+available. It validates the bundle JSON Schema, request-validation report,
+embedded receipt against the loaded contract pack, embedded gate report,
+optional model-config import provenance, and the optional status, decision,
+assurance, and pass gates.
+
 Validate a receipt file after it has been handed to another project:
 
 ```bash
@@ -490,6 +509,7 @@ site/data/generated/circle_ai_contract_receipt.schema.json
 site/data/generated/circle_ai_contract_runner_check.schema.json
 site/data/generated/circle_ai_contract_receipt_file_check.schema.json
 site/data/generated/circle_ai_contract_certification_bundle.schema.json
+site/data/generated/circle_ai_contract_certification_bundle_file_check.schema.json
 ```
 
 The request schema is contract-specific: it accepts defaults for RoPE and

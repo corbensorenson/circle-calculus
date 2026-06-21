@@ -25,11 +25,13 @@ from .circle_ai_contract_runner import (
     RECEIPT_SCHEMA_ID as CIRCLE_AI_CONTRACT_RECEIPT_SCHEMA_ID,
     RECEIPT_FILE_CHECK_SCHEMA_ID as CIRCLE_AI_CONTRACT_RECEIPT_FILE_CHECK_SCHEMA_ID,
     CERTIFICATION_BUNDLE_SCHEMA_ID,
+    CERTIFICATION_BUNDLE_FILE_CHECK_SCHEMA_ID,
     REQUEST_SCHEMA_ID as CIRCLE_AI_CONTRACT_REQUEST_SCHEMA_ID,
     REQUEST_VALIDATION_SCHEMA_ID as CIRCLE_AI_CONTRACT_REQUEST_VALIDATION_SCHEMA_ID,
     RUNNER_CHECK_SCHEMA_ID as CIRCLE_AI_CONTRACT_RUNNER_CHECK_SCHEMA_ID,
     SUPPORTED_CONTRACT_KINDS as CIRCLE_AI_RUNNER_CONTRACT_KINDS,
     build_contract_certification_bundle,
+    build_contract_certification_bundle_file_check_json_schema,
     build_contract_certification_bundle_json_schema,
     build_contract_receipt,
     build_contract_receipt_file_check_report,
@@ -63,6 +65,9 @@ from .circle_ai_contract_runner import (
 )
 
 CIRCLE_AI_CONTRACT_CERTIFICATION_BUNDLE_SCHEMA_ID = CERTIFICATION_BUNDLE_SCHEMA_ID
+CIRCLE_AI_CONTRACT_CERTIFICATION_BUNDLE_FILE_CHECK_SCHEMA_ID = (
+    CERTIFICATION_BUNDLE_FILE_CHECK_SCHEMA_ID
+)
 
 from .coil_data import (
     PeriodBenchmarkResult,
