@@ -152,7 +152,9 @@ The Rust CLI now has a separate arbitrary-precision path:
 
 ```bash
 circle-prime big-test N --rounds 64 --json
+circle-prime big-test N --profile bpsw --json
 circle-prime big-next START --rounds 64 --max-candidates 1000000 --json
+circle-prime big-next START --profile bpsw --max-candidates 1000000 --json
 circle-prime big-fuzzy-search MODEL START \
   --candidate-window 512 \
   --top-k 16 \
@@ -171,9 +173,11 @@ circle-prime big-fuzzy-server MODEL \
 This path is deliberately not merged into the u64 proof contract. For inputs
 that fit in `u64`, `big-test` delegates to the exact deterministic classifier.
 For larger `BigUint` inputs, accepted candidates are probable primes from
-trial division plus configured fixed Miller-Rabin bases. Composite results are
-exact when a small factor or Miller-Rabin witness is found; prime results above
-`u64` are not formal primality certificates yet.
+trial division plus a selected probable-prime profile. The default `mr`
+profile uses configured fixed Miller-Rabin bases. The optional `bpsw` profile
+uses base-2 Miller-Rabin plus a strong Lucas-Selfridge check. Composite results
+are exact when a small factor or witness is found; prime results above `u64`
+are still probable-prime reports, not formal primality certificates.
 
 `big-fuzzy-search` keeps the same safety rule as the smaller fuzzy lane: the
 model only ranks candidates, and every reported candidate must pass the
@@ -193,7 +197,9 @@ compares `big-next` against SymPy `nextprime`. It also runs a fuzzy any-prime
 search smoke and verifies the reported candidate with SymPy. The benchmark
 records both cold one-shot CLI rows and hot `big-*-server` rows; use the hot
 server rows for engine tuning because they remove process startup from the
-measurement. The output lives at
+measurement. It also records hot `bpsw` profile rows for `big-test-server` and
+`big-next-server`, so the fixed-base Miller-Rabin and Baillie-PSW-style
+profiles can be compared without changing the proof boundary. The output lives at
 `sidecars/PRIME_ENGINE/results/prime_bigint_controls_latest.csv` with metadata
 in `prime_bigint_controls_latest.json`.
 

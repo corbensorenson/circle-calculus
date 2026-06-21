@@ -261,6 +261,10 @@ def circle_big_test_server(server: LineServer, n: int, batch_size: int) -> bool:
     raise RuntimeError(f"could not parse big-test-server response: {lines[0]!r}")
 
 
+def circle_big_bpsw_test_server(server: LineServer, n: int, batch_size: int) -> bool:
+    return circle_big_test_server(server, n, batch_size)
+
+
 def circle_big_next(binary: Path, start: int, mr_rounds: int, max_candidates: int) -> int | None:
     payload = run_circle_json(
         binary,
@@ -281,6 +285,10 @@ def circle_big_next_server(server: LineServer, start: int, batch_size: int) -> i
     if any(line != lines[0] for line in lines):
         raise RuntimeError(f"big-next-server returned inconsistent batch: {lines}")
     return None if lines[0] == "none" else int(lines[0])
+
+
+def circle_big_bpsw_next_server(server: LineServer, start: int, batch_size: int) -> int | None:
+    return circle_big_next_server(server, start, batch_size)
 
 
 def circle_big_fuzzy_any(
@@ -447,6 +455,16 @@ def main() -> int:
                 ]
             )
         )
+        circle_bpsw_test_server = stack.enter_context(
+            LineServer(
+                [
+                    str(args.circle_prime_bin),
+                    "big-test-server",
+                    "--profile",
+                    "bpsw",
+                ]
+            )
+        )
         circle_next_server = stack.enter_context(
             LineServer(
                 [
@@ -454,6 +472,18 @@ def main() -> int:
                     "big-next-server",
                     "--rounds",
                     str(args.mr_rounds),
+                    "--max-candidates",
+                    str(args.max_candidates),
+                ]
+            )
+        )
+        circle_bpsw_next_server = stack.enter_context(
+            LineServer(
+                [
+                    str(args.circle_prime_bin),
+                    "big-next-server",
+                    "--profile",
+                    "bpsw",
                     "--max-candidates",
                     str(args.max_candidates),
                 ]
@@ -493,6 +523,14 @@ def main() -> int:
                 bench_rounds=args.bench_rounds,
                 sample_divisor=args.server_batch_size,
             )
+            circle_bpsw_server = timed(
+                lambda case=case: circle_big_bpsw_test_server(
+                    circle_bpsw_test_server, case.n, args.server_batch_size
+                ),
+                warmup_rounds=args.warmup_rounds,
+                bench_rounds=args.bench_rounds,
+                sample_divisor=args.server_batch_size,
+            )
             openssl = timed(
                 lambda case=case: openssl_prime(args.openssl_bin, case.n, args.mr_rounds),
                 warmup_rounds=args.warmup_rounds,
@@ -506,6 +544,7 @@ def main() -> int:
             for engine, sample_set in [
                 ("circle_big_test", circle),
                 ("circle_big_test_server", circle_server),
+                ("circle_big_bpsw_test_server", circle_bpsw_server),
                 ("openssl_prime", openssl),
                 ("sympy_isprime", sympy_result),
             ]:
@@ -547,6 +586,14 @@ def main() -> int:
                 bench_rounds=args.bench_rounds,
                 sample_divisor=args.server_batch_size,
             )
+            circle_bpsw_server = timed(
+                lambda case=case: circle_big_bpsw_next_server(
+                    circle_bpsw_next_server, case.start, args.server_batch_size
+                ),
+                warmup_rounds=args.warmup_rounds,
+                bench_rounds=args.bench_rounds,
+                sample_divisor=args.server_batch_size,
+            )
             sympy_next = timed(
                 lambda case=case: sympy_next_prime_at_or_above(case.start),
                 warmup_rounds=args.warmup_rounds,
@@ -576,6 +623,7 @@ def main() -> int:
             for engine, sample_set, require_exact in [
                 ("circle_big_next", circle, True),
                 ("circle_big_next_server", circle_server, True),
+                ("circle_big_bpsw_next_server", circle_bpsw_server, True),
                 ("sympy_nextprime", sympy_next, True),
                 ("circle_big_fuzzy_any", fuzzy, False),
                 ("circle_big_fuzzy_any_server", fuzzy_server, False),

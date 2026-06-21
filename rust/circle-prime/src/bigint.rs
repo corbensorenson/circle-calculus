@@ -1,5 +1,5 @@
 use num_bigint::BigUint;
-use num_traits::{One, ToPrimitive};
+use num_traits::{One, ToPrimitive, Zero};
 
 use crate::scalar::{is_prime_u64, PrimeStatus};
 
@@ -288,7 +288,7 @@ impl BigFuzzySearch {
 }
 
 pub fn big_probable_prime_contract_json() -> &'static str {
-    "{\"name\":\"prime_bigint_probable_prime_search_v0\",\"lean_module\":\"Circle.Core.Horizon\",\"rust_domain\":\"arbitrary_precision_biguint_probable_prime\",\"scope\":\"Rust implements arbitrary-precision candidate arithmetic, exact composite witnesses from trial division or Miller-Rabin witnesses, and probable-prime acceptance after configured Miller-Rabin bases. The current Lean boundary documents the divisibility target but does not certify arbitrary-precision prime results.\",\"not_claimed\":[\"arbitrary-precision primality certificate\",\"deterministic primality for all BigUint inputs\",\"learned model correctness\"]}"
+    "{\"name\":\"prime_bigint_probable_prime_search_v0\",\"lean_module\":\"Circle.Core.Horizon\",\"rust_domain\":\"arbitrary_precision_biguint_probable_prime\",\"scope\":\"Rust implements arbitrary-precision candidate arithmetic, exact composite witnesses from trial division, Miller-Rabin witnesses, perfect-square checks, or strong Lucas-Selfridge witnesses, and probable-prime acceptance under the selected fixed-base Miller-Rabin or BPSW profile. The current Lean boundary documents the divisibility target but does not certify arbitrary-precision prime results.\",\"not_claimed\":[\"arbitrary-precision primality certificate\",\"deterministic primality for all BigUint inputs\",\"learned model correctness\"]}"
 }
 
 pub fn big_fuzzy_hybrid_contract_json() -> &'static str {
@@ -415,19 +415,165 @@ pub fn is_probable_prime_biguint(n: &BigUint, rounds: usize) -> Result<BigPrimeD
     })
 }
 
+pub fn is_bpsw_probable_prime_biguint(n: &BigUint) -> Result<BigPrimeDecision, String> {
+    if let Some(value) = n.to_u64() {
+        let decision = is_prime_u64(value);
+        let status = match decision.status {
+            PrimeStatus::Composite => BigPrimeStatus::Composite,
+            PrimeStatus::Prime => BigPrimeStatus::Prime,
+            PrimeStatus::ProbablePrime => BigPrimeStatus::ProbablePrime,
+        };
+        return Ok(BigPrimeDecision {
+            n: n.clone(),
+            status,
+            method: "u64_exact_bridge",
+            stage: decision.stage,
+            factor: decision.factor,
+            witness_base: decision.witness_base,
+            checked_small_prime_limit: 79,
+            miller_rabin_rounds: 0,
+            bit_length: n.bits(),
+        });
+    }
+
+    let two = BigUint::from(2u8);
+    if n < &two {
+        return Ok(BigPrimeDecision {
+            n: n.clone(),
+            status: BigPrimeStatus::Composite,
+            method: "boundary",
+            stage: "below_two",
+            factor: None,
+            witness_base: None,
+            checked_small_prime_limit: 0,
+            miller_rabin_rounds: 0,
+            bit_length: n.bits(),
+        });
+    }
+
+    let digits = n.to_u64_digits();
+    for &prime in &BIG_SMALL_PRIME_TRIAL_DIVISORS {
+        if biguint_digits_mod_u64(&digits, prime) == 0 {
+            return Ok(BigPrimeDecision {
+                n: n.clone(),
+                status: BigPrimeStatus::Composite,
+                method: "small_prime_trial_division",
+                stage: "small_factor_found",
+                factor: Some(prime),
+                witness_base: None,
+                checked_small_prime_limit: prime,
+                miller_rabin_rounds: 0,
+                bit_length: n.bits(),
+            });
+        }
+    }
+
+    if is_square_biguint(n) {
+        return Ok(BigPrimeDecision {
+            n: n.clone(),
+            status: BigPrimeStatus::Composite,
+            method: "baillie_psw_biguint",
+            stage: "perfect_square_found",
+            factor: None,
+            witness_base: None,
+            checked_small_prime_limit: *BIG_SMALL_PRIME_TRIAL_DIVISORS
+                .last()
+                .expect("trial divisor list is nonempty"),
+            miller_rabin_rounds: 0,
+            bit_length: n.bits(),
+        });
+    }
+
+    let (d, s, n_minus_one) = miller_rabin_decomposition(n);
+    if !miller_rabin_round_biguint(n, 2, &d, s, &n_minus_one) {
+        return Ok(BigPrimeDecision {
+            n: n.clone(),
+            status: BigPrimeStatus::Composite,
+            method: "baillie_psw_biguint",
+            stage: "base2_miller_rabin_witness_found",
+            factor: None,
+            witness_base: Some(2),
+            checked_small_prime_limit: *BIG_SMALL_PRIME_TRIAL_DIVISORS
+                .last()
+                .expect("trial divisor list is nonempty"),
+            miller_rabin_rounds: 1,
+            bit_length: n.bits(),
+        });
+    }
+
+    let Some((selfridge_d, selfridge_q)) = selfridge_lucas_parameters(n) else {
+        return Ok(BigPrimeDecision {
+            n: n.clone(),
+            status: BigPrimeStatus::Composite,
+            method: "baillie_psw_biguint",
+            stage: "selfridge_parameter_factor_found",
+            factor: None,
+            witness_base: None,
+            checked_small_prime_limit: *BIG_SMALL_PRIME_TRIAL_DIVISORS
+                .last()
+                .expect("trial divisor list is nonempty"),
+            miller_rabin_rounds: 1,
+            bit_length: n.bits(),
+        });
+    };
+
+    if !strong_lucas_selfridge_prp(n, selfridge_d, selfridge_q) {
+        return Ok(BigPrimeDecision {
+            n: n.clone(),
+            status: BigPrimeStatus::Composite,
+            method: "baillie_psw_biguint",
+            stage: "strong_lucas_selfridge_witness_found",
+            factor: None,
+            witness_base: None,
+            checked_small_prime_limit: *BIG_SMALL_PRIME_TRIAL_DIVISORS
+                .last()
+                .expect("trial divisor list is nonempty"),
+            miller_rabin_rounds: 1,
+            bit_length: n.bits(),
+        });
+    }
+
+    Ok(BigPrimeDecision {
+        n: n.clone(),
+        status: BigPrimeStatus::ProbablePrime,
+        method: "baillie_psw_biguint",
+        stage: "base2_miller_rabin_and_strong_lucas_selfridge_passed",
+        factor: None,
+        witness_base: Some(2),
+        checked_small_prime_limit: *BIG_SMALL_PRIME_TRIAL_DIVISORS
+            .last()
+            .expect("trial divisor list is nonempty"),
+        miller_rabin_rounds: 1,
+        bit_length: n.bits(),
+    })
+}
+
 pub fn next_probable_prime_biguint(
     start: &BigUint,
     rounds: usize,
     max_candidates: u64,
 ) -> Result<BigNextPrimeSearch, String> {
     validate_big_miller_rabin_rounds(rounds)?;
+    next_probable_prime_biguint_by(start, max_candidates, |candidate| {
+        is_probable_prime_biguint(candidate, rounds)
+    })
+}
+
+fn next_probable_prime_biguint_by<F>(
+    start: &BigUint,
+    max_candidates: u64,
+    verifier: F,
+) -> Result<BigNextPrimeSearch, String>
+where
+    F: Fn(&BigUint) -> Result<BigPrimeDecision, String>,
+{
     if max_candidates == 0 {
         return Err("big-next --max-candidates must be positive".to_string());
     }
     for &prime in &[2u64, 3, 5] {
         let prime_big = BigUint::from(prime);
         if start <= &prime_big {
-            let decision = is_probable_prime_biguint(&prime_big, rounds)?;
+            let decision = verifier(&prime_big)?;
             return Ok(BigNextPrimeSearch {
                 start: start.clone(),
                 prime: Some(prime_big),
@@ -447,7 +593,7 @@ pub fn next_probable_prime_biguint(
     while candidate_count < max_candidates {
         candidate_count += 1;
         if first_small_factor_from_residues(&small_prime_residues).is_none() {
-            let decision = is_probable_prime_biguint(&candidate, rounds)?;
+            let decision = verifier(&candidate)?;
             if decision.is_prime_like() {
                 let exact_certified = decision.is_exact_prime();
                 return Ok(BigNextPrimeSearch {
@@ -473,6 +619,13 @@ pub fn next_probable_prime_biguint(
         exact_certified: false,
         decision: None,
     })
+}
+
+pub fn next_bpsw_probable_prime_biguint(
+    start: &BigUint,
+    max_candidates: u64,
+) -> Result<BigNextPrimeSearch, String> {
+    next_probable_prime_biguint_by(start, max_candidates, is_bpsw_probable_prime_biguint)
 }
 
 pub fn big_fuzzy_any_prime_search(
@@ -558,6 +711,18 @@ fn validate_big_miller_rabin_rounds(rounds: usize) -> Result<(), String> {
     Ok(())
 }
 
+fn miller_rabin_decomposition(n: &BigUint) -> (BigUint, u32, BigUint) {
+    let one = BigUint::one();
+    let n_minus_one = n - &one;
+    let mut d = n_minus_one.clone();
+    let mut s = 0u32;
+    while !d.bit(0) {
+        d >>= 1usize;
+        s += 1;
+    }
+    (d, s, n_minus_one)
+}
+
 fn miller_rabin_round_biguint(
     n: &BigUint,
     base: u64,
@@ -581,6 +746,159 @@ fn miller_rabin_round_biguint(
     }
 
     false
+}
+
+fn is_square_biguint(n: &BigUint) -> bool {
+    let root = n.sqrt();
+    (&root * &root) == *n
+}
+
+fn selfridge_lucas_parameters(n: &BigUint) -> Option<(i64, i64)> {
+    let mut abs_d = 5i64;
+    let mut sign = 1i64;
+    loop {
+        let d = sign * abs_d;
+        match jacobi_i64_biguint(d, n) {
+            -1 => return Some((d, (1 - d) / 4)),
+            0 => return None,
+            _ => {}
+        }
+        abs_d += 2;
+        sign = -sign;
+        if abs_d > 10_000 {
+            return None;
+        }
+    }
+}
+
+fn strong_lucas_selfridge_prp(n: &BigUint, d_param: i64, q_param: i64) -> bool {
+    let one = BigUint::one();
+    let mut lucas_d = n + &one;
+    let mut s = 0u32;
+    while !lucas_d.bit(0) {
+        lucas_d >>= 1usize;
+        s += 1;
+    }
+
+    let (u, mut v, mut q_k) = lucas_uv_q_mod(n, d_param, q_param, &lucas_d);
+    if u.is_zero() || v.is_zero() {
+        return true;
+    }
+    for _ in 1..s {
+        let v_squared = (&v * &v) % n;
+        let two_q = (&q_k << 1usize) % n;
+        v = mod_sub_biguint(&v_squared, &two_q, n);
+        q_k = (&q_k * &q_k) % n;
+        if v.is_zero() {
+            return true;
+        }
+    }
+    false
+}
+
+fn lucas_uv_q_mod(
+    n: &BigUint,
+    d_param: i64,
+    q_param: i64,
+    k: &BigUint,
+) -> (BigUint, BigUint, BigUint) {
+    let mut u = BigUint::zero();
+    let mut v = BigUint::from(2u8) % n;
+    let mut q_k = BigUint::one();
+    let q_mod = signed_i64_mod_biguint(q_param, n);
+
+    for bit_index in (0..k.bits()).rev() {
+        let doubled_u = (&u * &v) % n;
+        let v_squared = (&v * &v) % n;
+        let two_q = (&q_k << 1usize) % n;
+        let doubled_v = mod_sub_biguint(&v_squared, &two_q, n);
+        let doubled_q = (&q_k * &q_k) % n;
+        u = doubled_u;
+        v = doubled_v;
+        q_k = doubled_q;
+
+        if k.bit(bit_index) {
+            let u_next = half_mod_odd_modulus(&((&u + &v) % n), n);
+            let v_next = half_mod_odd_modulus(&signed_mul_add_mod(d_param, &u, &v, n), n);
+            let q_next = (&q_k * &q_mod) % n;
+            u = u_next;
+            v = v_next;
+            q_k = q_next;
+        }
+    }
+
+    (u, v, q_k)
+}
+
+fn jacobi_i64_biguint(a: i64, n: &BigUint) -> i32 {
+    debug_assert!(n.bit(0));
+    let mut a = signed_i64_mod_biguint(a, n);
+    let mut n = n.clone();
+    let mut t = 1i32;
+
+    while !a.is_zero() {
+        while !a.bit(0) {
+            a >>= 1usize;
+            let residue = biguint_mod_u64(&n, 8);
+            if residue == 3 || residue == 5 {
+                t = -t;
+            }
+        }
+        std::mem::swap(&mut a, &mut n);
+        if biguint_mod_u64(&a, 4) == 3 && biguint_mod_u64(&n, 4) == 3 {
+            t = -t;
+        }
+        a %= &n;
+    }
+
+    if n.is_one() {
+        t
+    } else {
+        0
+    }
+}
+
+fn signed_i64_mod_biguint(value: i64, modulus: &BigUint) -> BigUint {
+    if value >= 0 {
+        BigUint::from(value as u64) % modulus
+    } else {
+        let positive = BigUint::from(value.unsigned_abs()) % modulus;
+        if positive.is_zero() {
+            positive
+        } else {
+            modulus - positive
+        }
+    }
+}
+
+fn signed_mul_add_mod(
+    coefficient: i64,
+    value: &BigUint,
+    addend: &BigUint,
+    modulus: &BigUint,
+) -> BigUint {
+    let product = (value * BigUint::from(coefficient.unsigned_abs())) % modulus;
+    if coefficient >= 0 {
+        (product + addend) % modulus
+    } else {
+        mod_sub_biguint(addend, &product, modulus)
+    }
+}
+
+fn half_mod_odd_modulus(value: &BigUint, modulus: &BigUint) -> BigUint {
+    if value.bit(0) {
+        (value + modulus) >> 1usize
+    } else {
+        value >> 1usize
+    }
+}
+
+fn mod_sub_biguint(left: &BigUint, right: &BigUint, modulus: &BigUint) -> BigUint {
+    if left >= right {
+        left - right
+    } else {
+        (left + modulus) - right
+    }
 }
 
 fn big_fuzzy_any_prime_core(
@@ -833,11 +1151,81 @@ mod tests {
     }
 
     #[test]
+    fn bpsw_classifies_selected_large_primes_as_probable_prime() {
+        let cases = [
+            (BigUint::one() << 127usize) - BigUint::one(),
+            (BigUint::one() << 255usize) - BigUint::from(19u64),
+            (BigUint::one() << 256usize) - (BigUint::one() << 32usize) - BigUint::from(977u64),
+        ];
+        for n in cases {
+            let decision = is_bpsw_probable_prime_biguint(&n).unwrap();
+            assert_eq!(decision.status, BigPrimeStatus::ProbablePrime);
+            assert_eq!(decision.method, "baillie_psw_biguint");
+        }
+    }
+
+    #[test]
+    fn bpsw_rejects_large_square() {
+        let prime = (BigUint::one() << 127usize) - BigUint::one();
+        let square = &prime * &prime;
+        let decision = is_bpsw_probable_prime_biguint(&square).unwrap();
+        assert_eq!(decision.status, BigPrimeStatus::Composite);
+        assert_eq!(decision.stage, "perfect_square_found");
+    }
+
+    #[test]
+    fn bpsw_classifies_large_mersenne_prime_as_probable_prime() {
+        let n = (BigUint::one() << 127usize) - BigUint::one();
+        let decision = is_bpsw_probable_prime_biguint(&n).unwrap();
+        assert_eq!(decision.status, BigPrimeStatus::ProbablePrime);
+        assert_eq!(decision.method, "baillie_psw_biguint");
+        assert_eq!(
+            decision.stage,
+            "base2_miller_rabin_and_strong_lucas_selfridge_passed"
+        );
+        assert_eq!(decision.miller_rabin_rounds, 1);
+    }
+
+    #[test]
+    fn bpsw_rejects_large_perfect_square_before_lucas_step() {
+        let root = (BigUint::one() << 127usize) - BigUint::one();
+        let n = &root * &root;
+        let decision = is_bpsw_probable_prime_biguint(&n).unwrap();
+        assert_eq!(decision.status, BigPrimeStatus::Composite);
+        assert_eq!(decision.method, "baillie_psw_biguint");
+        assert_eq!(decision.stage, "perfect_square_found");
+    }
+
+    #[test]
     fn finds_next_large_probable_prime() {
         let start = BigUint::one() << 127usize;
         let search = next_probable_prime_biguint(&start, 16, 1024).unwrap();
         assert!(search.prime.is_some());
         assert!(!search.exact_certified);
+    }
+
+    #[test]
+    fn bpsw_finds_same_next_large_probable_prime_as_miller_rabin() {
+        let start = BigUint::one() << 127usize;
+        let mr = next_probable_prime_biguint(&start, 16, 1024).unwrap();
+        let bpsw = next_bpsw_probable_prime_biguint(&start, 1024).unwrap();
+        assert_eq!(bpsw.prime, mr.prime);
+        assert!(!bpsw.exact_certified);
+    }
+
+    #[test]
+    fn bpsw_next_search_finds_large_probable_prime() {
+        let start = BigUint::one() << 127usize;
+        let search = next_bpsw_probable_prime_biguint(&start, 1024).unwrap();
+        assert_eq!(
+            search.prime,
+            Some(parse_biguint("170141183460469231731687303715884105757").unwrap())
+        );
+        assert!(!search.exact_certified);
+        assert_eq!(
+            search.decision.as_ref().map(|decision| decision.method),
+            Some("baillie_psw_biguint")
+        );
     }
 
     #[test]

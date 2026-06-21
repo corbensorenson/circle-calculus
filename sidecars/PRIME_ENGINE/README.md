@@ -107,10 +107,14 @@ and SymPy `isprime`, checks `big-next` against SymPy `nextprime`, and runs a
 BigUint fuzzy any-prime smoke. The artifact includes both cold CLI rows and hot
 `big-test-server`/`big-next-server`/`big-fuzzy-server` rows so large-prime
 tuning is not dominated by process startup. This lane reports probable-prime
-status above `u64`; it is not a Lean-certified primality certificate yet. The
-current hot path caches limb digits for small-prime trial division, keeps
-incremental small-prime residues during `big-next` wheel search, and uses a
-value-only fuzzy server path when JSON diagnostics are not requested.
+status above `u64`; it is not a Lean-certified primality certificate yet.
+`big-test` and `big-next` now accept `--profile mr|bpsw`: `mr` uses the fixed
+Miller-Rabin base bank, while `bpsw` uses base-2 Miller-Rabin plus strong
+Lucas-Selfridge. The BigUint smoke records hot BPSW profile rows for test and
+next-prime searches beside the default Miller-Rabin rows. The current hot path
+caches limb digits for small-prime trial division, keeps incremental
+small-prime residues during `big-next` wheel search, and uses a value-only
+fuzzy server path when JSON diagnostics are not requested.
 
 `make prime-engine-high-offset-shifted-hot-server` is the harder diagnostic for
 the same high-offset lane. It keeps the server processes hot, but advances each

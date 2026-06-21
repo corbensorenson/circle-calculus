@@ -214,6 +214,25 @@ def test_rust_prime_cli_big_test_marks_large_prime_probable(
     assert "certificate" in " ".join(payload["proof_contract"]["not_claimed"])
 
 
+def test_rust_prime_cli_big_test_bpsw_profile_marks_large_prime_probable(
+    circle_prime_bin: Path,
+) -> None:
+    mersenne_127 = str((1 << 127) - 1)
+    payload = json.loads(
+        run_circle_prime(
+            circle_prime_bin,
+            "big-test",
+            mersenne_127,
+            "--profile",
+            "bpsw",
+            "--json",
+        )
+    )
+    assert payload["status"] == "probable_prime"
+    assert payload["method"] == "baillie_psw_biguint"
+    assert payload["stage"] == "base2_miller_rabin_and_strong_lucas_selfridge_passed"
+
+
 def test_rust_prime_cli_big_next_finds_probable_prime(
     circle_prime_bin: Path,
 ) -> None:
@@ -234,6 +253,38 @@ def test_rust_prime_cli_big_next_finds_probable_prime(
     assert int(payload["prime"]) >= int(start)
     assert payload["decision"]["status"] == "probable_prime"
     assert payload["exact_certified"] is False
+
+
+def test_rust_prime_cli_big_next_bpsw_profile_matches_mr(
+    circle_prime_bin: Path,
+) -> None:
+    start = str(1 << 128)
+    mr = json.loads(
+        run_circle_prime(
+            circle_prime_bin,
+            "big-next",
+            start,
+            "--rounds",
+            "16",
+            "--max-candidates",
+            "1024",
+            "--json",
+        )
+    )
+    bpsw = json.loads(
+        run_circle_prime(
+            circle_prime_bin,
+            "big-next",
+            start,
+            "--profile",
+            "bpsw",
+            "--max-candidates",
+            "1024",
+            "--json",
+        )
+    )
+    assert bpsw["prime"] == mr["prime"]
+    assert bpsw["decision"]["method"] == "baillie_psw_biguint"
 
 
 def test_rust_prime_cli_big_fuzzy_search_uses_probable_verifier(
@@ -282,7 +333,14 @@ def test_rust_prime_cli_big_servers_handle_repeated_requests(
 ) -> None:
     mersenne_127 = str((1 << 127) - 1)
     completed = subprocess.run(
-        [str(circle_prime_bin), "big-test-server", "--rounds", "16"],
+        [
+            str(circle_prime_bin),
+            "big-test-server",
+            "--profile",
+            "bpsw",
+            "--rounds",
+            "16",
+        ],
         cwd=ROOT,
         input=f"{mersenne_127} 2\nquit\n",
         check=True,

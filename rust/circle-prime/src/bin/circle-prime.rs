@@ -11,18 +11,18 @@ use num_bigint::BigUint;
 use circle_prime::{
     big_fuzzy_any_prime_search, big_fuzzy_any_prime_value, effective_parallel_thread_count,
     effective_prefix_pi_thread_count, fuzzy_any_prime_value_with_score_limit,
-    fuzzy_search_with_score_limit, inspect_horizon, is_prime_u64, is_probable_prime_biguint,
-    next_prime_u64, next_prime_value_u64, next_probable_prime_biguint, parse_biguint,
-    prime_count_in_range, prime_count_in_range_hybrid_wheel30_marks,
-    prime_count_in_range_hybrid_wheel30_marks_parallel, prime_count_in_range_parallel,
-    prime_count_in_range_parallel_balanced, prime_count_in_range_parallel_dynamic,
-    prime_count_in_range_prefix_pi, prime_count_in_range_prefix_pi_parallel,
-    prime_count_in_range_presieve13, prime_count_in_range_presieve13_parallel,
-    prime_count_in_range_presieve13_with_scratch, prime_count_in_range_presieve17,
-    prime_count_in_range_presieve17_parallel, prime_count_in_range_presieve17_with_scratch,
-    prime_count_in_range_small_prefix_pi, prime_count_in_range_wheel30_marks,
-    prime_count_in_range_wheel30_marks_parallel, prime_count_in_range_with_scratch,
-    prime_count_shifted_single_segment_presieve13_with_scratch,
+    fuzzy_search_with_score_limit, inspect_horizon, is_bpsw_probable_prime_biguint, is_prime_u64,
+    is_probable_prime_biguint, next_bpsw_probable_prime_biguint, next_prime_u64,
+    next_prime_value_u64, next_probable_prime_biguint, parse_biguint, prime_count_in_range,
+    prime_count_in_range_hybrid_wheel30_marks, prime_count_in_range_hybrid_wheel30_marks_parallel,
+    prime_count_in_range_parallel, prime_count_in_range_parallel_balanced,
+    prime_count_in_range_parallel_dynamic, prime_count_in_range_prefix_pi,
+    prime_count_in_range_prefix_pi_parallel, prime_count_in_range_presieve13,
+    prime_count_in_range_presieve13_parallel, prime_count_in_range_presieve13_with_scratch,
+    prime_count_in_range_presieve17, prime_count_in_range_presieve17_parallel,
+    prime_count_in_range_presieve17_with_scratch, prime_count_in_range_small_prefix_pi,
+    prime_count_in_range_wheel30_marks, prime_count_in_range_wheel30_marks_parallel,
+    prime_count_in_range_with_scratch, prime_count_shifted_single_segment_presieve13_with_scratch,
     prime_count_shifted_single_segment_presieve17_with_scratch, prime_horizon_proof_contract_json,
     prime_range_count_proof_contract_json, primes_in_range, recommended_count_mode,
     recommended_count_segment_size, recommended_segment_size, warm_small_prefix_pi_cache,
@@ -102,6 +102,22 @@ impl CountMode {
     }
 }
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+enum BigPrimeProfile {
+    MillerRabin,
+    BailliePsw,
+}
+
+impl BigPrimeProfile {
+    fn parse(raw: &str) -> Result<Self, String> {
+        match raw {
+            "mr" | "miller-rabin" => Ok(Self::MillerRabin),
+            "bpsw" | "baillie-psw" => Ok(Self::BailliePsw),
+            _ => Err("big prime profile must be mr or bpsw".to_string()),
+        }
+    }
+}
+
 fn main() {
     if let Err(message) = run(env::args().skip(1).collect()) {
         eprintln!("{message}");
@@ -141,8 +157,9 @@ fn run(args: Vec<String>) -> Result<(), String> {
 fn big_test_command(args: &[String]) -> Result<(), String> {
     let n = parse_biguint(required_arg(args, 0, "big-test requires N")?)?;
     let rounds = big_rounds_arg(args)?;
+    let profile = big_profile_arg(args)?;
     let json = args.iter().any(|arg| arg == "--json");
-    let decision = is_probable_prime_biguint(&n, rounds)?;
+    let decision = big_prime_decision(&n, profile, rounds)?;
     if json {
         println!("{}", decision.to_json());
     } else {
@@ -164,6 +181,7 @@ fn big_test_command(args: &[String]) -> Result<(), String> {
 
 fn big_test_server_command(args: &[String]) -> Result<(), String> {
     let rounds = big_rounds_arg(args)?;
+    let profile = big_profile_arg(args)?;
     let json = args.iter().any(|arg| arg == "--json");
     let stdin = io::stdin();
     let mut reader = stdin.lock();
@@ -186,7 +204,7 @@ fn big_test_server_command(args: &[String]) -> Result<(), String> {
         }
         let (n, repetitions) = parse_big_server_request(request, "big-test-server")?;
         for _ in 0..repetitions {
-            let decision = is_probable_prime_biguint(&n, rounds)?;
+            let decision = big_prime_decision(&n, profile, rounds)?;
             if json {
                 writeln!(stdout, "{}", decision.to_json())
                     .map_err(|err| format!("failed to write response: {err}"))?;
@@ -210,6 +228,7 @@ fn big_test_server_command(args: &[String]) -> Result<(), String> {
 fn big_next_command(args: &[String]) -> Result<(), String> {
     let start = parse_biguint(required_arg(args, 0, "big-next requires START")?)?;
     let rounds = big_rounds_arg(args)?;
+    let profile = big_profile_arg(args)?;
     let max_candidates = optional_value(args, "--max-candidates")
         .map(|value| {
             value
@@ -219,7 +238,7 @@ fn big_next_command(args: &[String]) -> Result<(), String> {
         .transpose()?
         .unwrap_or(DEFAULT_BIG_NEXT_MAX_CANDIDATES);
     let json = args.iter().any(|arg| arg == "--json");
-    let search = next_probable_prime_biguint(&start, rounds, max_candidates)?;
+    let search = big_next_search(&start, profile, rounds, max_candidates)?;
     if json {
         println!("{}", search.to_json());
     } else if let Some(prime) = search.prime {
@@ -232,6 +251,7 @@ fn big_next_command(args: &[String]) -> Result<(), String> {
 
 fn big_next_server_command(args: &[String]) -> Result<(), String> {
     let rounds = big_rounds_arg(args)?;
+    let profile = big_profile_arg(args)?;
     let max_candidates = optional_value(args, "--max-candidates")
         .map(|value| {
             value
@@ -262,7 +282,7 @@ fn big_next_server_command(args: &[String]) -> Result<(), String> {
         }
         let (start, repetitions) = parse_big_server_request(request, "big-next-server")?;
         for _ in 0..repetitions {
-            let search = next_probable_prime_biguint(&start, rounds, max_candidates)?;
+            let search = big_next_search(&start, profile, rounds, max_candidates)?;
             if json {
                 writeln!(stdout, "{}", search.to_json())
                     .map_err(|err| format!("failed to write response: {err}"))?;
@@ -488,6 +508,36 @@ fn big_rounds_arg(args: &[String]) -> Result<usize, String> {
         })
         .transpose()
         .map(|rounds| rounds.unwrap_or(DEFAULT_BIG_MILLER_RABIN_ROUNDS))
+}
+
+fn big_profile_arg(args: &[String]) -> Result<BigPrimeProfile, String> {
+    optional_value(args, "--profile")
+        .map(BigPrimeProfile::parse)
+        .transpose()
+        .map(|profile| profile.unwrap_or(BigPrimeProfile::MillerRabin))
+}
+
+fn big_prime_decision(
+    n: &BigUint,
+    profile: BigPrimeProfile,
+    rounds: usize,
+) -> Result<circle_prime::BigPrimeDecision, String> {
+    match profile {
+        BigPrimeProfile::MillerRabin => is_probable_prime_biguint(n, rounds),
+        BigPrimeProfile::BailliePsw => is_bpsw_probable_prime_biguint(n),
+    }
+}
+
+fn big_next_search(
+    start: &BigUint,
+    profile: BigPrimeProfile,
+    rounds: usize,
+    max_candidates: u64,
+) -> Result<circle_prime::BigNextPrimeSearch, String> {
+    match profile {
+        BigPrimeProfile::MillerRabin => next_probable_prime_biguint(start, rounds, max_candidates),
+        BigPrimeProfile::BailliePsw => next_bpsw_probable_prime_biguint(start, max_candidates),
+    }
 }
 
 fn fuzzy_server_command(args: &[String]) -> Result<(), String> {
@@ -2248,11 +2298,11 @@ fn usage() -> String {
         "  circle-prime test N [--json]",
         "  circle-prime next N [--json]",
         "  circle-prime next-server [--json]",
-        "  circle-prime big-test N [--rounds N] [--json]",
-        "  circle-prime big-next START [--rounds N] [--max-candidates N] [--json]",
+        "  circle-prime big-test N [--profile mr|bpsw] [--rounds N] [--json]",
+        "  circle-prime big-next START [--profile mr|bpsw] [--rounds N] [--max-candidates N] [--json]",
         "  circle-prime big-fuzzy-search MODEL START [--candidate-window N] [--top-k N] [--score-limit N] [--rounds N] [--json]",
-        "  circle-prime big-test-server [--rounds N] [--json]",
-        "  circle-prime big-next-server [--rounds N] [--max-candidates N] [--json]",
+        "  circle-prime big-test-server [--profile mr|bpsw] [--rounds N] [--json]",
+        "  circle-prime big-next-server [--profile mr|bpsw] [--rounds N] [--max-candidates N] [--json]",
         "  circle-prime big-fuzzy-server MODEL [--candidate-window N] [--top-k N] [--score-limit N] [--rounds N] [--json]",
         "  circle-prime fuzzy-search MODEL START [--mode exact-next|any-prime] [--window N] [--top-k N] [--json]",
         "  circle-prime fuzzy-server MODEL [--mode exact-next|any-prime] [--window N] [--top-k N] [--json]",
@@ -2262,7 +2312,7 @@ fn usage() -> String {
         "",
         "next-server reads START or START COUNT lines from stdin and writes one next prime, none, or JSON object per requested search.",
         "big-test-server, big-next-server, and big-fuzzy-server read N or N COUNT lines from stdin and keep the arbitrary-precision engine hot between requests.",
-        "big-test/big-next use arbitrary-precision BigUint arithmetic. Results above u64 are probable-prime decisions from fixed Miller-Rabin bases, not formal primality certificates.",
+        "big-test/big-next use arbitrary-precision BigUint arithmetic. --profile mr uses fixed Miller-Rabin bases; --profile bpsw uses base-2 Miller-Rabin plus strong Lucas-Selfridge. Results above u64 are probable-prime decisions, not formal primality certificates.",
         "big-fuzzy-search uses a tiny bit/residue model only to rank arbitrary-precision candidates; every reported candidate still passes the configured BigUint probable-prime verifier.",
         "fuzzy-search/fuzzy-server read a tiny exported model, use it only to rank candidates, and accept reported primes only after deterministic verification. exact-next mode also verifies every earlier candidate in the bounded window.",
         "count-server reads LOW HIGH [SEGMENT_SIZE] [THREADS] [COUNT_MODE], repeat COUNT LOW HIGH ..., or shifted COUNT SHIFT LOW HIGH ... lines from stdin and writes one count or JSON object per requested count. --warm-prefix-pi-cache prebuilds the reusable small-prefix pi table before reading requests.",

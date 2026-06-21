@@ -15,10 +15,11 @@ mod tables;
 
 pub use bigint::{
     big_fuzzy_any_prime_search, big_fuzzy_any_prime_value, big_fuzzy_hybrid_contract_json,
-    big_probable_prime_contract_json, is_probable_prime_biguint, max_big_miller_rabin_rounds,
-    next_probable_prime_biguint, parse_biguint, BigFuzzyPrimeModel, BigFuzzySearch,
-    BigNextPrimeSearch, BigPrimeDecision, BigPrimeStatus, DEFAULT_BIG_FUZZY_CANDIDATE_WINDOW,
-    DEFAULT_BIG_MILLER_RABIN_ROUNDS, DEFAULT_BIG_NEXT_MAX_CANDIDATES,
+    big_probable_prime_contract_json, is_bpsw_probable_prime_biguint, is_probable_prime_biguint,
+    max_big_miller_rabin_rounds, next_bpsw_probable_prime_biguint, next_probable_prime_biguint,
+    parse_biguint, BigFuzzyPrimeModel, BigFuzzySearch, BigNextPrimeSearch, BigPrimeDecision,
+    BigPrimeStatus, DEFAULT_BIG_FUZZY_CANDIDATE_WINDOW, DEFAULT_BIG_MILLER_RABIN_ROUNDS,
+    DEFAULT_BIG_NEXT_MAX_CANDIDATES,
 };
 pub use coil::{
     coil_signature, coil_spectrum, contains_horizon, contains_smaller_horizon, horizon_collision,
