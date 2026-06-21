@@ -38,6 +38,13 @@ DEFAULT_RECEIPT_FILE_CHECK_SCHEMA = (
     / "generated"
     / "circle_ai_contract_receipt_file_check.schema.json"
 )
+DEFAULT_RECEIPT_REPLAY_CHECK_SCHEMA = (
+    ROOT
+    / "site"
+    / "data"
+    / "generated"
+    / "circle_ai_contract_receipt_replay_check.schema.json"
+)
 DEFAULT_CERTIFICATION_BUNDLE_SCHEMA = (
     ROOT
     / "site"
@@ -1308,6 +1315,12 @@ def main() -> int:
         validate_json_schema_file(
             DEFAULT_RECEIPT_FILE_CHECK_SCHEMA,
             label="contract receipt-file check report",
+        )
+    )
+    failures.extend(
+        validate_json_schema_file(
+            DEFAULT_RECEIPT_REPLAY_CHECK_SCHEMA,
+            label="contract receipt replay-check report",
         )
     )
     failures.extend(

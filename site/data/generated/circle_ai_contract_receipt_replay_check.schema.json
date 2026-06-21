@@ -1,0 +1,266 @@
+{
+  "$id": "https://circle-calculus.local/schemas/circle_ai_contract_receipt_replay_check.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "comparison": {
+      "additionalProperties": false,
+      "properties": {
+        "all_replay_fields_match": {
+          "type": "boolean"
+        },
+        "contract_id_matches": {
+          "type": "boolean"
+        },
+        "decision_assurance_matches": {
+          "type": "boolean"
+        },
+        "decision_verdict_matches": {
+          "type": "boolean"
+        },
+        "kind_matches": {
+          "type": "boolean"
+        },
+        "normalized_request_fingerprint_matches": {
+          "type": "boolean"
+        },
+        "receipt_content_fingerprint_matches": {
+          "type": "boolean"
+        },
+        "request_content_fingerprint_matches": {
+          "type": "boolean"
+        },
+        "request_passed_matches": {
+          "type": "boolean"
+        },
+        "status_matches": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "kind_matches",
+        "contract_id_matches",
+        "status_matches",
+        "request_passed_matches",
+        "decision_verdict_matches",
+        "decision_assurance_matches",
+        "request_content_fingerprint_matches",
+        "normalized_request_fingerprint_matches",
+        "receipt_content_fingerprint_matches",
+        "all_replay_fields_match"
+      ],
+      "type": "object"
+    },
+    "content_fingerprint_algorithm": {
+      "const": "sha256-json-v1"
+    },
+    "failure_count": {
+      "minimum": 0,
+      "type": "integer"
+    },
+    "failures": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "ok": {
+      "type": "boolean"
+    },
+    "original": {
+      "additionalProperties": false,
+      "properties": {
+        "contract_id": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "decision_assurance": {
+          "enum": [
+            "theorem_backed",
+            "mixed_theorem_and_computation",
+            "numerical_only",
+            "unsupported",
+            "undecided"
+          ]
+        },
+        "decision_verdict": {
+          "enum": [
+            "passed",
+            "failed",
+            "undecided",
+            "numerical_only",
+            "outside_scope"
+          ]
+        },
+        "kind": {
+          "enum": [
+            "rope_position_distinguishability",
+            "kv_cache_ring_buffer",
+            "sparse_attention_coverage",
+            "recurrence_schedule"
+          ]
+        },
+        "normalized_request_fingerprint": {
+          "pattern": "^[0-9a-f]{64}$",
+          "type": "string"
+        },
+        "receipt_content_fingerprint": {
+          "pattern": "^[0-9a-f]{64}$",
+          "type": "string"
+        },
+        "request_content_fingerprint": {
+          "pattern": "^[0-9a-f]{64}$",
+          "type": "string"
+        },
+        "request_passed": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "status": {
+          "enum": [
+            "proved",
+            "impossible",
+            "undecided",
+            "numerical_only",
+            "outside_scope"
+          ]
+        }
+      },
+      "required": [
+        "kind",
+        "contract_id",
+        "status",
+        "request_passed",
+        "decision_verdict",
+        "decision_assurance",
+        "request_content_fingerprint",
+        "normalized_request_fingerprint",
+        "receipt_content_fingerprint"
+      ],
+      "type": "object"
+    },
+    "path": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "receipt_schema_id": {
+      "const": "circle_calculus.ai_contract_receipt.v0"
+    },
+    "replay_command": {
+      "minLength": 1,
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "replay_command_matches_request": {
+      "type": "boolean"
+    },
+    "replayed": {
+      "anyOf": [
+        {
+          "additionalProperties": false,
+          "properties": {
+            "contract_id": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "decision_assurance": {
+              "enum": [
+                "theorem_backed",
+                "mixed_theorem_and_computation",
+                "numerical_only",
+                "unsupported",
+                "undecided"
+              ]
+            },
+            "decision_verdict": {
+              "enum": [
+                "passed",
+                "failed",
+                "undecided",
+                "numerical_only",
+                "outside_scope"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "rope_position_distinguishability",
+                "kv_cache_ring_buffer",
+                "sparse_attention_coverage",
+                "recurrence_schedule"
+              ]
+            },
+            "normalized_request_fingerprint": {
+              "pattern": "^[0-9a-f]{64}$",
+              "type": "string"
+            },
+            "receipt_content_fingerprint": {
+              "pattern": "^[0-9a-f]{64}$",
+              "type": "string"
+            },
+            "request_content_fingerprint": {
+              "pattern": "^[0-9a-f]{64}$",
+              "type": "string"
+            },
+            "request_passed": {
+              "type": [
+                "boolean",
+                "null"
+              ]
+            },
+            "status": {
+              "enum": [
+                "proved",
+                "impossible",
+                "undecided",
+                "numerical_only",
+                "outside_scope"
+              ]
+            }
+          },
+          "required": [
+            "kind",
+            "contract_id",
+            "status",
+            "request_passed",
+            "decision_verdict",
+            "decision_assurance",
+            "request_content_fingerprint",
+            "normalized_request_fingerprint",
+            "receipt_content_fingerprint"
+          ],
+          "type": "object"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "request_schema_id": {
+      "const": "circle_calculus.ai_contract_request.v0"
+    },
+    "schema_id": {
+      "const": "circle_calculus.ai_contract_receipt_replay_check.v0"
+    }
+  },
+  "required": [
+    "schema_id",
+    "receipt_schema_id",
+    "request_schema_id",
+    "content_fingerprint_algorithm",
+    "ok",
+    "failure_count",
+    "failures",
+    "path",
+    "replay_command",
+    "replay_command_matches_request",
+    "original",
+    "replayed",
+    "comparison"
+  ],
+  "title": "Circle AI Contract Receipt Replay Check Report",
+  "type": "object"
+}

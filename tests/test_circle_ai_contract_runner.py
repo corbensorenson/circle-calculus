@@ -21,6 +21,8 @@ from circle_math.applications import (
     build_contract_receipt_file_check_report,
     build_contract_receipt_gate_report,
     build_contract_receipt_json_schema,
+    build_contract_receipt_replay_check_json_schema,
+    build_contract_receipt_replay_check_report,
     build_contract_receipt_from_request,
     build_contract_request,
     build_contract_runner_check_json_schema,
@@ -783,6 +785,50 @@ def test_receipt_file_check_report_public_api(contract_pack: dict) -> None:
     assert any(
         "did not match required assurance set" in failure
         for failure in decision_failed["failures"]
+    )
+
+
+def test_receipt_replay_check_report_public_api(contract_pack: dict) -> None:
+    receipt = build_rope_receipt(
+        context=131072,
+        requested_margin="1/328459",
+        pack=contract_pack,
+    )
+    report = build_contract_receipt_replay_check_report(
+        receipt,
+        contract_pack,
+        receipt_path="reports/rope_receipt.json",
+    )
+
+    jsonschema.validate(report, build_contract_receipt_replay_check_json_schema())
+    assert report["ok"] is True
+    assert report["replay_command"] == receipt["validation_commands"][0]
+    assert report["replay_command_matches_request"] is True
+    assert report["original"]["receipt_content_fingerprint"] == (
+        receipt["receipt_content_fingerprint"]
+    )
+    assert report["replayed"]["receipt_content_fingerprint"] == (
+        receipt["receipt_content_fingerprint"]
+    )
+    assert report["comparison"]["all_replay_fields_match"] is True
+
+    stale = json.loads(json.dumps(receipt))
+    stale["evidence"]["exact_common_collision_gap"] = -1
+    stale["receipt_content_fingerprint"] = _receipt_fingerprint(stale)
+    stale_report = build_contract_receipt_replay_check_report(
+        stale,
+        contract_pack,
+        receipt_path="reports/stale_rope_receipt.json",
+    )
+    jsonschema.validate(
+        stale_report,
+        build_contract_receipt_replay_check_json_schema(),
+    )
+    assert stale_report["ok"] is False
+    assert stale_report["comparison"]["receipt_content_fingerprint_matches"] is False
+    assert any(
+        "receipt replay mismatch: receipt_content_fingerprint" in failure
+        for failure in stale_report["failures"]
     )
 
 

@@ -397,6 +397,21 @@ reports/rope_receipt_check.json`; the checker accepts either the whole report
 or just the `pin_policy` object, and explicit `--require-*` flags are merged
 with the loaded pins.
 
+Replay a saved receipt when CI needs to prove it can still be regenerated from
+its embedded request under the current runner code and contract pack:
+
+```bash
+python scripts/check_circle_ai_receipt_replay.py reports/rope_receipt.json \
+  --report-out reports/rope_receipt_replay.json
+```
+
+The replay checker does not execute shell commands embedded in the receipt. It
+rebuilds the receipt through the public Python request API, then compares the
+original and regenerated status, decision, request fingerprint, normalized
+request fingerprint, and receipt fingerprint. This catches stale-but-well-formed
+receipt files whose JSON shape and pack fingerprints still validate but whose
+computed evidence no longer matches the current runner.
+
 Receipt JSON is strict at the top level: unknown fields are rejected, while
 contract-specific details live under `evidence`, `support`, and `proof_layers`.
 The embedded `request` object is also validated against the public request
@@ -459,6 +474,7 @@ from circle_math.applications import (
     build_contract_certification_bundle_file_check_report,
     build_contract_receipt_file_check_report,
     build_contract_receipt_gate_report,
+    build_contract_receipt_replay_check_report,
     build_contract_request,
     build_contract_request_validation_report,
     build_rope_contract_request_from_model_config,
@@ -525,6 +541,13 @@ check_report = build_contract_receipt_file_check_report(
     require_passed=True,
 )
 assert check_report["ok"] is True
+replay_report = build_contract_receipt_replay_check_report(
+    receipt,
+    pack,
+    receipt_path="reports/rope_receipt.json",
+)
+assert replay_report["ok"] is True
+assert replay_report["comparison"]["all_replay_fields_match"] is True
 gate_report = build_contract_receipt_gate_report(
     receipt,
     pack,
@@ -607,6 +630,7 @@ site/data/generated/circle_ai_rope_model_config_import.schema.json
 site/data/generated/circle_ai_contract_receipt.schema.json
 site/data/generated/circle_ai_contract_runner_check.schema.json
 site/data/generated/circle_ai_contract_receipt_file_check.schema.json
+site/data/generated/circle_ai_contract_receipt_replay_check.schema.json
 site/data/generated/circle_ai_contract_certification_bundle.schema.json
 site/data/generated/circle_ai_contract_certification_bundle_file_check.schema.json
 site/data/generated/circle_ai_contract_artifact_manifest.schema.json

@@ -54,6 +54,9 @@ ROPE_MODEL_CONFIG_IMPORT_SCHEMA_ID = (
 )
 RUNNER_CHECK_SCHEMA_ID = "circle_calculus.ai_contract_runner_check.v0"
 RECEIPT_FILE_CHECK_SCHEMA_ID = "circle_calculus.ai_contract_receipt_file_check.v0"
+RECEIPT_REPLAY_CHECK_SCHEMA_ID = (
+    "circle_calculus.ai_contract_receipt_replay_check.v0"
+)
 CERTIFICATION_BUNDLE_SCHEMA_ID = (
     "circle_calculus.ai_contract_certification_bundle.v0"
 )
@@ -79,6 +82,9 @@ RUNNER_CHECK_SCHEMA_PATH = (
 )
 RECEIPT_FILE_CHECK_SCHEMA_PATH = (
     "site/data/generated/circle_ai_contract_receipt_file_check.schema.json"
+)
+RECEIPT_REPLAY_CHECK_SCHEMA_PATH = (
+    "site/data/generated/circle_ai_contract_receipt_replay_check.schema.json"
 )
 CERTIFICATION_BUNDLE_SCHEMA_PATH = (
     "site/data/generated/circle_ai_contract_certification_bundle.schema.json"
@@ -2493,6 +2499,122 @@ def build_contract_receipt_file_check_report(
     return report
 
 
+def _receipt_replay_summary(receipt: Mapping[str, Any]) -> dict[str, Any]:
+    decision = receipt.get("decision")
+    decision_map = decision if isinstance(decision, Mapping) else {}
+    return {
+        "kind": receipt.get("kind"),
+        "contract_id": receipt.get("contract_id"),
+        "status": receipt.get("status"),
+        "request_passed": receipt.get("request_passed"),
+        "decision_verdict": decision_map.get("verdict"),
+        "decision_assurance": decision_map.get("assurance"),
+        "request_content_fingerprint": receipt.get("request_content_fingerprint"),
+        "normalized_request_fingerprint": receipt.get(
+            "normalized_request_fingerprint"
+        ),
+        "receipt_content_fingerprint": receipt.get("receipt_content_fingerprint"),
+    }
+
+
+def build_contract_receipt_replay_check_report(
+    receipt: Mapping[str, Any],
+    pack: Mapping[str, Any],
+    *,
+    receipt_path: str,
+) -> dict[str, Any]:
+    """Rebuild a receipt from its embedded request and compare fingerprints.
+
+    This is a deterministic stale-receipt check. It does not execute the shell
+    command stored in ``validation_commands``; it rebuilds through the public
+    Python request API against the supplied contract pack.
+    """
+
+    if not isinstance(receipt_path, str) or not receipt_path:
+        raise ValueError("receipt_path must be a non-empty string")
+    failures = validate_contract_receipt_against_pack(receipt, pack)
+    request = receipt.get("request")
+    replayed: dict[str, Any] | None = None
+    replay_command = None
+    replay_command_matches_request = False
+    comparison = {
+        "kind_matches": False,
+        "contract_id_matches": False,
+        "status_matches": False,
+        "request_passed_matches": False,
+        "decision_verdict_matches": False,
+        "decision_assurance_matches": False,
+        "request_content_fingerprint_matches": False,
+        "normalized_request_fingerprint_matches": False,
+        "receipt_content_fingerprint_matches": False,
+        "all_replay_fields_match": False,
+    }
+    if not isinstance(request, Mapping):
+        failures.append("receipt request must be an object before replay")
+    else:
+        try:
+            replay_command = _runner_validation_command_for_request(request)
+        except (KeyError, TypeError, ValueError) as exc:
+            failures.append(f"receipt replay command could not be derived: {exc}")
+        receipt_commands = receipt.get("validation_commands")
+        if isinstance(receipt_commands, list) and receipt_commands:
+            replay_command_matches_request = receipt_commands[0] == replay_command
+            if not replay_command_matches_request:
+                failures.append(
+                    "receipt validation_commands[0] does not match replay command"
+                )
+        try:
+            replayed = build_validated_contract_receipt_from_request(
+                request,
+                pack=pack,
+            )
+        except ValueError as exc:
+            failures.append(f"receipt replay failed: {exc}")
+    if replayed is not None:
+        original_summary = _receipt_replay_summary(receipt)
+        replayed_summary = _receipt_replay_summary(replayed)
+        for key in (
+            "kind",
+            "contract_id",
+            "status",
+            "request_passed",
+            "decision_verdict",
+            "decision_assurance",
+            "request_content_fingerprint",
+            "normalized_request_fingerprint",
+            "receipt_content_fingerprint",
+        ):
+            comparison_key = f"{key}_matches"
+            comparison[comparison_key] = original_summary.get(key) == (
+                replayed_summary.get(key)
+            )
+            if not comparison[comparison_key]:
+                failures.append(f"receipt replay mismatch: {key}")
+        comparison["all_replay_fields_match"] = all(
+            value
+            for key, value in comparison.items()
+            if key != "all_replay_fields_match"
+        )
+    else:
+        original_summary = _receipt_replay_summary(receipt)
+        replayed_summary = None
+    return {
+        "schema_id": RECEIPT_REPLAY_CHECK_SCHEMA_ID,
+        "receipt_schema_id": RECEIPT_SCHEMA_ID,
+        "request_schema_id": REQUEST_SCHEMA_ID,
+        "content_fingerprint_algorithm": FINGERPRINT_ALGORITHM,
+        "ok": not failures,
+        "failure_count": len(failures),
+        "failures": failures,
+        "path": receipt_path,
+        "replay_command": replay_command,
+        "replay_command_matches_request": replay_command_matches_request,
+        "original": original_summary,
+        "replayed": replayed_summary,
+        "comparison": comparison,
+    }
+
+
 def build_contract_receipt_gate_report(
     receipt: Mapping[str, Any],
     pack: Mapping[str, Any],
@@ -4077,6 +4199,109 @@ def build_contract_receipt_file_check_json_schema() -> dict[str, Any]:
             "gate_policy": gate_policy,
             "pin_policy": _dependency_pin_policy_schema(),
             "summaries": {"type": "array", "items": summary},
+        },
+        "additionalProperties": False,
+    }
+
+
+def build_contract_receipt_replay_check_json_schema() -> dict[str, Any]:
+    fingerprint = {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+    receipt_summary = {
+        "type": "object",
+        "required": [
+            "kind",
+            "contract_id",
+            "status",
+            "request_passed",
+            "decision_verdict",
+            "decision_assurance",
+            "request_content_fingerprint",
+            "normalized_request_fingerprint",
+            "receipt_content_fingerprint",
+        ],
+        "properties": {
+            "kind": {"enum": list(SUPPORTED_CONTRACT_KINDS)},
+            "contract_id": {"type": "string", "minLength": 1},
+            "status": {"enum": list(STATUS_VALUES)},
+            "request_passed": {"type": ["boolean", "null"]},
+            "decision_verdict": {"enum": list(DECISION_VERDICTS)},
+            "decision_assurance": {"enum": list(DECISION_ASSURANCE_LEVELS)},
+            "request_content_fingerprint": fingerprint,
+            "normalized_request_fingerprint": fingerprint,
+            "receipt_content_fingerprint": fingerprint,
+        },
+        "additionalProperties": False,
+    }
+    comparison = {
+        "type": "object",
+        "required": [
+            "kind_matches",
+            "contract_id_matches",
+            "status_matches",
+            "request_passed_matches",
+            "decision_verdict_matches",
+            "decision_assurance_matches",
+            "request_content_fingerprint_matches",
+            "normalized_request_fingerprint_matches",
+            "receipt_content_fingerprint_matches",
+            "all_replay_fields_match",
+        ],
+        "properties": {
+            "kind_matches": {"type": "boolean"},
+            "contract_id_matches": {"type": "boolean"},
+            "status_matches": {"type": "boolean"},
+            "request_passed_matches": {"type": "boolean"},
+            "decision_verdict_matches": {"type": "boolean"},
+            "decision_assurance_matches": {"type": "boolean"},
+            "request_content_fingerprint_matches": {"type": "boolean"},
+            "normalized_request_fingerprint_matches": {"type": "boolean"},
+            "receipt_content_fingerprint_matches": {"type": "boolean"},
+            "all_replay_fields_match": {"type": "boolean"},
+        },
+        "additionalProperties": False,
+    }
+    return {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "$id": (
+            "https://circle-calculus.local/schemas/"
+            "circle_ai_contract_receipt_replay_check.schema.json"
+        ),
+        "title": "Circle AI Contract Receipt Replay Check Report",
+        "type": "object",
+        "required": [
+            "schema_id",
+            "receipt_schema_id",
+            "request_schema_id",
+            "content_fingerprint_algorithm",
+            "ok",
+            "failure_count",
+            "failures",
+            "path",
+            "replay_command",
+            "replay_command_matches_request",
+            "original",
+            "replayed",
+            "comparison",
+        ],
+        "properties": {
+            "schema_id": {"const": RECEIPT_REPLAY_CHECK_SCHEMA_ID},
+            "receipt_schema_id": {"const": RECEIPT_SCHEMA_ID},
+            "request_schema_id": {"const": REQUEST_SCHEMA_ID},
+            "content_fingerprint_algorithm": {"const": FINGERPRINT_ALGORITHM},
+            "ok": {"type": "boolean"},
+            "failure_count": {"type": "integer", "minimum": 0},
+            "failures": {"type": "array", "items": {"type": "string"}},
+            "path": {"type": "string", "minLength": 1},
+            "replay_command": {
+                "type": ["string", "null"],
+                "minLength": 1,
+            },
+            "replay_command_matches_request": {"type": "boolean"},
+            "original": receipt_summary,
+            "replayed": {
+                "anyOf": [receipt_summary, {"type": "null"}],
+            },
+            "comparison": comparison,
         },
         "additionalProperties": False,
     }

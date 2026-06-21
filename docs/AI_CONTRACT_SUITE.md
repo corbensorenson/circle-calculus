@@ -163,7 +163,8 @@ parameterized runner schema sidecars
 `site/data/generated/circle_ai_contract_request_validation.schema.json`,
 `site/data/generated/circle_ai_contract_receipt.schema.json`,
 `site/data/generated/circle_ai_contract_runner_check.schema.json`, and
-`site/data/generated/circle_ai_contract_receipt_file_check.schema.json`, plus
+`site/data/generated/circle_ai_contract_receipt_file_check.schema.json`,
+`site/data/generated/circle_ai_contract_receipt_replay_check.schema.json`, plus
 `site/data/generated/circle_ai_contract_certification_bundle.schema.json` and
 `site/data/generated/circle_ai_contract_certification_bundle_file_check.schema.json`,
 plus `site/data/generated/circle_ai_contract_artifact_manifest.schema.json` and

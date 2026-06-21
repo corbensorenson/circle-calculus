@@ -287,6 +287,13 @@ def add_circle_ai_contract_checks(checks: list[Check], seen: set[tuple[str, ...]
     add(
         checks,
         seen,
+        "Circle AI receipt replay verifier tests",
+        pytest("tests/test_check_circle_ai_receipt_replay.py"),
+        reason,
+    )
+    add(
+        checks,
+        seen,
         "Circle AI certification bundle verifier tests",
         pytest("tests/test_check_circle_ai_certification_bundle.py"),
         reason,
@@ -544,6 +551,7 @@ AI_CONTRACT_GENERATED_PACK_ARTIFACTS = (
     "circle_ai_contract_receipt.schema.json",
     "circle_ai_contract_runner_check.schema.json",
     "circle_ai_contract_receipt_file_check.schema.json",
+    "circle_ai_contract_receipt_replay_check.schema.json",
     "circle_ai_contract_certification_bundle.schema.json",
     "circle_ai_contract_certification_bundle_file_check.schema.json",
     "circle_ai_contract_artifact_manifest.schema.json",
