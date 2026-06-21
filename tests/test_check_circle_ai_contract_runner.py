@@ -127,6 +127,8 @@ def test_check_circle_ai_contract_runner_emits_json_report() -> None:
         len(summary["request_content_fingerprint"]) == 64
         for summary in payload["summaries"]
     )
+    assert all(summary["decision_verdict"] for summary in payload["summaries"])
+    assert all(summary["decision_assurance"] for summary in payload["summaries"])
     assert {summary["source_type"] for summary in payload["summaries"]} == {
         "request",
         "model_config",
@@ -158,6 +160,8 @@ def test_check_circle_ai_contract_runner_writes_receipts(tmp_path: Path) -> None
     for path in receipt_paths:
         receipt = json.loads(path.read_text())
         assert receipt["schema_id"] == "circle_calculus.ai_contract_receipt.v0"
+        assert receipt["decision"]["claim_status"] == receipt["status"]
+        assert receipt["decision"]["request_passed"] == receipt["request_passed"]
         assert len(receipt["receipt_content_fingerprint"]) == 64
         assert receipt["proof_status"]["all_theorem_ids_proved"] is True
 

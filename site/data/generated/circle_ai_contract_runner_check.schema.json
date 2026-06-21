@@ -52,6 +52,24 @@
       "items": {
         "additionalProperties": false,
         "properties": {
+          "decision_assurance": {
+            "enum": [
+              "theorem_backed",
+              "mixed_theorem_and_computation",
+              "numerical_only",
+              "unsupported",
+              "undecided"
+            ]
+          },
+          "decision_verdict": {
+            "enum": [
+              "passed",
+              "failed",
+              "undecided",
+              "numerical_only",
+              "outside_scope"
+            ]
+          },
           "kind": {
             "enum": [
               "rope_position_distinguishability",
@@ -130,6 +148,8 @@
           "kind",
           "status",
           "request_passed",
+          "decision_verdict",
+          "decision_assurance",
           "theorem_count",
           "recommendation_count",
           "validation_command_count",

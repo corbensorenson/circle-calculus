@@ -93,6 +93,7 @@ def _summary_from_receipt(
     receipt_path: Path | None,
     receipt: dict[str, Any],
 ) -> dict[str, Any]:
+    decision = receipt["decision"]
     return {
         "source_type": source_type,
         "source_path": _display_path(source_path),
@@ -101,6 +102,8 @@ def _summary_from_receipt(
         "kind": receipt["kind"],
         "status": receipt["status"],
         "request_passed": receipt["request_passed"],
+        "decision_verdict": decision["verdict"],
+        "decision_assurance": decision["assurance"],
         "theorem_count": receipt["proof_status"]["theorem_count"],
         "recommendation_count": len(receipt["recommendations"]),
         "validation_command_count": len(receipt["validation_commands"]),
@@ -357,6 +360,8 @@ def main() -> int:
                 f"request={summary['request_path']} kind={summary['kind']} "
                 f"status={summary['status']} "
                 f"passed={summary['request_passed']} "
+                f"decision={summary['decision_verdict']} "
+                f"assurance={summary['decision_assurance']} "
                 f"theorems={summary['theorem_count']} "
                 f"recommendations={summary['recommendation_count']} "
                 f"receipt={summary['receipt_path']}"

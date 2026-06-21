@@ -180,6 +180,8 @@ def main() -> int:
                 f"contract_id={summary['contract_id']} "
                 f"status={summary['status']} "
                 f"passed={summary['request_passed']} "
+                f"decision={summary['decision_verdict']} "
+                f"assurance={summary['decision_assurance']} "
                 f"theorems={summary['theorem_count']}"
             )
         for failure in report["failures"]:

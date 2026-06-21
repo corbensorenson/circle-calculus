@@ -134,6 +134,31 @@ def _refresh_pack_fingerprints(pack: dict) -> None:
     pack["pack_content_fingerprint"] = _pack_content_fingerprint(pack)
 
 
+def _assert_decision_matches_receipt(
+    receipt: dict,
+    *,
+    verdict: str | None = None,
+    assurance: str | None = None,
+) -> None:
+    decision = receipt["decision"]
+    assert decision["schema_id"] == "circle_calculus.ai_contract_decision.v0"
+    assert decision["claim_status"] == receipt["status"]
+    assert decision["request_passed"] == receipt["request_passed"]
+    assert decision["theorem_count"] == receipt["proof_status"]["theorem_count"]
+    assert decision["all_theorem_ids_proved"] == receipt["proof_status"][
+        "all_theorem_ids_proved"
+    ]
+    assert decision["proof_layer_counts"] == {
+        bucket: len(receipt["proof_layers"][bucket]) for bucket in PROOF_LAYER_BUCKETS
+    }
+    assert decision["summary"]
+    assert decision["next_action"]
+    if verdict is not None:
+        assert decision["verdict"] == verdict
+    if assurance is not None:
+        assert decision["assurance"] == assurance
+
+
 @pytest.fixture(scope="module")
 def contract_pack() -> dict:
     return build_contract_pack()
@@ -153,6 +178,11 @@ def test_rope_receipt_classifies_d19_margin_request(contract_pack: dict) -> None
     assert receipt["kind"] == "rope_position_distinguishability"
     assert receipt["status"] == "proved"
     assert receipt["request_passed"] is True
+    _assert_decision_matches_receipt(
+        receipt,
+        verdict="passed",
+        assurance="mixed_theorem_and_computation",
+    )
     classifier = receipt["evidence"]["standard_channel0_d19_request_classifier"]
     assert classifier["request_status"] == "proved"
     assert classifier["theorem_backed_classification"] is True
@@ -201,12 +231,22 @@ def test_rope_receipt_distinguishes_impossible_and_undecided_margins(
 
     assert impossible["status"] == "impossible"
     assert impossible["request_passed"] is False
+    _assert_decision_matches_receipt(
+        impossible,
+        verdict="failed",
+        assurance="mixed_theorem_and_computation",
+    )
     assert impossible["evidence"]["standard_channel0_d19_request_classifier"][
         "request_status"
     ] == "impossible"
     assert impossible["proof_status"]["all_theorem_ids_proved"] is True
     assert undecided["status"] == "undecided"
     assert undecided["request_passed"] is None
+    _assert_decision_matches_receipt(
+        undecided,
+        verdict="undecided",
+        assurance="undecided",
+    )
     assert undecided["evidence"]["standard_channel0_d19_request_classifier"][
         "request_status"
     ] == "undecided_margin_gap"
@@ -219,6 +259,11 @@ def test_rope_receipt_distinguishes_impossible_and_undecided_margins(
     )
     assert above_ceiling["status"] == "impossible"
     assert above_ceiling["request_passed"] is False
+    _assert_decision_matches_receipt(
+        above_ceiling,
+        verdict="failed",
+        assurance="mixed_theorem_and_computation",
+    )
     guardrail = above_ceiling["evidence"]["real_phase_dirichlet_guardrail"]
     assert guardrail["requested_margin_relation_to_ceiling"] == (
         "above_dirichlet_ceiling"
@@ -242,6 +287,7 @@ def test_receipt_summary_lines_surface_proof_layer_counts(
     lines = receipt_summary_lines(receipt)
 
     proof_layer_line = next(line for line in lines if line.startswith("proof_layers="))
+    decision_line = next(line for line in lines if line.startswith("decision="))
     proof_layers = receipt["proof_layers"]
     assert f"proved_fields={len(proof_layers['proved_fields'])}" in proof_layer_line
     assert f"computed_fields={len(proof_layers['computed_fields'])}" in proof_layer_line
@@ -253,6 +299,8 @@ def test_receipt_summary_lines_surface_proof_layer_counts(
         f"unsupported_fields={len(proof_layers['unsupported_fields'])}"
         in proof_layer_line
     )
+    assert "verdict=passed" in decision_line
+    assert "assurance=mixed_theorem_and_computation" in decision_line
 
 
 def test_kv_sparse_and_recurrence_receipts_preserve_family_semantics(
@@ -277,6 +325,11 @@ def test_kv_sparse_and_recurrence_receipts_preserve_family_semantics(
 
     assert stale_kv["status"] == "proved"
     assert stale_kv["request_passed"] is False
+    _assert_decision_matches_receipt(
+        stale_kv,
+        verdict="failed",
+        assurance="theorem_backed",
+    )
     adapter = stale_kv["evidence"]["adapter_request_trace_certificate"]
     assert adapter["first_stale_token"] == 12
     assert adapter["stale_member_blocks_pass"] is True
@@ -284,12 +337,22 @@ def test_kv_sparse_and_recurrence_receipts_preserve_family_semantics(
 
     assert sparse["status"] == "proved"
     assert sparse["request_passed"] is False
+    _assert_decision_matches_receipt(
+        sparse,
+        verdict="failed",
+        assurance="theorem_backed",
+    )
     assert sparse["evidence"]["coverage_complete"] is False
     assert sparse["evidence"]["first_uncovered_lag"] == 5
     assert sparse["proof_status"]["all_theorem_ids_proved"] is True
 
     assert recurrence["status"] == "proved"
     assert recurrence["request_passed"] is True
+    _assert_decision_matches_receipt(
+        recurrence,
+        verdict="passed",
+        assurance="theorem_backed",
+    )
     fields = recurrence["evidence"]["fields"]
     assert fields["scheduled_work_saving"] > 0
     assert fields["periodic_shift_required_steps_invariant"] is True
@@ -453,6 +516,29 @@ def test_receipt_validator_requires_typed_proof_layer_buckets(
         for failure in failures
     )
 
+    mismatched_decision = json.loads(json.dumps(receipt))
+    mismatched_decision["decision"]["claim_status"] = "impossible"
+    mismatched_decision["receipt_content_fingerprint"] = _receipt_fingerprint(
+        mismatched_decision
+    )
+    failures = validate_contract_receipt(mismatched_decision)
+    assert any(
+        "decision.claim_status must match receipt status" in failure
+        for failure in failures
+    )
+
+    stale_decision_counts = json.loads(json.dumps(receipt))
+    stale_decision_counts["decision"]["proof_layer_counts"]["proved_fields"] += 1
+    stale_decision_counts["receipt_content_fingerprint"] = _receipt_fingerprint(
+        stale_decision_counts
+    )
+    failures = validate_contract_receipt(stale_decision_counts)
+    assert any(
+        "decision.proof_layer_counts.proved_fields must match proof_layers"
+        in failure
+        for failure in failures
+    )
+
     mismatched_recommendations = json.loads(json.dumps(receipt))
     mismatched_recommendations["recommendations"][0]["id"] = "WRONG"
     mismatched_recommendations["receipt_content_fingerprint"] = _receipt_fingerprint(
@@ -599,6 +685,12 @@ def test_receipt_file_check_report_public_api(contract_pack: dict) -> None:
         "require_passed": True,
     }
     assert report["summaries"][0]["path"] == "reports/rope_receipt.json"
+    assert report["summaries"][0]["decision_verdict"] == receipt["decision"][
+        "verdict"
+    ]
+    assert report["summaries"][0]["decision_assurance"] == receipt["decision"][
+        "assurance"
+    ]
     assert report["summaries"][0]["receipt_content_fingerprint"] == receipt[
         "receipt_content_fingerprint"
     ]
@@ -1001,7 +1093,22 @@ def test_receipt_schema_exposes_runner_metadata() -> None:
     assert "validation_commands" in schema["required"]
     assert "request_content_fingerprint" in schema["required"]
     assert "normalized_request_fingerprint" in schema["required"]
+    assert "decision" in schema["required"]
+    assert schema["properties"]["decision"]["additionalProperties"] is False
+    assert schema["properties"]["decision"]["properties"]["verdict"]["enum"] == [
+        "passed",
+        "failed",
+        "undecided",
+        "numerical_only",
+        "outside_scope",
+    ]
     assert schema["properties"]["proof_layers"]["required"] == list(PROOF_LAYER_BUCKETS)
+    assert (
+        schema["properties"]["decision"]["properties"]["proof_layer_counts"][
+            "required"
+        ]
+        == list(PROOF_LAYER_BUCKETS)
+    )
     assert schema["properties"]["recommendations"]["minItems"] == 1
     assert schema["properties"]["recommendations"]["uniqueItems"] is True
     assert schema["properties"]["validation_commands"]["minItems"] == 1
@@ -1134,6 +1241,8 @@ def test_runner_check_report_schema_accepts_public_report() -> None:
                 "kind": "rope_position_distinguishability",
                 "status": "proved",
                 "request_passed": True,
+                "decision_verdict": "passed",
+                "decision_assurance": "mixed_theorem_and_computation",
                 "theorem_count": 43,
                 "recommendation_count": 2,
                 "validation_command_count": 2,
@@ -1175,6 +1284,8 @@ def test_circle_ai_certify_cli_emits_json_receipt() -> None:
     assert payload["schema_id"] == "circle_calculus.ai_contract_receipt.v0"
     assert payload["status"] == "proved"
     assert payload["request_passed"] is True
+    assert payload["decision"]["verdict"] == "passed"
+    assert payload["decision"]["claim_status"] == payload["status"]
     assert payload["proof_status"]["all_theorem_ids_proved"] is True
     public_pack = json.loads(PUBLIC_CONTRACT_PACK.read_text())
     assert payload["support"]["contract_pack_fingerprint"] == public_pack[

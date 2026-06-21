@@ -4,6 +4,7 @@ The contract runner is the parameterized surface for the proof-carrying AI lane.
 It takes a user configuration and emits a text or JSON receipt with:
 
 - normalized input parameters,
+- a compact `decision` block for downstream gates,
 - theorem ids used by the receipt,
 - proof-status summary from the generated contract pack,
 - evidence fields from the relevant Python certifier,
@@ -177,6 +178,33 @@ contract-specific details live under `evidence`, `support`, and `proof_layers`.
 The embedded `request` object is also validated against the public request
 schema, and its contract kind must match the receipt kind.
 
+For downstream code, read `decision` first. It repeats the receipt status in a
+small stable shape:
+
+```json
+{
+  "schema_id": "circle_calculus.ai_contract_decision.v0",
+  "verdict": "passed",
+  "assurance": "mixed_theorem_and_computation",
+  "claim_status": "proved",
+  "request_passed": true,
+  "theorem_count": 43,
+  "all_theorem_ids_proved": true,
+  "proof_layer_counts": {
+    "proved_fields": 5,
+    "computed_fields": 2,
+    "numerical_only_fields": 4,
+    "unsupported_fields": 2
+  },
+  "summary": "rope_position_distinguishability request passed with receipt status proved.",
+  "next_action": "Use the receipt as a theorem-linked structural certificate."
+}
+```
+
+The validator rejects stale decisions: `claim_status`, `request_passed`,
+`theorem_count`, `all_theorem_ids_proved`, and proof-layer counts must match the
+rest of the receipt.
+
 ## Receipt Statuses
 
 | Status | Meaning |
@@ -229,6 +257,7 @@ receipt = build_validated_contract_receipt(
     pack=pack,
 )
 assert receipt["schema_id"] == "circle_calculus.ai_contract_receipt.v0"
+assert receipt["decision"]["verdict"] == "passed"
 assert receipt["proof_status"]["all_theorem_ids_proved"] is True
 assert receipt["request_content_fingerprint"]
 assert receipt["normalized_request_fingerprint"]

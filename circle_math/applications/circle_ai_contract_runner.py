@@ -94,6 +94,20 @@ PROOF_LAYER_BUCKETS = (
     "numerical_only_fields",
     "unsupported_fields",
 )
+DECISION_VERDICTS = (
+    "passed",
+    "failed",
+    "undecided",
+    "numerical_only",
+    "outside_scope",
+)
+DECISION_ASSURANCE_LEVELS = (
+    "theorem_backed",
+    "mixed_theorem_and_computation",
+    "numerical_only",
+    "unsupported",
+    "undecided",
+)
 RECEIPT_TOP_LEVEL_KEYS = {
     "schema_id",
     "request_schema_id",
@@ -102,6 +116,7 @@ RECEIPT_TOP_LEVEL_KEYS = {
     "contract_id",
     "status",
     "request_passed",
+    "decision",
     "request",
     "request_content_fingerprint",
     "normalized_request",
@@ -505,6 +520,99 @@ def _proof_status(
     }
 
 
+def _decision_verdict(*, status: str, request_passed: bool | None) -> str:
+    if request_passed is True:
+        return "passed"
+    if request_passed is False:
+        return "failed"
+    if status == "numerical_only":
+        return "numerical_only"
+    if status == "outside_scope":
+        return "outside_scope"
+    return "undecided"
+
+
+def _decision_assurance(
+    *,
+    status: str,
+    proof_status: Mapping[str, Any],
+    proof_layers: Mapping[str, Any],
+) -> str:
+    if status == "numerical_only":
+        return "numerical_only"
+    if status == "outside_scope":
+        return "unsupported"
+    if status == "undecided":
+        return "undecided"
+    if proof_status.get("all_theorem_ids_proved") is not True:
+        return "undecided"
+    if proof_layers.get("computed_fields") or proof_layers.get("numerical_only_fields"):
+        return "mixed_theorem_and_computation"
+    return "theorem_backed"
+
+
+def _decision_summary(*, kind: str, status: str, request_passed: bool | None) -> str:
+    if request_passed is True:
+        return f"{kind} request passed with receipt status {status}."
+    if request_passed is False:
+        return f"{kind} request failed with receipt status {status}."
+    return f"{kind} request is not decided by the current receipt frontier."
+
+
+def _decision_next_action(*, status: str, request_passed: bool | None) -> str:
+    if request_passed is True and status == "proved":
+        return "Use the receipt as a theorem-linked structural certificate."
+    if request_passed is False and status in {"proved", "impossible"}:
+        return "Treat the requested property as rejected by the cited theorem layer."
+    if status == "outside_scope":
+        return "Narrow the request to the proved contract range or add a new theorem."
+    if status == "numerical_only":
+        return (
+            "Do not gate on this result as a formal proof; add a theorem or "
+            "acceptance policy."
+        )
+    return "Inspect unsupported and numerical-only fields before using this as a gate."
+
+
+def _receipt_decision(
+    *,
+    kind: str,
+    status: str,
+    request_passed: bool | None,
+    proof_status: Mapping[str, Any],
+    proof_layers: Mapping[str, Any],
+) -> dict[str, Any]:
+    return {
+        "schema_id": "circle_calculus.ai_contract_decision.v0",
+        "verdict": _decision_verdict(
+            status=status,
+            request_passed=request_passed,
+        ),
+        "assurance": _decision_assurance(
+            status=status,
+            proof_status=proof_status,
+            proof_layers=proof_layers,
+        ),
+        "claim_status": status,
+        "request_passed": request_passed,
+        "theorem_count": proof_status.get("theorem_count"),
+        "all_theorem_ids_proved": proof_status.get("all_theorem_ids_proved"),
+        "proof_layer_counts": {
+            bucket: len(proof_layers.get(bucket, []))
+            for bucket in PROOF_LAYER_BUCKETS
+        },
+        "summary": _decision_summary(
+            kind=kind,
+            status=status,
+            request_passed=request_passed,
+        ),
+        "next_action": _decision_next_action(
+            status=status,
+            request_passed=request_passed,
+        ),
+    }
+
+
 def _base_receipt(
     *,
     kind: str,
@@ -528,6 +636,14 @@ def _base_receipt(
         support=support,
         pack=pack_dict,
     )
+    proof_layers_object = dict(proof_layers)
+    decision = _receipt_decision(
+        kind=canonical,
+        status=status,
+        request_passed=request_passed,
+        proof_status=proof_status,
+        proof_layers=proof_layers_object,
+    )
     request_object = build_contract_request(canonical, request_parameters)
     normalized_object = dict(normalized_parameters)
     receipt = {
@@ -538,13 +654,14 @@ def _base_receipt(
         "contract_id": support["contract_id"],
         "status": status,
         "request_passed": request_passed,
+        "decision": decision,
         "request": request_object,
         "request_content_fingerprint": _json_fingerprint(request_object),
         "normalized_request": normalized_object,
         "normalized_request_fingerprint": _json_fingerprint(normalized_object),
         "evidence": dict(evidence),
         "proof_status": proof_status,
-        "proof_layers": dict(proof_layers),
+        "proof_layers": proof_layers_object,
         "recommendations": list(support["planner_recommendations"]),
         "validation_commands": list(support["validation_commands"]),
         "support": support,
@@ -1396,6 +1513,56 @@ def build_validated_contract_receipt_from_request(
     return receipt
 
 
+def _validate_decision_block(
+    *,
+    decision: Any,
+    receipt: Mapping[str, Any],
+    proof_status: Any,
+    proof_layers: Any,
+    failures: list[str],
+) -> None:
+    if not isinstance(decision, dict):
+        failures.append("decision must be an object")
+        return
+    if decision.get("schema_id") != "circle_calculus.ai_contract_decision.v0":
+        failures.append(
+            "decision.schema_id must be circle_calculus.ai_contract_decision.v0"
+        )
+    if decision.get("verdict") not in DECISION_VERDICTS:
+        failures.append("decision.verdict must be a supported decision verdict")
+    if decision.get("assurance") not in DECISION_ASSURANCE_LEVELS:
+        failures.append("decision.assurance must be a supported assurance level")
+    if decision.get("claim_status") != receipt.get("status"):
+        failures.append("decision.claim_status must match receipt status")
+    if decision.get("request_passed") != receipt.get("request_passed"):
+        failures.append("decision.request_passed must match receipt request_passed")
+    if not isinstance(proof_status, dict):
+        return
+    if decision.get("theorem_count") != proof_status.get("theorem_count"):
+        failures.append("decision.theorem_count must match proof_status.theorem_count")
+    if decision.get("all_theorem_ids_proved") != proof_status.get(
+        "all_theorem_ids_proved"
+    ):
+        failures.append("decision.all_theorem_ids_proved must match proof_status")
+    counts = decision.get("proof_layer_counts")
+    if not isinstance(counts, dict):
+        failures.append("decision.proof_layer_counts must be an object")
+    elif isinstance(proof_layers, dict):
+        for bucket in PROOF_LAYER_BUCKETS:
+            fields = proof_layers.get(bucket)
+            expected = len(fields) if isinstance(fields, list) else None
+            if counts.get(bucket) != expected:
+                failures.append(
+                    f"decision.proof_layer_counts.{bucket} must match proof_layers"
+                )
+    if not isinstance(decision.get("summary"), str) or not decision.get("summary"):
+        failures.append("decision.summary must be a non-empty string")
+    if not isinstance(decision.get("next_action"), str) or not decision.get(
+        "next_action"
+    ):
+        failures.append("decision.next_action must be a non-empty string")
+
+
 def validate_contract_receipt(receipt: Mapping[str, Any]) -> list[str]:
     """Return receipt-shape failures. This is a JSON-level check, not Lean."""
 
@@ -1417,6 +1584,13 @@ def validate_contract_receipt(receipt: Mapping[str, Any]) -> list[str]:
     status = receipt.get("status")
     if status not in STATUS_VALUES:
         failures.append("status must be one of " + ", ".join(STATUS_VALUES))
+    request_passed = receipt.get("request_passed")
+    if (
+        request_passed is not True
+        and request_passed is not False
+        and request_passed is not None
+    ):
+        failures.append("request_passed must be true, false, or null")
     if receipt.get("content_fingerprint_algorithm") != FINGERPRINT_ALGORITHM:
         failures.append(
             f"content_fingerprint_algorithm must be {FINGERPRINT_ALGORITHM!r}"
@@ -1526,6 +1700,13 @@ def validate_contract_receipt(receipt: Mapping[str, Any]) -> list[str]:
             "all_theorem_ids_proved"
         ) is not True:
             failures.append("proved/impossible receipts require proved theorem ids")
+    _validate_decision_block(
+        decision=receipt.get("decision"),
+        receipt=receipt,
+        proof_status=proof_status,
+        proof_layers=proof_layers,
+        failures=failures,
+    )
     support = receipt.get("support")
     if not isinstance(support, dict):
         failures.append("support must be an object")
@@ -1725,6 +1906,7 @@ def build_contract_receipt_file_check_report(
             f"(got {receipt.get('request_passed')!r})"
         )
     proof_status = receipt.get("proof_status")
+    decision = receipt.get("decision")
     report = {
         "schema_id": RECEIPT_FILE_CHECK_SCHEMA_ID,
         "ok": not failures,
@@ -1742,6 +1924,12 @@ def build_contract_receipt_file_check_report(
                 "contract_id": receipt.get("contract_id"),
                 "status": status,
                 "request_passed": receipt.get("request_passed"),
+                "decision_verdict": (
+                    decision.get("verdict") if isinstance(decision, Mapping) else None
+                ),
+                "decision_assurance": (
+                    decision.get("assurance") if isinstance(decision, Mapping) else None
+                ),
                 "theorem_count": (
                     proof_status.get("theorem_count")
                     if isinstance(proof_status, Mapping)
@@ -1801,6 +1989,14 @@ def receipt_summary_lines(receipt: Mapping[str, Any]) -> list[str]:
         f"computed_fields={len(proof_layers['computed_fields'])} "
         f"numerical_only_fields={len(proof_layers['numerical_only_fields'])} "
         f"unsupported_fields={len(proof_layers['unsupported_fields'])}"
+    )
+    decision = receipt["decision"]
+    lines.append(
+        "decision="
+        f"verdict={decision['verdict']} "
+        f"assurance={decision['assurance']} "
+        f"claim_status={decision['claim_status']} "
+        f"request_passed={decision['request_passed']}"
     )
     evidence = receipt["evidence"]
     kind = receipt["kind"]
@@ -2059,6 +2255,8 @@ def build_contract_runner_check_json_schema() -> dict[str, Any]:
             "kind",
             "status",
             "request_passed",
+            "decision_verdict",
+            "decision_assurance",
             "theorem_count",
             "recommendation_count",
             "validation_command_count",
@@ -2074,6 +2272,8 @@ def build_contract_runner_check_json_schema() -> dict[str, Any]:
             "kind": {"enum": list(SUPPORTED_CONTRACT_KINDS)},
             "status": {"enum": list(STATUS_VALUES)},
             "request_passed": {"type": ["boolean", "null"]},
+            "decision_verdict": {"enum": list(DECISION_VERDICTS)},
+            "decision_assurance": {"enum": list(DECISION_ASSURANCE_LEVELS)},
             "theorem_count": {"type": "integer", "minimum": 0},
             "recommendation_count": {"type": "integer", "minimum": 0},
             "validation_command_count": {"type": "integer", "minimum": 0},
@@ -2148,6 +2348,8 @@ def build_contract_receipt_file_check_json_schema() -> dict[str, Any]:
             "contract_id",
             "status",
             "request_passed",
+            "decision_verdict",
+            "decision_assurance",
             "theorem_count",
             "receipt_content_fingerprint",
             "failure_count",
@@ -2158,6 +2360,8 @@ def build_contract_receipt_file_check_json_schema() -> dict[str, Any]:
             "contract_id": {"type": "string", "minLength": 1},
             "status": {"enum": list(STATUS_VALUES)},
             "request_passed": {"type": ["boolean", "null"]},
+            "decision_verdict": {"enum": list(DECISION_VERDICTS)},
+            "decision_assurance": {"enum": list(DECISION_ASSURANCE_LEVELS)},
             "theorem_count": {"type": "integer", "minimum": 0},
             "receipt_content_fingerprint": fingerprint,
             "failure_count": {"type": "integer", "minimum": 0},
@@ -2216,6 +2420,43 @@ def build_contract_receipt_json_schema() -> dict[str, Any]:
         for key, value in build_contract_request_json_schema().items()
         if key not in {"$schema", "$id", "title"}
     }
+    proof_layer_counts_schema = {
+        "type": "object",
+        "required": list(PROOF_LAYER_BUCKETS),
+        "properties": {
+            bucket: {"type": "integer", "minimum": 0}
+            for bucket in PROOF_LAYER_BUCKETS
+        },
+        "additionalProperties": False,
+    }
+    decision_schema = {
+        "type": "object",
+        "required": [
+            "schema_id",
+            "verdict",
+            "assurance",
+            "claim_status",
+            "request_passed",
+            "theorem_count",
+            "all_theorem_ids_proved",
+            "proof_layer_counts",
+            "summary",
+            "next_action",
+        ],
+        "properties": {
+            "schema_id": {"const": "circle_calculus.ai_contract_decision.v0"},
+            "verdict": {"enum": list(DECISION_VERDICTS)},
+            "assurance": {"enum": list(DECISION_ASSURANCE_LEVELS)},
+            "claim_status": {"enum": list(STATUS_VALUES)},
+            "request_passed": {"type": ["boolean", "null"]},
+            "theorem_count": {"type": "integer", "minimum": 0},
+            "all_theorem_ids_proved": {"type": "boolean"},
+            "proof_layer_counts": proof_layer_counts_schema,
+            "summary": {"type": "string", "minLength": 1},
+            "next_action": {"type": "string", "minLength": 1},
+        },
+        "additionalProperties": False,
+    }
     return {
         "$schema": "https://json-schema.org/draft/2020-12/schema",
         "$id": "https://circle-calculus.local/schemas/circle_ai_contract_receipt.schema.json",
@@ -2229,6 +2470,7 @@ def build_contract_receipt_json_schema() -> dict[str, Any]:
             "contract_id",
             "status",
             "request_passed",
+            "decision",
             "request",
             "request_content_fingerprint",
             "normalized_request",
@@ -2251,6 +2493,7 @@ def build_contract_receipt_json_schema() -> dict[str, Any]:
             "contract_id": {"type": "string", "minLength": 1},
             "status": {"enum": list(STATUS_VALUES)},
             "request_passed": {"type": ["boolean", "null"]},
+            "decision": decision_schema,
             "request": request_schema,
             "request_content_fingerprint": {
                 "type": "string",

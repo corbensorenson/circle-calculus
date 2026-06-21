@@ -81,6 +81,12 @@ def test_check_circle_ai_receipt_accepts_saved_receipt(tmp_path: Path) -> None:
     assert payload["ok"] is True
     assert payload["receipt_count"] == 1
     assert payload["summaries"][0]["kind"] == "rope_position_distinguishability"
+    assert payload["summaries"][0]["decision_verdict"] == receipt["decision"][
+        "verdict"
+    ]
+    assert payload["summaries"][0]["decision_assurance"] == receipt["decision"][
+        "assurance"
+    ]
     assert json.loads(report_path.read_text()) == payload
 
 

@@ -346,6 +346,11 @@ That returns the same schema as the CLI:
 circle_calculus.ai_contract_receipt.v0
 ```
 
+Downstream gates should read the receipt's `decision` block before digging into
+contract-specific evidence. It carries the stable verdict, assurance level,
+claim status, `request_passed`, theorem count, and proof-layer counts, and the
+receipt validator rejects it if it drifts from the rest of the receipt.
+
 The generated request and receipt schemas live at:
 
 ```text
