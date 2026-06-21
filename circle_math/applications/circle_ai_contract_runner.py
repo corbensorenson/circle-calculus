@@ -2143,6 +2143,18 @@ def validate_contract_receipt(receipt: Mapping[str, Any]) -> list[str]:
         and validation_commands != support["validation_commands"]
     ):
         failures.append("validation_commands must match support.validation_commands")
+    elif isinstance(request, dict):
+        try:
+            expected_replay_command = _runner_validation_command_for_request(request)
+        except (KeyError, TypeError, ValueError):
+            expected_replay_command = None
+        if (
+            expected_replay_command is not None
+            and validation_commands[0] != expected_replay_command
+        ):
+            failures.append(
+                "validation_commands[0] must replay the embedded request"
+            )
     if not isinstance(receipt.get("not_claimed"), list) or not receipt.get(
         "not_claimed"
     ):

@@ -588,6 +588,18 @@ def test_receipt_validator_requires_typed_proof_layer_buckets(
         for failure in failures
     )
 
+    wrong_replay_command = json.loads(json.dumps(receipt))
+    wrong_replay_command["validation_commands"][0] = "python wrong.py"
+    wrong_replay_command["support"]["validation_commands"][0] = "python wrong.py"
+    wrong_replay_command["receipt_content_fingerprint"] = _receipt_fingerprint(
+        wrong_replay_command
+    )
+    failures = validate_contract_receipt(wrong_replay_command)
+    assert any(
+        "validation_commands[0] must replay the embedded request" in failure
+        for failure in failures
+    )
+
     duplicate_validation_command = json.loads(json.dumps(receipt))
     duplicate_validation_command["validation_commands"].append(
         duplicate_validation_command["validation_commands"][0]
