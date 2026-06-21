@@ -51,6 +51,9 @@ ROPE_MODEL_CONFIG_IMPORT_SCHEMA_ID = (
 )
 RUNNER_CHECK_SCHEMA_ID = "circle_calculus.ai_contract_runner_check.v0"
 RECEIPT_FILE_CHECK_SCHEMA_ID = "circle_calculus.ai_contract_receipt_file_check.v0"
+CERTIFICATION_BUNDLE_SCHEMA_ID = (
+    "circle_calculus.ai_contract_certification_bundle.v0"
+)
 REQUEST_SCHEMA_PATH = "site/data/generated/circle_ai_contract_request.schema.json"
 REQUEST_VALIDATION_SCHEMA_PATH = (
     "site/data/generated/circle_ai_contract_request_validation.schema.json"
@@ -64,6 +67,9 @@ RUNNER_CHECK_SCHEMA_PATH = (
 )
 RECEIPT_FILE_CHECK_SCHEMA_PATH = (
     "site/data/generated/circle_ai_contract_receipt_file_check.schema.json"
+)
+CERTIFICATION_BUNDLE_SCHEMA_PATH = (
+    "site/data/generated/circle_ai_contract_certification_bundle.schema.json"
 )
 
 SUPPORTED_CONTRACT_KINDS = (
@@ -2135,24 +2141,12 @@ def validate_contract_receipt_against_pack(
     return failures
 
 
-def build_contract_receipt_file_check_report(
-    receipt: Mapping[str, Any],
-    pack: Mapping[str, Any],
+def _validate_receipt_gate_policy(
     *,
-    receipt_path: str,
-    required_statuses: Sequence[str] = (),
-    required_decision_verdicts: Sequence[str] = (),
-    required_assurance_levels: Sequence[str] = (),
-    require_passed: bool = False,
-) -> dict[str, Any]:
-    """Build a saved-receipt validation report with the public report shape.
-
-    This is the public API equivalent of ``scripts/check_circle_ai_receipt.py``
-    for callers that already have a receipt object in memory.
-    """
-
-    if not isinstance(receipt_path, str) or not receipt_path:
-        raise ValueError("receipt_path must be a non-empty string")
+    required_statuses: Sequence[str],
+    required_decision_verdicts: Sequence[str],
+    required_assurance_levels: Sequence[str],
+) -> None:
     unsupported_statuses = [
         status for status in required_statuses if status not in STATUS_VALUES
     ]
@@ -2181,6 +2175,46 @@ def build_contract_receipt_file_check_report(
             "required_assurance_levels contains unsupported assurance levels: "
             + ", ".join(str(level) for level in unsupported_assurance_levels)
         )
+
+
+def _receipt_gate_policy(
+    *,
+    required_statuses: Sequence[str],
+    required_decision_verdicts: Sequence[str],
+    required_assurance_levels: Sequence[str],
+    require_passed: bool,
+) -> dict[str, Any]:
+    return {
+        "allowed_statuses": list(required_statuses),
+        "allowed_decision_verdicts": list(required_decision_verdicts),
+        "allowed_assurance_levels": list(required_assurance_levels),
+        "require_passed": require_passed,
+    }
+
+
+def build_contract_receipt_file_check_report(
+    receipt: Mapping[str, Any],
+    pack: Mapping[str, Any],
+    *,
+    receipt_path: str,
+    required_statuses: Sequence[str] = (),
+    required_decision_verdicts: Sequence[str] = (),
+    required_assurance_levels: Sequence[str] = (),
+    require_passed: bool = False,
+) -> dict[str, Any]:
+    """Build a saved-receipt validation report with the public report shape.
+
+    This is the public API equivalent of ``scripts/check_circle_ai_receipt.py``
+    for callers that already have a receipt object in memory.
+    """
+
+    if not isinstance(receipt_path, str) or not receipt_path:
+        raise ValueError("receipt_path must be a non-empty string")
+    _validate_receipt_gate_policy(
+        required_statuses=required_statuses,
+        required_decision_verdicts=required_decision_verdicts,
+        required_assurance_levels=required_assurance_levels,
+    )
     failures = validate_contract_receipt_against_pack(receipt, pack)
     status = receipt.get("status")
     if required_statuses and status not in set(required_statuses):
@@ -2223,12 +2257,12 @@ def build_contract_receipt_file_check_report(
         "receipt_count": 1,
         "failure_count": len(failures),
         "failures": failures,
-        "gate_policy": {
-            "allowed_statuses": list(required_statuses),
-            "allowed_decision_verdicts": list(required_decision_verdicts),
-            "allowed_assurance_levels": list(required_assurance_levels),
-            "require_passed": require_passed,
-        },
+        "gate_policy": _receipt_gate_policy(
+            required_statuses=required_statuses,
+            required_decision_verdicts=required_decision_verdicts,
+            required_assurance_levels=required_assurance_levels,
+            require_passed=require_passed,
+        ),
         "summaries": [
             {
                 "path": receipt_path,
@@ -2327,6 +2361,90 @@ def require_contract_receipt_gate(
     raise ValueError(
         "Circle AI contract receipt gate failed: " + "; ".join(report["failures"])
     )
+
+
+def build_contract_certification_bundle(
+    request: Mapping[str, Any],
+    *,
+    pack: Mapping[str, Any] | None = None,
+    receipt_path: str = "<in-memory-receipt>",
+    required_statuses: Sequence[str] = (),
+    required_decision_verdicts: Sequence[str] = (),
+    required_assurance_levels: Sequence[str] = (),
+    require_passed: bool = False,
+) -> dict[str, Any]:
+    """Return request validation, receipt, and gate report in one public shape.
+
+    The bundle is the Python API counterpart to running
+    ``circle_ai_certify.py`` with request preflight and a receipt gate. Invalid
+    requests return a failed bundle with ``receipt = None`` instead of forcing
+    downstream callers to catch an exception just to see validation failures.
+    Invalid gate-policy values still raise ``ValueError`` because that is a
+    caller bug rather than a property of the request being certified.
+    """
+
+    _validate_receipt_gate_policy(
+        required_statuses=required_statuses,
+        required_decision_verdicts=required_decision_verdicts,
+        required_assurance_levels=required_assurance_levels,
+    )
+    request_validation_report = build_contract_request_validation_report(request)
+    gate_policy = _receipt_gate_policy(
+        required_statuses=required_statuses,
+        required_decision_verdicts=required_decision_verdicts,
+        required_assurance_levels=required_assurance_levels,
+        require_passed=require_passed,
+    )
+    failures = [
+        f"request validation failed: {failure}"
+        for failure in request_validation_report["failures"]
+    ]
+    receipt: dict[str, Any] | None = None
+    gate_report: dict[str, Any] | None = None
+
+    if request_validation_report["ok"]:
+        pack_dict = _default_pack(pack)
+        try:
+            receipt = build_validated_contract_receipt_from_request(
+                request,
+                pack=pack_dict,
+            )
+            gate_report = build_contract_receipt_gate_report(
+                receipt,
+                pack_dict,
+                receipt_path=receipt_path,
+                required_statuses=required_statuses,
+                required_decision_verdicts=required_decision_verdicts,
+                required_assurance_levels=required_assurance_levels,
+                require_passed=require_passed,
+            )
+            failures.extend(gate_report["failures"])
+        except ValueError as exc:
+            failures.append(str(exc))
+
+    return {
+        "schema_id": CERTIFICATION_BUNDLE_SCHEMA_ID,
+        "request_schema_id": REQUEST_SCHEMA_ID,
+        "receipt_schema_id": RECEIPT_SCHEMA_ID,
+        "gate_report_schema_id": RECEIPT_FILE_CHECK_SCHEMA_ID,
+        "content_fingerprint_algorithm": FINGERPRINT_ALGORITHM,
+        "ok": not failures,
+        "failure_count": len(failures),
+        "failures": failures,
+        "gate_policy": gate_policy,
+        "request_content_fingerprint": request_validation_report[
+            "request_content_fingerprint"
+        ],
+        "normalized_request_fingerprint": (
+            None if receipt is None else receipt["normalized_request_fingerprint"]
+        ),
+        "receipt_content_fingerprint": (
+            None if receipt is None else receipt["receipt_content_fingerprint"]
+        ),
+        "request_validation_report": request_validation_report,
+        "receipt": receipt,
+        "gate_report": gate_report,
+    }
 
 
 def receipt_summary_lines(receipt: Mapping[str, Any]) -> list[str]:
@@ -2998,6 +3116,99 @@ def build_contract_receipt_file_check_json_schema() -> dict[str, Any]:
             "failures": string_list,
             "gate_policy": gate_policy,
             "summaries": {"type": "array", "items": summary},
+        },
+        "additionalProperties": False,
+    }
+
+
+def build_contract_certification_bundle_json_schema() -> dict[str, Any]:
+    fingerprint = {"type": ["string", "null"], "pattern": "^[0-9a-f]{64}$"}
+    gate_policy = {
+        "type": "object",
+        "required": [
+            "allowed_statuses",
+            "allowed_decision_verdicts",
+            "allowed_assurance_levels",
+            "require_passed",
+        ],
+        "properties": {
+            "allowed_statuses": {
+                "type": "array",
+                "items": {"enum": list(STATUS_VALUES)},
+            },
+            "allowed_decision_verdicts": {
+                "type": "array",
+                "items": {"enum": list(DECISION_VERDICTS)},
+            },
+            "allowed_assurance_levels": {
+                "type": "array",
+                "items": {"enum": list(DECISION_ASSURANCE_LEVELS)},
+            },
+            "require_passed": {"type": "boolean"},
+        },
+        "additionalProperties": False,
+    }
+
+    def inline(schema: Mapping[str, Any]) -> dict[str, Any]:
+        return {
+            key: value
+            for key, value in schema.items()
+            if key not in {"$schema", "$id", "title"}
+        }
+
+    return {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "$id": (
+            "https://circle-calculus.local/schemas/"
+            "circle_ai_contract_certification_bundle.schema.json"
+        ),
+        "title": "Circle AI Contract Certification Bundle",
+        "type": "object",
+        "required": [
+            "schema_id",
+            "request_schema_id",
+            "receipt_schema_id",
+            "gate_report_schema_id",
+            "content_fingerprint_algorithm",
+            "ok",
+            "failure_count",
+            "failures",
+            "gate_policy",
+            "request_content_fingerprint",
+            "normalized_request_fingerprint",
+            "receipt_content_fingerprint",
+            "request_validation_report",
+            "receipt",
+            "gate_report",
+        ],
+        "properties": {
+            "schema_id": {"const": CERTIFICATION_BUNDLE_SCHEMA_ID},
+            "request_schema_id": {"const": REQUEST_SCHEMA_ID},
+            "receipt_schema_id": {"const": RECEIPT_SCHEMA_ID},
+            "gate_report_schema_id": {"const": RECEIPT_FILE_CHECK_SCHEMA_ID},
+            "content_fingerprint_algorithm": {"const": FINGERPRINT_ALGORITHM},
+            "ok": {"type": "boolean"},
+            "failure_count": {"type": "integer", "minimum": 0},
+            "failures": {"type": "array", "items": {"type": "string"}},
+            "gate_policy": gate_policy,
+            "request_content_fingerprint": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$",
+            },
+            "normalized_request_fingerprint": fingerprint,
+            "receipt_content_fingerprint": fingerprint,
+            "request_validation_report": inline(
+                build_contract_request_validation_json_schema()
+            ),
+            "receipt": {
+                "anyOf": [inline(build_contract_receipt_json_schema()), {"type": "null"}]
+            },
+            "gate_report": {
+                "anyOf": [
+                    inline(build_contract_receipt_file_check_json_schema()),
+                    {"type": "null"},
+                ],
+            },
         },
         "additionalProperties": False,
     }

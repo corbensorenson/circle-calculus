@@ -10,6 +10,8 @@ import jsonschema
 import pytest
 
 from circle_math.applications import (
+    build_contract_certification_bundle,
+    build_contract_certification_bundle_json_schema,
     build_contract_receipt,
     build_contract_receipt_file_check_json_schema,
     build_contract_receipt_file_check_report,
@@ -817,6 +819,111 @@ def test_receipt_gate_report_public_api(contract_pack: dict) -> None:
             contract_pack,
             required_decision_verdicts=("failed",),
         )
+
+
+def test_certification_bundle_public_api_accepts_valid_request(
+    contract_pack: dict,
+) -> None:
+    request = build_contract_request(
+        "rope",
+        {
+            "head_dim": 128,
+            "base": 10000.0,
+            "context": 131072,
+            "requested_margin": "1/328459",
+        },
+    )
+
+    bundle = build_contract_certification_bundle(
+        request,
+        pack=contract_pack,
+        required_statuses=("proved",),
+        required_decision_verdicts=("passed",),
+        required_assurance_levels=("mixed_theorem_and_computation",),
+        require_passed=True,
+    )
+
+    jsonschema.Draft202012Validator.check_schema(
+        build_contract_certification_bundle_json_schema()
+    )
+    jsonschema.validate(bundle, build_contract_certification_bundle_json_schema())
+    assert bundle["schema_id"] == (
+        "circle_calculus.ai_contract_certification_bundle.v0"
+    )
+    assert bundle["ok"] is True
+    assert bundle["failure_count"] == 0
+    assert bundle["request_validation_report"]["ok"] is True
+    assert bundle["receipt"]["schema_id"] == "circle_calculus.ai_contract_receipt.v0"
+    assert bundle["gate_report"]["ok"] is True
+    assert bundle["request_content_fingerprint"] == bundle[
+        "request_validation_report"
+    ]["request_content_fingerprint"]
+    assert bundle["receipt"]["request_content_fingerprint"]
+    assert bundle["receipt_content_fingerprint"] == bundle["receipt"][
+        "receipt_content_fingerprint"
+    ]
+
+
+def test_certification_bundle_public_api_reports_invalid_request(
+    contract_pack: dict,
+) -> None:
+    request = {
+        "schema_id": "circle_calculus.ai_contract_request.v0",
+        "kind": "sparse-attention",
+        "parameters": {
+            "context": 32,
+            "strides": [5, 0],
+            "path_length": 16,
+            "local_window": 9,
+        },
+    }
+
+    bundle = build_contract_certification_bundle(request, pack=contract_pack)
+
+    jsonschema.validate(bundle, build_contract_certification_bundle_json_schema())
+    assert bundle["ok"] is False
+    assert bundle["request_validation_report"]["ok"] is False
+    assert bundle["receipt"] is None
+    assert bundle["gate_report"] is None
+    assert bundle["normalized_request_fingerprint"] is None
+    assert bundle["receipt_content_fingerprint"] is None
+    assert bundle["failures"] == [
+        "request validation failed: parameters.strides must contain positive integers"
+    ]
+
+
+def test_certification_bundle_public_api_reports_gate_failure(
+    contract_pack: dict,
+) -> None:
+    request = build_contract_request(
+        "rope",
+        {
+            "head_dim": 128,
+            "base": 10000.0,
+            "context": 131072,
+            "requested_margin": "1/328458",
+        },
+    )
+
+    bundle = build_contract_certification_bundle(
+        request,
+        pack=contract_pack,
+        required_statuses=("proved",),
+        required_decision_verdicts=("passed",),
+        require_passed=True,
+    )
+
+    jsonschema.validate(bundle, build_contract_certification_bundle_json_schema())
+    assert bundle["ok"] is False
+    assert bundle["request_validation_report"]["ok"] is True
+    assert bundle["receipt"]["status"] == "impossible"
+    assert bundle["gate_report"]["ok"] is False
+    assert bundle["failure_count"] == 3
+    assert any("receipt status" in failure for failure in bundle["failures"])
+    assert any("decision verdict" in failure for failure in bundle["failures"])
+    assert any(
+        "request_passed was not true" in failure for failure in bundle["failures"]
+    )
 
 
 def test_receipt_file_check_report_rejects_invalid_api_inputs(

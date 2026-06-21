@@ -18,6 +18,7 @@ from circle_math.applications.circle_ai_contracts import (
     build_downstream_rejection_report_json_schema,
 )
 from circle_math.applications.circle_ai_contract_runner import (
+    build_contract_certification_bundle_json_schema,
     build_contract_receipt_file_check_json_schema,
     build_contract_runner_check_json_schema,
 )
@@ -2197,6 +2198,9 @@ def test_generic_export_script_writes_json(tmp_path: Path) -> None:
     runner_receipt_schema_out = tmp_path / "circle_runner_receipt.schema.json"
     runner_check_schema_out = tmp_path / "circle_runner_check.schema.json"
     receipt_file_check_schema_out = tmp_path / "circle_receipt_file_check.schema.json"
+    certification_bundle_schema_out = (
+        tmp_path / "circle_certification_bundle.schema.json"
+    )
     subprocess.run(
         [
             sys.executable,
@@ -2219,6 +2223,8 @@ def test_generic_export_script_writes_json(tmp_path: Path) -> None:
             str(runner_check_schema_out),
             "--contract-receipt-file-check-schema-out",
             str(receipt_file_check_schema_out),
+            "--contract-certification-bundle-schema-out",
+            str(certification_bundle_schema_out),
         ],
         check=True,
     )
@@ -2234,6 +2240,9 @@ def test_generic_export_script_writes_json(tmp_path: Path) -> None:
     runner_receipt_schema = json.loads(runner_receipt_schema_out.read_text())
     runner_check_schema = json.loads(runner_check_schema_out.read_text())
     receipt_file_check_schema = json.loads(receipt_file_check_schema_out.read_text())
+    certification_bundle_schema = json.loads(
+        certification_bundle_schema_out.read_text()
+    )
     assert data["schema_id"] == "circle_calculus.ai_contract_pack.v0"
     assert len(data["contracts"]) == 9
     jsonschema.validate(data, schema)
@@ -2245,8 +2254,13 @@ def test_generic_export_script_writes_json(tmp_path: Path) -> None:
     jsonschema.Draft202012Validator.check_schema(runner_receipt_schema)
     jsonschema.Draft202012Validator.check_schema(runner_check_schema)
     jsonschema.Draft202012Validator.check_schema(receipt_file_check_schema)
+    jsonschema.Draft202012Validator.check_schema(certification_bundle_schema)
     assert runner_check_schema == build_contract_runner_check_json_schema()
     assert receipt_file_check_schema == build_contract_receipt_file_check_json_schema()
+    assert (
+        certification_bundle_schema
+        == build_contract_certification_bundle_json_schema()
+    )
     subprocess.run(
         [
             sys.executable,

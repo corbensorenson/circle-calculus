@@ -134,7 +134,8 @@ parameterized runner schema sidecars
 `site/data/generated/circle_ai_contract_request_validation.schema.json`,
 `site/data/generated/circle_ai_contract_receipt.schema.json`,
 `site/data/generated/circle_ai_contract_runner_check.schema.json`, and
-`site/data/generated/circle_ai_contract_receipt_file_check.schema.json`; the
+`site/data/generated/circle_ai_contract_receipt_file_check.schema.json`, plus
+`site/data/generated/circle_ai_contract_certification_bundle.schema.json`; the
 acceptance-policy schema sidecar
 `site/data/generated/circle_ai_contract_acceptance_policy.schema.json`, policy-report
 schema sidecar

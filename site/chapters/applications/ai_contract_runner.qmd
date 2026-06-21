@@ -340,6 +340,7 @@ Read every receipt in this order:
 
 ```python
 from circle_math.applications import (
+    build_contract_certification_bundle,
     build_contract_receipt_file_check_report,
     build_contract_receipt_gate_report,
     build_contract_request,
@@ -436,7 +437,23 @@ request = {
 assert validate_contract_request(request) == []
 assert build_contract_request_validation_report(request)["ok"] is True
 receipt = build_validated_contract_receipt_from_request(request, pack=pack)
+bundle = build_contract_certification_bundle(
+    request,
+    pack=pack,
+    required_statuses=("proved",),
+    required_decision_verdicts=("passed",),
+    required_assurance_levels=("theorem_backed",),
+    require_passed=True,
+)
+assert bundle["request_validation_report"]["ok"] is True
+assert bundle["receipt"] == receipt
+assert bundle["gate_report"]["ok"] is True
 ```
+
+The bundle's top-level `request_content_fingerprint` hashes the submitted
+request object used for preflight. The embedded receipt carries its own
+`request_content_fingerprint` for the canonical request emitted after contract
+defaults are applied.
 
 That returns the same schema as the CLI:
 
@@ -451,7 +468,7 @@ receipt validator rejects it if it drifts from the rest of the receipt. The CLI
 and saved-receipt checker can gate directly on it with `--require-decision` and
 `--require-assurance`.
 
-The generated request and receipt schemas live at:
+The generated Circle AI runner schemas live at:
 
 ```text
 site/data/generated/circle_ai_contract_request.schema.json
@@ -460,6 +477,7 @@ site/data/generated/circle_ai_rope_model_config_import.schema.json
 site/data/generated/circle_ai_contract_receipt.schema.json
 site/data/generated/circle_ai_contract_runner_check.schema.json
 site/data/generated/circle_ai_contract_receipt_file_check.schema.json
+site/data/generated/circle_ai_contract_certification_bundle.schema.json
 ```
 
 The request schema is contract-specific: it accepts defaults for RoPE and
