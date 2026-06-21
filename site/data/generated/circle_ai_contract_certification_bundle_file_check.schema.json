@@ -71,6 +71,75 @@
     "ok": {
       "type": "boolean"
     },
+    "pin_policy": {
+      "additionalProperties": false,
+      "properties": {
+        "required_evidence_fields": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "required_kinds": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "required_model_config_fingerprints": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "required_normalized_params": {
+          "items": {
+            "additionalProperties": false,
+            "properties": {
+              "key": {
+                "minLength": 1,
+                "type": "string"
+              },
+              "value": {}
+            },
+            "required": [
+              "key",
+              "value"
+            ],
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "required_recommendation_ids": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "required_theorem_ids": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "required_validation_commands": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "required_kinds",
+        "required_theorem_ids",
+        "required_evidence_fields",
+        "required_recommendation_ids",
+        "required_validation_commands",
+        "required_model_config_fingerprints",
+        "required_normalized_params"
+      ],
+      "type": "object"
+    },
     "schema_id": {
       "const": "circle_calculus.ai_contract_certification_bundle_file_check.v0"
     },
@@ -284,6 +353,7 @@
     "failure_count",
     "failures",
     "gate_policy",
+    "pin_policy",
     "summaries"
   ],
   "title": "Circle AI Contract Certification Bundle File Check Report",

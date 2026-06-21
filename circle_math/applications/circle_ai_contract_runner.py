@@ -2214,6 +2214,69 @@ def _receipt_gate_policy(
     }
 
 
+def _dependency_pin_policy_schema() -> dict[str, Any]:
+    string_list = {"type": "array", "items": {"type": "string"}}
+    normalized_param_pin = {
+        "type": "object",
+        "required": ["key", "value"],
+        "properties": {
+            "key": {"type": "string", "minLength": 1},
+            "value": {},
+        },
+        "additionalProperties": False,
+    }
+    return {
+        "type": "object",
+        "required": [
+            "required_kinds",
+            "required_theorem_ids",
+            "required_evidence_fields",
+            "required_recommendation_ids",
+            "required_validation_commands",
+            "required_model_config_fingerprints",
+            "required_normalized_params",
+        ],
+        "properties": {
+            "required_kinds": string_list,
+            "required_theorem_ids": string_list,
+            "required_evidence_fields": string_list,
+            "required_recommendation_ids": string_list,
+            "required_validation_commands": string_list,
+            "required_model_config_fingerprints": string_list,
+            "required_normalized_params": {
+                "type": "array",
+                "items": normalized_param_pin,
+            },
+        },
+        "additionalProperties": False,
+    }
+
+
+def _dependency_pin_policy(
+    *,
+    required_kinds: Sequence[str] = (),
+    required_theorem_ids: Sequence[str] = (),
+    required_evidence_fields: Sequence[str] = (),
+    required_recommendation_ids: Sequence[str] = (),
+    required_validation_commands: Sequence[str] = (),
+    required_model_config_fingerprints: Sequence[str] = (),
+    required_normalized_params: Sequence[tuple[str, Any]] = (),
+) -> dict[str, Any]:
+    return {
+        "required_kinds": list(required_kinds),
+        "required_theorem_ids": list(required_theorem_ids),
+        "required_evidence_fields": list(required_evidence_fields),
+        "required_recommendation_ids": list(required_recommendation_ids),
+        "required_validation_commands": list(required_validation_commands),
+        "required_model_config_fingerprints": list(
+            required_model_config_fingerprints
+        ),
+        "required_normalized_params": [
+            {"key": key, "value": value} for key, value in required_normalized_params
+        ],
+    }
+
+
 def build_contract_receipt_file_check_report(
     receipt: Mapping[str, Any],
     pack: Mapping[str, Any],
@@ -2288,6 +2351,7 @@ def build_contract_receipt_file_check_report(
             required_assurance_levels=required_assurance_levels,
             require_passed=require_passed,
         ),
+        "pin_policy": _dependency_pin_policy(),
         "summaries": [
             {
                 "path": receipt_path,
@@ -3360,6 +3424,7 @@ def build_contract_artifact_manifest_file_check_json_schema() -> dict[str, Any]:
             "manifest_count",
             "failure_count",
             "failures",
+            "pin_policy",
             "summaries",
         ],
         "properties": {
@@ -3368,6 +3433,7 @@ def build_contract_artifact_manifest_file_check_json_schema() -> dict[str, Any]:
             "manifest_count": {"type": "integer", "minimum": 0},
             "failure_count": {"type": "integer", "minimum": 0},
             "failures": string_list,
+            "pin_policy": _dependency_pin_policy_schema(),
             "summaries": {"type": "array", "items": summary},
         },
         "additionalProperties": False,
@@ -3799,6 +3865,7 @@ def build_contract_artifact_manifest_file_check_report(
         "manifest_count": 1,
         "failure_count": len(failures),
         "failures": failures,
+        "pin_policy": _dependency_pin_policy(),
         "summaries": summaries,
     }
     jsonschema.validate(
@@ -3903,6 +3970,7 @@ def build_contract_receipt_file_check_json_schema() -> dict[str, Any]:
             "failure_count",
             "failures",
             "gate_policy",
+            "pin_policy",
             "summaries",
         ],
         "properties": {
@@ -3912,6 +3980,7 @@ def build_contract_receipt_file_check_json_schema() -> dict[str, Any]:
             "failure_count": {"type": "integer", "minimum": 0},
             "failures": string_list,
             "gate_policy": gate_policy,
+            "pin_policy": _dependency_pin_policy_schema(),
             "summaries": {"type": "array", "items": summary},
         },
         "additionalProperties": False,
@@ -4139,6 +4208,7 @@ def build_contract_certification_bundle_file_check_json_schema() -> dict[str, An
             "failure_count",
             "failures",
             "gate_policy",
+            "pin_policy",
             "summaries",
         ],
         "properties": {
@@ -4148,6 +4218,7 @@ def build_contract_certification_bundle_file_check_json_schema() -> dict[str, An
             "failure_count": {"type": "integer", "minimum": 0},
             "failures": string_list,
             "gate_policy": gate_policy,
+            "pin_policy": _dependency_pin_policy_schema(),
             "summaries": {"type": "array", "items": summary},
         },
         "additionalProperties": False,
@@ -4420,6 +4491,7 @@ def build_contract_certification_bundle_file_check_report(
             required_assurance_levels=required_assurance_levels,
             require_passed=require_passed,
         ),
+        "pin_policy": _dependency_pin_policy(),
         "summaries": summaries,
     }
     jsonschema.validate(

@@ -183,6 +183,17 @@ def test_check_circle_ai_certification_bundle_accepts_model_config_bundle(
         "allowed_assurance_levels": ["mixed_theorem_and_computation"],
         "require_passed": True,
     }
+    assert payload["pin_policy"] == {
+        "required_kinds": [],
+        "required_theorem_ids": ["AIRA-T0239"],
+        "required_evidence_fields": ["real_phase_dirichlet_guardrail"],
+        "required_recommendation_ids": ["ROPE-USE-D19-MARGIN-FRONTIER"],
+        "required_validation_commands": [bundle["receipt"]["validation_commands"][0]],
+        "required_model_config_fingerprints": [
+            import_report["model_config_fingerprint"]
+        ],
+        "required_normalized_params": [{"key": "head_dim", "value": 128}],
+    }
     summary = payload["summaries"][0]
     assert summary["path"] == str(bundle_path)
     assert summary["kind"] == "rope_position_distinguishability"

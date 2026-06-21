@@ -2394,6 +2394,20 @@ def test_circle_ai_certify_cli_artifact_dir_writes_standard_audit_set(
         build_contract_artifact_manifest_file_check_json_schema(),
     )
     assert manifest_cli_report["ok"] is True
+    assert manifest_cli_report["pin_policy"] == {
+        "required_kinds": ["rope_position_distinguishability"],
+        "required_theorem_ids": ["AIRA-T0239"],
+        "required_evidence_fields": ["real_phase_dirichlet_guardrail"],
+        "required_recommendation_ids": ["ROPE-USE-D19-MARGIN-FRONTIER"],
+        "required_validation_commands": [receipt["validation_commands"][0]],
+        "required_model_config_fingerprints": [
+            model_config_import["model_config_fingerprint"]
+        ],
+        "required_normalized_params": [
+            {"key": "head_dim", "value": 128},
+            {"key": "context_length", "value": 131072},
+        ],
+    }
     assert "AIRA-T0239" in manifest_cli_report["summaries"][0]["theorem_ids"]
 
     missing_pin_cli = subprocess.run(

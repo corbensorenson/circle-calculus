@@ -100,6 +100,15 @@ def test_check_circle_ai_receipt_accepts_saved_receipt(tmp_path: Path) -> None:
         "allowed_assurance_levels": ["mixed_theorem_and_computation"],
         "require_passed": True,
     }
+    assert payload["pin_policy"] == {
+        "required_kinds": [],
+        "required_theorem_ids": ["AIRA-T0239"],
+        "required_evidence_fields": ["real_phase_dirichlet_guardrail"],
+        "required_recommendation_ids": ["ROPE-USE-D19-MARGIN-FRONTIER"],
+        "required_validation_commands": [receipt["validation_commands"][0]],
+        "required_model_config_fingerprints": [],
+        "required_normalized_params": [{"key": "head_dim", "value": 128}],
+    }
     assert payload["summaries"][0]["kind"] == "rope_position_distinguishability"
     assert payload["summaries"][0]["decision_verdict"] == receipt["decision"][
         "verdict"

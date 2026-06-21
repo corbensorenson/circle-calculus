@@ -157,6 +157,31 @@ def _pin_failures(
     return failures
 
 
+def _pin_policy(
+    *,
+    required_kinds: tuple[str, ...],
+    required_theorem_ids: tuple[str, ...],
+    required_evidence_fields: tuple[str, ...],
+    required_recommendation_ids: tuple[str, ...],
+    required_validation_commands: tuple[str, ...],
+    required_model_config_fingerprints: tuple[str, ...],
+    required_normalized_params: tuple[tuple[str, Any], ...],
+) -> dict[str, Any]:
+    return {
+        "required_kinds": list(required_kinds),
+        "required_theorem_ids": list(required_theorem_ids),
+        "required_evidence_fields": list(required_evidence_fields),
+        "required_recommendation_ids": list(required_recommendation_ids),
+        "required_validation_commands": list(required_validation_commands),
+        "required_model_config_fingerprints": list(
+            required_model_config_fingerprints
+        ),
+        "required_normalized_params": [
+            {"key": key, "value": value} for key, value in required_normalized_params
+        ],
+    }
+
+
 def check_artifact_manifest_files(
     *,
     manifest_paths: tuple[Path, ...],
@@ -220,6 +245,15 @@ def check_artifact_manifest_files(
         "manifest_count": len(manifest_paths),
         "failure_count": len(failures),
         "failures": failures,
+        "pin_policy": _pin_policy(
+            required_kinds=required_kinds,
+            required_theorem_ids=required_theorem_ids,
+            required_evidence_fields=required_evidence_fields,
+            required_recommendation_ids=required_recommendation_ids,
+            required_validation_commands=required_validation_commands,
+            required_model_config_fingerprints=required_model_config_fingerprints,
+            required_normalized_params=required_normalized_params,
+        ),
         "summaries": summaries,
     }
     jsonschema.validate(report, report_schema)

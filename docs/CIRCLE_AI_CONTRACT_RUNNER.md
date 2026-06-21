@@ -254,6 +254,8 @@ directory was produced from a model `config.json` and CI must pin that source
 config hash.
 Add `--require-normalized-param KEY=JSON_VALUE` when CI needs to pin a top-level
 `normalized_request` value such as `head_dim=128` or `sequence_length=32`.
+First-party check reports include a `pin_policy` block recording these requested
+dependencies, so audit logs show both what was required and what was observed.
 
 Copyable starting points live under:
 
@@ -341,6 +343,7 @@ FINGERPRINT` with the `model_config_fingerprint` from the embedded import
 report when the bundle came from an imported RoPE `config.json`. It is the
 preferred CI-facing command when a downstream project stores the full
 certification bundle rather than just the receipt.
+The bundle-check report records those requested dependencies in `pin_policy`.
 
 Validate a saved receipt file that another project has already produced:
 
@@ -370,6 +373,7 @@ fingerprint, contract fingerprint, receipt fingerprint, request-content
 fingerprint, normalized-request fingerprint, theorem ids, evidence fields,
 recommendation ids, validation commands, and normalized request, so CI can
 record what was certified without reopening every receipt file.
+The receipt-check report also records requested dependency pins in `pin_policy`.
 
 Receipt JSON is strict at the top level: unknown fields are rejected, while
 contract-specific details live under `evidence`, `support`, and `proof_layers`.
