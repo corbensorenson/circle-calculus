@@ -244,6 +244,12 @@ def test_standalone_artifact_verifier_accepts_standard_artifact_dirs(
         "certification_bundle_check",
     ]
     assert summary["semantic_check_sidecar_failure_count"] == 0
+    expected_preflight_labels = ["request_validation_report"]
+    if "model_config_import_report" in expected_labels:
+        expected_preflight_labels.append("model_config_import_report")
+    assert summary["preflight_sidecar_count"] == len(expected_preflight_labels)
+    assert summary["preflight_sidecar_labels"] == expected_preflight_labels
+    assert summary["preflight_sidecar_failure_count"] == 0
     assert "mathematical proof" in payload["not_claimed"]
 
 
@@ -546,6 +552,52 @@ def test_standalone_artifact_verifier_rejects_stale_gate_report_sidecar(
     assert summary["semantic_check_sidecar_count"] == 3
     assert summary["semantic_check_sidecar_failure_count"] == 1
     assert "gate_report receipt_content_fingerprint" in "\n".join(
+        payload["failures"]
+    )
+
+
+def test_standalone_artifact_verifier_rejects_stale_model_config_import_sidecar(
+    tmp_path: Path,
+) -> None:
+    manifest_path, _paths = _emit_standard_rope_artifacts(tmp_path)
+    artifact_dir = manifest_path.parent
+    import_path = artifact_dir / "standard_rope_config_model_config_import.json"
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    import_report = json.loads(import_path.read_text(encoding="utf-8"))
+    import_report["request_content_fingerprint"] = "0" * 64
+    import_path.write_text(
+        json.dumps(import_report, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+    )
+    for artifact in manifest["artifacts"]:
+        if artifact["label"] == "model_config_import_report":
+            artifact["sha256"] = hashlib.sha256(import_path.read_bytes()).hexdigest()
+    manifest_path.write_text(
+        json.dumps(manifest, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+    )
+
+    result = subprocess.run(
+        [
+            sys.executable,
+            str(SCRIPT),
+            str(manifest_path),
+            "--format",
+            "json",
+        ],
+        cwd=ROOT,
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+
+    assert result.returncode == 4
+    payload = json.loads(result.stderr)
+    assert payload["accepted"] is False
+    summary = payload["manifests"][0]
+    assert summary["preflight_sidecar_count"] == 2
+    assert summary["preflight_sidecar_failure_count"] == 1
+    assert "model_config_import_report request_content_fingerprint" in "\n".join(
         payload["failures"]
     )
 

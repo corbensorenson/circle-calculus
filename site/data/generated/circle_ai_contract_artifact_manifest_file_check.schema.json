@@ -352,6 +352,20 @@
             "minLength": 1,
             "type": "string"
           },
+          "preflight_sidecar_count": {
+            "minimum": 0,
+            "type": "integer"
+          },
+          "preflight_sidecar_failure_count": {
+            "minimum": 0,
+            "type": "integer"
+          },
+          "preflight_sidecar_labels": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
           "receipt_content_fingerprint": {
             "anyOf": [
               {
@@ -541,6 +555,9 @@
           "semantic_check_sidecar_count",
           "semantic_check_sidecar_labels",
           "semantic_check_sidecar_failure_count",
+          "preflight_sidecar_count",
+          "preflight_sidecar_labels",
+          "preflight_sidecar_failure_count",
           "theorem_count",
           "theorem_ids",
           "evidence_field_count",

@@ -690,6 +690,70 @@ def _semantic_check_sidecar_summary_and_failures(
     )
 
 
+def _preflight_sidecar_summary_and_failures(
+    *,
+    manifest: dict[str, Any],
+    artifacts_by_label: dict[str, dict[str, Any]],
+    manifest_path: Path,
+    base_dir: Path | None,
+) -> tuple[dict[str, Any], list[str]]:
+    expected_request_fingerprint = manifest.get("request_content_fingerprint")
+    expected_request_fingerprint = (
+        expected_request_fingerprint
+        if isinstance(expected_request_fingerprint, str)
+        else None
+    )
+    labels: list[str] = []
+    failures: list[str] = []
+
+    for label in ("request_validation_report", "model_config_import_report"):
+        artifact = artifacts_by_label.get(label)
+        if artifact is None:
+            continue
+        labels.append(label)
+        raw_path = artifact.get("path")
+        if not isinstance(raw_path, str):
+            failures.append(f"{label} path is not a string")
+            continue
+        path = _resolve_existing_artifact(
+            raw_path,
+            manifest_path=manifest_path,
+            base_dir=base_dir,
+        )
+        if path is None:
+            failures.append(f"{label} artifact is missing: {raw_path}")
+            continue
+        try:
+            payload = _load_json_object(path)
+        except (OSError, ValueError, json.JSONDecodeError, UnicodeDecodeError) as exc:
+            failures.append(f"{label} artifact is unreadable: {exc}")
+            continue
+        if payload.get("schema_id") != EXPECTED_SCHEMA_BY_LABEL[label]:
+            failures.append(f"{label} schema_id is unexpected")
+        if payload.get("ok") is not True:
+            failures.append(f"{label} report ok was not true")
+        if payload.get("failure_count") != 0:
+            failures.append(f"{label} failure_count was not zero")
+        if (
+            expected_request_fingerprint is not None
+            and payload.get("request_content_fingerprint")
+            != expected_request_fingerprint
+        ):
+            failures.append(
+                f"{label} request_content_fingerprint does not match artifact "
+                "manifest"
+            )
+
+    return (
+        {
+            "preflight_sidecar_count": len(labels),
+            "preflight_sidecar_labels": labels,
+            "preflight_sidecar_failure_count": len(failures),
+        },
+        failures,
+    )
+
+
 def _receipt_theorem_ids(receipt: dict[str, Any] | None) -> list[str]:
     if receipt is None:
         return []
@@ -862,6 +926,15 @@ def verify_manifest(
         )
     )
     failures.extend(semantic_sidecar_failures)
+    preflight_sidecar_summary, preflight_sidecar_failures = (
+        _preflight_sidecar_summary_and_failures(
+            manifest=manifest,
+            artifacts_by_label=artifacts_by_label,
+            manifest_path=path,
+            base_dir=base_dir,
+        )
+    )
+    failures.extend(preflight_sidecar_failures)
 
     status = manifest.get("status")
     decision = manifest.get("decision_verdict")
@@ -936,6 +1009,7 @@ def verify_manifest(
         "receipt_content_fingerprint": manifest.get("receipt_content_fingerprint"),
         **receipt_replay_summary,
         **semantic_sidecar_summary,
+        **preflight_sidecar_summary,
         "request_content_fingerprint_short": _short(
             manifest.get("request_content_fingerprint")
         ),

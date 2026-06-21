@@ -3587,6 +3587,9 @@ def build_contract_artifact_manifest_file_check_json_schema() -> dict[str, Any]:
             "semantic_check_sidecar_count",
             "semantic_check_sidecar_labels",
             "semantic_check_sidecar_failure_count",
+            "preflight_sidecar_count",
+            "preflight_sidecar_labels",
+            "preflight_sidecar_failure_count",
             "theorem_count",
             "theorem_ids",
             "evidence_field_count",
@@ -3648,6 +3651,12 @@ def build_contract_artifact_manifest_file_check_json_schema() -> dict[str, Any]:
             "semantic_check_sidecar_count": {"type": "integer", "minimum": 0},
             "semantic_check_sidecar_labels": string_list,
             "semantic_check_sidecar_failure_count": {
+                "type": "integer",
+                "minimum": 0,
+            },
+            "preflight_sidecar_count": {"type": "integer", "minimum": 0},
+            "preflight_sidecar_labels": string_list,
+            "preflight_sidecar_failure_count": {
                 "type": "integer",
                 "minimum": 0,
             },
@@ -4144,6 +4153,65 @@ def _semantic_check_sidecar_summary_and_failures(
     )
 
 
+def _preflight_sidecar_summary_and_failures(
+    *,
+    artifact_by_label: Mapping[str, Mapping[str, Any]],
+    manifest: Mapping[str, Any],
+    manifest_path: Path,
+) -> tuple[dict[str, Any], list[str]]:
+    expected_request_fingerprint = manifest.get("request_content_fingerprint")
+    expected_request_fingerprint = (
+        expected_request_fingerprint
+        if isinstance(expected_request_fingerprint, str)
+        else None
+    )
+    labels: list[str] = []
+    failures: list[str] = []
+
+    preflight_schemas = {
+        "request_validation_report": build_contract_request_validation_json_schema,
+        "model_config_import_report": build_rope_model_config_import_json_schema,
+    }
+    for label, schema_builder in preflight_schemas.items():
+        if label not in artifact_by_label:
+            continue
+        labels.append(label)
+        payload = _load_artifact_payload_by_label(
+            artifact_by_label=artifact_by_label,
+            manifest_path=manifest_path,
+            label=label,
+        )
+        if payload is None:
+            failures.append(f"{label} artifact is not readable JSON")
+            continue
+        try:
+            jsonschema.validate(payload, schema_builder())
+        except (jsonschema.ValidationError, jsonschema.SchemaError) as exc:
+            failures.append(f"{label} schema validation failed: {exc}")
+        if payload.get("ok") is not True:
+            failures.append(f"{label} report ok was not true")
+        if payload.get("failure_count") != 0:
+            failures.append(f"{label} failure_count was not zero")
+        if (
+            expected_request_fingerprint is not None
+            and payload.get("request_content_fingerprint")
+            != expected_request_fingerprint
+        ):
+            failures.append(
+                f"{label} request_content_fingerprint does not match artifact "
+                "manifest"
+            )
+
+    return (
+        {
+            "preflight_sidecar_count": len(labels),
+            "preflight_sidecar_labels": labels,
+            "preflight_sidecar_failure_count": len(failures),
+        },
+        failures,
+    )
+
+
 def build_contract_artifact_manifest_file_check_report(
     manifest: Mapping[str, Any],
     *,
@@ -4298,6 +4366,15 @@ def build_contract_artifact_manifest_file_check_report(
             receipt_payload=receipt_payload,
         )
         path_failures.extend(semantic_sidecar_failures)
+        (
+            preflight_sidecar_summary,
+            preflight_sidecar_failures,
+        ) = _preflight_sidecar_summary_and_failures(
+            artifact_by_label=artifact_by_label,
+            manifest=manifest,
+            manifest_path=manifest_path,
+        )
+        path_failures.extend(preflight_sidecar_failures)
         summary = {
             "path": _display_manifest_check_path(manifest_path),
             "kind": manifest.get("kind"),
@@ -4346,6 +4423,7 @@ def build_contract_artifact_manifest_file_check_report(
             ),
             **receipt_replay_summary,
             **semantic_sidecar_summary,
+            **preflight_sidecar_summary,
             "theorem_count": len(receipt_theorem_ids),
             "theorem_ids": receipt_theorem_ids,
             "evidence_field_count": len(receipt_evidence_fields),

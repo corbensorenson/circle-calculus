@@ -2542,6 +2542,15 @@ def test_circle_ai_certify_cli_artifact_dir_writes_standard_audit_set(
     assert artifact_manifest_report["summaries"][0][
         "semantic_check_sidecar_failure_count"
     ] == 0
+    assert artifact_manifest_report["summaries"][0]["preflight_sidecar_count"] == 2
+    assert artifact_manifest_report["summaries"][0]["preflight_sidecar_labels"] == [
+        "request_validation_report",
+        "model_config_import_report",
+    ]
+    assert (
+        artifact_manifest_report["summaries"][0]["preflight_sidecar_failure_count"]
+        == 0
+    )
 
     assert artifact_manifest_check["summaries"][0]["artifact_count"] == 9
     assert artifact_manifest_check["summaries"][0]["failure_count"] == 0
@@ -2871,6 +2880,69 @@ def test_artifact_manifest_check_rejects_stale_receipt_check_sidecar(
     assert report["summaries"][0]["semantic_check_sidecar_count"] == 3
     assert report["summaries"][0]["semantic_check_sidecar_failure_count"] == 1
     assert "receipt_check receipt_content_fingerprint" in "\n".join(
+        report["failures"]
+    )
+
+
+def test_artifact_manifest_check_rejects_stale_request_validation_sidecar(
+    tmp_path: Path,
+) -> None:
+    artifact_dir = tmp_path / "artifacts"
+    prefix = "standard_rope_config"
+    subprocess.run(
+        [
+            sys.executable,
+            str(SCRIPT),
+            "rope",
+            "--model-config",
+            str(STANDARD_ROPE_MODEL_CONFIG),
+            "--requested-margin",
+            "1/328459",
+            "--artifact-dir",
+            str(artifact_dir),
+            "--require-status",
+            "proved",
+            "--require-decision",
+            "passed",
+            "--require-assurance",
+            "mixed_theorem_and_computation",
+            "--require-passed",
+        ],
+        cwd=ROOT,
+        check=True,
+        text=True,
+        capture_output=True,
+    )
+
+    manifest_path = artifact_dir / f"{prefix}_artifact_manifest.json"
+    request_validation_path = artifact_dir / f"{prefix}_request_validation.json"
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    request_validation = json.loads(
+        request_validation_path.read_text(encoding="utf-8")
+    )
+    request_validation["request_content_fingerprint"] = "0" * 64
+    request_validation_path.write_text(
+        json.dumps(request_validation, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+    )
+    for artifact in manifest["artifacts"]:
+        if artifact["label"] == "request_validation_report":
+            artifact["sha256"] = hashlib.sha256(
+                request_validation_path.read_bytes()
+            ).hexdigest()
+
+    report = build_contract_artifact_manifest_file_check_report(
+        manifest,
+        manifest_path=manifest_path,
+    )
+    jsonschema.validate(
+        report,
+        build_contract_artifact_manifest_file_check_json_schema(),
+    )
+    assert report["ok"] is False
+    assert report["summaries"][0]["preflight_sidecar_count"] == 2
+    assert report["summaries"][0]["preflight_sidecar_failure_count"] == 1
+    assert "request_validation_report request_content_fingerprint" in "\n".join(
         report["failures"]
     )
 

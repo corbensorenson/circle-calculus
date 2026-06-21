@@ -221,6 +221,9 @@ and replayed receipt fingerprints match the saved receipt. The saved
 `_receipt_check.json`, `_gate_report.json`, and
 `_certification_bundle_check.json` sidecars are also audited: each must be `ok`,
 use the manifest's gate policy, and point back to the same receipt fingerprint.
+Request preflight sidecars are checked too: `_request_validation.json` and, for
+RoPE config imports, `_model_config_import.json` must be `ok` and must point
+back to the same request fingerprint.
 Pass the dependency-pin flags below directly to `scripts/circle_ai_certify.py`
 with `--artifact-dir` when the first generated `_artifact_manifest_check.json`
 should already carry and enforce the reusable `pin_policy`.
@@ -240,7 +243,8 @@ against the receipt fingerprint, so stale replay reports fail the whole artifact
 directory instead of being silently listed as extra files. The receipt-check,
 gate-report, and bundle-check sidecars get the same semantic treatment: if a
 downstream job updates their file hash but leaves stale receipt facts inside,
-the manifest check still fails.
+the manifest check still fails. Request-validation and model-config import
+sidecars are also checked against the manifest request fingerprint.
 It also accepts `--require-kind`, `--require-theorem-id`,
 `--require-evidence-field`, `--require-recommendation-id`, and
 `--require-validation-command` for first-party CI jobs that need the same
