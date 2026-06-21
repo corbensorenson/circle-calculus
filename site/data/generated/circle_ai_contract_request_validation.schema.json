@@ -16,6 +16,9 @@
         "null"
       ]
     },
+    "content_fingerprint_algorithm": {
+      "const": "sha256-json-v1"
+    },
     "failure_count": {
       "minimum": 0,
       "type": "integer"
@@ -35,6 +38,10 @@
     "ok": {
       "type": "boolean"
     },
+    "request_content_fingerprint": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
     "request_schema_id": {
       "const": "circle_calculus.ai_contract_request.v0"
     },
@@ -45,6 +52,8 @@
   "required": [
     "schema_id",
     "request_schema_id",
+    "content_fingerprint_algorithm",
+    "request_content_fingerprint",
     "ok",
     "kind",
     "canonical_kind",

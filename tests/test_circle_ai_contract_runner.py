@@ -1461,6 +1461,9 @@ def test_request_validation_report_schema_accepts_public_reports() -> None:
     jsonschema.Draft202012Validator.check_schema(schema)
     jsonschema.validate(good_report, schema)
     jsonschema.validate(bad_report, schema)
+    assert good_report["content_fingerprint_algorithm"] == "sha256-json-v1"
+    assert len(good_report["request_content_fingerprint"]) == 64
+    assert len(bad_report["request_content_fingerprint"]) == 64
     assert good_report["ok"] is True
     assert bad_report["ok"] is False
 
@@ -2191,7 +2194,17 @@ def test_circle_ai_certify_cli_validates_request_without_receipt(
 
     payload = json.loads(result.stdout)
     assert json.loads(report_path.read_text()) == payload
-    assert payload == {
+    assert payload["content_fingerprint_algorithm"] == "sha256-json-v1"
+    assert len(payload["request_content_fingerprint"]) == 64
+    assert {
+        key: value
+        for key, value in payload.items()
+        if key
+        not in {
+            "content_fingerprint_algorithm",
+            "request_content_fingerprint",
+        }
+    } == {
         "schema_id": "circle_calculus.ai_contract_request_validation.v0",
         "request_schema_id": "circle_calculus.ai_contract_request.v0",
         "ok": True,

@@ -1605,6 +1605,8 @@ def build_contract_request_validation_report(request: Mapping[str, Any]) -> dict
     return {
         "schema_id": REQUEST_VALIDATION_SCHEMA_ID,
         "request_schema_id": REQUEST_SCHEMA_ID,
+        "content_fingerprint_algorithm": FINGERPRINT_ALGORITHM,
+        "request_content_fingerprint": _json_fingerprint(_json_ready_value(request)),
         "ok": not failures,
         "kind": kind,
         "canonical_kind": canonical_kind,
@@ -2517,6 +2519,8 @@ def build_contract_request_validation_json_schema() -> dict[str, Any]:
         "required": [
             "schema_id",
             "request_schema_id",
+            "content_fingerprint_algorithm",
+            "request_content_fingerprint",
             "ok",
             "kind",
             "canonical_kind",
@@ -2526,6 +2530,11 @@ def build_contract_request_validation_json_schema() -> dict[str, Any]:
         "properties": {
             "schema_id": {"const": REQUEST_VALIDATION_SCHEMA_ID},
             "request_schema_id": {"const": REQUEST_SCHEMA_ID},
+            "content_fingerprint_algorithm": {"const": FINGERPRINT_ALGORITHM},
+            "request_content_fingerprint": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$",
+            },
             "ok": {"type": "boolean"},
             "kind": {"type": ["string", "null"]},
             "canonical_kind": {
