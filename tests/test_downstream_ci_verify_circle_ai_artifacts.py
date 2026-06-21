@@ -395,6 +395,53 @@ def test_standalone_artifact_verifier_accepts_multi_contract_kind_gate(
     assert payload["required_normalized_params"] == [
         {"key": key, "value": value} for key, value in required_normalized_params
     ]
+    expected_pin_policy = {
+        "required_kinds": expected_kinds,
+        "required_theorem_ids": required_theorem_ids,
+        "required_evidence_fields": required_evidence_fields,
+        "required_recommendation_ids": required_recommendation_ids,
+        "required_validation_commands": required_validation_commands,
+        "required_model_config_fingerprints": required_model_config_fingerprints,
+        "required_normalized_params": [
+            {"key": key, "value": value} for key, value in required_normalized_params
+        ],
+    }
+    assert payload["pin_policy"] == expected_pin_policy
+
+    policy_path = tmp_path / "artifact_pin_policy.json"
+    policy_path.write_text(
+        json.dumps({"pin_policy": expected_pin_policy}, indent=2, sort_keys=True)
+        + "\n",
+        encoding="utf-8",
+    )
+    policy_result = subprocess.run(
+        [
+            sys.executable,
+            str(SCRIPT),
+            *(str(path) for path in manifests),
+            "--format",
+            "json",
+            "--require-status",
+            "proved",
+            "--require-decision",
+            "passed",
+            "--require-assurance",
+            "theorem_backed",
+            "--require-assurance",
+            "mixed_theorem_and_computation",
+            "--require-passed",
+            "--require-manifest-check",
+            "--pin-policy",
+            str(policy_path),
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    policy_payload = json.loads(policy_result.stdout)
+    assert policy_payload["accepted"] is True
+    assert policy_payload["pin_policy"] == expected_pin_policy
 
 
 def test_standalone_artifact_verifier_rejects_missing_required_kind(

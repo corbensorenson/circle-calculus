@@ -239,7 +239,10 @@ source `config.json`. Use
 downstream job depends on.
 For a copyable standard-library-only downstream gate, use
 `examples/downstream_ci_verify_circle_ai_artifacts.py`; it performs the same
-artifact-integrity checks without importing Circle or `jsonschema`.
+artifact-integrity checks without importing Circle or `jsonschema`. It also
+accepts `--pin-policy` with either a whole prior report or just the
+`pin_policy` object, and its JSON report records the merged `pin_policy` for
+replay.
 The standard artifact-directory path and standalone verifier are covered for
 RoPE, KV-cache, sparse-attention, and recurrence receipts, so downstream CI can
 adopt one gate shape across all four current contract families.

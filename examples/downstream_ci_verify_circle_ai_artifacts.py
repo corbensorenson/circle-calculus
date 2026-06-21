@@ -172,6 +172,142 @@ def _parse_normalized_param_pin(raw: str) -> tuple[str, Any]:
     return key, value
 
 
+def _load_pin_policy(path: Path | None) -> dict[str, Any]:
+    if path is None:
+        return {}
+    payload = _load_json_object(path)
+    if "pin_policy" in payload:
+        policy = payload["pin_policy"]
+        if not isinstance(policy, dict):
+            raise ValueError(f"{path} pin_policy must be a JSON object")
+        return policy
+    return payload
+
+
+def _policy_string_list(policy: dict[str, Any], key: str) -> list[str]:
+    values = policy.get(key, [])
+    if not isinstance(values, list) or not all(
+        isinstance(value, str) for value in values
+    ):
+        raise ValueError(f"pin policy {key} must be a list of strings")
+    return list(values)
+
+
+def _policy_normalized_params(policy: dict[str, Any]) -> list[tuple[str, Any]]:
+    values = policy.get("required_normalized_params", [])
+    if not isinstance(values, list):
+        raise ValueError(
+            "pin policy required_normalized_params must be a list of objects"
+        )
+    pins: list[tuple[str, Any]] = []
+    for item in values:
+        if not isinstance(item, dict):
+            raise ValueError(
+                "pin policy required_normalized_params must be a list of objects"
+            )
+        key = item.get("key")
+        if not isinstance(key, str) or not key:
+            raise ValueError(
+                "pin policy required_normalized_params entries need a string key"
+            )
+        if "value" not in item:
+            raise ValueError(
+                "pin policy required_normalized_params entries need a value"
+            )
+        pins.append((key, item["value"]))
+    return pins
+
+
+def _merge_strings(*groups: list[str]) -> list[str]:
+    merged: list[str] = []
+    seen: set[str] = set()
+    for group in groups:
+        for value in group:
+            if value not in seen:
+                seen.add(value)
+                merged.append(value)
+    return merged
+
+
+def _value_marker(value: Any) -> str:
+    try:
+        return json.dumps(value, sort_keys=True, separators=(",", ":"))
+    except TypeError:
+        return repr(value)
+
+
+def _merge_normalized_params(
+    *groups: list[tuple[str, Any]],
+) -> list[tuple[str, Any]]:
+    merged: list[tuple[str, Any]] = []
+    seen: set[tuple[str, str]] = set()
+    for group in groups:
+        for key, value in group:
+            marker = (key, _value_marker(value))
+            if marker not in seen:
+                seen.add(marker)
+                merged.append((key, value))
+    return merged
+
+
+def _merge_pin_policy_args(
+    args: argparse.Namespace,
+    required_normalized_params: list[tuple[str, Any]],
+) -> list[tuple[str, Any]]:
+    policy = _load_pin_policy(args.pin_policy)
+    args.require_kind = _merge_strings(
+        _policy_string_list(policy, "required_kinds"),
+        args.require_kind,
+    )
+    args.require_theorem_id = _merge_strings(
+        _policy_string_list(policy, "required_theorem_ids"),
+        args.require_theorem_id,
+    )
+    args.require_evidence_field = _merge_strings(
+        _policy_string_list(policy, "required_evidence_fields"),
+        args.require_evidence_field,
+    )
+    args.require_recommendation_id = _merge_strings(
+        _policy_string_list(policy, "required_recommendation_ids"),
+        args.require_recommendation_id,
+    )
+    args.require_validation_command = _merge_strings(
+        _policy_string_list(policy, "required_validation_commands"),
+        args.require_validation_command,
+    )
+    args.require_model_config_fingerprint = _merge_strings(
+        _policy_string_list(policy, "required_model_config_fingerprints"),
+        args.require_model_config_fingerprint,
+    )
+    return _merge_normalized_params(
+        _policy_normalized_params(policy),
+        required_normalized_params,
+    )
+
+
+def _pin_policy(
+    *,
+    required_kinds: list[str],
+    required_theorem_ids: list[str],
+    required_evidence_fields: list[str],
+    required_recommendation_ids: list[str],
+    required_validation_commands: list[str],
+    required_model_config_fingerprints: list[str],
+    required_normalized_params: list[tuple[str, Any]],
+) -> dict[str, Any]:
+    return {
+        "required_kinds": required_kinds,
+        "required_theorem_ids": required_theorem_ids,
+        "required_evidence_fields": required_evidence_fields,
+        "required_recommendation_ids": required_recommendation_ids,
+        "required_validation_commands": required_validation_commands,
+        "required_model_config_fingerprints": required_model_config_fingerprints,
+        "required_normalized_params": [
+            {"key": key, "value": value} for key, value in required_normalized_params
+        ],
+    }
+
+
 def _artifact_report(
     artifact: dict[str, Any],
     *,
@@ -746,6 +882,15 @@ def verify_manifests(
         "required_normalized_params": [
             {"key": key, "value": value} for key, value in required_normalized_params
         ],
+        "pin_policy": _pin_policy(
+            required_kinds=required_kinds,
+            required_theorem_ids=required_theorem_ids,
+            required_evidence_fields=required_evidence_fields,
+            required_recommendation_ids=required_recommendation_ids,
+            required_validation_commands=required_validation_commands,
+            required_model_config_fingerprints=required_model_config_fingerprints,
+            required_normalized_params=required_normalized_params,
+        ),
         "required_statuses": required_statuses,
         "required_decisions": required_decisions,
         "required_assurances": required_assurances,
@@ -882,6 +1027,15 @@ def main() -> int:
         ),
     )
     parser.add_argument(
+        "--pin-policy",
+        type=Path,
+        help=(
+            "Load dependency pins from a JSON object shaped like a check report "
+            "pin_policy block. A whole prior check report is also accepted. "
+            "Explicit --require-* flags are merged with loaded pins."
+        ),
+    )
+    parser.add_argument(
         "--require-decision",
         action="append",
         default=[],
@@ -916,6 +1070,10 @@ def main() -> int:
             _parse_normalized_param_pin(raw)
             for raw in args.require_normalized_param
         ]
+        required_normalized_params = _merge_pin_policy_args(
+            args,
+            required_normalized_params,
+        )
         report = verify_manifests(
             args.manifests,
             base_dir=args.base_dir,

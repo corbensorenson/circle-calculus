@@ -641,6 +641,9 @@ on, `--require-evidence-field` for receipt fields it reads, and
 recheck command, `--require-model-config-fingerprint` when the RoPE receipt came
 from an imported model `config.json`, and `--require-normalized-param` when it
 must pin the certified configuration values.
+Use `--pin-policy PATH` to reload either a whole prior verifier report or just
+its `pin_policy` object; explicit `--require-*` flags merge with the loaded
+policy.
 
 That script checks the manifest, referenced file SHA-256 hashes, declared schema
 ids, mirrored receipt status, and optional manifest-check report without

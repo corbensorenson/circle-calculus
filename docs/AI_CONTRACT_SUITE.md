@@ -680,6 +680,9 @@ on, `--require-evidence-field` for receipt fields it reads, and
 recheck command, `--require-model-config-fingerprint` when the RoPE receipt came
 from an imported model `config.json`, and `--require-normalized-param` when it
 must pin the certified configuration values.
+Use `--pin-policy PATH` to reload either a whole prior verifier report or just
+its `pin_policy` object; explicit `--require-*` flags merge with the loaded
+policy.
 
 A downstream project should fail fast if the readiness index or contract-level
 `ready_for_downstream_fixture_use` is false. That gate only means the public
