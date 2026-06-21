@@ -11,6 +11,7 @@ import pytest
 
 from circle_math.applications import (
     build_contract_receipt,
+    build_contract_receipt_file_check_json_schema,
     build_contract_receipt_json_schema,
     build_contract_receipt_from_request,
     build_contract_request,
@@ -874,6 +875,53 @@ def test_circle_ai_certify_cli_imports_checked_in_model_config(
     assert saved_receipt["normalized_request"]["head_dim"] == 128
     assert saved_receipt["normalized_request"]["base"] == 10000.0
     assert saved_receipt["normalized_request"]["context_length"] == 131072
+
+
+def test_circle_ai_certify_cli_writes_receipt_check_report(
+    tmp_path: Path,
+) -> None:
+    receipt_path = tmp_path / "receipt.json"
+    report_path = tmp_path / "receipt_check.json"
+
+    result = subprocess.run(
+        [
+            sys.executable,
+            str(SCRIPT),
+            "rope",
+            "--context",
+            "131072",
+            "--requested-margin",
+            "1/328459",
+            "--json-out",
+            str(receipt_path),
+            "--receipt-check-out",
+            str(report_path),
+            "--require-status",
+            "proved",
+            "--require-passed",
+            "--format",
+            "json",
+        ],
+        cwd=ROOT,
+        check=True,
+        text=True,
+        capture_output=True,
+    )
+
+    receipt = json.loads(receipt_path.read_text())
+    report = json.loads(report_path.read_text())
+    assert json.loads(result.stdout) == receipt
+    jsonschema.validate(report, build_contract_receipt_file_check_json_schema())
+    assert report["ok"] is True
+    assert report["receipt_count"] == 1
+    assert report["gate_policy"] == {
+        "allowed_statuses": ["proved"],
+        "require_passed": True,
+    }
+    assert report["summaries"][0]["path"] == str(receipt_path)
+    assert report["summaries"][0]["receipt_content_fingerprint"] == receipt[
+        "receipt_content_fingerprint"
+    ]
 
 
 def test_circle_ai_certify_cli_rejects_scaled_rope_model_config(

@@ -16,7 +16,9 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from circle_math.applications import (  # noqa: E402
+    CIRCLE_AI_CONTRACT_RECEIPT_FILE_CHECK_SCHEMA_ID,
     build_contract_receipt,
+    build_contract_receipt_file_check_json_schema,
     build_contract_receipt_from_request,
     build_contract_receipt_json_schema,
     build_contract_request,
@@ -25,8 +27,10 @@ from circle_math.applications import (  # noqa: E402
     build_rope_request_parameters_from_model_config,
     load_contract_pack,
     receipt_summary_lines,
+    validate_contract_receipt_against_pack,
 )
 from circle_math.applications.circle_ai_contract_runner import (  # noqa: E402
+    RECEIPT_FILE_CHECK_SCHEMA_PATH,
     RECEIPT_SCHEMA_PATH,
     REQUEST_VALIDATION_SCHEMA_PATH,
 )
@@ -41,6 +45,7 @@ RECEIPT_STATUS_VALUES = (
 )
 DEFAULT_REQUEST_VALIDATION_SCHEMA = ROOT / REQUEST_VALIDATION_SCHEMA_PATH
 DEFAULT_RECEIPT_SCHEMA = ROOT / RECEIPT_SCHEMA_PATH
+DEFAULT_RECEIPT_CHECK_SCHEMA = ROOT / RECEIPT_FILE_CHECK_SCHEMA_PATH
 DEFAULT_PACK_PATH = ROOT / "site" / "data" / "generated" / "circle_ai_contract_pack.json"
 
 
@@ -77,6 +82,24 @@ def add_common_options(parser: argparse.ArgumentParser) -> None:
         help=(
             "Optional path for the exact versioned request JSON used by this "
             "run. For validate-only request files, this writes the loaded request."
+        ),
+    )
+    parser.add_argument(
+        "--receipt-check-out",
+        type=Path,
+        help=(
+            "Optional path for a schema-validated receipt-check report for "
+            "the emitted receipt."
+        ),
+    )
+    parser.add_argument(
+        "--receipt-check-schema",
+        type=Path,
+        default=DEFAULT_RECEIPT_CHECK_SCHEMA,
+        help=(
+            "Generated JSON Schema used to validate --receipt-check-out reports. "
+            "Defaults to "
+            "site/data/generated/circle_ai_contract_receipt_file_check.schema.json."
         ),
     )
     parser.add_argument(
@@ -244,6 +267,15 @@ def _load_request_json(path: Path) -> dict[str, Any]:
     return _load_json_object(path, label="request JSON")
 
 
+def _display_path(path: Path | None) -> str:
+    if path is None:
+        return "<emitted-receipt>"
+    try:
+        return str(path.relative_to(ROOT))
+    except ValueError:
+        return str(path)
+
+
 def _receipt_from_request_json(
     path: Path,
     *,
@@ -281,6 +313,20 @@ def _validate_receipt_schema(receipt: dict[str, Any], schema_path: Path) -> None
     if schema != generated_schema:
         raise jsonschema.SchemaError(
             "receipt schema drifted from application builder"
+        )
+
+
+def _validate_receipt_check_report(
+    report: dict[str, Any],
+    schema_path: Path,
+) -> None:
+    schema = _load_json_object(schema_path, label="receipt-check schema")
+    jsonschema.Draft202012Validator.check_schema(schema)
+    jsonschema.validate(report, schema)
+    generated_schema = build_contract_receipt_file_check_json_schema()
+    if schema != generated_schema:
+        raise jsonschema.SchemaError(
+            "receipt-check schema drifted from application builder"
         )
 
 
@@ -354,16 +400,51 @@ def _receipt_gate_failures(receipt: dict[str, Any], args: argparse.Namespace) ->
     return failures
 
 
+def _receipt_check_report(
+    receipt: dict[str, Any],
+    *,
+    pack: dict[str, Any],
+    receipt_path: Path | None,
+    gate_failures: list[str],
+    args: argparse.Namespace,
+) -> dict[str, Any]:
+    pack_failures = validate_contract_receipt_against_pack(receipt, pack)
+    failures = [*pack_failures, *gate_failures]
+    return {
+        "schema_id": CIRCLE_AI_CONTRACT_RECEIPT_FILE_CHECK_SCHEMA_ID,
+        "ok": not failures,
+        "receipt_count": 1,
+        "failure_count": len(failures),
+        "failures": failures,
+        "gate_policy": {
+            "allowed_statuses": list(args.require_status),
+            "require_passed": args.require_passed,
+        },
+        "summaries": [
+            {
+                "path": _display_path(receipt_path),
+                "kind": receipt["kind"],
+                "contract_id": receipt["contract_id"],
+                "status": receipt["status"],
+                "request_passed": receipt["request_passed"],
+                "theorem_count": receipt["proof_status"]["theorem_count"],
+                "receipt_content_fingerprint": receipt["receipt_content_fingerprint"],
+                "failure_count": len(failures),
+            }
+        ],
+    }
+
+
 def main() -> int:
     args = parse_args()
     if args.kind == "request":
         if args.request_out is not None:
             write_json(args.request_out, _load_request_json(args.request_json))
         if args.validate_only:
-            if args.require_status or args.require_passed:
+            if args.require_status or args.require_passed or args.receipt_check_out:
                 raise SystemExit(
-                    "--require-status and --require-passed require a receipt; "
-                    "omit --validate-only"
+                    "--require-status, --require-passed, and --receipt-check-out "
+                    "require a receipt; omit --validate-only"
                 )
             report = _request_validation_report(args.request_json)
             _validate_request_validation_report(
@@ -399,15 +480,26 @@ def main() -> int:
             )
         except ValueError as exc:
             raise SystemExit(str(exc)) from exc
+    assert pack is not None
     _validate_receipt_schema(receipt, args.receipt_schema)
+    gate_failures = _receipt_gate_failures(receipt, args)
     if args.json_out is not None:
         write_json(args.json_out, receipt)
+    if args.receipt_check_out is not None:
+        check_report = _receipt_check_report(
+            receipt,
+            pack=pack,
+            receipt_path=args.json_out,
+            gate_failures=gate_failures,
+            args=args,
+        )
+        _validate_receipt_check_report(check_report, args.receipt_check_schema)
+        write_json(args.receipt_check_out, check_report)
     if args.format == "json":
         print(json.dumps(receipt, indent=2, sort_keys=True))
     else:
         for line in receipt_summary_lines(receipt):
             print(line)
-    gate_failures = _receipt_gate_failures(receipt, args)
     for failure in gate_failures:
         print(f"receipt_gate_failure={failure}", file=sys.stderr)
     return 0 if not gate_failures else 1
