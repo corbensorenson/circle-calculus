@@ -216,7 +216,11 @@ def main() -> int:
                 f"passed={summary['request_passed']} "
                 f"decision={summary['decision_verdict']} "
                 f"assurance={summary['decision_assurance']} "
-                f"theorems={summary['theorem_count']}"
+                f"theorems={summary['theorem_count']} "
+                f"pack={summary['contract_pack_fingerprint'][:12]} "
+                f"contract={summary['contract_content_fingerprint'][:12]} "
+                f"request={summary['request_content_fingerprint'][:12]} "
+                f"receipt_fingerprint={summary['receipt_content_fingerprint'][:12]}"
             )
         for failure in report["failures"]:
             print(f"failure={failure}", file=sys.stderr)

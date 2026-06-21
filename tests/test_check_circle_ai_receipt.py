@@ -121,6 +121,49 @@ def test_check_circle_ai_receipt_accepts_saved_receipt(tmp_path: Path) -> None:
     assert json.loads(report_path.read_text()) == payload
 
 
+def test_check_circle_ai_receipt_text_output_includes_audit_fingerprints(
+    tmp_path: Path,
+) -> None:
+    receipt_path = tmp_path / "rope_receipt.json"
+    receipt = build_rope_receipt(
+        context=131072,
+        requested_margin="1/328459",
+        pack=load_contract_pack(PACK),
+    )
+    _write_receipt(receipt_path, receipt)
+
+    result = subprocess.run(
+        [
+            sys.executable,
+            str(SCRIPT),
+            str(receipt_path),
+            "--require-status",
+            "proved",
+            "--require-decision",
+            "passed",
+            "--require-assurance",
+            "mixed_theorem_and_computation",
+            "--require-passed",
+        ],
+        cwd=ROOT,
+        check=True,
+        text=True,
+        capture_output=True,
+    )
+
+    assert "circle AI receipt files ok=True receipts=1 failures=0" in result.stdout
+    assert f"pack={receipt['support']['contract_pack_fingerprint'][:12]}" in result.stdout
+    assert (
+        f"contract={receipt['support']['contract_content_fingerprint'][:12]}"
+        in result.stdout
+    )
+    assert f"request={receipt['request_content_fingerprint'][:12]}" in result.stdout
+    assert (
+        f"receipt_fingerprint={receipt['receipt_content_fingerprint'][:12]}"
+        in result.stdout
+    )
+
+
 def test_check_circle_ai_receipt_rejects_status_gate(tmp_path: Path) -> None:
     receipt_path = tmp_path / "rope_impossible_receipt.json"
     receipt = build_rope_receipt(
