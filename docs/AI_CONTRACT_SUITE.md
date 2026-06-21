@@ -55,6 +55,10 @@ For model-config imports, pin the source `config.json` by passing the
 `model_config_fingerprint` from the import report to
 `--require-model-config-fingerprint` in the certification-bundle checker,
 artifact-manifest checker, or standalone downstream verifier.
+Those handoff checkers can also require embedded receipt theorem ids, evidence
+fields, recommendation ids, validation commands, and normalized request
+parameters, so downstream CI can fail on missing dependencies without parsing
+the receipt by hand.
 Add `--gate-report-out reports/rope_gate.json` when CI needs a compact
 schema-validated JSON gate report without saving the full receipt. Use
 `--json-out reports/rope_receipt.json --receipt-check-out

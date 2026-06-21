@@ -203,6 +203,10 @@ For model-config imports, pass the `model_config_fingerprint` from the import
 report to `--require-model-config-fingerprint` in the certification-bundle
 checker, artifact-manifest checker, or standalone downstream verifier when CI
 must pin the source `config.json`.
+Those handoff checkers can also require embedded receipt theorem ids, evidence
+fields, recommendation ids, validation commands, and normalized request
+parameters, so downstream CI can fail on missing dependencies without parsing
+the receipt by hand.
 
 ```bash
 python scripts/circle_ai_certify.py rope \

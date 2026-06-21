@@ -4060,6 +4060,12 @@ def build_contract_certification_bundle_file_check_json_schema() -> dict[str, An
             "decision_verdict",
             "decision_assurance",
             "theorem_count",
+            "theorem_ids",
+            "evidence_field_count",
+            "evidence_fields",
+            "recommendation_ids",
+            "validation_command_count",
+            "validation_commands",
             "normalized_request",
             "bundle_request_content_fingerprint",
             "receipt_request_content_fingerprint",
@@ -4086,6 +4092,12 @@ def build_contract_certification_bundle_file_check_json_schema() -> dict[str, An
             "decision_verdict": {"enum": list(DECISION_VERDICTS)},
             "decision_assurance": {"enum": list(DECISION_ASSURANCE_LEVELS)},
             "theorem_count": {"type": "integer", "minimum": 0},
+            "theorem_ids": string_list,
+            "evidence_field_count": {"type": "integer", "minimum": 0},
+            "evidence_fields": string_list,
+            "recommendation_ids": string_list,
+            "validation_command_count": {"type": "integer", "minimum": 0},
+            "validation_commands": string_list,
             "normalized_request": {"type": "object", "minProperties": 1},
             "bundle_request_content_fingerprint": fingerprint,
             "receipt_request_content_fingerprint": fingerprint,
@@ -4302,6 +4314,17 @@ def build_contract_certification_bundle_file_check_report(
             receipt_summary = dict(receipt_report["summaries"][0])
             import_report = bundle.get("model_config_import_report")
             has_import_report = isinstance(import_report, Mapping)
+            receipt_payload = receipt if isinstance(receipt, Mapping) else None
+            receipt_theorem_ids = _receipt_artifact_theorem_ids(receipt_payload)
+            receipt_evidence_fields = _receipt_artifact_evidence_fields(
+                receipt_payload
+            )
+            receipt_recommendation_ids = _receipt_artifact_recommendation_ids(
+                receipt_payload
+            )
+            receipt_validation_commands = _receipt_artifact_validation_commands(
+                receipt_payload
+            )
             summaries.append(
                 {
                     "path": bundle_path,
@@ -4341,7 +4364,13 @@ def build_contract_certification_bundle_file_check_report(
                     "request_passed": receipt_summary["request_passed"],
                     "decision_verdict": receipt_summary["decision_verdict"],
                     "decision_assurance": receipt_summary["decision_assurance"],
-                    "theorem_count": receipt_summary["theorem_count"],
+                    "theorem_count": len(receipt_theorem_ids),
+                    "theorem_ids": receipt_theorem_ids,
+                    "evidence_field_count": len(receipt_evidence_fields),
+                    "evidence_fields": receipt_evidence_fields,
+                    "recommendation_ids": receipt_recommendation_ids,
+                    "validation_command_count": len(receipt_validation_commands),
+                    "validation_commands": receipt_validation_commands,
                     "normalized_request": receipt_summary["normalized_request"],
                     "bundle_request_content_fingerprint": bundle[
                         "request_content_fingerprint"

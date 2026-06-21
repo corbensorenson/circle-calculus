@@ -143,8 +143,18 @@ def test_check_circle_ai_certification_bundle_accepts_model_config_bundle(
             "--require-assurance",
             "mixed_theorem_and_computation",
             "--require-passed",
+            "--require-theorem-id",
+            "AIRA-T0239",
+            "--require-evidence-field",
+            "real_phase_dirichlet_guardrail",
+            "--require-recommendation-id",
+            "ROPE-USE-D19-MARGIN-FRONTIER",
+            "--require-validation-command",
+            bundle["receipt"]["validation_commands"][0],
             "--require-model-config-fingerprint",
             import_report["model_config_fingerprint"],
+            "--require-normalized-param",
+            "head_dim=128",
             "--report-out",
             str(report_path),
             "--format",
@@ -180,6 +190,13 @@ def test_check_circle_ai_certification_bundle_accepts_model_config_bundle(
     assert summary["model_config_fingerprint"] == import_report[
         "model_config_fingerprint"
     ]
+    assert "AIRA-T0239" in summary["theorem_ids"]
+    assert "real_phase_dirichlet_guardrail" in summary["evidence_fields"]
+    assert "ROPE-USE-D19-MARGIN-FRONTIER" in summary["recommendation_ids"]
+    assert bundle["receipt"]["validation_commands"][0] in summary[
+        "validation_commands"
+    ]
+    assert summary["normalized_request"]["head_dim"] == 128
     assert summary["bundle_request_content_fingerprint"] == bundle[
         "request_content_fingerprint"
     ]
@@ -187,6 +204,74 @@ def test_check_circle_ai_certification_bundle_accepts_model_config_bundle(
         "receipt_content_fingerprint"
     ]
     assert json.loads(report_path.read_text()) == payload
+
+
+def test_check_circle_ai_certification_bundle_rejects_missing_receipt_pins(
+    tmp_path: Path,
+) -> None:
+    bundle_path = tmp_path / "rope_certification_bundle.json"
+    pack = load_contract_pack(PACK)
+    request = build_contract_request(
+        "rope",
+        {
+            "context": 131072,
+            "requested_margin": "1/328459",
+        },
+    )
+    bundle = build_contract_certification_bundle(request, pack=pack)
+    _write_bundle(bundle_path, bundle)
+
+    result = subprocess.run(
+        [
+            sys.executable,
+            str(SCRIPT),
+            str(bundle_path),
+            "--require-theorem-id",
+            "NONEXISTENT-T0000",
+            "--require-evidence-field",
+            "nonexistent_evidence_field",
+            "--require-recommendation-id",
+            "NONEXISTENT-RECOMMENDATION",
+            "--require-validation-command",
+            "python nonexistent_validation.py",
+            "--require-normalized-param",
+            "head_dim=256",
+            "--format",
+            "json",
+        ],
+        cwd=ROOT,
+        check=False,
+        text=True,
+        capture_output=True,
+    )
+
+    payload = json.loads(result.stdout)
+    jsonschema.validate(
+        payload,
+        build_contract_certification_bundle_file_check_json_schema(),
+    )
+    assert result.returncode == 1
+    assert payload["ok"] is False
+    assert any(
+        "required receipt theorem id is missing" in failure
+        for failure in payload["failures"]
+    )
+    assert any(
+        "required receipt evidence field is missing" in failure
+        for failure in payload["failures"]
+    )
+    assert any(
+        "required receipt recommendation id is missing" in failure
+        for failure in payload["failures"]
+    )
+    assert any(
+        "required receipt validation command is missing" in failure
+        for failure in payload["failures"]
+    )
+    assert any(
+        "required normalized request parameter is missing" in failure
+        for failure in payload["failures"]
+    )
 
 
 def test_check_circle_ai_certification_bundle_rejects_missing_model_config_fingerprint(
