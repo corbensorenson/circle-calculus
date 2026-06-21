@@ -1485,6 +1485,7 @@ def test_runner_check_report_schema_accepts_public_report() -> None:
                 "source_path": "examples/circle_ai_requests/rope_request.json",
                 "source_content_fingerprint": "3" * 64,
                 "request_path": "examples/circle_ai_requests/rope_request.json",
+                "model_config_import_report_path": None,
                 "receipt_path": None,
                 "kind": "rope_position_distinguishability",
                 "status": "proved",

@@ -173,6 +173,7 @@ Write receipt JSON files for a request directory:
 python scripts/check_circle_ai_contract_runner.py \
   --example-dir examples/circle_ai_requests \
   --receipt-out-dir reports/circle_ai_receipts \
+  --model-config-import-report-out-dir reports/circle_ai_imports \
   --report-out reports/circle_ai_runner_check.json \
   --require-status proved \
   --require-decision passed \
@@ -186,7 +187,10 @@ is still written with the receipt summaries and the command exits nonzero. Each
 summary includes the `normalized_request` object so downstream CI can compare
 the certified parameters without reopening every receipt file. Each summary
 also includes `source_content_fingerprint` so request files and model configs
-can be pinned in audit logs.
+can be pinned in audit logs. When
+`--model-config-import-report-out-dir` is set, model-config summaries also point
+to the schema-validated import report that converted the config into a Circle
+request.
 By default it checks both `examples/circle_ai_requests/*.json` request files and
 `examples/circle_ai_model_configs/*.json` standard RoPE model configs, currently
 including 128k examples at RoPE bases `10000` and `500000`. Model config

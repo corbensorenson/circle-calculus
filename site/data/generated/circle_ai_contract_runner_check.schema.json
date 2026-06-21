@@ -104,6 +104,12 @@
               "recurrence_schedule"
             ]
           },
+          "model_config_import_report_path": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
           "normalized_request": {
             "minProperties": 1,
             "type": "object"
@@ -179,6 +185,7 @@
           "source_path",
           "source_content_fingerprint",
           "request_path",
+          "model_config_import_report_path",
           "receipt_path",
           "kind",
           "status",

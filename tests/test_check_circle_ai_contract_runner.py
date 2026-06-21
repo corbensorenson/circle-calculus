@@ -15,6 +15,12 @@ RUNNER_CHECK_SCHEMA = (
     / "generated"
     / "circle_ai_contract_runner_check.schema.json"
 )
+MODEL_CONFIG_IMPORT_SCHEMA = (
+    Path("site")
+    / "data"
+    / "generated"
+    / "circle_ai_rope_model_config_import.schema.json"
+)
 CONTRACT_PACK = Path("site") / "data" / "generated" / "circle_ai_contract_pack.json"
 FINGERPRINT_ALGORITHM = "sha256-json-v1"
 FINGERPRINT_KEYS = {
@@ -26,6 +32,10 @@ FINGERPRINT_KEYS = {
 
 def _runner_check_schema() -> dict:
     return json.loads(RUNNER_CHECK_SCHEMA.read_text())
+
+
+def _model_config_import_schema() -> dict:
+    return json.loads(MODEL_CONFIG_IMPORT_SCHEMA.read_text())
 
 
 def _strip_fingerprint_fields(value: object) -> object:
@@ -149,6 +159,7 @@ def test_check_circle_ai_contract_runner_emits_json_report() -> None:
 
 def test_check_circle_ai_contract_runner_writes_receipts(tmp_path: Path) -> None:
     out_dir = tmp_path / "receipts"
+    import_report_dir = tmp_path / "imports"
 
     result = subprocess.run(
         [
@@ -156,6 +167,8 @@ def test_check_circle_ai_contract_runner_writes_receipts(tmp_path: Path) -> None
             "scripts/check_circle_ai_contract_runner.py",
             "--receipt-out-dir",
             str(out_dir),
+            "--model-config-import-report-out-dir",
+            str(import_report_dir),
             "--format",
             "json",
         ],
@@ -169,6 +182,32 @@ def test_check_circle_ai_contract_runner_writes_receipts(tmp_path: Path) -> None
     receipt_paths = [Path(summary["receipt_path"]) for summary in payload["summaries"]]
     assert len(receipt_paths) == 6
     assert all(path.exists() for path in receipt_paths)
+    import_report_summaries = [
+        summary for summary in payload["summaries"] if summary["source_type"] == "model_config"
+    ]
+    assert import_report_summaries
+    assert all(
+        summary["model_config_import_report_path"] for summary in import_report_summaries
+    )
+    for summary in payload["summaries"]:
+        if summary["source_type"] == "request":
+            assert summary["model_config_import_report_path"] is None
+    for summary in import_report_summaries:
+        import_report_path = Path(summary["model_config_import_report_path"])
+        assert import_report_path.exists()
+        import_report = json.loads(import_report_path.read_text())
+        jsonschema.validate(import_report, _model_config_import_schema())
+        assert import_report["ok"] is True
+        assert import_report["request"]["kind"] == summary["kind"]
+        assert import_report["request"]["parameters"]["head_dim"] == summary[
+            "normalized_request"
+        ]["head_dim"]
+        assert import_report["request"]["parameters"]["base"] == summary[
+            "normalized_request"
+        ]["base"]
+        assert import_report["request"]["parameters"]["context"] == summary[
+            "normalized_request"
+        ]["context_length"]
     for path in receipt_paths:
         receipt = json.loads(path.read_text())
         matching_summary = next(
@@ -187,6 +226,7 @@ def test_check_circle_ai_contract_runner_writes_receipts(tmp_path: Path) -> None
 def test_check_circle_ai_contract_runner_writes_report_file(tmp_path: Path) -> None:
     report_path = tmp_path / "runner_check_report.json"
     receipt_dir = tmp_path / "receipts"
+    import_report_dir = tmp_path / "imports"
 
     result = subprocess.run(
         [
@@ -194,6 +234,8 @@ def test_check_circle_ai_contract_runner_writes_report_file(tmp_path: Path) -> N
             "scripts/check_circle_ai_contract_runner.py",
             "--receipt-out-dir",
             str(receipt_dir),
+            "--model-config-import-report-out-dir",
+            str(import_report_dir),
             "--report-out",
             str(report_path),
         ],
@@ -215,6 +257,7 @@ def test_check_circle_ai_contract_runner_writes_report_file(tmp_path: Path) -> N
         if summary["source_type"] == "model_config"
     )
     assert model_config_summary["request_path"]
+    assert model_config_summary["model_config_import_report_path"]
 
 
 def test_check_circle_ai_contract_runner_accepts_batch_gate() -> None:

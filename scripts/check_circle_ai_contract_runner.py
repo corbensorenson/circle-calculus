@@ -17,10 +17,9 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from circle_math.applications import (  # noqa: E402
-    build_contract_request,
     build_contract_request_validation_report,
     build_contract_runner_check_json_schema,
-    build_rope_request_parameters_from_model_config,
+    build_rope_model_config_import_report,
     build_validated_contract_receipt_from_request,
     load_contract_pack,
     validate_contract_request,
@@ -45,6 +44,9 @@ DEFAULT_REQUEST_VALIDATION_SCHEMA = (
     / "data"
     / "generated"
     / "circle_ai_contract_request_validation.schema.json"
+)
+DEFAULT_MODEL_CONFIG_IMPORT_SCHEMA = (
+    ROOT / "site" / "data" / "generated" / "circle_ai_rope_model_config_import.schema.json"
 )
 DEFAULT_RECEIPT_SCHEMA = (
     ROOT / "site" / "data" / "generated" / "circle_ai_contract_receipt.schema.json"
@@ -99,6 +101,7 @@ def _summary_from_receipt(
     source_path: Path,
     source: dict[str, Any],
     request_path: Path | None,
+    model_config_import_report_path: Path | None,
     receipt_path: Path | None,
     receipt: dict[str, Any],
 ) -> dict[str, Any]:
@@ -108,6 +111,11 @@ def _summary_from_receipt(
         "source_path": _display_path(source_path),
         "source_content_fingerprint": _json_fingerprint(source),
         "request_path": None if request_path is None else _display_path(request_path),
+        "model_config_import_report_path": (
+            None
+            if model_config_import_report_path is None
+            else _display_path(model_config_import_report_path)
+        ),
         "receipt_path": None if receipt_path is None else _display_path(receipt_path),
         "kind": receipt["kind"],
         "status": receipt["status"],
@@ -172,9 +180,11 @@ def check_runner_examples(
     pack_path: Path = DEFAULT_PACK_PATH,
     request_schema_path: Path = DEFAULT_REQUEST_SCHEMA,
     request_validation_schema_path: Path = DEFAULT_REQUEST_VALIDATION_SCHEMA,
+    model_config_import_schema_path: Path = DEFAULT_MODEL_CONFIG_IMPORT_SCHEMA,
     receipt_schema_path: Path = DEFAULT_RECEIPT_SCHEMA,
     runner_check_schema_path: Path = DEFAULT_RUNNER_CHECK_SCHEMA,
     receipt_out_dir: Path | None = None,
+    model_config_import_report_out_dir: Path | None = None,
     required_statuses: tuple[str, ...] = (),
     required_decision_verdicts: tuple[str, ...] = (),
     required_assurance_levels: tuple[str, ...] = (),
@@ -182,10 +192,12 @@ def check_runner_examples(
 ) -> dict[str, Any]:
     request_schema = _json(request_schema_path)
     request_validation_schema = _json(request_validation_schema_path)
+    model_config_import_schema = _json(model_config_import_schema_path)
     receipt_schema = _json(receipt_schema_path)
     runner_check_schema = _json(runner_check_schema_path)
     jsonschema.Draft202012Validator.check_schema(request_schema)
     jsonschema.Draft202012Validator.check_schema(request_validation_schema)
+    jsonschema.Draft202012Validator.check_schema(model_config_import_schema)
     jsonschema.Draft202012Validator.check_schema(receipt_schema)
     jsonschema.Draft202012Validator.check_schema(runner_check_schema)
     pack = load_contract_pack(pack_path)
@@ -213,6 +225,7 @@ def check_runner_examples(
                 source_path=path,
                 source=request,
                 request_path=path,
+                model_config_import_report_path=None,
                 receipt_path=receipt_path,
                 receipt=receipt,
             )
@@ -232,11 +245,24 @@ def check_runner_examples(
     for path in _model_config_paths(model_config_dir):
         try:
             config = _json(path)
-            parameters = build_rope_request_parameters_from_model_config(
+            import_report = build_rope_model_config_import_report(
                 config,
                 requested_margin=model_config_requested_margin,
             )
-            request = build_contract_request("rope", parameters)
+            jsonschema.validate(import_report, model_config_import_schema)
+            import_report_path = None
+            if model_config_import_report_out_dir is not None:
+                import_report_path = (
+                    model_config_import_report_out_dir / f"{path.stem}_import.json"
+                )
+                _write_json(import_report_path, import_report)
+            if not import_report["ok"]:
+                failures.append(f"{path}: " + "; ".join(import_report["failures"]))
+                continue
+            request = import_report["request"]
+            if not isinstance(request, dict):
+                failures.append(f"{path}: model config import report did not emit a request")
+                continue
             jsonschema.validate(request, request_schema)
             validation_report = build_contract_request_validation_report(request)
             jsonschema.validate(validation_report, request_validation_schema)
@@ -258,6 +284,7 @@ def check_runner_examples(
                 source_path=path,
                 source=config,
                 request_path=request_path,
+                model_config_import_report_path=import_report_path,
                 receipt_path=receipt_path,
                 receipt=receipt,
             )
@@ -333,6 +360,12 @@ def main() -> int:
         default=DEFAULT_REQUEST_VALIDATION_SCHEMA,
     )
     parser.add_argument(
+        "--model-config-import-schema",
+        type=Path,
+        default=DEFAULT_MODEL_CONFIG_IMPORT_SCHEMA,
+        help="Generated JSON Schema used to validate standard-RoPE model-config import reports.",
+    )
+    parser.add_argument(
         "--runner-check-schema",
         type=Path,
         default=DEFAULT_RUNNER_CHECK_SCHEMA,
@@ -342,6 +375,14 @@ def main() -> int:
         "--receipt-out-dir",
         type=Path,
         help="Optional directory where validated receipt JSON files are written.",
+    )
+    parser.add_argument(
+        "--model-config-import-report-out-dir",
+        type=Path,
+        help=(
+            "Optional directory where schema-validated standard-RoPE "
+            "model-config import reports are written."
+        ),
     )
     parser.add_argument(
         "--report-out",
@@ -396,9 +437,11 @@ def main() -> int:
         pack_path=args.pack,
         request_schema_path=args.request_schema,
         request_validation_schema_path=args.request_validation_schema,
+        model_config_import_schema_path=args.model_config_import_schema,
         receipt_schema_path=args.receipt_schema,
         runner_check_schema_path=args.runner_check_schema,
         receipt_out_dir=args.receipt_out_dir,
+        model_config_import_report_out_dir=args.model_config_import_report_out_dir,
         required_statuses=tuple(args.require_status),
         required_decision_verdicts=tuple(args.require_decision),
         required_assurance_levels=tuple(args.require_assurance),
@@ -425,6 +468,7 @@ def main() -> int:
                 "source="
                 f"{summary['source_path']} type={summary['source_type']} "
                 f"request={summary['request_path']} kind={summary['kind']} "
+                f"import_report={summary['model_config_import_report_path']} "
                 f"status={summary['status']} "
                 f"passed={summary['request_passed']} "
                 f"decision={summary['decision_verdict']} "
