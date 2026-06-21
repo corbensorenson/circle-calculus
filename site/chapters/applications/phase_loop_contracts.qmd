@@ -1,0 +1,59 @@
+---
+title: "Phase Loop Contracts"
+---
+
+<div class="claim-boundary-strip">
+<span class="claim-boundary-label">Claim boundary</span>
+<span class="claim-boundary-badge claim-boundary-proved">proved finite loop sums</span>
+<span class="claim-boundary-badge claim-boundary-executable">phase diagnostics</span>
+<span class="claim-boundary-badge claim-boundary-experimental">dynamics separate</span>
+<span class="claim-boundary-badge claim-boundary-speculative">no physics claim</span>
+</div>
+
+Loop phases connect winding, holonomy, vortex-charge vocabulary, and
+Kuramoto-style phase locking. The literature relates phase-locked solutions to
+topological winding numbers and loop currents, including
+[Delabays, Coletta, and Jacquod](https://arxiv.org/abs/1512.04266). Circle
+Calculus only formalizes the finite bookkeeping:
+
+```text
+loop_charge = sum(increments) mod period
+reverse_loop_charge = -loop_charge
+phase_locked(left, right) = left mod period = right mod period
+```
+
+## Lean Surface
+
+```lean
+import Circle.Applications.PhaseLoop
+import Circle.Applications.Public
+```
+
+The theorem ids are `CC-T0161` through `CC-T0172`, covering loop-charge empty,
+singleton, append, reverse, vortex-charge alias and reversal, closed-loop
+endpoint-gauge cancellation, finite phase locking, and winding/residue
+reconstruction.
+
+## Python Example
+
+```python
+from circle_math.core import phase_lock_report, phase_loop_report
+
+loop = phase_loop_report(12, [3, 4, 7], base_gauge=5)
+print(loop.charge)
+print(loop.reverse_charge)
+print(loop.charge_plus_reverse)
+print(loop.closed_loop_gauge_invariant)
+
+locked = phase_lock_report(12, [1, 13, 25])
+print(locked.all_locked)
+print(locked.order_parameter)
+```
+
+The Lean-backed fields are finite modular identities. The order parameter is an
+executable circular-statistics diagnostic, not a proof of oscillator dynamics,
+stability, or synchronization threshold.
+
+These diagnostics are not proof of a physical model. The theorem ids are the
+status source for the finite modular statements, and dynamics remain separate
+from Lean proof status.

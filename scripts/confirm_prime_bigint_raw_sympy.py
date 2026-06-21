@@ -7,7 +7,10 @@ import sys
 from dataclasses import dataclass
 from pathlib import Path
 
-import sympy
+try:
+    import sympy
+except ModuleNotFoundError:  # pragma: no cover - exercised in minimal CI envs.
+    sympy = None
 
 try:
     from check_prime_bigint_controls import (
@@ -32,6 +35,15 @@ except ModuleNotFoundError:
 ROOT = Path(__file__).resolve().parents[1]
 RESULTS_DIR = ROOT / "sidecars" / "PRIME_ENGINE" / "results"
 SCHEMA_ID = "circle_calculus.prime_bigint_raw_sympy_confirm.v0"
+
+
+def require_sympy():
+    if sympy is None:
+        raise RuntimeError(
+            "SymPy is required for raw BigUint confirmation runs. "
+            "Install sympy to run scripts/confirm_prime_bigint_raw_sympy.py."
+        )
+    return sympy
 
 
 @dataclass(frozen=True)
@@ -149,6 +161,7 @@ def benchmark_raw_prime_rows(
     args: argparse.Namespace,
     cases: set[str],
 ) -> list[dict[str, object]]:
+    sympy_module = require_sympy()
     selected_cases = [case for case in prime_cases() if case.name in cases]
     rows: list[dict[str, object]] = []
     with LineServer(
@@ -172,7 +185,7 @@ def benchmark_raw_prime_rows(
                 sample_divisor=args.server_batch_size,
             )
             sympy_sample = timed(
-                lambda case=case: bool(sympy.isprime(case.n)),
+                lambda case=case: bool(sympy_module.isprime(case.n)),
                 warmup_rounds=args.warmup_rounds,
                 bench_rounds=args.bench_rounds,
             )
@@ -295,7 +308,7 @@ def write_metadata(
             "exists": args.circle_prime_bin.exists(),
         },
         "tools": {
-            "sympy": sympy.__version__,
+            "sympy": sympy.__version__ if sympy is not None else None,
         },
     }
     path.write_text(json.dumps(metadata, indent=2, sort_keys=True) + "\n")

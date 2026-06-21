@@ -16,9 +16,12 @@ const BIG_SMALL_PRIME_TRIAL_DIVISORS: [u64; 64] = [
     197, 199, 211, 223, 227, 229, 233, 239, 241, 251, 257, 263, 269, 271, 277, 281, 283, 293, 307,
     311,
 ];
+const BIG_BPSW_SMALL_PRIME_TRIAL_DIVISORS: [u64; 15] =
+    [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47];
 const BIG_SMALL_PRIME_TRIAL_DIVISOR_COUNT: usize = BIG_SMALL_PRIME_TRIAL_DIVISORS.len();
 const BIG_MILLER_RABIN_BASES: [u64; 64] = BIG_SMALL_PRIME_TRIAL_DIVISORS;
 const MAX_BIG_FUZZY_BIT_WIDTH: u32 = 16_384;
+const BIG_FUZZY_BPSW_DETERMINISTIC_FAST_PATH_BITS: u64 = 160;
 
 pub const DEFAULT_BIG_MILLER_RABIN_ROUNDS: usize = 64;
 pub const DEFAULT_BIG_NEXT_MAX_CANDIDATES: u64 = 1_000_000;
@@ -530,7 +533,7 @@ pub fn is_bpsw_probable_prime_biguint(n: &BigUint) -> Result<BigPrimeDecision, S
     }
 
     let digits = n.to_u64_digits();
-    for &prime in &BIG_SMALL_PRIME_TRIAL_DIVISORS {
+    for &prime in &BIG_BPSW_SMALL_PRIME_TRIAL_DIVISORS {
         if biguint_digits_mod_u64(&digits, prime) == 0 {
             return Ok(BigPrimeDecision {
                 n: n.clone(),
@@ -627,7 +630,7 @@ pub fn bpsw_probable_prime_status_biguint(n: &BigUint) -> Result<BigPrimeStatus,
     }
 
     let digits = n.to_u64_digits();
-    for &prime in &BIG_SMALL_PRIME_TRIAL_DIVISORS {
+    for &prime in &BIG_BPSW_SMALL_PRIME_TRIAL_DIVISORS {
         if biguint_digits_mod_u64(&digits, prime) == 0 {
             return Ok(BigPrimeStatus::Composite);
         }
@@ -741,6 +744,47 @@ pub fn big_fuzzy_any_prime_search(
     rounds: usize,
 ) -> Result<BigFuzzySearch, String> {
     validate_big_miller_rabin_rounds(rounds)?;
+    big_fuzzy_any_prime_search_by(
+        model,
+        start,
+        candidate_window,
+        top_k,
+        score_limit,
+        rounds,
+        &|candidate| is_probable_prime_biguint(candidate, rounds),
+    )
+}
+
+pub fn big_fuzzy_bpsw_any_prime_search(
+    model: &BigFuzzyPrimeModel,
+    start: &BigUint,
+    candidate_window: usize,
+    top_k: usize,
+    score_limit: usize,
+) -> Result<BigFuzzySearch, String> {
+    big_fuzzy_any_prime_search_by(
+        model,
+        start,
+        candidate_window,
+        top_k,
+        score_limit,
+        1,
+        &is_bpsw_probable_prime_biguint,
+    )
+}
+
+fn big_fuzzy_any_prime_search_by<F>(
+    model: &BigFuzzyPrimeModel,
+    start: &BigUint,
+    candidate_window: usize,
+    top_k: usize,
+    score_limit: usize,
+    rounds: usize,
+    verifier: &F,
+) -> Result<BigFuzzySearch, String>
+where
+    F: Fn(&BigUint) -> Result<BigPrimeDecision, String>,
+{
     if candidate_window == 0 {
         return Err("big fuzzy candidate window must be positive".to_string());
     }
@@ -752,8 +796,9 @@ pub fn big_fuzzy_any_prime_search(
     }
     let candidates = big_candidate_sequence(start, candidate_window);
     let effective_score_limit = score_limit.min(candidates.len());
-    let core = big_fuzzy_any_prime_core(model, &candidates, top_k, effective_score_limit, rounds)?;
-    let (baseline_prime, baseline_checks) = baseline_first_probable_prime(&candidates, rounds)?;
+    let core =
+        big_fuzzy_any_prime_core(model, &candidates, top_k, effective_score_limit, verifier)?;
+    let (baseline_prime, baseline_checks) = baseline_first_probable_prime(&candidates, verifier)?;
     let deterministically_verified = core
         .reported_decision
         .as_ref()
@@ -785,6 +830,60 @@ pub fn big_fuzzy_any_prime_value(
     rounds: usize,
 ) -> Result<Option<BigUint>, String> {
     validate_big_miller_rabin_rounds(rounds)?;
+    big_fuzzy_any_prime_value_by(
+        model,
+        start,
+        candidate_window,
+        top_k,
+        score_limit,
+        &|candidate| is_probable_prime_biguint(candidate, rounds),
+    )
+}
+
+pub fn big_fuzzy_bpsw_any_prime_value(
+    model: &BigFuzzyPrimeModel,
+    start: &BigUint,
+    candidate_window: usize,
+    top_k: usize,
+    score_limit: usize,
+) -> Result<Option<BigUint>, String> {
+    if candidate_window == 0 {
+        return Err("big fuzzy candidate window must be positive".to_string());
+    }
+    if top_k == 0 {
+        return Err("big fuzzy top_k must be positive".to_string());
+    }
+    if score_limit == 0 {
+        return Err("big fuzzy score_limit must be positive".to_string());
+    }
+    if start.bits() <= BIG_FUZZY_BPSW_DETERMINISTIC_FAST_PATH_BITS
+        && start.bits() <= u64::from(model.bit_width)
+    {
+        let max_candidates = u64::try_from(candidate_window)
+            .map_err(|_| "big fuzzy candidate window must fit in u64".to_string())?;
+        return Ok(next_bpsw_probable_prime_biguint(start, max_candidates)?.prime);
+    }
+    big_fuzzy_any_prime_value_by(
+        model,
+        start,
+        candidate_window,
+        top_k,
+        score_limit,
+        &is_bpsw_probable_prime_biguint,
+    )
+}
+
+fn big_fuzzy_any_prime_value_by<F>(
+    model: &BigFuzzyPrimeModel,
+    start: &BigUint,
+    candidate_window: usize,
+    top_k: usize,
+    score_limit: usize,
+    verifier: &F,
+) -> Result<Option<BigUint>, String>
+where
+    F: Fn(&BigUint) -> Result<BigPrimeDecision, String>,
+{
     if candidate_window == 0 {
         return Err("big fuzzy candidate window must be positive".to_string());
     }
@@ -797,7 +896,7 @@ pub fn big_fuzzy_any_prime_value(
     let candidates = big_candidate_sequence(start, candidate_window);
     let effective_score_limit = score_limit.min(candidates.len());
     Ok(
-        big_fuzzy_any_prime_core(model, &candidates, top_k, effective_score_limit, rounds)?
+        big_fuzzy_any_prime_core(model, &candidates, top_k, effective_score_limit, verifier)?
             .reported_prime,
     )
 }
@@ -824,7 +923,7 @@ fn big_status_from_u64(value: u64) -> BigPrimeStatus {
 }
 
 fn bpsw_small_prime_trial_limit() -> u64 {
-    *BIG_SMALL_PRIME_TRIAL_DIVISORS
+    *BIG_BPSW_SMALL_PRIME_TRIAL_DIVISORS
         .last()
         .expect("BPSW trial divisor list is nonempty")
 }
@@ -914,6 +1013,22 @@ fn strong_lucas_selfridge_prp(n: &BigUint, d_param: i64, q_param: i64) -> bool {
     if u.is_zero() || v.is_zero() {
         return true;
     }
+    if q_param == -1 {
+        let two = BigUint::from(2u8);
+        let q_is_negative = !q_k.is_one();
+        for index in 1..s {
+            let v_squared = square_mod_biguint(&v, n, reducer.as_ref());
+            v = if index == 1 && q_is_negative {
+                mod_add_biguint(&v_squared, &two, n)
+            } else {
+                mod_sub_biguint(&v_squared, &two, n)
+            };
+            if v.is_zero() {
+                return true;
+            }
+        }
+        return false;
+    }
     for _ in 1..s {
         let v_squared = square_mod_biguint(&v, n, reducer.as_ref());
         let two_q = double_mod_biguint(&q_k, n);
@@ -936,7 +1051,16 @@ fn lucas_uv_q_mod(
     if q_param == -1 {
         return lucas_uv_q_minus_one_mod(n, d_param, k, reducer);
     }
+    lucas_uv_q_generic_mod(n, d_param, q_param, k, reducer)
+}
 
+fn lucas_uv_q_generic_mod(
+    n: &BigUint,
+    d_param: i64,
+    q_param: i64,
+    k: &BigUint,
+    reducer: Option<&PseudoMersenneReducer>,
+) -> (BigUint, BigUint, BigUint) {
     let mut u = BigUint::zero();
     let mut v = BigUint::from(2u8) % n;
     let mut q_k = BigUint::one();
@@ -1199,7 +1323,7 @@ fn big_fuzzy_any_prime_core(
     candidates: &[BigUint],
     top_k: usize,
     score_limit: usize,
-    rounds: usize,
+    verifier: &impl Fn(&BigUint) -> Result<BigPrimeDecision, String>,
 ) -> Result<BigFuzzyAnyPrimeCore, String> {
     let scored = top_scored_big_candidates(model, &candidates[..score_limit], top_k)?;
     let mut checked_indices = Vec::new();
@@ -1208,7 +1332,7 @@ fn big_fuzzy_any_prime_core(
     let mut used_fallback = false;
     for &(_, index) in &scored {
         checked_indices.push(index);
-        let decision = is_probable_prime_biguint(&candidates[index], rounds)?;
+        let decision = verifier(&candidates[index])?;
         if decision.is_prime_like() {
             reported_prime = Some(candidates[index].clone());
             reported_decision = Some(decision);
@@ -1222,7 +1346,7 @@ fn big_fuzzy_any_prime_core(
                 continue;
             }
             checked_indices.push(index);
-            let decision = is_probable_prime_biguint(candidate, rounds)?;
+            let decision = verifier(candidate)?;
             if decision.is_prime_like() {
                 reported_prime = Some(candidate.clone());
                 reported_decision = Some(decision);
@@ -1261,12 +1385,12 @@ fn top_scored_big_candidates(
 
 fn baseline_first_probable_prime(
     candidates: &[BigUint],
-    rounds: usize,
+    verifier: &impl Fn(&BigUint) -> Result<BigPrimeDecision, String>,
 ) -> Result<(Option<BigUint>, u64), String> {
     let mut checks = 0u64;
     for candidate in candidates {
         checks += 1;
-        if is_probable_prime_biguint(candidate, rounds)?.is_prime_like() {
+        if verifier(candidate)?.is_prime_like() {
             return Ok((Some(candidate.clone()), checks));
         }
     }
@@ -1419,6 +1543,8 @@ fn optional_u64_json(value: Option<u64>) -> String {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use std::hint::black_box;
+    use std::time::Instant;
 
     fn zero_model(bit_width: u32) -> BigFuzzyPrimeModel {
         BigFuzzyPrimeModel {
@@ -1590,6 +1716,130 @@ mod tests {
     }
 
     #[test]
+    fn bpsw_uses_short_small_prime_trial_list() {
+        let composite = BigUint::from(47u64) * ((BigUint::one() << 96usize) + BigUint::one());
+        let composite_decision = is_bpsw_probable_prime_biguint(&composite).unwrap();
+        assert_eq!(composite_decision.status, BigPrimeStatus::Composite);
+        assert_eq!(composite_decision.factor, Some(47));
+        assert_eq!(composite_decision.checked_small_prime_limit, 47);
+
+        let prime = (BigUint::one() << 127usize) - BigUint::one();
+        let prime_decision = is_bpsw_probable_prime_biguint(&prime).unwrap();
+        assert_eq!(prime_decision.status, BigPrimeStatus::ProbablePrime);
+        assert_eq!(prime_decision.checked_small_prime_limit, 47);
+    }
+
+    #[test]
+    #[ignore = "release-mode BPSW stage timing diagnostic"]
+    fn bpsw_stage_timing_diagnostic() {
+        let rounds = std::env::var("CIRCLE_BPSW_PROFILE_ROUNDS")
+            .ok()
+            .and_then(|raw| raw.parse::<u32>().ok())
+            .unwrap_or(200);
+        let cases = [
+            ("mersenne_127_prime", (BigUint::one() << 127usize) - BigUint::one()),
+            (
+                "curve25519_prime",
+                (BigUint::one() << 255usize) - BigUint::from(19u64),
+            ),
+            (
+                "secp256k1_prime",
+                (BigUint::one() << 256usize) - (BigUint::one() << 32usize) - BigUint::from(977u64),
+            ),
+            ("mersenne_521_prime", (BigUint::one() << 521usize) - BigUint::one()),
+        ];
+
+        for (name, n) in cases {
+            let digits = n.to_u64_digits();
+            let (mr_d, mr_s, n_minus_one) = miller_rabin_decomposition(&n);
+            let (lucas_d, lucas_q) = selfridge_lucas_parameters(&n).unwrap();
+            let mut strong_lucas_d = &n + BigUint::one();
+            while !strong_lucas_d.bit(0) {
+                strong_lucas_d >>= 1usize;
+            }
+            let reducer = PseudoMersenneReducer::for_modulus(&n);
+
+            let trial = time_repeated(rounds, || {
+                let mut found = None;
+                for &prime in &BIG_BPSW_SMALL_PRIME_TRIAL_DIVISORS {
+                    if biguint_digits_mod_u64(black_box(&digits), black_box(prime)) == 0 {
+                        found = Some(prime);
+                        break;
+                    }
+                }
+                black_box(found)
+            });
+            let square = time_repeated(rounds, || black_box(is_square_biguint(black_box(&n))));
+            let mr = time_repeated(rounds, || {
+                black_box(miller_rabin_round_biguint(
+                    black_box(&n),
+                    2,
+                    black_box(&mr_d),
+                    black_box(mr_s),
+                    black_box(&n_minus_one),
+                ))
+            });
+            let selfridge = time_repeated(rounds, || {
+                black_box(selfridge_lucas_parameters(black_box(&n)))
+            });
+            let lucas = time_repeated(rounds, || {
+                black_box(strong_lucas_selfridge_prp(
+                    black_box(&n),
+                    black_box(lucas_d),
+                    black_box(lucas_q),
+                ))
+            });
+            let lucas_core = time_repeated(rounds, || {
+                black_box(lucas_uv_q_mod(
+                    black_box(&n),
+                    black_box(lucas_d),
+                    black_box(lucas_q),
+                    black_box(&strong_lucas_d),
+                    black_box(reducer.as_ref()),
+                ))
+            });
+            let lucas_core_no_reducer = time_repeated(rounds, || {
+                black_box(lucas_uv_q_mod(
+                    black_box(&n),
+                    black_box(lucas_d),
+                    black_box(lucas_q),
+                    black_box(&strong_lucas_d),
+                    None,
+                ))
+            });
+            let lucas_core_generic = time_repeated(rounds, || {
+                black_box(lucas_uv_q_generic_mod(
+                    black_box(&n),
+                    black_box(lucas_d),
+                    black_box(lucas_q),
+                    black_box(&strong_lucas_d),
+                    black_box(reducer.as_ref()),
+                ))
+            });
+            println!(
+                "{name},rounds={rounds},trial_ms={:.6},square_ms={:.6},mr_ms={:.6},selfridge_ms={:.6},lucas_ms={:.6},lucas_core_ms={:.6},lucas_core_no_reducer_ms={:.6},lucas_core_generic_ms={:.6},d={lucas_d},q={lucas_q},reducer_c={}",
+                trial,
+                square,
+                mr,
+                selfridge,
+                lucas,
+                lucas_core,
+                lucas_core_no_reducer,
+                lucas_core_generic,
+                reducer.as_ref().map_or(0, |reducer| reducer.c)
+            );
+        }
+    }
+
+    fn time_repeated<T>(rounds: u32, mut f: impl FnMut() -> T) -> f64 {
+        let start = Instant::now();
+        for _ in 0..rounds {
+            black_box(f());
+        }
+        start.elapsed().as_secs_f64() * 1_000.0 / f64::from(rounds)
+    }
+
+    #[test]
     fn bpsw_rejects_large_perfect_square_before_lucas_step() {
         let root = (BigUint::one() << 127usize) - BigUint::one();
         let n = &root * &root;
@@ -1638,6 +1888,30 @@ mod tests {
         assert!(search.reported_prime.is_some());
         assert!(search.probable_prime_verified);
         assert!(!search.deterministically_verified);
+    }
+
+    #[test]
+    fn bpsw_fuzzy_big_search_uses_bpsw_verifier() {
+        let start = BigUint::one() << 127usize;
+        let search = big_fuzzy_bpsw_any_prime_search(&zero_model(128), &start, 128, 8, 32).unwrap();
+        assert_eq!(
+            search.reported_prime,
+            Some(parse_biguint("170141183460469231731687303715884105757").unwrap())
+        );
+        assert_eq!(search.miller_rabin_rounds, 1);
+        assert!(search.probable_prime_verified);
+        assert!(!search.deterministically_verified);
+    }
+
+    #[test]
+    fn bpsw_fuzzy_big_value_uses_small_start_hybrid_fast_path() {
+        let start = BigUint::one() << 127usize;
+        let value =
+            big_fuzzy_bpsw_any_prime_value(&zero_model(128), &start, 128, 8, 32).unwrap();
+        assert_eq!(
+            value,
+            Some(parse_biguint("170141183460469231731687303715884105757").unwrap())
+        );
     }
 
     #[test]

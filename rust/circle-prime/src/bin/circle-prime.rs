@@ -9,7 +9,8 @@ use std::thread::{self, JoinHandle};
 use num_bigint::BigUint;
 
 use circle_prime::{
-    big_fuzzy_any_prime_search, big_fuzzy_any_prime_value, bpsw_probable_prime_status_biguint,
+    big_fuzzy_any_prime_search, big_fuzzy_any_prime_value, big_fuzzy_bpsw_any_prime_search,
+    big_fuzzy_bpsw_any_prime_value, bpsw_probable_prime_status_biguint,
     effective_parallel_thread_count, effective_prefix_pi_thread_count,
     fuzzy_any_prime_value_with_score_limit, fuzzy_search_with_score_limit, inspect_horizon,
     is_bpsw_probable_prime_biguint, is_prime_u64, is_probable_prime_biguint,
@@ -311,6 +312,7 @@ fn big_fuzzy_search_command(args: &[String]) -> Result<(), String> {
         1,
         "big-fuzzy-search requires MODEL START",
     )?)?;
+    let profile = big_profile_arg(args)?;
     let rounds = big_rounds_arg(args)?;
     let candidate_window = optional_value(args, "--candidate-window")
         .map(|value| {
@@ -341,22 +343,24 @@ fn big_fuzzy_search_command(args: &[String]) -> Result<(), String> {
         .map_err(|err| format!("failed to read fuzzy model {model_path:?}: {err}"))?;
     let model = BigFuzzyPrimeModel::from_text(&raw_model)?;
     if json {
-        let search = big_fuzzy_any_prime_search(
+        let search = big_fuzzy_search(
             &model,
             &start,
             candidate_window,
             top_k,
             score_limit,
+            profile,
             rounds,
         )?;
         println!("{}", search.to_json(&model));
     } else {
-        match big_fuzzy_any_prime_value(
+        match big_fuzzy_value(
             &model,
             &start,
             candidate_window,
             top_k,
             score_limit,
+            profile,
             rounds,
         )? {
             Some(prime) => println!("{prime}"),
@@ -368,6 +372,7 @@ fn big_fuzzy_search_command(args: &[String]) -> Result<(), String> {
 
 fn big_fuzzy_server_command(args: &[String]) -> Result<(), String> {
     let model_path = required_arg(args, 0, "big-fuzzy-server requires MODEL")?;
+    let profile = big_profile_arg(args)?;
     let rounds = big_rounds_arg(args)?;
     let candidate_window = optional_value(args, "--candidate-window")
         .map(|value| {
@@ -419,23 +424,25 @@ fn big_fuzzy_server_command(args: &[String]) -> Result<(), String> {
         let (start, repetitions) = parse_big_server_request(request, "big-fuzzy-server")?;
         for _ in 0..repetitions {
             if json {
-                let search = big_fuzzy_any_prime_search(
+                let search = big_fuzzy_search(
                     &model,
                     &start,
                     candidate_window,
                     top_k,
                     score_limit,
+                    profile,
                     rounds,
                 )?;
                 writeln!(stdout, "{}", search.to_json(&model))
                     .map_err(|err| format!("failed to write response: {err}"))?;
             } else {
-                match big_fuzzy_any_prime_value(
+                match big_fuzzy_value(
                     &model,
                     &start,
                     candidate_window,
                     top_k,
                     score_limit,
+                    profile,
                     rounds,
                 )? {
                     Some(prime) => writeln!(stdout, "{prime}")
@@ -550,6 +557,44 @@ fn big_next_search(
     match profile {
         BigPrimeProfile::MillerRabin => next_probable_prime_biguint(start, rounds, max_candidates),
         BigPrimeProfile::BailliePsw => next_bpsw_probable_prime_biguint(start, max_candidates),
+    }
+}
+
+fn big_fuzzy_search(
+    model: &BigFuzzyPrimeModel,
+    start: &BigUint,
+    candidate_window: usize,
+    top_k: usize,
+    score_limit: usize,
+    profile: BigPrimeProfile,
+    rounds: usize,
+) -> Result<circle_prime::BigFuzzySearch, String> {
+    match profile {
+        BigPrimeProfile::MillerRabin => {
+            big_fuzzy_any_prime_search(model, start, candidate_window, top_k, score_limit, rounds)
+        }
+        BigPrimeProfile::BailliePsw => {
+            big_fuzzy_bpsw_any_prime_search(model, start, candidate_window, top_k, score_limit)
+        }
+    }
+}
+
+fn big_fuzzy_value(
+    model: &BigFuzzyPrimeModel,
+    start: &BigUint,
+    candidate_window: usize,
+    top_k: usize,
+    score_limit: usize,
+    profile: BigPrimeProfile,
+    rounds: usize,
+) -> Result<Option<BigUint>, String> {
+    match profile {
+        BigPrimeProfile::MillerRabin => {
+            big_fuzzy_any_prime_value(model, start, candidate_window, top_k, score_limit, rounds)
+        }
+        BigPrimeProfile::BailliePsw => {
+            big_fuzzy_bpsw_any_prime_value(model, start, candidate_window, top_k, score_limit)
+        }
     }
 }
 
@@ -2393,10 +2438,10 @@ fn usage() -> String {
         "  circle-prime next-server [--json]",
         "  circle-prime big-test N [--profile mr|bpsw] [--rounds N] [--json]",
         "  circle-prime big-next START [--profile mr|bpsw] [--rounds N] [--max-candidates N] [--json]",
-        "  circle-prime big-fuzzy-search MODEL START [--candidate-window N] [--top-k N] [--score-limit N] [--rounds N] [--json]",
+        "  circle-prime big-fuzzy-search MODEL START [--profile mr|bpsw] [--candidate-window N] [--top-k N] [--score-limit N] [--rounds N] [--json]",
         "  circle-prime big-test-server [--profile mr|bpsw] [--rounds N] [--json]",
         "  circle-prime big-next-server [--profile mr|bpsw] [--rounds N] [--max-candidates N] [--json]",
-        "  circle-prime big-fuzzy-server MODEL [--candidate-window N] [--top-k N] [--score-limit N] [--rounds N] [--json]",
+        "  circle-prime big-fuzzy-server MODEL [--profile mr|bpsw] [--candidate-window N] [--top-k N] [--score-limit N] [--rounds N] [--json]",
         "  circle-prime fuzzy-search MODEL START [--mode exact-next|any-prime] [--window N] [--top-k N] [--json]",
         "  circle-prime fuzzy-server MODEL [--mode exact-next|any-prime] [--window N] [--top-k N] [--json]",
         "  circle-prime recommend LOW HIGH [--count] [--json] [--threads N]",
@@ -2406,7 +2451,7 @@ fn usage() -> String {
         "next-server reads START, START COUNT, or shifted COUNT SHIFT START lines from stdin and writes one next prime, none, or JSON object per requested search.",
         "big-test-server, big-next-server, and big-fuzzy-server read N or N COUNT lines from stdin and keep the arbitrary-precision engine hot between requests.",
         "big-test/big-next use arbitrary-precision BigUint arithmetic. --profile mr uses fixed Miller-Rabin bases; --profile bpsw uses base-2 Miller-Rabin plus strong Lucas-Selfridge. Results above u64 are probable-prime decisions, not formal primality certificates.",
-        "big-fuzzy-search uses a tiny bit/residue model only to rank arbitrary-precision candidates; every reported candidate still passes the configured BigUint probable-prime verifier.",
+        "big-fuzzy-search uses a tiny bit/residue model only to rank arbitrary-precision candidates; every reported candidate still passes the configured BigUint probable-prime verifier. --profile mr uses fixed Miller-Rabin bases; --profile bpsw uses base-2 Miller-Rabin plus strong Lucas-Selfridge.",
         "fuzzy-search/fuzzy-server read a tiny exported model, use it only to rank candidates, and accept reported primes only after deterministic verification. fuzzy-server accepts START, START COUNT, or shifted COUNT SHIFT START requests. exact-next mode also verifies every earlier candidate in the bounded window.",
         "count-server reads LOW HIGH [SEGMENT_SIZE] [THREADS] [COUNT_MODE], repeat COUNT LOW HIGH ..., or shifted COUNT SHIFT LOW HIGH ... lines from stdin and writes one count or JSON object per requested count. --warm-prefix-pi-cache prebuilds the reusable small-prefix pi table before reading requests.",
         "count modes: segmented, balanced, dynamic, prefix-pi, presieve13, presieve17, wheel30-mark, hybrid-wheel30-mark",

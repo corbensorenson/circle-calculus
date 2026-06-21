@@ -39,6 +39,8 @@ The claim is *not* that circular language automatically improves every domain. I
 - [Sparse attention coverage](sparse_attention_contract.qmd) — proof-carrying finite coverage, gap-witness, and candidate-budget certificates for local-window plus stride-family sparse plans.
 - [Circle graph coverage](circle_graph_coverage.qmd) — graph-shaped wrapper for finite direct positive-lag coverage on circular sparse-attention layouts.
 - [Circular statistics contracts](circular_statistics.qmd) — finite same-phase, wrapped-distance, residue-list, and histogram facts with executable circular mean/resultant helpers.
+- [Cyclic equivariance contracts](cyclic_equivariance.qmd) — finite shift equivariance, sum-pooling invariance, circulant-layer equivariance, and minimal reflection laws.
+- [Phase loop contracts](phase_loop_contracts.qmd) — finite loop charge, vortex-charge vocabulary, closed-loop gauge cancellation, phase locking, and winding reconstruction.
 - [Looped recurrence contracts](looped_recurrence_contracts.qmd) — guided finite recurrence-budget, exit-certificate, token-route, middle-block, and multi-resolution schedule contracts.
 - [Strided candidate fanout](strided_candidate_fanout.qmd) — finite stride-orbit traversal and duplicate-collapsed candidate-budget certificates.
 - [Cyclic memory residue winding](cyclic_memory_residue_winding.qmd) — finite alias-provenance certificates that keep residue and winding together.

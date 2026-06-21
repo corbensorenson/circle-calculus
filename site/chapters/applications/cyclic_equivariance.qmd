@@ -1,0 +1,64 @@
+---
+title: "Cyclic Equivariance Contracts"
+---
+
+<div class="claim-boundary-strip">
+<span class="claim-boundary-label">Claim boundary</span>
+<span class="claim-boundary-badge claim-boundary-proved">proved finite equivariance</span>
+<span class="claim-boundary-badge claim-boundary-executable">executable checks</span>
+<span class="claim-boundary-badge claim-boundary-experimental">AI quality separate</span>
+<span class="claim-boundary-badge claim-boundary-speculative">no continuous-rotation claim</span>
+</div>
+
+Equivariance says that transforming the input transforms the output in the same
+way. The AI literature uses this idea in group convolutions and steerable
+networks, including
+[Group Equivariant Convolutional Networks](https://arxiv.org/abs/1602.07576),
+Distill's
+[equivariance overview](https://distill.pub/2020/circuits/equivariance/), and
+[E(2)-equivariant steerable CNNs](https://arxiv.org/abs/1911.08251).
+
+Circle Calculus keeps the first contract finite:
+
+```text
+shift(s, x)[i] = x[i - s]
+f is equivariant when f(shift(s, x)) = shift(s, f(x))
+```
+
+## Lean Surface
+
+```lean
+import Circle.Applications.CyclicEquivariance
+import Circle.Applications.Public
+```
+
+The theorem ids are `CC-T0149` through `CC-T0160`. They cover the finite cyclic
+shift action, closure of cyclic-equivariant maps, circulant-layer equivariance,
+sum-pooling invariance, reflection involution, reflection/shift interaction, and
+minimal dihedral identity facts.
+
+## Python Example
+
+```python
+from circle_math.core import (
+    circulant_equivariance_report,
+    cyclic_sum_invariance_report,
+    dihedral_transform,
+)
+
+print(dihedral_transform([10, 20, 30, 40], shift=1, reflected=True))
+
+report = circulant_equivariance_report(
+    [2, 0, 1, 0],
+    [[1, 2, 0, -1], [0, 3, 1, 2]],
+)
+print(report.passed)
+print(report.max_abs_delta)
+
+pooling = cyclic_sum_invariance_report([[1, 2, 3, 4]])
+print(pooling.passed)
+```
+
+These are finite structural checks. The Python examples are executable
+references, not proof artifacts and not model-quality claims. They do not claim
+robustness, data efficiency, or continuous rotation equivariance.

@@ -1,5 +1,5 @@
 {
-  "edge_count": 8414,
+  "edge_count": 8510,
   "edges": [
     {
       "kind": "cited_by_paper",
@@ -29328,6 +29328,486 @@
     },
     {
       "kind": "cited_by_paper",
+      "source": "CC-T0149",
+      "target": "paper:docs/CYCLIC_EQUIVARIANCE"
+    },
+    {
+      "kind": "declares",
+      "source": "CC-T0149",
+      "target": "lean:Circle.Applications.cyclicShift_zero"
+    },
+    {
+      "kind": "uses_dictionary",
+      "source": "CC-T0149",
+      "target": "dict:CC-0001"
+    },
+    {
+      "kind": "uses_dictionary",
+      "source": "CC-T0149",
+      "target": "dict:CC-0101"
+    },
+    {
+      "kind": "cited_by_paper",
+      "source": "CC-T0150",
+      "target": "paper:docs/CYCLIC_EQUIVARIANCE"
+    },
+    {
+      "kind": "declares",
+      "source": "CC-T0150",
+      "target": "lean:Circle.Applications.cyclicShift_add"
+    },
+    {
+      "kind": "uses_dictionary",
+      "source": "CC-T0150",
+      "target": "dict:CC-0001"
+    },
+    {
+      "kind": "uses_dictionary",
+      "source": "CC-T0150",
+      "target": "dict:CC-0101"
+    },
+    {
+      "kind": "cited_by_paper",
+      "source": "CC-T0151",
+      "target": "paper:docs/CYCLIC_EQUIVARIANCE"
+    },
+    {
+      "kind": "declares",
+      "source": "CC-T0151",
+      "target": "lean:Circle.Applications.cyclicEquivariant_identity"
+    },
+    {
+      "kind": "uses_dictionary",
+      "source": "CC-T0151",
+      "target": "dict:CC-0001"
+    },
+    {
+      "kind": "uses_dictionary",
+      "source": "CC-T0151",
+      "target": "dict:CC-0101"
+    },
+    {
+      "kind": "cited_by_paper",
+      "source": "CC-T0152",
+      "target": "paper:docs/CYCLIC_EQUIVARIANCE"
+    },
+    {
+      "kind": "declares",
+      "source": "CC-T0152",
+      "target": "lean:Circle.Applications.cyclicEquivariant_comp"
+    },
+    {
+      "kind": "uses_dictionary",
+      "source": "CC-T0152",
+      "target": "dict:CC-0001"
+    },
+    {
+      "kind": "uses_dictionary",
+      "source": "CC-T0152",
+      "target": "dict:CC-0101"
+    },
+    {
+      "kind": "cited_by_paper",
+      "source": "CC-T0153",
+      "target": "paper:docs/CYCLIC_EQUIVARIANCE"
+    },
+    {
+      "kind": "declares",
+      "source": "CC-T0153",
+      "target": "lean:Circle.Applications.cyclicEquivariant_add"
+    },
+    {
+      "kind": "uses_dictionary",
+      "source": "CC-T0153",
+      "target": "dict:CC-0001"
+    },
+    {
+      "kind": "uses_dictionary",
+      "source": "CC-T0153",
+      "target": "dict:CC-0101"
+    },
+    {
+      "kind": "cited_by_paper",
+      "source": "CC-T0154",
+      "target": "paper:docs/CYCLIC_EQUIVARIANCE"
+    },
+    {
+      "kind": "declares",
+      "source": "CC-T0154",
+      "target": "lean:Circle.Applications.circulantLayer_cyclicEquivariant"
+    },
+    {
+      "kind": "uses_dictionary",
+      "source": "CC-T0154",
+      "target": "dict:CC-0001"
+    },
+    {
+      "kind": "uses_dictionary",
+      "source": "CC-T0154",
+      "target": "dict:CC-0101"
+    },
+    {
+      "kind": "cited_by_paper",
+      "source": "CC-T0155",
+      "target": "paper:docs/CYCLIC_EQUIVARIANCE"
+    },
+    {
+      "kind": "declares",
+      "source": "CC-T0155",
+      "target": "lean:Circle.Applications.cyclicSum_shift_invariant"
+    },
+    {
+      "kind": "uses_dictionary",
+      "source": "CC-T0155",
+      "target": "dict:CC-0001"
+    },
+    {
+      "kind": "uses_dictionary",
+      "source": "CC-T0155",
+      "target": "dict:CC-0101"
+    },
+    {
+      "kind": "cited_by_paper",
+      "source": "CC-T0156",
+      "target": "paper:docs/CYCLIC_EQUIVARIANCE"
+    },
+    {
+      "kind": "declares",
+      "source": "CC-T0156",
+      "target": "lean:Circle.Applications.reflectSignal_involutive"
+    },
+    {
+      "kind": "uses_dictionary",
+      "source": "CC-T0156",
+      "target": "dict:CC-0001"
+    },
+    {
+      "kind": "uses_dictionary",
+      "source": "CC-T0156",
+      "target": "dict:CC-0101"
+    },
+    {
+      "kind": "cited_by_paper",
+      "source": "CC-T0157",
+      "target": "paper:docs/CYCLIC_EQUIVARIANCE"
+    },
+    {
+      "kind": "declares",
+      "source": "CC-T0157",
+      "target": "lean:Circle.Applications.reflectSignal_shift"
+    },
+    {
+      "kind": "uses_dictionary",
+      "source": "CC-T0157",
+      "target": "dict:CC-0001"
+    },
+    {
+      "kind": "uses_dictionary",
+      "source": "CC-T0157",
+      "target": "dict:CC-0101"
+    },
+    {
+      "kind": "cited_by_paper",
+      "source": "CC-T0158",
+      "target": "paper:docs/CYCLIC_EQUIVARIANCE"
+    },
+    {
+      "kind": "declares",
+      "source": "CC-T0158",
+      "target": "lean:Circle.Applications.dihedralEquivariant_identity"
+    },
+    {
+      "kind": "uses_dictionary",
+      "source": "CC-T0158",
+      "target": "dict:CC-0001"
+    },
+    {
+      "kind": "uses_dictionary",
+      "source": "CC-T0158",
+      "target": "dict:CC-0101"
+    },
+    {
+      "kind": "cited_by_paper",
+      "source": "CC-T0159",
+      "target": "paper:docs/CYCLIC_EQUIVARIANCE"
+    },
+    {
+      "kind": "declares",
+      "source": "CC-T0159",
+      "target": "lean:Circle.Applications.dihedralEquivariant_implies_cyclic"
+    },
+    {
+      "kind": "uses_dictionary",
+      "source": "CC-T0159",
+      "target": "dict:CC-0001"
+    },
+    {
+      "kind": "uses_dictionary",
+      "source": "CC-T0159",
+      "target": "dict:CC-0101"
+    },
+    {
+      "kind": "cited_by_paper",
+      "source": "CC-T0160",
+      "target": "paper:docs/CYCLIC_EQUIVARIANCE"
+    },
+    {
+      "kind": "declares",
+      "source": "CC-T0160",
+      "target": "lean:Circle.Applications.dihedralTransform_reflection_zero_involutive"
+    },
+    {
+      "kind": "uses_dictionary",
+      "source": "CC-T0160",
+      "target": "dict:CC-0001"
+    },
+    {
+      "kind": "uses_dictionary",
+      "source": "CC-T0160",
+      "target": "dict:CC-0101"
+    },
+    {
+      "kind": "cited_by_paper",
+      "source": "CC-T0161",
+      "target": "paper:docs/PHASE_LOOP_CONTRACTS"
+    },
+    {
+      "kind": "declares",
+      "source": "CC-T0161",
+      "target": "lean:Circle.Applications.phaseLoopCharge_nil"
+    },
+    {
+      "kind": "uses_dictionary",
+      "source": "CC-T0161",
+      "target": "dict:CC-0001"
+    },
+    {
+      "kind": "uses_dictionary",
+      "source": "CC-T0161",
+      "target": "dict:CC-0101"
+    },
+    {
+      "kind": "cited_by_paper",
+      "source": "CC-T0162",
+      "target": "paper:docs/PHASE_LOOP_CONTRACTS"
+    },
+    {
+      "kind": "declares",
+      "source": "CC-T0162",
+      "target": "lean:Circle.Applications.phaseLoopCharge_singleton"
+    },
+    {
+      "kind": "uses_dictionary",
+      "source": "CC-T0162",
+      "target": "dict:CC-0001"
+    },
+    {
+      "kind": "uses_dictionary",
+      "source": "CC-T0162",
+      "target": "dict:CC-0101"
+    },
+    {
+      "kind": "cited_by_paper",
+      "source": "CC-T0163",
+      "target": "paper:docs/PHASE_LOOP_CONTRACTS"
+    },
+    {
+      "kind": "declares",
+      "source": "CC-T0163",
+      "target": "lean:Circle.Applications.phaseLoopCharge_append"
+    },
+    {
+      "kind": "uses_dictionary",
+      "source": "CC-T0163",
+      "target": "dict:CC-0001"
+    },
+    {
+      "kind": "uses_dictionary",
+      "source": "CC-T0163",
+      "target": "dict:CC-0101"
+    },
+    {
+      "kind": "cited_by_paper",
+      "source": "CC-T0164",
+      "target": "paper:docs/PHASE_LOOP_CONTRACTS"
+    },
+    {
+      "kind": "declares",
+      "source": "CC-T0164",
+      "target": "lean:Circle.Applications.phaseLoopCharge_reverse"
+    },
+    {
+      "kind": "uses_dictionary",
+      "source": "CC-T0164",
+      "target": "dict:CC-0001"
+    },
+    {
+      "kind": "uses_dictionary",
+      "source": "CC-T0164",
+      "target": "dict:CC-0101"
+    },
+    {
+      "kind": "cited_by_paper",
+      "source": "CC-T0165",
+      "target": "paper:docs/PHASE_LOOP_CONTRACTS"
+    },
+    {
+      "kind": "declares",
+      "source": "CC-T0165",
+      "target": "lean:Circle.Applications.vortexCharge_eq_phaseLoopCharge"
+    },
+    {
+      "kind": "uses_dictionary",
+      "source": "CC-T0165",
+      "target": "dict:CC-0001"
+    },
+    {
+      "kind": "uses_dictionary",
+      "source": "CC-T0165",
+      "target": "dict:CC-0101"
+    },
+    {
+      "kind": "cited_by_paper",
+      "source": "CC-T0166",
+      "target": "paper:docs/PHASE_LOOP_CONTRACTS"
+    },
+    {
+      "kind": "declares",
+      "source": "CC-T0166",
+      "target": "lean:Circle.Applications.vortexCharge_reverse"
+    },
+    {
+      "kind": "uses_dictionary",
+      "source": "CC-T0166",
+      "target": "dict:CC-0001"
+    },
+    {
+      "kind": "uses_dictionary",
+      "source": "CC-T0166",
+      "target": "dict:CC-0101"
+    },
+    {
+      "kind": "cited_by_paper",
+      "source": "CC-T0167",
+      "target": "paper:docs/PHASE_LOOP_CONTRACTS"
+    },
+    {
+      "kind": "declares",
+      "source": "CC-T0167",
+      "target": "lean:Circle.Applications.loopGaugeShiftedCharge_eq_phaseLoopCharge"
+    },
+    {
+      "kind": "uses_dictionary",
+      "source": "CC-T0167",
+      "target": "dict:CC-0001"
+    },
+    {
+      "kind": "uses_dictionary",
+      "source": "CC-T0167",
+      "target": "dict:CC-0101"
+    },
+    {
+      "kind": "cited_by_paper",
+      "source": "CC-T0168",
+      "target": "paper:docs/PHASE_LOOP_CONTRACTS"
+    },
+    {
+      "kind": "declares",
+      "source": "CC-T0168",
+      "target": "lean:Circle.Applications.finitePhaseLocked_iff_gap_dvd"
+    },
+    {
+      "kind": "uses_dictionary",
+      "source": "CC-T0168",
+      "target": "dict:CC-0001"
+    },
+    {
+      "kind": "uses_dictionary",
+      "source": "CC-T0168",
+      "target": "dict:CC-0101"
+    },
+    {
+      "kind": "cited_by_paper",
+      "source": "CC-T0169",
+      "target": "paper:docs/PHASE_LOOP_CONTRACTS"
+    },
+    {
+      "kind": "declares",
+      "source": "CC-T0169",
+      "target": "lean:Circle.Applications.finitePhaseLocked_refl"
+    },
+    {
+      "kind": "uses_dictionary",
+      "source": "CC-T0169",
+      "target": "dict:CC-0001"
+    },
+    {
+      "kind": "uses_dictionary",
+      "source": "CC-T0169",
+      "target": "dict:CC-0101"
+    },
+    {
+      "kind": "cited_by_paper",
+      "source": "CC-T0170",
+      "target": "paper:docs/PHASE_LOOP_CONTRACTS"
+    },
+    {
+      "kind": "declares",
+      "source": "CC-T0170",
+      "target": "lean:Circle.Applications.finitePhaseLocked_symm"
+    },
+    {
+      "kind": "uses_dictionary",
+      "source": "CC-T0170",
+      "target": "dict:CC-0001"
+    },
+    {
+      "kind": "uses_dictionary",
+      "source": "CC-T0170",
+      "target": "dict:CC-0101"
+    },
+    {
+      "kind": "cited_by_paper",
+      "source": "CC-T0171",
+      "target": "paper:docs/PHASE_LOOP_CONTRACTS"
+    },
+    {
+      "kind": "declares",
+      "source": "CC-T0171",
+      "target": "lean:Circle.Applications.finitePhaseLocked_trans"
+    },
+    {
+      "kind": "uses_dictionary",
+      "source": "CC-T0171",
+      "target": "dict:CC-0001"
+    },
+    {
+      "kind": "uses_dictionary",
+      "source": "CC-T0171",
+      "target": "dict:CC-0101"
+    },
+    {
+      "kind": "cited_by_paper",
+      "source": "CC-T0172",
+      "target": "paper:docs/PHASE_LOOP_CONTRACTS"
+    },
+    {
+      "kind": "declares",
+      "source": "CC-T0172",
+      "target": "lean:Circle.Applications.windingResidueReconstruct_eq_value"
+    },
+    {
+      "kind": "uses_dictionary",
+      "source": "CC-T0172",
+      "target": "dict:CC-0001"
+    },
+    {
+      "kind": "uses_dictionary",
+      "source": "CC-T0172",
+      "target": "dict:CC-0301"
+    },
+    {
+      "kind": "cited_by_paper",
       "source": "COMMON-T0001",
       "target": "paper:docs/COMPLETION_ROADMAP"
     },
@@ -42073,7 +42553,7 @@
     }
   ],
   "kind": "manifest_evidence_graph",
-  "node_count": 2210,
+  "node_count": 2260,
   "nodes": [
     {
       "id": "AIA-T0001",
@@ -47924,6 +48404,198 @@
       "status": "proved"
     },
     {
+      "id": "CC-T0149",
+      "kind": "theorem",
+      "lean_name": "Circle.Applications.cyclicShift_zero",
+      "name": "Cyclic shift zero is identity",
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved"
+    },
+    {
+      "id": "CC-T0150",
+      "kind": "theorem",
+      "lean_name": "Circle.Applications.cyclicShift_add",
+      "name": "Cyclic shifts compose additively",
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved"
+    },
+    {
+      "id": "CC-T0151",
+      "kind": "theorem",
+      "lean_name": "Circle.Applications.cyclicEquivariant_identity",
+      "name": "Identity map is cyclic equivariant",
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved"
+    },
+    {
+      "id": "CC-T0152",
+      "kind": "theorem",
+      "lean_name": "Circle.Applications.cyclicEquivariant_comp",
+      "name": "Cyclic equivariant maps compose",
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved"
+    },
+    {
+      "id": "CC-T0153",
+      "kind": "theorem",
+      "lean_name": "Circle.Applications.cyclicEquivariant_add",
+      "name": "Pointwise sums preserve cyclic equivariance",
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved"
+    },
+    {
+      "id": "CC-T0154",
+      "kind": "theorem",
+      "lean_name": "Circle.Applications.circulantLayer_cyclicEquivariant",
+      "name": "Circulant layers are cyclic equivariant",
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved"
+    },
+    {
+      "id": "CC-T0155",
+      "kind": "theorem",
+      "lean_name": "Circle.Applications.cyclicSum_shift_invariant",
+      "name": "Cyclic sum pooling is shift invariant",
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved"
+    },
+    {
+      "id": "CC-T0156",
+      "kind": "theorem",
+      "lean_name": "Circle.Applications.reflectSignal_involutive",
+      "name": "Finite reflection is involutive",
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved"
+    },
+    {
+      "id": "CC-T0157",
+      "kind": "theorem",
+      "lean_name": "Circle.Applications.reflectSignal_shift",
+      "name": "Reflection conjugates shift to opposite shift",
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved"
+    },
+    {
+      "id": "CC-T0158",
+      "kind": "theorem",
+      "lean_name": "Circle.Applications.dihedralEquivariant_identity",
+      "name": "Identity map is dihedral equivariant",
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved"
+    },
+    {
+      "id": "CC-T0159",
+      "kind": "theorem",
+      "lean_name": "Circle.Applications.dihedralEquivariant_implies_cyclic",
+      "name": "Dihedral equivariance implies cyclic equivariance",
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved"
+    },
+    {
+      "id": "CC-T0160",
+      "kind": "theorem",
+      "lean_name": "Circle.Applications.dihedralTransform_reflection_zero_involutive",
+      "name": "Zero-shift reflection transform is involutive",
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved"
+    },
+    {
+      "id": "CC-T0161",
+      "kind": "theorem",
+      "lean_name": "Circle.Applications.phaseLoopCharge_nil",
+      "name": "Empty phase loop has zero charge",
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved"
+    },
+    {
+      "id": "CC-T0162",
+      "kind": "theorem",
+      "lean_name": "Circle.Applications.phaseLoopCharge_singleton",
+      "name": "Singleton phase loop charge is the phase",
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved"
+    },
+    {
+      "id": "CC-T0163",
+      "kind": "theorem",
+      "lean_name": "Circle.Applications.phaseLoopCharge_append",
+      "name": "Phase loop charge is additive under append",
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved"
+    },
+    {
+      "id": "CC-T0164",
+      "kind": "theorem",
+      "lean_name": "Circle.Applications.phaseLoopCharge_reverse",
+      "name": "Reversing a phase loop negates charge",
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved"
+    },
+    {
+      "id": "CC-T0165",
+      "kind": "theorem",
+      "lean_name": "Circle.Applications.vortexCharge_eq_phaseLoopCharge",
+      "name": "Vortex charge is phase loop charge",
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved"
+    },
+    {
+      "id": "CC-T0166",
+      "kind": "theorem",
+      "lean_name": "Circle.Applications.vortexCharge_reverse",
+      "name": "Reversing a vortex loop negates charge",
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved"
+    },
+    {
+      "id": "CC-T0167",
+      "kind": "theorem",
+      "lean_name": "Circle.Applications.loopGaugeShiftedCharge_eq_phaseLoopCharge",
+      "name": "Closed-loop gauge shifted charge equals loop charge",
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved"
+    },
+    {
+      "id": "CC-T0168",
+      "kind": "theorem",
+      "lean_name": "Circle.Applications.finitePhaseLocked_iff_gap_dvd",
+      "name": "Finite phase locking iff gap divisibility",
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved"
+    },
+    {
+      "id": "CC-T0169",
+      "kind": "theorem",
+      "lean_name": "Circle.Applications.finitePhaseLocked_refl",
+      "name": "Finite phase locking is reflexive",
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved"
+    },
+    {
+      "id": "CC-T0170",
+      "kind": "theorem",
+      "lean_name": "Circle.Applications.finitePhaseLocked_symm",
+      "name": "Finite phase locking is symmetric",
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved"
+    },
+    {
+      "id": "CC-T0171",
+      "kind": "theorem",
+      "lean_name": "Circle.Applications.finitePhaseLocked_trans",
+      "name": "Finite phase locking is transitive",
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved"
+    },
+    {
+      "id": "CC-T0172",
+      "kind": "theorem",
+      "lean_name": "Circle.Applications.windingResidueReconstruct_eq_value",
+      "name": "Winding residue reconstructs lifted node value",
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved"
+    },
+    {
       "id": "COMMON-T0001",
       "kind": "theorem",
       "lean_name": "Circle.Common.eulerCharacteristic",
@@ -50912,6 +51584,13 @@
       "source": "Circle/Applications/CircleGraphCoverage.lean"
     },
     {
+      "id": "lean:Circle.Applications.circulantLayer_cyclicEquivariant",
+      "kind": "lean_declaration",
+      "lean_name": "Circle.Applications.circulantLayer_cyclicEquivariant",
+      "line": 80,
+      "source": "Circle/Applications/CyclicEquivariance.lean"
+    },
+    {
       "id": "lean:Circle.Applications.circularHistogram_le_length",
       "kind": "lean_declaration",
       "lean_name": "Circle.Applications.circularHistogram_le_length",
@@ -51143,6 +51822,69 @@
       "source": "Circle/Applications/CoilCompute.lean"
     },
     {
+      "id": "lean:Circle.Applications.cyclicEquivariant_add",
+      "kind": "lean_declaration",
+      "lean_name": "Circle.Applications.cyclicEquivariant_add",
+      "line": 63,
+      "source": "Circle/Applications/CyclicEquivariance.lean"
+    },
+    {
+      "id": "lean:Circle.Applications.cyclicEquivariant_comp",
+      "kind": "lean_declaration",
+      "lean_name": "Circle.Applications.cyclicEquivariant_comp",
+      "line": 53,
+      "source": "Circle/Applications/CyclicEquivariance.lean"
+    },
+    {
+      "id": "lean:Circle.Applications.cyclicEquivariant_identity",
+      "kind": "lean_declaration",
+      "lean_name": "Circle.Applications.cyclicEquivariant_identity",
+      "line": 47,
+      "source": "Circle/Applications/CyclicEquivariance.lean"
+    },
+    {
+      "id": "lean:Circle.Applications.cyclicShift_add",
+      "kind": "lean_declaration",
+      "lean_name": "Circle.Applications.cyclicShift_add",
+      "line": 42,
+      "source": "Circle/Applications/CyclicEquivariance.lean"
+    },
+    {
+      "id": "lean:Circle.Applications.cyclicShift_zero",
+      "kind": "lean_declaration",
+      "lean_name": "Circle.Applications.cyclicShift_zero",
+      "line": 37,
+      "source": "Circle/Applications/CyclicEquivariance.lean"
+    },
+    {
+      "id": "lean:Circle.Applications.cyclicSum_shift_invariant",
+      "kind": "lean_declaration",
+      "lean_name": "Circle.Applications.cyclicSum_shift_invariant",
+      "line": 92,
+      "source": "Circle/Applications/CyclicEquivariance.lean"
+    },
+    {
+      "id": "lean:Circle.Applications.dihedralEquivariant_identity",
+      "kind": "lean_declaration",
+      "lean_name": "Circle.Applications.dihedralEquivariant_identity",
+      "line": 132,
+      "source": "Circle/Applications/CyclicEquivariance.lean"
+    },
+    {
+      "id": "lean:Circle.Applications.dihedralEquivariant_implies_cyclic",
+      "kind": "lean_declaration",
+      "lean_name": "Circle.Applications.dihedralEquivariant_implies_cyclic",
+      "line": 139,
+      "source": "Circle/Applications/CyclicEquivariance.lean"
+    },
+    {
+      "id": "lean:Circle.Applications.dihedralTransform_reflection_zero_involutive",
+      "kind": "lean_declaration",
+      "lean_name": "Circle.Applications.dihedralTransform_reflection_zero_involutive",
+      "line": 147,
+      "source": "Circle/Applications/CyclicEquivariance.lean"
+    },
+    {
       "id": "lean:Circle.Applications.directionBin_add_binCount",
       "kind": "lean_declaration",
       "lean_name": "Circle.Applications.directionBin_add_binCount",
@@ -51190,6 +51932,34 @@
       "lean_name": "Circle.Applications.finiteFourierCoeff_circConv",
       "line": 24,
       "source": "Circle/Applications/CirculantSpectral.lean"
+    },
+    {
+      "id": "lean:Circle.Applications.finitePhaseLocked_iff_gap_dvd",
+      "kind": "lean_declaration",
+      "lean_name": "Circle.Applications.finitePhaseLocked_iff_gap_dvd",
+      "line": 80,
+      "source": "Circle/Applications/PhaseLoop.lean"
+    },
+    {
+      "id": "lean:Circle.Applications.finitePhaseLocked_refl",
+      "kind": "lean_declaration",
+      "lean_name": "Circle.Applications.finitePhaseLocked_refl",
+      "line": 86,
+      "source": "Circle/Applications/PhaseLoop.lean"
+    },
+    {
+      "id": "lean:Circle.Applications.finitePhaseLocked_symm",
+      "kind": "lean_declaration",
+      "lean_name": "Circle.Applications.finitePhaseLocked_symm",
+      "line": 91,
+      "source": "Circle/Applications/PhaseLoop.lean"
+    },
+    {
+      "id": "lean:Circle.Applications.finitePhaseLocked_trans",
+      "kind": "lean_declaration",
+      "lean_name": "Circle.Applications.finitePhaseLocked_trans",
+      "line": 98,
+      "source": "Circle/Applications/PhaseLoop.lean"
     },
     {
       "id": "lean:Circle.Applications.fullLoopTokenWork_default_8_4",
@@ -52501,6 +53271,13 @@
       "source": "Circle/Applications/CircleAI.lean"
     },
     {
+      "id": "lean:Circle.Applications.loopGaugeShiftedCharge_eq_phaseLoopCharge",
+      "kind": "lean_declaration",
+      "lean_name": "Circle.Applications.loopGaugeShiftedCharge_eq_phaseLoopCharge",
+      "line": 67,
+      "source": "Circle/Applications/PhaseLoop.lean"
+    },
+    {
       "id": "lean:Circle.Applications.loopOverthinkingBoundary_add_loopPeriod",
       "kind": "lean_declaration",
       "lean_name": "Circle.Applications.loopOverthinkingBoundary_add_loopPeriod",
@@ -53523,6 +54300,34 @@
       "source": "Circle/Applications/PositionPhase.lean"
     },
     {
+      "id": "lean:Circle.Applications.phaseLoopCharge_append",
+      "kind": "lean_declaration",
+      "lean_name": "Circle.Applications.phaseLoopCharge_append",
+      "line": 42,
+      "source": "Circle/Applications/PhaseLoop.lean"
+    },
+    {
+      "id": "lean:Circle.Applications.phaseLoopCharge_nil",
+      "kind": "lean_declaration",
+      "lean_name": "Circle.Applications.phaseLoopCharge_nil",
+      "line": 32,
+      "source": "Circle/Applications/PhaseLoop.lean"
+    },
+    {
+      "id": "lean:Circle.Applications.phaseLoopCharge_reverse",
+      "kind": "lean_declaration",
+      "lean_name": "Circle.Applications.phaseLoopCharge_reverse",
+      "line": 49,
+      "source": "Circle/Applications/PhaseLoop.lean"
+    },
+    {
+      "id": "lean:Circle.Applications.phaseLoopCharge_singleton",
+      "kind": "lean_declaration",
+      "lean_name": "Circle.Applications.phaseLoopCharge_singleton",
+      "line": 37,
+      "source": "Circle/Applications/PhaseLoop.lean"
+    },
+    {
       "id": "lean:Circle.Applications.positionResidue_add_mul_period",
       "kind": "lean_declaration",
       "lean_name": "Circle.Applications.positionResidue_add_mul_period",
@@ -53570,6 +54375,20 @@
       "lean_name": "Circle.Applications.rawCandidateDedupLength_add_rawCandidateDedupLoss_eq_length",
       "line": 303,
       "source": "Circle/Applications/CircleTransformer.lean"
+    },
+    {
+      "id": "lean:Circle.Applications.reflectSignal_involutive",
+      "kind": "lean_declaration",
+      "lean_name": "Circle.Applications.reflectSignal_involutive",
+      "line": 106,
+      "source": "Circle/Applications/CyclicEquivariance.lean"
+    },
+    {
+      "id": "lean:Circle.Applications.reflectSignal_shift",
+      "kind": "lean_declaration",
+      "lean_name": "Circle.Applications.reflectSignal_shift",
+      "line": 112,
+      "source": "Circle/Applications/CyclicEquivariance.lean"
     },
     {
       "id": "lean:Circle.Applications.ropeCollisionPairCountAtGapMultiples_eq_closedForm",
@@ -55175,11 +55994,32 @@
       "source": "Circle/Applications/TreeLLM.lean"
     },
     {
+      "id": "lean:Circle.Applications.vortexCharge_eq_phaseLoopCharge",
+      "kind": "lean_declaration",
+      "lean_name": "Circle.Applications.vortexCharge_eq_phaseLoopCharge",
+      "line": 55,
+      "source": "Circle/Applications/PhaseLoop.lean"
+    },
+    {
+      "id": "lean:Circle.Applications.vortexCharge_reverse",
+      "kind": "lean_declaration",
+      "lean_name": "Circle.Applications.vortexCharge_reverse",
+      "line": 61,
+      "source": "Circle/Applications/PhaseLoop.lean"
+    },
+    {
       "id": "lean:Circle.Applications.windingPosition_fst_mul_add_snd",
       "kind": "lean_declaration",
       "lean_name": "Circle.Applications.windingPosition_fst_mul_add_snd",
       "line": 2469,
       "source": "Circle/Applications/CircleAI.lean"
+    },
+    {
+      "id": "lean:Circle.Applications.windingResidueReconstruct_eq_value",
+      "kind": "lean_declaration",
+      "lean_name": "Circle.Applications.windingResidueReconstruct_eq_value",
+      "line": 111,
+      "source": "Circle/Applications/PhaseLoop.lean"
     },
     {
       "id": "lean:Circle.Applications.wrappedCircularDistance_comm",
@@ -57954,6 +58794,11 @@
       "paper_id": "docs/COMPLETION_ROADMAP"
     },
     {
+      "id": "paper:docs/CYCLIC_EQUIVARIANCE",
+      "kind": "paper",
+      "paper_id": "docs/CYCLIC_EQUIVARIANCE"
+    },
+    {
       "id": "paper:docs/FINITE_FOURIER_CIRCULANT",
       "kind": "paper",
       "paper_id": "docs/FINITE_FOURIER_CIRCULANT"
@@ -57962,6 +58807,11 @@
       "id": "paper:docs/GOOGLE_DRIVE_CIRCLE_IDEAS_AUDIT",
       "kind": "paper",
       "paper_id": "docs/GOOGLE_DRIVE_CIRCLE_IDEAS_AUDIT"
+    },
+    {
+      "id": "paper:docs/PHASE_LOOP_CONTRACTS",
+      "kind": "paper",
+      "paper_id": "docs/PHASE_LOOP_CONTRACTS"
     },
     {
       "id": "paper:docs/POSITION_PHASE_BANKS",
@@ -58224,7 +59074,7 @@
   "status_counts": {
     "lean_proved": 852,
     "lean_stated": 1,
-    "proved": 148
+    "proved": 172
   },
-  "theorem_count": 1001
+  "theorem_count": 1025
 }

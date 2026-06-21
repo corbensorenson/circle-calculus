@@ -13,7 +13,10 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Callable, TypeVar
 
-import sympy
+try:
+    import sympy
+except ModuleNotFoundError:  # pragma: no cover - exercised in minimal CI envs.
+    sympy = None
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -21,6 +24,15 @@ RESULTS_DIR = ROOT / "sidecars" / "PRIME_ENGINE" / "results"
 SCHEMA_ID = "circle_calculus.prime_bigint_controls.v0"
 
 T = TypeVar("T")
+
+
+def require_sympy():
+    if sympy is None:
+        raise RuntimeError(
+            "SymPy is required for BigUint benchmark control comparisons. "
+            "Install sympy to run scripts/benchmark_prime_bigint_controls.py."
+        )
+    return sympy
 
 
 @dataclass(frozen=True)
@@ -113,6 +125,12 @@ def parse_args() -> argparse.Namespace:
         type=int,
         default=128,
         help="Scored prefix budget for Circle big-fuzzy-search smoke rows.",
+    )
+    parser.add_argument(
+        "--fuzzy-profile",
+        choices=["mr", "bpsw"],
+        default="bpsw",
+        help="BigUint verifier profile used by Circle big-fuzzy-search smoke rows.",
     )
     parser.add_argument(
         "--server-batch-size",
@@ -299,6 +317,7 @@ def circle_big_fuzzy_any(
     candidate_window: int,
     top_k: int,
     score_limit: int,
+    fuzzy_profile: str,
 ) -> int | None:
     payload = run_circle_json(
         binary,
@@ -311,6 +330,8 @@ def circle_big_fuzzy_any(
         str(top_k),
         "--score-limit",
         str(score_limit),
+        "--profile",
+        fuzzy_profile,
         "--rounds",
         str(mr_rounds),
         "--json",
@@ -347,9 +368,10 @@ def openssl_prime(binary: str, n: int, mr_rounds: int) -> bool:
 
 
 def sympy_next_prime_at_or_above(start: int) -> int:
-    if sympy.isprime(start):
+    sympy_module = require_sympy()
+    if sympy_module.isprime(start):
         return start
-    return int(sympy.nextprime(start))
+    return int(sympy_module.nextprime(start))
 
 
 def write_big_fuzzy_model(path: Path, bit_width: int) -> None:
@@ -436,6 +458,7 @@ def main() -> int:
         raise SystemExit("--mr-rounds must be positive")
     if args.server_batch_size <= 0:
         raise SystemExit("--server-batch-size must be positive")
+    sympy_module = require_sympy()
 
     max_bits = max([case.n.bit_length() for case in prime_cases()] + [521])
     model_path = ROOT / "target" / "prime-controls" / "prime-big-fuzzy-model.txt"
@@ -501,6 +524,8 @@ def main() -> int:
                     str(args.top_k),
                     "--score-limit",
                     str(args.score_limit),
+                    "--profile",
+                    args.fuzzy_profile,
                     "--rounds",
                     str(args.mr_rounds),
                 ]
@@ -537,7 +562,7 @@ def main() -> int:
                 bench_rounds=args.bench_rounds,
             )
             sympy_result = timed(
-                lambda case=case: bool(sympy.isprime(case.n)),
+                lambda case=case: bool(sympy_module.isprime(case.n)),
                 warmup_rounds=args.warmup_rounds,
                 bench_rounds=args.bench_rounds,
             )
@@ -608,6 +633,7 @@ def main() -> int:
                     args.candidate_window,
                     args.top_k,
                     args.score_limit,
+                    args.fuzzy_profile,
                 ),
                 warmup_rounds=args.warmup_rounds,
                 bench_rounds=args.bench_rounds,
@@ -634,7 +660,7 @@ def main() -> int:
                     agreed = (
                         isinstance(sample_set.result, int)
                         and sample_set.result >= case.start
-                        and bool(sympy.isprime(sample_set.result))
+                        and bool(sympy_module.isprime(sample_set.result))
                     )
                 if not agreed:
                     failures.append(
@@ -685,13 +711,14 @@ def main() -> int:
         "candidate_window": args.candidate_window,
         "top_k": args.top_k,
         "score_limit": args.score_limit,
+        "fuzzy_profile": args.fuzzy_profile,
         "server_batch_size": args.server_batch_size,
         "circle_server_protocol": "stdin lines: N or N COUNT; non-json response per request",
         "circle_prime": file_fingerprint(args.circle_prime_bin),
         "big_fuzzy_model": file_fingerprint(model_path),
         "tools": {
             "openssl": tool_version([args.openssl_bin, "version"]),
-            "sympy": sympy.__version__,
+            "sympy": sympy_module.__version__,
         },
         "failures": failures,
     }

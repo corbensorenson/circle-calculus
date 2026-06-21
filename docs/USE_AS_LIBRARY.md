@@ -139,6 +139,53 @@ helpers are proof-facing; the real-valued mean/resultant fields are executable
 floating-point diagnostics, not statistical-quality or numerical-stability
 proofs.
 
+## Python: Cyclic Equivariance
+
+```python
+from circle_math.core import (
+    circulant_equivariance_report,
+    cyclic_sum_invariance_report,
+    dihedral_transform,
+)
+
+print(dihedral_transform([10, 20, 30, 40], shift=1, reflected=True))
+
+report = circulant_equivariance_report(
+    [2, 0, 1, 0],
+    [[1, 2, 0, -1], [0, 3, 1, 2]],
+)
+print(report.passed)
+print(report.max_abs_delta)
+
+pooling = cyclic_sum_invariance_report([[1, 2, 3, 4]])
+print(pooling.passed)
+```
+
+The corresponding Lean facts are in
+`Circle.Applications.CyclicEquivariance`. This proves finite shift/reflection
+structure and circulant-layer cyclic equivariance, not continuous rotation
+equivariance, robustness, or model quality.
+
+## Python: Phase Loop And Locking
+
+```python
+from circle_math.core import phase_lock_report, phase_loop_report
+
+loop = phase_loop_report(12, [3, 4, 7], base_gauge=5)
+print(loop.charge)
+print(loop.reverse_charge)
+print(loop.charge_plus_reverse)
+print(loop.closed_loop_gauge_invariant)
+
+locked = phase_lock_report(12, [1, 13, 25])
+print(locked.all_locked)
+print(locked.order_parameter)
+```
+
+The corresponding Lean facts are in `Circle.Applications.PhaseLoop`. This is a
+finite modular phase-loop contract, not a Kuramoto stability, synchronization,
+continuum-vortex, quantum-holonomy, or physics proof.
+
 ## Python: RoPE Contract Receipt
 
 ```python

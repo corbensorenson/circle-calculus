@@ -99,6 +99,7 @@ def test_build_summary_records_weakest_speedups_by_group() -> None:
         candidate_window=512,
         top_k=16,
         score_limit=128,
+        fuzzy_profile="bpsw",
         server_batch_size=16,
         min_bpsw_next_vs_sympy=1.1,
         min_fuzzy_any_vs_sympy=0.0,

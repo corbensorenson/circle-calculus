@@ -168,6 +168,10 @@ website:
             text: Circle Graph Coverage
           - href: chapters/applications/circular_statistics.qmd
             text: Circular Statistics Contracts
+          - href: chapters/applications/cyclic_equivariance.qmd
+            text: Cyclic Equivariance Contracts
+          - href: chapters/applications/phase_loop_contracts.qmd
+            text: Phase Loop Contracts
           - href: chapters/applications/looped_recurrence_contracts.qmd
             text: Looped Recurrence Contracts
           - href: chapters/applications/strided_candidate_fanout.qmd

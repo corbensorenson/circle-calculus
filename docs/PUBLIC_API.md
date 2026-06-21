@@ -65,6 +65,36 @@ The Lean proof spine for the finite residue layer lives in
 `Circle.Applications.CircularStatistics`; see
 [CIRCULAR_STATISTICS_CONTRACTS.md](CIRCULAR_STATISTICS_CONTRACTS.md).
 
+Finite cyclic equivariance helpers are stable through `circle_math.core`:
+
+```python
+from circle_math.core import circulant_equivariance_report, cyclic_shift
+
+assert cyclic_shift([1, 2, 3, 4], 1) == (4 + 0j, 1 + 0j, 2 + 0j, 3 + 0j)
+report = circulant_equivariance_report([2, 0, 1, 0], [[1, 2, 0, -1]])
+assert report.passed is True
+```
+
+The Lean proof spine for this layer lives in
+`Circle.Applications.CyclicEquivariance`; see
+[CYCLIC_EQUIVARIANCE.md](CYCLIC_EQUIVARIANCE.md).
+
+Finite phase-loop helpers are stable through `circle_math.core`:
+
+```python
+from circle_math.core import phase_lock_report, phase_loop_report
+
+loop = phase_loop_report(12, [3, 4, 7], base_gauge=5)
+assert loop.charge == 2
+assert loop.closed_loop_gauge_invariant is True
+
+locked = phase_lock_report(12, [1, 13, 25])
+assert locked.all_locked is True
+```
+
+The Lean proof spine for this layer lives in `Circle.Applications.PhaseLoop`;
+see [PHASE_LOOP_CONTRACTS.md](PHASE_LOOP_CONTRACTS.md).
+
 ## Python Contracts
 
 Use `circle_math.ai_contracts` to build public contract fixtures and receipts:

@@ -26208,6 +26208,786 @@
       "blocker": "",
       "canonical_status": "proved",
       "dictionary_dependencies": [
+        "CC-0001",
+        "CC-0101"
+      ],
+      "formal_statement": "forall x : ZMod n -> R, Circle.Applications.cyclicShift 0 x = x",
+      "id": "CC-T0149",
+      "informal_statement": "The zero shift on a finite cyclic signal leaves the signal unchanged.",
+      "lean_name": "Circle.Applications.cyclicShift_zero",
+      "lean_source": "Circle/Applications/CyclicEquivariance.lean",
+      "lean_source_line": 37,
+      "name": "Cyclic shift zero is identity",
+      "original_status": "proved",
+      "paper_refs": [
+        "docs/CYCLIC_EQUIVARIANCE.md"
+      ],
+      "proof_notes": "Lean theorem is compiled in Circle/Applications/CyclicEquivariance.lean as a public wrapper around shiftBy_zero.",
+      "python_tests": [
+        "tests/test_cyclic_equivariance.py::test_cyclic_shift_and_reflection_match_finite_index_conventions"
+      ],
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved",
+      "used_by_papers": [],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": [
+          "cyclic_shift(values,0) leaves deterministic examples unchanged"
+        ]
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "CC-0001",
+        "CC-0101"
+      ],
+      "formal_statement": "forall s t : ZMod n, forall x : ZMod n -> R, Circle.Applications.cyclicShift (s + t) x = Circle.Applications.cyclicShift s (Circle.Applications.cyclicShift t x)",
+      "id": "CC-T0150",
+      "informal_statement": "Applying two finite cyclic shifts is the same as shifting by their sum.",
+      "lean_name": "Circle.Applications.cyclicShift_add",
+      "lean_source": "Circle/Applications/CyclicEquivariance.lean",
+      "lean_source_line": 42,
+      "name": "Cyclic shifts compose additively",
+      "original_status": "proved",
+      "paper_refs": [
+        "docs/CYCLIC_EQUIVARIANCE.md"
+      ],
+      "proof_notes": "Lean theorem is compiled in Circle/Applications/CyclicEquivariance.lean as a public wrapper around shiftBy_add.",
+      "python_tests": [
+        "tests/test_cyclic_equivariance.py::test_cyclic_and_dihedral_orbits_have_expected_size"
+      ],
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved",
+      "used_by_papers": [],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": [
+          "cyclic_orbit enumerates one transform per shift"
+        ]
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "CC-0001",
+        "CC-0101"
+      ],
+      "formal_statement": "Circle.Applications.CyclicEquivariant (fun x => x)",
+      "id": "CC-T0151",
+      "informal_statement": "The identity map on finite cyclic signals commutes with every cyclic shift.",
+      "lean_name": "Circle.Applications.cyclicEquivariant_identity",
+      "lean_source": "Circle/Applications/CyclicEquivariance.lean",
+      "lean_source_line": 47,
+      "name": "Identity map is cyclic equivariant",
+      "original_status": "proved",
+      "paper_refs": [
+        "docs/CYCLIC_EQUIVARIANCE.md"
+      ],
+      "proof_notes": "Lean theorem is compiled in Circle/Applications/CyclicEquivariance.lean by reflexivity.",
+      "python_tests": [
+        "tests/test_cyclic_equivariance.py::test_generic_cyclic_equivariance_checker_accepts_identity_layer"
+      ],
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved",
+      "used_by_papers": [],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": [
+          "generic cyclic equivariance checker accepts the identity layer"
+        ]
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "CC-0001",
+        "CC-0101"
+      ],
+      "formal_statement": "forall f g, Circle.Applications.CyclicEquivariant f -> Circle.Applications.CyclicEquivariant g -> Circle.Applications.CyclicEquivariant (fun x => f (g x))",
+      "id": "CC-T0152",
+      "informal_statement": "The composition of two cyclic-equivariant finite signal maps is cyclic-equivariant.",
+      "lean_name": "Circle.Applications.cyclicEquivariant_comp",
+      "lean_source": "Circle/Applications/CyclicEquivariance.lean",
+      "lean_source_line": 53,
+      "name": "Cyclic equivariant maps compose",
+      "original_status": "proved",
+      "paper_refs": [
+        "docs/CYCLIC_EQUIVARIANCE.md"
+      ],
+      "proof_notes": "Lean theorem is compiled in Circle/Applications/CyclicEquivariance.lean by rewriting both equivariance hypotheses.",
+      "python_tests": [],
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved",
+      "used_by_papers": [],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": []
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "CC-0001",
+        "CC-0101"
+      ],
+      "formal_statement": "forall f g, Circle.Applications.CyclicEquivariant f -> Circle.Applications.CyclicEquivariant g -> Circle.Applications.CyclicEquivariant (fun x => f x + g x)",
+      "id": "CC-T0153",
+      "informal_statement": "The pointwise sum of two cyclic-equivariant finite signal maps is cyclic-equivariant.",
+      "lean_name": "Circle.Applications.cyclicEquivariant_add",
+      "lean_source": "Circle/Applications/CyclicEquivariance.lean",
+      "lean_source_line": 63,
+      "name": "Pointwise sums preserve cyclic equivariance",
+      "original_status": "proved",
+      "paper_refs": [
+        "docs/CYCLIC_EQUIVARIANCE.md"
+      ],
+      "proof_notes": "Lean theorem is compiled in Circle/Applications/CyclicEquivariance.lean by pointwise function extensionality after rewriting both hypotheses.",
+      "python_tests": [],
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved",
+      "used_by_papers": [],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": []
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "CC-0001",
+        "CC-0101"
+      ],
+      "formal_statement": "forall kernel : ZMod n -> R, Circle.Applications.CyclicEquivariant (Circle.Applications.circulantLayer kernel)",
+      "id": "CC-T0154",
+      "informal_statement": "Every finite circulant convolution layer commutes with every cyclic shift.",
+      "lean_name": "Circle.Applications.circulantLayer_cyclicEquivariant",
+      "lean_source": "Circle/Applications/CyclicEquivariance.lean",
+      "lean_source_line": 80,
+      "name": "Circulant layers are cyclic equivariant",
+      "original_status": "proved",
+      "paper_refs": [
+        "docs/CYCLIC_EQUIVARIANCE.md"
+      ],
+      "proof_notes": "Lean theorem is compiled in Circle/Applications/CyclicEquivariance.lean from the existing circConv_shift_equivariant theorem.",
+      "python_tests": [
+        "tests/test_cyclic_equivariance.py::test_circulant_layer_cyclic_equivariance_report"
+      ],
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved",
+      "used_by_papers": [],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": [
+          "circulant_equivariance_report passes deterministic circulant fixtures"
+        ]
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "CC-0001",
+        "CC-0101"
+      ],
+      "formal_statement": "forall s : ZMod n, forall x : ZMod n -> R, Circle.Applications.cyclicSum (Circle.Applications.cyclicShift s x) = Circle.Applications.cyclicSum x",
+      "id": "CC-T0155",
+      "informal_statement": "Summing a finite cyclic signal over every address is invariant under cyclic shift.",
+      "lean_name": "Circle.Applications.cyclicSum_shift_invariant",
+      "lean_source": "Circle/Applications/CyclicEquivariance.lean",
+      "lean_source_line": 92,
+      "name": "Cyclic sum pooling is shift invariant",
+      "original_status": "proved",
+      "paper_refs": [
+        "docs/CYCLIC_EQUIVARIANCE.md"
+      ],
+      "proof_notes": "Lean theorem is compiled in Circle/Applications/CyclicEquivariance.lean by reindexing the finite sum through the shift equivalence.",
+      "python_tests": [
+        "tests/test_cyclic_equivariance.py::test_cyclic_sum_invariance_report"
+      ],
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved",
+      "used_by_papers": [],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": [
+          "cyclic_sum_invariance_report passes deterministic examples"
+        ]
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "CC-0001",
+        "CC-0101"
+      ],
+      "formal_statement": "forall x : ZMod n -> R, Circle.Applications.reflectSignal (Circle.Applications.reflectSignal x) = x",
+      "id": "CC-T0156",
+      "informal_statement": "Reflecting a finite cyclic signal twice returns the original signal.",
+      "lean_name": "Circle.Applications.reflectSignal_involutive",
+      "lean_source": "Circle/Applications/CyclicEquivariance.lean",
+      "lean_source_line": 106,
+      "name": "Finite reflection is involutive",
+      "original_status": "proved",
+      "paper_refs": [
+        "docs/CYCLIC_EQUIVARIANCE.md"
+      ],
+      "proof_notes": "Lean theorem is compiled in Circle/Applications/CyclicEquivariance.lean by function extensionality and negation simplification.",
+      "python_tests": [
+        "tests/test_cyclic_equivariance.py::test_cyclic_shift_and_reflection_match_finite_index_conventions"
+      ],
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved",
+      "used_by_papers": [],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": [
+          "reflect_signal(reflect_signal(values)) returns the original signal in deterministic examples"
+        ]
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "CC-0001",
+        "CC-0101"
+      ],
+      "formal_statement": "forall s : ZMod n, forall x : ZMod n -> R, Circle.Applications.reflectSignal (Circle.Applications.cyclicShift s x) = Circle.Applications.cyclicShift (-s) (Circle.Applications.reflectSignal x)",
+      "id": "CC-T0157",
+      "informal_statement": "Reflecting after a finite shift by s is the same as shifting the reflected signal by -s.",
+      "lean_name": "Circle.Applications.reflectSignal_shift",
+      "lean_source": "Circle/Applications/CyclicEquivariance.lean",
+      "lean_source_line": 112,
+      "name": "Reflection conjugates shift to opposite shift",
+      "original_status": "proved",
+      "paper_refs": [
+        "docs/CYCLIC_EQUIVARIANCE.md"
+      ],
+      "proof_notes": "Lean theorem is compiled in Circle/Applications/CyclicEquivariance.lean by unfolding reflection and shift and simplifying additive inverses.",
+      "python_tests": [
+        "tests/test_cyclic_equivariance.py::test_cyclic_shift_and_reflection_match_finite_index_conventions"
+      ],
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved",
+      "used_by_papers": [],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": [
+          "dihedral_transform uses reflection followed by shift"
+        ]
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "CC-0001",
+        "CC-0101"
+      ],
+      "formal_statement": "Circle.Applications.DihedralEquivariant (fun x => x)",
+      "id": "CC-T0158",
+      "informal_statement": "The identity map on finite cyclic signals commutes with every declared shift/reflection transform.",
+      "lean_name": "Circle.Applications.dihedralEquivariant_identity",
+      "lean_source": "Circle/Applications/CyclicEquivariance.lean",
+      "lean_source_line": 132,
+      "name": "Identity map is dihedral equivariant",
+      "original_status": "proved",
+      "paper_refs": [
+        "docs/CYCLIC_EQUIVARIANCE.md"
+      ],
+      "proof_notes": "Lean theorem is compiled in Circle/Applications/CyclicEquivariance.lean by case splitting on the reflection flag.",
+      "python_tests": [
+        "tests/test_cyclic_equivariance.py::test_cyclic_shift_and_reflection_match_finite_index_conventions"
+      ],
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved",
+      "used_by_papers": [],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": [
+          "dihedral transform examples follow the declared finite convention"
+        ]
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "CC-0001",
+        "CC-0101"
+      ],
+      "formal_statement": "forall f, Circle.Applications.DihedralEquivariant f -> Circle.Applications.CyclicEquivariant f",
+      "id": "CC-T0159",
+      "informal_statement": "Any finite signal map that is equivariant for all shift/reflection transforms is equivariant for cyclic shifts.",
+      "lean_name": "Circle.Applications.dihedralEquivariant_implies_cyclic",
+      "lean_source": "Circle/Applications/CyclicEquivariance.lean",
+      "lean_source_line": 139,
+      "name": "Dihedral equivariance implies cyclic equivariance",
+      "original_status": "proved",
+      "paper_refs": [
+        "docs/CYCLIC_EQUIVARIANCE.md"
+      ],
+      "proof_notes": "Lean theorem is compiled in Circle/Applications/CyclicEquivariance.lean by specializing the dihedral predicate to the no-reflection case.",
+      "python_tests": [],
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved",
+      "used_by_papers": [],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": []
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "CC-0001",
+        "CC-0101"
+      ],
+      "formal_statement": "forall x : ZMod n -> R, Circle.Applications.dihedralTransform true 0 (Circle.Applications.dihedralTransform true 0 x) = x",
+      "id": "CC-T0160",
+      "informal_statement": "The finite dihedral transform with reflection and zero shift is its own inverse.",
+      "lean_name": "Circle.Applications.dihedralTransform_reflection_zero_involutive",
+      "lean_source": "Circle/Applications/CyclicEquivariance.lean",
+      "lean_source_line": 147,
+      "name": "Zero-shift reflection transform is involutive",
+      "original_status": "proved",
+      "paper_refs": [
+        "docs/CYCLIC_EQUIVARIANCE.md"
+      ],
+      "proof_notes": "Lean theorem is compiled in Circle/Applications/CyclicEquivariance.lean from reflection involution and zero-shift identity.",
+      "python_tests": [
+        "tests/test_cyclic_equivariance.py::test_cyclic_shift_and_reflection_match_finite_index_conventions"
+      ],
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved",
+      "used_by_papers": [],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": [
+          "dihedral_transform(..., reflected=True, shift=0) applied twice returns the original deterministic signal"
+        ]
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "CC-0001",
+        "CC-0101"
+      ],
+      "formal_statement": "Circle.Applications.phaseLoopCharge ([] : List (ZMod n)) = 0",
+      "id": "CC-T0161",
+      "informal_statement": "The finite phase-loop charge of the empty increment list is zero.",
+      "lean_name": "Circle.Applications.phaseLoopCharge_nil",
+      "lean_source": "Circle/Applications/PhaseLoop.lean",
+      "lean_source_line": 32,
+      "name": "Empty phase loop has zero charge",
+      "original_status": "proved",
+      "paper_refs": [
+        "docs/PHASE_LOOP_CONTRACTS.md"
+      ],
+      "proof_notes": "Lean theorem is compiled in Circle/Applications/PhaseLoop.lean by simplifying the empty path holonomy.",
+      "python_tests": [
+        "tests/test_phase_loop.py::test_phase_loop_charge_and_reverse_negation"
+      ],
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved",
+      "used_by_papers": [],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": [
+          "phase_loop_charge(period, []) is zero in executable fixtures"
+        ]
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "CC-0001",
+        "CC-0101"
+      ],
+      "formal_statement": "forall phase : ZMod n, Circle.Applications.phaseLoopCharge [phase] = phase",
+      "id": "CC-T0162",
+      "informal_statement": "A one-increment finite phase-loop charge is exactly that increment.",
+      "lean_name": "Circle.Applications.phaseLoopCharge_singleton",
+      "lean_source": "Circle/Applications/PhaseLoop.lean",
+      "lean_source_line": 37,
+      "name": "Singleton phase loop charge is the phase",
+      "original_status": "proved",
+      "paper_refs": [
+        "docs/PHASE_LOOP_CONTRACTS.md"
+      ],
+      "proof_notes": "Lean theorem is compiled in Circle/Applications/PhaseLoop.lean by simplifying singleton path holonomy.",
+      "python_tests": [
+        "tests/test_phase_loop.py::test_phase_loop_charge_and_reverse_negation"
+      ],
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved",
+      "used_by_papers": [],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": [
+          "single-increment charge follows modular normalization in executable fixtures"
+        ]
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "CC-0001",
+        "CC-0101"
+      ],
+      "formal_statement": "forall left right : List (ZMod n), Circle.Applications.phaseLoopCharge (left ++ right) = Circle.Applications.phaseLoopCharge left + Circle.Applications.phaseLoopCharge right",
+      "id": "CC-T0163",
+      "informal_statement": "Appending two finite phase paths adds their modular loop charges.",
+      "lean_name": "Circle.Applications.phaseLoopCharge_append",
+      "lean_source": "Circle/Applications/PhaseLoop.lean",
+      "lean_source_line": 42,
+      "name": "Phase loop charge is additive under append",
+      "original_status": "proved",
+      "paper_refs": [
+        "docs/PHASE_LOOP_CONTRACTS.md"
+      ],
+      "proof_notes": "Lean theorem is compiled in Circle/Applications/PhaseLoop.lean from the existing pathHolonomy_concat theorem.",
+      "python_tests": [
+        "tests/test_phase_loop.py::test_phase_loop_charge_and_reverse_negation"
+      ],
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved",
+      "used_by_papers": [],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": [
+          "phase_loop_charge follows modular sum append behavior in deterministic examples"
+        ]
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "CC-0001",
+        "CC-0101"
+      ],
+      "formal_statement": "forall increments : List (ZMod n), Circle.Applications.phaseLoopCharge (Circle.Physics.reversePhases increments) = - Circle.Applications.phaseLoopCharge increments",
+      "id": "CC-T0164",
+      "informal_statement": "The finite phase-loop charge of a reversed and negated path is the negative of the original charge.",
+      "lean_name": "Circle.Applications.phaseLoopCharge_reverse",
+      "lean_source": "Circle/Applications/PhaseLoop.lean",
+      "lean_source_line": 49,
+      "name": "Reversing a phase loop negates charge",
+      "original_status": "proved",
+      "paper_refs": [
+        "docs/PHASE_LOOP_CONTRACTS.md"
+      ],
+      "proof_notes": "Lean theorem is compiled in Circle/Applications/PhaseLoop.lean from the existing pathHolonomy_reverse theorem.",
+      "python_tests": [
+        "tests/test_phase_loop.py::test_phase_loop_charge_and_reverse_negation"
+      ],
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved",
+      "used_by_papers": [],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": [
+          "reverse_phase_increments gives charge_plus_reverse equal to zero modulo period"
+        ]
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "CC-0001",
+        "CC-0101"
+      ],
+      "formal_statement": "forall increments : List (ZMod n), Circle.Applications.vortexCharge increments = Circle.Applications.phaseLoopCharge increments",
+      "id": "CC-T0165",
+      "informal_statement": "The module's finite vortex-charge vocabulary is exactly the same modular sum as finite phase-loop charge.",
+      "lean_name": "Circle.Applications.vortexCharge_eq_phaseLoopCharge",
+      "lean_source": "Circle/Applications/PhaseLoop.lean",
+      "lean_source_line": 55,
+      "name": "Vortex charge is phase loop charge",
+      "original_status": "proved",
+      "paper_refs": [
+        "docs/PHASE_LOOP_CONTRACTS.md"
+      ],
+      "proof_notes": "Lean theorem is compiled in Circle/Applications/PhaseLoop.lean by definitional equality.",
+      "python_tests": [
+        "tests/test_phase_loop.py::test_phase_loop_charge_and_reverse_negation"
+      ],
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved",
+      "used_by_papers": [],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": [
+          "vortex_charge is an alias for phase_loop_charge"
+        ]
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "CC-0001",
+        "CC-0101"
+      ],
+      "formal_statement": "forall increments : List (ZMod n), Circle.Applications.vortexCharge (Circle.Physics.reversePhases increments) = - Circle.Applications.vortexCharge increments",
+      "id": "CC-T0166",
+      "informal_statement": "The finite vortex-charge of a reversed and negated loop is the negative of the original charge.",
+      "lean_name": "Circle.Applications.vortexCharge_reverse",
+      "lean_source": "Circle/Applications/PhaseLoop.lean",
+      "lean_source_line": 61,
+      "name": "Reversing a vortex loop negates charge",
+      "original_status": "proved",
+      "paper_refs": [
+        "docs/PHASE_LOOP_CONTRACTS.md"
+      ],
+      "proof_notes": "Lean theorem is compiled in Circle/Applications/PhaseLoop.lean from the phase-loop reversal theorem.",
+      "python_tests": [
+        "tests/test_phase_loop.py::test_phase_loop_charge_and_reverse_negation"
+      ],
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved",
+      "used_by_papers": [],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": [
+          "vortex-charge reversal follows the same finite modular negation fixture"
+        ]
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "CC-0001",
+        "CC-0101"
+      ],
+      "formal_statement": "forall increments : List (ZMod n), forall baseGauge : ZMod n, Circle.Applications.loopGaugeShiftedCharge increments baseGauge = Circle.Applications.phaseLoopCharge increments",
+      "id": "CC-T0167",
+      "informal_statement": "A finite closed-loop endpoint gauge shift cancels because the source and target base gauges are the same.",
+      "lean_name": "Circle.Applications.loopGaugeShiftedCharge_eq_phaseLoopCharge",
+      "lean_source": "Circle/Applications/PhaseLoop.lean",
+      "lean_source_line": 67,
+      "name": "Closed-loop gauge shifted charge equals loop charge",
+      "original_status": "proved",
+      "paper_refs": [
+        "docs/PHASE_LOOP_CONTRACTS.md"
+      ],
+      "proof_notes": "Lean theorem is compiled in Circle/Applications/PhaseLoop.lean by simplifying gaugeTransformHolonomy with identical endpoint gauges.",
+      "python_tests": [
+        "tests/test_phase_loop.py::test_closed_loop_gauge_shifted_charge_matches_loop_charge"
+      ],
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved",
+      "used_by_papers": [],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": [
+          "loop_gauge_shifted_charge equals phase_loop_charge for deterministic closed-loop fixtures"
+        ]
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "CC-0001",
+        "CC-0101"
+      ],
+      "formal_statement": "forall {period left right : Nat}, left <= right -> Circle.Applications.finitePhaseLocked period left right <-> period | right - left",
+      "id": "CC-T0168",
+      "informal_statement": "For ordered natural phase samples, finite phase locking is equivalent to the declared period dividing the phase gap.",
+      "lean_name": "Circle.Applications.finitePhaseLocked_iff_gap_dvd",
+      "lean_source": "Circle/Applications/PhaseLoop.lean",
+      "lean_source_line": 80,
+      "name": "Finite phase locking iff gap divisibility",
+      "original_status": "proved",
+      "paper_refs": [
+        "docs/PHASE_LOOP_CONTRACTS.md"
+      ],
+      "proof_notes": "Lean theorem is compiled in Circle/Applications/PhaseLoop.lean from the circularSamePhase divisibility theorem.",
+      "python_tests": [
+        "tests/test_phase_loop.py::test_finite_phase_locking_and_gap"
+      ],
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved",
+      "used_by_papers": [],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": [
+          "finite_phase_locked matches zero modular gap in deterministic examples"
+        ]
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "CC-0001",
+        "CC-0101"
+      ],
+      "formal_statement": "forall period sample : Nat, Circle.Applications.finitePhaseLocked period sample sample",
+      "id": "CC-T0169",
+      "informal_statement": "Every natural phase sample is finite-phase-locked with itself.",
+      "lean_name": "Circle.Applications.finitePhaseLocked_refl",
+      "lean_source": "Circle/Applications/PhaseLoop.lean",
+      "lean_source_line": 86,
+      "name": "Finite phase locking is reflexive",
+      "original_status": "proved",
+      "paper_refs": [
+        "docs/PHASE_LOOP_CONTRACTS.md"
+      ],
+      "proof_notes": "Lean theorem is compiled in Circle/Applications/PhaseLoop.lean from circularSamePhase_refl.",
+      "python_tests": [
+        "tests/test_phase_loop.py::test_phase_lock_report_order_parameter"
+      ],
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved",
+      "used_by_papers": [],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": [
+          "phase_lock_report locks every sample to itself in same-residue fixtures"
+        ]
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "CC-0001",
+        "CC-0101"
+      ],
+      "formal_statement": "forall {period left right : Nat}, Circle.Applications.finitePhaseLocked period left right -> Circle.Applications.finitePhaseLocked period right left",
+      "id": "CC-T0170",
+      "informal_statement": "Finite phase locking is symmetric between two natural samples.",
+      "lean_name": "Circle.Applications.finitePhaseLocked_symm",
+      "lean_source": "Circle/Applications/PhaseLoop.lean",
+      "lean_source_line": 91,
+      "name": "Finite phase locking is symmetric",
+      "original_status": "proved",
+      "paper_refs": [
+        "docs/PHASE_LOOP_CONTRACTS.md"
+      ],
+      "proof_notes": "Lean theorem is compiled in Circle/Applications/PhaseLoop.lean from circularSamePhase_symm.",
+      "python_tests": [
+        "tests/test_phase_loop.py::test_finite_phase_locking_and_gap"
+      ],
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved",
+      "used_by_papers": [],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": [
+          "finite_phase_locked examples are symmetric under argument swap"
+        ]
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "CC-0001",
+        "CC-0101"
+      ],
+      "formal_statement": "forall {period left middle right : Nat}, Circle.Applications.finitePhaseLocked period left middle -> Circle.Applications.finitePhaseLocked period middle right -> Circle.Applications.finitePhaseLocked period left right",
+      "id": "CC-T0171",
+      "informal_statement": "Finite phase locking composes transitively through an intermediate sample.",
+      "lean_name": "Circle.Applications.finitePhaseLocked_trans",
+      "lean_source": "Circle/Applications/PhaseLoop.lean",
+      "lean_source_line": 98,
+      "name": "Finite phase locking is transitive",
+      "original_status": "proved",
+      "paper_refs": [
+        "docs/PHASE_LOOP_CONTRACTS.md"
+      ],
+      "proof_notes": "Lean theorem is compiled in Circle/Applications/PhaseLoop.lean from circularSamePhase_trans.",
+      "python_tests": [
+        "tests/test_phase_loop.py::test_phase_lock_report_order_parameter"
+      ],
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved",
+      "used_by_papers": [],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": [
+          "phase_lock_report detects all phases locked to the first sample in same-residue fixtures"
+        ]
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "CC-0001",
+        "CC-0301"
+      ],
+      "formal_statement": "forall node : Circle.LiftedNode, Circle.Applications.windingResidueReconstruct node.modulus node.winding node.residue = node.value",
+      "id": "CC-T0172",
+      "informal_statement": "A lifted finite-circle node reconstructs exactly as winding times modulus plus residue.",
+      "lean_name": "Circle.Applications.windingResidueReconstruct_eq_value",
+      "lean_source": "Circle/Applications/PhaseLoop.lean",
+      "lean_source_line": 111,
+      "name": "Winding residue reconstructs lifted node value",
+      "original_status": "proved",
+      "paper_refs": [
+        "docs/PHASE_LOOP_CONTRACTS.md"
+      ],
+      "proof_notes": "Lean theorem is compiled in Circle/Applications/PhaseLoop.lean by unfolding the reconstruction and LiftedNode.value definitions.",
+      "python_tests": [
+        "tests/test_phase_loop.py::test_winding_residue_reconstruction_and_lift"
+      ],
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved",
+      "used_by_papers": [],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": [
+          "winding_residue_reconstruct(lifted.modulus,lifted.winding,lifted.residue) equals lifted.value"
+        ]
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
         "COMMON-0001",
         "COMMON-0002"
       ],

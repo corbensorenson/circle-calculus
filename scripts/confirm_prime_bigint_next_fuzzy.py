@@ -7,7 +7,10 @@ import sys
 from dataclasses import dataclass
 from pathlib import Path
 
-import sympy
+try:
+    import sympy
+except ModuleNotFoundError:  # pragma: no cover - exercised in minimal CI envs.
+    sympy = None
 
 try:
     from check_prime_bigint_controls import BigIntRow, NEXT_CASES, read_rows
@@ -36,6 +39,15 @@ except ModuleNotFoundError:
 ROOT = Path(__file__).resolve().parents[1]
 RESULTS_DIR = ROOT / "sidecars" / "PRIME_ENGINE" / "results"
 SCHEMA_ID = "circle_calculus.prime_bigint_next_fuzzy_confirm.v0"
+
+
+def require_sympy():
+    if sympy is None:
+        raise RuntimeError(
+            "SymPy is required for BigUint next/fuzzy confirmation runs. "
+            "Install sympy to run scripts/confirm_prime_bigint_next_fuzzy.py."
+        )
+    return sympy
 
 
 @dataclass(frozen=True)
@@ -67,6 +79,7 @@ def main() -> int:
     parser.add_argument("--candidate-window", type=int, default=512)
     parser.add_argument("--top-k", type=int, default=16)
     parser.add_argument("--score-limit", type=int, default=128)
+    parser.add_argument("--fuzzy-profile", choices=["mr", "bpsw"], default="bpsw")
     parser.add_argument("--server-batch-size", type=int, default=16)
     parser.add_argument("--min-bpsw-next-vs-sympy", type=float, default=1.1)
     parser.add_argument("--min-fuzzy-any-vs-sympy", type=float, default=0.0)
@@ -144,6 +157,7 @@ def run_confirmation_pass(*, args: argparse.Namespace, run_index: int) -> RunSum
 
 
 def benchmark_next_fuzzy_rows(*, args: argparse.Namespace) -> list[dict[str, object]]:
+    require_sympy()
     max_bits = max(case.start.bit_length() for case in next_cases())
     model_path = ROOT / "target" / "prime-controls" / "prime-big-fuzzy-model.txt"
     write_big_fuzzy_model(model_path, max_bits)
@@ -168,6 +182,8 @@ def benchmark_next_fuzzy_rows(*, args: argparse.Namespace) -> list[dict[str, obj
             str(args.top_k),
             "--score-limit",
             str(args.score_limit),
+            "--profile",
+            args.fuzzy_profile,
             "--rounds",
             str(args.mr_rounds),
         ]
@@ -244,7 +260,7 @@ def is_valid_fuzzy_result(result: object, *, start: int) -> bool:
         return False
     if result < start:
         return False
-    return bool(sympy.isprime(result))
+    return bool(require_sympy().isprime(result))
 
 
 def append_row(
@@ -327,6 +343,7 @@ def write_metadata(
         "candidate_window": args.candidate_window,
         "top_k": args.top_k,
         "score_limit": args.score_limit,
+        "fuzzy_profile": args.fuzzy_profile,
         "server_batch_size": args.server_batch_size,
         "cases": sorted(NEXT_CASES),
         "circle_prime": {
@@ -466,6 +483,7 @@ def build_summary(*, args: argparse.Namespace, runs: list[RunSummary]) -> dict[s
         "candidate_window": args.candidate_window,
         "top_k": args.top_k,
         "score_limit": args.score_limit,
+        "fuzzy_profile": args.fuzzy_profile,
         "server_batch_size": args.server_batch_size,
         "min_bpsw_next_vs_sympy": args.min_bpsw_next_vs_sympy,
         "min_fuzzy_any_vs_sympy": args.min_fuzzy_any_vs_sympy,

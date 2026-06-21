@@ -587,6 +587,150 @@
           "status": "proved"
         },
         {
+          "id": "CC-T0149",
+          "lean_name": "Circle.Applications.cyclicShift_zero",
+          "name": "Cyclic shift zero is identity",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0150",
+          "lean_name": "Circle.Applications.cyclicShift_add",
+          "name": "Cyclic shifts compose additively",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0151",
+          "lean_name": "Circle.Applications.cyclicEquivariant_identity",
+          "name": "Identity map is cyclic equivariant",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0152",
+          "lean_name": "Circle.Applications.cyclicEquivariant_comp",
+          "name": "Cyclic equivariant maps compose",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0153",
+          "lean_name": "Circle.Applications.cyclicEquivariant_add",
+          "name": "Pointwise sums preserve cyclic equivariance",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0154",
+          "lean_name": "Circle.Applications.circulantLayer_cyclicEquivariant",
+          "name": "Circulant layers are cyclic equivariant",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0155",
+          "lean_name": "Circle.Applications.cyclicSum_shift_invariant",
+          "name": "Cyclic sum pooling is shift invariant",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0156",
+          "lean_name": "Circle.Applications.reflectSignal_involutive",
+          "name": "Finite reflection is involutive",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0157",
+          "lean_name": "Circle.Applications.reflectSignal_shift",
+          "name": "Reflection conjugates shift to opposite shift",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0158",
+          "lean_name": "Circle.Applications.dihedralEquivariant_identity",
+          "name": "Identity map is dihedral equivariant",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0159",
+          "lean_name": "Circle.Applications.dihedralEquivariant_implies_cyclic",
+          "name": "Dihedral equivariance implies cyclic equivariance",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0160",
+          "lean_name": "Circle.Applications.dihedralTransform_reflection_zero_involutive",
+          "name": "Zero-shift reflection transform is involutive",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0161",
+          "lean_name": "Circle.Applications.phaseLoopCharge_nil",
+          "name": "Empty phase loop has zero charge",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0162",
+          "lean_name": "Circle.Applications.phaseLoopCharge_singleton",
+          "name": "Singleton phase loop charge is the phase",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0163",
+          "lean_name": "Circle.Applications.phaseLoopCharge_append",
+          "name": "Phase loop charge is additive under append",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0164",
+          "lean_name": "Circle.Applications.phaseLoopCharge_reverse",
+          "name": "Reversing a phase loop negates charge",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0165",
+          "lean_name": "Circle.Applications.vortexCharge_eq_phaseLoopCharge",
+          "name": "Vortex charge is phase loop charge",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0166",
+          "lean_name": "Circle.Applications.vortexCharge_reverse",
+          "name": "Reversing a vortex loop negates charge",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0167",
+          "lean_name": "Circle.Applications.loopGaugeShiftedCharge_eq_phaseLoopCharge",
+          "name": "Closed-loop gauge shifted charge equals loop charge",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0168",
+          "lean_name": "Circle.Applications.finitePhaseLocked_iff_gap_dvd",
+          "name": "Finite phase locking iff gap divisibility",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0169",
+          "lean_name": "Circle.Applications.finitePhaseLocked_refl",
+          "name": "Finite phase locking is reflexive",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0170",
+          "lean_name": "Circle.Applications.finitePhaseLocked_symm",
+          "name": "Finite phase locking is symmetric",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0171",
+          "lean_name": "Circle.Applications.finitePhaseLocked_trans",
+          "name": "Finite phase locking is transitive",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0172",
+          "lean_name": "Circle.Applications.windingResidueReconstruct_eq_value",
+          "name": "Winding residue reconstructs lifted node value",
+          "status": "proved"
+        },
+        {
           "id": "GEN-T0001",
           "lean_name": "Circle.Generative.finiteCircleGenerator_regenerates_nodes",
           "name": "Circle.Generative.finiteCircleGenerator_regenerates_nodes",
@@ -1297,6 +1441,144 @@
           "id": "CC-T0148",
           "lean_name": "Circle.Applications.circularHistogram_zero_of_period_le_residue",
           "name": "Circular histogram outside positive period is zero",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0149",
+          "lean_name": "Circle.Applications.cyclicShift_zero",
+          "name": "Cyclic shift zero is identity",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0150",
+          "lean_name": "Circle.Applications.cyclicShift_add",
+          "name": "Cyclic shifts compose additively",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0151",
+          "lean_name": "Circle.Applications.cyclicEquivariant_identity",
+          "name": "Identity map is cyclic equivariant",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0152",
+          "lean_name": "Circle.Applications.cyclicEquivariant_comp",
+          "name": "Cyclic equivariant maps compose",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0153",
+          "lean_name": "Circle.Applications.cyclicEquivariant_add",
+          "name": "Pointwise sums preserve cyclic equivariance",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0154",
+          "lean_name": "Circle.Applications.circulantLayer_cyclicEquivariant",
+          "name": "Circulant layers are cyclic equivariant",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0155",
+          "lean_name": "Circle.Applications.cyclicSum_shift_invariant",
+          "name": "Cyclic sum pooling is shift invariant",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0156",
+          "lean_name": "Circle.Applications.reflectSignal_involutive",
+          "name": "Finite reflection is involutive",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0157",
+          "lean_name": "Circle.Applications.reflectSignal_shift",
+          "name": "Reflection conjugates shift to opposite shift",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0158",
+          "lean_name": "Circle.Applications.dihedralEquivariant_identity",
+          "name": "Identity map is dihedral equivariant",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0159",
+          "lean_name": "Circle.Applications.dihedralEquivariant_implies_cyclic",
+          "name": "Dihedral equivariance implies cyclic equivariance",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0160",
+          "lean_name": "Circle.Applications.dihedralTransform_reflection_zero_involutive",
+          "name": "Zero-shift reflection transform is involutive",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0161",
+          "lean_name": "Circle.Applications.phaseLoopCharge_nil",
+          "name": "Empty phase loop has zero charge",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0162",
+          "lean_name": "Circle.Applications.phaseLoopCharge_singleton",
+          "name": "Singleton phase loop charge is the phase",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0163",
+          "lean_name": "Circle.Applications.phaseLoopCharge_append",
+          "name": "Phase loop charge is additive under append",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0164",
+          "lean_name": "Circle.Applications.phaseLoopCharge_reverse",
+          "name": "Reversing a phase loop negates charge",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0165",
+          "lean_name": "Circle.Applications.vortexCharge_eq_phaseLoopCharge",
+          "name": "Vortex charge is phase loop charge",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0166",
+          "lean_name": "Circle.Applications.vortexCharge_reverse",
+          "name": "Reversing a vortex loop negates charge",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0167",
+          "lean_name": "Circle.Applications.loopGaugeShiftedCharge_eq_phaseLoopCharge",
+          "name": "Closed-loop gauge shifted charge equals loop charge",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0168",
+          "lean_name": "Circle.Applications.finitePhaseLocked_iff_gap_dvd",
+          "name": "Finite phase locking iff gap divisibility",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0169",
+          "lean_name": "Circle.Applications.finitePhaseLocked_refl",
+          "name": "Finite phase locking is reflexive",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0170",
+          "lean_name": "Circle.Applications.finitePhaseLocked_symm",
+          "name": "Finite phase locking is symmetric",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0171",
+          "lean_name": "Circle.Applications.finitePhaseLocked_trans",
+          "name": "Finite phase locking is transitive",
           "status": "proved"
         },
         {
@@ -3343,6 +3625,12 @@
           "id": "CC-T0016",
           "lean_name": "Circle.lift_iter_successor_decomposition",
           "name": "Iterated lifted successor",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0172",
+          "lean_name": "Circle.Applications.windingResidueReconstruct_eq_value",
+          "name": "Winding residue reconstructs lifted node value",
           "status": "proved"
         }
       ],

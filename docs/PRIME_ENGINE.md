@@ -363,13 +363,16 @@ Current CPU findings:
   `libprimesieve` generate-next and iterator helpers, keeping `libprimecount`
   pi/nth-prime evidence in the broader control run instead of letting it set
   the fast feedback cadence. In the latest accepted server-only artifact,
-  Circle reads `1.295x`, `2.385x`, `8.294x`, and `39.414x` median over
+  Circle reads `1.326x`, `2.412x`, `8.030x`, and `39.758x` median over
   persistent `libprimesieve` generate-next at starts `90`, `1000000`,
-  `4294967000`, and `1000000000000`. The same starts read `31.677x`,
-  `37.610x`, `40.274x`, and `151.977x` median over the persistent
-  `libprimesieve` iterator helper. The `4294967000` iterator row is locally
-  noisy but clears the material noisy-win bypass by a wide margin; the
-  generate-next rows are stable.
+  `4294967000`, and `1000000000000`. The same starts read `31.292x`,
+  `37.533x`, `36.808x`, and `138.895x` median over the persistent
+  `libprimesieve` iterator helper. The `1000000` generate-next row is locally
+  noisy but clears the material noisy-win bypass by a wide margin; the tracked
+  material rows still pass the server gate. The shifted fresh-start next gate
+  also passes, with generate-next speedups of `1.194x`, `1.459x`, `6.855x`,
+  and `34.103x`, and iterator-helper speedups of `12.618x`, `15.407x`,
+  `44.682x`, and `128.875x` at the same starts.
 - Adaptive segment sizing is a measured win for high-offset interval searches:
   around `10^12`, large segments reduce repeated cursor scans over tens of
   thousands of base primes.
@@ -1081,6 +1084,12 @@ drift checks, and the combined report. The smoke uses batch `80` because batch
 `20` was too short to give a reliable fresh-interval `libprimesieve`
 comparison while still remaining a quick gate. Use it when you need a current
 competitive read without starting the long tuner.
+The latest refreshed smoke on 2026-06-21 passes current-binary provenance and
+has `circle_prime_count_binary_server_default_count` at `1.132x` median over
+persistent `libprimesieve` and `5.737x` median over persistent `libprimecount`
+pi-diff on `[1e12, 1e12 + 1e7)` shifted batches. The matching external
+correctness matrix checked `826` Circle variants against `primesieve` and
+`primecount`.
 The hot-server scorecard includes persistent `libprimesieve` and persistent
 `libprimecount` pi-diff controls when their local headers and libraries are
 available; the focused default-promotion gate still uses the confirmed

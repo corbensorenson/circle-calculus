@@ -196,12 +196,12 @@ are exact when a small factor, perfect square, Miller-Rabin witness, or
 Lucas-Selfridge witness is found; prime results above `u64` are still
 probable-prime reports, not formal primality certificates.
 The hot non-JSON `big-test-server` path uses status-only MR/BPSW verifiers so
-diagnostic objects are built only when JSON is requested. The BPSW path rejects
-impossible square residues before a BigUint square root, uses bounded modular
-add/double operations in the Lucas recurrence, and specializes the common
-Selfridge `Q = -1` case to avoid unnecessary modular squaring of `Q^k`. For
-non-`Q = -1` Lucas work, pseudo-Mersenne moduli of the form `2^k - c` with
-small `c` use a local fold-and-subtract reducer instead of BigUint division.
+diagnostic objects are built only when JSON is requested. The BPSW path uses a
+short pre-BPSW trial list through 47, rejects impossible square residues before
+a BigUint square root, uses bounded modular add/double operations in the Lucas
+recurrence, specializes both the common Selfridge `Q = -1` recurrence and its
+strong-Lucas doubling tail, and uses a fold-and-subtract reducer for
+non-`Q = -1` pseudo-Mersenne Lucas work over moduli of the form `2^k - c`.
 
 `big-fuzzy-search` keeps the same safety rule as the smaller fuzzy lane: the
 model only ranks candidates, and every reported candidate must pass the
@@ -249,9 +249,10 @@ make prime-engine-bigint-raw-sympy-confirm
 
 That target reruns a focused hot-batched raw-primality benchmark several times,
 applies the same raw-SymPy promotion gate to every run, and writes a
-confirmation summary with the weakest observed speedup per case. Treat this as
-the promotion source for raw-primality speed claims; short one-round smokes are
-useful for wiring checks but too noisy for claim language.
+confirmation summary with the weakest observed speedup per case. The latest
+3-run confirmation passes: weakest BPSW-over-SymPy speedups are `1.783x` on
+the 127-bit Mersenne prime, `1.161x` on Curve25519, `1.140x` on secp256k1,
+and `2.941x` on the 521-bit Mersenne prime.
 
 For the large next-prime and fuzzy-search split, run:
 
@@ -260,12 +261,18 @@ make prime-engine-bigint-next-fuzzy-confirm
 ```
 
 That target repeats only hot BPSW `big-next-server`, hot BigUint
-`big-fuzzy-server`, and SymPy `nextprime` rows. It keeps the deterministic
-next-prime floor separate from fuzzy readouts, because fuzzy any-prime search
-does not claim exact next-prime semantics. Treat this as a diagnostic and
-promotion gate: deterministic next-prime speedups must clear their configured
-floor repeatedly before they become a claim, while fuzzy any-prime rows remain
-readouts unless explicit floors are supplied.
+`big-fuzzy-server --profile bpsw`, and SymPy `nextprime` rows. It keeps the
+deterministic next-prime floor separate from fuzzy readouts, because fuzzy
+any-prime search does not claim exact next-prime semantics. The latest 3-run
+confirmation uses 15 measured samples per run and passes both the deterministic
+`1.1x` BPSW-next-over-SymPy floor and the `1.0x`
+BPSW-backed-fuzzy-over-SymPy floor. Weakest observed BPSW-next-over-SymPy
+speedups are `2.327x` at `2^127` and `2.006x` near Curve25519. Weakest
+BPSW-backed-fuzzy-over-SymPy speedups are `2.324x` and `1.736x`. The fuzzy
+hybrid now uses the deterministic BPSW next path for small starts where model
+ranking overhead is slower than direct verification; it still trails
+deterministic BPSW next near Curve25519 with a weakest fuzzy-over-BPSW-next
+speedup of `0.828x`.
 
 Current local smoke status from 2026-06-21:
 
@@ -275,27 +282,31 @@ Current local smoke status from 2026-06-21:
   every selected 127/255/256/521-bit primality case. Latest medians include
   `0.631 ms` for the Curve25519 prime, `0.629 ms` for the secp256k1 field
   prime, and `2.540 ms` for the 521-bit Mersenne prime under fixed-base MR.
-- Hot Circle BPSW agrees with SymPy on every selected case and is faster than
-  the fixed-base MR profile on prime-heavy inputs. The latest local artifact
-  clears `prime-engine-bigint-raw-sympy-promotion-check`: hot BPSW raw
-  primality beats SymPy by `1.332x` on the 127-bit Mersenne prime, `1.099x`
-  on the Curve25519 prime, `1.128x` on the secp256k1 field prime, and
-  `2.970x` on the 521-bit Mersenne prime.
+- Hot Circle BPSW agrees with SymPy on every selected raw primality case and is
+  faster than the fixed-base MR profile on prime-heavy inputs. The latest
+  local artifact clears `prime-engine-bigint-raw-sympy-promotion-check`:
+  BPSW-over-SymPy raw speedups are `1.865x` on the 127-bit Mersenne prime,
+  `1.165x` on Curve25519, `1.200x` on secp256k1, and `3.073x` on the 521-bit
+  Mersenne prime.
 - Hot Circle BPSW `big-next-server` agrees with SymPy on the selected 127-bit
-  and near-255-bit starts in the focused diagnostic. Treat repeated
-  confirmation, not a one-off local smoke, as the source for any deterministic
-  next-prime speed claim.
+  and near-255-bit starts in the focused diagnostic. Repeated confirmation now
+  clears the `1.1x` floor with 15 measured samples per run: `2.327x` at
+  `2^127` and `2.006x` near Curve25519.
 - A higher-check probe should still be rerun before raising the default
-  arbitrary-precision profile. The current raw-primality promotion claim is
-  tied to the configured 16-Miller-Rabin-round control artifact.
+  arbitrary-precision profile. Raw BPSW speed is now a local promotion claim
+  for the selected hot SymPy cases, not a formal primality certificate.
 - BigUint fuzzy any-prime search is correct in the smoke and its value-only
-  server path now skips diagnostic baseline scans. It is not promoted as a
-  deterministic-speed win; the focused next/fuzzy confirmation keeps those
-  readouts separate from exact next-prime claims.
-- The raw BPSW SymPy lane now has a repeated-confirmation target for selected
-  hot-batched 127/255/256/521-bit prime-like cases. Keep any speed claim scoped
-  to raw `isprime` comparisons and tied to the latest confirmation artifact
-  until next-prime and fuzzy searches clear the same standard.
+  server path now skips diagnostic baseline scans, can run with the same BPSW
+  verifier profile as deterministic `big-next-server`, and falls back to the
+  deterministic BPSW next path for small starts where model scoring is the
+  slower part. The focused repeated confirmation clears the
+  BPSW-backed-fuzzy-over-SymPy floor with weakest speedups of `2.324x` at
+  `2^127` and `1.736x` near Curve25519, but it still trails deterministic BPSW
+  next near Curve25519 (`0.828x`), so it is not promoted as a
+  deterministic-speed replacement.
+- The raw BPSW SymPy lane and the BPSW-backed next/fuzzy lane now have separate
+  repeated-confirmation targets. Both targets are promoted against SymPy under
+  their configured hot-server floors for the selected cases.
 
 Near-term promotion requirements:
 

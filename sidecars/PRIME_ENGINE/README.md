@@ -68,6 +68,12 @@ sample; batch `20` was too short for a reliable fresh-interval
 `libprimesieve` comparison on this lane. Overnight targets are optional
 regression/tuning jobs, not the primary way to learn whether Circle is
 competitive.
+The latest refreshed smoke on 2026-06-21 passes current-binary provenance and
+has `circle_prime_count_binary_server_default_count` at `1.132x` median over
+persistent `libprimesieve` and `5.737x` median over persistent `libprimecount`
+pi-diff on `[1e12, 1e12 + 1e7)` shifted batches. The matching external
+correctness matrix checked `826` Circle variants against `primesieve` and
+`primecount`.
 
 `make prime-engine-fuzzy-hybrid-smoke` trains and evaluates the tiny bit-level
 neural ordering model in `scripts/prime_fuzzy_hybrid.py`, writes
@@ -119,17 +125,20 @@ status above `u64`; it is not a Lean-certified primality certificate yet.
 Miller-Rabin base bank, while `bpsw` uses base-2 Miller-Rabin plus strong
 Lucas-Selfridge. The BigUint smoke records hot BPSW profile rows for test and
 next-prime searches beside the default Miller-Rabin rows. In the latest local
-smoke, hot BPSW beats SymPy on both selected large next-prime searches and the
-separate raw-primality promotion gate now passes on the selected
-127/255/256/521-bit prime-like cases. The current hot path caches limb digits
+smoke, hot BPSW beats SymPy on the selected raw-primality and large next-prime
+searches, and the BPSW-backed fuzzy server beats SymPy `nextprime` under the
+configured hot-server floor. The current hot path caches limb digits
 for small-prime trial division, keeps incremental small-prime residues during
 `big-next` wheel search, and uses a value-only fuzzy server path when JSON
 diagnostics are not requested. The BPSW hot path also uses value-only
 `big-test-server` status checks for non-JSON requests, skips BigUint square
 roots when the candidate is not a square residue modulo 64, replaces several
 Lucas `% n` operations with bounded modular add/double steps, specializes the
-Selfridge `Q = -1` recurrence, and uses a fold-and-subtract reducer for
-non-`Q = -1` Lucas work over pseudo-Mersenne moduli `2^k - c`.
+Selfridge `Q = -1` recurrence and strong-Lucas doubling tail, uses a short
+pre-BPSW trial list through 47, and uses a fold-and-subtract reducer for
+non-`Q = -1` Lucas work over pseudo-Mersenne moduli `2^k - c`. The BPSW-backed
+fuzzy value path uses deterministic BPSW next directly for small starts where
+model scoring is slower than direct verification.
 Use `make prime-engine-bigint-raw-sympy-promotion-check` for that stricter
 promotion gate. It reuses the latest BigUint artifact and requires hot BPSW
 raw primality to beat SymPy `isprime` on the selected prime-like cases; it
@@ -138,14 +147,20 @@ explicit.
 Use `make prime-engine-bigint-raw-sympy-confirm` for repeated confirmation: it
 reruns a focused hot-batched raw-primality benchmark several times, applies
 the same promotion floor on each run, and records the weakest observed speedup
-by case. Treat that repeated artifact as the source for raw-primality speed
-claims; short one-round smokes are wiring checks, not promotion evidence.
+by case. The latest 3-run confirmation passes: weakest BPSW-over-SymPy
+speedups are `1.783x` on the 127-bit Mersenne prime, `1.161x` on Curve25519,
+`1.140x` on secp256k1, and `2.941x` on the 521-bit Mersenne prime.
 Use `make prime-engine-bigint-next-fuzzy-confirm` for the large next-prime and
 fuzzy split. It repeats only hot BPSW `big-next-server`, hot BigUint
-`big-fuzzy-server`, and SymPy `nextprime` rows. Treat it as a diagnostic and
-promotion gate: deterministic next-prime speed claims need repeated artifacts,
-while fuzzy any-prime rows remain separate readouts unless explicit floors are
-supplied.
+`big-fuzzy-server --profile bpsw`, and SymPy `nextprime` rows. The latest
+3-run confirmation uses 15 measured samples per run and passes both the
+deterministic `1.1x` BPSW-next-over-SymPy floor and the `1.0x`
+BPSW-backed-fuzzy-over-SymPy floor. Weakest BPSW-next-over-SymPy speedups are
+`2.327x` at `2^127` and `2.006x` near Curve25519; weakest
+BPSW-backed-fuzzy-over-SymPy speedups are `2.324x` and `1.736x`. Fuzzy is now
+near parity with deterministic BPSW next at `2^127` because the hybrid takes
+the deterministic fast path there, but it still trails deterministic BPSW next
+near Curve25519 with a weakest fuzzy-over-BPSW-next speedup of `0.828x`.
 
 `make prime-engine-high-offset-shifted-hot-server` is the harder diagnostic for
 the same high-offset lane. It keeps the server processes hot, but advances each
@@ -202,12 +217,13 @@ The non-JSON next-prime server path uses a value-only exact search and direct
 ASCII `u64` writes while JSON still carries the full proof contract. The
 standard server-only gate now has Circle ahead at every checked start against
 the two persistent `libprimesieve` controls. In the latest accepted artifact,
-Circle reads `1.295x`, `2.385x`, `8.294x`, and `39.414x` median over
+Circle reads `1.326x`, `2.412x`, `8.030x`, and `39.758x` median over
 persistent `libprimesieve` generate-next at starts `90`, `1000000`,
-`4294967000`, and `1000000000000`. The same starts read `31.677x`, `37.610x`,
-`40.274x`, and `151.977x` median over the persistent `libprimesieve` iterator
-helper. The `4294967000` iterator row is locally noisy but clears the material
-noisy-win bypass by a wide margin; the generate-next rows are stable.
+`4294967000`, and `1000000000000`. The same starts read `31.292x`, `37.533x`,
+`36.808x`, and `138.895x` median over the persistent `libprimesieve` iterator
+helper. The `1000000` generate-next row is locally noisy but clears the
+material noisy-win bypass by a wide margin; the tracked material rows still
+pass the server gate.
 
 `make prime-engine-external-next-shifted` is the stricter fresh-start
 next-prime gate. It sends native `shifted COUNT SHIFT START` requests to
@@ -217,10 +233,10 @@ of repeating an identical start. The row result is a checksum of the entire
 prime vector, and every engine must match the vector per pass before speedups
 are recorded. The latest shifted artifact uses batch size `64`, shift `4096`,
 5 timed rounds, and 1 warmup round. Circle's median speedups over persistent
-`libprimesieve` generate-next are `1.054x`, `1.536x`, `8.784x`, and `36.611x`
+`libprimesieve` generate-next are `1.194x`, `1.459x`, `6.855x`, and `34.103x`
 at starts `90`, `1000000`, `4294967000`, and `1000000000000`; against the
-persistent iterator helper they are `12.024x`, `16.004x`, `44.959x`, and
-`127.775x`. All shifted rows in that artifact are stable.
+persistent iterator helper they are `12.618x`, `15.407x`, `44.682x`, and
+`128.875x`. All shifted rows in that artifact are stable.
 
 `make prime-engine-high-offset-confirm` is the stricter short gate for the
 remaining hard high-offset count lane. It runs warmed repeated confirmations

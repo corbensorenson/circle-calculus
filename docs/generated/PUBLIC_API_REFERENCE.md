@@ -21,20 +21,40 @@ research/application namespaces.
 | `CIRCULAR_STATISTICS_LEAN_DECLARATIONS` | value | tuple |
 | `CIRCULAR_STATISTICS_SCHEMA_ID` | value | str |
 | `CIRCULAR_STATISTICS_THEOREM_IDS` | value | tuple |
+| `CYCLIC_EQUIVARIANCE_CLAIM_BOUNDARY` | value | str |
+| `CYCLIC_EQUIVARIANCE_LEAN_DECLARATIONS` | value | tuple |
+| `CYCLIC_EQUIVARIANCE_SCHEMA_ID` | value | str |
+| `CYCLIC_EQUIVARIANCE_THEOREM_IDS` | value | tuple |
 | `Circle` | class | Finite v0 circle as a cyclic address space with n > 0 nodes. |
 | `CircularMeanReport` | class | Theorem-linked report for circular mean and resultant-length data. |
+| `EquivarianceCheckReport` | class | Theorem-linked executable report for finite transform equivariance. |
 | `LiftedNode` | class | Full windings plus a residue for a positive modulus. |
 | `NumberProvenance` | class | NumberProvenance(value: 'int', divisors: 'tuple[int, ...]', factor_pairs: 'tuple[tuple[int, int], ...]', default_theorem_ids: 'tuple[str, ...]') |
+| `PHASE_LOOP_CLAIM_BOUNDARY` | value | str |
+| `PHASE_LOOP_LEAN_DECLARATIONS` | value | tuple |
+| `PHASE_LOOP_SCHEMA_ID` | value | str |
+| `PHASE_LOOP_THEOREM_IDS` | value | tuple |
+| `PhaseLockReport` | class | Finite phase-locking and Kuramoto-style order-parameter diagnostic. |
+| `PhaseLoopReport` | class | Theorem-linked finite phase-loop diagnostic report. |
 | `SpectralConvolutionReport` | class | Residual report for the finite Fourier circular-convolution identity. |
 | `StrideProvenance` | class | StrideProvenance(size: 'int', stride: 'int', divisor: 'int', cofactor: 'int', period: 'int', orbit_count: 'int', theorem_ids: 'tuple[str, ...]') |
 | `angular_difference` | function | `angular_difference(left: 'float', right: 'float', *, period: 'float' = 6.283185307179586) -> 'float'` |
 | `character_value` | function | `character_value(size: 'int', frequency: 'int', index: 'int') -> 'complex'` |
+| `check_cyclic_equivariance` | function | `check_cyclic_equivariance(layer: 'Layer', examples: 'Iterable[Signal]', *, shifts: 'Iterable[int] | None' = None, tolerance: 'float' = 1e-09) -> 'EquivarianceCheckReport'` |
 | `circular_mean` | function | `circular_mean(angles: 'Iterable[float]', *, weights: 'Iterable[float] | None' = None, period: 'float' = 6.283185307179586, zero_tolerance: 'float' = 1e-12) -> 'float | None'` |
 | `circular_mean_report` | function | `circular_mean_report(angles: 'Iterable[float]', *, weights: 'Iterable[float] | None' = None, period: 'float' = 6.283185307179586, zero_tolerance: 'float' = 1e-12, metadata: 'Mapping[str, Any] | None' = None) -> 'CircularMeanReport'` |
 | `circular_variance` | function | `circular_variance(angles: 'Iterable[float]', *, weights: 'Iterable[float] | None' = None, period: 'float' = 6.283185307179586) -> 'float'` |
 | `circular_convolution` | function | `circular_convolution(kernel: 'Sequence[Number]', signal: 'Sequence[Number]') -> 'list[complex]'` |
+| `circulant_equivariance_report` | function | `circulant_equivariance_report(kernel: 'Signal', examples: 'Iterable[Signal]', *, shifts: 'Iterable[int] | None' = None, tolerance: 'float' = 1e-09) -> 'EquivarianceCheckReport'` |
+| `circulant_layer` | function | `circulant_layer(kernel: 'Signal', values: 'Signal') -> 'tuple[complex, ...]'` |
 | `circulant_matrix` | function | `circulant_matrix(kernel: 'Sequence[Number]') -> 'list[list[complex]]'` |
+| `cyclic_orbit` | function | `cyclic_orbit(values: 'Signal') -> 'tuple[tuple[complex, ...], ...]'` |
+| `cyclic_shift` | function | `cyclic_shift(values: 'Signal', shift: 'int') -> 'tuple[complex, ...]'` |
+| `cyclic_sum` | function | `cyclic_sum(values: 'Signal') -> 'complex'` |
+| `cyclic_sum_invariance_report` | function | `cyclic_sum_invariance_report(examples: 'Iterable[Signal]', *, shifts: 'Iterable[int] | None' = None, tolerance: 'float' = 1e-09) -> 'EquivarianceCheckReport'` |
 | `dft_matrix` | function | `dft_matrix(size: 'int') -> 'list[list[complex]]'` |
+| `dihedral_orbit` | function | `dihedral_orbit(values: 'Signal') -> 'tuple[tuple[complex, ...], ...]'` |
+| `dihedral_transform` | function | `dihedral_transform(values: 'Signal', *, shift: 'int' = 0, reflected: 'bool' = False) -> 'tuple[complex, ...]'` |
 | `divisors` | function | `divisors(value: 'int') -> 'tuple[int, ...]'` |
 | `factor_pairs` | function | `factor_pairs(value: 'int') -> 'tuple[tuple[int, int], ...]'` |
 | `finite_fourier_coefficients` | function | `finite_fourier_coefficients(signal: 'Sequence[Number]') -> 'list[complex]'` |
@@ -42,6 +62,8 @@ research/application namespaces.
 | `finite_orbit` | function | `finite_orbit(size: 'int', stride: 'int', start: 'int' = 0) -> 'list[int]'` |
 | `finite_orbit_decomposition` | function | `finite_orbit_decomposition(size: 'int', stride: 'int') -> 'list[list[int]]'` |
 | `finite_period` | function | `finite_period(size: 'int', stride: 'int') -> 'int'` |
+| `finite_phase_gap` | function | `finite_phase_gap(period: 'int', left: 'int', right: 'int') -> 'int'` |
+| `finite_phase_locked` | function | `finite_phase_locked(period: 'int', left: 'int', right: 'int') -> 'bool'` |
 | `finite_residue_histogram` | function | `finite_residue_histogram(period: 'int', samples: 'Iterable[int]', *, include_zero_counts: 'bool' = False) -> 'dict[int, int]'` |
 | `finite_residue_samples` | function | `finite_residue_samples(period: 'int', samples: 'Iterable[int]') -> 'tuple[int, ...]'` |
 | `finite_same_phase` | function | `finite_same_phase(period: 'int', left: 'int', right: 'int') -> 'bool'` |
@@ -52,10 +74,18 @@ research/application namespaces.
 | `lift_add` | function | `lift_add(modulus: 'int', left: 'int', right: 'int') -> 'LiftedNode'` |
 | `lift_iter_successor` | function | `lift_iter_successor(modulus: 'int', value: 'int', steps: 'int') -> 'LiftedNode'` |
 | `lift_successor` | function | `lift_successor(modulus: 'int', value: 'int') -> 'LiftedNode'` |
+| `loop_gauge_shifted_charge` | function | `loop_gauge_shifted_charge(period: 'int', increments: 'Iterable[int]', *, base_gauge: 'int' = 0) -> 'int'` |
+| `loop_winding_lift` | function | `loop_winding_lift(period: 'int', total_increment: 'int') -> 'LiftedNode'` |
 | `mean_resultant_length` | function | `mean_resultant_length(angles: 'Iterable[float]', *, weights: 'Iterable[float] | None' = None, period: 'float' = 6.283185307179586) -> 'float'` |
 | `normalize_angle` | function | `normalize_angle(angle: 'float', *, period: 'float' = 6.283185307179586) -> 'float'` |
+| `normalize_phase_increments` | function | `normalize_phase_increments(period: 'int', increments: 'Iterable[int]') -> 'tuple[int, ...]'` |
 | `number_provenance` | function | `number_provenance(value: 'int') -> 'NumberProvenance'` |
+| `phase_lock_report` | function | `phase_lock_report(period: 'int', phases: 'Iterable[int]') -> 'PhaseLockReport'` |
+| `phase_loop_charge` | function | `phase_loop_charge(period: 'int', increments: 'Iterable[int]') -> 'int'` |
+| `phase_loop_report` | function | `phase_loop_report(period: 'int', increments: 'Iterable[int]', *, base_gauge: 'int' = 0) -> 'PhaseLoopReport'` |
 | `provenance_summary` | function | `provenance_summary(value: 'int', strides: 'tuple[int, ...]') -> 'dict[str, object]'` |
+| `reflect_signal` | function | `reflect_signal(values: 'Signal') -> 'tuple[complex, ...]'` |
+| `reverse_phase_increments` | function | `reverse_phase_increments(period: 'int', increments: 'Iterable[int]') -> 'tuple[int, ...]'` |
 | `resultant_vector` | function | `resultant_vector(angles: 'Iterable[float]', *, weights: 'Iterable[float] | None' = None, period: 'float' = 6.283185307179586) -> 'tuple[float, float]'` |
 | `root_of_unity` | function | `root_of_unity(size: 'int', frequency: 'int' = 1) -> 'complex'` |
 | `spectral_aliasing_report` | function | `spectral_aliasing_report(size: 'int', frequencies: 'Iterable[int]') -> 'dict[int, list[int]]'` |
@@ -63,7 +93,9 @@ research/application namespaces.
 | `stride_provenance` | function | `stride_provenance(size: 'int', stride: 'int') -> 'StrideProvenance'` |
 | `value_only_summary` | function | `value_only_summary(value: 'int') -> 'dict[str, object]'` |
 | `von_mises_weight` | function | `von_mises_weight(angle: 'float', *, mean: 'float' = 0.0, kappa: 'float' = 1.0, period: 'float' = 6.283185307179586) -> 'float'` |
+| `vortex_charge` | function | `vortex_charge(period: 'int', increments: 'Iterable[int]') -> 'int'` |
 | `wrapped_angular_error` | function | `wrapped_angular_error(left: 'float', right: 'float', *, period: 'float' = 6.283185307179586) -> 'float'` |
+| `winding_residue_reconstruct` | function | `winding_residue_reconstruct(modulus: 'int', winding: 'int', residue: 'int') -> 'int'` |
 
 ### `circle_math.contracts`
 
@@ -208,6 +240,8 @@ model-quality results.
 | `Circle.Applications.CircularStatistics` | 16 | `circularSamePhase`, `circularForwardDistance`, `circularBackwardDistance`, `wrappedCircularDistance`, `circularSamePhase_iff_gap_dvd`, `circularSamePhase_refl`, `circularSamePhase_symm`, `circularSamePhase_trans`, `wrappedCircularDistance_comm`, `wrappedCircularDistance_le_forward`, `wrappedCircularDistance_le_backward`, `circularSampleResidues`, `circularHistogram`, `mem_circularSampleResidues_lt_period`, `circularHistogram_le_length`, `circularHistogram_zero_of_period_le_residue` |
 | `Circle.Applications.Circulant` | 6 | `shiftBy`, `shiftBy_add`, `circConv`, `circConv_shift_equivariant`, `circConv_comm`, `circConv_add` |
 | `Circle.Applications.CirculantSpectral` | 1 | `finiteFourierCoeff_circConv` |
+| `Circle.Applications.CyclicEquivariance` | 20 | `cyclicShift`, `CyclicEquivariant`, `CyclicInvariant`, `cyclicShift_zero`, `cyclicShift_add`, `cyclicEquivariant_identity`, `cyclicEquivariant_comp`, `cyclicEquivariant_add`, `circulantLayer`, `circulantLayer_cyclicEquivariant`, `cyclicSum`, `cyclicSum_shift_invariant`, `reflectSignal`, `reflectSignal_involutive`, `reflectSignal_shift`, `dihedralTransform`, `DihedralEquivariant`, `dihedralEquivariant_identity`, `dihedralEquivariant_implies_cyclic`, `dihedralTransform_reflection_zero_involutive` |
+| `Circle.Applications.PhaseLoop` | 17 | `phaseLoopCharge`, `vortexCharge`, `loopGaugeShiftedCharge`, `phaseLoopCharge_nil`, `phaseLoopCharge_singleton`, `phaseLoopCharge_append`, `phaseLoopCharge_reverse`, `vortexCharge_eq_phaseLoopCharge`, `vortexCharge_reverse`, `loopGaugeShiftedCharge_eq_phaseLoopCharge`, `finitePhaseLocked`, `finitePhaseLocked_iff_gap_dvd`, `finitePhaseLocked_refl`, `finitePhaseLocked_symm`, `finitePhaseLocked_trans`, `windingResidueReconstruct`, `windingResidueReconstruct_eq_value` |
 | `Circle.Applications.PositionPhase` | 19 | `phaseResidue`, `phaseChannelCollision`, `phaseChannelDistinguishable`, `phaseChannelCollision_iff_gap_dvd`, `phaseChannelDistinguishable_iff_not_gap_dvd`, `phaseChannelCollision_iff_eq_on_context`, `phaseBankCollision`, `phaseBankDistinguishable`, `phaseBankCollision_iff_forall_gap_dvd`, `phaseBankDistinguishable_iff_exists_not_gap_dvd`, `phaseBankDistinguishable_of_period_ge_context`, `phaseBankCollision_of_subset`, `phaseBankDistinguishable_of_subset`, `phaseGrid2DCollision`, `phaseGrid2DCollision_iff_axes`, `scaledPhasePeriod`, `scaledPhasePeriodBank`, `scaledPhasePeriod_pos`, `scaledPhasePeriodBank_all_pos` |
 | `Circle.Applications.RoPECertifier` | 244 | `ropeDiscretePhase`, `ropeDiscreteCollision`, `ropeDiscreteDistinguishable`, `ropeDiscreteCollision_iff_gap_dvd`, `ropeDiscreteDistinguishable_iff_not_gap_dvd`, `ropeDiscreteCollision_iff_eq_on_context`, `ropePhaseBankCollision`, `ropePhaseBankDistinguishable`, `ropePhaseBankCollision_iff_forall_gap_dvd`, `ropePhaseBankDistinguishable_iff_exists_not_gap_dvd`, `ropePhaseBankDistinguishable_of_period_ge_context`, `ropeCollisionPairCountAtGap`, `ropeCollisionPairCountAtGapMultiples`, `ropeCollisionPairCountFittingMultipleCount`, `ropeCollisionPairCountAtGapMultiplesFittingRange`, `ropePeriodBankLCM`, `ropePeriodBankLCM_pos_of_forall_mem_pos`, `ropeCollisionPairCountAtGap_pos_iff`, `ropeCollisionPairCountAtGapMultiples_pos_iff`, `ropeCollisionPairCountFittingMultipleCount_spec`, `ropeCollisionPairCountAtGapMultiples_eq_fittingRange`, `ropePositiveRangeCollisionPairCount_twice_eq_closedForm`, `ropeCollisionPairCountAtGapMultiplesFittingRange_twice_eq_closedForm`, `ropeCollisionPairCountAtGapMultiples_twice_eq_closedForm`, `ropeCollisionPairCountAtGapMultiples_eq_closedForm`, `ropeCollisionPairCountAtGapMultiples_eq_single_gap_count`, `ropeCollisionPairCountAtGapMultiples_period_succ_eq_one`, `ropePhaseBankCollision_at_gap_of_forall_dvd`, `ropePhaseBankCollision_at_commonGap_mul_of_forall_dvd`, `ropePeriodBankLCM_dvd_of_mem`, `ropePeriodBankLCM_dvd_of_forall_dvd`, `ropePhaseBankCollision_iff_lcm_dvd_gap`, `ropePhaseBankCollision_at_lcm_gap`, `ropePhaseBankCollision_exists_of_lcm_pos_lt_context`, `ropeLCMCollisionPairCountMultiples_eq_zero_iff`, `ropeLCMCollisionPairCountMultiples_pos_iff_exists_collision`, `not_ropePhaseBankCollision_of_lcm_ge_context`, `ropePhaseBankNoCollisionOnContext_iff_lcm_ge_context_of_forall_mem_pos`, `ropePhaseBankNoCollisionOnContext_iff_lcmCollisionPairCount_eq_zero_of_forall_mem_pos`, `not_ropePhaseBankCollision_of_prefix_lcm_ge_context`, `not_ropePhaseBankCollision_of_subbank_lcm_ge_context`, `ropePrefixPassesContext`, `ropeFirstPrefixPassesContext`, `ropeFirstPrefixPassesContext_unique`, `not_ropePhaseBankCollision_of_firstPrefixPassesContext`, `ropeSubfamilyPassesContext`, `ropeSmallestSubfamilyPassesContext`, `ropeSmallestSubfamilyPassesContext_size_unique`, `not_ropePhaseBankCollision_of_smallestSubfamilyPassesContext`, `ropeDiagnosticPrefixPass_context128_firstPrefix_length_three`, `ropeDiagnosticPrefixPass_context128_firstPrefixPasses_three`, `ropeDiagnosticPrefixPass_context128_smallestSubfamily_size_two`, `ropeDiagnosticPrefixPass_context128_smallestSubfamilyPasses_13_18`, `ropeDiagnosticSharedFactor_context64_totalCollisionPairCount`, `ropeQuantizedSharedFactor_context256_totalCollisionPairCount`, `ropeQuantizedBoundary_context241_totalCollisionPairCount`, `ropeInterpolatedX4_context960_totalCollisionPairCount`, `ropeInterpolatedX4_context961_totalCollisionPairCount`, `ropeDiscreteCollision_exists_positive_multiple_gap`, `ropeDiscreteNoCollisionOnContext_iff_context_le_period`, ... (184 more) |
 | `Circle.Applications.RoPEFrontier` | 15 | `ropeStandardChannel0D19_contextRange_margin_bracket`, `ropeStandardChannel0D19_contextRange_request_margin_bracket`, `ropeStandardChannel0D19_request_margin_thresholds_ordered`, `ropeStandardChannel0D19_request_margin_branches_disjoint`, `ropeStandardChannel0D19_request_margin_open_gap_iff_unclassified`, `supplies`, `ropeStandardChannel0D19_request_margin_trichotomy`, `ropeStandardChannel0D19_contextRange_request_margin_semantic_trichotomy`, `ropeStandardChannel0D19_proved_request_firstChannel_bank_noNearTurn`, `ropeStandardChannel0D19_proved_request_firstChannel_bank_noNearTurn_onContext`, `ropeStandardChannel0TurnRatio_mul_two_pi`, `ropeStandardChannel0D19_proved_request_radianFirstChannel_bank_noNearTurn_onContext`, `ropeStandardChannel0D19_contextRange_radianFirstChannel_request_semantic_trichotomy`, `ropeStandardChannel0D19_request_margin_open_gap_width`, `ropeStandardChannel0D19_public_undecided_probe_margin_in_open_gap` |
@@ -234,7 +268,7 @@ Public modules:
 
 Public re-export groups:
 
-- `bigint::{ big_fuzzy_any_prime_search, big_fuzzy_any_prime_value, big_fuzzy_hybrid_contract_json, big_probable_prime_contract_json, bpsw_probable_prime_status_biguint, is_bpsw_probable_prime_biguint, is_probable_prime_biguint, max_big_miller_rabin_rounds, next_bpsw_probable_prime_biguint, next_probable_prime_biguint, parse_biguint, probable_prime_status_biguint, BigFuzzyPrimeModel, BigFuzzySearch, BigNextPrimeSearch, BigPrimeDecision, BigPrimeStatus, DEFAULT_BIG_FUZZY_CANDIDATE_WINDOW, DEFAULT_BIG_MILLER_RABIN_ROUNDS, DEFAULT_BIG_NEXT_MAX_CANDIDATES, }`
+- `bigint::{ big_fuzzy_any_prime_search, big_fuzzy_any_prime_value, big_fuzzy_bpsw_any_prime_search, big_fuzzy_bpsw_any_prime_value, big_fuzzy_hybrid_contract_json, big_probable_prime_contract_json, bpsw_probable_prime_status_biguint, is_bpsw_probable_prime_biguint, is_probable_prime_biguint, max_big_miller_rabin_rounds, next_bpsw_probable_prime_biguint, next_probable_prime_biguint, parse_biguint, probable_prime_status_biguint, BigFuzzyPrimeModel, BigFuzzySearch, BigNextPrimeSearch, BigPrimeDecision, BigPrimeStatus, DEFAULT_BIG_FUZZY_CANDIDATE_WINDOW, DEFAULT_BIG_MILLER_RABIN_ROUNDS, DEFAULT_BIG_NEXT_MAX_CANDIDATES, }`
 - `coil::{ coil_signature, coil_spectrum, contains_horizon, contains_smaller_horizon, horizon_collision, inspect_horizon, literal_orbit, CoilSignature, HorizonCollision, HorizonInspection, }`
 - `controls::{ control_primal_sieve_prime_count, control_simple_sieve_prime_count, control_trial_division_prime_count, control_trial_division_prime_count_checked, }`
 - `fuzzy::{ fuzzy_any_prime_value, fuzzy_any_prime_value_with_score_limit, fuzzy_hybrid_proof_contract_json, fuzzy_search, fuzzy_search_with_score_limit, FuzzyPrimeModel, FuzzySearch, FuzzySearchMode, }`

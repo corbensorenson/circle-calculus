@@ -5,6 +5,8 @@ import Circle.Applications.CircleTransformer
 import Circle.Applications.CircularStatistics
 import Circle.Applications.Circulant
 import Circle.Applications.CirculantSpectral
+import Circle.Applications.CyclicEquivariance
+import Circle.Applications.PhaseLoop
 import Circle.Applications.PositionPhase
 import Circle.Applications.RoPECertifier
 import Circle.Applications.RoPEFrontier
