@@ -474,9 +474,13 @@ def build_rope_model_config_import_report(
         )
     except ValueError as exc:
         failures.append(str(exc))
+    request_fingerprint = _json_fingerprint(request) if request is not None else None
     return {
         "schema_id": ROPE_MODEL_CONFIG_IMPORT_SCHEMA_ID,
         "request_schema_id": REQUEST_SCHEMA_ID,
+        "content_fingerprint_algorithm": FINGERPRINT_ALGORITHM,
+        "model_config_fingerprint": _json_fingerprint(_json_ready_value(config)),
+        "request_content_fingerprint": request_fingerprint,
         "kind": "rope_position_distinguishability",
         "ok": not failures,
         "failure_count": len(failures),
@@ -2537,6 +2541,7 @@ def build_contract_request_validation_json_schema() -> dict[str, Any]:
 
 def build_rope_model_config_import_json_schema() -> dict[str, Any]:
     string_list = {"type": "array", "items": {"type": "string"}}
+    fingerprint = {"type": "string", "pattern": "^[0-9a-f]{64}$"}
     return {
         "$schema": "https://json-schema.org/draft/2020-12/schema",
         "$id": (
@@ -2548,6 +2553,9 @@ def build_rope_model_config_import_json_schema() -> dict[str, Any]:
         "required": [
             "schema_id",
             "request_schema_id",
+            "content_fingerprint_algorithm",
+            "model_config_fingerprint",
+            "request_content_fingerprint",
             "kind",
             "ok",
             "failure_count",
@@ -2559,6 +2567,14 @@ def build_rope_model_config_import_json_schema() -> dict[str, Any]:
         "properties": {
             "schema_id": {"const": ROPE_MODEL_CONFIG_IMPORT_SCHEMA_ID},
             "request_schema_id": {"const": REQUEST_SCHEMA_ID},
+            "content_fingerprint_algorithm": {"const": FINGERPRINT_ALGORITHM},
+            "model_config_fingerprint": fingerprint,
+            "request_content_fingerprint": {
+                "anyOf": [
+                    fingerprint,
+                    {"type": "null"},
+                ],
+            },
             "kind": {"const": "rope_position_distinguishability"},
             "ok": {"type": "boolean"},
             "failure_count": {"type": "integer", "minimum": 0},

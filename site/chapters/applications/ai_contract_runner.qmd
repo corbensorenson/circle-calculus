@@ -102,7 +102,8 @@ dimension pairs.
 Use `--model-config-import-report-out reports/rope_import.json` when CI needs a
 schema-validated explanation of whether a real config converted into the
 standard-RoPE request frontier. That report is not a receipt and does not prove
-scaled-RoPE behavior.
+scaled-RoPE behavior. It includes fingerprints for the source config and the
+emitted request when one exists, so CI can pin the import boundary.
 The saved request is the exact versioned Circle request object used to produce
 the receipt, so downstream tools can pin it before rerunning or auditing the
 certificate.

@@ -1060,8 +1060,13 @@ def test_rope_model_config_import_report_schema_classifies_scaling() -> None:
     jsonschema.validate(scaled, schema)
     assert standard["ok"] is True
     assert standard["request"]["kind"] == "rope_position_distinguishability"
+    assert standard["content_fingerprint_algorithm"] == "sha256-json-v1"
+    assert len(standard["model_config_fingerprint"]) == 64
+    assert len(standard["request_content_fingerprint"]) == 64
     assert scaled["ok"] is False
     assert scaled["request"] is None
+    assert len(scaled["model_config_fingerprint"]) == 64
+    assert scaled["request_content_fingerprint"] is None
     assert scaled["unsupported_model_config_fields"] == ["rope_scaling"]
     assert "rope_scaling is outside" in scaled["failures"][0]
 
@@ -1897,6 +1902,8 @@ def test_circle_ai_certify_cli_rejects_scaled_rope_model_config(
     jsonschema.validate(report, build_rope_model_config_import_json_schema())
     assert report["ok"] is False
     assert report["request"] is None
+    assert len(report["model_config_fingerprint"]) == 64
+    assert report["request_content_fingerprint"] is None
     assert report["unsupported_model_config_fields"] == ["rope_scaling"]
 
 

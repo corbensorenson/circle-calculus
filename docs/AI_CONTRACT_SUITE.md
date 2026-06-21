@@ -46,7 +46,8 @@ receipt. Non-default `rope_scaling` metadata is rejected instead of being
 treated as covered by the proof status.
 Use `--model-config-import-report-out reports/rope_import.json` to save a
 schema-validated explanation when a real model config cannot be imported into
-the standard-RoPE request frontier.
+the standard-RoPE request frontier. The report carries source-config and
+request fingerprints for downstream audit logs.
 The `--require-*` flags are optional CI gates: the receipt is still emitted, but
 the command exits nonzero if the requested status, decision, assurance, or pass
 policy is not met.
