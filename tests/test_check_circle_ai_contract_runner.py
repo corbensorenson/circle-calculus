@@ -21,6 +21,12 @@ MODEL_CONFIG_IMPORT_SCHEMA = (
     / "generated"
     / "circle_ai_rope_model_config_import.schema.json"
 )
+REQUEST_VALIDATION_SCHEMA = (
+    Path("site")
+    / "data"
+    / "generated"
+    / "circle_ai_contract_request_validation.schema.json"
+)
 CONTRACT_PACK = Path("site") / "data" / "generated" / "circle_ai_contract_pack.json"
 FINGERPRINT_ALGORITHM = "sha256-json-v1"
 FINGERPRINT_KEYS = {
@@ -36,6 +42,10 @@ def _runner_check_schema() -> dict:
 
 def _model_config_import_schema() -> dict:
     return json.loads(MODEL_CONFIG_IMPORT_SCHEMA.read_text())
+
+
+def _request_validation_schema() -> dict:
+    return json.loads(REQUEST_VALIDATION_SCHEMA.read_text())
 
 
 def _strip_fingerprint_fields(value: object) -> object:
@@ -143,6 +153,10 @@ def test_check_circle_ai_contract_runner_emits_json_report() -> None:
         len(summary["source_content_fingerprint"]) == 64
         for summary in payload["summaries"]
     )
+    assert all(
+        summary["request_validation_report_path"] is None
+        for summary in payload["summaries"]
+    )
     assert all(summary["normalized_request"] for summary in payload["summaries"])
     assert any(
         summary["normalized_request"].get("head_dim") == 128
@@ -160,6 +174,7 @@ def test_check_circle_ai_contract_runner_emits_json_report() -> None:
 def test_check_circle_ai_contract_runner_writes_receipts(tmp_path: Path) -> None:
     out_dir = tmp_path / "receipts"
     import_report_dir = tmp_path / "imports"
+    request_validation_dir = tmp_path / "request_validation"
 
     result = subprocess.run(
         [
@@ -169,6 +184,8 @@ def test_check_circle_ai_contract_runner_writes_receipts(tmp_path: Path) -> None
             str(out_dir),
             "--model-config-import-report-out-dir",
             str(import_report_dir),
+            "--request-validation-report-out-dir",
+            str(request_validation_dir),
             "--format",
             "json",
         ],
@@ -182,6 +199,29 @@ def test_check_circle_ai_contract_runner_writes_receipts(tmp_path: Path) -> None
     receipt_paths = [Path(summary["receipt_path"]) for summary in payload["summaries"]]
     assert len(receipt_paths) == 6
     assert all(path.exists() for path in receipt_paths)
+    validation_report_paths = [
+        Path(summary["request_validation_report_path"])
+        for summary in payload["summaries"]
+    ]
+    assert len(validation_report_paths) == 6
+    assert all(path.exists() for path in validation_report_paths)
+    for summary in payload["summaries"]:
+        validation_report = json.loads(
+            Path(summary["request_validation_report_path"]).read_text()
+        )
+        jsonschema.validate(validation_report, _request_validation_schema())
+        assert validation_report["ok"] is True
+        assert validation_report["canonical_kind"] == summary["kind"]
+        if summary["source_type"] == "request":
+            assert (
+                validation_report["request_content_fingerprint"]
+                == summary["source_content_fingerprint"]
+            )
+        else:
+            assert (
+                validation_report["request_content_fingerprint"]
+                == summary["request_content_fingerprint"]
+            )
     import_report_summaries = [
         summary for summary in payload["summaries"] if summary["source_type"] == "model_config"
     ]
@@ -227,6 +267,7 @@ def test_check_circle_ai_contract_runner_writes_report_file(tmp_path: Path) -> N
     report_path = tmp_path / "runner_check_report.json"
     receipt_dir = tmp_path / "receipts"
     import_report_dir = tmp_path / "imports"
+    request_validation_dir = tmp_path / "request_validation"
 
     result = subprocess.run(
         [
@@ -236,6 +277,8 @@ def test_check_circle_ai_contract_runner_writes_report_file(tmp_path: Path) -> N
             str(receipt_dir),
             "--model-config-import-report-out-dir",
             str(import_report_dir),
+            "--request-validation-report-out-dir",
+            str(request_validation_dir),
             "--report-out",
             str(report_path),
         ],
@@ -250,6 +293,9 @@ def test_check_circle_ai_contract_runner_writes_report_file(tmp_path: Path) -> N
     assert payload["ok"] is True
     assert len(payload["summaries"]) == 6
     assert all(summary["receipt_path"] for summary in payload["summaries"])
+    assert all(
+        summary["request_validation_report_path"] for summary in payload["summaries"]
+    )
     assert all(summary["source_content_fingerprint"] for summary in payload["summaries"])
     model_config_summary = next(
         summary

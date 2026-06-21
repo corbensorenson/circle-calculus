@@ -148,6 +148,12 @@
               "null"
             ]
           },
+          "request_validation_report_path": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
           "source_content_fingerprint": {
             "pattern": "^[0-9a-f]{64}$",
             "type": "string"
@@ -186,6 +192,7 @@
           "source_content_fingerprint",
           "request_path",
           "model_config_import_report_path",
+          "request_validation_report_path",
           "receipt_path",
           "kind",
           "status",

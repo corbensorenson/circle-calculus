@@ -102,6 +102,7 @@ def _summary_from_receipt(
     source: dict[str, Any],
     request_path: Path | None,
     model_config_import_report_path: Path | None,
+    request_validation_report_path: Path | None,
     receipt_path: Path | None,
     receipt: dict[str, Any],
 ) -> dict[str, Any]:
@@ -115,6 +116,11 @@ def _summary_from_receipt(
             None
             if model_config_import_report_path is None
             else _display_path(model_config_import_report_path)
+        ),
+        "request_validation_report_path": (
+            None
+            if request_validation_report_path is None
+            else _display_path(request_validation_report_path)
         ),
         "receipt_path": None if receipt_path is None else _display_path(receipt_path),
         "kind": receipt["kind"],
@@ -185,6 +191,7 @@ def check_runner_examples(
     runner_check_schema_path: Path = DEFAULT_RUNNER_CHECK_SCHEMA,
     receipt_out_dir: Path | None = None,
     model_config_import_report_out_dir: Path | None = None,
+    request_validation_report_out_dir: Path | None = None,
     required_statuses: tuple[str, ...] = (),
     required_decision_verdicts: tuple[str, ...] = (),
     required_assurance_levels: tuple[str, ...] = (),
@@ -210,6 +217,13 @@ def check_runner_examples(
             jsonschema.validate(request, request_schema)
             validation_report = build_contract_request_validation_report(request)
             jsonschema.validate(validation_report, request_validation_schema)
+            validation_report_path = None
+            if request_validation_report_out_dir is not None:
+                validation_report_path = (
+                    request_validation_report_out_dir
+                    / f"{path.stem.removesuffix('_request')}_request_validation.json"
+                )
+                _write_json(validation_report_path, validation_report)
             request_failures = validate_contract_request(request)
             if request_failures:
                 failures.append(f"{path}: " + "; ".join(request_failures))
@@ -226,6 +240,7 @@ def check_runner_examples(
                 source=request,
                 request_path=path,
                 model_config_import_report_path=None,
+                request_validation_report_path=validation_report_path,
                 receipt_path=receipt_path,
                 receipt=receipt,
             )
@@ -266,6 +281,13 @@ def check_runner_examples(
             jsonschema.validate(request, request_schema)
             validation_report = build_contract_request_validation_report(request)
             jsonschema.validate(validation_report, request_validation_schema)
+            validation_report_path = None
+            if request_validation_report_out_dir is not None:
+                validation_report_path = (
+                    request_validation_report_out_dir
+                    / f"{path.stem}_request_validation.json"
+                )
+                _write_json(validation_report_path, validation_report)
             request_failures = validate_contract_request(request)
             if request_failures:
                 failures.append(f"{path}: " + "; ".join(request_failures))
@@ -285,6 +307,7 @@ def check_runner_examples(
                 source=config,
                 request_path=request_path,
                 model_config_import_report_path=import_report_path,
+                request_validation_report_path=validation_report_path,
                 receipt_path=receipt_path,
                 receipt=receipt,
             )
@@ -385,6 +408,14 @@ def main() -> int:
         ),
     )
     parser.add_argument(
+        "--request-validation-report-out-dir",
+        type=Path,
+        help=(
+            "Optional directory where schema-validated request preflight "
+            "reports are written for every checked request."
+        ),
+    )
+    parser.add_argument(
         "--report-out",
         type=Path,
         help="Optional path where the schema-validated batch check report is written.",
@@ -442,6 +473,7 @@ def main() -> int:
         runner_check_schema_path=args.runner_check_schema,
         receipt_out_dir=args.receipt_out_dir,
         model_config_import_report_out_dir=args.model_config_import_report_out_dir,
+        request_validation_report_out_dir=args.request_validation_report_out_dir,
         required_statuses=tuple(args.require_status),
         required_decision_verdicts=tuple(args.require_decision),
         required_assurance_levels=tuple(args.require_assurance),
@@ -469,6 +501,7 @@ def main() -> int:
                 f"{summary['source_path']} type={summary['source_type']} "
                 f"request={summary['request_path']} kind={summary['kind']} "
                 f"import_report={summary['model_config_import_report_path']} "
+                f"request_validation={summary['request_validation_report_path']} "
                 f"status={summary['status']} "
                 f"passed={summary['request_passed']} "
                 f"decision={summary['decision_verdict']} "
