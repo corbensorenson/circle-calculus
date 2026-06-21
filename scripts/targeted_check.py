@@ -266,6 +266,13 @@ def add_circle_ai_contract_checks(checks: list[Check], seen: set[tuple[str, ...]
     add(
         checks,
         seen,
+        "Circle AI standalone artifact verifier tests",
+        pytest("tests/test_downstream_ci_verify_circle_ai_artifacts.py"),
+        reason,
+    )
+    add(
+        checks,
+        seen,
         "Circle AI contract runner tests",
         pytest("tests/test_circle_ai_contract_runner.py"),
         reason,
@@ -522,6 +529,7 @@ AI_CONTRACT_BROAD_SURFACE_PATHS = {
     "docs/CIRCLE_AI_CONTRACT_RUNNER.md",
     "examples/circle_ai_contract_acceptance_policy.json",
     "examples/downstream_ci_accept_circle_ai_contracts.py",
+    "examples/downstream_ci_verify_circle_ai_artifacts.py",
 }
 
 AI_CONTRACT_GENERATED_PACK_ARTIFACTS = (

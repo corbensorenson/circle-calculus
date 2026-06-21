@@ -641,6 +641,21 @@ and the requested planner recommendation ids. The policy schema and both CI
 gates reject duplicate contract selections or duplicate requirement pins, so
 lockfiles stay unambiguous.
 
+When another project already has a runner artifact directory, it can copy
+`examples/downstream_ci_verify_circle_ai_artifacts.py` and verify the manifest,
+file SHA-256 hashes, declared schema ids, mirrored receipt status, and optional
+manifest-check report without importing Circle or `jsonschema`:
+
+```bash
+python examples/downstream_ci_verify_circle_ai_artifacts.py \
+  reports/rope_contract/standard_rope_config_artifact_manifest.json \
+  --require-status proved \
+  --require-decision passed \
+  --require-assurance mixed_theorem_and_computation \
+  --require-passed \
+  --require-manifest-check
+```
+
 A downstream project should fail fast if the readiness index or contract-level
 `ready_for_downstream_fixture_use` is false. That gate only means the public
 Circle fixture contains the minimum theorem-linked fields for its contract kind
