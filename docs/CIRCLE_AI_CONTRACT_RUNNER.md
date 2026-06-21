@@ -113,9 +113,9 @@ By default, emitted receipts are issued against
 `site/data/generated/circle_ai_contract_pack.json`, the same public pack used by
 the saved-receipt verifier. Use `--pack` only when intentionally testing a
 different generated pack.
-Use `--receipt-check-out` to write the same schema-validated check report that a
-later `scripts/check_circle_ai_receipt.py` run would produce for the emitted
-receipt.
+Use `--receipt-check-out` with `--json-out` to write the same schema-validated
+check report that a later `scripts/check_circle_ai_receipt.py` run would
+produce for the saved receipt.
 
 Copyable starting points live under:
 

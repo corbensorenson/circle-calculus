@@ -924,6 +924,37 @@ def test_circle_ai_certify_cli_writes_receipt_check_report(
     ]
 
 
+def test_circle_ai_certify_cli_receipt_check_requires_saved_receipt(
+    tmp_path: Path,
+) -> None:
+    report_path = tmp_path / "receipt_check.json"
+
+    result = subprocess.run(
+        [
+            sys.executable,
+            str(SCRIPT),
+            "rope",
+            "--context",
+            "131072",
+            "--requested-margin",
+            "1/328459",
+            "--receipt-check-out",
+            str(report_path),
+            "--format",
+            "json",
+        ],
+        cwd=ROOT,
+        check=False,
+        text=True,
+        capture_output=True,
+    )
+
+    assert result.returncode != 0
+    assert result.stdout == ""
+    assert "--receipt-check-out requires --json-out" in result.stderr
+    assert not report_path.exists()
+
+
 def test_circle_ai_certify_cli_rejects_scaled_rope_model_config(
     tmp_path: Path,
 ) -> None:

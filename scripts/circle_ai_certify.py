@@ -437,6 +437,11 @@ def _receipt_check_report(
 
 def main() -> int:
     args = parse_args()
+    if args.receipt_check_out is not None and args.json_out is None:
+        raise SystemExit(
+            "--receipt-check-out requires --json-out so the report points at "
+            "a saved receipt file"
+        )
     if args.kind == "request":
         if args.request_out is not None:
             write_json(args.request_out, _load_request_json(args.request_json))
