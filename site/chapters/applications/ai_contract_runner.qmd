@@ -280,6 +280,7 @@ Read every receipt in this order:
 ```python
 from circle_math.applications import (
     build_contract_receipt,
+    build_contract_receipt_file_check_report,
     build_contract_receipt_from_request,
     build_contract_request,
     build_contract_request_validation_report,
@@ -288,6 +289,7 @@ from circle_math.applications import (
     validate_contract_receipt_against_pack,
 )
 
+pack = load_contract_pack("site/data/generated/circle_ai_contract_pack.json")
 request = build_contract_request(
     "kv-cache",
     {
@@ -302,12 +304,18 @@ request = build_contract_request(
 receipt = build_contract_receipt(
     request["kind"],
     request["parameters"],
+    pack=pack,
 )
 
-assert validate_contract_receipt_against_pack(
+assert validate_contract_receipt_against_pack(receipt, pack) == []
+check_report = build_contract_receipt_file_check_report(
     receipt,
-    load_contract_pack("site/data/generated/circle_ai_contract_pack.json"),
-) == []
+    pack,
+    receipt_path="reports/kv_receipt.json",
+    required_statuses=("proved",),
+    require_passed=True,
+)
+assert check_report["ok"] is True
 ```
 
 The request-file object can be used directly from Python:
@@ -326,7 +334,7 @@ request = {
 
 assert validate_contract_request(request) == []
 assert build_contract_request_validation_report(request)["ok"] is True
-receipt = build_contract_receipt_from_request(request)
+receipt = build_contract_receipt_from_request(request, pack=pack)
 ```
 
 That returns the same schema as the CLI:

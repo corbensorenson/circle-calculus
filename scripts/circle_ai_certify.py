@@ -16,9 +16,9 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from circle_math.applications import (  # noqa: E402
-    CIRCLE_AI_CONTRACT_RECEIPT_FILE_CHECK_SCHEMA_ID,
     build_contract_receipt,
     build_contract_receipt_file_check_json_schema,
+    build_contract_receipt_file_check_report,
     build_contract_receipt_from_request,
     build_contract_receipt_json_schema,
     build_contract_request,
@@ -27,7 +27,6 @@ from circle_math.applications import (  # noqa: E402
     build_rope_request_parameters_from_model_config,
     load_contract_pack,
     receipt_summary_lines,
-    validate_contract_receipt_against_pack,
 )
 from circle_math.applications.circle_ai_contract_runner import (  # noqa: E402
     RECEIPT_FILE_CHECK_SCHEMA_PATH,
@@ -400,41 +399,6 @@ def _receipt_gate_failures(receipt: dict[str, Any], args: argparse.Namespace) ->
     return failures
 
 
-def _receipt_check_report(
-    receipt: dict[str, Any],
-    *,
-    pack: dict[str, Any],
-    receipt_path: Path | None,
-    gate_failures: list[str],
-    args: argparse.Namespace,
-) -> dict[str, Any]:
-    pack_failures = validate_contract_receipt_against_pack(receipt, pack)
-    failures = [*pack_failures, *gate_failures]
-    return {
-        "schema_id": CIRCLE_AI_CONTRACT_RECEIPT_FILE_CHECK_SCHEMA_ID,
-        "ok": not failures,
-        "receipt_count": 1,
-        "failure_count": len(failures),
-        "failures": failures,
-        "gate_policy": {
-            "allowed_statuses": list(args.require_status),
-            "require_passed": args.require_passed,
-        },
-        "summaries": [
-            {
-                "path": _display_path(receipt_path),
-                "kind": receipt["kind"],
-                "contract_id": receipt["contract_id"],
-                "status": receipt["status"],
-                "request_passed": receipt["request_passed"],
-                "theorem_count": receipt["proof_status"]["theorem_count"],
-                "receipt_content_fingerprint": receipt["receipt_content_fingerprint"],
-                "failure_count": len(failures),
-            }
-        ],
-    }
-
-
 def main() -> int:
     args = parse_args()
     if args.receipt_check_out is not None and args.json_out is None:
@@ -491,12 +455,12 @@ def main() -> int:
     if args.json_out is not None:
         write_json(args.json_out, receipt)
     if args.receipt_check_out is not None:
-        check_report = _receipt_check_report(
+        check_report = build_contract_receipt_file_check_report(
             receipt,
             pack=pack,
-            receipt_path=args.json_out,
-            gate_failures=gate_failures,
-            args=args,
+            receipt_path=_display_path(args.json_out),
+            required_statuses=tuple(args.require_status),
+            require_passed=args.require_passed,
         )
         _validate_receipt_check_report(check_report, args.receipt_check_schema)
         write_json(args.receipt_check_out, check_report)

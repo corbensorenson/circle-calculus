@@ -1558,6 +1558,65 @@ def validate_contract_receipt_against_pack(
     return failures
 
 
+def build_contract_receipt_file_check_report(
+    receipt: Mapping[str, Any],
+    pack: Mapping[str, Any],
+    *,
+    receipt_path: str,
+    required_statuses: Sequence[str] = (),
+    require_passed: bool = False,
+) -> dict[str, Any]:
+    """Build a saved-receipt validation report with the public report shape.
+
+    This is the public API equivalent of ``scripts/check_circle_ai_receipt.py``
+    for callers that already have a receipt object in memory.
+    """
+
+    failures = validate_contract_receipt_against_pack(receipt, pack)
+    status = receipt.get("status")
+    if required_statuses and status not in set(required_statuses):
+        failures.append(
+            f"receipt status {status!r} did not match required status set: "
+            + ", ".join(required_statuses)
+        )
+    if require_passed and receipt.get("request_passed") is not True:
+        failures.append(
+            "receipt request_passed was not true "
+            f"(got {receipt.get('request_passed')!r})"
+        )
+    proof_status = receipt.get("proof_status")
+    report = {
+        "schema_id": RECEIPT_FILE_CHECK_SCHEMA_ID,
+        "ok": not failures,
+        "receipt_count": 1,
+        "failure_count": len(failures),
+        "failures": failures,
+        "gate_policy": {
+            "allowed_statuses": list(required_statuses),
+            "require_passed": require_passed,
+        },
+        "summaries": [
+            {
+                "path": receipt_path,
+                "kind": receipt.get("kind"),
+                "contract_id": receipt.get("contract_id"),
+                "status": status,
+                "request_passed": receipt.get("request_passed"),
+                "theorem_count": (
+                    proof_status.get("theorem_count")
+                    if isinstance(proof_status, Mapping)
+                    else None
+                ),
+                "receipt_content_fingerprint": receipt.get(
+                    "receipt_content_fingerprint"
+                ),
+                "failure_count": len(failures),
+            }
+        ],
+    }
+    return report
+
+
 def receipt_summary_lines(receipt: Mapping[str, Any]) -> list[str]:
     """Return a compact text summary for humans."""
 

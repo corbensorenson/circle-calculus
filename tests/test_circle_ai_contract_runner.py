@@ -12,6 +12,7 @@ import pytest
 from circle_math.applications import (
     build_contract_receipt,
     build_contract_receipt_file_check_json_schema,
+    build_contract_receipt_file_check_report,
     build_contract_receipt_json_schema,
     build_contract_receipt_from_request,
     build_contract_request,
@@ -347,6 +348,46 @@ def test_receipt_pack_validator_rejects_stale_support_fingerprints(
         in failure
         for failure in failures
     )
+
+
+def test_receipt_file_check_report_public_api(contract_pack: dict) -> None:
+    receipt = build_rope_receipt(
+        context=131072,
+        requested_margin="1/328459",
+        pack=contract_pack,
+    )
+
+    report = build_contract_receipt_file_check_report(
+        receipt,
+        contract_pack,
+        receipt_path="reports/rope_receipt.json",
+        required_statuses=("proved",),
+        require_passed=True,
+    )
+
+    jsonschema.validate(report, build_contract_receipt_file_check_json_schema())
+    assert report["ok"] is True
+    assert report["receipt_count"] == 1
+    assert report["gate_policy"] == {
+        "allowed_statuses": ["proved"],
+        "require_passed": True,
+    }
+    assert report["summaries"][0]["path"] == "reports/rope_receipt.json"
+    assert report["summaries"][0]["receipt_content_fingerprint"] == receipt[
+        "receipt_content_fingerprint"
+    ]
+
+    failed = build_contract_receipt_file_check_report(
+        receipt,
+        contract_pack,
+        receipt_path="reports/rope_receipt.json",
+        required_statuses=("impossible",),
+        require_passed=True,
+    )
+    jsonschema.validate(failed, build_contract_receipt_file_check_json_schema())
+    assert failed["ok"] is False
+    assert failed["failure_count"] == 1
+    assert "did not match required status set" in failed["failures"][0]
 
 
 def test_request_api_validates_and_builds_receipts(contract_pack: dict) -> None:
