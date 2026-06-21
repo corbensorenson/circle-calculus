@@ -8,6 +8,18 @@ research/application namespaces.
 from __future__ import annotations
 
 from .finite import Circle
+from .harmonics import (
+    SpectralConvolutionReport,
+    character_value,
+    circular_convolution,
+    circulant_matrix,
+    dft_matrix,
+    finite_fourier_coefficients,
+    inverse_finite_fourier,
+    root_of_unity,
+    spectral_aliasing_report,
+    spectral_convolution_report,
+)
 from .number_provenance import (
     NumberProvenance,
     StrideProvenance,
@@ -50,13 +62,20 @@ __all__ = [
     "Circle",
     "LiftedNode",
     "NumberProvenance",
+    "SpectralConvolutionReport",
     "StrideProvenance",
+    "character_value",
+    "circular_convolution",
+    "circulant_matrix",
+    "dft_matrix",
     "divisors",
     "factor_pairs",
+    "finite_fourier_coefficients",
     "finite_circle",
     "finite_orbit",
     "finite_orbit_decomposition",
     "finite_period",
+    "inverse_finite_fourier",
     "is_full_coil",
     "lift",
     "lift_add",
@@ -64,6 +83,9 @@ __all__ = [
     "lift_successor",
     "number_provenance",
     "provenance_summary",
+    "root_of_unity",
+    "spectral_aliasing_report",
+    "spectral_convolution_report",
     "stride_provenance",
     "value_only_summary",
 ]

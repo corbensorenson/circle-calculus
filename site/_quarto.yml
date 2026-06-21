@@ -98,6 +98,8 @@ website:
             text: 5. Winding Lift
           - href: chapters/S1/06_review.qmd
             text: 6. S1 Review And Exercises
+          - href: chapters/S1/07_finite_fourier_circulant.qmd
+            text: 7. Finite Fourier And Circulant Algebra
       - section: "Part IV: Higher-Dimensional Ladder"
         contents:
           - href: chapters/S2/index.qmd

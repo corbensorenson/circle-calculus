@@ -1854,3 +1854,83 @@ theorems:
       lean_build_required: true
       no_sorry_required: true
       python_property_tests: ["regular_polygon_unit_embedding(n) gives unit-length cycle edges for deterministic examples"]
+
+  - id: CC-T0117
+    name: Finite-circle character values are roots of unity
+    status: proved
+    lean_name: Circle.CyclicCharacter.value_pow_card
+    informal_statement: "Every value of a cyclic character on C_n is an n-th root of unity."
+    formal_statement: "forall (n : Nat) {R : Type} [CommMonoid R] (chi : Circle.CyclicCharacter n R) (a : ZMod n), chi a ^ n = 1"
+    dictionary_dependencies: ["CC-0001", "CC-0101"]
+    paper_refs: ["docs/FINITE_FOURIER_CIRCULANT.md"]
+    python_tests: ["tests/test_public_api.py::test_stable_harmonic_api_examples"]
+    proof_notes: "Lean theorem is compiled in Circle/Core/FiniteFourier.lean from the cyclic character homomorphism law and n • a = 0 in ZMod n."
+    blocker: ""
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["root_of_unity(n,k)^n is numerically 1 for finite examples"]
+
+  - id: CC-T0118
+    name: Finite-circle shifts compose additively
+    status: proved
+    lean_name: Circle.finiteShift_add
+    informal_statement: "Shifting a finite-circle signal by s+t is the same as shifting by t and then by s."
+    formal_statement: "forall {n : Nat} {R : Type} (s t : ZMod n) (x : ZMod n -> R), Circle.finiteShift (s + t) x = Circle.finiteShift s (Circle.finiteShift t x)"
+    dictionary_dependencies: ["CC-0001", "CC-0101"]
+    paper_refs: ["docs/FINITE_FOURIER_CIRCULANT.md"]
+    python_tests: ["tests/test_public_api.py::test_stable_harmonic_api_examples"]
+    proof_notes: "Lean theorem is compiled in Circle/Core/FiniteFourier.lean by finite-circle subtraction algebra."
+    blocker: ""
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["finite shifts on finite lists compose by adding residues"]
+
+  - id: CC-T0119
+    name: Finite Fourier coefficient additivity
+    status: proved
+    lean_name: Circle.finiteFourierCoeff_add
+    informal_statement: "A finite Fourier coefficient is additive in the signal."
+    formal_statement: "forall {n : Nat} [NeZero n] {R : Type} [CommSemiring R] (chi : Circle.CyclicCharacter n R) (x y : ZMod n -> R), Circle.finiteFourierCoeff chi (x + y) = Circle.finiteFourierCoeff chi x + Circle.finiteFourierCoeff chi y"
+    dictionary_dependencies: ["CC-0001", "CC-0101"]
+    paper_refs: ["docs/FINITE_FOURIER_CIRCULANT.md"]
+    python_tests: ["tests/test_public_api.py::test_stable_harmonic_api_examples"]
+    proof_notes: "Lean theorem is compiled in Circle/Core/FiniteFourier.lean by distributivity and finite sum additivity."
+    blocker: ""
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["DFT(x+y) equals DFT(x)+DFT(y) for deterministic finite examples"]
+
+  - id: CC-T0120
+    name: Finite Fourier shift phase law
+    status: proved
+    lean_name: Circle.finiteFourierCoeff_shift
+    informal_statement: "Shifting a finite-circle signal multiplies a Fourier coefficient by the matching character phase."
+    formal_statement: "forall {n : Nat} [NeZero n] {R : Type} [CommSemiring R] (chi : Circle.CyclicCharacter n R) (s : ZMod n) (x : ZMod n -> R), Circle.finiteFourierCoeff chi (Circle.finiteShift s x) = chi s * Circle.finiteFourierCoeff chi x"
+    dictionary_dependencies: ["CC-0001", "CC-0101"]
+    paper_refs: ["docs/FINITE_FOURIER_CIRCULANT.md"]
+    python_tests: ["tests/test_public_api.py::test_stable_harmonic_api_examples"]
+    proof_notes: "Lean theorem is compiled in Circle/Core/FiniteFourier.lean by reindexing the finite sum and applying the character addition law."
+    blocker: ""
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["DFT(shift_s x)[k] equals character(k,s)*DFT(x)[k] for finite examples"]
+
+  - id: CC-T0121
+    name: Circulant convolution Fourier coefficient factorization
+    status: proved
+    lean_name: Circle.Applications.finiteFourierCoeff_circConv
+    informal_statement: "Each finite Fourier coefficient of a circular convolution factors as the product of the matching kernel and signal coefficients."
+    formal_statement: "forall {n : Nat} [NeZero n] {R : Type} [CommRing R] (chi : Circle.CyclicCharacter n R) (c x : ZMod n -> R), Circle.finiteFourierCoeff chi (Circle.Applications.circConv c x) = Circle.finiteFourierCoeff chi c * Circle.finiteFourierCoeff chi x"
+    dictionary_dependencies: ["CC-0001", "CC-0101"]
+    paper_refs: ["docs/FINITE_FOURIER_CIRCULANT.md"]
+    python_tests: ["tests/test_public_api.py::test_stable_harmonic_api_examples"]
+    proof_notes: "Lean theorem is compiled in Circle/Applications/CirculantSpectral.lean by finite-sum reindexing and the cyclic character addition law."
+    blocker: ""
+    verification:
+      lean_build_required: true
+      no_sorry_required: true
+      python_property_tests: ["spectral_convolution_report(kernel, signal).passed for deterministic finite examples"]

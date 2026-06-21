@@ -2,6 +2,7 @@ import Circle.Applications.AIConfig
 import Circle.Applications.CircleAI
 import Circle.Applications.CircleTransformer
 import Circle.Applications.Circulant
+import Circle.Applications.CirculantSpectral
 import Circle.Applications.RoPECertifier
 import Circle.Applications.RoPEFrontier
 import Circle.Applications.TemporalCoil

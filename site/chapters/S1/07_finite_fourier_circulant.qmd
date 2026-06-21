@@ -1,0 +1,71 @@
+---
+title: "7. Finite Fourier And Circulant Algebra"
+---
+
+<div class="claim-boundary-strip">
+<span class="claim-boundary-label">Claim boundary</span>
+<span class="claim-boundary-badge claim-boundary-proved">proved finite algebra</span>
+<span class="claim-boundary-badge claim-boundary-executable">Python diagnostics</span>
+<span class="claim-boundary-badge claim-boundary-experimental">AI performance separate</span>
+<span class="claim-boundary-badge claim-boundary-speculative">no quality claim</span>
+</div>
+
+Finite Fourier analysis is the spectral language of a finite circle. A cyclic
+character turns addition on `ZMod n` into multiplication by a phase. Circular
+convolution is the corresponding circulant token mixer.
+
+The Lean spine is:
+
+- `Circle.Core.FiniteFourier`
+- `Circle.Applications.Circulant`
+- `Circle.Applications.CirculantSpectral`
+
+The public imports are:
+
+```lean
+import Circle.Core
+import Circle.Applications.Public
+```
+
+## Proved Facts
+
+The current formal layer proves:
+
+- character values are `n`th roots of unity;
+- finite shifts compose additively;
+- Fourier coefficients are additive in the signal;
+- shifting a signal multiplies each Fourier coefficient by the matching phase;
+- circular convolution is shift-equivariant, commutative, and additive;
+- each Fourier coefficient of `c ⋆ x` factors into the matching coefficient of
+  `c` times the matching coefficient of `x`.
+
+## Executable Companion
+
+```python
+from circle_math.core import (
+    circular_convolution,
+    spectral_aliasing_report,
+    spectral_convolution_report,
+)
+
+signal = [1, 2, 0, -1]
+kernel = [2, 0, 1, 0]
+
+print(circular_convolution(kernel, signal))
+print(spectral_convolution_report(kernel, signal).passed)
+print(spectral_aliasing_report(4, [-1, 0, 3, 4, 7]))
+```
+
+## Why It Connects
+
+The same circle algebra shows up in:
+
+- finite coils and stride orbits;
+- DFT and roots of unity;
+- circular convolution and circulant matrices;
+- RoPE and other phase-bank positional encodings;
+- Fourier features and harmonic networks;
+- cyclic sparse-attention patterns.
+
+The proof layer certifies algebraic structure. It does not certify neural model
+quality, speed, memory use, training stability, or deployment behavior.

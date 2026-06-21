@@ -35,6 +35,27 @@ Expected output:
 True
 ```
 
+## Python: Finite Fourier And Circulant Algebra
+
+```python
+from circle_math.core import (
+    circular_convolution,
+    spectral_aliasing_report,
+    spectral_convolution_report,
+)
+
+signal = [1, 2, 0, -1]
+kernel = [2, 0, 1, 0]
+
+print(circular_convolution(kernel, signal))
+print(spectral_convolution_report(kernel, signal).passed)
+print(spectral_aliasing_report(4, [-1, 0, 3, 4, 7]))
+```
+
+The corresponding Lean facts are in `Circle.Core.FiniteFourier` and
+`Circle.Applications.CirculantSpectral`. The executable residual check is a
+floating-point diagnostic; the algebraic identities are the Lean-proved layer.
+
 ## Python: RoPE Contract Receipt
 
 ```python

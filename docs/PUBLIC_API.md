@@ -33,6 +33,22 @@ assert finite_period(12, 5) == 12
 assert is_full_coil(12, 5) is True
 ```
 
+Finite Fourier and circulant helpers are also stable through `circle_math.core`:
+
+```python
+from circle_math.core import circular_convolution, spectral_convolution_report
+
+kernel = [2, 0, 1, 0]
+signal = [1, 2, 0, -1]
+
+assert circular_convolution(kernel, signal) == [2 + 0j, 3 + 0j, 1 + 0j, 0 + 0j]
+assert spectral_convolution_report(kernel, signal).passed is True
+```
+
+The Lean proof spine for these helpers lives in `Circle.Core.FiniteFourier` and
+`Circle.Applications.CirculantSpectral`; see
+[FINITE_FOURIER_CIRCULANT.md](FINITE_FOURIER_CIRCULANT.md).
+
 ## Python Contracts
 
 Use `circle_math.ai_contracts` to build public contract fixtures and receipts:

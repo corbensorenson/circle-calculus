@@ -1,5 +1,5 @@
 {
-  "edge_count": 8286,
+  "edge_count": 8306,
   "edges": [
     {
       "kind": "cited_by_paper",
@@ -28688,6 +28688,106 @@
     },
     {
       "kind": "cited_by_paper",
+      "source": "CC-T0117",
+      "target": "paper:docs/FINITE_FOURIER_CIRCULANT"
+    },
+    {
+      "kind": "declares",
+      "source": "CC-T0117",
+      "target": "lean:Circle.CyclicCharacter.value_pow_card"
+    },
+    {
+      "kind": "uses_dictionary",
+      "source": "CC-T0117",
+      "target": "dict:CC-0001"
+    },
+    {
+      "kind": "uses_dictionary",
+      "source": "CC-T0117",
+      "target": "dict:CC-0101"
+    },
+    {
+      "kind": "cited_by_paper",
+      "source": "CC-T0118",
+      "target": "paper:docs/FINITE_FOURIER_CIRCULANT"
+    },
+    {
+      "kind": "declares",
+      "source": "CC-T0118",
+      "target": "lean:Circle.finiteShift_add"
+    },
+    {
+      "kind": "uses_dictionary",
+      "source": "CC-T0118",
+      "target": "dict:CC-0001"
+    },
+    {
+      "kind": "uses_dictionary",
+      "source": "CC-T0118",
+      "target": "dict:CC-0101"
+    },
+    {
+      "kind": "cited_by_paper",
+      "source": "CC-T0119",
+      "target": "paper:docs/FINITE_FOURIER_CIRCULANT"
+    },
+    {
+      "kind": "declares",
+      "source": "CC-T0119",
+      "target": "lean:Circle.finiteFourierCoeff_add"
+    },
+    {
+      "kind": "uses_dictionary",
+      "source": "CC-T0119",
+      "target": "dict:CC-0001"
+    },
+    {
+      "kind": "uses_dictionary",
+      "source": "CC-T0119",
+      "target": "dict:CC-0101"
+    },
+    {
+      "kind": "cited_by_paper",
+      "source": "CC-T0120",
+      "target": "paper:docs/FINITE_FOURIER_CIRCULANT"
+    },
+    {
+      "kind": "declares",
+      "source": "CC-T0120",
+      "target": "lean:Circle.finiteFourierCoeff_shift"
+    },
+    {
+      "kind": "uses_dictionary",
+      "source": "CC-T0120",
+      "target": "dict:CC-0001"
+    },
+    {
+      "kind": "uses_dictionary",
+      "source": "CC-T0120",
+      "target": "dict:CC-0101"
+    },
+    {
+      "kind": "cited_by_paper",
+      "source": "CC-T0121",
+      "target": "paper:docs/FINITE_FOURIER_CIRCULANT"
+    },
+    {
+      "kind": "declares",
+      "source": "CC-T0121",
+      "target": "lean:Circle.Applications.finiteFourierCoeff_circConv"
+    },
+    {
+      "kind": "uses_dictionary",
+      "source": "CC-T0121",
+      "target": "dict:CC-0001"
+    },
+    {
+      "kind": "uses_dictionary",
+      "source": "CC-T0121",
+      "target": "dict:CC-0101"
+    },
+    {
+      "kind": "cited_by_paper",
       "source": "COMMON-T0001",
       "target": "paper:docs/COMPLETION_ROADMAP"
     },
@@ -41433,7 +41533,7 @@
     }
   ],
   "kind": "manifest_evidence_graph",
-  "node_count": 2142,
+  "node_count": 2153,
   "nodes": [
     {
       "id": "AIA-T0001",
@@ -47028,6 +47128,46 @@
       "status": "proved"
     },
     {
+      "id": "CC-T0117",
+      "kind": "theorem",
+      "lean_name": "Circle.CyclicCharacter.value_pow_card",
+      "name": "Finite-circle character values are roots of unity",
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved"
+    },
+    {
+      "id": "CC-T0118",
+      "kind": "theorem",
+      "lean_name": "Circle.finiteShift_add",
+      "name": "Finite-circle shifts compose additively",
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved"
+    },
+    {
+      "id": "CC-T0119",
+      "kind": "theorem",
+      "lean_name": "Circle.finiteFourierCoeff_add",
+      "name": "Finite Fourier coefficient additivity",
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved"
+    },
+    {
+      "id": "CC-T0120",
+      "kind": "theorem",
+      "lean_name": "Circle.finiteFourierCoeff_shift",
+      "name": "Finite Fourier shift phase law",
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved"
+    },
+    {
+      "id": "CC-T0121",
+      "kind": "theorem",
+      "lean_name": "Circle.Applications.finiteFourierCoeff_circConv",
+      "name": "Circulant convolution Fourier coefficient factorization",
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved"
+    },
+    {
       "id": "COMMON-T0001",
       "kind": "theorem",
       "lean_name": "Circle.Common.eulerCharacteristic",
@@ -50203,6 +50343,13 @@
       "lean_name": "Circle.Applications.exists_ropeTurnRatioError_le_inv_context",
       "line": 1417,
       "source": "Circle/Applications/RoPECertifier.lean"
+    },
+    {
+      "id": "lean:Circle.Applications.finiteFourierCoeff_circConv",
+      "kind": "lean_declaration",
+      "lean_name": "Circle.Applications.finiteFourierCoeff_circConv",
+      "line": 24,
+      "source": "Circle/Applications/CirculantSpectral.lean"
     },
     {
       "id": "lean:Circle.Applications.fullLoopTokenWork_default_8_4",
@@ -54153,6 +54300,13 @@
       "source": "Circle/Common/Scaffold.lean"
     },
     {
+      "id": "lean:Circle.CyclicCharacter.value_pow_card",
+      "kind": "lean_declaration",
+      "lean_name": "Circle.CyclicCharacter.value_pow_card",
+      "line": 77,
+      "source": "Circle/Core/FiniteFourier.lean"
+    },
+    {
       "id": "lean:Circle.Future.S15.eightSuspensions_eulerCharacteristic",
       "kind": "lean_declaration",
       "lean_name": "Circle.Future.S15.eightSuspensions_eulerCharacteristic",
@@ -55959,6 +56113,27 @@
       "source": "Circle/Core/CoilNetwork.lean"
     },
     {
+      "id": "lean:Circle.finiteFourierCoeff_add",
+      "kind": "lean_declaration",
+      "lean_name": "Circle.finiteFourierCoeff_add",
+      "line": 112,
+      "source": "Circle/Core/FiniteFourier.lean"
+    },
+    {
+      "id": "lean:Circle.finiteFourierCoeff_shift",
+      "kind": "lean_declaration",
+      "lean_name": "Circle.finiteFourierCoeff_shift",
+      "line": 125,
+      "source": "Circle/Core/FiniteFourier.lean"
+    },
+    {
+      "id": "lean:Circle.finiteShift_add",
+      "kind": "lean_declaration",
+      "lean_name": "Circle.finiteShift_add",
+      "line": 99,
+      "source": "Circle/Core/FiniteFourier.lean"
+    },
+    {
       "id": "lean:Circle.fullChordNetworkAntinodeCount_eq_certificate_card",
       "kind": "lean_declaration",
       "lean_name": "Circle.fullChordNetworkAntinodeCount_eq_certificate_card",
@@ -56824,6 +56999,11 @@
       "paper_id": "docs/COMPLETION_ROADMAP"
     },
     {
+      "id": "paper:docs/FINITE_FOURIER_CIRCULANT",
+      "kind": "paper",
+      "paper_id": "docs/FINITE_FOURIER_CIRCULANT"
+    },
+    {
       "id": "paper:docs/GOOGLE_DRIVE_CIRCLE_IDEAS_AUDIT",
       "kind": "paper",
       "paper_id": "docs/GOOGLE_DRIVE_CIRCLE_IDEAS_AUDIT"
@@ -57084,7 +57264,7 @@
   "status_counts": {
     "lean_proved": 852,
     "lean_stated": 1,
-    "proved": 116
+    "proved": 121
   },
-  "theorem_count": 969
+  "theorem_count": 974
 }

@@ -5,7 +5,17 @@ import subprocess
 import sys
 from pathlib import Path
 
-from circle_math.core import finite_orbit, finite_period, is_full_coil
+from circle_math.core import (
+    circular_convolution,
+    circulant_matrix,
+    finite_fourier_coefficients,
+    finite_orbit,
+    finite_period,
+    inverse_finite_fourier,
+    is_full_coil,
+    spectral_aliasing_report,
+    spectral_convolution_report,
+)
 from circle_math.ai_contracts import (
     CONTRACT_PACK_SCHEMA_ID,
     build_contract_pack,
@@ -29,6 +39,27 @@ def test_stable_core_api_examples() -> None:
     assert finite_period(12, 4) == 3
     assert is_full_coil(13, 5) is True
     assert is_full_coil(12, 4) is False
+
+
+def test_stable_harmonic_api_examples() -> None:
+    signal = [1, 2, 0, -1]
+    kernel = [2, 0, 1, 0]
+
+    coefficients = finite_fourier_coefficients(signal)
+    reconstructed = inverse_finite_fourier(coefficients)
+    assert all(abs(left - right) < 1e-9 for left, right in zip(signal, reconstructed))
+
+    assert circular_convolution(kernel, signal) == [2 + 0j, 3 + 0j, 1 + 0j, 0 + 0j]
+    assert circulant_matrix(kernel)[1] == [0 + 0j, 2 + 0j, 0 + 0j, 1 + 0j]
+
+    report = spectral_convolution_report(kernel, signal)
+    assert report.passed is True
+    assert report.max_abs_error < 1e-9
+
+    assert spectral_aliasing_report(4, [-1, 0, 3, 4, 7]) == {
+        0: [0, 4],
+        3: [-1, 3, 7],
+    }
 
 
 def test_stable_contract_api_pack_readiness() -> None:
