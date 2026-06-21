@@ -390,6 +390,27 @@ def test_receipt_file_check_report_public_api(contract_pack: dict) -> None:
     assert "did not match required status set" in failed["failures"][0]
 
 
+def test_receipt_file_check_report_rejects_invalid_api_inputs(
+    contract_pack: dict,
+) -> None:
+    receipt = build_rope_receipt(pack=contract_pack)
+
+    with pytest.raises(ValueError, match="receipt_path"):
+        build_contract_receipt_file_check_report(
+            receipt,
+            contract_pack,
+            receipt_path="",
+        )
+
+    with pytest.raises(ValueError, match="unsupported statuses"):
+        build_contract_receipt_file_check_report(
+            receipt,
+            contract_pack,
+            receipt_path="reports/rope_receipt.json",
+            required_statuses=("green",),
+        )
+
+
 def test_request_api_validates_and_builds_receipts(contract_pack: dict) -> None:
     request = {
         "schema_id": "circle_calculus.ai_contract_request.v0",

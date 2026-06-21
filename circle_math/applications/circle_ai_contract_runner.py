@@ -1572,6 +1572,16 @@ def build_contract_receipt_file_check_report(
     for callers that already have a receipt object in memory.
     """
 
+    if not isinstance(receipt_path, str) or not receipt_path:
+        raise ValueError("receipt_path must be a non-empty string")
+    unsupported_statuses = [
+        status for status in required_statuses if status not in STATUS_VALUES
+    ]
+    if unsupported_statuses:
+        raise ValueError(
+            "required_statuses contains unsupported statuses: "
+            + ", ".join(str(status) for status in unsupported_statuses)
+        )
     failures = validate_contract_receipt_against_pack(receipt, pack)
     status = receipt.get("status")
     if required_statuses and status not in set(required_statuses):
