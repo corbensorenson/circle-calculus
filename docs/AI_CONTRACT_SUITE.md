@@ -55,7 +55,23 @@ Add `--gate-report-out reports/rope_gate.json` when CI needs a compact
 schema-validated JSON gate report without saving the full receipt. Use
 `--json-out reports/rope_receipt.json --receipt-check-out
 reports/rope_receipt_check.json` when the audit log should point at a saved
-receipt file.
+receipt file. Use `--certification-bundle-out` plus
+`--certification-bundle-check-out` when the audit log should retain the full
+request preflight, theorem-linked receipt, gate report, model-config provenance
+when present, and a CI-readable verification report for the bundle:
+
+```bash
+python scripts/circle_ai_certify.py rope \
+  --model-config examples/circle_ai_model_configs/standard_rope_config.json \
+  --requested-margin 1/328459 \
+  --json-out reports/rope_receipt.json \
+  --certification-bundle-out reports/rope_certification_bundle.json \
+  --certification-bundle-check-out reports/rope_certification_bundle_check.json \
+  --require-status proved \
+  --require-decision passed \
+  --require-assurance mixed_theorem_and_computation \
+  --require-passed
+```
 
 The runner receipt schema is `circle_calculus.ai_contract_receipt.v0`; the
 request schema is `circle_calculus.ai_contract_request.v0`; the request
@@ -135,8 +151,9 @@ parameterized runner schema sidecars
 `site/data/generated/circle_ai_contract_receipt.schema.json`,
 `site/data/generated/circle_ai_contract_runner_check.schema.json`, and
 `site/data/generated/circle_ai_contract_receipt_file_check.schema.json`, plus
-`site/data/generated/circle_ai_contract_certification_bundle.schema.json`; the
-acceptance-policy schema sidecar
+`site/data/generated/circle_ai_contract_certification_bundle.schema.json` and
+`site/data/generated/circle_ai_contract_certification_bundle_file_check.schema.json`;
+the acceptance-policy schema sidecar
 `site/data/generated/circle_ai_contract_acceptance_policy.schema.json`, policy-report
 schema sidecar
 `site/data/generated/circle_ai_contract_acceptance_policy_report.schema.json`,

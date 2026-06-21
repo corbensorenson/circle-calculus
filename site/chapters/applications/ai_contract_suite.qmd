@@ -195,7 +195,23 @@ python scripts/circle_ai_certify.py rope \
 
 `--gate-report-out` writes the schema-validated pass/fail report for the
 in-memory receipt. Use `--json-out` plus `--receipt-check-out` when an audit log
-should also retain the full receipt JSON.
+should also retain the full receipt JSON. Use `--certification-bundle-out` plus
+`--certification-bundle-check-out` when the audit log should retain the full
+request preflight, theorem-linked receipt, gate report, model-config provenance
+when present, and a CI-readable verification report for the bundle:
+
+```bash
+python scripts/circle_ai_certify.py rope \
+  --model-config examples/circle_ai_model_configs/standard_rope_config.json \
+  --requested-margin 1/328459 \
+  --json-out reports/rope_receipt.json \
+  --certification-bundle-out reports/rope_certification_bundle.json \
+  --certification-bundle-check-out reports/rope_certification_bundle_check.json \
+  --require-status proved \
+  --require-decision passed \
+  --require-assurance mixed_theorem_and_computation \
+  --require-passed
+```
 
 `make circle-ai-contracts-check` validates the generated JSON artifact itself: schema id, required contract keys, minimum fields, theorem ids, proof-status metadata, dictionary ids, source paths, quickstart docs, Living Book pages, and Python entrypoint paths.
 

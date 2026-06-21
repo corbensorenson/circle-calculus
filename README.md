@@ -143,6 +143,27 @@ python scripts/circle_ai_contract_ready.py --kind sparse_attention_coverage
 
 This writes `site/data/generated/circle_ai_contract_pack.json`, a public-safe generic fixture pack for nine contract families: RoPE position distinguishability, KV-cache ring-buffer freshness, sparse-attention coverage, recurrence schedules, strided fanout, cyclic memory, phase-feature tags, circulant/block-cyclic mixers, and seed-rule regeneration. The pack includes a top-level `contract_readiness_index` plus per-record `consumer_check.ready_for_downstream_fixture_use` and `proof_status` gates for projects that want to consume theorem-linked fields without reading Lean internals. See `docs/CIRCLE_AI_CONTRACTS_INTEGRATION.md` for the schema and downstream-consumer rules.
 
+For your own AI architecture parameters, use the unified Circle AI runner:
+
+```bash
+python scripts/circle_ai_certify.py rope \
+  --head-dim 128 \
+  --base 10000 \
+  --context 131072 \
+  --requested-margin 1/328459 \
+  --json-out reports/rope_receipt.json \
+  --certification-bundle-out reports/rope_certification_bundle.json \
+  --certification-bundle-check-out reports/rope_certification_bundle_check.json \
+  --require-status proved \
+  --require-decision passed \
+  --require-assurance mixed_theorem_and_computation \
+  --require-passed
+```
+
+That runner also supports `kv-cache`, `sparse-attention`, and `recurrence`. The
+receipt and bundle are theorem-linked audit artifacts; they do not claim better
+model quality, speed, memory, or deployment safety.
+
 For the optional Theseus-Hive AI transfer compatibility lane, run:
 
 ```bash
