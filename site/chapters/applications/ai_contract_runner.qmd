@@ -544,6 +544,9 @@ receipt = build_validated_contract_receipt(
 )
 
 assert validate_contract_receipt_against_pack(receipt, pack) == []
+assert receipt["validation_commands"][0].startswith(
+    "python scripts/circle_ai_certify.py kv-cache "
+)
 check_report = build_contract_receipt_file_check_report(
     receipt,
     pack,
@@ -620,6 +623,11 @@ request object used for preflight. If the request came from
 config-to-request parameter sources, and the emitted request fingerprint. The
 embedded receipt carries its own `request_content_fingerprint` for the canonical
 request emitted after contract defaults are applied.
+
+For every parameterized receipt, the first `validation_commands` entry is the
+request-specific replay command for those exact runner parameters. The remaining
+commands come from the contract pack and recheck fixture readiness, theorem
+coverage, and family-specific tests.
 
 That returns the same schema as the CLI:
 

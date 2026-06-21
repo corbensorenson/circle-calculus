@@ -1060,6 +1060,77 @@ def test_request_api_validates_and_builds_receipts(contract_pack: dict) -> None:
     assert validate_contract_receipt(receipt) == []
 
 
+def _assert_request_replay_command(receipt: dict, expected: str) -> None:
+    assert receipt["validation_commands"][0] == expected
+    assert receipt["support"]["validation_commands"][0] == expected
+    assert receipt["validation_commands"] == receipt["support"]["validation_commands"]
+    assert validate_contract_receipt(receipt) == []
+
+
+def test_receipts_include_request_specific_replay_commands(
+    contract_pack: dict,
+) -> None:
+    rope = build_rope_receipt(
+        head_dim=64,
+        base=500000.0,
+        context=8192,
+        requested_margin="1/100000",
+        pack=contract_pack,
+    )
+    _assert_request_replay_command(
+        rope,
+        "python scripts/circle_ai_certify.py rope --head-dim 64 "
+        "--base 500000.0 --context 8192 --tolerance 1e-06 "
+        "--discretization round --requested-margin 1/100000 --format json",
+    )
+
+    kv = build_kv_cache_receipt(
+        cache_size=32,
+        current=80,
+        token=60,
+        batch_tokens=(60, 64, 80),
+        sink_size=2,
+        pack=contract_pack,
+    )
+    _assert_request_replay_command(
+        kv,
+        "python scripts/circle_ai_certify.py kv-cache --cache-size 32 "
+        "--current 80 --token 60 --batch-tokens 60,64,80 "
+        "--sink-size 2 --format json",
+    )
+
+    sparse = build_sparse_attention_receipt(
+        context=64,
+        strides=(5, 9),
+        path_length=2,
+        local_window=3,
+        pack=contract_pack,
+    )
+    _assert_request_replay_command(
+        sparse,
+        "python scripts/circle_ai_certify.py sparse-attention --context 64 "
+        "--strides 5,9 --path-length 2 --local-window 3 --format json",
+    )
+
+    recurrence = build_recurrence_receipt(
+        loop_period=6,
+        sample_index=11,
+        max_loops=9,
+        token_count=10,
+        selected_block_start=3,
+        selected_block_width=4,
+        shift_passes=5,
+        pack=contract_pack,
+    )
+    _assert_request_replay_command(
+        recurrence,
+        "python scripts/circle_ai_certify.py recurrence --loop-period 6 "
+        "--sample-index 11 --max-loops 9 --token-count 10 "
+        "--selected-block-start 3 --selected-block-width 4 "
+        "--shift-passes 5 --format json",
+    )
+
+
 def test_validated_receipt_api_builds_pack_checked_receipts(
     contract_pack: dict,
 ) -> None:

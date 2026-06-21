@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import shlex
 from dataclasses import asdict
 from fractions import Fraction
 from pathlib import Path
@@ -114,6 +115,12 @@ KIND_ALIASES = {
     "recurrence": "recurrence_schedule",
     "recurrence-schedule": "recurrence_schedule",
     "recurrence_schedule": "recurrence_schedule",
+}
+CONTRACT_KIND_CLI_SUBCOMMANDS = {
+    "rope_position_distinguishability": "rope",
+    "kv_cache_ring_buffer": "kv-cache",
+    "sparse_attention_coverage": "sparse-attention",
+    "recurrence_schedule": "recurrence",
 }
 STATUS_VALUES = (
     "proved",
@@ -483,6 +490,73 @@ def _unique_strings(values: Iterable[str]) -> tuple[str, ...]:
             seen.add(value)
             ordered.append(value)
     return tuple(ordered)
+
+
+def _cli_value(value: Any) -> str:
+    return shlex.quote(str(value))
+
+
+def _cli_csv(values: Sequence[Any]) -> str:
+    return ",".join(str(value) for value in values)
+
+
+def _runner_validation_command_for_request(request: Mapping[str, Any]) -> str:
+    kind = canonical_contract_kind(str(request["kind"]))
+    parameters = request["parameters"]
+    if not isinstance(parameters, Mapping):
+        raise ValueError("request.parameters must be an object")
+    parts = [
+        "python",
+        "scripts/circle_ai_certify.py",
+        CONTRACT_KIND_CLI_SUBCOMMANDS[kind],
+    ]
+    if kind == "rope_position_distinguishability":
+        for flag, key in (
+            ("--head-dim", "head_dim"),
+            ("--base", "base"),
+            ("--context", "context"),
+            ("--tolerance", "tolerance"),
+            ("--discretization", "discretization"),
+        ):
+            if key in parameters:
+                parts.extend([flag, _cli_value(parameters[key])])
+        if parameters.get("requested_margin") is not None:
+            parts.extend(
+                ["--requested-margin", _cli_value(parameters["requested_margin"])]
+            )
+    elif kind == "kv_cache_ring_buffer":
+        for flag, key in (
+            ("--cache-size", "cache_size"),
+            ("--current", "current"),
+            ("--token", "token"),
+        ):
+            parts.extend([flag, _cli_value(parameters[key])])
+        batch_tokens = parameters.get("batch_tokens", [])
+        if batch_tokens:
+            parts.extend(["--batch-tokens", _cli_value(_cli_csv(batch_tokens))])
+        if "sink_size" in parameters:
+            parts.extend(["--sink-size", _cli_value(parameters["sink_size"])])
+        if parameters.get("request_id") != "read_request":
+            parts.extend(["--request-id", _cli_value(parameters["request_id"])])
+    elif kind == "sparse_attention_coverage":
+        parts.extend(["--context", _cli_value(parameters["context"])])
+        parts.extend(["--strides", _cli_value(_cli_csv(parameters["strides"]))])
+        parts.extend(["--path-length", _cli_value(parameters["path_length"])])
+        parts.extend(["--local-window", _cli_value(parameters["local_window"])])
+    elif kind == "recurrence_schedule":
+        for flag, key in (
+            ("--loop-period", "loop_period"),
+            ("--sample-index", "sample_index"),
+            ("--max-loops", "max_loops"),
+            ("--token-count", "token_count"),
+            ("--selected-block-start", "selected_block_start"),
+            ("--selected-block-width", "selected_block_width"),
+            ("--shift-passes", "shift_passes"),
+        ):
+            if key in parameters:
+                parts.extend([flag, _cli_value(parameters[key])])
+    parts.extend(["--format", "json"])
+    return " ".join(parts)
 
 
 def _as_string_set(value: Any) -> set[str]:
@@ -855,7 +929,17 @@ def _base_receipt(
     if status not in STATUS_VALUES:
         raise ValueError(f"unsupported receipt status {status!r}")
     pack_dict = _default_pack(pack)
+    request_object = build_contract_request(canonical, request_parameters)
     support = _support_block(pack_dict, canonical)
+    support = dict(support)
+    support["validation_commands"] = list(
+        _unique_strings(
+            (
+                _runner_validation_command_for_request(request_object),
+                *support["validation_commands"],
+            )
+        )
+    )
     proof_status = _proof_status(
         theorem_ids=theorem_ids,
         support=support,
@@ -869,7 +953,6 @@ def _base_receipt(
         proof_status=proof_status,
         proof_layers=proof_layers_object,
     )
-    request_object = build_contract_request(canonical, request_parameters)
     normalized_object = dict(normalized_parameters)
     receipt = {
         "schema_id": RECEIPT_SCHEMA_ID,
