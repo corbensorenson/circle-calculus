@@ -493,6 +493,46 @@ def test_rust_prime_cli_fuzzy_server_handles_repeated_exact_next(
     assert completed.stdout.splitlines() == ["101", "101", "101"]
 
 
+def test_rust_prime_cli_fuzzy_server_handles_shifted_exact_next(
+    circle_prime_bin: Path,
+    tmp_path: Path,
+) -> None:
+    model = tmp_path / "tiny-model.txt"
+    model.write_text(
+        "\n".join(
+            [
+                "circle_fuzzy_model_v0",
+                "bit_width 8",
+                "residue_moduli none",
+                "weights 0,0,0,0,0,0,0,0",
+                "bias 0",
+                "",
+            ]
+        )
+    )
+
+    completed = subprocess.run(
+        [
+            str(circle_prime_bin),
+            "fuzzy-server",
+            str(model),
+            "--mode",
+            "exact-next",
+            "--window",
+            "32",
+            "--top-k",
+            "4",
+        ],
+        cwd=ROOT,
+        input="shifted 3 10 90\nquit\n",
+        text=True,
+        capture_output=True,
+        check=True,
+    )
+
+    assert completed.stdout.splitlines() == ["97", "101", "113"]
+
+
 def test_rust_prime_cli_next_server_handles_repeated_requests(
     circle_prime_bin: Path,
 ) -> None:

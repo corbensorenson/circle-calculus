@@ -70,6 +70,14 @@ struct BigFuzzyAnyPrimeCore {
     used_fallback: bool,
 }
 
+#[derive(Debug, Clone)]
+struct PseudoMersenneReducer {
+    modulus: BigUint,
+    mask: BigUint,
+    c: BigUint,
+    k: usize,
+}
+
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct BigFuzzySearch {
     pub search_kind: &'static str,
@@ -144,6 +152,45 @@ impl BigNextPrimeSearch {
             decision,
             big_probable_prime_contract_json()
         )
+    }
+}
+
+impl PseudoMersenneReducer {
+    fn for_modulus(modulus: &BigUint) -> Option<Self> {
+        let k = usize::try_from(modulus.bits()).ok()?;
+        if k < 64 {
+            return None;
+        }
+        for bit_index in 64..k {
+            if !modulus.bit(bit_index as u64) {
+                return None;
+            }
+        }
+        let two_to_k = BigUint::one() << k;
+        if &two_to_k <= modulus {
+            return None;
+        }
+        let c = &two_to_k - modulus;
+        c.to_u64()?;
+        let mask = &two_to_k - BigUint::one();
+        Some(Self {
+            modulus: modulus.clone(),
+            mask,
+            c,
+            k,
+        })
+    }
+
+    fn reduce(&self, mut value: BigUint) -> BigUint {
+        while value.bits() > self.k as u64 {
+            let high = &value >> self.k;
+            let low = &value & &self.mask;
+            value = low + high * &self.c;
+        }
+        while value >= self.modulus {
+            value -= &self.modulus;
+        }
+        value
     }
 }
 
@@ -415,6 +462,34 @@ pub fn is_probable_prime_biguint(n: &BigUint, rounds: usize) -> Result<BigPrimeD
     })
 }
 
+pub fn probable_prime_status_biguint(n: &BigUint, rounds: usize) -> Result<BigPrimeStatus, String> {
+    validate_big_miller_rabin_rounds(rounds)?;
+    if let Some(value) = n.to_u64() {
+        return Ok(big_status_from_u64(value));
+    }
+
+    let two = BigUint::from(2u8);
+    if n < &two {
+        return Ok(BigPrimeStatus::Composite);
+    }
+
+    let digits = n.to_u64_digits();
+    for &prime in &BIG_SMALL_PRIME_TRIAL_DIVISORS {
+        if biguint_digits_mod_u64(&digits, prime) == 0 {
+            return Ok(BigPrimeStatus::Composite);
+        }
+    }
+
+    let (d, s, n_minus_one) = miller_rabin_decomposition(n);
+    for &base in &BIG_MILLER_RABIN_BASES[..rounds] {
+        if !miller_rabin_round_biguint(n, base, &d, s, &n_minus_one) {
+            return Ok(BigPrimeStatus::Composite);
+        }
+    }
+
+    Ok(BigPrimeStatus::ProbablePrime)
+}
+
 pub fn is_bpsw_probable_prime_biguint(n: &BigUint) -> Result<BigPrimeDecision, String> {
     if let Some(value) = n.to_u64() {
         let decision = is_prime_u64(value);
@@ -546,6 +621,42 @@ pub fn is_bpsw_probable_prime_biguint(n: &BigUint) -> Result<BigPrimeDecision, S
         miller_rabin_rounds: 1,
         bit_length: n.bits(),
     })
+}
+
+pub fn bpsw_probable_prime_status_biguint(n: &BigUint) -> Result<BigPrimeStatus, String> {
+    if let Some(value) = n.to_u64() {
+        return Ok(big_status_from_u64(value));
+    }
+
+    let two = BigUint::from(2u8);
+    if n < &two {
+        return Ok(BigPrimeStatus::Composite);
+    }
+
+    let digits = n.to_u64_digits();
+    for &prime in &BIG_SMALL_PRIME_TRIAL_DIVISORS {
+        if biguint_digits_mod_u64(&digits, prime) == 0 {
+            return Ok(BigPrimeStatus::Composite);
+        }
+    }
+
+    if is_square_biguint(n) {
+        return Ok(BigPrimeStatus::Composite);
+    }
+
+    let (d, s, n_minus_one) = miller_rabin_decomposition(n);
+    if !miller_rabin_round_biguint(n, 2, &d, s, &n_minus_one) {
+        return Ok(BigPrimeStatus::Composite);
+    }
+
+    let Some((selfridge_d, selfridge_q)) = selfridge_lucas_parameters(n) else {
+        return Ok(BigPrimeStatus::Composite);
+    };
+    if !strong_lucas_selfridge_prp(n, selfridge_d, selfridge_q) {
+        return Ok(BigPrimeStatus::Composite);
+    }
+
+    Ok(BigPrimeStatus::ProbablePrime)
 }
 
 pub fn next_probable_prime_biguint(
@@ -711,6 +822,14 @@ fn validate_big_miller_rabin_rounds(rounds: usize) -> Result<(), String> {
     Ok(())
 }
 
+fn big_status_from_u64(value: u64) -> BigPrimeStatus {
+    match is_prime_u64(value).status {
+        PrimeStatus::Composite => BigPrimeStatus::Composite,
+        PrimeStatus::Prime => BigPrimeStatus::Prime,
+        PrimeStatus::ProbablePrime => BigPrimeStatus::ProbablePrime,
+    }
+}
+
 fn miller_rabin_decomposition(n: &BigUint) -> (BigUint, u32, BigUint) {
     let one = BigUint::one();
     let n_minus_one = n - &one;
@@ -749,8 +868,18 @@ fn miller_rabin_round_biguint(
 }
 
 fn is_square_biguint(n: &BigUint) -> bool {
+    if !is_square_residue_mod64(biguint_mod_u64(n, 64)) {
+        return false;
+    }
     let root = n.sqrt();
     (&root * &root) == *n
+}
+
+fn is_square_residue_mod64(residue: u64) -> bool {
+    matches!(
+        residue,
+        0 | 1 | 4 | 9 | 16 | 17 | 25 | 33 | 36 | 41 | 49 | 57
+    )
 }
 
 fn selfridge_lucas_parameters(n: &BigUint) -> Option<(i64, i64)> {
@@ -780,15 +909,20 @@ fn strong_lucas_selfridge_prp(n: &BigUint, d_param: i64, q_param: i64) -> bool {
         s += 1;
     }
 
-    let (u, mut v, mut q_k) = lucas_uv_q_mod(n, d_param, q_param, &lucas_d);
+    let reducer = if q_param == -1 {
+        None
+    } else {
+        PseudoMersenneReducer::for_modulus(n)
+    };
+    let (u, mut v, mut q_k) = lucas_uv_q_mod(n, d_param, q_param, &lucas_d, reducer.as_ref());
     if u.is_zero() || v.is_zero() {
         return true;
     }
     for _ in 1..s {
-        let v_squared = (&v * &v) % n;
-        let two_q = (&q_k << 1usize) % n;
+        let v_squared = square_mod_biguint(&v, n, reducer.as_ref());
+        let two_q = double_mod_biguint(&q_k, n);
         v = mod_sub_biguint(&v_squared, &two_q, n);
-        q_k = (&q_k * &q_k) % n;
+        q_k = square_mod_biguint(&q_k, n, reducer.as_ref());
         if v.is_zero() {
             return true;
         }
@@ -801,26 +935,30 @@ fn lucas_uv_q_mod(
     d_param: i64,
     q_param: i64,
     k: &BigUint,
+    reducer: Option<&PseudoMersenneReducer>,
 ) -> (BigUint, BigUint, BigUint) {
+    if q_param == -1 {
+        return lucas_uv_q_minus_one_mod(n, d_param, k, reducer);
+    }
+
     let mut u = BigUint::zero();
     let mut v = BigUint::from(2u8) % n;
     let mut q_k = BigUint::one();
-    let q_mod = signed_i64_mod_biguint(q_param, n);
 
     for bit_index in (0..k.bits()).rev() {
-        let doubled_u = (&u * &v) % n;
-        let v_squared = (&v * &v) % n;
-        let two_q = (&q_k << 1usize) % n;
+        let doubled_u = mul_mod_biguint(&u, &v, n, reducer);
+        let v_squared = square_mod_biguint(&v, n, reducer);
+        let two_q = double_mod_biguint(&q_k, n);
         let doubled_v = mod_sub_biguint(&v_squared, &two_q, n);
-        let doubled_q = (&q_k * &q_k) % n;
+        let doubled_q = square_mod_biguint(&q_k, n, reducer);
         u = doubled_u;
         v = doubled_v;
         q_k = doubled_q;
 
         if k.bit(bit_index) {
-            let u_next = half_mod_odd_modulus(&((&u + &v) % n), n);
+            let u_next = half_mod_odd_modulus(&mod_add_biguint(&u, &v, n), n);
             let v_next = half_mod_odd_modulus(&signed_mul_add_mod(d_param, &u, &v, n), n);
-            let q_next = (&q_k * &q_mod) % n;
+            let q_next = signed_small_mul_mod_biguint(&q_k, q_param, n);
             u = u_next;
             v = v_next;
             q_k = q_next;
@@ -830,45 +968,136 @@ fn lucas_uv_q_mod(
     (u, v, q_k)
 }
 
-fn jacobi_i64_biguint(a: i64, n: &BigUint) -> i32 {
-    debug_assert!(n.bit(0));
-    let mut a = signed_i64_mod_biguint(a, n);
-    let mut n = n.clone();
-    let mut t = 1i32;
+fn lucas_uv_q_minus_one_mod(
+    n: &BigUint,
+    d_param: i64,
+    k: &BigUint,
+    reducer: Option<&PseudoMersenneReducer>,
+) -> (BigUint, BigUint, BigUint) {
+    let mut u = BigUint::zero();
+    let mut v = BigUint::from(2u8) % n;
+    let one = BigUint::one();
+    let two = BigUint::from(2u8);
+    let n_minus_one = n - &one;
+    let mut q_is_negative = false;
 
-    while !a.is_zero() {
-        while !a.bit(0) {
-            a >>= 1usize;
-            let residue = biguint_mod_u64(&n, 8);
-            if residue == 3 || residue == 5 {
-                t = -t;
-            }
+    for bit_index in (0..k.bits()).rev() {
+        let doubled_u = mul_mod_biguint(&u, &v, n, reducer);
+        let v_squared = square_mod_biguint(&v, n, reducer);
+        let doubled_v = if q_is_negative {
+            mod_add_biguint(&v_squared, &two, n)
+        } else {
+            mod_sub_biguint(&v_squared, &two, n)
+        };
+        u = doubled_u;
+        v = doubled_v;
+        q_is_negative = false;
+
+        if k.bit(bit_index) {
+            let u_next = half_mod_odd_modulus(&mod_add_biguint(&u, &v, n), n);
+            let v_next = half_mod_odd_modulus(&signed_mul_add_mod(d_param, &u, &v, n), n);
+            u = u_next;
+            v = v_next;
+            q_is_negative = true;
         }
-        std::mem::swap(&mut a, &mut n);
-        if biguint_mod_u64(&a, 4) == 3 && biguint_mod_u64(&n, 4) == 3 {
-            t = -t;
-        }
-        a %= &n;
     }
 
-    if n.is_one() {
-        t
+    let q_k = if q_is_negative {
+        n_minus_one
     } else {
-        0
+        BigUint::one()
+    };
+    (u, v, q_k)
+}
+
+fn jacobi_i64_biguint(a: i64, n: &BigUint) -> i32 {
+    debug_assert!(n.bit(0));
+    if a == 0 {
+        return if n.is_one() { 1 } else { 0 };
+    }
+
+    let mut sign = 1i32;
+    let mut remaining = a.unsigned_abs();
+    if a < 0 && biguint_mod_u64(n, 4) == 3 {
+        sign = -sign;
+    }
+
+    let mut exponent = 0u32;
+    while remaining & 1 == 0 {
+        exponent += 1;
+        remaining >>= 1;
+    }
+    if exponent > 0 {
+        if biguint_mod_u64(n, 2) == 0 {
+            return 0;
+        }
+        if exponent % 2 == 1 {
+            let residue = biguint_mod_u64(n, 8);
+            if residue == 3 || residue == 5 {
+                sign = -sign;
+            }
+        }
+    }
+
+    let mut factor = 3u64;
+    while factor <= remaining / factor {
+        if remaining % factor == 0 {
+            let mut exponent = 0u32;
+            while remaining % factor == 0 {
+                exponent += 1;
+                remaining /= factor;
+            }
+            sign = multiply_jacobi_prime_factor(sign, factor, exponent, n);
+            if sign == 0 {
+                return 0;
+            }
+        }
+        factor += 2;
+    }
+    if remaining > 1 {
+        sign = multiply_jacobi_prime_factor(sign, remaining, 1, n);
+    }
+    sign
+}
+
+fn multiply_jacobi_prime_factor(mut sign: i32, prime: u64, exponent: u32, n: &BigUint) -> i32 {
+    let residue = biguint_mod_u64(n, prime);
+    if residue == 0 {
+        return 0;
+    }
+    if exponent % 2 == 1 {
+        if prime % 4 == 3 && biguint_mod_u64(n, 4) == 3 {
+            sign = -sign;
+        }
+        sign *= legendre_symbol_u64(residue, prime);
+    }
+    sign
+}
+
+fn legendre_symbol_u64(residue: u64, prime: u64) -> i32 {
+    debug_assert!(prime > 2);
+    debug_assert!(residue < prime);
+    match pow_mod_u64(residue, (prime - 1) / 2, prime) {
+        1 => 1,
+        value if value == prime - 1 => -1,
+        _ => 0,
     }
 }
 
-fn signed_i64_mod_biguint(value: i64, modulus: &BigUint) -> BigUint {
-    if value >= 0 {
-        BigUint::from(value as u64) % modulus
-    } else {
-        let positive = BigUint::from(value.unsigned_abs()) % modulus;
-        if positive.is_zero() {
-            positive
-        } else {
-            modulus - positive
+fn pow_mod_u64(base: u64, mut exponent: u64, modulus: u64) -> u64 {
+    let modulus_u128 = modulus as u128;
+    let mut result = 1u128;
+    let mut base_u128 = (base % modulus) as u128;
+    while exponent > 0 {
+        if exponent & 1 == 1 {
+            result = (result * base_u128) % modulus_u128;
+        }
+        exponent >>= 1;
+        if exponent > 0 {
+            base_u128 = (base_u128 * base_u128) % modulus_u128;
         }
     }
+    result as u64
 }
 
 fn signed_mul_add_mod(
@@ -877,12 +1106,77 @@ fn signed_mul_add_mod(
     addend: &BigUint,
     modulus: &BigUint,
 ) -> BigUint {
-    let product = (value * BigUint::from(coefficient.unsigned_abs())) % modulus;
+    let product = small_mul_mod_biguint(value, coefficient.unsigned_abs(), modulus);
     if coefficient >= 0 {
-        (product + addend) % modulus
+        mod_add_biguint(&product, addend, modulus)
     } else {
         mod_sub_biguint(addend, &product, modulus)
     }
+}
+
+fn signed_small_mul_mod_biguint(value: &BigUint, coefficient: i64, modulus: &BigUint) -> BigUint {
+    let product = small_mul_mod_biguint(value, coefficient.unsigned_abs(), modulus);
+    if coefficient >= 0 || product.is_zero() {
+        product
+    } else {
+        modulus - product
+    }
+}
+
+fn square_mod_biguint(
+    value: &BigUint,
+    modulus: &BigUint,
+    reducer: Option<&PseudoMersenneReducer>,
+) -> BigUint {
+    mul_mod_biguint(value, value, modulus, reducer)
+}
+
+fn mul_mod_biguint(
+    left: &BigUint,
+    right: &BigUint,
+    modulus: &BigUint,
+    reducer: Option<&PseudoMersenneReducer>,
+) -> BigUint {
+    let product = left * right;
+    if let Some(reducer) = reducer {
+        reducer.reduce(product)
+    } else {
+        product % modulus
+    }
+}
+
+fn small_mul_mod_biguint(value: &BigUint, mut coefficient: u64, modulus: &BigUint) -> BigUint {
+    if coefficient == 0 || value.is_zero() {
+        return BigUint::zero();
+    }
+    let mut result = BigUint::zero();
+    let mut addend = value.clone();
+    while coefficient > 0 {
+        if coefficient & 1 == 1 {
+            result = mod_add_biguint(&result, &addend, modulus);
+        }
+        coefficient >>= 1;
+        if coefficient > 0 {
+            addend = double_mod_biguint(&addend, modulus);
+        }
+    }
+    result
+}
+
+fn double_mod_biguint(value: &BigUint, modulus: &BigUint) -> BigUint {
+    let mut doubled = value << 1usize;
+    if &doubled >= modulus {
+        doubled -= modulus;
+    }
+    doubled
+}
+
+fn mod_add_biguint(left: &BigUint, right: &BigUint, modulus: &BigUint) -> BigUint {
+    let mut sum = left + right;
+    if &sum >= modulus {
+        sum -= modulus;
+    }
+    sum
 }
 
 fn half_mod_odd_modulus(value: &BigUint, modulus: &BigUint) -> BigUint {
@@ -1047,8 +1341,14 @@ fn advance_small_prime_trial_residues(
 }
 
 fn biguint_mod_u64(n: &BigUint, modulus: u64) -> u64 {
-    let digits = n.to_u64_digits();
-    biguint_digits_mod_u64(&digits, modulus)
+    debug_assert!(modulus > 0);
+    let modulus_u128 = modulus as u128;
+    let base = ((u64::MAX as u128) + 1) % modulus_u128;
+    let mut result = 0u128;
+    for digit in n.iter_u64_digits().rev() {
+        result = ((result * base) + (digit as u128 % modulus_u128)) % modulus_u128;
+    }
+    result as u64
 }
 
 fn biguint_digits_mod_u64(digits: &[u64], modulus: u64) -> u64 {
@@ -1130,6 +1430,42 @@ mod tests {
         }
     }
 
+    fn slow_jacobi_i64_biguint(a: i64, n: &BigUint) -> i32 {
+        let mut a = if a >= 0 {
+            BigUint::from(a as u64) % n
+        } else {
+            let positive = BigUint::from(a.unsigned_abs()) % n;
+            if positive.is_zero() {
+                positive
+            } else {
+                n - positive
+            }
+        };
+        let mut n = n.clone();
+        let mut t = 1i32;
+
+        while !a.is_zero() {
+            while !a.bit(0) {
+                a >>= 1usize;
+                let residue = biguint_mod_u64(&n, 8);
+                if residue == 3 || residue == 5 {
+                    t = -t;
+                }
+            }
+            std::mem::swap(&mut a, &mut n);
+            if biguint_mod_u64(&a, 4) == 3 && biguint_mod_u64(&n, 4) == 3 {
+                t = -t;
+            }
+            a %= &n;
+        }
+
+        if n.is_one() {
+            t
+        } else {
+            0
+        }
+    }
+
     #[test]
     fn parses_decimal_and_hex_bigints() {
         assert_eq!(parse_biguint("97").unwrap(), BigUint::from(97u64));
@@ -1161,6 +1497,74 @@ mod tests {
             let decision = is_bpsw_probable_prime_biguint(&n).unwrap();
             assert_eq!(decision.status, BigPrimeStatus::ProbablePrime);
             assert_eq!(decision.method, "baillie_psw_biguint");
+        }
+    }
+
+    #[test]
+    fn small_jacobi_matches_slow_biguint_algorithm() {
+        let mersenne_127 = (BigUint::one() << 127usize) - BigUint::one();
+        let cases = [
+            mersenne_127.clone(),
+            (BigUint::one() << 255usize) - BigUint::from(19u64),
+            (BigUint::one() << 256usize) - (BigUint::one() << 32usize) - BigUint::from(977u64),
+            &mersenne_127 * &mersenne_127,
+            BigUint::from(3_215_031_751u64),
+        ];
+        for n in cases {
+            for a in -99..=99 {
+                assert_eq!(
+                    jacobi_i64_biguint(a, &n),
+                    slow_jacobi_i64_biguint(a, &n),
+                    "a={a}, n={n}"
+                );
+            }
+        }
+    }
+
+    #[test]
+    fn pseudo_mersenne_reducer_matches_biguint_modulo() {
+        let moduli = [
+            (BigUint::one() << 127usize) - BigUint::one(),
+            (BigUint::one() << 255usize) - BigUint::from(19u64),
+            (BigUint::one() << 256usize) - (BigUint::one() << 32usize) - BigUint::from(977u64),
+            (BigUint::one() << 521usize) - BigUint::one(),
+        ];
+        for modulus in moduli {
+            let reducer = PseudoMersenneReducer::for_modulus(&modulus).unwrap();
+            let values = [
+                BigUint::zero(),
+                BigUint::one(),
+                &modulus - BigUint::one(),
+                modulus.clone(),
+                &modulus + BigUint::one(),
+                (&modulus - BigUint::one()) * (&modulus - BigUint::from(2u8)),
+                (&modulus * &modulus) + BigUint::from(12345u64),
+            ];
+            for value in values {
+                assert_eq!(reducer.reduce(value.clone()), value % &modulus);
+            }
+        }
+    }
+
+    #[test]
+    fn status_only_big_verifiers_match_diagnostic_decisions() {
+        let cases = [
+            (BigUint::one() << 127usize) - BigUint::one(),
+            (BigUint::one() << 255usize) - BigUint::from(19u64),
+            (BigUint::one() << 256usize) - (BigUint::one() << 32usize) - BigUint::from(977u64),
+            BigUint::one() << 256usize,
+        ];
+        for n in cases {
+            let mr_decision = is_probable_prime_biguint(&n, 16).unwrap();
+            assert_eq!(
+                probable_prime_status_biguint(&n, 16).unwrap(),
+                mr_decision.status
+            );
+            let bpsw_decision = is_bpsw_probable_prime_biguint(&n).unwrap();
+            assert_eq!(
+                bpsw_probable_prime_status_biguint(&n).unwrap(),
+                bpsw_decision.status
+            );
         }
     }
 

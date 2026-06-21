@@ -336,11 +336,13 @@ fn fuzzy_any_prime_core_for_candidates(
     score_limit: usize,
 ) -> Result<FuzzyAnyPrimeCore, String> {
     let scored = top_scored_candidates(model, &candidates[..score_limit], top_k)?;
-    let mut checked = Vec::new();
+    let mut scored_candidates = Vec::with_capacity(scored.len());
+    let mut checked_count = 0u64;
     let mut reported_prime = None;
     let mut used_fallback = false;
     for &(_, candidate) in &scored {
-        checked.push(candidate);
+        scored_candidates.push(candidate);
+        checked_count += 1;
         if is_prime_u64(candidate).is_prime() {
             reported_prime = Some(candidate);
             break;
@@ -348,11 +350,12 @@ fn fuzzy_any_prime_core_for_candidates(
     }
     if reported_prime.is_none() {
         used_fallback = true;
+        scored_candidates.sort_unstable();
         for &candidate in candidates {
-            if checked.contains(&candidate) {
+            if scored_candidates.binary_search(&candidate).is_ok() {
                 continue;
             }
-            checked.push(candidate);
+            checked_count += 1;
             if is_prime_u64(candidate).is_prime() {
                 reported_prime = Some(candidate);
                 break;
@@ -361,7 +364,7 @@ fn fuzzy_any_prime_core_for_candidates(
     }
     Ok(FuzzyAnyPrimeCore {
         reported_prime,
-        checked_count: checked.len() as u64,
+        checked_count,
         used_fallback,
     })
 }
@@ -613,5 +616,16 @@ mod tests {
         assert_eq!(search.reported_prime, Some(101));
         assert_eq!(search.candidate_count, 9);
         assert!(search.exact_next_certified);
+    }
+
+    #[test]
+    fn any_prime_fallback_skips_already_scored_candidates() {
+        let search =
+            fuzzy_search_with_score_limit(&test_model(), FuzzySearchMode::AnyPrime, 121, 16, 1, 1)
+                .unwrap();
+        assert_eq!(search.reported_prime, Some(127));
+        assert!(search.used_deterministic_fallback);
+        assert_eq!(search.hybrid_deterministic_checks, 2);
+        assert_eq!(search.baseline_sequential_checks_to_first_prime, 2);
     }
 }

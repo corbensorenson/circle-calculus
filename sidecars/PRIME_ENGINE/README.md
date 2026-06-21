@@ -84,6 +84,13 @@ The fuzzy result may be a later prime than the next-prime controls; the checker
 only accepts it if it is deterministically prime and inside the bounded window.
 The Rust server scores only a bounded candidate prefix before deterministic
 fallback so neural overhead remains visible and controlled in the artifact.
+The refreshed gate now requires at least `0.55x` median versus Circle
+`next-server` and at least `1.5x` median versus persistent `libprimesieve`
+generate-next at every tracked start. The latest artifact has Rust fuzzy
+any-prime at `2.435x`, `2.241x`, and `1.921x` median over `libprimesieve`
+generate-next, and `0.674x`, `0.696x`, and `0.665x` median versus Circle
+`next-server`, so this lane is useful against external controls but is still
+not promoted as a deterministic next-prime replacement.
 `make prime-engine-fuzzy-hybrid-next-smoke` is the comparable exact-next gate:
 it writes `prime_fuzzy_hybrid_next` CSV/sample/metadata artifacts and compares
 the current Python hybrid exact-next path and Rust `circle-prime fuzzy-server`
@@ -112,12 +119,22 @@ status above `u64`; it is not a Lean-certified primality certificate yet.
 Miller-Rabin base bank, while `bpsw` uses base-2 Miller-Rabin plus strong
 Lucas-Selfridge. The BigUint smoke records hot BPSW profile rows for test and
 next-prime searches beside the default Miller-Rabin rows. In the latest local
-smoke, hot BPSW beats SymPy on both selected large next-prime searches and on
-the 521-bit Mersenne primality check while still trailing SymPy on selected
-255/256-bit raw primality checks. The current hot path caches limb digits for
-small-prime trial division, keeps incremental
-small-prime residues during `big-next` wheel search, and uses a value-only
-fuzzy server path when JSON diagnostics are not requested.
+smoke, hot BPSW beats SymPy on both selected large next-prime searches and the
+separate raw-primality promotion gate now passes on the selected
+127/255/256/521-bit prime-like cases. The current hot path caches limb digits
+for small-prime trial division, keeps incremental small-prime residues during
+`big-next` wheel search, and uses a value-only fuzzy server path when JSON
+diagnostics are not requested. The BPSW hot path also uses value-only
+`big-test-server` status checks for non-JSON requests, skips BigUint square
+roots when the candidate is not a square residue modulo 64, replaces several
+Lucas `% n` operations with bounded modular add/double steps, specializes the
+Selfridge `Q = -1` recurrence, and uses a fold-and-subtract reducer for
+non-`Q = -1` Lucas work over pseudo-Mersenne moduli `2^k - c`.
+Use `make prime-engine-bigint-raw-sympy-promotion-check` for that stricter
+promotion gate. It reuses the latest BigUint artifact and requires hot BPSW
+raw primality to beat SymPy `isprime` on the selected prime-like cases; it
+remains separate from the default smoke so the raw-primality promotion claim is
+explicit.
 
 `make prime-engine-high-offset-shifted-hot-server` is the harder diagnostic for
 the same high-offset lane. It keeps the server processes hot, but advances each
@@ -180,6 +197,19 @@ persistent `libprimesieve` generate-next at starts `90`, `1000000`,
 `40.274x`, and `151.977x` median over the persistent `libprimesieve` iterator
 helper. The `4294967000` iterator row is locally noisy but clears the material
 noisy-win bypass by a wide margin; the generate-next rows are stable.
+
+`make prime-engine-external-next-shifted` is the stricter fresh-start
+next-prime gate. It sends native `shifted COUNT SHIFT START` requests to
+Circle's `next-server` and the persistent `libprimesieve` helpers, so each
+timed sample checks many distinct nearby starts with one server flush instead
+of repeating an identical start. The row result is a checksum of the entire
+prime vector, and every engine must match the vector per pass before speedups
+are recorded. The latest shifted artifact uses batch size `64`, shift `4096`,
+5 timed rounds, and 1 warmup round. Circle's median speedups over persistent
+`libprimesieve` generate-next are `1.054x`, `1.536x`, `8.784x`, and `36.611x`
+at starts `90`, `1000000`, `4294967000`, and `1000000000000`; against the
+persistent iterator helper they are `12.024x`, `16.004x`, `44.959x`, and
+`127.775x`. All shifted rows in that artifact are stable.
 
 `make prime-engine-high-offset-confirm` is the stricter short gate for the
 remaining hard high-offset count lane. It runs warmed repeated confirmations

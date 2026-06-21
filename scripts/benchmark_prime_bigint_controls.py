@@ -677,6 +677,7 @@ def main() -> int:
 
     metadata = {
         "schema": SCHEMA_ID,
+        "row_count": len(rows),
         "bench_rounds": args.bench_rounds,
         "warmup_rounds": args.warmup_rounds,
         "mr_rounds": args.mr_rounds,

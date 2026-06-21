@@ -9,11 +9,12 @@ use std::thread::{self, JoinHandle};
 use num_bigint::BigUint;
 
 use circle_prime::{
-    big_fuzzy_any_prime_search, big_fuzzy_any_prime_value, effective_parallel_thread_count,
-    effective_prefix_pi_thread_count, fuzzy_any_prime_value_with_score_limit,
-    fuzzy_search_with_score_limit, inspect_horizon, is_bpsw_probable_prime_biguint, is_prime_u64,
-    is_probable_prime_biguint, next_bpsw_probable_prime_biguint, next_prime_u64,
-    next_prime_value_u64, next_probable_prime_biguint, parse_biguint, prime_count_in_range,
+    big_fuzzy_any_prime_search, big_fuzzy_any_prime_value, bpsw_probable_prime_status_biguint,
+    effective_parallel_thread_count, effective_prefix_pi_thread_count,
+    fuzzy_any_prime_value_with_score_limit, fuzzy_search_with_score_limit, inspect_horizon,
+    is_bpsw_probable_prime_biguint, is_prime_u64, is_probable_prime_biguint,
+    next_bpsw_probable_prime_biguint, next_prime_u64, next_prime_value_u64,
+    next_probable_prime_biguint, parse_biguint, prime_count_in_range,
     prime_count_in_range_hybrid_wheel30_marks, prime_count_in_range_hybrid_wheel30_marks_parallel,
     prime_count_in_range_parallel, prime_count_in_range_parallel_balanced,
     prime_count_in_range_parallel_dynamic, prime_count_in_range_prefix_pi,
@@ -24,12 +25,13 @@ use circle_prime::{
     prime_count_in_range_wheel30_marks, prime_count_in_range_wheel30_marks_parallel,
     prime_count_in_range_with_scratch, prime_count_shifted_single_segment_presieve13_with_scratch,
     prime_count_shifted_single_segment_presieve17_with_scratch, prime_horizon_proof_contract_json,
-    prime_range_count_proof_contract_json, primes_in_range, recommended_count_mode,
-    recommended_count_segment_size, recommended_segment_size, warm_small_prefix_pi_cache,
-    BigFuzzyPrimeModel, FuzzyPrimeModel, FuzzySearchMode, PrimeCountScratch,
-    BASE_PRIME_CACHE_LIMIT, DEFAULT_BIG_FUZZY_CANDIDATE_WINDOW, DEFAULT_BIG_MILLER_RABIN_ROUNDS,
-    DEFAULT_BIG_NEXT_MAX_CANDIDATES, PARALLEL_EDGE_HIGH_OFFSET_MIN_BASE_LIMIT,
-    PARALLEL_LOWER_HIGH_OFFSET_BASE_LIMIT, PARALLEL_LOWER_HIGH_OFFSET_MIN_BASE_LIMIT,
+    prime_range_count_proof_contract_json, primes_in_range, probable_prime_status_biguint,
+    recommended_count_mode, recommended_count_segment_size, recommended_segment_size,
+    warm_small_prefix_pi_cache, BigFuzzyPrimeModel, FuzzyPrimeModel, FuzzySearchMode,
+    PrimeCountScratch, BASE_PRIME_CACHE_LIMIT, DEFAULT_BIG_FUZZY_CANDIDATE_WINDOW,
+    DEFAULT_BIG_MILLER_RABIN_ROUNDS, DEFAULT_BIG_NEXT_MAX_CANDIDATES,
+    PARALLEL_EDGE_HIGH_OFFSET_MIN_BASE_LIMIT, PARALLEL_LOWER_HIGH_OFFSET_BASE_LIMIT,
+    PARALLEL_LOWER_HIGH_OFFSET_MIN_BASE_LIMIT,
 };
 
 const MAX_INSPECT_N: u128 = 100_000;
@@ -204,12 +206,12 @@ fn big_test_server_command(args: &[String]) -> Result<(), String> {
         }
         let (n, repetitions) = parse_big_server_request(request, "big-test-server")?;
         for _ in 0..repetitions {
-            let decision = big_prime_decision(&n, profile, rounds)?;
             if json {
+                let decision = big_prime_decision(&n, profile, rounds)?;
                 writeln!(stdout, "{}", decision.to_json())
                     .map_err(|err| format!("failed to write response: {err}"))?;
             } else {
-                let status = match decision.status {
+                let status = match big_prime_status(&n, profile, rounds)? {
                     circle_prime::BigPrimeStatus::Composite => "composite",
                     circle_prime::BigPrimeStatus::Prime => "prime",
                     circle_prime::BigPrimeStatus::ProbablePrime => "probable_prime",
@@ -528,6 +530,17 @@ fn big_prime_decision(
     }
 }
 
+fn big_prime_status(
+    n: &BigUint,
+    profile: BigPrimeProfile,
+    rounds: usize,
+) -> Result<circle_prime::BigPrimeStatus, String> {
+    match profile {
+        BigPrimeProfile::MillerRabin => probable_prime_status_biguint(n, rounds),
+        BigPrimeProfile::BailliePsw => bpsw_probable_prime_status_biguint(n),
+    }
+}
+
 fn big_next_search(
     start: &BigUint,
     profile: BigPrimeProfile,
@@ -593,8 +606,9 @@ fn fuzzy_server_command(args: &[String]) -> Result<(), String> {
         if request == b"quit" || request == b"exit" {
             break;
         }
-        let (start, repetitions) = parse_next_server_request_ascii(request)?;
-        for _ in 0..repetitions {
+        let batch = parse_next_server_batch_request_ascii(request)?;
+        for index in 0..batch.repetitions() {
+            let start = batch.start_at(index)?;
             if json {
                 let search =
                     fuzzy_search_with_score_limit(&model, mode, start, window, top_k, score_limit)?;
@@ -786,9 +800,7 @@ fn parse_next_server_request_count_ascii(bytes: &[u8]) -> Result<usize, String> 
     Ok(count)
 }
 
-fn parse_next_server_batch_request_ascii(
-    bytes: &[u8],
-) -> Result<NextServerBatchRequest, String> {
+fn parse_next_server_batch_request_ascii(bytes: &[u8]) -> Result<NextServerBatchRequest, String> {
     let mut parts = bytes
         .split(|byte| matches!(byte, b' ' | b'\t'))
         .filter(|part| !part.is_empty());
@@ -796,11 +808,10 @@ fn parse_next_server_batch_request_ascii(
         .next()
         .ok_or_else(|| "next-server request must include START".to_string())?;
     if first == b"shifted" {
-        let repetitions = parse_next_server_request_count_ascii(
-            parts.next().ok_or_else(|| {
+        let repetitions =
+            parse_next_server_request_count_ascii(parts.next().ok_or_else(|| {
                 "shifted next-server request must be: shifted COUNT SHIFT START".to_string()
-            })?,
-        )?;
+            })?)?;
         let shift = parse_u64_ascii(parts.next().ok_or_else(|| {
             "shifted next-server request must be: shifted COUNT SHIFT START".to_string()
         })?)?;
@@ -833,6 +844,7 @@ fn parse_next_server_batch_request_ascii(
     Ok(NextServerBatchRequest::Repeat { start, repetitions })
 }
 
+#[cfg(test)]
 fn parse_next_server_request_ascii(bytes: &[u8]) -> Result<(u64, usize), String> {
     match parse_next_server_batch_request_ascii(bytes)? {
         NextServerBatchRequest::Repeat { start, repetitions } => Ok((start, repetitions)),
@@ -2395,7 +2407,7 @@ fn usage() -> String {
         "big-test-server, big-next-server, and big-fuzzy-server read N or N COUNT lines from stdin and keep the arbitrary-precision engine hot between requests.",
         "big-test/big-next use arbitrary-precision BigUint arithmetic. --profile mr uses fixed Miller-Rabin bases; --profile bpsw uses base-2 Miller-Rabin plus strong Lucas-Selfridge. Results above u64 are probable-prime decisions, not formal primality certificates.",
         "big-fuzzy-search uses a tiny bit/residue model only to rank arbitrary-precision candidates; every reported candidate still passes the configured BigUint probable-prime verifier.",
-        "fuzzy-search/fuzzy-server read a tiny exported model, use it only to rank candidates, and accept reported primes only after deterministic verification. exact-next mode also verifies every earlier candidate in the bounded window.",
+        "fuzzy-search/fuzzy-server read a tiny exported model, use it only to rank candidates, and accept reported primes only after deterministic verification. fuzzy-server accepts START, START COUNT, or shifted COUNT SHIFT START requests. exact-next mode also verifies every earlier candidate in the bounded window.",
         "count-server reads LOW HIGH [SEGMENT_SIZE] [THREADS] [COUNT_MODE], repeat COUNT LOW HIGH ..., or shifted COUNT SHIFT LOW HIGH ... lines from stdin and writes one count or JSON object per requested count. --warm-prefix-pi-cache prebuilds the reusable small-prefix pi table before reading requests.",
         "count modes: segmented, balanced, dynamic, prefix-pi, presieve13, presieve17, wheel30-mark, hybrid-wheel30-mark",
     ]
