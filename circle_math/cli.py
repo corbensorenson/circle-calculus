@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import sys
 from dataclasses import asdict, is_dataclass
 from pathlib import Path
 from typing import Any
@@ -185,6 +186,31 @@ def _write_json_file(path: Path, payload: Any) -> None:
     path.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n")
 
 
+def _receipt_gate_failures(receipt: dict[str, Any], args: argparse.Namespace) -> list[str]:
+    failures: list[str] = []
+    if args.require_passed and receipt.get("request_passed") is not True:
+        failures.append("receipt request_passed is not true")
+    if args.require_status and receipt.get("status") not in args.require_status:
+        failures.append(
+            "receipt status "
+            f"{receipt.get('status')!r} is not in {tuple(args.require_status)!r}"
+        )
+    decision = receipt.get("decision", {})
+    if not isinstance(decision, dict):
+        decision = {}
+    if args.require_decision and decision.get("verdict") not in args.require_decision:
+        failures.append(
+            "receipt decision.verdict "
+            f"{decision.get('verdict')!r} is not in {tuple(args.require_decision)!r}"
+        )
+    if args.require_assurance and decision.get("assurance") not in args.require_assurance:
+        failures.append(
+            "receipt decision.assurance "
+            f"{decision.get('assurance')!r} is not in {tuple(args.require_assurance)!r}"
+        )
+    return failures
+
+
 def contract_receipt_main() -> int:
     """Build a theorem-linked public contract receipt from JSON parameters."""
     parser = argparse.ArgumentParser(
@@ -279,6 +305,38 @@ def contract_receipt_main() -> int:
             "Only valid with --model-config-file."
         ),
     )
+    parser.add_argument(
+        "--require-passed",
+        action="store_true",
+        help="Return nonzero unless the emitted receipt has request_passed=true.",
+    )
+    parser.add_argument(
+        "--require-status",
+        action="append",
+        choices=("proved", "impossible", "undecided", "numerical_only", "outside_scope"),
+        default=[],
+        help="Allowed receipt status. May be passed more than once.",
+    )
+    parser.add_argument(
+        "--require-decision",
+        action="append",
+        choices=("passed", "failed", "undecided", "numerical_only", "outside_scope"),
+        default=[],
+        help="Allowed decision.verdict. May be passed more than once.",
+    )
+    parser.add_argument(
+        "--require-assurance",
+        action="append",
+        choices=(
+            "theorem_backed",
+            "mixed_theorem_and_computation",
+            "numerical_only",
+            "unsupported",
+            "undecided",
+        ),
+        default=[],
+        help="Allowed decision.assurance. May be passed more than once.",
+    )
     parser.add_argument("--format", choices=("text", "json"), default="text")
     args = parser.parse_args()
 
@@ -369,12 +427,15 @@ def contract_receipt_main() -> int:
             parser.error(str(exc))
     if args.request_out is not None:
         _write_json_file(args.request_out, receipt["request"])
+    gate_failures = _receipt_gate_failures(receipt, args)
     if args.format == "json":
         print(json.dumps(receipt, indent=2, sort_keys=True))
     else:
         for line in receipt_summary_lines(receipt):
             print(line)
-    return 0
+    for failure in gate_failures:
+        print(f"contract receipt gate failed: {failure}", file=sys.stderr)
+    return 2 if gate_failures else 0
 
 
 __all__ = [

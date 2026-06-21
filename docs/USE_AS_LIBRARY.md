@@ -112,6 +112,7 @@ available:
 circle-ai-contract-ready --kind sparse_attention_coverage
 circle-ai-contract-receipt --kind rope --model-config-file examples/circle_ai_model_configs/standard_rope_config.json --request-out /tmp/circle_rope_request.json --model-config-import-report-out /tmp/circle_rope_import_report.json
 circle-ai-contract-receipt --request-file examples/circle_ai_requests/kv_cache_request.json --request-out /tmp/circle_kv_request.json
+circle-ai-contract-receipt --request-file examples/circle_ai_requests/kv_cache_request.json --require-passed --require-status proved --require-decision passed
 circle-ai-contract-receipt --kind sparse-attention --parameters '{"context": 9, "strides": [3, 4, 7], "path_length": 2, "local_window": 2}'
 circle-rope-certify --preset llama_style_10000_4k
 circle-sparse-attention-certify --context 9 --strides 3,4,7 --path-length 2 --local-window 2
@@ -125,6 +126,10 @@ exact versioned Circle request and `--model-config-import-report-out` to save
 the parameter-source audit report for a RoPE model config.
 Use `--request-file` when the input is already a versioned Circle request for
 RoPE, KV-cache, sparse attention, or recurrence.
+Use `--require-passed`, `--require-status`, `--require-decision`, and
+`--require-assurance` when the command is part of downstream CI. Gate failures
+return exit code `2` after writing the receipt, so CI logs keep the theorem
+ids, proof layers, and non-claims needed to debug the rejection.
 
 Non-default `rope_scaling` values are rejected by the standard-RoPE importer.
 That rejection is intentional: scaled-RoPE variants need separate theorem

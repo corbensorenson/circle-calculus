@@ -174,6 +174,77 @@ def test_package_cli_contract_receipt_from_request_file(tmp_path) -> None:
     assert receipt["proof_status"]["all_theorem_ids_proved"] is True
 
 
+def test_package_cli_contract_receipt_gate_accepts_ready_request_file() -> None:
+    request_file = ROOT / "examples" / "circle_ai_requests" / "kv_cache_request.json"
+
+    result = subprocess.run(
+        [
+            sys.executable,
+            "-c",
+            (
+                "import sys; "
+                "from circle_math.cli import contract_receipt_main; "
+                "sys.exit(contract_receipt_main())"
+            ),
+            "--request-file",
+            str(request_file),
+            "--require-passed",
+            "--require-status",
+            "proved",
+            "--require-decision",
+            "passed",
+            "--require-assurance",
+            "theorem_backed",
+            "--format",
+            "json",
+        ],
+        text=True,
+        capture_output=True,
+        check=True,
+    )
+    receipt = json.loads(result.stdout)
+    assert receipt["kind"] == "kv_cache_ring_buffer"
+    assert receipt["request_passed"] is True
+
+
+def test_package_cli_contract_receipt_gate_rejects_failed_request() -> None:
+    result = subprocess.run(
+        [
+            sys.executable,
+            "-c",
+            (
+                "import sys; "
+                "from circle_math.cli import contract_receipt_main; "
+                "sys.exit(contract_receipt_main())"
+            ),
+            "--kind",
+            "rope",
+            "--parameters",
+            json.dumps(
+                {
+                    "head_dim": 128,
+                    "base": 10000.0,
+                    "context": 1000,
+                    "tolerance": 1e-6,
+                    "discretization": "round",
+                    "requested_margin": "1/999",
+                }
+            ),
+            "--require-passed",
+            "--format",
+            "json",
+        ],
+        text=True,
+        capture_output=True,
+    )
+    assert result.returncode == 2
+    assert "contract receipt gate failed" in result.stderr
+    receipt = json.loads(result.stdout)
+    assert receipt["kind"] == "rope_position_distinguishability"
+    assert receipt["status"] == "impossible"
+    assert receipt["request_passed"] is False
+
+
 def test_package_cli_contract_receipt_from_rope_model_config_json(
     tmp_path,
 ) -> None:

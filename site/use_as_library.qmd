@@ -99,7 +99,7 @@ After installing the package in editable mode:
 python -m pip install -e .
 circle-ai-contract-ready --kind sparse_attention_coverage
 circle-ai-contract-receipt --kind rope --model-config-file examples/circle_ai_model_configs/standard_rope_config.json
-circle-ai-contract-receipt --request-file examples/circle_ai_requests/kv_cache_request.json --request-out /tmp/circle_kv_request.json
+circle-ai-contract-receipt --request-file examples/circle_ai_requests/kv_cache_request.json --request-out /tmp/circle_kv_request.json --require-passed --require-status proved --require-decision passed
 circle-ai-contract-receipt --kind sparse-attention --parameters '{"context": 9, "strides": [3, 4, 7], "path_length": 2, "local_window": 2}'
 circle-rope-certify --preset llama_style_10000_4k
 circle-sparse-attention-certify --context 9 --strides 3,4,7 --path-length 2 --local-window 2
@@ -114,6 +114,9 @@ the parameter-source audit report saved beside the receipt.
 For KV-cache, sparse attention, recurrence, and already-normalized RoPE
 requests, use `--request-file` with a
 `circle_calculus.ai_contract_request.v0` JSON object.
+Use `--require-passed`, `--require-status`, `--require-decision`, and
+`--require-assurance` when the command should fail CI unless the emitted
+receipt satisfies a narrow acceptance policy.
 
 Non-default `rope_scaling` values are rejected by this standard-RoPE importer
 until there is separate theorem coverage for the scaled variant.

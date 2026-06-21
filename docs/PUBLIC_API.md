@@ -84,6 +84,9 @@ circle-ai-contract-receipt \
 circle-ai-contract-receipt \
   --request-file examples/circle_ai_requests/kv_cache_request.json \
   --request-out /tmp/circle_kv_request.json \
+  --require-passed \
+  --require-status proved \
+  --require-decision passed \
   --format json
 
 circle-ai-contract-receipt \
