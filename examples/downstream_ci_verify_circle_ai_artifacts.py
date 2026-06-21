@@ -432,6 +432,7 @@ def verify_manifests(
     paths: list[Path],
     *,
     base_dir: Path | None,
+    required_kinds: list[str],
     required_statuses: list[str],
     required_decisions: list[str],
     required_assurances: list[str],
@@ -462,12 +463,24 @@ def verify_manifests(
         for summary in summaries
         for failure in summary["failures"]
     ]
+    observed_kinds = [
+        summary["kind"] for summary in summaries if isinstance(summary.get("kind"), str)
+    ]
+    kind_counts = {
+        kind: observed_kinds.count(kind) for kind in sorted(set(observed_kinds))
+    }
+    for kind in required_kinds:
+        if kind not in kind_counts:
+            failures.append(f"required contract kind is missing: {kind}")
     return {
         "schema_id": EXAMPLE_SCHEMA_ID,
         "accepted": not failures,
         "manifest_count": len(paths),
         "failure_count": len(failures),
         "failures": failures,
+        "required_kinds": required_kinds,
+        "observed_kinds": sorted(set(observed_kinds)),
+        "kind_counts": kind_counts,
         "required_statuses": required_statuses,
         "required_decisions": required_decisions,
         "required_assurances": required_assurances,
@@ -543,6 +556,12 @@ def main() -> int:
         help="Require every manifest status to match this value.",
     )
     parser.add_argument(
+        "--require-kind",
+        action="append",
+        default=[],
+        help="Require at least one artifact manifest for this contract kind.",
+    )
+    parser.add_argument(
         "--require-decision",
         action="append",
         default=[],
@@ -576,6 +595,7 @@ def main() -> int:
         report = verify_manifests(
             args.manifests,
             base_dir=args.base_dir,
+            required_kinds=args.require_kind,
             required_statuses=args.require_status,
             required_decisions=args.require_decision,
             required_assurances=args.require_assurance,

@@ -231,6 +231,9 @@ artifact-integrity checks without importing Circle or `jsonschema`.
 The standard artifact-directory path and standalone verifier are covered for
 RoPE, KV-cache, sparse-attention, and recurrence receipts, so downstream CI can
 adopt one gate shape across all four current contract families.
+When a downstream job emits multiple manifests, add `--require-kind` for each
+contract family that must be present; the verifier fails if any required family
+is missing.
 
 Copyable starting points live under:
 
