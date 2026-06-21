@@ -165,7 +165,7 @@ integration, pin the generated pack fingerprint and require the specific fields,
 theorem ids, and recommendations that your downstream tool depends on.
 
 The KV-cache contract intentionally includes both a passing retained read and a failing stale-read probe, so downstream consumers can test the success and rejection boundaries from the same theorem-backed schema.
-The RoPE contract likewise includes D19 standard-channel request-classifier probes that mark `1/328459` as proved, `1/328458` as impossible, and `2/656917` as the deliberate `undecided_margin_gap` at context `131072`; Lean now also proves the exact undecided interval width `1/107884986222` and that the public undecided probe lies inside that open gap. This is a one-channel frontier rather than a full all-channel real-RoPE theorem.
+The RoPE contract likewise includes D19 standard-channel request-classifier probes that mark `1/328459` as proved, `1/328458` as impossible, and `2/656917` as the deliberate `undecided_margin_gap` at context `131072`; Lean now also proves the exact undecided interval width `1/107884986222` and that the public undecided probe lies inside that open gap. The parameterized runner also exposes `standard_channel0_d19_bank_bridge` for the proved first-channel bank transfer (`AIRA-T0171`, `AIRA-T0172`, and `AIRA-T0234` through `AIRA-T0237`), so smaller contexts at or below margin `1/328459` can carry a proved conditional bank no-near-turn payload even when the obstruction-range classifier itself says `outside_range`. This is a one-channel frontier rather than a full all-channel real-RoPE theorem.
 
 For external projects, the standalone public pack is generated with:
 

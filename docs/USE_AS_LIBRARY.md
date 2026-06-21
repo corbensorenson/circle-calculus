@@ -49,6 +49,7 @@ receipt = build_rope_receipt(
     head_dim=128,
     base=10000,
     context=4096,
+    requested_margin="1/328459",
     pack=pack,
 )
 
@@ -56,11 +57,14 @@ print(receipt["contract_id"])
 print(receipt["decision"]["verdict"])
 print(receipt["decision"]["claim_status"])
 print(receipt["decision"]["all_theorem_ids_proved"])
+print(receipt["evidence"]["standard_channel0_d19_bank_bridge"]["applies"])
 ```
 
 This returns a theorem-linked structural receipt for the declared RoPE request.
-Read the `not_claimed` field before treating the receipt as an engineering
-result.
+With the requested margin above, the D19 first-channel bank bridge is the
+theorem-backed payload that makes the smaller-context request pass. It is still
+conditional on the standard channel-0 first-frequency bank shape. Read the
+`not_claimed` field before treating the receipt as an engineering result.
 
 For a model-style config object, use the standard-RoPE importer:
 

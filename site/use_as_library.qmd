@@ -52,6 +52,7 @@ receipt = build_rope_receipt(
     head_dim=128,
     base=10000,
     context=4096,
+    requested_margin="1/328459",
     pack=pack,
 )
 
@@ -59,10 +60,14 @@ print(receipt["contract_id"])
 print(receipt["decision"]["verdict"])
 print(receipt["decision"]["claim_status"])
 print(receipt["decision"]["all_theorem_ids_proved"])
+print(receipt["evidence"]["standard_channel0_d19_bank_bridge"]["applies"])
 ```
 
 The receipt is a theorem-linked structural certificate for the declared request.
-It is not a language-model quality, speed, memory, or deployment-safety result.
+Here the D19 first-channel bank bridge is the theorem-backed payload that makes
+the smaller-context request pass. It is conditional on the standard channel-0
+first-frequency bank shape, and it is not a language-model quality, speed,
+memory, or deployment-safety result.
 
 ## Sparse-Attention Coverage Contract
 

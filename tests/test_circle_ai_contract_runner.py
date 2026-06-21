@@ -215,6 +215,27 @@ def test_rope_receipt_classifies_d19_margin_request(contract_pack: dict) -> None
     assert "real_phase_dirichlet_guardrail" in receipt["proof_layers"][
         "proved_fields"
     ]
+    bank_bridge = receipt["evidence"]["standard_channel0_d19_bank_bridge"]
+    assert bank_bridge["applies"] is True
+    assert bank_bridge["request_status"] == "proved_conditional_bank_no_near_turn"
+    assert bank_bridge["bank_shape"] == "standard_channel0_first"
+    assert bank_bridge["context_wide_first_channel_contract"] is True
+    assert bank_bridge["radian_bank_form"] is True
+    assert bank_bridge["pair_scope"] == (
+        "all ordered unequal pairs left < right < requested_context"
+    )
+    assert bank_bridge["theorem_ids"] == [
+        "AIRA-T0171",
+        "AIRA-T0172",
+        "AIRA-T0234",
+        "AIRA-T0235",
+        "AIRA-T0236",
+        "AIRA-T0237",
+    ]
+    assert "AIRA-T0236" in receipt["proof_status"]["theorem_ids"]
+    assert "standard_channel0_d19_bank_bridge" in receipt["proof_layers"][
+        "proved_fields"
+    ]
     assert receipt["proof_status"]["all_theorem_ids_proved"] is True
     assert len(receipt["request_content_fingerprint"]) == 64
     assert len(receipt["normalized_request_fingerprint"]) == 64
@@ -230,6 +251,46 @@ def test_rope_receipt_classifies_d19_margin_request(contract_pack: dict) -> None
         for field in receipt["proof_layers"]["unsupported_fields"]
     )
     assert len(receipt["receipt_content_fingerprint"]) == 64
+
+
+def test_rope_receipt_uses_d19_bank_bridge_for_smaller_context(
+    contract_pack: dict,
+) -> None:
+    receipt = build_rope_receipt(
+        head_dim=128,
+        base=10000.0,
+        context=4096,
+        requested_margin="1/328459",
+        pack=contract_pack,
+    )
+
+    assert validate_contract_receipt(receipt) == []
+    assert receipt["status"] == "proved"
+    assert receipt["request_passed"] is True
+    _assert_decision_matches_receipt(
+        receipt,
+        verdict="passed",
+        assurance="mixed_theorem_and_computation",
+    )
+    classifier = receipt["evidence"]["standard_channel0_d19_request_classifier"]
+    assert classifier["request_status"] == "outside_range"
+    bank_bridge = receipt["evidence"]["standard_channel0_d19_bank_bridge"]
+    assert bank_bridge["applies"] is True
+    assert bank_bridge["requested_context"] == 4096
+    assert bank_bridge["requested_margin"] == "1/328459"
+    assert bank_bridge["certified_context"] == 196608
+    assert bank_bridge["certified_margin"] == "1/328459"
+    assert bank_bridge["theorem_backed"] is True
+    assert bank_bridge["radian_bank_form"] is True
+    assert bank_bridge["failure_reason"] is None
+    assert "standard_channel0_d19_bank_bridge" in receipt["proof_layers"][
+        "proved_fields"
+    ]
+    assert any(
+        "standard_channel0_d19_request_classifier outside" in field
+        for field in receipt["proof_layers"]["unsupported_fields"]
+    )
+    assert receipt["proof_status"]["all_theorem_ids_proved"] is True
 
 
 def test_rope_receipt_distinguishes_impossible_and_undecided_margins(

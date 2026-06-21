@@ -149,6 +149,7 @@ proof_status=theorems=... resolved=True proved=True ...
 proof_layers=proved_fields=... computed_fields=... numerical_only_fields=... unsupported_fields=...
 rope_exact_discrete=pass=True ...
 rope_d19_request=status=proved theorem_backed=True ...
+rope_d19_bank_bridge=applies=True radian_bank_form=True ...
 rope_dirichlet_guardrail=applies=True inv_context_margin=1/131072 ...
 not_claimed=...
 ```
@@ -160,6 +161,7 @@ Read that as:
 | `status=proved` | the requested D19 channel-0 margin branch is theorem-backed in the proved range |
 | `request_passed=True` | the requested margin is accepted by the current theorem-backed classifier |
 | `rope_exact_discrete` | exact integer-period phase-bank result for the declared discretization model |
+| `standard_channel0_d19_bank_bridge` | conditional first-channel bank no-near-turn payload backed by `AIRA-T0171`, `AIRA-T0172`, and `AIRA-T0234` through `AIRA-T0237` when its context/margin premises pass |
 | `rope_dirichlet_guardrail` | theorem-backed `1/context` upper-bound guardrail from `AIRA-T0239` through `AIRA-T0241` |
 | `rope_real_phase_scan` | numerical diagnostic only |
 | `not_claimed` | boundary that prevents model-quality or full all-channel real-RoPE overclaims |
@@ -167,6 +169,10 @@ Read that as:
 The guardrail rejects requested margins strictly above `1/context`. It does not
 prove margins at or below that ceiling; those still need the D19 classifier or a
 future sharper real-phase theorem.
+For smaller contexts below the D19 obstruction range, the receipt can still be
+`proved` when the `standard_channel0_d19_bank_bridge` applies: that bridge is a
+conditional one-separating-channel theorem for a finite bank whose first
+frequency is standard channel 0, not an independent all-channel margin theorem.
 
 ## Four Runner Surfaces
 

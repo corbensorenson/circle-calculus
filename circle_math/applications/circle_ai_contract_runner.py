@@ -42,6 +42,7 @@ from .circle_ai_contracts import (
 from .rope_certifier import (
     RoPEConfig,
     certify_rope_positions,
+    certify_standard_channel0_d19_bank_request,
     certify_standard_channel0_d19_range_request_margin_bracket,
 )
 
@@ -1080,6 +1081,62 @@ def _rope_dirichlet_guardrail(
     }
 
 
+def _rope_standard_channel0_d19_bank_bridge(
+    *,
+    context: int,
+    requested_margin: Fraction,
+) -> dict[str, Any]:
+    """Return the conditional D19 first-channel bank bridge receipt payload."""
+
+    certificate = certify_standard_channel0_d19_bank_request(
+        requested_context=context,
+        requested_margin=requested_margin,
+    ).to_dict()
+    applies = bool(certificate["pass_certificate"])
+    theorem_ids = (
+        list(certificate["theorem_ids"])
+        if applies
+        else []
+    )
+    return {
+        "schema_id": certificate["schema_id"],
+        "applies": applies,
+        "request_status": (
+            "proved_conditional_bank_no_near_turn"
+            if applies
+            else "outside_bank_bridge_scope"
+        ),
+        "theorem_backed": applies,
+        "requested_context": certificate["requested_context"],
+        "requested_margin": certificate["requested_margin"],
+        "certified_context": certificate["certified_context"],
+        "certified_margin": certificate["certified_margin"],
+        "failure_reason": certificate["failure_reason"],
+        "bank_shape": certificate["bank_shape"],
+        "pair_scope": certificate["context_wide_pair_scope"],
+        "context_wide_first_channel_contract": certificate[
+            "context_wide_first_channel_contract"
+        ],
+        "radian_bank_form": (
+            applies
+            and certificate["bank_shape"] == "standard_channel0_first"
+            and "AIRA-T0236" in certificate["theorem_ids"]
+        ),
+        "assumptions": list(certificate["assumptions"]),
+        "tolerance_rule": certificate["tolerance_rule"],
+        "theorem_ids": theorem_ids,
+        "available_theorem_ids": list(certificate["theorem_ids"]),
+        "lean_declarations": (
+            list(certificate["lean_declarations"])
+            if applies
+            else []
+        ),
+        "available_lean_declarations": list(certificate["lean_declarations"]),
+        "claim": certificate["explanation"],
+        "non_claim": certificate["claim_boundary"],
+    }
+
+
 def build_rope_receipt(
     *,
     head_dim: int = 128,
@@ -1169,6 +1226,16 @@ def build_rope_receipt(
             request_passed = False
         elif status in {"undecided", "outside_scope"}:
             request_passed = None
+        bank_bridge = _rope_standard_channel0_d19_bank_bridge(
+            context=context,
+            requested_margin=margin,
+        )
+        evidence["standard_channel0_d19_bank_bridge"] = bank_bridge
+        theorem_ids.extend(bank_bridge["theorem_ids"])
+        if bank_bridge["applies"]:
+            if status in {"outside_scope", "proved"}:
+                status = "proved"
+                request_passed = True
     if dirichlet_guardrail["requested_margin_exceeds_ceiling"] is True:
         status = "impossible"
         request_passed = False
@@ -1207,6 +1274,17 @@ def build_rope_receipt(
         proof_layers["unsupported_fields"].append(
             "standard_channel0_d19_request_classifier outside its proved context range"
         )
+    if margin is not None:
+        bank_bridge = evidence["standard_channel0_d19_bank_bridge"]
+        if bank_bridge["applies"]:
+            proof_layers["proved_fields"].append(
+                "standard_channel0_d19_bank_bridge"
+            )
+        else:
+            proof_layers["unsupported_fields"].append(
+                "standard_channel0_d19_bank_bridge outside its certified "
+                "margin/context scope"
+            )
     return _base_receipt(
         kind="rope_position_distinguishability",
         request_parameters={
