@@ -17,6 +17,8 @@ if str(ROOT) not in sys.path:
 
 from circle_math.applications import (  # noqa: E402
     build_contract_certification_bundle,
+    build_contract_certification_bundle_file_check_json_schema,
+    build_contract_certification_bundle_file_check_report,
     build_contract_certification_bundle_json_schema,
     build_contract_receipt_file_check_json_schema,
     build_contract_receipt_file_check_report,
@@ -32,6 +34,7 @@ from circle_math.applications import (  # noqa: E402
     receipt_summary_lines,
 )
 from circle_math.applications.circle_ai_contract_runner import (  # noqa: E402
+    CERTIFICATION_BUNDLE_FILE_CHECK_SCHEMA_PATH,
     CERTIFICATION_BUNDLE_SCHEMA_PATH,
     DECISION_ASSURANCE_LEVELS,
     DECISION_VERDICTS,
@@ -54,6 +57,9 @@ DEFAULT_ROPE_MODEL_CONFIG_IMPORT_SCHEMA = ROOT / ROPE_MODEL_CONFIG_IMPORT_SCHEMA
 DEFAULT_RECEIPT_SCHEMA = ROOT / RECEIPT_SCHEMA_PATH
 DEFAULT_RECEIPT_CHECK_SCHEMA = ROOT / RECEIPT_FILE_CHECK_SCHEMA_PATH
 DEFAULT_CERTIFICATION_BUNDLE_SCHEMA = ROOT / CERTIFICATION_BUNDLE_SCHEMA_PATH
+DEFAULT_CERTIFICATION_BUNDLE_CHECK_SCHEMA = (
+    ROOT / CERTIFICATION_BUNDLE_FILE_CHECK_SCHEMA_PATH
+)
 DEFAULT_PACK_PATH = ROOT / "site" / "data" / "generated" / "circle_ai_contract_pack.json"
 
 
@@ -136,6 +142,14 @@ def add_common_options(parser: argparse.ArgumentParser) -> None:
         ),
     )
     parser.add_argument(
+        "--certification-bundle-check-out",
+        type=Path,
+        help=(
+            "Optional path for a schema-validated verification report for "
+            "the emitted --certification-bundle-out file."
+        ),
+    )
+    parser.add_argument(
         "--certification-bundle-schema",
         type=Path,
         default=DEFAULT_CERTIFICATION_BUNDLE_SCHEMA,
@@ -143,6 +157,16 @@ def add_common_options(parser: argparse.ArgumentParser) -> None:
             "Generated JSON Schema used to validate --certification-bundle-out. "
             "Defaults to "
             "site/data/generated/circle_ai_contract_certification_bundle.schema.json."
+        ),
+    )
+    parser.add_argument(
+        "--certification-bundle-check-schema",
+        type=Path,
+        default=DEFAULT_CERTIFICATION_BUNDLE_CHECK_SCHEMA,
+        help=(
+            "Generated JSON Schema used to validate "
+            "--certification-bundle-check-out. Defaults to "
+            "site/data/generated/circle_ai_contract_certification_bundle_file_check.schema.json."
         ),
     )
     parser.add_argument(
@@ -432,6 +456,20 @@ def _validate_certification_bundle(
         )
 
 
+def _validate_certification_bundle_check_report(
+    report: dict[str, Any],
+    schema_path: Path,
+) -> None:
+    schema = _load_json_object(schema_path, label="certification-bundle check schema")
+    jsonschema.Draft202012Validator.check_schema(schema)
+    jsonschema.validate(report, schema)
+    generated_schema = build_contract_certification_bundle_file_check_json_schema()
+    if schema != generated_schema:
+        raise jsonschema.SchemaError(
+            "certification-bundle check schema drifted from application builder"
+        )
+
+
 def _parameters_from_args(args: argparse.Namespace) -> dict[str, Any]:
     if args.kind == "rope":
         return {
@@ -523,6 +561,14 @@ def main() -> int:
             "--receipt-check-out requires --json-out so the report points at "
             "a saved receipt file"
         )
+    if (
+        args.certification_bundle_check_out is not None
+        and args.certification_bundle_out is None
+    ):
+        raise SystemExit(
+            "--certification-bundle-check-out requires --certification-bundle-out "
+            "so the report points at a saved certification bundle"
+        )
     request_for_bundle: dict[str, Any] | None = None
     model_config_import_report_for_bundle: dict[str, Any] | None = None
     if args.kind == "request":
@@ -538,11 +584,13 @@ def main() -> int:
                 or args.receipt_check_out
                 or args.gate_report_out
                 or args.certification_bundle_out
+                or args.certification_bundle_check_out
             ):
                 raise SystemExit(
                     "--require-status, --require-decision, --require-assurance, "
                     "--require-passed, --receipt-check-out, --gate-report-out, "
-                    "and --certification-bundle-out require a receipt; omit "
+                    "--certification-bundle-out, and "
+                    "--certification-bundle-check-out require a receipt; omit "
                     "--validate-only"
                 )
             report = _validated_request_validation_report(
@@ -672,6 +720,21 @@ def main() -> int:
         )
         _validate_certification_bundle(bundle, args.certification_bundle_schema)
         write_json(args.certification_bundle_out, bundle)
+        if args.certification_bundle_check_out is not None:
+            bundle_check_report = build_contract_certification_bundle_file_check_report(
+                bundle,
+                pack=pack,
+                bundle_path=_display_path(args.certification_bundle_out),
+                required_statuses=tuple(args.require_status),
+                required_decision_verdicts=tuple(args.require_decision),
+                required_assurance_levels=tuple(args.require_assurance),
+                require_passed=args.require_passed,
+            )
+            _validate_certification_bundle_check_report(
+                bundle_check_report,
+                args.certification_bundle_check_schema,
+            )
+            write_json(args.certification_bundle_check_out, bundle_check_report)
     if args.format == "json":
         print(json.dumps(receipt, indent=2, sort_keys=True))
     else:

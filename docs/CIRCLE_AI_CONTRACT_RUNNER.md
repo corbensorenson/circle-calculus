@@ -169,6 +169,27 @@ Both report paths are validated against
 `site/data/generated/circle_ai_contract_receipt_file_check.schema.json`.
 Certification bundles are validated against
 `site/data/generated/circle_ai_contract_certification_bundle.schema.json`.
+Use `--certification-bundle-check-out` with `--certification-bundle-out` to
+write the same schema-validated bundle verification report that a later
+`scripts/check_circle_ai_certification_bundle.py` run would produce:
+
+```bash
+python scripts/circle_ai_certify.py rope \
+  --head-dim 128 \
+  --base 10000 \
+  --context 131072 \
+  --requested-margin 1/328459 \
+  --json-out reports/rope_receipt.json \
+  --certification-bundle-out reports/rope_certification_bundle.json \
+  --certification-bundle-check-out reports/rope_certification_bundle_check.json \
+  --require-status proved \
+  --require-decision passed \
+  --require-assurance mixed_theorem_and_computation \
+  --require-passed
+```
+
+The bundle-check report is validated against
+`site/data/generated/circle_ai_contract_certification_bundle_file_check.schema.json`.
 
 Copyable starting points live under:
 

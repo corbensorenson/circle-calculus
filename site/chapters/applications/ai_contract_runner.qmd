@@ -244,6 +244,25 @@ python scripts/circle_ai_certify.py rope \
   --require-passed
 ```
 
+Use `--certification-bundle-check-out` with `--certification-bundle-out` when a
+single config run should leave behind the portable bundle and the CI-facing
+verification report for that bundle:
+
+```bash
+python scripts/circle_ai_certify.py rope \
+  --head-dim 128 \
+  --base 10000 \
+  --context 131072 \
+  --requested-margin 1/328459 \
+  --json-out reports/rope_receipt.json \
+  --certification-bundle-out reports/rope_certification_bundle.json \
+  --certification-bundle-check-out reports/rope_certification_bundle_check.json \
+  --require-status proved \
+  --require-decision passed \
+  --require-assurance mixed_theorem_and_computation \
+  --require-passed
+```
+
 Checked-in examples are available for all four runner surfaces:
 
 ```text

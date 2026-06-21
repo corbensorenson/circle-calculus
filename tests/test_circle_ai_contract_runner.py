@@ -11,6 +11,7 @@ import pytest
 
 from circle_math.applications import (
     build_contract_certification_bundle,
+    build_contract_certification_bundle_file_check_json_schema,
     build_contract_certification_bundle_json_schema,
     build_contract_receipt,
     build_contract_receipt_file_check_json_schema,
@@ -2048,6 +2049,70 @@ def test_circle_ai_certify_cli_writes_certification_bundle(
     ]
 
 
+def test_circle_ai_certify_cli_writes_certification_bundle_check_report(
+    tmp_path: Path,
+) -> None:
+    receipt_path = tmp_path / "receipt.json"
+    bundle_path = tmp_path / "certification_bundle.json"
+    bundle_check_path = tmp_path / "certification_bundle_check.json"
+
+    result = subprocess.run(
+        [
+            sys.executable,
+            str(SCRIPT),
+            "rope",
+            "--context",
+            "131072",
+            "--requested-margin",
+            "1/328459",
+            "--json-out",
+            str(receipt_path),
+            "--certification-bundle-out",
+            str(bundle_path),
+            "--certification-bundle-check-out",
+            str(bundle_check_path),
+            "--require-status",
+            "proved",
+            "--require-decision",
+            "passed",
+            "--require-assurance",
+            "mixed_theorem_and_computation",
+            "--require-passed",
+            "--format",
+            "json",
+        ],
+        cwd=ROOT,
+        check=True,
+        text=True,
+        capture_output=True,
+    )
+
+    receipt = json.loads(receipt_path.read_text())
+    bundle = json.loads(bundle_path.read_text())
+    bundle_check = json.loads(bundle_check_path.read_text())
+    assert json.loads(result.stdout) == receipt
+    jsonschema.validate(bundle, build_contract_certification_bundle_json_schema())
+    jsonschema.validate(
+        bundle_check,
+        build_contract_certification_bundle_file_check_json_schema(),
+    )
+    assert bundle_check["ok"] is True
+    assert bundle_check["bundle_count"] == 1
+    assert bundle_check["gate_policy"] == {
+        "allowed_statuses": ["proved"],
+        "allowed_decision_verdicts": ["passed"],
+        "allowed_assurance_levels": ["mixed_theorem_and_computation"],
+        "require_passed": True,
+    }
+    assert bundle_check["summaries"][0]["path"] == str(bundle_path)
+    assert bundle_check["summaries"][0]["bundle_request_content_fingerprint"] == (
+        bundle["request_content_fingerprint"]
+    )
+    assert bundle_check["summaries"][0]["receipt_content_fingerprint"] == (
+        receipt["receipt_content_fingerprint"]
+    )
+
+
 def test_circle_ai_certify_cli_writes_model_config_certification_bundle(
     tmp_path: Path,
 ) -> None:
@@ -2222,6 +2287,40 @@ def test_circle_ai_certify_cli_receipt_check_requires_saved_receipt(
     assert result.returncode != 0
     assert result.stdout == ""
     assert "--receipt-check-out requires --json-out" in result.stderr
+    assert not report_path.exists()
+
+
+def test_circle_ai_certify_cli_bundle_check_requires_saved_bundle(
+    tmp_path: Path,
+) -> None:
+    report_path = tmp_path / "certification_bundle_check.json"
+
+    result = subprocess.run(
+        [
+            sys.executable,
+            str(SCRIPT),
+            "rope",
+            "--context",
+            "131072",
+            "--requested-margin",
+            "1/328459",
+            "--certification-bundle-check-out",
+            str(report_path),
+            "--format",
+            "json",
+        ],
+        cwd=ROOT,
+        check=False,
+        text=True,
+        capture_output=True,
+    )
+
+    assert result.returncode != 0
+    assert result.stdout == ""
+    assert (
+        "--certification-bundle-check-out requires --certification-bundle-out"
+        in result.stderr
+    )
     assert not report_path.exists()
 
 
