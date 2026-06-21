@@ -2600,6 +2600,7 @@ def build_contract_runner_check_json_schema() -> dict[str, Any]:
         "required": [
             "source_type",
             "source_path",
+            "source_content_fingerprint",
             "request_path",
             "receipt_path",
             "kind",
@@ -2618,6 +2619,7 @@ def build_contract_runner_check_json_schema() -> dict[str, Any]:
         "properties": {
             "source_type": {"enum": ["request", "model_config"]},
             "source_path": {"type": "string", "minLength": 1},
+            "source_content_fingerprint": fingerprint,
             "request_path": {"type": ["string", "null"]},
             "receipt_path": {"type": ["string", "null"]},
             "kind": {"enum": list(SUPPORTED_CONTRACT_KINDS)},

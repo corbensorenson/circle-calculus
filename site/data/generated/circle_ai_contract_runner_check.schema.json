@@ -142,6 +142,10 @@
               "null"
             ]
           },
+          "source_content_fingerprint": {
+            "pattern": "^[0-9a-f]{64}$",
+            "type": "string"
+          },
           "source_path": {
             "minLength": 1,
             "type": "string"
@@ -173,6 +177,7 @@
         "required": [
           "source_type",
           "source_path",
+          "source_content_fingerprint",
           "request_path",
           "receipt_path",
           "kind",

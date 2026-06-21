@@ -129,6 +129,10 @@ def test_check_circle_ai_contract_runner_emits_json_report() -> None:
         len(summary["request_content_fingerprint"]) == 64
         for summary in payload["summaries"]
     )
+    assert all(
+        len(summary["source_content_fingerprint"]) == 64
+        for summary in payload["summaries"]
+    )
     assert all(summary["normalized_request"] for summary in payload["summaries"])
     assert any(
         summary["normalized_request"].get("head_dim") == 128
@@ -204,6 +208,7 @@ def test_check_circle_ai_contract_runner_writes_report_file(tmp_path: Path) -> N
     assert payload["ok"] is True
     assert len(payload["summaries"]) == 6
     assert all(summary["receipt_path"] for summary in payload["summaries"])
+    assert all(summary["source_content_fingerprint"] for summary in payload["summaries"])
     model_config_summary = next(
         summary
         for summary in payload["summaries"]

@@ -184,7 +184,9 @@ The batch checker records its gate policy in
 `--require-decision`, `--require-assurance`, or `--require-passed`, the report
 is still written with the receipt summaries and the command exits nonzero. Each
 summary includes the `normalized_request` object so downstream CI can compare
-the certified parameters without reopening every receipt file.
+the certified parameters without reopening every receipt file. Each summary
+also includes `source_content_fingerprint` so request files and model configs
+can be pinned in audit logs.
 By default it checks both `examples/circle_ai_requests/*.json` request files and
 `examples/circle_ai_model_configs/*.json` standard RoPE model configs, currently
 including 128k examples at RoPE bases `10000` and `500000`. Model config

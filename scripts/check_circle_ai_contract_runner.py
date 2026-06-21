@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import sys
 from pathlib import Path
@@ -87,10 +88,16 @@ def _write_json(path: Path, payload: dict[str, Any]) -> None:
     path.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n")
 
 
+def _json_fingerprint(value: dict[str, Any]) -> str:
+    payload = json.dumps(value, sort_keys=True, separators=(",", ":")).encode("utf-8")
+    return hashlib.sha256(payload).hexdigest()
+
+
 def _summary_from_receipt(
     *,
     source_type: str,
     source_path: Path,
+    source: dict[str, Any],
     request_path: Path | None,
     receipt_path: Path | None,
     receipt: dict[str, Any],
@@ -99,6 +106,7 @@ def _summary_from_receipt(
     return {
         "source_type": source_type,
         "source_path": _display_path(source_path),
+        "source_content_fingerprint": _json_fingerprint(source),
         "request_path": None if request_path is None else _display_path(request_path),
         "receipt_path": None if receipt_path is None else _display_path(receipt_path),
         "kind": receipt["kind"],
@@ -203,6 +211,7 @@ def check_runner_examples(
             summary = _summary_from_receipt(
                 source_type="request",
                 source_path=path,
+                source=request,
                 request_path=path,
                 receipt_path=receipt_path,
                 receipt=receipt,
@@ -247,6 +256,7 @@ def check_runner_examples(
             summary = _summary_from_receipt(
                 source_type="model_config",
                 source_path=path,
+                source=config,
                 request_path=request_path,
                 receipt_path=receipt_path,
                 receipt=receipt,

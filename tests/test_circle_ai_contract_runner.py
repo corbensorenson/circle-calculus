@@ -1483,6 +1483,7 @@ def test_runner_check_report_schema_accepts_public_report() -> None:
             {
                 "source_type": "request",
                 "source_path": "examples/circle_ai_requests/rope_request.json",
+                "source_content_fingerprint": "3" * 64,
                 "request_path": "examples/circle_ai_requests/rope_request.json",
                 "receipt_path": None,
                 "kind": "rope_position_distinguishability",
