@@ -285,6 +285,17 @@ otherwise the contract family name. Use `--artifact-prefix` to override it. The
 manifest indexes the generated files, their schema ids, and their file SHA-256
 hashes.
 
+Verify the whole artifact directory from the manifest:
+
+```bash
+python scripts/check_circle_ai_artifact_manifest.py \
+  reports/rope_contract/standard_rope_config_artifact_manifest.json \
+  --report-out reports/rope_contract/standard_rope_config_artifact_manifest_check.json
+```
+
+That checker re-hashes every referenced file, validates declared content schema
+ids, and confirms the manifest's status fields still match the saved receipt.
+
 Checked-in examples are available for all four runner surfaces:
 
 ```text
@@ -412,6 +423,7 @@ Read every receipt in this order:
 
 ```python
 from circle_math.applications import (
+    build_contract_artifact_manifest_file_check_report,
     build_contract_certification_bundle,
     build_contract_certification_bundle_file_check_report,
     build_contract_receipt_file_check_report,
@@ -566,6 +578,7 @@ site/data/generated/circle_ai_contract_receipt_file_check.schema.json
 site/data/generated/circle_ai_contract_certification_bundle.schema.json
 site/data/generated/circle_ai_contract_certification_bundle_file_check.schema.json
 site/data/generated/circle_ai_contract_artifact_manifest.schema.json
+site/data/generated/circle_ai_contract_artifact_manifest_file_check.schema.json
 ```
 
 The request schema is contract-specific: it accepts defaults for RoPE and

@@ -18,6 +18,8 @@ from circle_math.applications.circle_ai_contracts import (
     build_downstream_rejection_report_json_schema,
 )
 from circle_math.applications.circle_ai_contract_runner import (
+    build_contract_artifact_manifest_file_check_json_schema,
+    build_contract_artifact_manifest_json_schema,
     build_contract_certification_bundle_json_schema,
     build_contract_receipt_file_check_json_schema,
     build_contract_runner_check_json_schema,
@@ -2201,6 +2203,10 @@ def test_generic_export_script_writes_json(tmp_path: Path) -> None:
     certification_bundle_schema_out = (
         tmp_path / "circle_certification_bundle.schema.json"
     )
+    artifact_manifest_schema_out = tmp_path / "circle_artifact_manifest.schema.json"
+    artifact_manifest_file_check_schema_out = (
+        tmp_path / "circle_artifact_manifest_file_check.schema.json"
+    )
     subprocess.run(
         [
             sys.executable,
@@ -2225,6 +2231,10 @@ def test_generic_export_script_writes_json(tmp_path: Path) -> None:
             str(receipt_file_check_schema_out),
             "--contract-certification-bundle-schema-out",
             str(certification_bundle_schema_out),
+            "--contract-artifact-manifest-schema-out",
+            str(artifact_manifest_schema_out),
+            "--contract-artifact-manifest-file-check-schema-out",
+            str(artifact_manifest_file_check_schema_out),
         ],
         check=True,
     )
@@ -2243,6 +2253,10 @@ def test_generic_export_script_writes_json(tmp_path: Path) -> None:
     certification_bundle_schema = json.loads(
         certification_bundle_schema_out.read_text()
     )
+    artifact_manifest_schema = json.loads(artifact_manifest_schema_out.read_text())
+    artifact_manifest_file_check_schema = json.loads(
+        artifact_manifest_file_check_schema_out.read_text()
+    )
     assert data["schema_id"] == "circle_calculus.ai_contract_pack.v0"
     assert len(data["contracts"]) == 9
     jsonschema.validate(data, schema)
@@ -2255,11 +2269,18 @@ def test_generic_export_script_writes_json(tmp_path: Path) -> None:
     jsonschema.Draft202012Validator.check_schema(runner_check_schema)
     jsonschema.Draft202012Validator.check_schema(receipt_file_check_schema)
     jsonschema.Draft202012Validator.check_schema(certification_bundle_schema)
+    jsonschema.Draft202012Validator.check_schema(artifact_manifest_schema)
+    jsonschema.Draft202012Validator.check_schema(artifact_manifest_file_check_schema)
     assert runner_check_schema == build_contract_runner_check_json_schema()
     assert receipt_file_check_schema == build_contract_receipt_file_check_json_schema()
     assert (
         certification_bundle_schema
         == build_contract_certification_bundle_json_schema()
+    )
+    assert artifact_manifest_schema == build_contract_artifact_manifest_json_schema()
+    assert (
+        artifact_manifest_file_check_schema
+        == build_contract_artifact_manifest_file_check_json_schema()
     )
     subprocess.run(
         [

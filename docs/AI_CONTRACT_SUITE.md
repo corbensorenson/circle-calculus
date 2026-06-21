@@ -74,7 +74,8 @@ python scripts/circle_ai_certify.py rope \
 `--artifact-dir` writes the request, request-validation report, model-config
 import report when present, receipt, receipt-check report, gate report,
 certification bundle, bundle-check report, and artifact manifest with stable
-names.
+names. `scripts/check_circle_ai_artifact_manifest.py` verifies that manifest
+after handoff by re-hashing each referenced file.
 
 The runner receipt schema is `circle_calculus.ai_contract_receipt.v0`; the
 request schema is `circle_calculus.ai_contract_request.v0`; the request
@@ -156,7 +157,8 @@ parameterized runner schema sidecars
 `site/data/generated/circle_ai_contract_receipt_file_check.schema.json`, plus
 `site/data/generated/circle_ai_contract_certification_bundle.schema.json` and
 `site/data/generated/circle_ai_contract_certification_bundle_file_check.schema.json`,
-plus `site/data/generated/circle_ai_contract_artifact_manifest.schema.json`;
+plus `site/data/generated/circle_ai_contract_artifact_manifest.schema.json` and
+`site/data/generated/circle_ai_contract_artifact_manifest_file_check.schema.json`;
 the acceptance-policy schema sidecar
 `site/data/generated/circle_ai_contract_acceptance_policy.schema.json`, policy-report
 schema sidecar

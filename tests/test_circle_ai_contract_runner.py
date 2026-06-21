@@ -10,6 +10,8 @@ import jsonschema
 import pytest
 
 from circle_math.applications import (
+    build_contract_artifact_manifest_file_check_json_schema,
+    build_contract_artifact_manifest_file_check_report,
     build_contract_artifact_manifest_json_schema,
     build_contract_certification_bundle,
     build_contract_certification_bundle_file_check_json_schema,
@@ -47,6 +49,9 @@ from circle_math.applications.circle_ai_contracts import build_contract_pack
 
 ROOT = Path(__file__).resolve().parents[1]
 SCRIPT = ROOT / "scripts" / "circle_ai_certify.py"
+ARTIFACT_MANIFEST_CHECK_SCRIPT = (
+    ROOT / "scripts" / "check_circle_ai_artifact_manifest.py"
+)
 STANDARD_ROPE_MODEL_CONFIG = (
     ROOT / "examples" / "circle_ai_model_configs" / "standard_rope_config.json"
 )
@@ -2291,6 +2296,65 @@ def test_circle_ai_certify_cli_artifact_dir_writes_standard_audit_set(
         assert artifact["exists"] is True
         assert len(artifact["sha256"]) == 64
         assert artifact["path"] == str(expected_paths[label])
+
+    artifact_manifest_report = build_contract_artifact_manifest_file_check_report(
+        artifact_manifest,
+        manifest_path=expected_paths["artifact_manifest"],
+    )
+    jsonschema.validate(
+        artifact_manifest_report,
+        build_contract_artifact_manifest_file_check_json_schema(),
+    )
+    assert artifact_manifest_report["ok"] is True
+    assert artifact_manifest_report["manifest_count"] == 1
+    assert artifact_manifest_report["summaries"][0]["artifact_count"] == 8
+    assert (
+        artifact_manifest_report["summaries"][0]["fingerprint_mismatch_count"]
+        == 0
+    )
+    assert artifact_manifest_report["summaries"][0]["schema_mismatch_count"] == 0
+
+    manifest_check_path = artifact_dir / f"{prefix}_artifact_manifest_check.json"
+    manifest_cli = subprocess.run(
+        [
+            sys.executable,
+            str(ARTIFACT_MANIFEST_CHECK_SCRIPT),
+            str(expected_paths["artifact_manifest"]),
+            "--report-out",
+            str(manifest_check_path),
+        ],
+        cwd=ROOT,
+        check=True,
+        text=True,
+        capture_output=True,
+    )
+    assert "circle AI artifact manifests ok=True manifests=1 failures=0" in (
+        manifest_cli.stdout
+    )
+    manifest_cli_report = json.loads(manifest_check_path.read_text())
+    jsonschema.validate(
+        manifest_cli_report,
+        build_contract_artifact_manifest_file_check_json_schema(),
+    )
+    assert manifest_cli_report["ok"] is True
+
+    expected_paths["request_json"].write_text(
+        expected_paths["request_json"].read_text() + "\n",
+        encoding="utf-8",
+    )
+    stale_cli = subprocess.run(
+        [
+            sys.executable,
+            str(ARTIFACT_MANIFEST_CHECK_SCRIPT),
+            str(expected_paths["artifact_manifest"]),
+        ],
+        cwd=ROOT,
+        check=False,
+        text=True,
+        capture_output=True,
+    )
+    assert stale_cli.returncode == 1
+    assert "sha256 mismatch" in stale_cli.stderr
 
 
 def test_circle_ai_certify_cli_writes_model_config_certification_bundle(

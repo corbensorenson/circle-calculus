@@ -59,6 +59,13 @@ DEFAULT_ARTIFACT_MANIFEST_SCHEMA = (
     / "generated"
     / "circle_ai_contract_artifact_manifest.schema.json"
 )
+DEFAULT_ARTIFACT_MANIFEST_FILE_CHECK_SCHEMA = (
+    ROOT
+    / "site"
+    / "data"
+    / "generated"
+    / "circle_ai_contract_artifact_manifest_file_check.schema.json"
+)
 EXPECTED_SCHEMA_ID = "circle_calculus.ai_contract_pack.v0"
 EXPECTED_ACCEPTANCE_POLICY_SCHEMA_ID = "circle_calculus.ai_contract_acceptance_policy.v0"
 EXPECTED_ACCEPTANCE_POLICY_REPORT_SCHEMA_ID = (
@@ -1319,6 +1326,12 @@ def main() -> int:
         validate_json_schema_file(
             DEFAULT_ARTIFACT_MANIFEST_SCHEMA,
             label="contract artifact manifest",
+        )
+    )
+    failures.extend(
+        validate_json_schema_file(
+            DEFAULT_ARTIFACT_MANIFEST_FILE_CHECK_SCHEMA,
+            label="contract artifact-manifest file-check report",
         )
     )
     for kind in args.require_kind:

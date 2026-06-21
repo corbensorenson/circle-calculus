@@ -887,6 +887,7 @@ def test_contract_runner_schema_json_change_runs_receipt_verifier_tests() -> Non
         "site/data/generated/circle_ai_contract_certification_bundle.schema.json",
         "site/data/generated/circle_ai_contract_certification_bundle_file_check.schema.json",
         "site/data/generated/circle_ai_contract_artifact_manifest.schema.json",
+        "site/data/generated/circle_ai_contract_artifact_manifest_file_check.schema.json",
     ]
 
     for path in paths:

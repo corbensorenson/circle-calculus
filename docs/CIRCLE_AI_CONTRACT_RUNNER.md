@@ -212,6 +212,18 @@ otherwise the contract family name. Use `--artifact-prefix` to override it. The
 manifest indexes the generated files, their schema ids, and their file SHA-256
 hashes.
 
+Downstream projects can verify a complete artifact directory from that manifest:
+
+```bash
+python scripts/check_circle_ai_artifact_manifest.py \
+  reports/rope_contract/standard_rope_config_artifact_manifest.json \
+  --report-out reports/rope_contract/standard_rope_config_artifact_manifest_check.json
+```
+
+The checker validates the manifest schema, referenced file existence,
+SHA-256 fingerprints, declared content schema ids, and the receipt summary
+fields mirrored into the manifest.
+
 Copyable starting points live under:
 
 ```text
@@ -372,6 +384,7 @@ future sharper theorem.
 
 ```python
 from circle_math.applications import (
+    build_contract_artifact_manifest_file_check_report,
     build_contract_certification_bundle,
     build_contract_certification_bundle_file_check_report,
     build_contract_receipt_file_check_report,
@@ -519,6 +532,7 @@ site/data/generated/circle_ai_contract_receipt_file_check.schema.json
 site/data/generated/circle_ai_contract_certification_bundle.schema.json
 site/data/generated/circle_ai_contract_certification_bundle_file_check.schema.json
 site/data/generated/circle_ai_contract_artifact_manifest.schema.json
+site/data/generated/circle_ai_contract_artifact_manifest_file_check.schema.json
 ```
 
 The request schema has contract-specific parameter shapes. RoPE and recurrence

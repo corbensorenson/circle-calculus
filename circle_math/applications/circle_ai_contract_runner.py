@@ -62,6 +62,9 @@ CERTIFICATION_BUNDLE_FILE_CHECK_SCHEMA_ID = (
 ARTIFACT_MANIFEST_SCHEMA_ID = (
     "circle_calculus.ai_contract_artifact_manifest.v0"
 )
+ARTIFACT_MANIFEST_FILE_CHECK_SCHEMA_ID = (
+    "circle_calculus.ai_contract_artifact_manifest_file_check.v0"
+)
 REQUEST_SCHEMA_PATH = "site/data/generated/circle_ai_contract_request.schema.json"
 REQUEST_VALIDATION_SCHEMA_PATH = (
     "site/data/generated/circle_ai_contract_request_validation.schema.json"
@@ -85,6 +88,10 @@ CERTIFICATION_BUNDLE_FILE_CHECK_SCHEMA_PATH = (
 )
 ARTIFACT_MANIFEST_SCHEMA_PATH = (
     "site/data/generated/circle_ai_contract_artifact_manifest.schema.json"
+)
+ARTIFACT_MANIFEST_FILE_CHECK_SCHEMA_PATH = (
+    "site/data/generated/"
+    "circle_ai_contract_artifact_manifest_file_check.schema.json"
 )
 
 SUPPORTED_CONTRACT_KINDS = (
@@ -3193,6 +3200,427 @@ def build_contract_artifact_manifest_json_schema() -> dict[str, Any]:
         },
         "additionalProperties": False,
     }
+
+
+def build_contract_artifact_manifest_file_check_json_schema() -> dict[str, Any]:
+    string_list = {"type": "array", "items": {"type": "string"}}
+    fingerprint = {
+        "anyOf": [
+            {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+            {"type": "null"},
+        ]
+    }
+    gate_policy = {
+        "type": "object",
+        "required": [
+            "allowed_statuses",
+            "allowed_decision_verdicts",
+            "allowed_assurance_levels",
+            "require_passed",
+        ],
+        "properties": {
+            "allowed_statuses": {
+                "type": "array",
+                "items": {"enum": list(STATUS_VALUES)},
+            },
+            "allowed_decision_verdicts": {
+                "type": "array",
+                "items": {"enum": list(DECISION_VERDICTS)},
+            },
+            "allowed_assurance_levels": {
+                "type": "array",
+                "items": {"enum": list(DECISION_ASSURANCE_LEVELS)},
+            },
+            "require_passed": {"type": "boolean"},
+        },
+        "additionalProperties": False,
+    }
+    artifact_summary = {
+        "type": "object",
+        "required": [
+            "label",
+            "path",
+            "resolved_path",
+            "exists",
+            "declared_exists",
+            "declared_sha256",
+            "actual_sha256",
+            "content_schema_id",
+            "actual_schema_id",
+            "ok",
+            "failures",
+        ],
+        "properties": {
+            "label": {"type": "string", "minLength": 1},
+            "path": {"type": "string", "minLength": 1},
+            "resolved_path": {"type": ["string", "null"]},
+            "exists": {"type": "boolean"},
+            "declared_exists": {"type": "boolean"},
+            "declared_sha256": fingerprint,
+            "actual_sha256": fingerprint,
+            "content_schema_id": {"type": ["string", "null"]},
+            "actual_schema_id": {"type": ["string", "null"]},
+            "ok": {"type": "boolean"},
+            "failures": string_list,
+        },
+        "additionalProperties": False,
+    }
+    summary = {
+        "type": "object",
+        "required": [
+            "path",
+            "kind",
+            "status",
+            "request_passed",
+            "decision_verdict",
+            "decision_assurance",
+            "artifact_fingerprint_algorithm",
+            "artifact_count",
+            "declared_artifact_count",
+            "missing_artifact_count",
+            "fingerprint_mismatch_count",
+            "schema_mismatch_count",
+            "artifact_prefix",
+            "artifact_dir",
+            "gate_policy",
+            "request_content_fingerprint",
+            "normalized_request_fingerprint",
+            "receipt_content_fingerprint",
+            "artifacts",
+            "failure_count",
+        ],
+        "properties": {
+            "path": {"type": "string", "minLength": 1},
+            "kind": {"type": ["string", "null"], "enum": [*SUPPORTED_CONTRACT_KINDS, None]},
+            "status": {"type": ["string", "null"], "enum": [*STATUS_VALUES, None]},
+            "request_passed": {"type": ["boolean", "null"]},
+            "decision_verdict": {
+                "type": ["string", "null"],
+                "enum": [*DECISION_VERDICTS, None],
+            },
+            "decision_assurance": {
+                "type": ["string", "null"],
+                "enum": [*DECISION_ASSURANCE_LEVELS, None],
+            },
+            "artifact_fingerprint_algorithm": {"const": "sha256-file-v1"},
+            "artifact_count": {"type": "integer", "minimum": 0},
+            "declared_artifact_count": {"type": "integer", "minimum": 0},
+            "missing_artifact_count": {"type": "integer", "minimum": 0},
+            "fingerprint_mismatch_count": {"type": "integer", "minimum": 0},
+            "schema_mismatch_count": {"type": "integer", "minimum": 0},
+            "artifact_prefix": {"type": "string", "minLength": 1},
+            "artifact_dir": {"type": ["string", "null"]},
+            "gate_policy": gate_policy,
+            "request_content_fingerprint": fingerprint,
+            "normalized_request_fingerprint": fingerprint,
+            "receipt_content_fingerprint": fingerprint,
+            "artifacts": {"type": "array", "items": artifact_summary},
+            "failure_count": {"type": "integer", "minimum": 0},
+        },
+        "additionalProperties": False,
+    }
+    return {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "$id": (
+            "https://circle-calculus.local/schemas/"
+            "circle_ai_contract_artifact_manifest_file_check.schema.json"
+        ),
+        "title": "Circle AI Contract Artifact Manifest File Check Report",
+        "type": "object",
+        "required": [
+            "schema_id",
+            "ok",
+            "manifest_count",
+            "failure_count",
+            "failures",
+            "summaries",
+        ],
+        "properties": {
+            "schema_id": {"const": ARTIFACT_MANIFEST_FILE_CHECK_SCHEMA_ID},
+            "ok": {"type": "boolean"},
+            "manifest_count": {"type": "integer", "minimum": 0},
+            "failure_count": {"type": "integer", "minimum": 0},
+            "failures": string_list,
+            "summaries": {"type": "array", "items": summary},
+        },
+        "additionalProperties": False,
+    }
+
+
+def _file_sha256_or_none(path: Path) -> str | None:
+    if not path.exists() or not path.is_file():
+        return None
+    digest = hashlib.sha256()
+    with path.open("rb") as handle:
+        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
+
+
+def _display_manifest_check_path(path: Path) -> str:
+    try:
+        return str(path.relative_to(Path.cwd()))
+    except ValueError:
+        return str(path)
+
+
+def _artifact_resolution_candidates(raw_path: str, manifest_path: Path) -> list[Path]:
+    path = Path(raw_path)
+    candidates = [path]
+    if not path.is_absolute():
+        candidates.append(manifest_path.parent / path)
+    unique: list[Path] = []
+    seen: set[str] = set()
+    for candidate in candidates:
+        key = str(candidate)
+        if key not in seen:
+            seen.add(key)
+            unique.append(candidate)
+    return unique
+
+
+def _load_artifact_schema_id(path: Path) -> str | None:
+    try:
+        payload = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError, UnicodeDecodeError):
+        return None
+    if not isinstance(payload, Mapping):
+        return None
+    schema_id = payload.get("schema_id")
+    return schema_id if isinstance(schema_id, str) else None
+
+
+def _receipt_consistency_failures(
+    *,
+    manifest: Mapping[str, Any],
+    artifact_by_label: Mapping[str, Mapping[str, Any]],
+    manifest_path: Path,
+) -> list[str]:
+    receipt_artifact = artifact_by_label.get("receipt_json")
+    if not isinstance(receipt_artifact, Mapping):
+        return []
+    raw_path = receipt_artifact.get("path")
+    if not isinstance(raw_path, str):
+        return []
+    receipt_path = next(
+        (
+            candidate
+            for candidate in _artifact_resolution_candidates(raw_path, manifest_path)
+            if candidate.exists()
+        ),
+        None,
+    )
+    if receipt_path is None:
+        return []
+    try:
+        receipt = json.loads(receipt_path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError, UnicodeDecodeError):
+        return [f"receipt_json artifact is not readable JSON: {raw_path}"]
+    if not isinstance(receipt, Mapping):
+        return [f"receipt_json artifact is not a JSON object: {raw_path}"]
+
+    failures: list[str] = []
+    decision = receipt.get("decision")
+    decision_dict = decision if isinstance(decision, Mapping) else {}
+    comparisons = (
+        ("kind", manifest.get("kind"), receipt.get("kind")),
+        ("status", manifest.get("status"), receipt.get("status")),
+        (
+            "request_passed",
+            manifest.get("request_passed"),
+            receipt.get("request_passed"),
+        ),
+        (
+            "decision_verdict",
+            manifest.get("decision_verdict"),
+            decision_dict.get("verdict"),
+        ),
+        (
+            "decision_assurance",
+            manifest.get("decision_assurance"),
+            decision_dict.get("assurance"),
+        ),
+        (
+            "request_content_fingerprint",
+            manifest.get("request_content_fingerprint"),
+            receipt.get("request_content_fingerprint"),
+        ),
+        (
+            "normalized_request_fingerprint",
+            manifest.get("normalized_request_fingerprint"),
+            receipt.get("normalized_request_fingerprint"),
+        ),
+        (
+            "receipt_content_fingerprint",
+            manifest.get("receipt_content_fingerprint"),
+            receipt.get("receipt_content_fingerprint"),
+        ),
+    )
+    for field, manifest_value, receipt_value in comparisons:
+        if manifest_value != receipt_value:
+            failures.append(
+                f"manifest {field} does not match receipt_json: "
+                f"{manifest_value!r} != {receipt_value!r}"
+            )
+    return failures
+
+
+def build_contract_artifact_manifest_file_check_report(
+    manifest: Mapping[str, Any],
+    *,
+    manifest_path: str | Path,
+) -> dict[str, Any]:
+    """Validate a saved artifact manifest and the files it names.
+
+    This is the consumer-facing counterpart to ``--artifact-dir``. It verifies
+    the manifest schema, every referenced file's SHA-256, declared content
+    schema ids, and the receipt summary fields mirrored into the manifest.
+    """
+
+    manifest_path = Path(manifest_path)
+    path_failures: list[str] = []
+    summaries: list[dict[str, Any]] = []
+    try:
+        jsonschema.validate(manifest, build_contract_artifact_manifest_json_schema())
+        artifacts = manifest.get("artifacts")
+        if not isinstance(artifacts, list):
+            artifacts = []
+        if manifest.get("artifact_count") != len(artifacts):
+            path_failures.append(
+                "artifact_count does not match artifacts length: "
+                f"{manifest.get('artifact_count')!r} != {len(artifacts)!r}"
+            )
+
+        seen_labels: set[str] = set()
+        artifact_summaries: list[dict[str, Any]] = []
+        missing_count = 0
+        fingerprint_mismatch_count = 0
+        schema_mismatch_count = 0
+        artifact_by_label: dict[str, Mapping[str, Any]] = {}
+        for artifact in artifacts:
+            artifact_failures: list[str] = []
+            if not isinstance(artifact, Mapping):
+                path_failures.append("artifact entry was not an object")
+                continue
+            label = artifact.get("label")
+            raw_path = artifact.get("path")
+            declared_sha256 = artifact.get("sha256")
+            content_schema_id = artifact.get("content_schema_id")
+            declared_exists = artifact.get("exists")
+            if isinstance(label, str):
+                if label in seen_labels:
+                    artifact_failures.append(f"duplicate artifact label: {label}")
+                seen_labels.add(label)
+                artifact_by_label[label] = artifact
+            resolved_path: Path | None = None
+            actual_sha256: str | None = None
+            actual_schema_id: str | None = None
+            if not isinstance(raw_path, str):
+                artifact_failures.append("artifact path was not a string")
+            else:
+                for candidate in _artifact_resolution_candidates(raw_path, manifest_path):
+                    if candidate.exists():
+                        resolved_path = candidate
+                        break
+                if resolved_path is None:
+                    artifact_failures.append(f"artifact file is missing: {raw_path}")
+                    missing_count += 1
+                else:
+                    actual_sha256 = _file_sha256_or_none(resolved_path)
+                    actual_schema_id = _load_artifact_schema_id(resolved_path)
+            if declared_exists is not True:
+                artifact_failures.append(
+                    f"artifact declared exists={declared_exists!r}, expected true"
+                )
+            if declared_sha256 != actual_sha256:
+                artifact_failures.append(
+                    f"artifact sha256 mismatch: {declared_sha256!r} != {actual_sha256!r}"
+                )
+                fingerprint_mismatch_count += 1
+            if content_schema_id is not None and content_schema_id != actual_schema_id:
+                artifact_failures.append(
+                    "artifact schema_id mismatch: "
+                    f"{content_schema_id!r} != {actual_schema_id!r}"
+                )
+                schema_mismatch_count += 1
+            artifact_summaries.append(
+                {
+                    "label": str(label),
+                    "path": str(raw_path),
+                    "resolved_path": (
+                        None
+                        if resolved_path is None
+                        else _display_manifest_check_path(resolved_path)
+                    ),
+                    "exists": resolved_path is not None,
+                    "declared_exists": bool(declared_exists),
+                    "declared_sha256": declared_sha256,
+                    "actual_sha256": actual_sha256,
+                    "content_schema_id": content_schema_id,
+                    "actual_schema_id": actual_schema_id,
+                    "ok": not artifact_failures,
+                    "failures": artifact_failures,
+                }
+            )
+            path_failures.extend(
+                f"{label}: {failure}" for failure in artifact_failures
+            )
+
+        path_failures.extend(
+            _receipt_consistency_failures(
+                manifest=manifest,
+                artifact_by_label=artifact_by_label,
+                manifest_path=manifest_path,
+            )
+        )
+        summary = {
+            "path": _display_manifest_check_path(manifest_path),
+            "kind": manifest.get("kind"),
+            "status": manifest.get("status"),
+            "request_passed": manifest.get("request_passed"),
+            "decision_verdict": manifest.get("decision_verdict"),
+            "decision_assurance": manifest.get("decision_assurance"),
+            "artifact_fingerprint_algorithm": manifest.get(
+                "artifact_fingerprint_algorithm"
+            ),
+            "artifact_count": len(artifact_summaries),
+            "declared_artifact_count": int(manifest.get("artifact_count", 0)),
+            "missing_artifact_count": missing_count,
+            "fingerprint_mismatch_count": fingerprint_mismatch_count,
+            "schema_mismatch_count": schema_mismatch_count,
+            "artifact_prefix": manifest.get("artifact_prefix"),
+            "artifact_dir": manifest.get("artifact_dir"),
+            "gate_policy": manifest.get("gate_policy"),
+            "request_content_fingerprint": manifest.get(
+                "request_content_fingerprint"
+            ),
+            "normalized_request_fingerprint": manifest.get(
+                "normalized_request_fingerprint"
+            ),
+            "receipt_content_fingerprint": manifest.get(
+                "receipt_content_fingerprint"
+            ),
+            "artifacts": artifact_summaries,
+            "failure_count": len(path_failures),
+        }
+        summaries.append(summary)
+    except (ValueError, jsonschema.ValidationError, jsonschema.SchemaError) as exc:
+        path_failures.append(str(exc))
+
+    failures = [f"{_display_manifest_check_path(manifest_path)}: {failure}" for failure in path_failures]
+    report = {
+        "schema_id": ARTIFACT_MANIFEST_FILE_CHECK_SCHEMA_ID,
+        "ok": not failures,
+        "manifest_count": 1,
+        "failure_count": len(failures),
+        "failures": failures,
+        "summaries": summaries,
+    }
+    jsonschema.validate(
+        report,
+        build_contract_artifact_manifest_file_check_json_schema(),
+    )
+    return report
 
 
 def build_contract_receipt_file_check_json_schema() -> dict[str, Any]:

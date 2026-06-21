@@ -29,6 +29,7 @@ site/data/generated/circle_ai_contract_receipt_file_check.schema.json
 site/data/generated/circle_ai_contract_certification_bundle.schema.json
 site/data/generated/circle_ai_contract_certification_bundle_file_check.schema.json
 site/data/generated/circle_ai_contract_artifact_manifest.schema.json
+site/data/generated/circle_ai_contract_artifact_manifest_file_check.schema.json
 ```
 
 The schema id is:
@@ -367,6 +368,8 @@ report. `site/data/generated/circle_ai_contract_certification_bundle_file_check.
 covers saved-bundle verification reports, and
 `site/data/generated/circle_ai_contract_artifact_manifest.schema.json` covers the
 standard artifact-directory index emitted by the unified runner.
+`site/data/generated/circle_ai_contract_artifact_manifest_file_check.schema.json`
+covers saved-manifest verification reports that re-hash the referenced files.
 The default policy covers the four flagship contracts: RoPE, KV-cache, sparse
 attention, and recurrence schedules.
 Use `python scripts/circle_ai_contract_ready.py --print-refreshed-policy` after
