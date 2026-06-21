@@ -56,7 +56,7 @@
       "id": "CC-AI-CONTRACT-MEMORY-001"
     },
     "kv_cache_ring_buffer": {
-      "content_fingerprint": "21824e6aa4564a226c4a65c69818a3c572128a3e5d833aa2f5471e1235fefd8f",
+      "content_fingerprint": "bfebf150ce45d1eb124ea553bf2ba8c62008751ebec9f8600b83cc09e0526a46",
       "content_fingerprint_algorithm": "sha256-json-v1",
       "id": "CC-AI-CONTRACT-KV-001"
     },
@@ -175,7 +175,7 @@
       ],
       "ready_for_downstream_fixture_use": true,
       "required_fields_present": true,
-      "theorem_count": 38,
+      "theorem_count": 54,
       "unproved_theorem_count": 0,
       "unproved_theorem_ids": [],
       "unresolved_theorem_count": 0,
@@ -3050,7 +3050,7 @@
         "unproved_theorem_ids": [],
         "unresolved_theorem_ids": []
       },
-      "content_fingerprint": "21824e6aa4564a226c4a65c69818a3c572128a3e5d833aa2f5471e1235fefd8f",
+      "content_fingerprint": "bfebf150ce45d1eb124ea553bf2ba8c62008751ebec9f8600b83cc09e0526a46",
       "content_fingerprint_algorithm": "sha256-json-v1",
       "contract_passed": true,
       "dictionary_ids": [
@@ -3065,11 +3065,28 @@
       ],
       "fields": {
         "adapter_request_pass": true,
+        "batch_all_retained": true,
+        "batch_slots": [
+          4,
+          8,
+          13,
+          15
+        ],
+        "batch_slots_distinct": true,
+        "batch_tokens": [
+          20,
+          24,
+          29,
+          31
+        ],
         "cache_size": 16,
         "certificate_schema_id": "circle_calculus.kv_cache_ring_buffer_certificate.v0",
         "current": 31,
         "fail_iff_stale_count_positive_under_nonfuture_nodup": true,
         "live_window_full_coverage": true,
+        "live_window_request_pass": true,
+        "live_window_request_slots_distinct": true,
+        "live_window_request_token_count": 16,
         "live_window_slot_range_covered": true,
         "pass_iff_stale_count_zero_under_nonfuture_nodup": true,
         "requested_slots": [
@@ -3143,7 +3160,11 @@
         "stale_probe_stale_member_blocks_pass": true,
         "stale_probe_stale_requested_count": 1,
         "stale_probe_tokens_distinct": true,
-        "stale_requested_count": 0
+        "stale_requested_count": 0,
+        "window_next_overwrite_token": 47,
+        "window_no_same_slot_overwrite_before_current": true,
+        "window_retained": true,
+        "window_slot": 15
       },
       "id": "CC-AI-CONTRACT-KV-001",
       "integration_use": "KV-cache request auditing: retained-window freshness, stale-request rejection, generated live-window coverage, and sink-window policy checks.",
@@ -3224,11 +3245,109 @@
           "proved"
         ],
         "source": "manifests/**/*.yaml",
-        "theorem_count": 38,
+        "theorem_count": 54,
         "theorems": [
           {
             "id": "AIM-T0059",
             "lean_name": "Circle.Applications.kvCacheSlot_lt_cacheSize",
+            "proved": true,
+            "resolved": true,
+            "status": "lean_proved"
+          },
+          {
+            "id": "AIM-T0060",
+            "lean_name": "Circle.Applications.kvCacheSlot_add_cacheSize",
+            "proved": true,
+            "resolved": true,
+            "status": "lean_proved"
+          },
+          {
+            "id": "AIM-T0061",
+            "lean_name": "Circle.Applications.kvCacheSlotCollision_iff_gap_dvd",
+            "proved": true,
+            "resolved": true,
+            "status": "lean_proved"
+          },
+          {
+            "id": "AIM-T0062",
+            "lean_name": "Circle.Applications.kvCacheSlot_ne_of_positive_gap_lt_cache",
+            "proved": true,
+            "resolved": true,
+            "status": "lean_proved"
+          },
+          {
+            "id": "AIM-T0063",
+            "lean_name": "Circle.Applications.kvCacheWindow_nextOverwrite_after_current",
+            "proved": true,
+            "resolved": true,
+            "status": "lean_proved"
+          },
+          {
+            "id": "AIM-T0064",
+            "lean_name": "Circle.Applications.kvCacheWindow_retainedSlot_ne_current_of_lt",
+            "proved": true,
+            "resolved": true,
+            "status": "lean_proved"
+          },
+          {
+            "id": "AIM-T0065",
+            "lean_name": "Circle.Applications.kvCacheWindow_retainedSlots_ne_of_lt",
+            "proved": true,
+            "resolved": true,
+            "status": "lean_proved"
+          },
+          {
+            "id": "AIM-T0066",
+            "lean_name": "Circle.Applications.kvCacheWindow_retainedSlots_ne_of_ne",
+            "proved": true,
+            "resolved": true,
+            "status": "lean_proved"
+          },
+          {
+            "id": "AIM-T0069",
+            "lean_name": "Circle.Applications.kvCacheWindowContains_iff_current_lt_nextOverwrite",
+            "proved": true,
+            "resolved": true,
+            "status": "lean_proved"
+          },
+          {
+            "id": "AIM-T0070",
+            "lean_name": "Circle.Applications.not_kvCacheWindowContains_iff_nextOverwrite_le_current_of_le",
+            "proved": true,
+            "resolved": true,
+            "status": "lean_proved"
+          },
+          {
+            "id": "AIM-T0075",
+            "lean_name": "Circle.Applications.kvCacheWindow_noSameSlotOverwrite_between",
+            "proved": true,
+            "resolved": true,
+            "status": "lean_proved"
+          },
+          {
+            "id": "AIM-T0076",
+            "lean_name": "Circle.Applications.kvCacheWindow_sameSlotOverwrite_witness_of_not_contains",
+            "proved": true,
+            "resolved": true,
+            "status": "lean_proved"
+          },
+          {
+            "id": "AIM-T0077",
+            "lean_name": "Circle.Applications.kvCacheWindowContains_iff_noSameSlotOverwrite_between_of_le",
+            "proved": true,
+            "resolved": true,
+            "status": "lean_proved"
+          },
+          {
+            "id": "AIM-T0091",
+            "lean_name": "Circle.Applications.kvCacheNoSameSlotOverwriteTrace_iff_current_lt_nextOverwrite_of_le",
+            "proved": true,
+            "resolved": true,
+            "status": "lean_proved"
+          },
+          {
+            "id": "AIM-T0099",
+            "lean_name": "Circle.Applications.not_kvCacheWindowContains_iff_exists_sameSlotOverwrite_between_of_le",
             "proved": true,
             "resolved": true,
             "status": "lean_proved"
@@ -3262,22 +3381,15 @@
             "status": "lean_proved"
           },
           {
-            "id": "AIM-T0086",
-            "lean_name": "Circle.Applications.kvCacheAdapterRequestTracePass_iff_nonFuture_nodup_traceFresh",
-            "proved": true,
-            "resolved": true,
-            "status": "lean_proved"
-          },
-          {
-            "id": "AIM-T0091",
-            "lean_name": "Circle.Applications.kvCacheNoSameSlotOverwriteTrace_iff_current_lt_nextOverwrite_of_le",
-            "proved": true,
-            "resolved": true,
-            "status": "lean_proved"
-          },
-          {
             "id": "AIM-T0092",
             "lean_name": "Circle.Applications.kvCacheBatchNoSameSlotOverwriteTrace_iff_all_nextOverwrite_after_current_of_forall_le",
+            "proved": true,
+            "resolved": true,
+            "status": "lean_proved"
+          },
+          {
+            "id": "AIM-T0086",
+            "lean_name": "Circle.Applications.kvCacheAdapterRequestTracePass_iff_nonFuture_nodup_traceFresh",
             "proved": true,
             "resolved": true,
             "status": "lean_proved"
@@ -3409,6 +3521,20 @@
             "status": "lean_proved"
           },
           {
+            "id": "AIM-T0087",
+            "lean_name": "Circle.Applications.kvCacheLiveWindowTokens_adapterRequestTracePass",
+            "proved": true,
+            "resolved": true,
+            "status": "lean_proved"
+          },
+          {
+            "id": "AIM-T0088",
+            "lean_name": "Circle.Applications.kvCacheLiveWindowRequestTraceContract_iff_tokens_eq_liveWindow",
+            "proved": true,
+            "resolved": true,
+            "status": "lean_proved"
+          },
+          {
             "id": "AIM-T0104",
             "lean_name": "Circle.Applications.kvCacheSinkWindowContains_iff_mem_sinkWindowTokens",
             "proved": true,
@@ -3465,6 +3591,13 @@
             "status": "lean_proved"
           },
           {
+            "id": "AIM-T0089",
+            "lean_name": "Circle.Applications.kvCacheLiveWindowRequestTraceContract_default_16_31",
+            "proved": true,
+            "resolved": true,
+            "status": "lean_proved"
+          },
+          {
             "id": "AIM-T0105",
             "lean_name": "Circle.Applications.kvCacheSinkWindowTokens_default_4_16_31",
             "proved": true,
@@ -3504,13 +3637,26 @@
       "status": "fixture",
       "theorem_ids": [
         "AIM-T0059",
+        "AIM-T0060",
+        "AIM-T0061",
+        "AIM-T0062",
+        "AIM-T0063",
+        "AIM-T0064",
+        "AIM-T0065",
+        "AIM-T0066",
+        "AIM-T0069",
+        "AIM-T0070",
+        "AIM-T0075",
+        "AIM-T0076",
+        "AIM-T0077",
+        "AIM-T0091",
+        "AIM-T0099",
         "AIM-T0067",
         "AIM-T0068",
         "AIM-T0078",
         "AIM-T0079",
-        "AIM-T0086",
-        "AIM-T0091",
         "AIM-T0092",
+        "AIM-T0086",
         "AIM-T0093",
         "AIM-T0094",
         "AIM-T0095",
@@ -3529,6 +3675,8 @@
         "AIM-T0081",
         "AIM-T0082",
         "AIM-T0083",
+        "AIM-T0087",
+        "AIM-T0088",
         "AIM-T0104",
         "AIM-T0108",
         "AIM-T0110",
@@ -3537,6 +3685,7 @@
         "AIM-T0136",
         "AIM-T0137",
         "AIM-T0148",
+        "AIM-T0089",
         "AIM-T0105",
         "AIM-T0109",
         "AIM-T0118",
@@ -7931,7 +8080,7 @@
       "schema_id": "circle_calculus.theseus_hive_ai_contracts.v0"
     }
   },
-  "pack_content_fingerprint": "c294e169fc6a33c31223c57cc0ef957107d55dc3682e0cb6864665d0a9e53e15",
+  "pack_content_fingerprint": "0d4de6253ec22734f061228271cda060198fe2c9ee00a6bcf088952ce7756066",
   "planner_recommendation_index": {
     "FANOUT-AUDIT-DUPLICATE-COLLAPSED-BUDGET": {
       "action_kind": "audit_duplicate_collapsed_candidate_budget",

@@ -146,7 +146,7 @@
       ]
     },
     {
-      "expected_contract_fingerprint": "21824e6aa4564a226c4a65c69818a3c572128a3e5d833aa2f5471e1235fefd8f",
+      "expected_contract_fingerprint": "bfebf150ce45d1eb124ea553bf2ba8c62008751ebec9f8600b83cc09e0526a46",
       "kind": "kv_cache_ring_buffer",
       "required_fields": [
         "stale_probe_first_stale_token",
@@ -377,7 +377,7 @@
       ]
     }
   ],
-  "expected_pack_fingerprint": "c294e169fc6a33c31223c57cc0ef957107d55dc3682e0cb6864665d0a9e53e15",
+  "expected_pack_fingerprint": "0d4de6253ec22734f061228271cda060198fe2c9ee00a6bcf088952ce7756066",
   "policy_id": "circle_ai_flagship_contracts_acceptance_v0",
   "policy_name": "Circle AI flagship contracts acceptance policy",
   "schema_id": "circle_calculus.ai_contract_acceptance_policy.v0"

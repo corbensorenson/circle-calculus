@@ -18,8 +18,11 @@ import yaml
 
 from .circle_ai import (
     certify_kv_cache_adapter_request_trace,
+    certify_kv_cache_batch,
     certify_kv_cache_live_window,
+    certify_kv_cache_live_window_request,
     certify_kv_cache_sink_window,
+    certify_kv_cache_window,
     certify_stride_family_coverage,
 )
 from .rope_certifier import (
@@ -3555,6 +3558,16 @@ def _rope_position_contract() -> dict[str, Any]:
 
 
 def _kv_cache_contract() -> dict[str, Any]:
+    window = certify_kv_cache_window(
+        cache_size=16,
+        current=31,
+        token=31,
+    )
+    batch = certify_kv_cache_batch(
+        cache_size=16,
+        current=31,
+        tokens=(20, 24, 29, 31),
+    )
     adapter = certify_kv_cache_adapter_request_trace(
         cache_size=16,
         current=31,
@@ -3568,19 +3581,40 @@ def _kv_cache_contract() -> dict[str, Any]:
         request_id="public_pack_stale_probe",
     )
     live_window = certify_kv_cache_live_window(cache_size=16, current=31)
+    live_window_request = certify_kv_cache_live_window_request(
+        cache_size=16,
+        current=31,
+        request_id="public_pack_generated_live_window",
+    )
     sink_window = certify_kv_cache_sink_window(sink_size=4, cache_size=16, current=31)
     theorem_ids = _unique(
-        adapter.theorem_ids
+        window.theorem_ids
+        + batch.theorem_ids
+        + adapter.theorem_ids
         + stale_probe.theorem_ids
         + live_window.theorem_ids
+        + live_window_request.theorem_ids
         + sink_window.theorem_ids
+        + getattr(window, "fixture_theorem_ids", ())
+        + getattr(batch, "fixture_theorem_ids", ())
         + getattr(adapter, "fixture_theorem_ids", ())
         + getattr(stale_probe, "fixture_theorem_ids", ())
         + getattr(live_window, "fixture_theorem_ids", ())
+        + getattr(live_window_request, "fixture_theorem_ids", ())
         + sink_window.fixture_theorem_ids
     )
     fields = {
         "certificate_schema_id": "circle_calculus.kv_cache_ring_buffer_certificate.v0",
+        "window_retained": window.retained,
+        "window_slot": window.slot,
+        "window_next_overwrite_token": window.next_overwrite_token,
+        "window_no_same_slot_overwrite_before_current": (
+            window.no_same_slot_overwrite_before_current
+        ),
+        "batch_tokens": list(batch.tokens),
+        "batch_slots": list(batch.slots),
+        "batch_all_retained": batch.all_retained,
+        "batch_slots_distinct": batch.slots_distinct,
         "cache_size": adapter.cache_size,
         "current": adapter.current,
         "requested_tokens": list(adapter.requested_tokens),
@@ -3621,6 +3655,9 @@ def _kv_cache_contract() -> dict[str, Any]:
         ),
         "live_window_full_coverage": live_window.full_coverage_contract,
         "live_window_slot_range_covered": live_window.slot_range_covered,
+        "live_window_request_pass": live_window_request.pass_certificate,
+        "live_window_request_token_count": live_window_request.request_token_count,
+        "live_window_request_slots_distinct": live_window_request.slots_distinct,
         "sink_size": sink_window.sink_size,
         "sink_window_tokens": list(sink_window.tokens),
         "sink_window_token_count": sink_window.token_count,

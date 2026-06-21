@@ -986,6 +986,89 @@ def test_circle_ai_certify_cli_writes_receipt_check_report(
     ]
 
 
+@pytest.mark.parametrize(
+    ("subcommand_args", "expected_kind"),
+    [
+        (
+            [
+                "kv-cache",
+                "--cache-size",
+                "16",
+                "--current",
+                "31",
+                "--token",
+                "31",
+                "--batch-tokens",
+                "20,24,29,31",
+                "--sink-size",
+                "4",
+            ],
+            "kv_cache_ring_buffer",
+        ),
+        (
+            [
+                "sparse-attention",
+                "--context",
+                "32",
+                "--strides",
+                "5,11,17",
+                "--path-length",
+                "16",
+                "--local-window",
+                "9",
+            ],
+            "sparse_attention_coverage",
+        ),
+        (
+            ["recurrence"],
+            "recurrence_schedule",
+        ),
+    ],
+)
+def test_circle_ai_certify_cli_writes_receipt_checks_for_non_rope_families(
+    tmp_path: Path,
+    subcommand_args: list[str],
+    expected_kind: str,
+) -> None:
+    receipt_path = tmp_path / f"{expected_kind}.receipt.json"
+    report_path = tmp_path / f"{expected_kind}.check.json"
+
+    result = subprocess.run(
+        [
+            sys.executable,
+            str(SCRIPT),
+            *subcommand_args,
+            "--json-out",
+            str(receipt_path),
+            "--receipt-check-out",
+            str(report_path),
+            "--require-status",
+            "proved",
+            "--require-passed",
+            "--format",
+            "json",
+        ],
+        cwd=ROOT,
+        check=True,
+        text=True,
+        capture_output=True,
+    )
+
+    receipt = json.loads(receipt_path.read_text())
+    report = json.loads(report_path.read_text())
+    assert json.loads(result.stdout) == receipt
+    assert receipt["kind"] == expected_kind
+    assert receipt["status"] == "proved"
+    assert receipt["request_passed"] is True
+    assert receipt["proof_status"]["all_theorem_ids_proved"] is True
+    jsonschema.validate(report, build_contract_receipt_file_check_json_schema())
+    assert report["ok"] is True
+    assert report["summaries"][0]["kind"] == expected_kind
+    assert report["summaries"][0]["receipt_content_fingerprint"] == receipt[
+        "receipt_content_fingerprint"
+    ]
+
+
 def test_circle_ai_certify_cli_receipt_check_requires_saved_receipt(
     tmp_path: Path,
 ) -> None:
