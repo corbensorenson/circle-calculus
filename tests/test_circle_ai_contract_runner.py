@@ -383,6 +383,20 @@ def test_receipt_validator_requires_typed_proof_layer_buckets(
         for failure in failures
     )
 
+    duplicate_layer_field = json.loads(json.dumps(receipt))
+    duplicate_layer_field["proof_layers"]["numerical_only_fields"].append(
+        duplicate_layer_field["proof_layers"]["proved_fields"][0]
+    )
+    duplicate_layer_field["receipt_content_fingerprint"] = _receipt_fingerprint(
+        duplicate_layer_field
+    )
+    failures = validate_contract_receipt(duplicate_layer_field)
+    assert any(
+        "proof layer field appears in multiple buckets" in failure
+        and duplicate_layer_field["proof_layers"]["proved_fields"][0] in failure
+        for failure in failures
+    )
+
     extra_key = json.loads(json.dumps(receipt))
     extra_key["proof_statuz"] = {}
     extra_key["receipt_content_fingerprint"] = _receipt_fingerprint(extra_key)

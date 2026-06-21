@@ -1456,6 +1456,7 @@ def validate_contract_receipt(receipt: Mapping[str, Any]) -> list[str]:
     if not isinstance(proof_layers, dict):
         failures.append("proof_layers must be an object")
     else:
+        field_buckets: dict[str, list[str]] = {}
         for bucket in PROOF_LAYER_BUCKETS:
             fields = proof_layers.get(bucket)
             if not isinstance(fields, list):
@@ -1463,6 +1464,15 @@ def validate_contract_receipt(receipt: Mapping[str, Any]) -> list[str]:
             elif not all(isinstance(field, str) and field for field in fields):
                 failures.append(
                     f"proof_layers.{bucket} must contain non-empty strings"
+                )
+            else:
+                for field in fields:
+                    field_buckets.setdefault(field, []).append(bucket)
+        for field, buckets in sorted(field_buckets.items()):
+            if len(buckets) > 1:
+                failures.append(
+                    "proof layer field appears in multiple buckets: "
+                    f"{field} in {', '.join(buckets)}"
                 )
     proof_status = receipt.get("proof_status")
     if not isinstance(proof_status, dict):
