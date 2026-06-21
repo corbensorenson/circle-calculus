@@ -1901,7 +1901,11 @@ def test_circle_ai_certify_cli_rejects_receipt_schema_drift(
     assert "schema_id" in result.stderr
 
 
-def test_circle_ai_certify_cli_receipt_gate_rejects_failed_request() -> None:
+def test_circle_ai_certify_cli_receipt_gate_rejects_failed_request(
+    tmp_path: Path,
+) -> None:
+    report_path = tmp_path / "failed_gate_report.json"
+
     result = subprocess.run(
         [
             sys.executable,
@@ -1913,6 +1917,8 @@ def test_circle_ai_certify_cli_receipt_gate_rejects_failed_request() -> None:
             "1/999",
             "--format",
             "json",
+            "--gate-report-out",
+            str(report_path),
             "--require-status",
             "impossible",
             "--require-passed",
@@ -1924,9 +1930,15 @@ def test_circle_ai_certify_cli_receipt_gate_rejects_failed_request() -> None:
     )
 
     payload = json.loads(result.stdout)
+    report = json.loads(report_path.read_text())
     assert result.returncode == 1
     assert payload["status"] == "impossible"
     assert payload["request_passed"] is False
+    jsonschema.validate(report, build_contract_receipt_file_check_json_schema())
+    assert report["ok"] is False
+    assert report["failure_count"] == 1
+    assert report["summaries"][0]["status"] == "impossible"
+    assert report["summaries"][0]["request_passed"] is False
     assert "receipt_gate_failure=" in result.stderr
     assert "request_passed was not true" in result.stderr
 

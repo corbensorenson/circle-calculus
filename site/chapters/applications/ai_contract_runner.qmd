@@ -102,6 +102,10 @@ the receipt, so downstream tools can pin it before rerunning or auditing the
 certificate.
 The `--require-*` flags are CI gates: the receipt is still printed or written,
 then the command exits nonzero if the requested status/pass policy is not met.
+Use `--gate-report-out reports/rope_gate.json` when CI needs a compact
+schema-validated pass/fail report for the emitted receipt. This does not require
+saving the full receipt. Use `--json-out` plus `--receipt-check-out` when the
+audit trail should also point at a saved receipt file.
 
 Expected shape:
 
@@ -205,6 +209,21 @@ different generated pack.
 Use `--receipt-check-out` with `--json-out` to write the same schema-validated
 pack-aware check report that a later `scripts/check_circle_ai_receipt.py` run
 would produce for the saved receipt.
+Use `--gate-report-out` without `--json-out` to write the same report shape for
+the in-memory receipt:
+
+```bash
+python scripts/circle_ai_certify.py rope \
+  --head-dim 128 \
+  --base 10000 \
+  --context 131072 \
+  --requested-margin 1/328459 \
+  --gate-report-out reports/rope_gate.json \
+  --require-status proved \
+  --require-decision passed \
+  --require-assurance mixed_theorem_and_computation \
+  --require-passed
+```
 
 Checked-in examples are available for all four runner surfaces:
 
