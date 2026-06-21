@@ -1237,6 +1237,15 @@ def validate_contract_request(request: Mapping[str, Any]) -> list[str]:
     """Return request-shape failures for the public runner request object."""
 
     failures: list[str] = []
+    extra_keys = sorted(
+        str(key)
+        for key in request
+        if key not in {"schema_id", "kind", "parameters"}
+    )
+    if extra_keys:
+        failures.append(
+            "request contains unsupported keys: " + ", ".join(extra_keys)
+        )
     if request.get("schema_id") != REQUEST_SCHEMA_ID:
         failures.append(f"schema_id must be {REQUEST_SCHEMA_ID!r}")
     kind = request.get("kind")
@@ -1749,7 +1758,7 @@ def build_contract_request_json_schema() -> dict[str, Any]:
                 },
             },
         ],
-        "additionalProperties": True,
+        "additionalProperties": False,
     }
 
 

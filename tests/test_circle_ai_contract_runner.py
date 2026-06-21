@@ -438,6 +438,12 @@ def test_request_api_reports_malformed_requests() -> None:
         "kind": "recurrence",
         "parameters": {"shift_presses": 3},
     }
+    typo_top_level = {
+        "schema_id": "circle_calculus.ai_contract_request.v0",
+        "kind": "rope",
+        "parameters": {},
+        "paramaters": {},
+    }
 
     assert "parameters must be an object" in validate_contract_request(
         missing_parameters
@@ -462,6 +468,10 @@ def test_request_api_reports_malformed_requests() -> None:
     assert any(
         "unsupported keys" in failure
         for failure in validate_contract_request(typo_parameter)
+    )
+    assert any(
+        "request contains unsupported keys: paramaters" in failure
+        for failure in validate_contract_request(typo_top_level)
     )
     assert build_contract_request_validation_report(typo_parameter) == {
         "schema_id": "circle_calculus.ai_contract_request_validation.v0",
@@ -562,11 +572,19 @@ def test_request_schema_validates_public_parameter_shapes() -> None:
         "kind": "recurrence",
         "parameters": {"shift_presses": 3},
     }
+    typo_top_level = {
+        "schema_id": "circle_calculus.ai_contract_request.v0",
+        "kind": "rope",
+        "parameters": {},
+        "paramaters": {},
+    }
 
     with pytest.raises(jsonschema.ValidationError):
         jsonschema.validate(missing_sparse_field, schema)
     with pytest.raises(jsonschema.ValidationError):
         jsonschema.validate(typo_parameter, schema)
+    with pytest.raises(jsonschema.ValidationError):
+        jsonschema.validate(typo_top_level, schema)
 
 
 def test_receipt_schema_exposes_runner_metadata() -> None:

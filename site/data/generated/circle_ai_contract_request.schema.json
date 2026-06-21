@@ -1,7 +1,7 @@
 {
   "$id": "https://circle-calculus.local/schemas/circle_ai_contract_request.schema.json",
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "additionalProperties": true,
+  "additionalProperties": false,
   "oneOf": [
     {
       "properties": {

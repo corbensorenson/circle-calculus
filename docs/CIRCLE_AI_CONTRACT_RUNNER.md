@@ -249,8 +249,8 @@ site/data/generated/circle_ai_contract_receipt_file_check.schema.json
 
 The request schema has contract-specific parameter shapes. RoPE and recurrence
 requests may rely on defaults, while KV-cache and sparse-attention requests must
-include their required fields. Unknown parameter keys are rejected so typoed
-configs fail before a receipt is issued.
+include their required fields. Unknown top-level request keys and unknown
+parameter keys are rejected so typoed configs fail before a receipt is issued.
 
 `validate_contract_request(request)` applies the same contract-specific checks
 inside Python, including required fields, unknown keys, numeric ranges, and
