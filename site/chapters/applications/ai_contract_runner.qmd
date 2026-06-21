@@ -263,7 +263,8 @@ It also records the batch gate policy. If a receipt violates the required
 status, decision, assurance, or pass condition, the checker still writes the
 report and exits nonzero.
 By default the batch includes both request-file examples and standard RoPE
-model-config examples.
+model-config examples, currently including 128k examples at RoPE bases `10000`
+and `500000`.
 
 Validate a receipt file after it has been handed to another project:
 

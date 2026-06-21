@@ -181,9 +181,10 @@ is still written with the receipt summaries and the command exits nonzero. Each
 summary includes the `normalized_request` object so downstream CI can compare
 the certified parameters without reopening every receipt file.
 By default it checks both `examples/circle_ai_requests/*.json` request files and
-`examples/circle_ai_model_configs/*.json` standard RoPE model configs. Model
-config examples are first converted into versioned Circle request JSON, then
-checked by the same receipt path.
+`examples/circle_ai_model_configs/*.json` standard RoPE model configs, currently
+including 128k examples at RoPE bases `10000` and `500000`. Model config
+examples are first converted into versioned Circle request JSON, then checked
+by the same receipt path.
 
 Validate a saved receipt file that another project has already produced:
 
