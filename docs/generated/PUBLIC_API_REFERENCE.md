@@ -17,12 +17,21 @@ research/application namespaces.
 
 | Name | Kind | Signature / Summary |
 | --- | --- | --- |
+| `CIRCULAR_STATISTICS_CLAIM_BOUNDARY` | value | str |
+| `CIRCULAR_STATISTICS_LEAN_DECLARATIONS` | value | tuple |
+| `CIRCULAR_STATISTICS_SCHEMA_ID` | value | str |
+| `CIRCULAR_STATISTICS_THEOREM_IDS` | value | tuple |
 | `Circle` | class | Finite v0 circle as a cyclic address space with n > 0 nodes. |
+| `CircularMeanReport` | class | Theorem-linked report for circular mean and resultant-length data. |
 | `LiftedNode` | class | Full windings plus a residue for a positive modulus. |
 | `NumberProvenance` | class | NumberProvenance(value: 'int', divisors: 'tuple[int, ...]', factor_pairs: 'tuple[tuple[int, int], ...]', default_theorem_ids: 'tuple[str, ...]') |
 | `SpectralConvolutionReport` | class | Residual report for the finite Fourier circular-convolution identity. |
 | `StrideProvenance` | class | StrideProvenance(size: 'int', stride: 'int', divisor: 'int', cofactor: 'int', period: 'int', orbit_count: 'int', theorem_ids: 'tuple[str, ...]') |
+| `angular_difference` | function | `angular_difference(left: 'float', right: 'float', *, period: 'float' = 6.283185307179586) -> 'float'` |
 | `character_value` | function | `character_value(size: 'int', frequency: 'int', index: 'int') -> 'complex'` |
+| `circular_mean` | function | `circular_mean(angles: 'Iterable[float]', *, weights: 'Iterable[float] | None' = None, period: 'float' = 6.283185307179586, zero_tolerance: 'float' = 1e-12) -> 'float | None'` |
+| `circular_mean_report` | function | `circular_mean_report(angles: 'Iterable[float]', *, weights: 'Iterable[float] | None' = None, period: 'float' = 6.283185307179586, zero_tolerance: 'float' = 1e-12, metadata: 'Mapping[str, Any] | None' = None) -> 'CircularMeanReport'` |
+| `circular_variance` | function | `circular_variance(angles: 'Iterable[float]', *, weights: 'Iterable[float] | None' = None, period: 'float' = 6.283185307179586) -> 'float'` |
 | `circular_convolution` | function | `circular_convolution(kernel: 'Sequence[Number]', signal: 'Sequence[Number]') -> 'list[complex]'` |
 | `circulant_matrix` | function | `circulant_matrix(kernel: 'Sequence[Number]') -> 'list[list[complex]]'` |
 | `dft_matrix` | function | `dft_matrix(size: 'int') -> 'list[list[complex]]'` |
@@ -33,19 +42,28 @@ research/application namespaces.
 | `finite_orbit` | function | `finite_orbit(size: 'int', stride: 'int', start: 'int' = 0) -> 'list[int]'` |
 | `finite_orbit_decomposition` | function | `finite_orbit_decomposition(size: 'int', stride: 'int') -> 'list[list[int]]'` |
 | `finite_period` | function | `finite_period(size: 'int', stride: 'int') -> 'int'` |
+| `finite_residue_histogram` | function | `finite_residue_histogram(period: 'int', samples: 'Iterable[int]', *, include_zero_counts: 'bool' = False) -> 'dict[int, int]'` |
+| `finite_residue_samples` | function | `finite_residue_samples(period: 'int', samples: 'Iterable[int]') -> 'tuple[int, ...]'` |
+| `finite_same_phase` | function | `finite_same_phase(period: 'int', left: 'int', right: 'int') -> 'bool'` |
+| `finite_wrapped_distance` | function | `finite_wrapped_distance(period: 'int', left: 'int', right: 'int') -> 'int'` |
 | `inverse_finite_fourier` | function | `inverse_finite_fourier(coefficients: 'Sequence[Number]') -> 'list[complex]'` |
 | `is_full_coil` | function | `is_full_coil(size: 'int', stride: 'int') -> 'bool'` |
 | `lift` | function | `lift(modulus: 'int', value: 'int') -> 'LiftedNode'` |
 | `lift_add` | function | `lift_add(modulus: 'int', left: 'int', right: 'int') -> 'LiftedNode'` |
 | `lift_iter_successor` | function | `lift_iter_successor(modulus: 'int', value: 'int', steps: 'int') -> 'LiftedNode'` |
 | `lift_successor` | function | `lift_successor(modulus: 'int', value: 'int') -> 'LiftedNode'` |
+| `mean_resultant_length` | function | `mean_resultant_length(angles: 'Iterable[float]', *, weights: 'Iterable[float] | None' = None, period: 'float' = 6.283185307179586) -> 'float'` |
+| `normalize_angle` | function | `normalize_angle(angle: 'float', *, period: 'float' = 6.283185307179586) -> 'float'` |
 | `number_provenance` | function | `number_provenance(value: 'int') -> 'NumberProvenance'` |
 | `provenance_summary` | function | `provenance_summary(value: 'int', strides: 'tuple[int, ...]') -> 'dict[str, object]'` |
+| `resultant_vector` | function | `resultant_vector(angles: 'Iterable[float]', *, weights: 'Iterable[float] | None' = None, period: 'float' = 6.283185307179586) -> 'tuple[float, float]'` |
 | `root_of_unity` | function | `root_of_unity(size: 'int', frequency: 'int' = 1) -> 'complex'` |
 | `spectral_aliasing_report` | function | `spectral_aliasing_report(size: 'int', frequencies: 'Iterable[int]') -> 'dict[int, list[int]]'` |
 | `spectral_convolution_report` | function | `spectral_convolution_report(kernel: 'Sequence[Number]', signal: 'Sequence[Number]', *, tolerance: 'float' = 1e-09) -> 'SpectralConvolutionReport'` |
 | `stride_provenance` | function | `stride_provenance(size: 'int', stride: 'int') -> 'StrideProvenance'` |
 | `value_only_summary` | function | `value_only_summary(value: 'int') -> 'dict[str, object]'` |
+| `von_mises_weight` | function | `von_mises_weight(angle: 'float', *, mean: 'float' = 0.0, kappa: 'float' = 1.0, period: 'float' = 6.283185307179586) -> 'float'` |
+| `wrapped_angular_error` | function | `wrapped_angular_error(left: 'float', right: 'float', *, period: 'float' = 6.283185307179586) -> 'float'` |
 
 ### `circle_math.contracts`
 
@@ -92,6 +110,11 @@ model-quality results.
 | Name | Kind | Signature / Summary |
 | --- | --- | --- |
 | `CONTRACT_PACK_SCHEMA_ID` | value | str |
+| `CIRCLE_GRAPH_COVERAGE_CLAIM_BOUNDARY` | value | str |
+| `CIRCLE_GRAPH_COVERAGE_LEAN_DECLARATIONS` | value | tuple |
+| `CIRCLE_GRAPH_COVERAGE_SCHEMA_ID` | value | str |
+| `CIRCLE_GRAPH_COVERAGE_THEOREM_IDS` | value | tuple |
+| `CircleGraphCoverageReport` | class | Graph-shaped view of a finite sparse-attention coverage certificate. |
 | `POSITION_PHASE_CLAIM_BOUNDARY` | value | str |
 | `POSITION_PHASE_COLLISION_REPORT_SCHEMA_ID` | value | str |
 | `POSITION_PHASE_GRID_REPORT_SCHEMA_ID` | value | str |
@@ -125,6 +148,9 @@ model-quality results.
 | `build_validated_contract_receipt_from_request` | function | `build_validated_contract_receipt_from_request(request: 'Mapping[str, Any]', *, pack: 'Mapping[str, Any] | None' = None) -> 'dict[str, Any]'` |
 | `build_validated_rope_receipt_from_model_config` | function | `build_validated_rope_receipt_from_model_config(config: 'Mapping[str, Any]', *, head_dim: 'int | None' = None, base: 'float | None' = None, context: 'int | None' = None, tolerance: 'float | None' = None, discretization: 'str | None' = None, requested_margin: 'str | Fraction | None' = None, pack: 'Mapping[str, Any] | None' = None) -> 'dict[str, Any]'` |
 | `canonical_contract_kind` | function | `canonical_contract_kind(kind: 'str') -> 'str'` |
+| `circle_graph_coverage_report` | function | `circle_graph_coverage_report(context: 'int', strides: 'Sequence[int]', path_length: 'int', local_window: 'int') -> 'CircleGraphCoverageReport'` |
+| `circle_graph_directed_edges` | function | `circle_graph_directed_edges(context: 'int', lag_generators: 'Sequence[int]') -> 'tuple[tuple[int, int], ...]'` |
+| `circle_graph_lag_generators` | function | `circle_graph_lag_generators(context: 'int', strides: 'Sequence[int]', path_length: 'int', local_window: 'int') -> 'tuple[int, ...]'` |
 | `longrope_nonuniform_scaled_phase_bank` | function | `longrope_nonuniform_scaled_phase_bank(bank: 'PhaseBank', *, scale_factors: 'Sequence[int]', name: 'str' = 'longrope_nonuniform_scaled_phase_bank') -> 'PhaseBank'` |
 | `period_divides_gap` | function | `period_divides_gap(period: 'int', left: 'int', right: 'int') -> 'bool'` |
 | `phase_bank_collision_report` | function | `phase_bank_collision_report(bank: 'PhaseBank', left: 'int', right: 'int') -> 'PhaseBankCollisionReport'` |
@@ -177,7 +203,9 @@ model-quality results.
 | --- | ---: | --- |
 | `Circle.Applications.AIConfig` | 10 | `RotaryAttentionConfig`, `rotaryAttentionHeadDim`, `rotaryAttentionConfigWellFormed`, `mlxRotaryConfig512_8_4_16`, `mlxRotaryConfig512_8_4_0`, `mlxRotaryConfig512_8_4_16_wellFormed`, `mlxRotaryConfig512_8_4_16_headDim`, `mlxRotaryConfig512_8_4_0_wellFormed`, `effectiveRotaryDims`, `mlxRotaryConfig512_8_4_0_effectiveFullHead` |
 | `Circle.Applications.CircleAI` | 228 | `phaseChannel`, `phaseChannel_lt_period`, `phaseChannel_add_period`, `phaseChannel_add_mul_period`, `phaseChannel_idempotent`, `phaseChannel_zero`, `multiPhase2`, `multiPhase2_fst_lt_periodA`, `multiPhase2_snd_lt_periodB`, `multiPhase2_zero`, `multiPhase2_add_periodProduct`, `multiPhase2_add_mul_periodProduct`, `memorySlot`, `memorySlot_lt_bankSize`, `memorySlot_add_bankSize`, `memorySlot_add_mul_bankSize`, `memorySlot_idempotent`, `memorySlot_zero`, `kvCacheSlot`, `kvCacheSlotCollision`, `kvCacheWindowContains`, `kvCacheLiveWindowStart`, `kvCacheLiveWindowLength`, `kvCacheLiveWindowTokens`, `kvCacheSlot_lt_cacheSize`, `kvCacheSlot_add_cacheSize`, `kvCacheSlotCollision_iff_gap_dvd`, `kvCacheSlot_ne_of_positive_gap_lt_cache`, `kvCacheWindow_nextOverwrite_after_current`, `kvCacheWindowContains_iff_current_lt_nextOverwrite`, `not_kvCacheWindowContains_iff_nextOverwrite_le_current_of_le`, `kvCacheWindow_sameSlotOverwrite_witness_of_not_contains`, `kvCacheLiveWindowStart_add_length`, `kvCacheWindowContains_iff_mem_liveWindowTokens`, `kvCacheWindow_retainedSlot_ne_current_of_lt`, `applies`, `kvCacheWindow_retainedSlots_ne_of_lt`, `kvCacheWindow_noSameSlotOverwrite_between`, `kvCacheWindowContains_iff_noSameSlotOverwrite_between_of_le`, `not_kvCacheWindowContains_iff_exists_sameSlotOverwrite_between_of_le`, `kvCacheWindow_retainedSlots_ne_of_ne`, `kvCacheWindow_retainedBatchSlots_pairwise_ne`, `kvCacheWindow_retainedBatchSlotMap_nodup`, `kvCacheWindow_retainedBatch_iff_noSameSlotOverwriteTrace_of_forall_le`, `kvCacheWindow_traceFreshBatchSlotMap_nodup`, `kvCacheNoSameSlotOverwriteTrace`, `kvCacheNoSameSlotOverwriteTrace_iff_current_lt_nextOverwrite_of_le`, `kvCacheBatchNoSameSlotOverwriteTrace_iff_all_nextOverwrite_after_current_of_forall_le`, `kvCacheAdapterRequestTracePass`, `kvCacheAdapterRequestTracePass_iff_nonFuture_nodup_traceFresh`, `kvCacheAdapterRequestTracePass_iff_nonFuture_nodup_nextOverwriteAfterCurrent`, `kvCacheAdapterRequestBoundary_allRetained`, `kvCacheAdapterRequestBoundary_slotMap_nodup`, `not_kvCacheAdapterRequestTracePass_of_stale_member`, `kvCacheAdapterRequestTracePass_iff_no_stale_member_of_nonFuture_nodup`, `not_kvCacheAdapterRequestTracePass_iff_exists_stale_member_of_nonFuture_nodup`, `kvCacheAdapterRequestStaleMemberCount`, `kvCacheAdapterRequestStaleMemberCount_eq_zero_iff_no_stale_member`, `kvCacheAdapterRequestTracePass_iff_staleMemberCount_eq_zero_of_nonFuture_nodup`, `not_kvCacheAdapterRequestTracePass_iff_staleMemberCount_pos_of_nonFuture_nodup`, ... (168 more) |
+| `Circle.Applications.CircleGraphCoverage` | 13 | `circleGraphStrideFullCoverage`, `circleGraphLocalLagReach`, `circleGraphStrideLagReach`, `circleGraphFamilyLagReach`, `circleGraphFamilyCovers`, `circleGraphUncoveredLagList`, `circleGraphCoveredLagList`, `circleGraphStrideReach_eq_div_gcd`, `circleGraphStrideFullCoverage_iff_coprime`, `circleGraphLocalWindowCovers_iff_context_sub_one_le`, `circleGraphFamilyCovers_iff_uncoveredLagList_eq_nil`, `circleGraphFamilyCovers_iff_coveredLagList_length_eq_context_sub_one`, `circleGraphCompleteFixture_9_2_2_3_4_7` |
 | `Circle.Applications.CircleTransformer` | 223 | `attentionReach_eq_div_gcd`, `stridedHeadFullCoverage`, `stridedHead_fullCoverage_iff_coprime`, `stridedHead_fullCoverage_of_coprime`, `localLagReach`, `localWindowCoversContext`, `coilLagReach`, `hybridLagReach`, `coilStrideFamilyLagReach`, `hybridFamilyLagReach`, `hybridFamilyCoversContext`, `hybridFamilyRawCandidateBudget`, `hybridFamilyDedupCandidateBudgetBound`, `localLagCandidateList`, `coilLagResidueList`, `coilStrideFamilyLagResidueList`, `hybridFamilyLagCandidateList`, `hybridFamilyUncoveredLagList`, `extendConsecutiveLagIntervals`, `consecutiveLagIntervals`, `hybridFamilyUncoveredLagIntervalList`, `hybridFamilyFirstUncoveredLag`, `hybridFamilyCoveredLagList`, `hybridFamilyUniqueLagCandidateCount`, `predecessorIndex`, `predecessorIndex_injective_of_lag_lt_context`, `hybridFamilyQueryCandidateList`, `hybridFamilyUniqueQueryCandidateCount`, `rawCandidateCollisionPairCount`, `rawCandidateDedupLoss`, `rawCandidateDedupLength_add_rawCandidateDedupLoss_eq_length`, `hybridFamilyLagCandidateCollisionPairCount`, `hybridFamilyQueryCandidateCollisionPairCount`, `hybridFamilyLagCandidatesNoCollision`, `hybridFamilyQueryCandidatesNoCollision`, `rawCandidateCollisionPairCount_eq_zero_iff_nodup`, `rawCandidateCollisionPairCount_pos_iff_not_nodup`, `rawCandidateDedupLoss_le_collisionPairCount`, `hybridFamilyLagCandidateCollisionPairCount_eq_zero_iff_noCollision`, `hybridFamilyQueryCandidateCollisionPairCount_eq_zero_iff_noCollision`, `hybridFamilyLagCandidateCollisionPairCount_pos_iff_collision`, `hybridFamilyQueryCandidateCollisionPairCount_pos_iff_collision`, `coilStrideFamilyLagResiduesNoCollision`, `localCoilLagCandidatesDisjoint`, `coilLagResiduesDisjointFromFamily`, `coilStrideFamilyNoWrapSeparated`, `coilStrideFamilyNoZeroResidues`, `coilStrideFamilyHasZeroResidue`, `coilLagZeroResidueStepCount`, `coilStrideFamilyZeroResidueStepCount`, `coilLagResidue_zero_iff_period_dvd`, `coilPeriod_pos_of_context_ne_zero`, `coilLagResidue_period_is_first_positive_zero`, `coilLagZeroResidueStepCount_eq_pathLength_div_period`, `coilStrideFamilyZeroResidueStepCount_eq_sum_pathLength_div_period`, `coilStrideFamilyNoZeroResidues_singleton_iff_pathLength_lt_period`, `coilStrideFamilyNoZeroResidues_iff_forall_pathLength_lt_period`, `coilStrideFamilyZeroResidueStepCount_eq_zero_iff_noZeroResidues`, `coilStrideFamilyHasZeroResidue_iff_exists_period_le_pathLength`, `above`, ... (163 more) |
+| `Circle.Applications.CircularStatistics` | 16 | `circularSamePhase`, `circularForwardDistance`, `circularBackwardDistance`, `wrappedCircularDistance`, `circularSamePhase_iff_gap_dvd`, `circularSamePhase_refl`, `circularSamePhase_symm`, `circularSamePhase_trans`, `wrappedCircularDistance_comm`, `wrappedCircularDistance_le_forward`, `wrappedCircularDistance_le_backward`, `circularSampleResidues`, `circularHistogram`, `mem_circularSampleResidues_lt_period`, `circularHistogram_le_length`, `circularHistogram_zero_of_period_le_residue` |
 | `Circle.Applications.Circulant` | 6 | `shiftBy`, `shiftBy_add`, `circConv`, `circConv_shift_equivariant`, `circConv_comm`, `circConv_add` |
 | `Circle.Applications.CirculantSpectral` | 1 | `finiteFourierCoeff_circConv` |
 | `Circle.Applications.PositionPhase` | 19 | `phaseResidue`, `phaseChannelCollision`, `phaseChannelDistinguishable`, `phaseChannelCollision_iff_gap_dvd`, `phaseChannelDistinguishable_iff_not_gap_dvd`, `phaseChannelCollision_iff_eq_on_context`, `phaseBankCollision`, `phaseBankDistinguishable`, `phaseBankCollision_iff_forall_gap_dvd`, `phaseBankDistinguishable_iff_exists_not_gap_dvd`, `phaseBankDistinguishable_of_period_ge_context`, `phaseBankCollision_of_subset`, `phaseBankDistinguishable_of_subset`, `phaseGrid2DCollision`, `phaseGrid2DCollision_iff_axes`, `scaledPhasePeriod`, `scaledPhasePeriodBank`, `scaledPhasePeriod_pos`, `scaledPhasePeriodBank_all_pos` |

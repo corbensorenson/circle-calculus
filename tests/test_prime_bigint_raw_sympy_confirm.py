@@ -8,6 +8,7 @@ from scripts.confirm_prime_bigint_raw_sympy import (
     RunSummary,
     bpsw_prime_speedups_by_case,
     build_summary,
+    validate_raw_prime_rows,
 )
 
 
@@ -85,3 +86,21 @@ def test_build_summary_records_weakest_speedup_and_failures() -> None:
         "secp256k1_prime": 1.05,
     }
     assert summary["run_artifacts"][1]["failures"] == ["curve25519_prime fell below floor"]
+
+
+def test_validate_raw_prime_rows_requires_agreement_and_speed_floor() -> None:
+    rows = [
+        bigint_row("curve25519_prime", "circle_big_bpsw_test_server", 0.8),
+        bigint_row("curve25519_prime", "sympy_isprime", 0.72),
+    ]
+
+    failures = validate_raw_prime_rows(
+        rows,
+        cases={"curve25519_prime"},
+        minimum=1.0,
+    )
+
+    assert failures == [
+        "prime_test curve25519_prime circle_big_bpsw_test_server median speedup over "
+        "sympy_isprime is 0.900, below required 1.000"
+    ]

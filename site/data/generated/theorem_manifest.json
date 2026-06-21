@@ -25684,6 +25684,530 @@
       "blocker": "",
       "canonical_status": "proved",
       "dictionary_dependencies": [
+        "CC-0001",
+        "CC-0101"
+      ],
+      "formal_statement": "forall {n stride : Nat}, n != 0 -> Circle.Applications.circleGraphStrideReach n stride = n / Nat.gcd n stride",
+      "id": "CC-T0133",
+      "informal_statement": "One circular stride reaches exactly n / gcd(n,stride) vertices in a nonzero finite circle.",
+      "lean_name": "Circle.Applications.circleGraphStrideReach_eq_div_gcd",
+      "lean_source": "Circle/Applications/CircleGraphCoverage.lean",
+      "lean_source_line": 54,
+      "name": "Circle graph stride reach equals period quotient",
+      "original_status": "proved",
+      "paper_refs": [
+        "docs/CIRCLE_GRAPH_COVERAGE.md"
+      ],
+      "proof_notes": "Lean theorem is compiled in Circle/Applications/CircleGraphCoverage.lean as a graph-facing wrapper around attentionReach_eq_div_gcd.",
+      "python_tests": [
+        "tests/test_circle_graph_coverage.py::test_circle_graph_complete_sparse_fixture_covers_all_positive_lags"
+      ],
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved",
+      "used_by_papers": [],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": [
+          "circle graph lag generators reuse the sparse-attention stride-family coverage model"
+        ]
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "CC-0001",
+        "CC-0101"
+      ],
+      "formal_statement": "forall {n stride : Nat}, n != 0 -> Circle.Applications.circleGraphStrideFullCoverage n stride <-> Nat.gcd n stride = 1",
+      "id": "CC-T0134",
+      "informal_statement": "One circular stride covers the whole finite circle exactly when its stride is coprime to the context length.",
+      "lean_name": "Circle.Applications.circleGraphStrideFullCoverage_iff_coprime",
+      "lean_source": "Circle/Applications/CircleGraphCoverage.lean",
+      "lean_source_line": 60,
+      "name": "Circle graph stride full coverage iff coprime",
+      "original_status": "proved",
+      "paper_refs": [
+        "docs/CIRCLE_GRAPH_COVERAGE.md"
+      ],
+      "proof_notes": "Lean theorem is compiled in Circle/Applications/CircleGraphCoverage.lean as a graph-facing wrapper around stridedHead_fullCoverage_iff_coprime.",
+      "python_tests": [
+        "tests/test_circle_graph_coverage.py::test_circle_graph_complete_sparse_fixture_covers_all_positive_lags"
+      ],
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved",
+      "used_by_papers": [],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": [
+          "finite circle graph stride examples follow the gcd coverage rule"
+        ]
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "CC-0001",
+        "CC-0101"
+      ],
+      "formal_statement": "forall {n window : Nat}, Circle.Applications.localWindowCoversContext n window <-> n - 1 <= window",
+      "id": "CC-T0135",
+      "informal_statement": "A local window covers every positive lag exactly when it reaches the final positive lag n-1.",
+      "lean_name": "Circle.Applications.circleGraphLocalWindowCovers_iff_context_sub_one_le",
+      "lean_source": "Circle/Applications/CircleGraphCoverage.lean",
+      "lean_source_line": 66,
+      "name": "Circle graph local window coverage threshold",
+      "original_status": "proved",
+      "paper_refs": [
+        "docs/CIRCLE_GRAPH_COVERAGE.md"
+      ],
+      "proof_notes": "Lean theorem is compiled in Circle/Applications/CircleGraphCoverage.lean as a graph-facing wrapper around localWindowCoversContext_iff_context_sub_one_le.",
+      "python_tests": [
+        "tests/test_circle_graph_coverage.py::test_circle_graph_gap_fixture_exposes_uncovered_intervals"
+      ],
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved",
+      "used_by_papers": [],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": [
+          "complete local repair uses context-1 as the dense local threshold in sparse coverage reports"
+        ]
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "CC-0001",
+        "CC-0101"
+      ],
+      "formal_statement": "forall {n window pathLength : Nat} {strides : List Nat}, Circle.Applications.circleGraphFamilyCovers n window pathLength strides <-> Circle.Applications.circleGraphUncoveredLagList n window pathLength strides = []",
+      "id": "CC-T0136",
+      "informal_statement": "A local-window plus stride-family circle graph covers all positive lags exactly when its uncovered-lag list is empty.",
+      "lean_name": "Circle.Applications.circleGraphFamilyCovers_iff_uncoveredLagList_eq_nil",
+      "lean_source": "Circle/Applications/CircleGraphCoverage.lean",
+      "lean_source_line": 73,
+      "name": "Circle graph coverage iff no uncovered lags",
+      "original_status": "proved",
+      "paper_refs": [
+        "docs/CIRCLE_GRAPH_COVERAGE.md"
+      ],
+      "proof_notes": "Lean theorem is compiled in Circle/Applications/CircleGraphCoverage.lean as a graph-facing wrapper around hybridFamilyCoversContext_iff_uncoveredLagList_eq_nil.",
+      "python_tests": [
+        "tests/test_circle_graph_coverage.py::test_circle_graph_complete_sparse_fixture_covers_all_positive_lags"
+      ],
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved",
+      "used_by_papers": [],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": [
+          "circle_graph_coverage_report(...).coverage_complete iff uncovered_lags is empty for deterministic examples"
+        ]
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "CC-0001",
+        "CC-0101"
+      ],
+      "formal_statement": "forall {n window pathLength : Nat} {strides : List Nat}, Circle.Applications.circleGraphFamilyCovers n window pathLength strides <-> (Circle.Applications.circleGraphCoveredLagList n window pathLength strides).length = n - 1",
+      "id": "CC-T0137",
+      "informal_statement": "A local-window plus stride-family circle graph covers all positive lags exactly when its covered-lag list has length n-1.",
+      "lean_name": "Circle.Applications.circleGraphFamilyCovers_iff_coveredLagList_length_eq_context_sub_one",
+      "lean_source": "Circle/Applications/CircleGraphCoverage.lean",
+      "lean_source_line": 81,
+      "name": "Circle graph coverage iff covered-lag count reaches context minus one",
+      "original_status": "proved",
+      "paper_refs": [
+        "docs/CIRCLE_GRAPH_COVERAGE.md"
+      ],
+      "proof_notes": "Lean theorem is compiled in Circle/Applications/CircleGraphCoverage.lean as a graph-facing wrapper around hybridFamilyCoversContext_iff_coveredLagList_length_eq_context_sub_one.",
+      "python_tests": [
+        "tests/test_circle_graph_coverage.py::test_circle_graph_complete_sparse_fixture_covers_all_positive_lags"
+      ],
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved",
+      "used_by_papers": [],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": [
+          "covered_lags length reaches context-1 exactly in complete deterministic graph coverage examples"
+        ]
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "CC-0001",
+        "CC-0101"
+      ],
+      "formal_statement": "Circle.Applications.circleGraphFamilyCovers 9 2 2 [3,4,7]",
+      "id": "CC-T0138",
+      "informal_statement": "The compact C_9 local-window plus stride-family fixture with window 2, path length 2, and strides [3,4,7] covers all positive lags.",
+      "lean_name": "Circle.Applications.circleGraphCompleteFixture_9_2_2_3_4_7",
+      "lean_source": "Circle/Applications/CircleGraphCoverage.lean",
+      "lean_source_line": 88,
+      "name": "Compact circle graph sparse fixture covers all positive lags",
+      "original_status": "proved",
+      "paper_refs": [
+        "docs/CIRCLE_GRAPH_COVERAGE.md"
+      ],
+      "proof_notes": "Lean theorem is compiled in Circle/Applications/CircleGraphCoverage.lean as a graph-facing wrapper around the existing compact sparse-attention complete-coverage theorem.",
+      "python_tests": [
+        "tests/test_circle_graph_coverage.py::test_circle_graph_complete_sparse_fixture_covers_all_positive_lags"
+      ],
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved",
+      "used_by_papers": [],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": [
+          "circle_graph_coverage_report(context=9,strides=(3,4,7),path_length=2,local_window=2).coverage_complete is True"
+        ]
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "CC-0001",
+        "CC-0101"
+      ],
+      "formal_statement": "forall {period left right : Nat}, left <= right -> Circle.Applications.circularSamePhase period left right <-> period | right - left",
+      "id": "CC-T0139",
+      "informal_statement": "For ordered natural samples, equality of residues modulo a declared period is equivalent to the period dividing the sample gap.",
+      "lean_name": "Circle.Applications.circularSamePhase_iff_gap_dvd",
+      "lean_source": "Circle/Applications/CircularStatistics.lean",
+      "lean_source_line": 38,
+      "name": "Circular same-phase iff gap divisibility",
+      "original_status": "proved",
+      "paper_refs": [
+        "docs/CIRCULAR_STATISTICS_CONTRACTS.md"
+      ],
+      "proof_notes": "Lean theorem is compiled in Circle/Applications/CircularStatistics.lean by Nat.modEq_iff_dvd'.",
+      "python_tests": [
+        "tests/test_circular_statistics.py::test_finite_same_phase_and_wrapped_distance_match_modular_contract"
+      ],
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved",
+      "used_by_papers": [],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": [
+          "finite_same_phase matches equality of residues"
+        ]
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "CC-0001",
+        "CC-0101"
+      ],
+      "formal_statement": "forall period sample : Nat, Circle.Applications.circularSamePhase period sample sample",
+      "id": "CC-T0140",
+      "informal_statement": "Every natural sample has the same circular phase as itself for any declared period.",
+      "lean_name": "Circle.Applications.circularSamePhase_refl",
+      "lean_source": "Circle/Applications/CircularStatistics.lean",
+      "lean_source_line": 45,
+      "name": "Circular same-phase is reflexive",
+      "original_status": "proved",
+      "paper_refs": [
+        "docs/CIRCULAR_STATISTICS_CONTRACTS.md"
+      ],
+      "proof_notes": "Lean theorem is compiled in Circle/Applications/CircularStatistics.lean by reflexivity of residue equality.",
+      "python_tests": [
+        "tests/test_circular_statistics.py::test_finite_same_phase_and_wrapped_distance_match_modular_contract"
+      ],
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved",
+      "used_by_papers": [],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": [
+          "finite_same_phase(period,x,x) is true for tested residues"
+        ]
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "CC-0001",
+        "CC-0101"
+      ],
+      "formal_statement": "forall {period left right : Nat}, Circle.Applications.circularSamePhase period left right -> Circle.Applications.circularSamePhase period right left",
+      "id": "CC-T0141",
+      "informal_statement": "If one natural sample has the same finite circular phase as another, then the relation holds in the reverse direction.",
+      "lean_name": "Circle.Applications.circularSamePhase_symm",
+      "lean_source": "Circle/Applications/CircularStatistics.lean",
+      "lean_source_line": 50,
+      "name": "Circular same-phase is symmetric",
+      "original_status": "proved",
+      "paper_refs": [
+        "docs/CIRCULAR_STATISTICS_CONTRACTS.md"
+      ],
+      "proof_notes": "Lean theorem is compiled in Circle/Applications/CircularStatistics.lean by symmetry of equality.",
+      "python_tests": [
+        "tests/test_circular_statistics.py::test_finite_same_phase_and_wrapped_distance_match_modular_contract"
+      ],
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved",
+      "used_by_papers": [],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": [
+          "same-phase examples are symmetric under argument swap"
+        ]
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "CC-0001",
+        "CC-0101"
+      ],
+      "formal_statement": "forall {period left middle right : Nat}, Circle.Applications.circularSamePhase period left middle -> Circle.Applications.circularSamePhase period middle right -> Circle.Applications.circularSamePhase period left right",
+      "id": "CC-T0142",
+      "informal_statement": "Finite circular same-phase composes through an intermediate sample.",
+      "lean_name": "Circle.Applications.circularSamePhase_trans",
+      "lean_source": "Circle/Applications/CircularStatistics.lean",
+      "lean_source_line": 58,
+      "name": "Circular same-phase is transitive",
+      "original_status": "proved",
+      "paper_refs": [
+        "docs/CIRCULAR_STATISTICS_CONTRACTS.md"
+      ],
+      "proof_notes": "Lean theorem is compiled in Circle/Applications/CircularStatistics.lean by transitivity of equality.",
+      "python_tests": [],
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved",
+      "used_by_papers": [],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": []
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "CC-0001",
+        "CC-0101"
+      ],
+      "formal_statement": "forall period left right : Nat, Circle.Applications.wrappedCircularDistance period left right = Circle.Applications.wrappedCircularDistance period right left",
+      "id": "CC-T0143",
+      "informal_statement": "The shorter finite wrapped distance between two samples is unchanged by swapping the samples.",
+      "lean_name": "Circle.Applications.wrappedCircularDistance_comm",
+      "lean_source": "Circle/Applications/CircularStatistics.lean",
+      "lean_source_line": 67,
+      "name": "Wrapped circular distance is symmetric",
+      "original_status": "proved",
+      "paper_refs": [
+        "docs/CIRCULAR_STATISTICS_CONTRACTS.md"
+      ],
+      "proof_notes": "Lean theorem is compiled in Circle/Applications/CircularStatistics.lean by commutativity of Nat.min.",
+      "python_tests": [
+        "tests/test_circular_statistics.py::test_finite_same_phase_and_wrapped_distance_match_modular_contract"
+      ],
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved",
+      "used_by_papers": [],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": [
+          "finite_wrapped_distance(period,left,right) equals finite_wrapped_distance(period,right,left) in deterministic examples"
+        ]
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "CC-0001",
+        "CC-0101"
+      ],
+      "formal_statement": "forall period left right : Nat, Circle.Applications.wrappedCircularDistance period left right <= Circle.Applications.circularForwardDistance period left right",
+      "id": "CC-T0144",
+      "informal_statement": "The shorter finite wrapped distance is no larger than the forward wrapped distance.",
+      "lean_name": "Circle.Applications.wrappedCircularDistance_le_forward",
+      "lean_source": "Circle/Applications/CircularStatistics.lean",
+      "lean_source_line": 75,
+      "name": "Wrapped circular distance bounded by forward distance",
+      "original_status": "proved",
+      "paper_refs": [
+        "docs/CIRCULAR_STATISTICS_CONTRACTS.md"
+      ],
+      "proof_notes": "Lean theorem is compiled in Circle/Applications/CircularStatistics.lean by Nat.min_le_left.",
+      "python_tests": [
+        "tests/test_circular_statistics.py::test_finite_same_phase_and_wrapped_distance_match_modular_contract"
+      ],
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved",
+      "used_by_papers": [],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": [
+          "finite_wrapped_distance uses min(forward, backward)"
+        ]
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "CC-0001",
+        "CC-0101"
+      ],
+      "formal_statement": "forall period left right : Nat, Circle.Applications.wrappedCircularDistance period left right <= Circle.Applications.circularBackwardDistance period left right",
+      "id": "CC-T0145",
+      "informal_statement": "The shorter finite wrapped distance is no larger than the backward wrapped distance.",
+      "lean_name": "Circle.Applications.wrappedCircularDistance_le_backward",
+      "lean_source": "Circle/Applications/CircularStatistics.lean",
+      "lean_source_line": 83,
+      "name": "Wrapped circular distance bounded by backward distance",
+      "original_status": "proved",
+      "paper_refs": [
+        "docs/CIRCULAR_STATISTICS_CONTRACTS.md"
+      ],
+      "proof_notes": "Lean theorem is compiled in Circle/Applications/CircularStatistics.lean by Nat.min_le_right.",
+      "python_tests": [
+        "tests/test_circular_statistics.py::test_finite_same_phase_and_wrapped_distance_match_modular_contract"
+      ],
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved",
+      "used_by_papers": [],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": [
+          "finite_wrapped_distance uses min(forward, backward)"
+        ]
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "CC-0001",
+        "CC-0101"
+      ],
+      "formal_statement": "forall {period sample : Nat} {samples : List Nat}, 0 < period -> sample in Circle.Applications.circularSampleResidues period samples -> sample < period",
+      "id": "CC-T0146",
+      "informal_statement": "Every residue produced from a sample list with a positive declared period is strictly below that period.",
+      "lean_name": "Circle.Applications.mem_circularSampleResidues_lt_period",
+      "lean_source": "Circle/Applications/CircularStatistics.lean",
+      "lean_source_line": 101,
+      "name": "Circular sample residues lie below positive period",
+      "original_status": "proved",
+      "paper_refs": [
+        "docs/CIRCULAR_STATISTICS_CONTRACTS.md"
+      ],
+      "proof_notes": "Lean theorem is compiled in Circle/Applications/CircularStatistics.lean by List.mem_map and Nat.mod_lt.",
+      "python_tests": [
+        "tests/test_circular_statistics.py::test_finite_residue_samples_and_histogram"
+      ],
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved",
+      "used_by_papers": [],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": [
+          "finite_residue_samples returns residues in range 0..period-1"
+        ]
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "CC-0001",
+        "CC-0101"
+      ],
+      "formal_statement": "forall period : Nat, forall samples : List Nat, forall residue : Nat, Circle.Applications.circularHistogram period samples residue <= samples.length",
+      "id": "CC-T0147",
+      "informal_statement": "A finite circular histogram count for one residue is no larger than the number of samples.",
+      "lean_name": "Circle.Applications.circularHistogram_le_length",
+      "lean_source": "Circle/Applications/CircularStatistics.lean",
+      "lean_source_line": 113,
+      "name": "Circular histogram count bounded by sample length",
+      "original_status": "proved",
+      "paper_refs": [
+        "docs/CIRCULAR_STATISTICS_CONTRACTS.md"
+      ],
+      "proof_notes": "Lean theorem is compiled in Circle/Applications/CircularStatistics.lean by List.count_le_length and length preservation under map.",
+      "python_tests": [
+        "tests/test_circular_statistics.py::test_finite_residue_samples_and_histogram"
+      ],
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved",
+      "used_by_papers": [],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": [
+          "finite_residue_histogram counts cannot exceed sample count in deterministic examples"
+        ]
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
+        "CC-0001",
+        "CC-0101"
+      ],
+      "formal_statement": "forall {period residue : Nat} {samples : List Nat}, 0 < period -> period <= residue -> Circle.Applications.circularHistogram period samples residue = 0",
+      "id": "CC-T0148",
+      "informal_statement": "For a positive period, any residue index at least the period has zero finite circular histogram count.",
+      "lean_name": "Circle.Applications.circularHistogram_zero_of_period_le_residue",
+      "lean_source": "Circle/Applications/CircularStatistics.lean",
+      "lean_source_line": 123,
+      "name": "Circular histogram outside positive period is zero",
+      "original_status": "proved",
+      "paper_refs": [
+        "docs/CIRCULAR_STATISTICS_CONTRACTS.md"
+      ],
+      "proof_notes": "Lean theorem is compiled in Circle/Applications/CircularStatistics.lean from the residue range theorem and List.count_eq_zero.",
+      "python_tests": [
+        "tests/test_circular_statistics.py::test_finite_residue_samples_and_histogram"
+      ],
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved",
+      "used_by_papers": [],
+      "verification": {
+        "lean_build_required": true,
+        "no_sorry_required": true,
+        "python_property_tests": [
+          "include_zero_counts emits only residues below the period"
+        ]
+      }
+    },
+    {
+      "blocker": "",
+      "canonical_status": "proved",
+      "dictionary_dependencies": [
         "COMMON-0001",
         "COMMON-0002"
       ],

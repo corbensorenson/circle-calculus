@@ -1,5 +1,5 @@
 {
-  "edge_count": 8350,
+  "edge_count": 8414,
   "edges": [
     {
       "kind": "cited_by_paper",
@@ -29008,6 +29008,326 @@
     },
     {
       "kind": "cited_by_paper",
+      "source": "CC-T0133",
+      "target": "paper:docs/CIRCLE_GRAPH_COVERAGE"
+    },
+    {
+      "kind": "declares",
+      "source": "CC-T0133",
+      "target": "lean:Circle.Applications.circleGraphStrideReach_eq_div_gcd"
+    },
+    {
+      "kind": "uses_dictionary",
+      "source": "CC-T0133",
+      "target": "dict:CC-0001"
+    },
+    {
+      "kind": "uses_dictionary",
+      "source": "CC-T0133",
+      "target": "dict:CC-0101"
+    },
+    {
+      "kind": "cited_by_paper",
+      "source": "CC-T0134",
+      "target": "paper:docs/CIRCLE_GRAPH_COVERAGE"
+    },
+    {
+      "kind": "declares",
+      "source": "CC-T0134",
+      "target": "lean:Circle.Applications.circleGraphStrideFullCoverage_iff_coprime"
+    },
+    {
+      "kind": "uses_dictionary",
+      "source": "CC-T0134",
+      "target": "dict:CC-0001"
+    },
+    {
+      "kind": "uses_dictionary",
+      "source": "CC-T0134",
+      "target": "dict:CC-0101"
+    },
+    {
+      "kind": "cited_by_paper",
+      "source": "CC-T0135",
+      "target": "paper:docs/CIRCLE_GRAPH_COVERAGE"
+    },
+    {
+      "kind": "declares",
+      "source": "CC-T0135",
+      "target": "lean:Circle.Applications.circleGraphLocalWindowCovers_iff_context_sub_one_le"
+    },
+    {
+      "kind": "uses_dictionary",
+      "source": "CC-T0135",
+      "target": "dict:CC-0001"
+    },
+    {
+      "kind": "uses_dictionary",
+      "source": "CC-T0135",
+      "target": "dict:CC-0101"
+    },
+    {
+      "kind": "cited_by_paper",
+      "source": "CC-T0136",
+      "target": "paper:docs/CIRCLE_GRAPH_COVERAGE"
+    },
+    {
+      "kind": "declares",
+      "source": "CC-T0136",
+      "target": "lean:Circle.Applications.circleGraphFamilyCovers_iff_uncoveredLagList_eq_nil"
+    },
+    {
+      "kind": "uses_dictionary",
+      "source": "CC-T0136",
+      "target": "dict:CC-0001"
+    },
+    {
+      "kind": "uses_dictionary",
+      "source": "CC-T0136",
+      "target": "dict:CC-0101"
+    },
+    {
+      "kind": "cited_by_paper",
+      "source": "CC-T0137",
+      "target": "paper:docs/CIRCLE_GRAPH_COVERAGE"
+    },
+    {
+      "kind": "declares",
+      "source": "CC-T0137",
+      "target": "lean:Circle.Applications.circleGraphFamilyCovers_iff_coveredLagList_length_eq_context_sub_one"
+    },
+    {
+      "kind": "uses_dictionary",
+      "source": "CC-T0137",
+      "target": "dict:CC-0001"
+    },
+    {
+      "kind": "uses_dictionary",
+      "source": "CC-T0137",
+      "target": "dict:CC-0101"
+    },
+    {
+      "kind": "cited_by_paper",
+      "source": "CC-T0138",
+      "target": "paper:docs/CIRCLE_GRAPH_COVERAGE"
+    },
+    {
+      "kind": "declares",
+      "source": "CC-T0138",
+      "target": "lean:Circle.Applications.circleGraphCompleteFixture_9_2_2_3_4_7"
+    },
+    {
+      "kind": "uses_dictionary",
+      "source": "CC-T0138",
+      "target": "dict:CC-0001"
+    },
+    {
+      "kind": "uses_dictionary",
+      "source": "CC-T0138",
+      "target": "dict:CC-0101"
+    },
+    {
+      "kind": "cited_by_paper",
+      "source": "CC-T0139",
+      "target": "paper:docs/CIRCULAR_STATISTICS_CONTRACTS"
+    },
+    {
+      "kind": "declares",
+      "source": "CC-T0139",
+      "target": "lean:Circle.Applications.circularSamePhase_iff_gap_dvd"
+    },
+    {
+      "kind": "uses_dictionary",
+      "source": "CC-T0139",
+      "target": "dict:CC-0001"
+    },
+    {
+      "kind": "uses_dictionary",
+      "source": "CC-T0139",
+      "target": "dict:CC-0101"
+    },
+    {
+      "kind": "cited_by_paper",
+      "source": "CC-T0140",
+      "target": "paper:docs/CIRCULAR_STATISTICS_CONTRACTS"
+    },
+    {
+      "kind": "declares",
+      "source": "CC-T0140",
+      "target": "lean:Circle.Applications.circularSamePhase_refl"
+    },
+    {
+      "kind": "uses_dictionary",
+      "source": "CC-T0140",
+      "target": "dict:CC-0001"
+    },
+    {
+      "kind": "uses_dictionary",
+      "source": "CC-T0140",
+      "target": "dict:CC-0101"
+    },
+    {
+      "kind": "cited_by_paper",
+      "source": "CC-T0141",
+      "target": "paper:docs/CIRCULAR_STATISTICS_CONTRACTS"
+    },
+    {
+      "kind": "declares",
+      "source": "CC-T0141",
+      "target": "lean:Circle.Applications.circularSamePhase_symm"
+    },
+    {
+      "kind": "uses_dictionary",
+      "source": "CC-T0141",
+      "target": "dict:CC-0001"
+    },
+    {
+      "kind": "uses_dictionary",
+      "source": "CC-T0141",
+      "target": "dict:CC-0101"
+    },
+    {
+      "kind": "cited_by_paper",
+      "source": "CC-T0142",
+      "target": "paper:docs/CIRCULAR_STATISTICS_CONTRACTS"
+    },
+    {
+      "kind": "declares",
+      "source": "CC-T0142",
+      "target": "lean:Circle.Applications.circularSamePhase_trans"
+    },
+    {
+      "kind": "uses_dictionary",
+      "source": "CC-T0142",
+      "target": "dict:CC-0001"
+    },
+    {
+      "kind": "uses_dictionary",
+      "source": "CC-T0142",
+      "target": "dict:CC-0101"
+    },
+    {
+      "kind": "cited_by_paper",
+      "source": "CC-T0143",
+      "target": "paper:docs/CIRCULAR_STATISTICS_CONTRACTS"
+    },
+    {
+      "kind": "declares",
+      "source": "CC-T0143",
+      "target": "lean:Circle.Applications.wrappedCircularDistance_comm"
+    },
+    {
+      "kind": "uses_dictionary",
+      "source": "CC-T0143",
+      "target": "dict:CC-0001"
+    },
+    {
+      "kind": "uses_dictionary",
+      "source": "CC-T0143",
+      "target": "dict:CC-0101"
+    },
+    {
+      "kind": "cited_by_paper",
+      "source": "CC-T0144",
+      "target": "paper:docs/CIRCULAR_STATISTICS_CONTRACTS"
+    },
+    {
+      "kind": "declares",
+      "source": "CC-T0144",
+      "target": "lean:Circle.Applications.wrappedCircularDistance_le_forward"
+    },
+    {
+      "kind": "uses_dictionary",
+      "source": "CC-T0144",
+      "target": "dict:CC-0001"
+    },
+    {
+      "kind": "uses_dictionary",
+      "source": "CC-T0144",
+      "target": "dict:CC-0101"
+    },
+    {
+      "kind": "cited_by_paper",
+      "source": "CC-T0145",
+      "target": "paper:docs/CIRCULAR_STATISTICS_CONTRACTS"
+    },
+    {
+      "kind": "declares",
+      "source": "CC-T0145",
+      "target": "lean:Circle.Applications.wrappedCircularDistance_le_backward"
+    },
+    {
+      "kind": "uses_dictionary",
+      "source": "CC-T0145",
+      "target": "dict:CC-0001"
+    },
+    {
+      "kind": "uses_dictionary",
+      "source": "CC-T0145",
+      "target": "dict:CC-0101"
+    },
+    {
+      "kind": "cited_by_paper",
+      "source": "CC-T0146",
+      "target": "paper:docs/CIRCULAR_STATISTICS_CONTRACTS"
+    },
+    {
+      "kind": "declares",
+      "source": "CC-T0146",
+      "target": "lean:Circle.Applications.mem_circularSampleResidues_lt_period"
+    },
+    {
+      "kind": "uses_dictionary",
+      "source": "CC-T0146",
+      "target": "dict:CC-0001"
+    },
+    {
+      "kind": "uses_dictionary",
+      "source": "CC-T0146",
+      "target": "dict:CC-0101"
+    },
+    {
+      "kind": "cited_by_paper",
+      "source": "CC-T0147",
+      "target": "paper:docs/CIRCULAR_STATISTICS_CONTRACTS"
+    },
+    {
+      "kind": "declares",
+      "source": "CC-T0147",
+      "target": "lean:Circle.Applications.circularHistogram_le_length"
+    },
+    {
+      "kind": "uses_dictionary",
+      "source": "CC-T0147",
+      "target": "dict:CC-0001"
+    },
+    {
+      "kind": "uses_dictionary",
+      "source": "CC-T0147",
+      "target": "dict:CC-0101"
+    },
+    {
+      "kind": "cited_by_paper",
+      "source": "CC-T0148",
+      "target": "paper:docs/CIRCULAR_STATISTICS_CONTRACTS"
+    },
+    {
+      "kind": "declares",
+      "source": "CC-T0148",
+      "target": "lean:Circle.Applications.circularHistogram_zero_of_period_le_residue"
+    },
+    {
+      "kind": "uses_dictionary",
+      "source": "CC-T0148",
+      "target": "dict:CC-0001"
+    },
+    {
+      "kind": "uses_dictionary",
+      "source": "CC-T0148",
+      "target": "dict:CC-0101"
+    },
+    {
+      "kind": "cited_by_paper",
       "source": "COMMON-T0001",
       "target": "paper:docs/COMPLETION_ROADMAP"
     },
@@ -41753,7 +42073,7 @@
     }
   ],
   "kind": "manifest_evidence_graph",
-  "node_count": 2176,
+  "node_count": 2210,
   "nodes": [
     {
       "id": "AIA-T0001",
@@ -47476,6 +47796,134 @@
       "status": "proved"
     },
     {
+      "id": "CC-T0133",
+      "kind": "theorem",
+      "lean_name": "Circle.Applications.circleGraphStrideReach_eq_div_gcd",
+      "name": "Circle graph stride reach equals period quotient",
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved"
+    },
+    {
+      "id": "CC-T0134",
+      "kind": "theorem",
+      "lean_name": "Circle.Applications.circleGraphStrideFullCoverage_iff_coprime",
+      "name": "Circle graph stride full coverage iff coprime",
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved"
+    },
+    {
+      "id": "CC-T0135",
+      "kind": "theorem",
+      "lean_name": "Circle.Applications.circleGraphLocalWindowCovers_iff_context_sub_one_le",
+      "name": "Circle graph local window coverage threshold",
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved"
+    },
+    {
+      "id": "CC-T0136",
+      "kind": "theorem",
+      "lean_name": "Circle.Applications.circleGraphFamilyCovers_iff_uncoveredLagList_eq_nil",
+      "name": "Circle graph coverage iff no uncovered lags",
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved"
+    },
+    {
+      "id": "CC-T0137",
+      "kind": "theorem",
+      "lean_name": "Circle.Applications.circleGraphFamilyCovers_iff_coveredLagList_length_eq_context_sub_one",
+      "name": "Circle graph coverage iff covered-lag count reaches context minus one",
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved"
+    },
+    {
+      "id": "CC-T0138",
+      "kind": "theorem",
+      "lean_name": "Circle.Applications.circleGraphCompleteFixture_9_2_2_3_4_7",
+      "name": "Compact circle graph sparse fixture covers all positive lags",
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved"
+    },
+    {
+      "id": "CC-T0139",
+      "kind": "theorem",
+      "lean_name": "Circle.Applications.circularSamePhase_iff_gap_dvd",
+      "name": "Circular same-phase iff gap divisibility",
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved"
+    },
+    {
+      "id": "CC-T0140",
+      "kind": "theorem",
+      "lean_name": "Circle.Applications.circularSamePhase_refl",
+      "name": "Circular same-phase is reflexive",
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved"
+    },
+    {
+      "id": "CC-T0141",
+      "kind": "theorem",
+      "lean_name": "Circle.Applications.circularSamePhase_symm",
+      "name": "Circular same-phase is symmetric",
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved"
+    },
+    {
+      "id": "CC-T0142",
+      "kind": "theorem",
+      "lean_name": "Circle.Applications.circularSamePhase_trans",
+      "name": "Circular same-phase is transitive",
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved"
+    },
+    {
+      "id": "CC-T0143",
+      "kind": "theorem",
+      "lean_name": "Circle.Applications.wrappedCircularDistance_comm",
+      "name": "Wrapped circular distance is symmetric",
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved"
+    },
+    {
+      "id": "CC-T0144",
+      "kind": "theorem",
+      "lean_name": "Circle.Applications.wrappedCircularDistance_le_forward",
+      "name": "Wrapped circular distance bounded by forward distance",
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved"
+    },
+    {
+      "id": "CC-T0145",
+      "kind": "theorem",
+      "lean_name": "Circle.Applications.wrappedCircularDistance_le_backward",
+      "name": "Wrapped circular distance bounded by backward distance",
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved"
+    },
+    {
+      "id": "CC-T0146",
+      "kind": "theorem",
+      "lean_name": "Circle.Applications.mem_circularSampleResidues_lt_period",
+      "name": "Circular sample residues lie below positive period",
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved"
+    },
+    {
+      "id": "CC-T0147",
+      "kind": "theorem",
+      "lean_name": "Circle.Applications.circularHistogram_le_length",
+      "name": "Circular histogram count bounded by sample length",
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved"
+    },
+    {
+      "id": "CC-T0148",
+      "kind": "theorem",
+      "lean_name": "Circle.Applications.circularHistogram_zero_of_period_le_residue",
+      "name": "Circular histogram outside positive period is zero",
+      "source_manifest": "manifests/theorem_manifest.yaml",
+      "status": "proved"
+    },
+    {
       "id": "COMMON-T0001",
       "kind": "theorem",
       "lean_name": "Circle.Common.eulerCharacteristic",
@@ -50422,6 +50870,90 @@
       "source": "Circle/Applications/Circulant.lean"
     },
     {
+      "id": "lean:Circle.Applications.circleGraphCompleteFixture_9_2_2_3_4_7",
+      "kind": "lean_declaration",
+      "lean_name": "Circle.Applications.circleGraphCompleteFixture_9_2_2_3_4_7",
+      "line": 88,
+      "source": "Circle/Applications/CircleGraphCoverage.lean"
+    },
+    {
+      "id": "lean:Circle.Applications.circleGraphFamilyCovers_iff_coveredLagList_length_eq_context_sub_one",
+      "kind": "lean_declaration",
+      "lean_name": "Circle.Applications.circleGraphFamilyCovers_iff_coveredLagList_length_eq_context_sub_one",
+      "line": 81,
+      "source": "Circle/Applications/CircleGraphCoverage.lean"
+    },
+    {
+      "id": "lean:Circle.Applications.circleGraphFamilyCovers_iff_uncoveredLagList_eq_nil",
+      "kind": "lean_declaration",
+      "lean_name": "Circle.Applications.circleGraphFamilyCovers_iff_uncoveredLagList_eq_nil",
+      "line": 73,
+      "source": "Circle/Applications/CircleGraphCoverage.lean"
+    },
+    {
+      "id": "lean:Circle.Applications.circleGraphLocalWindowCovers_iff_context_sub_one_le",
+      "kind": "lean_declaration",
+      "lean_name": "Circle.Applications.circleGraphLocalWindowCovers_iff_context_sub_one_le",
+      "line": 66,
+      "source": "Circle/Applications/CircleGraphCoverage.lean"
+    },
+    {
+      "id": "lean:Circle.Applications.circleGraphStrideFullCoverage_iff_coprime",
+      "kind": "lean_declaration",
+      "lean_name": "Circle.Applications.circleGraphStrideFullCoverage_iff_coprime",
+      "line": 60,
+      "source": "Circle/Applications/CircleGraphCoverage.lean"
+    },
+    {
+      "id": "lean:Circle.Applications.circleGraphStrideReach_eq_div_gcd",
+      "kind": "lean_declaration",
+      "lean_name": "Circle.Applications.circleGraphStrideReach_eq_div_gcd",
+      "line": 54,
+      "source": "Circle/Applications/CircleGraphCoverage.lean"
+    },
+    {
+      "id": "lean:Circle.Applications.circularHistogram_le_length",
+      "kind": "lean_declaration",
+      "lean_name": "Circle.Applications.circularHistogram_le_length",
+      "line": 113,
+      "source": "Circle/Applications/CircularStatistics.lean"
+    },
+    {
+      "id": "lean:Circle.Applications.circularHistogram_zero_of_period_le_residue",
+      "kind": "lean_declaration",
+      "lean_name": "Circle.Applications.circularHistogram_zero_of_period_le_residue",
+      "line": 123,
+      "source": "Circle/Applications/CircularStatistics.lean"
+    },
+    {
+      "id": "lean:Circle.Applications.circularSamePhase_iff_gap_dvd",
+      "kind": "lean_declaration",
+      "lean_name": "Circle.Applications.circularSamePhase_iff_gap_dvd",
+      "line": 38,
+      "source": "Circle/Applications/CircularStatistics.lean"
+    },
+    {
+      "id": "lean:Circle.Applications.circularSamePhase_refl",
+      "kind": "lean_declaration",
+      "lean_name": "Circle.Applications.circularSamePhase_refl",
+      "line": 45,
+      "source": "Circle/Applications/CircularStatistics.lean"
+    },
+    {
+      "id": "lean:Circle.Applications.circularSamePhase_symm",
+      "kind": "lean_declaration",
+      "lean_name": "Circle.Applications.circularSamePhase_symm",
+      "line": 50,
+      "source": "Circle/Applications/CircularStatistics.lean"
+    },
+    {
+      "id": "lean:Circle.Applications.circularSamePhase_trans",
+      "kind": "lean_declaration",
+      "lean_name": "Circle.Applications.circularSamePhase_trans",
+      "line": 58,
+      "source": "Circle/Applications/CircularStatistics.lean"
+    },
+    {
       "id": "lean:Circle.Applications.coilLagReach_add_context",
       "kind": "lean_declaration",
       "lean_name": "Circle.Applications.coilLagReach_add_context",
@@ -52072,6 +52604,13 @@
       "lean_name": "Circle.Applications.loopedRecurrentState_tokenBudget_add_mul_loopPeriod",
       "line": 1498,
       "source": "Circle/Applications/CircleAI.lean"
+    },
+    {
+      "id": "lean:Circle.Applications.mem_circularSampleResidues_lt_period",
+      "kind": "lean_declaration",
+      "lean_name": "Circle.Applications.mem_circularSampleResidues_lt_period",
+      "line": 101,
+      "source": "Circle/Applications/CircularStatistics.lean"
     },
     {
       "id": "lean:Circle.Applications.mem_coilLagResidueList_iff",
@@ -54641,6 +55180,27 @@
       "lean_name": "Circle.Applications.windingPosition_fst_mul_add_snd",
       "line": 2469,
       "source": "Circle/Applications/CircleAI.lean"
+    },
+    {
+      "id": "lean:Circle.Applications.wrappedCircularDistance_comm",
+      "kind": "lean_declaration",
+      "lean_name": "Circle.Applications.wrappedCircularDistance_comm",
+      "line": 67,
+      "source": "Circle/Applications/CircularStatistics.lean"
+    },
+    {
+      "id": "lean:Circle.Applications.wrappedCircularDistance_le_backward",
+      "kind": "lean_declaration",
+      "lean_name": "Circle.Applications.wrappedCircularDistance_le_backward",
+      "line": 83,
+      "source": "Circle/Applications/CircularStatistics.lean"
+    },
+    {
+      "id": "lean:Circle.Applications.wrappedCircularDistance_le_forward",
+      "kind": "lean_declaration",
+      "lean_name": "Circle.Applications.wrappedCircularDistance_le_forward",
+      "line": 75,
+      "source": "Circle/Applications/CircularStatistics.lean"
     },
     {
       "id": "lean:Circle.Common.eulerCharacteristic",
@@ -57379,6 +57939,16 @@
       "title": "Circle Calculus S7.3: Octonionic Units and Nonassociative Coils"
     },
     {
+      "id": "paper:docs/CIRCLE_GRAPH_COVERAGE",
+      "kind": "paper",
+      "paper_id": "docs/CIRCLE_GRAPH_COVERAGE"
+    },
+    {
+      "id": "paper:docs/CIRCULAR_STATISTICS_CONTRACTS",
+      "kind": "paper",
+      "paper_id": "docs/CIRCULAR_STATISTICS_CONTRACTS"
+    },
+    {
       "id": "paper:docs/COMPLETION_ROADMAP",
       "kind": "paper",
       "paper_id": "docs/COMPLETION_ROADMAP"
@@ -57654,7 +58224,7 @@
   "status_counts": {
     "lean_proved": 852,
     "lean_stated": 1,
-    "proved": 132
+    "proved": 148
   },
-  "theorem_count": 985
+  "theorem_count": 1001
 }

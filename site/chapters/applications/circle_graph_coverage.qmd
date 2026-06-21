@@ -1,0 +1,108 @@
+---
+title: "Circle Graph Coverage"
+---
+
+<div class="claim-boundary-strip">
+<span class="claim-boundary-label">Claim boundary</span>
+<span class="claim-boundary-badge claim-boundary-proved">finite lag coverage</span>
+<span class="claim-boundary-badge claim-boundary-executable">graph reports</span>
+<span class="claim-boundary-badge claim-boundary-experimental">attention quality separate</span>
+<span class="claim-boundary-badge claim-boundary-speculative">no speed claim</span>
+</div>
+
+Sparse attention can be read as a graph on token positions: vertices are
+positions, and the mask chooses directed edges. Sparse Transformer, Longformer,
+BigBird, Routing Transformer, and newer periodic sparse-attention work motivate
+that graph view
+([Sparse Transformer](https://arxiv.org/abs/1904.10509),
+[Longformer](https://arxiv.org/abs/2004.05150),
+[BigBird](https://arxiv.org/abs/2007.14062),
+[Routing Transformer](https://arxiv.org/abs/2003.05997),
+[Periodic Sparse Transformers](https://arxiv.org/html/2511.10696v2)).
+
+Circle Calculus proves a narrow finite version. A positive lag generator `g`
+gives every query vertex an edge:
+
+```text
+query -> query - g mod context
+```
+
+Coverage means every positive dependency lag `1..context-1` appears in the
+declared local-window plus stride-family generator list.
+
+This page is a graph-facing explanation layer over Lean-proved finite coverage
+facts. It is not proof by itself. Policy labels: not performance claims,
+not model-quality claims, and not real-data usefulness claim for any attention
+architecture.
+
+## Complete Graph-Shaped Fixture
+
+```python
+from circle_math.ai_contracts import circle_graph_coverage_report
+
+report = circle_graph_coverage_report(
+    context=9,
+    strides=(3, 4, 7),
+    path_length=2,
+    local_window=2,
+)
+
+print(report.coverage_complete)
+print(report.covered_lags)
+print(report.uncovered_lags)
+print(report.directed_edge_count)
+```
+
+Expected output:
+
+```text
+True
+(1, 2, 3, 6, 4, 8, 7, 5)
+()
+72
+```
+
+The finite theorem says this declared graph covers every positive lag. It does
+not say this graph is optimal, fast, memory-saving, or useful for a real model.
+
+## Gap Graph Fixture
+
+```python
+from circle_math.ai_contracts import circle_graph_coverage_report
+
+report = circle_graph_coverage_report(
+    context=120,
+    strides=(7, 13),
+    path_length=3,
+    local_window=4,
+)
+
+print(report.coverage_complete)
+print(report.first_uncovered_lag)
+print(report.uncovered_lag_intervals)
+```
+
+Expected shape:
+
+```text
+False
+5
+((5, 6), (8, 12), (15, 20), (22, 25), (27, 38), (40, 119))
+```
+
+The intervals are finite gap certificates for the declared generator set.
+
+## Lean Theorems
+
+```lean
+import Circle.Applications.CircleGraphCoverage
+```
+
+Theorem ids:
+
+- `CC-T0133`: one stride reaches `n / gcd(n,stride)` vertices.
+- `CC-T0134`: one stride covers the finite circle iff it is coprime to `n`.
+- `CC-T0135`: local-only coverage reaches the `n-1` threshold.
+- `CC-T0136`: family coverage iff the uncovered-lag list is empty.
+- `CC-T0137`: family coverage iff the covered-lag count is `n-1`.
+- `CC-T0138`: the compact `C_9` fixture is complete.

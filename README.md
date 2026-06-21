@@ -17,6 +17,8 @@ Start with the public site: <https://corbensorenson.github.io/circle-calculus/>.
 - Inspect stable APIs: [docs/PUBLIC_API.md](docs/PUBLIC_API.md)
 - Use finite Fourier/circulant algebra: [docs/FINITE_FOURIER_CIRCULANT.md](docs/FINITE_FOURIER_CIRCULANT.md)
 - Use positional phase-bank contracts: [docs/POSITION_PHASE_BANKS.md](docs/POSITION_PHASE_BANKS.md)
+- Use circle graph coverage contracts: [docs/CIRCLE_GRAPH_COVERAGE.md](docs/CIRCLE_GRAPH_COVERAGE.md)
+- Use finite circular statistics contracts: [docs/CIRCULAR_STATISTICS_CONTRACTS.md](docs/CIRCULAR_STATISTICS_CONTRACTS.md)
 - Consume AI/system contracts: [docs/CIRCLE_AI_CONTRACTS_INTEGRATION.md](docs/CIRCLE_AI_CONTRACTS_INTEGRATION.md)
 - Check contract schema/version policy: [docs/CONTRACT_SCHEMA_VERSIONING.md](docs/CONTRACT_SCHEMA_VERSIONING.md)
 - Browse circle research expansion ideas: [docs/CIRCLE_RESEARCH_EXPANSION_BACKLOG.md](docs/CIRCLE_RESEARCH_EXPANSION_BACKLOG.md)

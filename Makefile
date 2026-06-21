@@ -229,8 +229,17 @@ CIRCLE_PRIME_BIGINT_MIN_BPSW_NEXT_VS_SYMPY ?= 1.1
 CIRCLE_PRIME_BIGINT_MIN_BPSW_PRIME_VS_SYMPY ?= 1.0
 CIRCLE_PRIME_BIGINT_BPSW_PRIME_VS_SYMPY_CASES ?= mersenne_127_prime,curve25519_prime,secp256k1_prime,mersenne_521_prime
 CIRCLE_PRIME_BIGINT_RAW_SYMPY_CONFIRM_RUNS ?= 3
+CIRCLE_PRIME_BIGINT_RAW_SYMPY_CONFIRM_BENCH_ROUNDS ?= 7
+CIRCLE_PRIME_BIGINT_RAW_SYMPY_CONFIRM_MIN_BPSW_NEXT_VS_SYMPY ?= 0.0
 CIRCLE_PRIME_BIGINT_RAW_SYMPY_CONFIRM_PREFIX ?= sidecars/PRIME_ENGINE/results/prime_bigint_raw_sympy_confirm_latest
 CIRCLE_PRIME_BIGINT_RAW_SYMPY_CONFIRM_OUTPUT ?= sidecars/PRIME_ENGINE/results/prime_bigint_raw_sympy_confirm_latest.json
+CIRCLE_PRIME_BIGINT_NEXT_FUZZY_CONFIRM_RUNS ?= 3
+CIRCLE_PRIME_BIGINT_NEXT_FUZZY_CONFIRM_BENCH_ROUNDS ?= 7
+CIRCLE_PRIME_BIGINT_NEXT_FUZZY_CONFIRM_MIN_BPSW_NEXT_VS_SYMPY ?= $(CIRCLE_PRIME_BIGINT_MIN_BPSW_NEXT_VS_SYMPY)
+CIRCLE_PRIME_BIGINT_NEXT_FUZZY_CONFIRM_MIN_FUZZY_ANY_VS_SYMPY ?= 0.0
+CIRCLE_PRIME_BIGINT_NEXT_FUZZY_CONFIRM_MIN_FUZZY_ANY_VS_BPSW_NEXT ?= 0.0
+CIRCLE_PRIME_BIGINT_NEXT_FUZZY_CONFIRM_PREFIX ?= sidecars/PRIME_ENGINE/results/prime_bigint_next_fuzzy_confirm_latest
+CIRCLE_PRIME_BIGINT_NEXT_FUZZY_CONFIRM_OUTPUT ?= sidecars/PRIME_ENGINE/results/prime_bigint_next_fuzzy_confirm_latest.json
 CIRCLE_PRIME_HIGH_OFFSET_HOT_COLD_ROUNDS ?= 7
 CIRCLE_PRIME_HIGH_OFFSET_HOT_COLD_OUTPUT ?= sidecars/PRIME_ENGINE/results/prime_engine_high_offset_hot_cold_latest.csv
 CIRCLE_PRIME_HIGH_OFFSET_CONFIRM_RUNS ?= 3
@@ -607,7 +616,11 @@ prime-engine-bigint-raw-sympy-promotion-check:
 
 prime-engine-bigint-raw-sympy-confirm:
 	cargo build --release -p circle-prime --bin circle-prime
-	python scripts/confirm_prime_bigint_raw_sympy.py --runs $(CIRCLE_PRIME_BIGINT_RAW_SYMPY_CONFIRM_RUNS) --circle-prime-bin target/release/circle-prime --bench-rounds $(CIRCLE_PRIME_BIGINT_BENCH_ROUNDS) --warmup-rounds $(CIRCLE_PRIME_BIGINT_WARMUP_ROUNDS) --mr-rounds $(CIRCLE_PRIME_BIGINT_MR_ROUNDS) --max-candidates $(CIRCLE_PRIME_BIGINT_MAX_CANDIDATES) --candidate-window $(CIRCLE_PRIME_BIGINT_CANDIDATE_WINDOW) --top-k $(CIRCLE_PRIME_BIGINT_TOP_K) --score-limit $(CIRCLE_PRIME_BIGINT_SCORE_LIMIT) --server-batch-size $(CIRCLE_PRIME_BIGINT_SERVER_BATCH_SIZE) --min-hot-test-vs-openssl $(CIRCLE_PRIME_BIGINT_MIN_HOT_TEST_VS_OPENSSL) --min-bpsw-test-vs-openssl $(CIRCLE_PRIME_BIGINT_MIN_BPSW_TEST_VS_OPENSSL) --min-bpsw-next-vs-sympy $(CIRCLE_PRIME_BIGINT_MIN_BPSW_NEXT_VS_SYMPY) --min-bpsw-prime-vs-sympy $(CIRCLE_PRIME_BIGINT_MIN_BPSW_PRIME_VS_SYMPY) --bpsw-prime-vs-sympy-cases $(CIRCLE_PRIME_BIGINT_BPSW_PRIME_VS_SYMPY_CASES) --artifact-prefix $(CIRCLE_PRIME_BIGINT_RAW_SYMPY_CONFIRM_PREFIX) --summary-output $(CIRCLE_PRIME_BIGINT_RAW_SYMPY_CONFIRM_OUTPUT)
+	python scripts/confirm_prime_bigint_raw_sympy.py --runs $(CIRCLE_PRIME_BIGINT_RAW_SYMPY_CONFIRM_RUNS) --circle-prime-bin target/release/circle-prime --bench-rounds $(CIRCLE_PRIME_BIGINT_RAW_SYMPY_CONFIRM_BENCH_ROUNDS) --warmup-rounds $(CIRCLE_PRIME_BIGINT_WARMUP_ROUNDS) --mr-rounds $(CIRCLE_PRIME_BIGINT_MR_ROUNDS) --max-candidates $(CIRCLE_PRIME_BIGINT_MAX_CANDIDATES) --candidate-window $(CIRCLE_PRIME_BIGINT_CANDIDATE_WINDOW) --top-k $(CIRCLE_PRIME_BIGINT_TOP_K) --score-limit $(CIRCLE_PRIME_BIGINT_SCORE_LIMIT) --server-batch-size $(CIRCLE_PRIME_BIGINT_SERVER_BATCH_SIZE) --min-hot-test-vs-openssl $(CIRCLE_PRIME_BIGINT_MIN_HOT_TEST_VS_OPENSSL) --min-bpsw-test-vs-openssl $(CIRCLE_PRIME_BIGINT_MIN_BPSW_TEST_VS_OPENSSL) --min-bpsw-next-vs-sympy $(CIRCLE_PRIME_BIGINT_RAW_SYMPY_CONFIRM_MIN_BPSW_NEXT_VS_SYMPY) --min-bpsw-prime-vs-sympy $(CIRCLE_PRIME_BIGINT_MIN_BPSW_PRIME_VS_SYMPY) --bpsw-prime-vs-sympy-cases $(CIRCLE_PRIME_BIGINT_BPSW_PRIME_VS_SYMPY_CASES) --artifact-prefix $(CIRCLE_PRIME_BIGINT_RAW_SYMPY_CONFIRM_PREFIX) --summary-output $(CIRCLE_PRIME_BIGINT_RAW_SYMPY_CONFIRM_OUTPUT)
+
+prime-engine-bigint-next-fuzzy-confirm:
+	cargo build --release -p circle-prime --bin circle-prime
+	python scripts/confirm_prime_bigint_next_fuzzy.py --runs $(CIRCLE_PRIME_BIGINT_NEXT_FUZZY_CONFIRM_RUNS) --circle-prime-bin target/release/circle-prime --bench-rounds $(CIRCLE_PRIME_BIGINT_NEXT_FUZZY_CONFIRM_BENCH_ROUNDS) --warmup-rounds $(CIRCLE_PRIME_BIGINT_WARMUP_ROUNDS) --mr-rounds $(CIRCLE_PRIME_BIGINT_MR_ROUNDS) --max-candidates $(CIRCLE_PRIME_BIGINT_MAX_CANDIDATES) --candidate-window $(CIRCLE_PRIME_BIGINT_CANDIDATE_WINDOW) --top-k $(CIRCLE_PRIME_BIGINT_TOP_K) --score-limit $(CIRCLE_PRIME_BIGINT_SCORE_LIMIT) --server-batch-size $(CIRCLE_PRIME_BIGINT_SERVER_BATCH_SIZE) --min-bpsw-next-vs-sympy $(CIRCLE_PRIME_BIGINT_NEXT_FUZZY_CONFIRM_MIN_BPSW_NEXT_VS_SYMPY) --min-fuzzy-any-vs-sympy $(CIRCLE_PRIME_BIGINT_NEXT_FUZZY_CONFIRM_MIN_FUZZY_ANY_VS_SYMPY) --min-fuzzy-any-vs-bpsw-next $(CIRCLE_PRIME_BIGINT_NEXT_FUZZY_CONFIRM_MIN_FUZZY_ANY_VS_BPSW_NEXT) --artifact-prefix $(CIRCLE_PRIME_BIGINT_NEXT_FUZZY_CONFIRM_PREFIX) --summary-output $(CIRCLE_PRIME_BIGINT_NEXT_FUZZY_CONFIRM_OUTPUT)
 
 prime-engine-competitive-short:
 	$(MAKE) prime-engine-external-correctness

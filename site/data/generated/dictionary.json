@@ -491,6 +491,102 @@
           "status": "proved"
         },
         {
+          "id": "CC-T0133",
+          "lean_name": "Circle.Applications.circleGraphStrideReach_eq_div_gcd",
+          "name": "Circle graph stride reach equals period quotient",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0134",
+          "lean_name": "Circle.Applications.circleGraphStrideFullCoverage_iff_coprime",
+          "name": "Circle graph stride full coverage iff coprime",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0135",
+          "lean_name": "Circle.Applications.circleGraphLocalWindowCovers_iff_context_sub_one_le",
+          "name": "Circle graph local window coverage threshold",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0136",
+          "lean_name": "Circle.Applications.circleGraphFamilyCovers_iff_uncoveredLagList_eq_nil",
+          "name": "Circle graph coverage iff no uncovered lags",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0137",
+          "lean_name": "Circle.Applications.circleGraphFamilyCovers_iff_coveredLagList_length_eq_context_sub_one",
+          "name": "Circle graph coverage iff covered-lag count reaches context minus one",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0138",
+          "lean_name": "Circle.Applications.circleGraphCompleteFixture_9_2_2_3_4_7",
+          "name": "Compact circle graph sparse fixture covers all positive lags",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0139",
+          "lean_name": "Circle.Applications.circularSamePhase_iff_gap_dvd",
+          "name": "Circular same-phase iff gap divisibility",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0140",
+          "lean_name": "Circle.Applications.circularSamePhase_refl",
+          "name": "Circular same-phase is reflexive",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0141",
+          "lean_name": "Circle.Applications.circularSamePhase_symm",
+          "name": "Circular same-phase is symmetric",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0142",
+          "lean_name": "Circle.Applications.circularSamePhase_trans",
+          "name": "Circular same-phase is transitive",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0143",
+          "lean_name": "Circle.Applications.wrappedCircularDistance_comm",
+          "name": "Wrapped circular distance is symmetric",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0144",
+          "lean_name": "Circle.Applications.wrappedCircularDistance_le_forward",
+          "name": "Wrapped circular distance bounded by forward distance",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0145",
+          "lean_name": "Circle.Applications.wrappedCircularDistance_le_backward",
+          "name": "Wrapped circular distance bounded by backward distance",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0146",
+          "lean_name": "Circle.Applications.mem_circularSampleResidues_lt_period",
+          "name": "Circular sample residues lie below positive period",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0147",
+          "lean_name": "Circle.Applications.circularHistogram_le_length",
+          "name": "Circular histogram count bounded by sample length",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0148",
+          "lean_name": "Circle.Applications.circularHistogram_zero_of_period_le_residue",
+          "name": "Circular histogram outside positive period is zero",
+          "status": "proved"
+        },
+        {
           "id": "GEN-T0001",
           "lean_name": "Circle.Generative.finiteCircleGenerator_regenerates_nodes",
           "name": "Circle.Generative.finiteCircleGenerator_regenerates_nodes",
@@ -1105,6 +1201,102 @@
           "id": "CC-T0132",
           "lean_name": "Circle.Applications.scaledPhasePeriodBank_all_pos",
           "name": "Positive phase-bank scaling preserves positive periods",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0133",
+          "lean_name": "Circle.Applications.circleGraphStrideReach_eq_div_gcd",
+          "name": "Circle graph stride reach equals period quotient",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0134",
+          "lean_name": "Circle.Applications.circleGraphStrideFullCoverage_iff_coprime",
+          "name": "Circle graph stride full coverage iff coprime",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0135",
+          "lean_name": "Circle.Applications.circleGraphLocalWindowCovers_iff_context_sub_one_le",
+          "name": "Circle graph local window coverage threshold",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0136",
+          "lean_name": "Circle.Applications.circleGraphFamilyCovers_iff_uncoveredLagList_eq_nil",
+          "name": "Circle graph coverage iff no uncovered lags",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0137",
+          "lean_name": "Circle.Applications.circleGraphFamilyCovers_iff_coveredLagList_length_eq_context_sub_one",
+          "name": "Circle graph coverage iff covered-lag count reaches context minus one",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0138",
+          "lean_name": "Circle.Applications.circleGraphCompleteFixture_9_2_2_3_4_7",
+          "name": "Compact circle graph sparse fixture covers all positive lags",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0139",
+          "lean_name": "Circle.Applications.circularSamePhase_iff_gap_dvd",
+          "name": "Circular same-phase iff gap divisibility",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0140",
+          "lean_name": "Circle.Applications.circularSamePhase_refl",
+          "name": "Circular same-phase is reflexive",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0141",
+          "lean_name": "Circle.Applications.circularSamePhase_symm",
+          "name": "Circular same-phase is symmetric",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0142",
+          "lean_name": "Circle.Applications.circularSamePhase_trans",
+          "name": "Circular same-phase is transitive",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0143",
+          "lean_name": "Circle.Applications.wrappedCircularDistance_comm",
+          "name": "Wrapped circular distance is symmetric",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0144",
+          "lean_name": "Circle.Applications.wrappedCircularDistance_le_forward",
+          "name": "Wrapped circular distance bounded by forward distance",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0145",
+          "lean_name": "Circle.Applications.wrappedCircularDistance_le_backward",
+          "name": "Wrapped circular distance bounded by backward distance",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0146",
+          "lean_name": "Circle.Applications.mem_circularSampleResidues_lt_period",
+          "name": "Circular sample residues lie below positive period",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0147",
+          "lean_name": "Circle.Applications.circularHistogram_le_length",
+          "name": "Circular histogram count bounded by sample length",
+          "status": "proved"
+        },
+        {
+          "id": "CC-T0148",
+          "lean_name": "Circle.Applications.circularHistogram_zero_of_period_le_residue",
+          "name": "Circular histogram outside positive period is zero",
           "status": "proved"
         },
         {

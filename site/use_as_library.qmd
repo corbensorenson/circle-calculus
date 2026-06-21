@@ -92,6 +92,60 @@ The Lean layer proves the integer residue/divisibility contract in
 `Circle.Applications.PositionPhase`. This does not prove real-valued RoPE-family
 margins or model-quality claims.
 
+## Circle Graph Coverage
+
+```python
+from circle_math.ai_contracts import circle_graph_coverage_report
+
+report = circle_graph_coverage_report(
+    context=9,
+    strides=(3, 4, 7),
+    path_length=2,
+    local_window=2,
+)
+
+print(report.coverage_complete)
+print(report.uncovered_lags)
+print(report.directed_edge_count)
+```
+
+Expected output:
+
+```text
+True
+()
+72
+```
+
+The Lean layer proves the finite direct-lag coverage contract in
+`Circle.Applications.CircleGraphCoverage`. This does not prove sparse-attention
+quality, speed, or memory savings.
+
+## Circular Statistics
+
+```python
+from math import tau
+
+from circle_math.core import (
+    circular_mean_report,
+    finite_residue_histogram,
+    finite_wrapped_distance,
+)
+
+print(finite_wrapped_distance(12, 1, 11))
+print(finite_residue_histogram(5, [0, 5, 7, 12], include_zero_counts=True))
+
+report = circular_mean_report([0.0, tau / 4.0])
+print(report.mean_angle)
+print(report.mean_resultant_length)
+print(report.undefined_mean)
+```
+
+The Lean layer proves finite residue, same-phase, wrapped-distance, and
+histogram contracts in `Circle.Applications.CircularStatistics`. The
+real-valued circular mean/resultant fields are executable diagnostics, not
+statistical-quality or numerical-stability claims.
+
 ## RoPE Contract Receipt
 
 ```python

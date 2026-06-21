@@ -241,6 +241,32 @@ That target reuses the latest BigUint artifact and requires hot
 prime-like raw primality cases. It is intentionally separate from the default
 smoke so raw-primality promotion remains an explicit claim.
 
+For stability evidence across fresh artifacts, run:
+
+```bash
+make prime-engine-bigint-raw-sympy-confirm
+```
+
+That target reruns a focused hot-batched raw-primality benchmark several times,
+applies the same raw-SymPy promotion gate to every run, and writes a
+confirmation summary with the weakest observed speedup per case. Treat this as
+the promotion source for raw-primality speed claims; short one-round smokes are
+useful for wiring checks but too noisy for claim language.
+
+For the large next-prime and fuzzy-search split, run:
+
+```bash
+make prime-engine-bigint-next-fuzzy-confirm
+```
+
+That target repeats only hot BPSW `big-next-server`, hot BigUint
+`big-fuzzy-server`, and SymPy `nextprime` rows. It keeps the deterministic
+next-prime floor separate from fuzzy readouts, because fuzzy any-prime search
+does not claim exact next-prime semantics. Treat this as a diagnostic and
+promotion gate: deterministic next-prime speedups must clear their configured
+floor repeatedly before they become a claim, while fuzzy any-prime rows remain
+readouts unless explicit floors are supplied.
+
 Current local smoke status from 2026-06-21:
 
 - 16-round `prime-engine-bigint-smoke` agrees with OpenSSL and SymPy on every
@@ -252,24 +278,24 @@ Current local smoke status from 2026-06-21:
 - Hot Circle BPSW agrees with SymPy on every selected case and is faster than
   the fixed-base MR profile on prime-heavy inputs. The latest local artifact
   clears `prime-engine-bigint-raw-sympy-promotion-check`: hot BPSW raw
-  primality beats SymPy by `1.161x` on the 127-bit Mersenne prime, `1.063x`
-  on the Curve25519 prime, `1.026x` on the secp256k1 field prime, and
-  `3.014x` on the 521-bit Mersenne prime.
+  primality beats SymPy by `1.332x` on the 127-bit Mersenne prime, `1.099x`
+  on the Curve25519 prime, `1.128x` on the secp256k1 field prime, and
+  `2.970x` on the 521-bit Mersenne prime.
 - Hot Circle BPSW `big-next-server` agrees with SymPy on the selected 127-bit
-  and near-255-bit starts and beats SymPy on both in the latest local smoke:
-  `0.079 ms` versus `0.185 ms` at `2^127`, and `0.953 ms` versus `1.882 ms`
-  near Curve25519.
+  and near-255-bit starts in the focused diagnostic. Treat repeated
+  confirmation, not a one-off local smoke, as the source for any deterministic
+  next-prime speed claim.
 - A higher-check probe should still be rerun before raising the default
   arbitrary-precision profile. The current raw-primality promotion claim is
   tied to the configured 16-Miller-Rabin-round control artifact.
 - BigUint fuzzy any-prime search is correct in the smoke and its value-only
-  server path now skips diagnostic baseline scans. It beats SymPy on the
-  near-255-bit any-prime case (`1.149 ms` versus SymPy next-prime at
-  `1.746 ms`), but remains slower than deterministic `big-next-server`; it is
-  not promoted as a deterministic-speed win yet.
-- The raw BPSW SymPy win is now a gated artifact claim, not a default-smoke
-  assumption. Keep the explicit promotion gate separate until repeated runs
-  show enough stability to make it part of the broader competitive target.
+  server path now skips diagnostic baseline scans. It is not promoted as a
+  deterministic-speed win; the focused next/fuzzy confirmation keeps those
+  readouts separate from exact next-prime claims.
+- The raw BPSW SymPy lane now has a repeated-confirmation target for selected
+  hot-batched 127/255/256/521-bit prime-like cases. Keep any speed claim scoped
+  to raw `isprime` comparisons and tied to the latest confirmation artifact
+  until next-prime and fuzzy searches clear the same standard.
 
 Near-term promotion requirements:
 

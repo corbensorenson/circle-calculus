@@ -27,7 +27,9 @@ import Circle.Applications.TemporalCoil
 import Circle.Applications.TreeLLM
 import Circle.Applications.AIConfig
 import Circle.Applications.CircleAI
+import Circle.Applications.CircleGraphCoverage
 import Circle.Applications.CircleTransformer
+import Circle.Applications.CircularStatistics
 import Circle.Applications.Circulant
 import Circle.Applications.CirculantSpectral
 import Circle.Applications.PositionPhase

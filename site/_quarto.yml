@@ -164,6 +164,10 @@ website:
             text: KV-Cache Ring Buffer
           - href: chapters/applications/sparse_attention_contract.qmd
             text: Sparse Attention Coverage
+          - href: chapters/applications/circle_graph_coverage.qmd
+            text: Circle Graph Coverage
+          - href: chapters/applications/circular_statistics.qmd
+            text: Circular Statistics Contracts
           - href: chapters/applications/looped_recurrence_contracts.qmd
             text: Looped Recurrence Contracts
           - href: chapters/applications/strided_candidate_fanout.qmd

@@ -84,6 +84,61 @@ The corresponding Lean facts are in `Circle.Applications.PositionPhase`.
 This is an exact integer-period residue contract. It is not a real-valued
 RoPE, xPos, YaRN, LongRoPE, model-quality, or context-length proof.
 
+## Python: Circle Graph Coverage
+
+```python
+from circle_math.ai_contracts import circle_graph_coverage_report
+
+report = circle_graph_coverage_report(
+    context=9,
+    strides=(3, 4, 7),
+    path_length=2,
+    local_window=2,
+)
+
+print(report.coverage_complete)
+print(report.uncovered_lags)
+print(report.directed_edge_count)
+```
+
+Expected output:
+
+```text
+True
+()
+72
+```
+
+The corresponding Lean facts are in `Circle.Applications.CircleGraphCoverage`.
+This is a finite direct-lag coverage contract, not a sparse-attention quality,
+speed, or memory claim.
+
+## Python: Circular Statistics
+
+```python
+from math import tau
+
+from circle_math.core import (
+    circular_mean_report,
+    finite_residue_histogram,
+    finite_wrapped_distance,
+)
+
+print(finite_wrapped_distance(12, 1, 11))
+print(finite_residue_histogram(5, [0, 5, 7, 12], include_zero_counts=True))
+
+report = circular_mean_report([0.0, tau / 4.0])
+print(report.mean_angle)
+print(report.mean_resultant_length)
+print(report.undefined_mean)
+```
+
+The corresponding Lean facts are in
+`Circle.Applications.CircularStatistics`. The finite residue and histogram
+helpers are proof-facing; the real-valued mean/resultant fields are executable
+floating-point diagnostics, not statistical-quality or numerical-stability
+proofs.
+
 ## Python: RoPE Contract Receipt
 
 ```python

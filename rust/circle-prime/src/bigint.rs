@@ -74,7 +74,7 @@ struct BigFuzzyAnyPrimeCore {
 struct PseudoMersenneReducer {
     modulus: BigUint,
     mask: BigUint,
-    c: BigUint,
+    c: u64,
     k: usize,
 }
 
@@ -170,8 +170,7 @@ impl PseudoMersenneReducer {
         if &two_to_k <= modulus {
             return None;
         }
-        let c = &two_to_k - modulus;
-        c.to_u64()?;
+        let c = (&two_to_k - modulus).to_u64()?;
         let mask = &two_to_k - BigUint::one();
         Some(Self {
             modulus: modulus.clone(),
@@ -185,7 +184,11 @@ impl PseudoMersenneReducer {
         while value.bits() > self.k as u64 {
             let high = &value >> self.k;
             let low = &value & &self.mask;
-            value = low + high * &self.c;
+            value = if self.c == 1 {
+                low + high
+            } else {
+                low + high * self.c
+            };
         }
         while value >= self.modulus {
             value -= &self.modulus;
@@ -551,9 +554,7 @@ pub fn is_bpsw_probable_prime_biguint(n: &BigUint) -> Result<BigPrimeDecision, S
             stage: "perfect_square_found",
             factor: None,
             witness_base: None,
-            checked_small_prime_limit: *BIG_SMALL_PRIME_TRIAL_DIVISORS
-                .last()
-                .expect("trial divisor list is nonempty"),
+            checked_small_prime_limit: bpsw_small_prime_trial_limit(),
             miller_rabin_rounds: 0,
             bit_length: n.bits(),
         });
@@ -568,9 +569,7 @@ pub fn is_bpsw_probable_prime_biguint(n: &BigUint) -> Result<BigPrimeDecision, S
             stage: "base2_miller_rabin_witness_found",
             factor: None,
             witness_base: Some(2),
-            checked_small_prime_limit: *BIG_SMALL_PRIME_TRIAL_DIVISORS
-                .last()
-                .expect("trial divisor list is nonempty"),
+            checked_small_prime_limit: bpsw_small_prime_trial_limit(),
             miller_rabin_rounds: 1,
             bit_length: n.bits(),
         });
@@ -584,9 +583,7 @@ pub fn is_bpsw_probable_prime_biguint(n: &BigUint) -> Result<BigPrimeDecision, S
             stage: "selfridge_parameter_factor_found",
             factor: None,
             witness_base: None,
-            checked_small_prime_limit: *BIG_SMALL_PRIME_TRIAL_DIVISORS
-                .last()
-                .expect("trial divisor list is nonempty"),
+            checked_small_prime_limit: bpsw_small_prime_trial_limit(),
             miller_rabin_rounds: 1,
             bit_length: n.bits(),
         });
@@ -600,9 +597,7 @@ pub fn is_bpsw_probable_prime_biguint(n: &BigUint) -> Result<BigPrimeDecision, S
             stage: "strong_lucas_selfridge_witness_found",
             factor: None,
             witness_base: None,
-            checked_small_prime_limit: *BIG_SMALL_PRIME_TRIAL_DIVISORS
-                .last()
-                .expect("trial divisor list is nonempty"),
+            checked_small_prime_limit: bpsw_small_prime_trial_limit(),
             miller_rabin_rounds: 1,
             bit_length: n.bits(),
         });
@@ -615,9 +610,7 @@ pub fn is_bpsw_probable_prime_biguint(n: &BigUint) -> Result<BigPrimeDecision, S
         stage: "base2_miller_rabin_and_strong_lucas_selfridge_passed",
         factor: None,
         witness_base: Some(2),
-        checked_small_prime_limit: *BIG_SMALL_PRIME_TRIAL_DIVISORS
-            .last()
-            .expect("trial divisor list is nonempty"),
+        checked_small_prime_limit: bpsw_small_prime_trial_limit(),
         miller_rabin_rounds: 1,
         bit_length: n.bits(),
     })
@@ -830,6 +823,12 @@ fn big_status_from_u64(value: u64) -> BigPrimeStatus {
     }
 }
 
+fn bpsw_small_prime_trial_limit() -> u64 {
+    *BIG_SMALL_PRIME_TRIAL_DIVISORS
+        .last()
+        .expect("BPSW trial divisor list is nonempty")
+}
+
 fn miller_rabin_decomposition(n: &BigUint) -> (BigUint, u32, BigUint) {
     let one = BigUint::one();
     let n_minus_one = n - &one;
@@ -909,11 +908,8 @@ fn strong_lucas_selfridge_prp(n: &BigUint, d_param: i64, q_param: i64) -> bool {
         s += 1;
     }
 
-    let reducer = if q_param == -1 {
-        None
-    } else {
-        PseudoMersenneReducer::for_modulus(n)
-    };
+    let reducer =
+        PseudoMersenneReducer::for_modulus(n).filter(|reducer| q_param != -1 || reducer.c == 1);
     let (u, mut v, mut q_k) = lucas_uv_q_mod(n, d_param, q_param, &lucas_d, reducer.as_ref());
     if u.is_zero() || v.is_zero() {
         return true;
@@ -974,6 +970,7 @@ fn lucas_uv_q_minus_one_mod(
     k: &BigUint,
     reducer: Option<&PseudoMersenneReducer>,
 ) -> (BigUint, BigUint, BigUint) {
+    debug_assert_eq!(d_param, 5);
     let mut u = BigUint::zero();
     let mut v = BigUint::from(2u8) % n;
     let one = BigUint::one();
@@ -994,8 +991,10 @@ fn lucas_uv_q_minus_one_mod(
         q_is_negative = false;
 
         if k.bit(bit_index) {
-            let u_next = half_mod_odd_modulus(&mod_add_biguint(&u, &v, n), n);
-            let v_next = half_mod_odd_modulus(&signed_mul_add_mod(d_param, &u, &v, n), n);
+            let u_plus_v = mod_add_biguint(&u, &v, n);
+            let four_u = double_mod_biguint(&double_mod_biguint(&u, n), n);
+            let u_next = half_mod_odd_modulus(&u_plus_v, n);
+            let v_next = half_mod_odd_modulus(&mod_add_biguint(&u_plus_v, &four_u, n), n);
             u = u_next;
             v = v_next;
             q_is_negative = true;

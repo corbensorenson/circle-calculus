@@ -135,6 +135,17 @@ promotion gate. It reuses the latest BigUint artifact and requires hot BPSW
 raw primality to beat SymPy `isprime` on the selected prime-like cases; it
 remains separate from the default smoke so the raw-primality promotion claim is
 explicit.
+Use `make prime-engine-bigint-raw-sympy-confirm` for repeated confirmation: it
+reruns a focused hot-batched raw-primality benchmark several times, applies
+the same promotion floor on each run, and records the weakest observed speedup
+by case. Treat that repeated artifact as the source for raw-primality speed
+claims; short one-round smokes are wiring checks, not promotion evidence.
+Use `make prime-engine-bigint-next-fuzzy-confirm` for the large next-prime and
+fuzzy split. It repeats only hot BPSW `big-next-server`, hot BigUint
+`big-fuzzy-server`, and SymPy `nextprime` rows. Treat it as a diagnostic and
+promotion gate: deterministic next-prime speed claims need repeated artifacts,
+while fuzzy any-prime rows remain separate readouts unless explicit floors are
+supplied.
 
 `make prime-engine-high-offset-shifted-hot-server` is the harder diagnostic for
 the same high-offset lane. It keeps the server processes hot, but advances each

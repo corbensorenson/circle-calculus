@@ -35,6 +35,16 @@ from .applications.circle_ai_contracts import (
     build_seed_rule_contract,
     build_strided_candidate_fanout_contract,
 )
+from .circle_graph_coverage import (
+    CIRCLE_GRAPH_COVERAGE_CLAIM_BOUNDARY,
+    CIRCLE_GRAPH_COVERAGE_LEAN_DECLARATIONS,
+    CIRCLE_GRAPH_COVERAGE_SCHEMA_ID,
+    CIRCLE_GRAPH_COVERAGE_THEOREM_IDS,
+    CircleGraphCoverageReport,
+    circle_graph_coverage_report,
+    circle_graph_directed_edges,
+    circle_graph_lag_generators,
+)
 from .position_phase import (
     POSITION_PHASE_CLAIM_BOUNDARY,
     POSITION_PHASE_COLLISION_REPORT_SCHEMA_ID,
@@ -66,6 +76,11 @@ from .position_phase import (
 
 __all__ = [
     "CONTRACT_PACK_SCHEMA_ID",
+    "CIRCLE_GRAPH_COVERAGE_CLAIM_BOUNDARY",
+    "CIRCLE_GRAPH_COVERAGE_LEAN_DECLARATIONS",
+    "CIRCLE_GRAPH_COVERAGE_SCHEMA_ID",
+    "CIRCLE_GRAPH_COVERAGE_THEOREM_IDS",
+    "CircleGraphCoverageReport",
     "POSITION_PHASE_CLAIM_BOUNDARY",
     "POSITION_PHASE_COLLISION_REPORT_SCHEMA_ID",
     "POSITION_PHASE_GRID_REPORT_SCHEMA_ID",
@@ -99,6 +114,9 @@ __all__ = [
     "build_validated_contract_receipt_from_request",
     "build_validated_rope_receipt_from_model_config",
     "canonical_contract_kind",
+    "circle_graph_coverage_report",
+    "circle_graph_directed_edges",
+    "circle_graph_lag_generators",
     "longrope_nonuniform_scaled_phase_bank",
     "period_divides_gap",
     "phase_bank_collision_report",

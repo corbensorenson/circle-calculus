@@ -1,11 +1,13 @@
 from __future__ import annotations
 
 import argparse
+import csv
 import json
-import subprocess
 import sys
 from dataclasses import dataclass
 from pathlib import Path
+
+import sympy
 
 try:
     from check_prime_bigint_controls import (
@@ -14,8 +16,8 @@ try:
         BigIntRow,
         parse_case_list,
         read_rows,
-        validate_artifact,
     )
+    from benchmark_prime_bigint_controls import LineServer, prime_cases, timed
 except ModuleNotFoundError:
     from scripts.check_prime_bigint_controls import (
         PRIME_CASES,
@@ -23,8 +25,8 @@ except ModuleNotFoundError:
         BigIntRow,
         parse_case_list,
         read_rows,
-        validate_artifact,
     )
+    from scripts.benchmark_prime_bigint_controls import LineServer, prime_cases, timed
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -44,7 +46,7 @@ class RunSummary:
 def main() -> int:
     parser = argparse.ArgumentParser(
         description=(
-            "Repeat the BigUint controls benchmark and require the raw BPSW "
+            "Repeat the BigUint raw-primality benchmark and require the raw BPSW "
             "primality promotion gate to pass on every run."
         )
     )
@@ -124,55 +126,216 @@ def run_confirmation_pass(
     metadata_path = args.artifact_prefix.with_name(
         f"{args.artifact_prefix.name}_run_{run_index:02d}.json"
     )
-    command = [
-        sys.executable,
-        str(ROOT / "scripts" / "benchmark_prime_bigint_controls.py"),
-        "--circle-prime-bin",
-        str(args.circle_prime_bin),
-        "--bench-rounds",
-        str(args.bench_rounds),
-        "--warmup-rounds",
-        str(args.warmup_rounds),
-        "--mr-rounds",
-        str(args.mr_rounds),
-        "--max-candidates",
-        str(args.max_candidates),
-        "--candidate-window",
-        str(args.candidate_window),
-        "--top-k",
-        str(args.top_k),
-        "--score-limit",
-        str(args.score_limit),
-        "--server-batch-size",
-        str(args.server_batch_size),
-        "--output",
-        str(csv_path),
-        "--metadata-output",
-        str(metadata_path),
-    ]
-    subprocess.run(command, cwd=ROOT, check=True)
-    failures = validate_artifact(
-        csv_path=csv_path,
-        metadata_path=metadata_path,
-        expect_bench_rounds=args.bench_rounds,
-        expect_warmup_rounds=args.warmup_rounds,
-        expect_mr_rounds=args.mr_rounds,
-        expect_server_batch_size=args.server_batch_size,
-        min_hot_test_vs_openssl=args.min_hot_test_vs_openssl,
-        min_bpsw_test_vs_openssl=args.min_bpsw_test_vs_openssl,
-        min_bpsw_next_vs_sympy=args.min_bpsw_next_vs_sympy,
-        min_bpsw_prime_vs_sympy=args.min_bpsw_prime_vs_sympy,
-        bpsw_prime_vs_sympy_cases=cases,
-        require_bpsw_profile=True,
-        require_fuzzy_any=True,
+    rows = benchmark_raw_prime_rows(args=args, cases=cases)
+    write_rows(csv_path, rows)
+    write_metadata(metadata_path, args=args, rows=rows, cases=cases)
+    parsed_rows = read_rows(csv_path)
+    failures = validate_raw_prime_rows(
+        parsed_rows,
+        cases=cases,
+        minimum=args.min_bpsw_prime_vs_sympy,
     )
     return RunSummary(
         run=run_index,
         csv=csv_path,
         metadata=metadata_path,
         failures=failures,
-        speedups=bpsw_prime_speedups_by_case(read_rows(csv_path), cases),
+        speedups=bpsw_prime_speedups_by_case(parsed_rows, cases),
     )
+
+
+def benchmark_raw_prime_rows(
+    *,
+    args: argparse.Namespace,
+    cases: set[str],
+) -> list[dict[str, object]]:
+    selected_cases = [case for case in prime_cases() if case.name in cases]
+    rows: list[dict[str, object]] = []
+    with LineServer(
+        [
+            str(args.circle_prime_bin),
+            "big-test-server",
+            "--profile",
+            "bpsw",
+        ]
+    ) as circle_bpsw_server:
+        for case in selected_cases:
+            expected = case.expected_prime
+            circle = timed(
+                lambda case=case: circle_big_bpsw_test_server(
+                    circle_bpsw_server,
+                    case.n,
+                    args.server_batch_size,
+                ),
+                warmup_rounds=args.warmup_rounds,
+                bench_rounds=args.bench_rounds,
+                sample_divisor=args.server_batch_size,
+            )
+            sympy_sample = timed(
+                lambda case=case: bool(sympy.isprime(case.n)),
+                warmup_rounds=args.warmup_rounds,
+                bench_rounds=args.bench_rounds,
+            )
+            append_row(
+                rows,
+                case=case.name,
+                bits=case.n.bit_length(),
+                engine="circle_big_bpsw_test_server",
+                result=bool(circle.result),
+                expected=expected,
+                agreed=bool(circle.result) == expected,
+                mr_rounds=args.mr_rounds,
+                samples_ms=circle.samples_ms,
+            )
+            append_row(
+                rows,
+                case=case.name,
+                bits=case.n.bit_length(),
+                engine="sympy_isprime",
+                result=bool(sympy_sample.result),
+                expected=expected,
+                agreed=bool(sympy_sample.result) == expected,
+                mr_rounds=args.mr_rounds,
+                samples_ms=sympy_sample.samples_ms,
+            )
+    return rows
+
+
+def circle_big_bpsw_test_server(server: LineServer, n: int, batch_size: int) -> bool:
+    lines = server.request(n, batch_size)
+    if any(line != lines[0] for line in lines):
+        raise RuntimeError(f"big-test-server returned inconsistent batch: {lines}")
+    if lines[0] in {"prime", "probable_prime"}:
+        return True
+    if lines[0] == "composite":
+        return False
+    raise RuntimeError(f"could not parse big-test-server response: {lines[0]!r}")
+
+
+def append_row(
+    rows: list[dict[str, object]],
+    *,
+    case: str,
+    bits: int,
+    engine: str,
+    result: bool,
+    expected: bool,
+    agreed: bool,
+    mr_rounds: int,
+    samples_ms: list[float],
+) -> None:
+    rows.append(
+        {
+            "operation": "prime_test",
+            "case": case,
+            "bits": bits,
+            "engine": engine,
+            "result": str(result),
+            "expected": str(expected),
+            "agreed": str(agreed),
+            "mr_rounds": mr_rounds,
+            "rounds": len(samples_ms),
+            "median_ms": f"{median(samples_ms):.6f}",
+            "min_ms": f"{min(samples_ms):.6f}",
+            "max_ms": f"{max(samples_ms):.6f}",
+        }
+    )
+
+
+def median(values: list[float]) -> float:
+    ordered = sorted(values)
+    midpoint = len(ordered) // 2
+    if len(ordered) % 2 == 1:
+        return ordered[midpoint]
+    return (ordered[midpoint - 1] + ordered[midpoint]) / 2.0
+
+
+def write_rows(path: Path, rows: list[dict[str, object]]) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with path.open("w", newline="") as handle:
+        writer = csv.DictWriter(
+            handle,
+            fieldnames=[
+                "operation",
+                "case",
+                "bits",
+                "engine",
+                "result",
+                "expected",
+                "agreed",
+                "mr_rounds",
+                "rounds",
+                "median_ms",
+                "min_ms",
+                "max_ms",
+            ],
+        )
+        writer.writeheader()
+        writer.writerows(rows)
+
+
+def write_metadata(
+    path: Path,
+    *,
+    args: argparse.Namespace,
+    rows: list[dict[str, object]],
+    cases: set[str],
+) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    metadata = {
+        "schema": "circle_calculus.prime_bigint_raw_sympy_run.v0",
+        "row_count": len(rows),
+        "bench_rounds": args.bench_rounds,
+        "warmup_rounds": args.warmup_rounds,
+        "mr_rounds": args.mr_rounds,
+        "server_batch_size": args.server_batch_size,
+        "cases": sorted(cases),
+        "circle_prime": {
+            "path": str(args.circle_prime_bin),
+            "exists": args.circle_prime_bin.exists(),
+        },
+        "tools": {
+            "sympy": sympy.__version__,
+        },
+    }
+    path.write_text(json.dumps(metadata, indent=2, sort_keys=True) + "\n")
+
+
+def validate_raw_prime_rows(
+    rows: list[BigIntRow],
+    *,
+    cases: set[str],
+    minimum: float,
+) -> list[str]:
+    failures = []
+    row_by_key = {row.key: row for row in rows}
+    for case in sorted(cases):
+        for engine in ["circle_big_bpsw_test_server", "sympy_isprime"]:
+            row = row_by_key.get(("prime_test", case, engine))
+            if row is None:
+                failures.append(f"missing prime_test row: case={case}, engine={engine}")
+                continue
+            if not row.agreed:
+                failures.append(
+                    f"prime_test {case} {engine} disagreed: "
+                    f"result={row.result}, expected={row.expected}"
+                )
+            if row.rounds <= 0:
+                failures.append(f"prime_test {case} {engine} has no samples")
+            if row.median_ms <= 0.0 or row.min_ms <= 0.0 or row.max_ms <= 0.0:
+                failures.append(f"prime_test {case} {engine} has nonpositive timing")
+            if row.min_ms > row.median_ms or row.median_ms > row.max_ms:
+                failures.append(f"prime_test {case} {engine} timing order is invalid")
+        bpsw = row_by_key.get(("prime_test", case, "circle_big_bpsw_test_server"))
+        sympy_row = row_by_key.get(("prime_test", case, "sympy_isprime"))
+        if bpsw is not None and sympy_row is not None and minimum > 0.0:
+            speedup = sympy_row.median_ms / bpsw.median_ms
+            if speedup < minimum:
+                failures.append(
+                    f"prime_test {case} circle_big_bpsw_test_server median speedup over "
+                    f"sympy_isprime is {speedup:.3f}, below required {minimum:.3f}"
+                )
+    return failures
 
 
 def bpsw_prime_speedups_by_case(rows: list[BigIntRow], cases: set[str]) -> dict[str, float]:

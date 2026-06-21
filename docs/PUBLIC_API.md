@@ -49,6 +49,22 @@ The Lean proof spine for these helpers lives in `Circle.Core.FiniteFourier` and
 `Circle.Applications.CirculantSpectral`; see
 [FINITE_FOURIER_CIRCULANT.md](FINITE_FOURIER_CIRCULANT.md).
 
+Finite circular-statistics helpers are stable through `circle_math.core`:
+
+```python
+from math import tau
+
+from circle_math.core import circular_mean_report, finite_residue_histogram
+
+assert finite_residue_histogram(5, [0, 5, 7, 12]) == {0: 2, 2: 2}
+report = circular_mean_report([0.0, tau / 4.0])
+assert report.undefined_mean is False
+```
+
+The Lean proof spine for the finite residue layer lives in
+`Circle.Applications.CircularStatistics`; see
+[CIRCULAR_STATISTICS_CONTRACTS.md](CIRCULAR_STATISTICS_CONTRACTS.md).
+
 ## Python Contracts
 
 Use `circle_math.ai_contracts` to build public contract fixtures and receipts:
@@ -94,6 +110,23 @@ assert report.witness_channels == ("phase_2",)
 The Lean proof spine for this layer lives in
 `Circle.Applications.PositionPhase`; see
 [POSITION_PHASE_BANKS.md](POSITION_PHASE_BANKS.md).
+
+It also exposes a graph-shaped sparse-attention coverage wrapper:
+
+```python
+from circle_math.ai_contracts import circle_graph_coverage_report
+
+report = circle_graph_coverage_report(
+    context=9,
+    strides=(3, 4, 7),
+    path_length=2,
+    local_window=2,
+)
+assert report.coverage_complete is True
+```
+
+The Lean wrapper surface lives in `Circle.Applications.CircleGraphCoverage`;
+see [CIRCLE_GRAPH_COVERAGE.md](CIRCLE_GRAPH_COVERAGE.md).
 
 Use `circle_math.contracts` to consume an already exported pack:
 

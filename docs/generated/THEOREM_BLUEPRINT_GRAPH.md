@@ -6,15 +6,15 @@ Edges are manifest evidence and paper reading-order links, not formal Lean proof
 
 ## Summary
 
-- Theorems: `985`
-- Nodes: `2176`
-- Edges: `8350`
+- Theorems: `1001`
+- Nodes: `2210`
+- Edges: `8414`
 
 ## Status Counts
 
 - `lean_proved`: `852`
 - `lean_stated`: `1`
-- `proved`: `132`
+- `proved`: `148`
 
 ## Largest Paper Theorem Spines
 

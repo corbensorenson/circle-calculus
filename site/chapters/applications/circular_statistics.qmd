@@ -1,0 +1,65 @@
+---
+title: "Circular Statistics Contracts"
+---
+
+<div class="claim-boundary-strip">
+<span class="claim-boundary-label">Claim boundary</span>
+<span class="claim-boundary-badge claim-boundary-proved">proved finite residues</span>
+<span class="claim-boundary-badge claim-boundary-executable">executable circular stats</span>
+<span class="claim-boundary-badge claim-boundary-experimental">numerics separate</span>
+<span class="claim-boundary-badge claim-boundary-speculative">no inference-quality claim</span>
+</div>
+
+Circular data shows up anywhere values wrap: phase, heading, hue, pose
+orientation, oscillator state, and periodic AI features. The executable Python
+surface follows the standard resultant-vector view used by
+[SciPy `circmean`](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.circmean.html),
+[SciPy `circvar`](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.circvar.html),
+and
+[SciPy `directional_stats`](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.directional_stats.html).
+
+The proved core is finite and exact:
+
+```text
+same_phase(period, left, right) = left mod period = right mod period
+histogram(period, samples, residue) = count(sample mod period = residue)
+```
+
+This page is not proof by itself. Policy labels: not performance claims,
+not model-quality claims, and not real-data usefulness claim for circular
+statistics, model behavior, or downstream decisions.
+
+## Lean Surface
+
+```lean
+import Circle.Applications.CircularStatistics
+import Circle.Applications.Public
+```
+
+The theorem ids are `CC-T0139` through `CC-T0148`, covering same-phase
+divisibility, equivalence laws, wrapped-distance symmetry and bounds, residue
+range, and histogram bounds.
+
+## Python Example
+
+```python
+from math import tau
+
+from circle_math.core import (
+    circular_mean_report,
+    finite_residue_histogram,
+    finite_wrapped_distance,
+)
+
+print(finite_wrapped_distance(12, 1, 11))
+print(finite_residue_histogram(5, [0, 5, 7, 12], include_zero_counts=True))
+
+report = circular_mean_report([0.0, tau / 4.0])
+print(report.mean_angle)
+print(report.mean_resultant_length)
+print(report.undefined_mean)
+```
+
+Finite residue helpers cite the Lean layer. The circular mean/resultant fields
+are executable floating-point diagnostics and keep their non-proof boundary in
+the emitted report.
