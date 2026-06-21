@@ -347,6 +347,20 @@ def _as_string_set(value: Any) -> set[str]:
     return {item for item in value if isinstance(item, str)}
 
 
+def _duplicate_strings(values: list[Any]) -> list[str]:
+    seen: set[str] = set()
+    duplicates: list[str] = []
+    duplicates_seen: set[str] = set()
+    for value in values:
+        if not isinstance(value, str):
+            continue
+        if value in seen and value not in duplicates_seen:
+            duplicates.append(value)
+            duplicates_seen.add(value)
+        seen.add(value)
+    return duplicates
+
+
 def build_contract_request(kind: str, parameters: Mapping[str, Any]) -> dict[str, Any]:
     """Build and validate a versioned public runner request object."""
 
@@ -1466,6 +1480,12 @@ def validate_contract_receipt(receipt: Mapping[str, Any]) -> list[str]:
                     f"proof_layers.{bucket} must contain non-empty strings"
                 )
             else:
+                duplicate_fields = _duplicate_strings(fields)
+                if duplicate_fields:
+                    failures.append(
+                        f"proof_layers.{bucket} must not contain duplicates: "
+                        + ", ".join(duplicate_fields)
+                    )
                 for field in fields:
                     field_buckets.setdefault(field, []).append(bucket)
         for field, buckets in sorted(field_buckets.items()):
@@ -1481,6 +1501,11 @@ def validate_contract_receipt(receipt: Mapping[str, Any]) -> list[str]:
         theorem_ids = proof_status.get("theorem_ids")
         if not isinstance(theorem_ids, list) or not theorem_ids:
             failures.append("proof_status.theorem_ids must be a non-empty list")
+        elif _duplicate_strings(theorem_ids):
+            failures.append(
+                "proof_status.theorem_ids must not contain duplicates: "
+                + ", ".join(_duplicate_strings(theorem_ids))
+            )
         theorem_count = proof_status.get("theorem_count")
         if not isinstance(theorem_count, int):
             failures.append("proof_status.theorem_count must be an integer")
@@ -1490,6 +1515,13 @@ def validate_contract_receipt(receipt: Mapping[str, Any]) -> list[str]:
             )
         if proof_status.get("all_theorem_ids_resolved") is not True:
             failures.append("all receipt theorem ids must resolve in the contract pack")
+        for key in ("unresolved_theorem_ids", "unproved_theorem_ids"):
+            value = proof_status.get(key)
+            if isinstance(value, list) and _duplicate_strings(value):
+                failures.append(
+                    f"proof_status.{key} must not contain duplicates: "
+                    + ", ".join(_duplicate_strings(value))
+                )
         if status in {"proved", "impossible"} and proof_status.get(
             "all_theorem_ids_proved"
         ) is not True:
@@ -1519,6 +1551,13 @@ def validate_contract_receipt(receipt: Mapping[str, Any]) -> list[str]:
                 "support.contract_theorem_count must equal "
                 "len(contract_theorem_ids)"
             )
+        if isinstance(contract_theorem_ids, list) and _duplicate_strings(
+            contract_theorem_ids
+        ):
+            failures.append(
+                "support.contract_theorem_ids must not contain duplicates: "
+                + ", ".join(_duplicate_strings(contract_theorem_ids))
+            )
     recommendations = receipt.get("recommendations")
     if not isinstance(recommendations, list) or not recommendations:
         failures.append("recommendations must be a non-empty list")
@@ -1535,6 +1574,11 @@ def validate_contract_receipt(receipt: Mapping[str, Any]) -> list[str]:
         failures.append("validation_commands must be a non-empty list")
     elif not all(isinstance(command, str) and command for command in validation_commands):
         failures.append("validation_commands must contain non-empty strings")
+    elif _duplicate_strings(validation_commands):
+        failures.append(
+            "validation_commands must not contain duplicates: "
+            + ", ".join(_duplicate_strings(validation_commands))
+        )
     elif (
         isinstance(support, dict)
         and isinstance(support.get("validation_commands"), list)
@@ -1545,6 +1589,15 @@ def validate_contract_receipt(receipt: Mapping[str, Any]) -> list[str]:
         "not_claimed"
     ):
         failures.append("not_claimed must be a non-empty list")
+    else:
+        not_claimed = receipt["not_claimed"]
+        if not all(isinstance(claim, str) and claim for claim in not_claimed):
+            failures.append("not_claimed must contain non-empty strings")
+        elif _duplicate_strings(not_claimed):
+            failures.append(
+                "not_claimed must not contain duplicates: "
+                + ", ".join(_duplicate_strings(not_claimed))
+            )
     return failures
 
 

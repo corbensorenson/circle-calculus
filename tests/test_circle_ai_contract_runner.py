@@ -415,6 +415,33 @@ def test_receipt_validator_requires_typed_proof_layer_buckets(
         for failure in failures
     )
 
+    duplicate_same_layer_field = json.loads(json.dumps(receipt))
+    duplicate_same_layer_field["proof_layers"]["proved_fields"].append(
+        duplicate_same_layer_field["proof_layers"]["proved_fields"][0]
+    )
+    duplicate_same_layer_field["receipt_content_fingerprint"] = _receipt_fingerprint(
+        duplicate_same_layer_field
+    )
+    failures = validate_contract_receipt(duplicate_same_layer_field)
+    assert any(
+        "proof_layers.proved_fields must not contain duplicates" in failure
+        for failure in failures
+    )
+
+    duplicate_theorem_id = json.loads(json.dumps(receipt))
+    duplicate_theorem_id["proof_status"]["theorem_ids"].append(
+        duplicate_theorem_id["proof_status"]["theorem_ids"][0]
+    )
+    duplicate_theorem_id["proof_status"]["theorem_count"] += 1
+    duplicate_theorem_id["receipt_content_fingerprint"] = _receipt_fingerprint(
+        duplicate_theorem_id
+    )
+    failures = validate_contract_receipt(duplicate_theorem_id)
+    assert any(
+        "proof_status.theorem_ids must not contain duplicates" in failure
+        for failure in failures
+    )
+
     wrong_theorem_count = json.loads(json.dumps(receipt))
     wrong_theorem_count["proof_status"]["theorem_count"] += 1
     wrong_theorem_count["receipt_content_fingerprint"] = _receipt_fingerprint(
@@ -448,6 +475,19 @@ def test_receipt_validator_requires_typed_proof_layer_buckets(
         for failure in failures
     )
 
+    duplicate_validation_command = json.loads(json.dumps(receipt))
+    duplicate_validation_command["validation_commands"].append(
+        duplicate_validation_command["validation_commands"][0]
+    )
+    duplicate_validation_command["receipt_content_fingerprint"] = _receipt_fingerprint(
+        duplicate_validation_command
+    )
+    failures = validate_contract_receipt(duplicate_validation_command)
+    assert any(
+        "validation_commands must not contain duplicates" in failure
+        for failure in failures
+    )
+
     mismatched_support_contract_id = json.loads(json.dumps(receipt))
     mismatched_support_contract_id["support"]["contract_id"] = "WRONG"
     mismatched_support_contract_id["receipt_content_fingerprint"] = (
@@ -468,6 +508,31 @@ def test_receipt_validator_requires_typed_proof_layer_buckets(
     assert any(
         "support.contract_theorem_count must equal len(contract_theorem_ids)"
         in failure
+        for failure in failures
+    )
+
+    duplicate_support_theorem_id = json.loads(json.dumps(receipt))
+    duplicate_support_theorem_id["support"]["contract_theorem_ids"].append(
+        duplicate_support_theorem_id["support"]["contract_theorem_ids"][0]
+    )
+    duplicate_support_theorem_id["support"]["contract_theorem_count"] += 1
+    duplicate_support_theorem_id["receipt_content_fingerprint"] = (
+        _receipt_fingerprint(duplicate_support_theorem_id)
+    )
+    failures = validate_contract_receipt(duplicate_support_theorem_id)
+    assert any(
+        "support.contract_theorem_ids must not contain duplicates" in failure
+        for failure in failures
+    )
+
+    duplicate_non_claim = json.loads(json.dumps(receipt))
+    duplicate_non_claim["not_claimed"].append(duplicate_non_claim["not_claimed"][0])
+    duplicate_non_claim["receipt_content_fingerprint"] = _receipt_fingerprint(
+        duplicate_non_claim
+    )
+    failures = validate_contract_receipt(duplicate_non_claim)
+    assert any(
+        "not_claimed must not contain duplicates" in failure
         for failure in failures
     )
 
