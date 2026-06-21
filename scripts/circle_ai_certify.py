@@ -27,6 +27,8 @@ from circle_math.applications import (  # noqa: E402
     build_contract_receipt_file_check_json_schema,
     build_contract_receipt_file_check_report,
     build_contract_receipt_gate_report,
+    build_contract_receipt_replay_check_json_schema,
+    build_contract_receipt_replay_check_report,
     build_contract_receipt_json_schema,
     build_contract_request,
     build_contract_request_validation_report,
@@ -49,6 +51,8 @@ from circle_math.applications.circle_ai_contract_runner import (  # noqa: E402
     DECISION_VERDICTS,
     RECEIPT_FILE_CHECK_SCHEMA_ID,
     RECEIPT_FILE_CHECK_SCHEMA_PATH,
+    RECEIPT_REPLAY_CHECK_SCHEMA_ID,
+    RECEIPT_REPLAY_CHECK_SCHEMA_PATH,
     RECEIPT_SCHEMA_ID,
     RECEIPT_SCHEMA_PATH,
     REQUEST_SCHEMA_ID,
@@ -70,6 +74,7 @@ DEFAULT_REQUEST_VALIDATION_SCHEMA = ROOT / REQUEST_VALIDATION_SCHEMA_PATH
 DEFAULT_ROPE_MODEL_CONFIG_IMPORT_SCHEMA = ROOT / ROPE_MODEL_CONFIG_IMPORT_SCHEMA_PATH
 DEFAULT_RECEIPT_SCHEMA = ROOT / RECEIPT_SCHEMA_PATH
 DEFAULT_RECEIPT_CHECK_SCHEMA = ROOT / RECEIPT_FILE_CHECK_SCHEMA_PATH
+DEFAULT_RECEIPT_REPLAY_CHECK_SCHEMA = ROOT / RECEIPT_REPLAY_CHECK_SCHEMA_PATH
 DEFAULT_CERTIFICATION_BUNDLE_SCHEMA = ROOT / CERTIFICATION_BUNDLE_SCHEMA_PATH
 DEFAULT_CERTIFICATION_BUNDLE_CHECK_SCHEMA = (
     ROOT / CERTIFICATION_BUNDLE_FILE_CHECK_SCHEMA_PATH
@@ -129,8 +134,9 @@ def add_common_options(parser: argparse.ArgumentParser) -> None:
             "Optional directory where a standard audit artifact set is written. "
             "For receipt-producing runs this fills unset output paths for "
             "request, request-validation, receipt, receipt-check, gate, "
-            "certification-bundle, certification-bundle-check, artifact-manifest, "
-            "and artifact-manifest-check JSON files."
+            "receipt-replay-check, certification-bundle, "
+            "certification-bundle-check, artifact-manifest, and "
+            "artifact-manifest-check JSON files."
         ),
     )
     parser.add_argument(
@@ -197,6 +203,15 @@ def add_common_options(parser: argparse.ArgumentParser) -> None:
         ),
     )
     parser.add_argument(
+        "--receipt-replay-check-out",
+        type=Path,
+        help=(
+            "Optional path for a schema-validated report that rebuilds the "
+            "emitted receipt from its embedded request and compares replay "
+            "fingerprints."
+        ),
+    )
+    parser.add_argument(
         "--gate-report-out",
         type=Path,
         help=(
@@ -249,6 +264,16 @@ def add_common_options(parser: argparse.ArgumentParser) -> None:
             "Generated JSON Schema used to validate --receipt-check-out and "
             "--gate-report-out reports. Defaults to "
             "site/data/generated/circle_ai_contract_receipt_file_check.schema.json."
+        ),
+    )
+    parser.add_argument(
+        "--receipt-replay-check-schema",
+        type=Path,
+        default=DEFAULT_RECEIPT_REPLAY_CHECK_SCHEMA,
+        help=(
+            "Generated JSON Schema used to validate "
+            "--receipt-replay-check-out reports. Defaults to "
+            "site/data/generated/circle_ai_contract_receipt_replay_check.schema.json."
         ),
     )
     parser.add_argument(
@@ -596,6 +621,20 @@ def _validate_receipt_check_report(
         )
 
 
+def _validate_receipt_replay_check_report(
+    report: dict[str, Any],
+    schema_path: Path,
+) -> None:
+    schema = _load_json_object(schema_path, label="receipt-replay-check schema")
+    jsonschema.Draft202012Validator.check_schema(schema)
+    jsonschema.validate(report, schema)
+    generated_schema = build_contract_receipt_replay_check_json_schema()
+    if schema != generated_schema:
+        raise jsonschema.SchemaError(
+            "receipt-replay-check schema drifted from application builder"
+        )
+
+
 def _validate_certification_bundle(
     bundle: dict[str, Any],
     schema_path: Path,
@@ -757,6 +796,13 @@ def _apply_artifact_dir_defaults(args: argparse.Namespace) -> None:
         )
     _fill_artifact_path(args, "json_out", artifact_dir, prefix, "receipt")
     _fill_artifact_path(args, "receipt_check_out", artifact_dir, prefix, "receipt_check")
+    _fill_artifact_path(
+        args,
+        "receipt_replay_check_out",
+        artifact_dir,
+        prefix,
+        "receipt_replay_check",
+    )
     _fill_artifact_path(args, "gate_report_out", artifact_dir, prefix, "gate_report")
     _fill_artifact_path(
         args,
@@ -798,6 +844,11 @@ def _artifact_paths_for_manifest(args: argparse.Namespace) -> list[tuple[str, Pa
         ),
         ("receipt_json", args.json_out, RECEIPT_SCHEMA_ID),
         ("receipt_check", args.receipt_check_out, RECEIPT_FILE_CHECK_SCHEMA_ID),
+        (
+            "receipt_replay_check",
+            args.receipt_replay_check_out,
+            RECEIPT_REPLAY_CHECK_SCHEMA_ID,
+        ),
         ("gate_report", args.gate_report_out, RECEIPT_FILE_CHECK_SCHEMA_ID),
         (
             "certification_bundle",
@@ -1282,6 +1333,7 @@ def _artifact_summary_line(args: argparse.Namespace) -> str | None:
         ("request_validation_report", args.request_validation_report_out),
         ("receipt_json", args.json_out),
         ("receipt_check", args.receipt_check_out),
+        ("receipt_replay_check", args.receipt_replay_check_out),
         ("gate_report", args.gate_report_out),
         ("certification_bundle", args.certification_bundle_out),
         ("certification_bundle_check", args.certification_bundle_check_out),
@@ -1476,6 +1528,21 @@ def main() -> int:
         )
         _validate_receipt_check_report(check_report, args.receipt_check_schema)
         write_json(args.receipt_check_out, check_report)
+    if args.receipt_replay_check_out is not None:
+        replay_report = build_contract_receipt_replay_check_report(
+            receipt,
+            pack=pack,
+            receipt_path=(
+                _display_path(args.json_out)
+                if args.json_out is not None
+                else "<in-memory-receipt>"
+            ),
+        )
+        _validate_receipt_replay_check_report(
+            replay_report,
+            args.receipt_replay_check_schema,
+        )
+        write_json(args.receipt_replay_check_out, replay_report)
     if args.gate_report_out is not None:
         gate_report = build_contract_receipt_gate_report(
             receipt,

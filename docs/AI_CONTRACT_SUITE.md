@@ -80,9 +80,10 @@ python scripts/circle_ai_certify.py rope \
 ```
 
 `--artifact-dir` writes the request, request-validation report, model-config
-import report when present, receipt, receipt-check report, gate report,
-certification bundle, bundle-check report, artifact manifest, and
-artifact-manifest-check report with stable names.
+import report when present, receipt, receipt-check report,
+receipt-replay-check report, gate report, certification bundle,
+bundle-check report, artifact manifest, and artifact-manifest-check report with
+stable names.
 `scripts/check_circle_ai_artifact_manifest.py` can re-run that manifest check
 after handoff by re-hashing each referenced file.
 

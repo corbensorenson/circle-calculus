@@ -2256,6 +2256,7 @@ def test_circle_ai_certify_cli_text_output_lists_written_artifacts(
     request_validation_path = tmp_path / "request_validation.json"
     receipt_path = tmp_path / "receipt.json"
     receipt_check_path = tmp_path / "receipt_check.json"
+    receipt_replay_check_path = tmp_path / "receipt_replay_check.json"
     gate_report_path = tmp_path / "gate_report.json"
     bundle_path = tmp_path / "certification_bundle.json"
     bundle_check_path = tmp_path / "certification_bundle_check.json"
@@ -2277,6 +2278,8 @@ def test_circle_ai_certify_cli_text_output_lists_written_artifacts(
             str(receipt_path),
             "--receipt-check-out",
             str(receipt_check_path),
+            "--receipt-replay-check-out",
+            str(receipt_replay_check_path),
             "--gate-report-out",
             str(gate_report_path),
             "--certification-bundle-out",
@@ -2305,6 +2308,7 @@ def test_circle_ai_certify_cli_text_output_lists_written_artifacts(
     assert f"request_validation_report={request_validation_path}" in artifact_line
     assert f"receipt_json={receipt_path}" in artifact_line
     assert f"receipt_check={receipt_check_path}" in artifact_line
+    assert f"receipt_replay_check={receipt_replay_check_path}" in artifact_line
     assert f"gate_report={gate_report_path}" in artifact_line
     assert f"certification_bundle={bundle_path}" in artifact_line
     assert f"certification_bundle_check={bundle_check_path}" in artifact_line
@@ -2313,6 +2317,7 @@ def test_circle_ai_certify_cli_text_output_lists_written_artifacts(
         request_validation_path,
         receipt_path,
         receipt_check_path,
+        receipt_replay_check_path,
         gate_report_path,
         bundle_path,
         bundle_check_path,
@@ -2338,6 +2343,7 @@ def test_circle_ai_certify_cli_artifact_dir_writes_standard_audit_set(
         / f"{prefix}_model_config_import.json",
         "receipt_json": artifact_dir / f"{prefix}_receipt.json",
         "receipt_check": artifact_dir / f"{prefix}_receipt_check.json",
+        "receipt_replay_check": artifact_dir / f"{prefix}_receipt_replay_check.json",
         "gate_report": artifact_dir / f"{prefix}_gate_report.json",
         "certification_bundle": artifact_dir / f"{prefix}_certification_bundle.json",
         "certification_bundle_check": artifact_dir
@@ -2401,6 +2407,9 @@ def test_circle_ai_certify_cli_artifact_dir_writes_standard_audit_set(
     )
     receipt = json.loads(expected_paths["receipt_json"].read_text())
     receipt_check = json.loads(expected_paths["receipt_check"].read_text())
+    receipt_replay_check = json.loads(
+        expected_paths["receipt_replay_check"].read_text()
+    )
     gate_report = json.loads(expected_paths["gate_report"].read_text())
     bundle = json.loads(expected_paths["certification_bundle"].read_text())
     bundle_check = json.loads(expected_paths["certification_bundle_check"].read_text())
@@ -2416,6 +2425,10 @@ def test_circle_ai_certify_cli_artifact_dir_writes_standard_audit_set(
     jsonschema.validate(model_config_import, build_rope_model_config_import_json_schema())
     jsonschema.validate(receipt, build_contract_receipt_json_schema())
     jsonschema.validate(receipt_check, build_contract_receipt_file_check_json_schema())
+    jsonschema.validate(
+        receipt_replay_check,
+        build_contract_receipt_replay_check_json_schema(),
+    )
     jsonschema.validate(gate_report, build_contract_receipt_file_check_json_schema())
     jsonschema.validate(bundle, build_contract_certification_bundle_json_schema())
     jsonschema.validate(
@@ -2434,6 +2447,8 @@ def test_circle_ai_certify_cli_artifact_dir_writes_standard_audit_set(
     assert model_config_import["ok"] is True
     assert receipt["status"] == "proved"
     assert receipt_check["ok"] is True
+    assert receipt_replay_check["ok"] is True
+    assert receipt_replay_check["comparison"]["all_replay_fields_match"] is True
     assert gate_report["ok"] is True
     assert bundle["ok"] is True
     assert bundle_check["ok"] is True
@@ -2443,7 +2458,7 @@ def test_circle_ai_certify_cli_artifact_dir_writes_standard_audit_set(
     assert artifact_manifest["status"] == "proved"
     assert artifact_manifest["request_passed"] is True
     assert artifact_manifest["decision_verdict"] == "passed"
-    assert artifact_manifest["artifact_count"] == 8
+    assert artifact_manifest["artifact_count"] == 9
     manifest_artifacts = {
         artifact["label"]: artifact for artifact in artifact_manifest["artifacts"]
     }
@@ -2467,7 +2482,7 @@ def test_circle_ai_certify_cli_artifact_dir_writes_standard_audit_set(
     )
     assert artifact_manifest_report["ok"] is True
     assert artifact_manifest_report["manifest_count"] == 1
-    assert artifact_manifest_report["summaries"][0]["artifact_count"] == 8
+    assert artifact_manifest_report["summaries"][0]["artifact_count"] == 9
     assert (
         artifact_manifest_report["summaries"][0]["fingerprint_mismatch_count"]
         == 0
@@ -2500,7 +2515,7 @@ def test_circle_ai_certify_cli_artifact_dir_writes_standard_audit_set(
         "unsupported_model_config_fields"
     ] == []
 
-    assert artifact_manifest_check["summaries"][0]["artifact_count"] == 8
+    assert artifact_manifest_check["summaries"][0]["artifact_count"] == 9
     assert artifact_manifest_check["summaries"][0]["failure_count"] == 0
     assert artifact_manifest_check["pin_policy"] == {
         "required_kinds": ["rope_position_distinguishability"],

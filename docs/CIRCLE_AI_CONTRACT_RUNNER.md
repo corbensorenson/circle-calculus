@@ -201,6 +201,7 @@ without naming every file. It fills unset paths for:
 <prefix>_model_config_import.json       # RoPE model-config runs only
 <prefix>_receipt.json
 <prefix>_receipt_check.json
+<prefix>_receipt_replay_check.json
 <prefix>_gate_report.json
 <prefix>_certification_bundle.json
 <prefix>_certification_bundle_check.json
