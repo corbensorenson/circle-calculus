@@ -17,6 +17,8 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from circle_math.applications import (  # noqa: E402
+    build_contract_artifact_manifest_file_check_json_schema,
+    build_contract_artifact_manifest_file_check_report,
     build_contract_artifact_manifest_json_schema,
     build_contract_certification_bundle,
     build_contract_certification_bundle_file_check_json_schema,
@@ -36,6 +38,7 @@ from circle_math.applications import (  # noqa: E402
     receipt_summary_lines,
 )
 from circle_math.applications.circle_ai_contract_runner import (  # noqa: E402
+    ARTIFACT_MANIFEST_FILE_CHECK_SCHEMA_PATH,
     ARTIFACT_MANIFEST_SCHEMA_ID,
     ARTIFACT_MANIFEST_SCHEMA_PATH,
     CERTIFICATION_BUNDLE_FILE_CHECK_SCHEMA_PATH,
@@ -72,6 +75,7 @@ DEFAULT_CERTIFICATION_BUNDLE_CHECK_SCHEMA = (
     ROOT / CERTIFICATION_BUNDLE_FILE_CHECK_SCHEMA_PATH
 )
 DEFAULT_ARTIFACT_MANIFEST_SCHEMA = ROOT / ARTIFACT_MANIFEST_SCHEMA_PATH
+DEFAULT_ARTIFACT_MANIFEST_CHECK_SCHEMA = ROOT / ARTIFACT_MANIFEST_FILE_CHECK_SCHEMA_PATH
 DEFAULT_PACK_PATH = ROOT / "site" / "data" / "generated" / "circle_ai_contract_pack.json"
 
 
@@ -125,7 +129,8 @@ def add_common_options(parser: argparse.ArgumentParser) -> None:
             "Optional directory where a standard audit artifact set is written. "
             "For receipt-producing runs this fills unset output paths for "
             "request, request-validation, receipt, receipt-check, gate, "
-            "certification-bundle, and certification-bundle-check JSON files."
+            "certification-bundle, certification-bundle-check, artifact-manifest, "
+            "and artifact-manifest-check JSON files."
         ),
     )
     parser.add_argument(
@@ -152,6 +157,25 @@ def add_common_options(parser: argparse.ArgumentParser) -> None:
             "Generated JSON Schema used to validate --artifact-manifest-out. "
             "Defaults to "
             "site/data/generated/circle_ai_contract_artifact_manifest.schema.json."
+        ),
+    )
+    parser.add_argument(
+        "--artifact-manifest-check-out",
+        type=Path,
+        help=(
+            "Optional path for a schema-validated verification report for "
+            "the emitted --artifact-manifest-out file."
+        ),
+    )
+    parser.add_argument(
+        "--artifact-manifest-check-schema",
+        type=Path,
+        default=DEFAULT_ARTIFACT_MANIFEST_CHECK_SCHEMA,
+        help=(
+            "Generated JSON Schema used to validate "
+            "--artifact-manifest-check-out. Defaults to "
+            "site/data/generated/"
+            "circle_ai_contract_artifact_manifest_file_check.schema.json."
         ),
     )
     parser.add_argument(
@@ -633,6 +657,13 @@ def _apply_artifact_dir_defaults(args: argparse.Namespace) -> None:
             prefix,
             "artifact_manifest",
         )
+        _fill_artifact_path(
+            args,
+            "artifact_manifest_check_out",
+            artifact_dir,
+            prefix,
+            "artifact_manifest_check",
+        )
         return
     if args.kind == "rope" and args.model_config is not None:
         _fill_artifact_path(
@@ -665,6 +696,13 @@ def _apply_artifact_dir_defaults(args: argparse.Namespace) -> None:
         artifact_dir,
         prefix,
         "artifact_manifest",
+    )
+    _fill_artifact_path(
+        args,
+        "artifact_manifest_check_out",
+        artifact_dir,
+        prefix,
+        "artifact_manifest_check",
     )
 
 
@@ -809,6 +847,20 @@ def _validate_artifact_manifest(manifest: dict[str, Any], schema_path: Path) -> 
         )
 
 
+def _validate_artifact_manifest_check_report(
+    report: dict[str, Any],
+    schema_path: Path,
+) -> None:
+    schema = _load_json_object(schema_path, label="artifact manifest check schema")
+    jsonschema.Draft202012Validator.check_schema(schema)
+    jsonschema.validate(report, schema)
+    generated_schema = build_contract_artifact_manifest_file_check_json_schema()
+    if schema != generated_schema:
+        raise jsonschema.SchemaError(
+            "artifact manifest check schema drifted from application builder"
+        )
+
+
 def _write_artifact_manifest(
     args: argparse.Namespace,
     *,
@@ -824,6 +876,16 @@ def _write_artifact_manifest(
     )
     _validate_artifact_manifest(manifest, args.artifact_manifest_schema)
     write_json(args.artifact_manifest_out, manifest)
+    if args.artifact_manifest_check_out is not None:
+        manifest_check_report = build_contract_artifact_manifest_file_check_report(
+            manifest,
+            manifest_path=args.artifact_manifest_out,
+        )
+        _validate_artifact_manifest_check_report(
+            manifest_check_report,
+            args.artifact_manifest_check_schema,
+        )
+        write_json(args.artifact_manifest_check_out, manifest_check_report)
 
 
 def _receipt_gate_failures(receipt: dict[str, Any], args: argparse.Namespace) -> list[str]:
@@ -869,6 +931,7 @@ def _artifact_summary_line(args: argparse.Namespace) -> str | None:
         ("certification_bundle", args.certification_bundle_out),
         ("certification_bundle_check", args.certification_bundle_check_out),
         ("artifact_manifest", args.artifact_manifest_out),
+        ("artifact_manifest_check", args.artifact_manifest_check_out),
     ]
     model_config_import_report_out = getattr(
         args,
@@ -906,6 +969,11 @@ def main() -> int:
         raise SystemExit(
             "--certification-bundle-check-out requires --certification-bundle-out "
             "so the report points at a saved certification bundle"
+        )
+    if args.artifact_manifest_check_out is not None and args.artifact_manifest_out is None:
+        raise SystemExit(
+            "--artifact-manifest-check-out requires --artifact-manifest-out "
+            "so the report points at a saved artifact manifest"
         )
     request_for_bundle: dict[str, Any] | None = None
     model_config_import_report_for_bundle: dict[str, Any] | None = None

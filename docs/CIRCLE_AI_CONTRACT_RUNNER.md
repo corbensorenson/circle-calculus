@@ -205,12 +205,14 @@ without naming every file. It fills unset paths for:
 <prefix>_certification_bundle.json
 <prefix>_certification_bundle_check.json
 <prefix>_artifact_manifest.json
+<prefix>_artifact_manifest_check.json
 ```
 
 The default prefix is the request or model-config filename stem when available,
 otherwise the contract family name. Use `--artifact-prefix` to override it. The
 manifest indexes the generated files, their schema ids, and their file SHA-256
-hashes.
+hashes. The manifest-check report re-hashes those indexed files and verifies
+the manifest's mirrored receipt status fields.
 
 Downstream projects can verify a complete artifact directory from that manifest:
 

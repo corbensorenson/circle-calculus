@@ -2209,6 +2209,8 @@ def test_circle_ai_certify_cli_artifact_dir_writes_standard_audit_set(
         "certification_bundle_check": artifact_dir
         / f"{prefix}_certification_bundle_check.json",
         "artifact_manifest": artifact_dir / f"{prefix}_artifact_manifest.json",
+        "artifact_manifest_check": artifact_dir
+        / f"{prefix}_artifact_manifest_check.json",
     }
 
     result = subprocess.run(
@@ -2255,6 +2257,9 @@ def test_circle_ai_certify_cli_artifact_dir_writes_standard_audit_set(
     bundle = json.loads(expected_paths["certification_bundle"].read_text())
     bundle_check = json.loads(expected_paths["certification_bundle_check"].read_text())
     artifact_manifest = json.loads(expected_paths["artifact_manifest"].read_text())
+    artifact_manifest_check = json.loads(
+        expected_paths["artifact_manifest_check"].read_text()
+    )
 
     jsonschema.validate(
         request_validation,
@@ -2273,6 +2278,10 @@ def test_circle_ai_certify_cli_artifact_dir_writes_standard_audit_set(
         artifact_manifest,
         build_contract_artifact_manifest_json_schema(),
     )
+    jsonschema.validate(
+        artifact_manifest_check,
+        build_contract_artifact_manifest_file_check_json_schema(),
+    )
     assert request_validation["ok"] is True
     assert model_config_import["ok"] is True
     assert receipt["status"] == "proved"
@@ -2280,6 +2289,7 @@ def test_circle_ai_certify_cli_artifact_dir_writes_standard_audit_set(
     assert gate_report["ok"] is True
     assert bundle["ok"] is True
     assert bundle_check["ok"] is True
+    assert artifact_manifest_check["ok"] is True
     assert bundle["model_config_import_report"] == model_config_import
     assert artifact_manifest["kind"] == "rope_position_distinguishability"
     assert artifact_manifest["status"] == "proved"
@@ -2290,7 +2300,9 @@ def test_circle_ai_certify_cli_artifact_dir_writes_standard_audit_set(
         artifact["label"]: artifact for artifact in artifact_manifest["artifacts"]
     }
     assert set(manifest_artifacts) == {
-        label for label in expected_paths if label != "artifact_manifest"
+        label
+        for label in expected_paths
+        if label not in {"artifact_manifest", "artifact_manifest_check"}
     }
     for label, artifact in manifest_artifacts.items():
         assert artifact["exists"] is True
@@ -2314,7 +2326,10 @@ def test_circle_ai_certify_cli_artifact_dir_writes_standard_audit_set(
     )
     assert artifact_manifest_report["summaries"][0]["schema_mismatch_count"] == 0
 
-    manifest_check_path = artifact_dir / f"{prefix}_artifact_manifest_check.json"
+    assert artifact_manifest_check["summaries"][0]["artifact_count"] == 8
+    assert artifact_manifest_check["summaries"][0]["failure_count"] == 0
+
+    manifest_check_path = artifact_dir / f"{prefix}_artifact_manifest_recheck.json"
     manifest_cli = subprocess.run(
         [
             sys.executable,
