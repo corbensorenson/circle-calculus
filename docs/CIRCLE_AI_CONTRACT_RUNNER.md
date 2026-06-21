@@ -223,7 +223,10 @@ decision, assurance, or pass gates. It validates its own report against
 `site/data/generated/circle_ai_contract_receipt_file_check.schema.json` and can
 write that report to disk for audit logs. It is the smallest CI-facing command
 for downstream projects that want to reject stale or tampered Circle AI receipts
-without running Lean.
+without running Lean. The report summary includes the receipt fingerprint,
+request-content fingerprint, normalized-request fingerprint, and normalized
+request, so CI can record what was certified without reopening every receipt
+file.
 
 Receipt JSON is strict at the top level: unknown fields are rejected, while
 contract-specific details live under `evidence`, `support`, and `proof_layers`.

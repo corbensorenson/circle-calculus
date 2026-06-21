@@ -97,6 +97,18 @@ def test_check_circle_ai_receipt_accepts_saved_receipt(tmp_path: Path) -> None:
     assert payload["summaries"][0]["decision_assurance"] == receipt["decision"][
         "assurance"
     ]
+    assert payload["summaries"][0]["normalized_request"] == receipt[
+        "normalized_request"
+    ]
+    assert payload["summaries"][0]["request_content_fingerprint"] == receipt[
+        "request_content_fingerprint"
+    ]
+    assert payload["summaries"][0]["normalized_request_fingerprint"] == receipt[
+        "normalized_request_fingerprint"
+    ]
+    assert payload["summaries"][0]["receipt_content_fingerprint"] == receipt[
+        "receipt_content_fingerprint"
+    ]
     assert json.loads(report_path.read_text()) == payload
 
 

@@ -2154,6 +2154,13 @@ def build_contract_receipt_file_check_report(
                     if isinstance(proof_status, Mapping)
                     else None
                 ),
+                "normalized_request": receipt.get("normalized_request"),
+                "request_content_fingerprint": receipt.get(
+                    "request_content_fingerprint"
+                ),
+                "normalized_request_fingerprint": receipt.get(
+                    "normalized_request_fingerprint"
+                ),
                 "receipt_content_fingerprint": receipt.get(
                     "receipt_content_fingerprint"
                 ),
@@ -2744,6 +2751,9 @@ def build_contract_receipt_file_check_json_schema() -> dict[str, Any]:
             "decision_verdict",
             "decision_assurance",
             "theorem_count",
+            "normalized_request",
+            "request_content_fingerprint",
+            "normalized_request_fingerprint",
             "receipt_content_fingerprint",
             "failure_count",
         ],
@@ -2756,6 +2766,9 @@ def build_contract_receipt_file_check_json_schema() -> dict[str, Any]:
             "decision_verdict": {"enum": list(DECISION_VERDICTS)},
             "decision_assurance": {"enum": list(DECISION_ASSURANCE_LEVELS)},
             "theorem_count": {"type": "integer", "minimum": 0},
+            "normalized_request": {"type": "object", "minProperties": 1},
+            "request_content_fingerprint": fingerprint,
+            "normalized_request_fingerprint": fingerprint,
             "receipt_content_fingerprint": fingerprint,
             "failure_count": {"type": "integer", "minimum": 0},
         },

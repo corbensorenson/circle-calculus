@@ -711,6 +711,15 @@ def test_receipt_file_check_report_public_api(contract_pack: dict) -> None:
     assert report["summaries"][0]["decision_assurance"] == receipt["decision"][
         "assurance"
     ]
+    assert report["summaries"][0]["normalized_request"] == receipt[
+        "normalized_request"
+    ]
+    assert report["summaries"][0]["request_content_fingerprint"] == receipt[
+        "request_content_fingerprint"
+    ]
+    assert report["summaries"][0]["normalized_request_fingerprint"] == receipt[
+        "normalized_request_fingerprint"
+    ]
     assert report["summaries"][0]["receipt_content_fingerprint"] == receipt[
         "receipt_content_fingerprint"
     ]
@@ -766,6 +775,12 @@ def test_receipt_gate_report_public_api(contract_pack: dict) -> None:
     jsonschema.validate(report, build_contract_receipt_file_check_json_schema())
     assert report["ok"] is True
     assert report["summaries"][0]["path"] == "<in-memory-receipt>"
+    assert report["summaries"][0]["normalized_request"] == receipt[
+        "normalized_request"
+    ]
+    assert report["summaries"][0]["request_content_fingerprint"] == receipt[
+        "request_content_fingerprint"
+    ]
     assert report["gate_policy"] == {
         "allowed_statuses": ["proved"],
         "allowed_decision_verdicts": ["passed"],
@@ -1704,6 +1719,15 @@ def test_circle_ai_certify_cli_writes_receipt_check_report(
         "require_passed": True,
     }
     assert report["summaries"][0]["path"] == str(receipt_path)
+    assert report["summaries"][0]["normalized_request"] == receipt[
+        "normalized_request"
+    ]
+    assert report["summaries"][0]["request_content_fingerprint"] == receipt[
+        "request_content_fingerprint"
+    ]
+    assert report["summaries"][0]["normalized_request_fingerprint"] == receipt[
+        "normalized_request_fingerprint"
+    ]
     assert report["summaries"][0]["receipt_content_fingerprint"] == receipt[
         "receipt_content_fingerprint"
     ]
@@ -1787,6 +1811,12 @@ def test_circle_ai_certify_cli_writes_receipt_checks_for_non_rope_families(
     jsonschema.validate(report, build_contract_receipt_file_check_json_schema())
     assert report["ok"] is True
     assert report["summaries"][0]["kind"] == expected_kind
+    assert report["summaries"][0]["normalized_request"] == receipt[
+        "normalized_request"
+    ]
+    assert report["summaries"][0]["request_content_fingerprint"] == receipt[
+        "request_content_fingerprint"
+    ]
     assert report["summaries"][0]["receipt_content_fingerprint"] == receipt[
         "receipt_content_fingerprint"
     ]

@@ -112,11 +112,23 @@
               "recurrence_schedule"
             ]
           },
+          "normalized_request": {
+            "minProperties": 1,
+            "type": "object"
+          },
+          "normalized_request_fingerprint": {
+            "pattern": "^[0-9a-f]{64}$",
+            "type": "string"
+          },
           "path": {
             "minLength": 1,
             "type": "string"
           },
           "receipt_content_fingerprint": {
+            "pattern": "^[0-9a-f]{64}$",
+            "type": "string"
+          },
+          "request_content_fingerprint": {
             "pattern": "^[0-9a-f]{64}$",
             "type": "string"
           },
@@ -149,6 +161,9 @@
           "decision_verdict",
           "decision_assurance",
           "theorem_count",
+          "normalized_request",
+          "request_content_fingerprint",
+          "normalized_request_fingerprint",
           "receipt_content_fingerprint",
           "failure_count"
         ],
