@@ -25,6 +25,7 @@ from circle_math.applications import (
     build_rope_request_parameters_from_model_config,
     build_rope_receipt,
     build_sparse_attention_receipt,
+    receipt_summary_lines,
     validate_contract_request,
     validate_contract_receipt,
     validate_contract_receipt_against_pack,
@@ -205,6 +206,33 @@ def test_rope_receipt_distinguishes_impossible_and_undecided_margins(
     assert guardrail["requested_margin_exceeds_ceiling"] is True
     assert "AIRA-T0240" in guardrail["theorem_ids"]
     assert above_ceiling["proof_status"]["all_theorem_ids_proved"] is True
+
+
+def test_receipt_summary_lines_surface_proof_layer_counts(
+    contract_pack: dict,
+) -> None:
+    receipt = build_rope_receipt(
+        head_dim=128,
+        base=10000.0,
+        context=131072,
+        requested_margin="1/328459",
+        pack=contract_pack,
+    )
+
+    lines = receipt_summary_lines(receipt)
+
+    proof_layer_line = next(line for line in lines if line.startswith("proof_layers="))
+    proof_layers = receipt["proof_layers"]
+    assert f"proved_fields={len(proof_layers['proved_fields'])}" in proof_layer_line
+    assert f"computed_fields={len(proof_layers['computed_fields'])}" in proof_layer_line
+    assert (
+        f"numerical_only_fields={len(proof_layers['numerical_only_fields'])}"
+        in proof_layer_line
+    )
+    assert (
+        f"unsupported_fields={len(proof_layers['unsupported_fields'])}"
+        in proof_layer_line
+    )
 
 
 def test_kv_sparse_and_recurrence_receipts_preserve_family_semantics(

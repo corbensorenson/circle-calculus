@@ -106,16 +106,18 @@ The validate-only report is checked against
 is printed or written.
 
 Every emitted receipt is checked against
-`site/data/generated/circle_ai_contract_receipt.schema.json` before it is
-printed or written. Use `--receipt-schema` to pin a generated schema path in a
-downstream project.
+`site/data/generated/circle_ai_contract_receipt.schema.json` and then validated
+against the loaded contract pack before it is printed or written. The pack-aware
+check covers the claimed pack fingerprint, contract fingerprint, contract id,
+and theorem-id membership. Use `--receipt-schema` to pin a generated schema path
+in a downstream project.
 By default, emitted receipts are issued against
 `site/data/generated/circle_ai_contract_pack.json`, the same public pack used by
 the saved-receipt verifier. Use `--pack` only when intentionally testing a
 different generated pack.
 Use `--receipt-check-out` with `--json-out` to write the same schema-validated
-check report that a later `scripts/check_circle_ai_receipt.py` run would
-produce for the saved receipt.
+pack-aware check report that a later `scripts/check_circle_ai_receipt.py` run
+would produce for the saved receipt.
 
 Copyable starting points live under:
 

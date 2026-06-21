@@ -1664,6 +1664,14 @@ def receipt_summary_lines(receipt: Mapping[str, Any]) -> list[str]:
             f"validation_commands={len(receipt['validation_commands'])}"
         ),
     ]
+    proof_layers = receipt["proof_layers"]
+    lines.append(
+        "proof_layers="
+        f"proved_fields={len(proof_layers['proved_fields'])} "
+        f"computed_fields={len(proof_layers['computed_fields'])} "
+        f"numerical_only_fields={len(proof_layers['numerical_only_fields'])} "
+        f"unsupported_fields={len(proof_layers['unsupported_fields'])}"
+    )
     evidence = receipt["evidence"]
     kind = receipt["kind"]
     if kind == "rope_position_distinguishability":
