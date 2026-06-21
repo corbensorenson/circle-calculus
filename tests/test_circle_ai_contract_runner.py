@@ -1093,11 +1093,37 @@ def test_rope_model_config_import_report_schema_classifies_scaling() -> None:
     assert standard["content_fingerprint_algorithm"] == "sha256-json-v1"
     assert len(standard["model_config_fingerprint"]) == 64
     assert len(standard["request_content_fingerprint"]) == 64
+    assert standard["parameter_sources"]["head_dim"] == {
+        "source": "derived_config_fields",
+        "fields": ["hidden_size", "num_attention_heads"],
+        "note": "hidden_size / num_attention_heads, adjusted by rotary fraction when present",
+    }
+    assert standard["parameter_sources"]["base"] == {
+        "source": "config_field",
+        "field": "rope_theta",
+    }
+    assert standard["parameter_sources"]["context"] == {
+        "source": "config_field",
+        "field": "max_position_embeddings",
+    }
+    assert standard["parameter_sources"]["tolerance"] == {
+        "source": "default",
+        "note": "1e-6",
+    }
+    assert standard["parameter_sources"]["discretization"] == {
+        "source": "default",
+        "note": "round",
+    }
+    assert standard["parameter_sources"]["requested_margin"] == {
+        "source": "override",
+        "field": "requested_margin",
+    }
     assert scaled["ok"] is False
     assert scaled["request"] is None
     assert len(scaled["model_config_fingerprint"]) == 64
     assert scaled["request_content_fingerprint"] is None
     assert scaled["unsupported_model_config_fields"] == ["rope_scaling"]
+    assert scaled["parameter_sources"]["base"]["field"] == "rope_theta"
     assert "rope_scaling is outside" in scaled["failures"][0]
 
 
@@ -1680,6 +1706,21 @@ def test_circle_ai_certify_cli_imports_checked_in_model_config(
     jsonschema.validate(import_report, build_rope_model_config_import_json_schema())
     assert import_report["ok"] is True
     assert import_report["request"] == saved_request
+    assert import_report["parameter_sources"]["head_dim"]["source"] == (
+        "derived_config_fields"
+    )
+    assert import_report["parameter_sources"]["base"] == {
+        "source": "config_field",
+        "field": "rope_theta",
+    }
+    assert import_report["parameter_sources"]["context"] == {
+        "source": "config_field",
+        "field": "max_position_embeddings",
+    }
+    assert import_report["parameter_sources"]["discretization"] == {
+        "source": "default",
+        "note": "round",
+    }
     assert saved_request == saved_receipt["request"]
     assert saved_receipt["normalized_request"]["head_dim"] == 128
     assert saved_receipt["normalized_request"]["base"] == 10000.0

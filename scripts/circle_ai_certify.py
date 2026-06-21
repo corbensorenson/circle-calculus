@@ -248,7 +248,6 @@ def parse_args() -> argparse.Namespace:
     rope.add_argument(
         "--discretization",
         choices=("round", "floor", "ceil"),
-        default="round",
     )
     rope.add_argument(
         "--requested-margin",
@@ -405,7 +404,9 @@ def _parameters_from_args(args: argparse.Namespace) -> dict[str, Any]:
             "base": 10000.0 if args.base is None else args.base,
             "context": 32768 if args.context is None else args.context,
             "tolerance": 1e-6 if args.tolerance is None else args.tolerance,
-            "discretization": args.discretization,
+            "discretization": "round"
+            if args.discretization is None
+            else args.discretization,
             "requested_margin": args.requested_margin,
         }
     if args.kind == "kv-cache":

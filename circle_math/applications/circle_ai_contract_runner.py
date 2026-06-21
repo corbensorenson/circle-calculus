@@ -181,6 +181,13 @@ def _model_config_value(config: Mapping[str, Any], keys: Sequence[str]) -> Any:
     return None
 
 
+def _model_config_key(config: Mapping[str, Any], keys: Sequence[str]) -> str | None:
+    for key in keys:
+        if key in config:
+            return key
+    return None
+
+
 def _positive_int_value(value: Any, *, field: str) -> int:
     if not isinstance(value, int) or isinstance(value, bool) or value <= 0:
         raise ValueError(f"model config {field} must be a positive integer")
@@ -332,6 +339,81 @@ def build_rope_request_parameters_from_model_config(
     if requested_margin is not None:
         parameters["requested_margin"] = str(requested_margin)
     return parameters
+
+
+def _rope_model_config_parameter_sources(
+    config: Mapping[str, Any],
+    *,
+    head_dim: int | None,
+    base: float | None,
+    context: int | None,
+    tolerance: float | None,
+    discretization: str | None,
+    requested_margin: str | Fraction | None,
+) -> dict[str, dict[str, Any]]:
+    """Describe where each standard-RoPE request parameter came from."""
+
+    head_dim_key = _model_config_key(config, ROPE_MODEL_HEAD_DIM_KEYS)
+    rotary_fraction_key = _model_config_key(config, ROPE_MODEL_ROTARY_FRACTION_KEYS)
+    base_key = _model_config_key(config, ROPE_MODEL_BASE_KEYS)
+    context_key = _model_config_key(config, ROPE_MODEL_CONTEXT_KEYS)
+
+    if head_dim is not None:
+        head_dim_source = {
+            "source": "override",
+            "field": "head_dim",
+        }
+    elif head_dim_key is not None:
+        head_dim_source = {
+            "source": "config_field",
+            "field": head_dim_key,
+        }
+    else:
+        fields = ["hidden_size", "num_attention_heads"]
+        if rotary_fraction_key is not None:
+            fields.append(rotary_fraction_key)
+        head_dim_source = {
+            "source": "derived_config_fields",
+            "fields": fields,
+            "note": "hidden_size / num_attention_heads, adjusted by rotary fraction when present",
+        }
+
+    return {
+        "head_dim": head_dim_source,
+        "base": (
+            {"source": "override", "field": "base"}
+            if base is not None
+            else (
+                {"source": "config_field", "field": base_key}
+                if base_key is not None
+                else {"source": "default", "note": "10000.0"}
+            )
+        ),
+        "context": (
+            {"source": "override", "field": "context"}
+            if context is not None
+            else (
+                {"source": "config_field", "field": context_key}
+                if context_key is not None
+                else {"source": "missing"}
+            )
+        ),
+        "tolerance": (
+            {"source": "override", "field": "tolerance"}
+            if tolerance is not None
+            else {"source": "default", "note": "1e-6"}
+        ),
+        "discretization": (
+            {"source": "override", "field": "discretization"}
+            if discretization is not None
+            else {"source": "default", "note": "round"}
+        ),
+        "requested_margin": (
+            {"source": "override", "field": "requested_margin"}
+            if requested_margin is not None
+            else {"source": "omitted"}
+        ),
+    }
 
 
 def _strip_fingerprint_fields(value: Any) -> Any:
@@ -487,6 +569,15 @@ def build_rope_model_config_import_report(
         "failures": failures,
         "unsupported_model_config_fields": _unsupported_rope_model_config_fields(
             config
+        ),
+        "parameter_sources": _rope_model_config_parameter_sources(
+            config,
+            head_dim=head_dim,
+            base=base,
+            context=context,
+            tolerance=tolerance,
+            discretization=discretization,
+            requested_margin=requested_margin,
         ),
         "request": request,
         "notes": [
@@ -2569,6 +2660,29 @@ def build_contract_request_validation_json_schema() -> dict[str, Any]:
 def build_rope_model_config_import_json_schema() -> dict[str, Any]:
     string_list = {"type": "array", "items": {"type": "string"}}
     fingerprint = {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+    parameter_source = {
+        "type": "object",
+        "required": ["source"],
+        "properties": {
+            "source": {
+                "enum": [
+                    "override",
+                    "config_field",
+                    "derived_config_fields",
+                    "default",
+                    "missing",
+                    "omitted",
+                ],
+            },
+            "field": {"type": "string", "minLength": 1},
+            "fields": {
+                "type": "array",
+                "items": {"type": "string", "minLength": 1},
+            },
+            "note": {"type": "string", "minLength": 1},
+        },
+        "additionalProperties": False,
+    }
     return {
         "$schema": "https://json-schema.org/draft/2020-12/schema",
         "$id": (
@@ -2588,6 +2702,7 @@ def build_rope_model_config_import_json_schema() -> dict[str, Any]:
             "failure_count",
             "failures",
             "unsupported_model_config_fields",
+            "parameter_sources",
             "request",
             "notes",
         ],
@@ -2607,6 +2722,26 @@ def build_rope_model_config_import_json_schema() -> dict[str, Any]:
             "failure_count": {"type": "integer", "minimum": 0},
             "failures": string_list,
             "unsupported_model_config_fields": string_list,
+            "parameter_sources": {
+                "type": "object",
+                "required": [
+                    "head_dim",
+                    "base",
+                    "context",
+                    "tolerance",
+                    "discretization",
+                    "requested_margin",
+                ],
+                "properties": {
+                    "head_dim": parameter_source,
+                    "base": parameter_source,
+                    "context": parameter_source,
+                    "tolerance": parameter_source,
+                    "discretization": parameter_source,
+                    "requested_margin": parameter_source,
+                },
+                "additionalProperties": False,
+            },
             "request": {
                 "anyOf": [
                     build_contract_request_json_schema(),

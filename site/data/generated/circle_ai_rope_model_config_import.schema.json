@@ -32,6 +32,224 @@
     "ok": {
       "type": "boolean"
     },
+    "parameter_sources": {
+      "additionalProperties": false,
+      "properties": {
+        "base": {
+          "additionalProperties": false,
+          "properties": {
+            "field": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "fields": {
+              "items": {
+                "minLength": 1,
+                "type": "string"
+              },
+              "type": "array"
+            },
+            "note": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "source": {
+              "enum": [
+                "override",
+                "config_field",
+                "derived_config_fields",
+                "default",
+                "missing",
+                "omitted"
+              ]
+            }
+          },
+          "required": [
+            "source"
+          ],
+          "type": "object"
+        },
+        "context": {
+          "additionalProperties": false,
+          "properties": {
+            "field": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "fields": {
+              "items": {
+                "minLength": 1,
+                "type": "string"
+              },
+              "type": "array"
+            },
+            "note": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "source": {
+              "enum": [
+                "override",
+                "config_field",
+                "derived_config_fields",
+                "default",
+                "missing",
+                "omitted"
+              ]
+            }
+          },
+          "required": [
+            "source"
+          ],
+          "type": "object"
+        },
+        "discretization": {
+          "additionalProperties": false,
+          "properties": {
+            "field": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "fields": {
+              "items": {
+                "minLength": 1,
+                "type": "string"
+              },
+              "type": "array"
+            },
+            "note": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "source": {
+              "enum": [
+                "override",
+                "config_field",
+                "derived_config_fields",
+                "default",
+                "missing",
+                "omitted"
+              ]
+            }
+          },
+          "required": [
+            "source"
+          ],
+          "type": "object"
+        },
+        "head_dim": {
+          "additionalProperties": false,
+          "properties": {
+            "field": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "fields": {
+              "items": {
+                "minLength": 1,
+                "type": "string"
+              },
+              "type": "array"
+            },
+            "note": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "source": {
+              "enum": [
+                "override",
+                "config_field",
+                "derived_config_fields",
+                "default",
+                "missing",
+                "omitted"
+              ]
+            }
+          },
+          "required": [
+            "source"
+          ],
+          "type": "object"
+        },
+        "requested_margin": {
+          "additionalProperties": false,
+          "properties": {
+            "field": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "fields": {
+              "items": {
+                "minLength": 1,
+                "type": "string"
+              },
+              "type": "array"
+            },
+            "note": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "source": {
+              "enum": [
+                "override",
+                "config_field",
+                "derived_config_fields",
+                "default",
+                "missing",
+                "omitted"
+              ]
+            }
+          },
+          "required": [
+            "source"
+          ],
+          "type": "object"
+        },
+        "tolerance": {
+          "additionalProperties": false,
+          "properties": {
+            "field": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "fields": {
+              "items": {
+                "minLength": 1,
+                "type": "string"
+              },
+              "type": "array"
+            },
+            "note": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "source": {
+              "enum": [
+                "override",
+                "config_field",
+                "derived_config_fields",
+                "default",
+                "missing",
+                "omitted"
+              ]
+            }
+          },
+          "required": [
+            "source"
+          ],
+          "type": "object"
+        }
+      },
+      "required": [
+        "head_dim",
+        "base",
+        "context",
+        "tolerance",
+        "discretization",
+        "requested_margin"
+      ],
+      "type": "object"
+    },
     "request": {
       "anyOf": [
         {
@@ -298,6 +516,7 @@
     "failure_count",
     "failures",
     "unsupported_model_config_fields",
+    "parameter_sources",
     "request",
     "notes"
   ],

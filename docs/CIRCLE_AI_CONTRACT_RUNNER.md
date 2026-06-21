@@ -73,7 +73,10 @@ Use `--model-config-import-report-out PATH` to write a schema-validated import
 report even when a real config contains unsupported fields such as non-default
 `rope_scaling`. That report is not a receipt; it says whether the config could
 be converted into the standard-RoPE request frontier and includes fingerprints
-for the source config and emitted request when one exists.
+for the source config and emitted request when one exists. It also includes
+`parameter_sources`, which records whether each standard-RoPE request parameter
+came from an explicit override, a config field, derived config fields, a
+default, or an omitted optional input.
 When `--request-out` is used with `--model-config`, the saved request is the
 exact versioned Circle request object emitted by the import report and used to
 produce the receipt.
