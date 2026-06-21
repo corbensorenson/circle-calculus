@@ -161,6 +161,16 @@
             "minimum": 0,
             "type": "integer"
           },
+          "evidence_field_count": {
+            "minimum": 0,
+            "type": "integer"
+          },
+          "evidence_fields": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
           "failure_count": {
             "minimum": 0,
             "type": "integer"
@@ -263,6 +273,12 @@
               }
             ]
           },
+          "recommendation_ids": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
           "request_content_fingerprint": {
             "anyOf": [
               {
@@ -297,6 +313,16 @@
               "string",
               "null"
             ]
+          },
+          "theorem_count": {
+            "minimum": 0,
+            "type": "integer"
+          },
+          "theorem_ids": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
           }
         },
         "required": [
@@ -318,6 +344,11 @@
           "request_content_fingerprint",
           "normalized_request_fingerprint",
           "receipt_content_fingerprint",
+          "theorem_count",
+          "theorem_ids",
+          "evidence_field_count",
+          "evidence_fields",
+          "recommendation_ids",
           "artifacts",
           "failure_count"
         ],

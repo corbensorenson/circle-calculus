@@ -57,11 +57,63 @@ def _validate_schema_file(
     return schema
 
 
+def _pin_failures(
+    summaries: list[dict[str, Any]],
+    *,
+    required_kinds: tuple[str, ...],
+    required_theorem_ids: tuple[str, ...],
+    required_evidence_fields: tuple[str, ...],
+    required_recommendation_ids: tuple[str, ...],
+) -> list[str]:
+    failures: list[str] = []
+    observed_kinds = {
+        summary["kind"] for summary in summaries if isinstance(summary.get("kind"), str)
+    }
+    observed_theorem_ids = {
+        theorem_id
+        for summary in summaries
+        for theorem_id in summary.get("theorem_ids", [])
+        if isinstance(theorem_id, str)
+    }
+    observed_evidence_fields = {
+        field
+        for summary in summaries
+        for field in summary.get("evidence_fields", [])
+        if isinstance(field, str)
+    }
+    observed_recommendation_ids = {
+        recommendation_id
+        for summary in summaries
+        for recommendation_id in summary.get("recommendation_ids", [])
+        if isinstance(recommendation_id, str)
+    }
+
+    for kind in required_kinds:
+        if kind not in observed_kinds:
+            failures.append(f"required contract kind is missing: {kind}")
+    for theorem_id in required_theorem_ids:
+        if theorem_id not in observed_theorem_ids:
+            failures.append(f"required receipt theorem id is missing: {theorem_id}")
+    for field in required_evidence_fields:
+        if field not in observed_evidence_fields:
+            failures.append(f"required receipt evidence field is missing: {field}")
+    for recommendation_id in required_recommendation_ids:
+        if recommendation_id not in observed_recommendation_ids:
+            failures.append(
+                f"required receipt recommendation id is missing: {recommendation_id}"
+            )
+    return failures
+
+
 def check_artifact_manifest_files(
     *,
     manifest_paths: tuple[Path, ...],
     manifest_schema_path: Path = DEFAULT_MANIFEST_SCHEMA,
     report_schema_path: Path = DEFAULT_REPORT_SCHEMA,
+    required_kinds: tuple[str, ...] = (),
+    required_theorem_ids: tuple[str, ...] = (),
+    required_evidence_fields: tuple[str, ...] = (),
+    required_recommendation_ids: tuple[str, ...] = (),
 ) -> dict[str, Any]:
     manifest_schema = _validate_schema_file(
         manifest_schema_path,
@@ -95,6 +147,15 @@ def check_artifact_manifest_files(
         ) as exc:
             failures.append(f"{path}: {exc}")
 
+    failures.extend(
+        _pin_failures(
+            summaries,
+            required_kinds=required_kinds,
+            required_theorem_ids=required_theorem_ids,
+            required_evidence_fields=required_evidence_fields,
+            required_recommendation_ids=required_recommendation_ids,
+        )
+    )
     report = {
         "schema_id": CHECK_SCHEMA_ID,
         "ok": not failures,
@@ -132,12 +193,46 @@ def main() -> int:
         type=Path,
         help="Optional path where the artifact-manifest validation report is written.",
     )
+    parser.add_argument(
+        "--require-kind",
+        action="append",
+        default=[],
+        help="Require at least one artifact manifest for this contract kind.",
+    )
+    parser.add_argument(
+        "--require-theorem-id",
+        action="append",
+        default=[],
+        help="Require at least one saved receipt artifact to cite this theorem id.",
+    )
+    parser.add_argument(
+        "--require-evidence-field",
+        action="append",
+        default=[],
+        help=(
+            "Require at least one saved receipt artifact to expose this top-level "
+            "evidence field."
+        ),
+    )
+    parser.add_argument(
+        "--require-recommendation-id",
+        action="append",
+        default=[],
+        help=(
+            "Require at least one saved receipt artifact to expose this planner "
+            "recommendation id."
+        ),
+    )
     args = parser.parse_args()
 
     report = check_artifact_manifest_files(
         manifest_paths=tuple(args.manifests),
         manifest_schema_path=args.manifest_schema,
         report_schema_path=args.report_schema,
+        required_kinds=tuple(args.require_kind),
+        required_theorem_ids=tuple(args.require_theorem_id),
+        required_evidence_fields=tuple(args.require_evidence_field),
+        required_recommendation_ids=tuple(args.require_recommendation_id),
     )
     if args.report_out is not None:
         _write_json(args.report_out, report)

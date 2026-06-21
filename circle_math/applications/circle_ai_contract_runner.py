@@ -3286,6 +3286,11 @@ def build_contract_artifact_manifest_file_check_json_schema() -> dict[str, Any]:
             "request_content_fingerprint",
             "normalized_request_fingerprint",
             "receipt_content_fingerprint",
+            "theorem_count",
+            "theorem_ids",
+            "evidence_field_count",
+            "evidence_fields",
+            "recommendation_ids",
             "artifacts",
             "failure_count",
         ],
@@ -3314,6 +3319,11 @@ def build_contract_artifact_manifest_file_check_json_schema() -> dict[str, Any]:
             "request_content_fingerprint": fingerprint,
             "normalized_request_fingerprint": fingerprint,
             "receipt_content_fingerprint": fingerprint,
+            "theorem_count": {"type": "integer", "minimum": 0},
+            "theorem_ids": string_list,
+            "evidence_field_count": {"type": "integer", "minimum": 0},
+            "evidence_fields": string_list,
+            "recommendation_ids": string_list,
             "artifacts": {"type": "array", "items": artifact_summary},
             "failure_count": {"type": "integer", "minimum": 0},
         },
@@ -3465,6 +3475,73 @@ def _receipt_consistency_failures(
     return failures
 
 
+def _load_receipt_artifact_payload(
+    *,
+    artifact_by_label: Mapping[str, Mapping[str, Any]],
+    manifest_path: Path,
+) -> Mapping[str, Any] | None:
+    receipt_artifact = artifact_by_label.get("receipt_json")
+    if not isinstance(receipt_artifact, Mapping):
+        return None
+    raw_path = receipt_artifact.get("path")
+    if not isinstance(raw_path, str):
+        return None
+    receipt_path = next(
+        (
+            candidate
+            for candidate in _artifact_resolution_candidates(raw_path, manifest_path)
+            if candidate.exists()
+        ),
+        None,
+    )
+    if receipt_path is None:
+        return None
+    try:
+        receipt = json.loads(receipt_path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError, UnicodeDecodeError):
+        return None
+    return receipt if isinstance(receipt, Mapping) else None
+
+
+def _receipt_artifact_theorem_ids(receipt: Mapping[str, Any] | None) -> list[str]:
+    if receipt is None:
+        return []
+    proof_status = receipt.get("proof_status")
+    if not isinstance(proof_status, Mapping):
+        return []
+    theorem_ids = proof_status.get("theorem_ids")
+    if not isinstance(theorem_ids, list):
+        return []
+    return [theorem_id for theorem_id in theorem_ids if isinstance(theorem_id, str)]
+
+
+def _receipt_artifact_evidence_fields(receipt: Mapping[str, Any] | None) -> list[str]:
+    if receipt is None:
+        return []
+    evidence = receipt.get("evidence")
+    if not isinstance(evidence, Mapping):
+        return []
+    return sorted(key for key in evidence if isinstance(key, str))
+
+
+def _receipt_artifact_recommendation_ids(
+    receipt: Mapping[str, Any] | None,
+) -> list[str]:
+    if receipt is None:
+        return []
+    recommendations = receipt.get("recommendations")
+    if not isinstance(recommendations, list):
+        return []
+    ids: list[str] = []
+    for recommendation in recommendations:
+        if not isinstance(recommendation, Mapping):
+            continue
+        recommendation_id = recommendation.get("id")
+        if isinstance(recommendation_id, str):
+            ids.append(recommendation_id)
+    return ids
+
+
 def build_contract_artifact_manifest_file_check_report(
     manifest: Mapping[str, Any],
     *,
@@ -3573,6 +3650,15 @@ def build_contract_artifact_manifest_file_check_report(
                 manifest_path=manifest_path,
             )
         )
+        receipt_payload = _load_receipt_artifact_payload(
+            artifact_by_label=artifact_by_label,
+            manifest_path=manifest_path,
+        )
+        receipt_theorem_ids = _receipt_artifact_theorem_ids(receipt_payload)
+        receipt_evidence_fields = _receipt_artifact_evidence_fields(receipt_payload)
+        receipt_recommendation_ids = _receipt_artifact_recommendation_ids(
+            receipt_payload
+        )
         summary = {
             "path": _display_manifest_check_path(manifest_path),
             "kind": manifest.get("kind"),
@@ -3600,6 +3686,11 @@ def build_contract_artifact_manifest_file_check_report(
             "receipt_content_fingerprint": manifest.get(
                 "receipt_content_fingerprint"
             ),
+            "theorem_count": len(receipt_theorem_ids),
+            "theorem_ids": receipt_theorem_ids,
+            "evidence_field_count": len(receipt_evidence_fields),
+            "evidence_fields": receipt_evidence_fields,
+            "recommendation_ids": receipt_recommendation_ids,
             "artifacts": artifact_summaries,
             "failure_count": len(path_failures),
         }

@@ -2325,6 +2325,17 @@ def test_circle_ai_certify_cli_artifact_dir_writes_standard_audit_set(
         == 0
     )
     assert artifact_manifest_report["summaries"][0]["schema_mismatch_count"] == 0
+    assert artifact_manifest_report["summaries"][0]["theorem_count"] == (
+        receipt["proof_status"]["theorem_count"]
+    )
+    assert "AIRA-T0239" in artifact_manifest_report["summaries"][0]["theorem_ids"]
+    assert (
+        "real_phase_dirichlet_guardrail"
+        in artifact_manifest_report["summaries"][0]["evidence_fields"]
+    )
+    assert "ROPE-USE-D19-MARGIN-FRONTIER" in (
+        artifact_manifest_report["summaries"][0]["recommendation_ids"]
+    )
 
     assert artifact_manifest_check["summaries"][0]["artifact_count"] == 8
     assert artifact_manifest_check["summaries"][0]["failure_count"] == 0
@@ -2337,6 +2348,14 @@ def test_circle_ai_certify_cli_artifact_dir_writes_standard_audit_set(
             str(expected_paths["artifact_manifest"]),
             "--report-out",
             str(manifest_check_path),
+            "--require-kind",
+            "rope_position_distinguishability",
+            "--require-theorem-id",
+            "AIRA-T0239",
+            "--require-evidence-field",
+            "real_phase_dirichlet_guardrail",
+            "--require-recommendation-id",
+            "ROPE-USE-D19-MARGIN-FRONTIER",
         ],
         cwd=ROOT,
         check=True,
@@ -2352,6 +2371,23 @@ def test_circle_ai_certify_cli_artifact_dir_writes_standard_audit_set(
         build_contract_artifact_manifest_file_check_json_schema(),
     )
     assert manifest_cli_report["ok"] is True
+    assert "AIRA-T0239" in manifest_cli_report["summaries"][0]["theorem_ids"]
+
+    missing_pin_cli = subprocess.run(
+        [
+            sys.executable,
+            str(ARTIFACT_MANIFEST_CHECK_SCRIPT),
+            str(expected_paths["artifact_manifest"]),
+            "--require-theorem-id",
+            "NONEXISTENT-T0000",
+        ],
+        cwd=ROOT,
+        check=False,
+        text=True,
+        capture_output=True,
+    )
+    assert missing_pin_cli.returncode == 1
+    assert "required receipt theorem id is missing" in missing_pin_cli.stderr
 
     expected_paths["request_json"].write_text(
         expected_paths["request_json"].read_text() + "\n",

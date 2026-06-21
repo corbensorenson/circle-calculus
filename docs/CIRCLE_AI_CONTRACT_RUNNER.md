@@ -225,6 +225,9 @@ python scripts/check_circle_ai_artifact_manifest.py \
 The checker validates the manifest schema, referenced file existence,
 SHA-256 fingerprints, declared content schema ids, and the receipt summary
 fields mirrored into the manifest.
+It also accepts `--require-kind`, `--require-theorem-id`,
+`--require-evidence-field`, and `--require-recommendation-id` for first-party
+CI jobs that need the same policy pins as the copyable standalone verifier.
 For a copyable standard-library-only downstream gate, use
 `examples/downstream_ci_verify_circle_ai_artifacts.py`; it performs the same
 artifact-integrity checks without importing Circle or `jsonschema`.
