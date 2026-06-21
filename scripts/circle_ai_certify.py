@@ -18,6 +18,7 @@ if str(ROOT) not in sys.path:
 from circle_math.applications import (  # noqa: E402
     build_contract_receipt,
     build_contract_receipt_from_request,
+    build_contract_receipt_json_schema,
     build_contract_request,
     build_contract_request_validation_report,
     build_contract_request_validation_json_schema,
@@ -26,6 +27,7 @@ from circle_math.applications import (  # noqa: E402
     receipt_summary_lines,
 )
 from circle_math.applications.circle_ai_contract_runner import (  # noqa: E402
+    RECEIPT_SCHEMA_PATH,
     REQUEST_VALIDATION_SCHEMA_PATH,
 )
 
@@ -38,6 +40,7 @@ RECEIPT_STATUS_VALUES = (
     "outside_scope",
 )
 DEFAULT_REQUEST_VALIDATION_SCHEMA = ROOT / REQUEST_VALIDATION_SCHEMA_PATH
+DEFAULT_RECEIPT_SCHEMA = ROOT / RECEIPT_SCHEMA_PATH
 
 
 def parse_tokens(raw: str) -> tuple[int, ...]:
@@ -81,6 +84,15 @@ def add_common_options(parser: argparse.ArgumentParser) -> None:
         help=(
             "Optional generated contract-pack path. Defaults to building the "
             "pack in memory from repository sources."
+        ),
+    )
+    parser.add_argument(
+        "--receipt-schema",
+        type=Path,
+        default=DEFAULT_RECEIPT_SCHEMA,
+        help=(
+            "Generated JSON Schema used to validate emitted receipts. Defaults "
+            "to site/data/generated/circle_ai_contract_receipt.schema.json."
         ),
     )
     parser.add_argument(
@@ -258,6 +270,17 @@ def _validate_request_validation_report(
         )
 
 
+def _validate_receipt_schema(receipt: dict[str, Any], schema_path: Path) -> None:
+    schema = _load_json_object(schema_path, label="receipt schema")
+    jsonschema.Draft202012Validator.check_schema(schema)
+    jsonschema.validate(receipt, schema)
+    generated_schema = build_contract_receipt_json_schema()
+    if schema != generated_schema:
+        raise jsonschema.SchemaError(
+            "receipt schema drifted from application builder"
+        )
+
+
 def _parameters_from_args(args: argparse.Namespace) -> dict[str, Any]:
     if args.kind == "rope":
         if args.model_config is not None:
@@ -373,6 +396,7 @@ def main() -> int:
             )
         except ValueError as exc:
             raise SystemExit(str(exc)) from exc
+    _validate_receipt_schema(receipt, args.receipt_schema)
     if args.json_out is not None:
         write_json(args.json_out, receipt)
     if args.format == "json":

@@ -982,6 +982,39 @@ def test_circle_ai_certify_cli_receipt_gate_accepts_passing_receipt() -> None:
     assert result.stderr == ""
 
 
+def test_circle_ai_certify_cli_rejects_receipt_schema_drift(
+    tmp_path: Path,
+) -> None:
+    schema_path = tmp_path / "bad_receipt_schema.json"
+    schema = build_contract_receipt_json_schema()
+    schema["properties"]["schema_id"]["const"] = "wrong"
+    schema_path.write_text(json.dumps(schema, indent=2, sort_keys=True) + "\n")
+
+    result = subprocess.run(
+        [
+            sys.executable,
+            str(SCRIPT),
+            "rope",
+            "--context",
+            "131072",
+            "--requested-margin",
+            "1/328459",
+            "--receipt-schema",
+            str(schema_path),
+            "--format",
+            "json",
+        ],
+        cwd=ROOT,
+        check=False,
+        text=True,
+        capture_output=True,
+    )
+
+    assert result.returncode != 0
+    assert result.stdout == ""
+    assert "schema_id" in result.stderr
+
+
 def test_circle_ai_certify_cli_receipt_gate_rejects_failed_request() -> None:
     result = subprocess.run(
         [

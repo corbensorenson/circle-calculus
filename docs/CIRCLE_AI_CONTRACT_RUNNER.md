@@ -104,6 +104,11 @@ The validate-only report is checked against
 `site/data/generated/circle_ai_contract_request_validation.schema.json` before it
 is printed or written.
 
+Every emitted receipt is checked against
+`site/data/generated/circle_ai_contract_receipt.schema.json` before it is
+printed or written. Use `--receipt-schema` to pin a generated schema path in a
+downstream project.
+
 Copyable starting points live under:
 
 ```text
