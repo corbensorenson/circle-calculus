@@ -256,6 +256,9 @@ Add `--require-normalized-param KEY=JSON_VALUE` when CI needs to pin a top-level
 `normalized_request` value such as `head_dim=128` or `sequence_length=32`.
 First-party check reports include a `pin_policy` block recording these requested
 dependencies, so audit logs show both what was required and what was observed.
+Reuse that policy later with `--pin-policy reports/check_report.json`; the
+checker accepts either the whole report or just the `pin_policy` object, and
+explicit `--require-*` flags are merged with the loaded pins.
 
 Copyable starting points live under:
 
@@ -345,6 +348,10 @@ from an imported RoPE `config.json`. It is the preferred CI-facing command when
 a downstream project stores the full certification bundle rather than just the
 receipt.
 The bundle-check report records those requested dependencies in `pin_policy`.
+Reuse the same bundle dependency contract later with `--pin-policy
+reports/rope_certification_bundle_check.json`; the checker accepts either the
+whole report or just the `pin_policy` object, and explicit `--require-*` flags
+are merged with the loaded pins.
 
 Validate a saved receipt file that another project has already produced:
 
@@ -376,6 +383,10 @@ fingerprint, normalized-request fingerprint, theorem ids, evidence fields,
 recommendation ids, validation commands, and normalized request, so CI can
 record what was certified without reopening every receipt file.
 The receipt-check report also records requested dependency pins in `pin_policy`.
+Reuse the same receipt dependency contract later with `--pin-policy
+reports/rope_receipt_check.json`; the checker accepts either the whole report
+or just the `pin_policy` object, and explicit `--require-*` flags are merged
+with the loaded pins.
 
 Receipt JSON is strict at the top level: unknown fields are rejected, while
 contract-specific details live under `evidence`, `support`, and `proof_layers`.

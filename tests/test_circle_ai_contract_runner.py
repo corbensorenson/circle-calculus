@@ -2410,6 +2410,25 @@ def test_circle_ai_certify_cli_artifact_dir_writes_standard_audit_set(
     }
     assert "AIRA-T0239" in manifest_cli_report["summaries"][0]["theorem_ids"]
 
+    manifest_policy_cli = subprocess.run(
+        [
+            sys.executable,
+            str(ARTIFACT_MANIFEST_CHECK_SCRIPT),
+            str(expected_paths["artifact_manifest"]),
+            "--pin-policy",
+            str(manifest_check_path),
+            "--format",
+            "json",
+        ],
+        cwd=ROOT,
+        check=True,
+        text=True,
+        capture_output=True,
+    )
+    manifest_policy_report = json.loads(manifest_policy_cli.stdout)
+    assert manifest_policy_report["ok"] is True
+    assert manifest_policy_report["pin_policy"] == manifest_cli_report["pin_policy"]
+
     missing_pin_cli = subprocess.run(
         [
             sys.executable,

@@ -218,6 +218,25 @@ def test_check_circle_ai_certification_bundle_accepts_model_config_bundle(
     ]
     assert json.loads(report_path.read_text()) == payload
 
+    policy_result = subprocess.run(
+        [
+            sys.executable,
+            str(SCRIPT),
+            str(bundle_path),
+            "--pin-policy",
+            str(report_path),
+            "--format",
+            "json",
+        ],
+        cwd=ROOT,
+        check=True,
+        text=True,
+        capture_output=True,
+    )
+    policy_payload = json.loads(policy_result.stdout)
+    assert policy_payload["ok"] is True
+    assert policy_payload["pin_policy"] == payload["pin_policy"]
+
 
 def test_check_circle_ai_certification_bundle_rejects_missing_receipt_pins(
     tmp_path: Path,

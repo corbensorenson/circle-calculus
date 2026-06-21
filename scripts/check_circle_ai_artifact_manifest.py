@@ -77,6 +77,113 @@ def _parse_normalized_param_pin(raw: str) -> tuple[str, Any]:
     return key, value
 
 
+def _load_pin_policy(path: Path | None) -> dict[str, Any]:
+    if path is None:
+        return {}
+    payload = _json_object(path)
+    if "pin_policy" in payload:
+        policy = payload["pin_policy"]
+        if not isinstance(policy, dict):
+            raise ValueError(f"{path} pin_policy must be a JSON object")
+        return policy
+    return payload
+
+
+def _policy_string_tuple(policy: dict[str, Any], key: str) -> tuple[str, ...]:
+    values = policy.get(key, [])
+    if not isinstance(values, list) or not all(
+        isinstance(value, str) for value in values
+    ):
+        raise ValueError(f"pin policy {key} must be a list of strings")
+    return tuple(values)
+
+
+def _policy_normalized_params(
+    policy: dict[str, Any],
+) -> tuple[tuple[str, Any], ...]:
+    values = policy.get("required_normalized_params", [])
+    if not isinstance(values, list):
+        raise ValueError(
+            "pin policy required_normalized_params must be a list of objects"
+        )
+    pins: list[tuple[str, Any]] = []
+    for item in values:
+        if not isinstance(item, dict):
+            raise ValueError(
+                "pin policy required_normalized_params must be a list of objects"
+            )
+        key = item.get("key")
+        if not isinstance(key, str) or not key:
+            raise ValueError(
+                "pin policy required_normalized_params entries need a string key"
+            )
+        if "value" not in item:
+            raise ValueError(
+                "pin policy required_normalized_params entries need a value"
+            )
+        pins.append((key, item["value"]))
+    return tuple(pins)
+
+
+def _merge_strings(*groups: tuple[str, ...]) -> tuple[str, ...]:
+    merged: list[str] = []
+    seen: set[str] = set()
+    for group in groups:
+        for value in group:
+            if value not in seen:
+                seen.add(value)
+                merged.append(value)
+    return tuple(merged)
+
+
+def _value_marker(value: Any) -> str:
+    try:
+        return json.dumps(value, sort_keys=True, separators=(",", ":"))
+    except TypeError:
+        return repr(value)
+
+
+def _merge_normalized_params(
+    *groups: tuple[tuple[str, Any], ...],
+) -> tuple[tuple[str, Any], ...]:
+    merged: list[tuple[str, Any]] = []
+    seen: set[tuple[str, str]] = set()
+    for group in groups:
+        for key, value in group:
+            marker = (key, _value_marker(value))
+            if marker not in seen:
+                seen.add(marker)
+                merged.append((key, value))
+    return tuple(merged)
+
+
+def _pin_policy_values(policy: dict[str, Any]) -> dict[str, Any]:
+    return {
+        "required_kinds": _policy_string_tuple(policy, "required_kinds"),
+        "required_theorem_ids": _policy_string_tuple(
+            policy,
+            "required_theorem_ids",
+        ),
+        "required_evidence_fields": _policy_string_tuple(
+            policy,
+            "required_evidence_fields",
+        ),
+        "required_recommendation_ids": _policy_string_tuple(
+            policy,
+            "required_recommendation_ids",
+        ),
+        "required_validation_commands": _policy_string_tuple(
+            policy,
+            "required_validation_commands",
+        ),
+        "required_model_config_fingerprints": _policy_string_tuple(
+            policy,
+            "required_model_config_fingerprints",
+        ),
+        "required_normalized_params": _policy_normalized_params(policy),
+    }
+
+
 def _pin_failures(
     summaries: list[dict[str, Any]],
     *,
@@ -343,11 +450,49 @@ def main() -> int:
             "this source config SHA-256 fingerprint."
         ),
     )
+    parser.add_argument(
+        "--pin-policy",
+        type=Path,
+        help=(
+            "Load required dependency pins from a JSON object shaped like a "
+            "check report pin_policy block. A whole prior check report is also "
+            "accepted. Explicit --require-* flags are merged with loaded pins."
+        ),
+    )
     args = parser.parse_args()
     try:
+        policy_values = _pin_policy_values(_load_pin_policy(args.pin_policy))
         required_normalized_params = tuple(
             _parse_normalized_param_pin(raw)
             for raw in args.require_normalized_param
+        )
+        required_kinds = _merge_strings(
+            policy_values["required_kinds"],
+            tuple(args.require_kind),
+        )
+        required_theorem_ids = _merge_strings(
+            policy_values["required_theorem_ids"],
+            tuple(args.require_theorem_id),
+        )
+        required_evidence_fields = _merge_strings(
+            policy_values["required_evidence_fields"],
+            tuple(args.require_evidence_field),
+        )
+        required_recommendation_ids = _merge_strings(
+            policy_values["required_recommendation_ids"],
+            tuple(args.require_recommendation_id),
+        )
+        required_validation_commands = _merge_strings(
+            policy_values["required_validation_commands"],
+            tuple(args.require_validation_command),
+        )
+        required_model_config_fingerprints = _merge_strings(
+            policy_values["required_model_config_fingerprints"],
+            tuple(args.require_model_config_fingerprint),
+        )
+        required_normalized_params = _merge_normalized_params(
+            policy_values["required_normalized_params"],
+            required_normalized_params,
         )
     except ValueError as exc:
         print(f"circle AI artifact manifests failed: {exc}", file=sys.stderr)
@@ -357,14 +502,12 @@ def main() -> int:
         manifest_paths=tuple(args.manifests),
         manifest_schema_path=args.manifest_schema,
         report_schema_path=args.report_schema,
-        required_kinds=tuple(args.require_kind),
-        required_theorem_ids=tuple(args.require_theorem_id),
-        required_evidence_fields=tuple(args.require_evidence_field),
-        required_recommendation_ids=tuple(args.require_recommendation_id),
-        required_validation_commands=tuple(args.require_validation_command),
-        required_model_config_fingerprints=tuple(
-            args.require_model_config_fingerprint
-        ),
+        required_kinds=required_kinds,
+        required_theorem_ids=required_theorem_ids,
+        required_evidence_fields=required_evidence_fields,
+        required_recommendation_ids=required_recommendation_ids,
+        required_validation_commands=required_validation_commands,
+        required_model_config_fingerprints=required_model_config_fingerprints,
         required_normalized_params=required_normalized_params,
     )
     if args.report_out is not None:
