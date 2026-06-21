@@ -38,6 +38,12 @@ STANDARD_ROPE_MODEL_CONFIG = (
     ROOT / "examples" / "circle_ai_model_configs" / "standard_rope_config.json"
 )
 PUBLIC_CONTRACT_PACK = ROOT / "site" / "data" / "generated" / "circle_ai_contract_pack.json"
+PACK_FINGERPRINT_ALGORITHM = "sha256-json-v1"
+PACK_FINGERPRINT_KEYS = {
+    "content_fingerprint",
+    "pack_content_fingerprint",
+    "contract_fingerprint_index",
+}
 PROOF_LAYER_BUCKETS = (
     "proved_fields",
     "computed_fields",
@@ -68,6 +74,43 @@ def _receipt_fingerprint(receipt: dict) -> str:
         return value
 
     return _json_fingerprint(strip(receipt))
+
+
+def _strip_pack_fingerprint_fields(value: object) -> object:
+    if isinstance(value, dict):
+        return {
+            key: _strip_pack_fingerprint_fields(child)
+            for key, child in sorted(value.items())
+            if key not in PACK_FINGERPRINT_KEYS
+        }
+    if isinstance(value, list):
+        return [_strip_pack_fingerprint_fields(child) for child in value]
+    return value
+
+
+def _pack_content_fingerprint(value: object) -> str:
+    normalized = json.dumps(
+        _strip_pack_fingerprint_fields(value),
+        sort_keys=True,
+        separators=(",", ":"),
+    ).encode("utf-8")
+    return hashlib.sha256(normalized).hexdigest()
+
+
+def _refresh_pack_fingerprints(pack: dict) -> None:
+    for contract in pack["contracts"]:
+        contract["content_fingerprint_algorithm"] = PACK_FINGERPRINT_ALGORITHM
+        contract["content_fingerprint"] = _pack_content_fingerprint(contract)
+    pack["contract_fingerprint_index"] = {
+        contract["kind"]: {
+            "id": contract["id"],
+            "content_fingerprint_algorithm": PACK_FINGERPRINT_ALGORITHM,
+            "content_fingerprint": contract["content_fingerprint"],
+        }
+        for contract in pack["contracts"]
+    }
+    pack["content_fingerprint_algorithm"] = PACK_FINGERPRINT_ALGORITHM
+    pack["pack_content_fingerprint"] = _pack_content_fingerprint(pack)
 
 
 @pytest.fixture(scope="module")
@@ -1209,6 +1252,56 @@ def test_circle_ai_certify_cli_receipt_gate_accepts_passing_receipt() -> None:
     assert payload["status"] == "proved"
     assert payload["request_passed"] is True
     assert result.stderr == ""
+
+
+def test_circle_ai_certify_cli_rejects_pack_missing_receipt_theorem(
+    tmp_path: Path,
+) -> None:
+    pack = json.loads(PUBLIC_CONTRACT_PACK.read_text())
+    kv_contract = next(
+        contract
+        for contract in pack["contracts"]
+        if contract["kind"] == "kv_cache_ring_buffer"
+    )
+    theorem_ids = kv_contract["theorem_ids"]
+    assert "AIM-T0060" in theorem_ids
+    kv_contract["theorem_ids"] = [
+        theorem_id for theorem_id in theorem_ids if theorem_id != "AIM-T0060"
+    ]
+    _refresh_pack_fingerprints(pack)
+    stale_pack_path = tmp_path / "kv_missing_theorem_pack.json"
+    stale_pack_path.write_text(json.dumps(pack, indent=2, sort_keys=True) + "\n")
+
+    result = subprocess.run(
+        [
+            sys.executable,
+            str(SCRIPT),
+            "kv-cache",
+            "--cache-size",
+            "16",
+            "--current",
+            "31",
+            "--token",
+            "20",
+            "--batch-tokens",
+            "20,24,29,31",
+            "--sink-size",
+            "4",
+            "--pack",
+            str(stale_pack_path),
+            "--format",
+            "json",
+        ],
+        cwd=ROOT,
+        check=False,
+        text=True,
+        capture_output=True,
+    )
+
+    assert result.returncode == 1
+    assert result.stdout == ""
+    assert "receipt failed contract-pack validation" in result.stderr
+    assert "receipt theorem ids are not in loaded contract: AIM-T0060" in result.stderr
 
 
 def test_circle_ai_certify_cli_rejects_receipt_schema_drift(

@@ -27,6 +27,7 @@ from circle_math.applications import (  # noqa: E402
     build_rope_request_parameters_from_model_config,
     load_contract_pack,
     receipt_summary_lines,
+    validate_contract_receipt_against_pack,
 )
 from circle_math.applications.circle_ai_contract_runner import (  # noqa: E402
     RECEIPT_FILE_CHECK_SCHEMA_PATH,
@@ -451,6 +452,11 @@ def main() -> int:
             raise SystemExit(str(exc)) from exc
     assert pack is not None
     _validate_receipt_schema(receipt, args.receipt_schema)
+    pack_failures = validate_contract_receipt_against_pack(receipt, pack)
+    if pack_failures:
+        raise SystemExit(
+            "receipt failed contract-pack validation: " + "; ".join(pack_failures)
+        )
     gate_failures = _receipt_gate_failures(receipt, args)
     if args.json_out is not None:
         write_json(args.json_out, receipt)
