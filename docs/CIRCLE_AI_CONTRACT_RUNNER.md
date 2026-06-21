@@ -356,13 +356,19 @@ python scripts/check_circle_ai_receipt.py reports/rope_receipt.json \
 This checker validates the receipt JSON Schema, the in-process receipt shape,
 the receipt fingerprint, the loaded contract-pack fingerprint, the contract
 fingerprint, theorem-id membership in the loaded contract, and optional status
-decision, assurance, or pass gates. It validates its own report against
+decision, assurance, pass, theorem-id, evidence-field, recommendation-id,
+validation-command, or normalized-parameter gates. Add `--require-theorem-id
+THEOREM_ID`, `--require-evidence-field FIELD`, `--require-recommendation-id ID`,
+`--require-validation-command COMMAND`, or `--require-normalized-param
+KEY=JSON_VALUE` when a downstream project depends on specific receipt content.
+It validates its own report against
 `site/data/generated/circle_ai_contract_receipt_file_check.schema.json` and can
 write that report to disk for audit logs. It is the smallest CI-facing command
 for downstream projects that want to reject stale or tampered Circle AI receipts
 without running Lean. The report summary includes the loaded contract-pack
 fingerprint, contract fingerprint, receipt fingerprint, request-content
-fingerprint, normalized-request fingerprint, and normalized request, so CI can
+fingerprint, normalized-request fingerprint, theorem ids, evidence fields,
+recommendation ids, validation commands, and normalized request, so CI can
 record what was certified without reopening every receipt file.
 
 Receipt JSON is strict at the top level: unknown fields are rejected, while

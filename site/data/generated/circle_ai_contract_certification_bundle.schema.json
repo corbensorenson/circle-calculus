@@ -180,6 +180,16 @@
                       "outside_scope"
                     ]
                   },
+                  "evidence_field_count": {
+                    "minimum": 0,
+                    "type": "integer"
+                  },
+                  "evidence_fields": {
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array"
+                  },
                   "failure_count": {
                     "minimum": 0,
                     "type": "integer"
@@ -208,6 +218,12 @@
                     "pattern": "^[0-9a-f]{64}$",
                     "type": "string"
                   },
+                  "recommendation_ids": {
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array"
+                  },
                   "request_content_fingerprint": {
                     "pattern": "^[0-9a-f]{64}$",
                     "type": "string"
@@ -230,6 +246,22 @@
                   "theorem_count": {
                     "minimum": 0,
                     "type": "integer"
+                  },
+                  "theorem_ids": {
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array"
+                  },
+                  "validation_command_count": {
+                    "minimum": 0,
+                    "type": "integer"
+                  },
+                  "validation_commands": {
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array"
                   }
                 },
                 "required": [
@@ -244,6 +276,12 @@
                   "decision_verdict",
                   "decision_assurance",
                   "theorem_count",
+                  "theorem_ids",
+                  "evidence_field_count",
+                  "evidence_fields",
+                  "recommendation_ids",
+                  "validation_command_count",
+                  "validation_commands",
                   "normalized_request",
                   "request_content_fingerprint",
                   "normalized_request_fingerprint",

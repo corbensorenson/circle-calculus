@@ -66,6 +66,16 @@ def test_check_circle_ai_receipt_accepts_saved_receipt(tmp_path: Path) -> None:
             "--require-assurance",
             "mixed_theorem_and_computation",
             "--require-passed",
+            "--require-theorem-id",
+            "AIRA-T0239",
+            "--require-evidence-field",
+            "real_phase_dirichlet_guardrail",
+            "--require-recommendation-id",
+            "ROPE-USE-D19-MARGIN-FRONTIER",
+            "--require-validation-command",
+            receipt["validation_commands"][0],
+            "--require-normalized-param",
+            "head_dim=128",
             "--report-out",
             str(report_path),
             "--format",
@@ -97,6 +107,17 @@ def test_check_circle_ai_receipt_accepts_saved_receipt(tmp_path: Path) -> None:
     assert payload["summaries"][0]["decision_assurance"] == receipt["decision"][
         "assurance"
     ]
+    assert "AIRA-T0239" in payload["summaries"][0]["theorem_ids"]
+    assert "real_phase_dirichlet_guardrail" in payload["summaries"][0][
+        "evidence_fields"
+    ]
+    assert "ROPE-USE-D19-MARGIN-FRONTIER" in payload["summaries"][0][
+        "recommendation_ids"
+    ]
+    assert receipt["validation_commands"][0] in payload["summaries"][0][
+        "validation_commands"
+    ]
+    assert payload["summaries"][0]["normalized_request"]["head_dim"] == 128
     assert payload["summaries"][0]["content_fingerprint_algorithm"] == receipt[
         "content_fingerprint_algorithm"
     ]
@@ -119,6 +140,67 @@ def test_check_circle_ai_receipt_accepts_saved_receipt(tmp_path: Path) -> None:
         "receipt_content_fingerprint"
     ]
     assert json.loads(report_path.read_text()) == payload
+
+
+def test_check_circle_ai_receipt_rejects_missing_receipt_pins(
+    tmp_path: Path,
+) -> None:
+    receipt_path = tmp_path / "rope_receipt.json"
+    receipt = build_rope_receipt(
+        context=131072,
+        requested_margin="1/328459",
+        pack=load_contract_pack(PACK),
+    )
+    _write_receipt(receipt_path, receipt)
+
+    result = subprocess.run(
+        [
+            sys.executable,
+            str(SCRIPT),
+            str(receipt_path),
+            "--require-theorem-id",
+            "NONEXISTENT-T0000",
+            "--require-evidence-field",
+            "nonexistent_evidence_field",
+            "--require-recommendation-id",
+            "NONEXISTENT-RECOMMENDATION",
+            "--require-validation-command",
+            "python nonexistent_validation.py",
+            "--require-normalized-param",
+            "head_dim=256",
+            "--format",
+            "json",
+        ],
+        cwd=ROOT,
+        check=False,
+        text=True,
+        capture_output=True,
+    )
+
+    payload = json.loads(result.stdout)
+    jsonschema.validate(payload, build_contract_receipt_file_check_json_schema())
+    assert result.returncode == 1
+    assert payload["ok"] is False
+    assert any(
+        "required receipt theorem id is missing" in failure
+        for failure in payload["failures"]
+    )
+    assert any(
+        "required receipt evidence field is missing" in failure
+        for failure in payload["failures"]
+    )
+    assert any(
+        "required receipt recommendation id is missing" in failure
+        for failure in payload["failures"]
+    )
+    assert any(
+        "required receipt validation command is missing" in failure
+        for failure in payload["failures"]
+    )
+    assert any(
+        "required normalized request parameter is missing" in failure
+        for failure in payload["failures"]
+    )
 
 
 def test_check_circle_ai_receipt_text_output_includes_audit_fingerprints(

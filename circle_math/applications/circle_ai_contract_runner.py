@@ -2270,9 +2270,12 @@ def build_contract_receipt_file_check_report(
             "receipt request_passed was not true "
             f"(got {receipt.get('request_passed')!r})"
         )
-    proof_status = receipt.get("proof_status")
     support = receipt.get("support")
     support_map = support if isinstance(support, Mapping) else {}
+    receipt_theorem_ids = _receipt_artifact_theorem_ids(receipt)
+    receipt_evidence_fields = _receipt_artifact_evidence_fields(receipt)
+    receipt_recommendation_ids = _receipt_artifact_recommendation_ids(receipt)
+    receipt_validation_commands = _receipt_artifact_validation_commands(receipt)
     report = {
         "schema_id": RECEIPT_FILE_CHECK_SCHEMA_ID,
         "ok": not failures,
@@ -2307,11 +2310,13 @@ def build_contract_receipt_file_check_report(
                 "decision_assurance": (
                     decision.get("assurance") if isinstance(decision, Mapping) else None
                 ),
-                "theorem_count": (
-                    proof_status.get("theorem_count")
-                    if isinstance(proof_status, Mapping)
-                    else None
-                ),
+                "theorem_count": len(receipt_theorem_ids),
+                "theorem_ids": receipt_theorem_ids,
+                "evidence_field_count": len(receipt_evidence_fields),
+                "evidence_fields": receipt_evidence_fields,
+                "recommendation_ids": receipt_recommendation_ids,
+                "validation_command_count": len(receipt_validation_commands),
+                "validation_commands": receipt_validation_commands,
                 "normalized_request": receipt.get("normalized_request"),
                 "request_content_fingerprint": receipt.get(
                     "request_content_fingerprint"
@@ -3845,6 +3850,12 @@ def build_contract_receipt_file_check_json_schema() -> dict[str, Any]:
             "decision_verdict",
             "decision_assurance",
             "theorem_count",
+            "theorem_ids",
+            "evidence_field_count",
+            "evidence_fields",
+            "recommendation_ids",
+            "validation_command_count",
+            "validation_commands",
             "normalized_request",
             "request_content_fingerprint",
             "normalized_request_fingerprint",
@@ -3863,6 +3874,12 @@ def build_contract_receipt_file_check_json_schema() -> dict[str, Any]:
             "decision_verdict": {"enum": list(DECISION_VERDICTS)},
             "decision_assurance": {"enum": list(DECISION_ASSURANCE_LEVELS)},
             "theorem_count": {"type": "integer", "minimum": 0},
+            "theorem_ids": string_list,
+            "evidence_field_count": {"type": "integer", "minimum": 0},
+            "evidence_fields": string_list,
+            "recommendation_ids": string_list,
+            "validation_command_count": {"type": "integer", "minimum": 0},
+            "validation_commands": string_list,
             "normalized_request": {"type": "object", "minProperties": 1},
             "request_content_fingerprint": fingerprint,
             "normalized_request_fingerprint": fingerprint,

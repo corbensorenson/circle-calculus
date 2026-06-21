@@ -424,13 +424,19 @@ python scripts/check_circle_ai_receipt.py reports/rope_receipt.json \
 This is the smallest downstream CI check. It validates the receipt JSON Schema,
 the in-process receipt shape, the receipt fingerprint, the loaded contract-pack
 fingerprint, the contract fingerprint, theorem-id membership in the loaded
-contract, and the optional status, decision, assurance, and pass gates. It does
-not run Lean; it verifies that the receipt still points at the public contract
-pack it claims to use. The checker validates its own report against
+contract, and the optional status, decision, assurance, pass, theorem-id,
+evidence-field, recommendation-id, validation-command, and normalized-parameter
+gates. Add `--require-theorem-id THEOREM_ID`, `--require-evidence-field FIELD`,
+`--require-recommendation-id ID`, `--require-validation-command COMMAND`, or
+`--require-normalized-param KEY=JSON_VALUE` when a downstream project depends on
+specific receipt content. It does not run Lean; it verifies that the receipt
+still points at the public contract pack it claims to use. The checker validates
+its own report against
 `site/data/generated/circle_ai_contract_receipt_file_check.schema.json` and can
 write that report to disk for audit logs. The report summary includes the
 loaded contract-pack fingerprint, contract fingerprint, receipt fingerprint,
-request-content fingerprint, normalized-request fingerprint, and normalized
+request-content fingerprint, normalized-request fingerprint, theorem ids,
+evidence fields, recommendation ids, validation commands, and normalized
 request, so CI can record what was certified without reopening every receipt
 file.
 
