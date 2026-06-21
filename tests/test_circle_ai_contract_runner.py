@@ -476,9 +476,48 @@ def test_kv_sparse_and_recurrence_receipts_preserve_family_semantics(
     assert "stride_family_zero_residue_total_step_count" in sparse["proof_layers"][
         "proved_fields"
     ]
+    assert "first_uncovered_lag_interval_start" in sparse["proof_layers"][
+        "proved_fields"
+    ]
+    assert "largest_uncovered_interval_repair_window" in sparse["proof_layers"][
+        "proved_fields"
+    ]
+    assert "complete_repair_window_minimal_for_declared_stride_family" in sparse[
+        "proof_layers"
+    ]["proved_fields"]
+    assert "interval_repair_plan_covers_context" in sparse["proof_layers"][
+        "proved_fields"
+    ]
     sparse_lines = receipt_summary_lines(sparse)
+    repair_line = next(
+        line for line in sparse_lines if line.startswith("sparse_repair=")
+    )
+    interval_line = next(
+        line for line in sparse_lines if line.startswith("sparse_intervals=")
+    )
+    interval_repair_line = next(
+        line for line in sparse_lines if line.startswith("sparse_interval_repair=")
+    )
+    repair_plan_line = next(
+        line for line in sparse_lines if line.startswith("sparse_repair_plan=")
+    )
     assert any(line.startswith("sparse_budget=") for line in sparse_lines)
     assert any(line.startswith("sparse_zero_residue=") for line in sparse_lines)
+    assert "complete_repair_window=119" in repair_line
+    assert "complete_minimal=True" in repair_line
+    assert "complete_witness_lag=119" in repair_line
+    assert "interval_count=6" in interval_line
+    assert "first=5-6" in interval_line
+    assert "largest=40-119" in interval_line
+    assert "largest_is_tail=True" in interval_line
+    assert "first_window=6" in interval_repair_line
+    assert "first_next_gap=8" in interval_repair_line
+    assert "largest_window=119" in interval_repair_line
+    assert "largest_covers_context=True" in interval_repair_line
+    assert "steps=6" in repair_plan_line
+    assert "final_window=119" in repair_plan_line
+    assert "covers_context=True" in repair_plan_line
+    assert "strictly_progresses=True" in repair_plan_line
     assert sparse["proof_status"]["all_theorem_ids_proved"] is True
 
     assert recurrence["status"] == "proved"

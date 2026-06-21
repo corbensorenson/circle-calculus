@@ -1488,6 +1488,43 @@ def build_sparse_attention_receipt(
                 "uncovered_lags",
                 "first_uncovered_lag",
                 "uncovered_lag_intervals",
+                "uncovered_lag_interval_count",
+                "first_uncovered_lag_interval_start",
+                "first_uncovered_lag_interval_stop",
+                "first_uncovered_lag_interval_length",
+                "first_uncovered_lag_interval_repair_window",
+                "first_uncovered_lag_interval_additional_local_slots",
+                "first_uncovered_interval_repair_reaches_interval",
+                "first_interval_repair_next_uncovered_lag",
+                "first_interval_repair_still_has_gap",
+                "first_interval_repair_covers_context",
+                "largest_uncovered_interval_start",
+                "largest_uncovered_interval_stop",
+                "largest_uncovered_interval_length",
+                "largest_uncovered_interval_repair_window",
+                "largest_uncovered_interval_additional_local_slots",
+                "largest_uncovered_interval_repair_reaches_interval",
+                "largest_interval_repair_next_uncovered_lag",
+                "largest_interval_repair_still_has_gap",
+                "largest_interval_repair_covers_context",
+                "largest_uncovered_interval_is_tail",
+                "local_window_complete_coverage_threshold",
+                "local_window_complete_coverage_shortfall",
+                "local_window_reaches_complete_coverage_threshold",
+                "local_window_threshold_certifies_complete",
+                "local_window_complete_threshold_is_exact_local_minimum",
+                "complete_repair_window",
+                "complete_repair_window_additional_local_slots",
+                "complete_repair_window_covers_context",
+                "complete_repair_window_uses_dense_threshold",
+                "complete_repair_window_minimal_for_declared_stride_family",
+                "complete_repair_window_minimal_witness_lag",
+                "interval_repair_plan",
+                "interval_repair_plan_step_count",
+                "interval_repair_plan_final_window",
+                "interval_repair_plan_covers_context",
+                "interval_repair_plan_strictly_progresses",
+                "first_gap_repair_window_reaches_complete_threshold",
                 "candidate_budget_per_query",
                 "raw_candidate_budget_upper_bound",
                 "deduplicated_candidate_budget_upper_bound",
@@ -3036,7 +3073,48 @@ def receipt_summary_lines(receipt: Mapping[str, Any]) -> list[str]:
         lines.append(
             "sparse_repair="
             f"complete_repair_window={evidence['complete_repair_window']} "
-            f"largest_interval_repair={evidence['largest_uncovered_interval_repair_window']}"
+            "complete_additional_slots="
+            f"{evidence['complete_repair_window_additional_local_slots']} "
+            "complete_covers_context="
+            f"{evidence['complete_repair_window_covers_context']} "
+            "complete_minimal="
+            f"{evidence['complete_repair_window_minimal_for_declared_stride_family']} "
+            "complete_witness_lag="
+            f"{evidence['complete_repair_window_minimal_witness_lag']}"
+        )
+        lines.append(
+            "sparse_intervals="
+            f"interval_count={evidence['uncovered_lag_interval_count']} "
+            "first="
+            f"{evidence['first_uncovered_lag_interval_start']}-"
+            f"{evidence['first_uncovered_lag_interval_stop']} "
+            f"first_len={evidence['first_uncovered_lag_interval_length']} "
+            "largest="
+            f"{evidence['largest_uncovered_interval_start']}-"
+            f"{evidence['largest_uncovered_interval_stop']} "
+            f"largest_len={evidence['largest_uncovered_interval_length']} "
+            f"largest_is_tail={evidence['largest_uncovered_interval_is_tail']}"
+        )
+        lines.append(
+            "sparse_interval_repair="
+            "first_window="
+            f"{evidence['first_uncovered_lag_interval_repair_window']} "
+            "first_reaches_interval="
+            f"{evidence['first_uncovered_interval_repair_reaches_interval']} "
+            "first_next_gap="
+            f"{evidence['first_interval_repair_next_uncovered_lag']} "
+            "largest_window="
+            f"{evidence['largest_uncovered_interval_repair_window']} "
+            "largest_covers_context="
+            f"{evidence['largest_interval_repair_covers_context']}"
+        )
+        lines.append(
+            "sparse_repair_plan="
+            f"steps={evidence['interval_repair_plan_step_count']} "
+            f"final_window={evidence['interval_repair_plan_final_window']} "
+            f"covers_context={evidence['interval_repair_plan_covers_context']} "
+            "strictly_progresses="
+            f"{evidence['interval_repair_plan_strictly_progresses']}"
         )
         lines.append(
             "sparse_budget="

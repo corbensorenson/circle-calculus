@@ -197,6 +197,13 @@ extension and the whole-period token-shift invariants as finite schedule facts.
 They do not claim better reasoning, adaptive-exit quality, speed, or model
 performance.
 
+For sparse-attention requests, the human receipt includes `sparse_intervals=`,
+`sparse_interval_repair=`, and `sparse_repair_plan=` lines. These expose the
+first uncovered lag interval, the largest uncovered interval, the complete local
+repair threshold, and the deterministic interval-repair plan. They are finite
+coverage and budget facts, not claims about attention quality, layout optimality,
+runtime speed, or model accuracy.
+
 Use `--format json` when another project will consume the result:
 
 ```bash
