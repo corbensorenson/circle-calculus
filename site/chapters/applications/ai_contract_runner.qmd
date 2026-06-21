@@ -434,8 +434,9 @@ site/data/generated/circle_ai_contract_receipt_file_check.schema.json
 
 The request schema is contract-specific: it accepts defaults for RoPE and
 recurrence, requires the core KV-cache and sparse-attention fields, rejects odd
-RoPE `head_dim` values, and rejects unknown top-level request keys or parameter
-names before a receipt is issued.
+RoPE `head_dim` values, requires positive recurrence `max_loops` and
+`selected_block_width` values, and rejects unknown top-level request keys or
+parameter names before a receipt is issued.
 The Python `validate_contract_request(request)` helper applies the same public
 checks for downstream code that does not invoke JSON Schema directly.
 The runner-check schema validates the batch report emitted by

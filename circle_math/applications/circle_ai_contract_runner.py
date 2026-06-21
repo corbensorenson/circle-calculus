@@ -1480,10 +1480,10 @@ def _validate_request_parameters(
         _require_allowed_keys(parameters, allowed=allowed, failures=failures)
         _require_positive_int(parameters, "loop_period", failures)
         _require_nonnegative_int(parameters, "sample_index", failures)
-        _require_nonnegative_int(parameters, "max_loops", failures)
+        _require_positive_int(parameters, "max_loops", failures)
         _require_positive_int(parameters, "token_count", failures)
         _require_nonnegative_int(parameters, "selected_block_start", failures)
-        _require_nonnegative_int(parameters, "selected_block_width", failures)
+        _require_positive_int(parameters, "selected_block_width", failures)
         _require_nonnegative_int(parameters, "shift_passes", failures)
     return failures
 
@@ -2420,10 +2420,10 @@ def build_contract_request_json_schema() -> dict[str, Any]:
                         "properties": {
                             "loop_period": positive_integer,
                             "sample_index": nonnegative_integer,
-                            "max_loops": nonnegative_integer,
+                            "max_loops": positive_integer,
                             "token_count": positive_integer,
                             "selected_block_start": nonnegative_integer,
-                            "selected_block_width": nonnegative_integer,
+                            "selected_block_width": positive_integer,
                             "shift_passes": nonnegative_integer,
                         },
                         "additionalProperties": False,

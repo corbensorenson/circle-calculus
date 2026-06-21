@@ -377,6 +377,7 @@ site/data/generated/circle_ai_contract_receipt_file_check.schema.json
 The request schema has contract-specific parameter shapes. RoPE and recurrence
 requests may rely on defaults, while KV-cache and sparse-attention requests must
 include their required fields. RoPE `head_dim` values must be positive and even.
+Recurrence `max_loops` and `selected_block_width` values must be positive.
 Unknown top-level request keys and unknown parameter keys are rejected so typoed
 configs fail before a receipt is issued.
 

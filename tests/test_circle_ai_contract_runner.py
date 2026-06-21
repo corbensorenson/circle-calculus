@@ -1093,6 +1093,16 @@ def test_request_api_reports_malformed_requests() -> None:
             "local_window": 9,
         },
     }
+    invalid_recurrence_zero_loop_budget = {
+        "schema_id": "circle_calculus.ai_contract_request.v0",
+        "kind": "recurrence",
+        "parameters": {"max_loops": 0},
+    }
+    invalid_recurrence_empty_block = {
+        "schema_id": "circle_calculus.ai_contract_request.v0",
+        "kind": "recurrence",
+        "parameters": {"selected_block_width": 0},
+    }
     typo_parameter = {
         "schema_id": "circle_calculus.ai_contract_request.v0",
         "kind": "recurrence",
@@ -1128,6 +1138,14 @@ def test_request_api_reports_malformed_requests() -> None:
     assert any(
         "positive integers" in failure
         for failure in validate_contract_request(invalid_sparse_stride)
+    )
+    assert any(
+        "parameters.max_loops must be a positive integer" in failure
+        for failure in validate_contract_request(invalid_recurrence_zero_loop_budget)
+    )
+    assert any(
+        "parameters.selected_block_width must be a positive integer" in failure
+        for failure in validate_contract_request(invalid_recurrence_empty_block)
     )
     assert any(
         "unsupported keys" in failure
@@ -1247,6 +1265,16 @@ def test_request_schema_validates_public_parameter_shapes() -> None:
         "kind": "rope",
         "parameters": {"head_dim": 127},
     }
+    zero_recurrence_loop_budget = {
+        "schema_id": "circle_calculus.ai_contract_request.v0",
+        "kind": "recurrence",
+        "parameters": {"max_loops": 0},
+    }
+    zero_recurrence_block_width = {
+        "schema_id": "circle_calculus.ai_contract_request.v0",
+        "kind": "recurrence",
+        "parameters": {"selected_block_width": 0},
+    }
 
     with pytest.raises(jsonschema.ValidationError):
         jsonschema.validate(missing_sparse_field, schema)
@@ -1256,6 +1284,10 @@ def test_request_schema_validates_public_parameter_shapes() -> None:
         jsonschema.validate(typo_top_level, schema)
     with pytest.raises(jsonschema.ValidationError):
         jsonschema.validate(odd_rope_head_dim, schema)
+    with pytest.raises(jsonschema.ValidationError):
+        jsonschema.validate(zero_recurrence_loop_budget, schema)
+    with pytest.raises(jsonschema.ValidationError):
+        jsonschema.validate(zero_recurrence_block_width, schema)
 
 
 def test_receipt_schema_exposes_runner_metadata() -> None:

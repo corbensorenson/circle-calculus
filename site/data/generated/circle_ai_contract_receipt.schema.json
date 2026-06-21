@@ -397,7 +397,7 @@
                   "type": "integer"
                 },
                 "max_loops": {
-                  "minimum": 0,
+                  "minimum": 1,
                   "type": "integer"
                 },
                 "sample_index": {
@@ -409,7 +409,7 @@
                   "type": "integer"
                 },
                 "selected_block_width": {
-                  "minimum": 0,
+                  "minimum": 1,
                   "type": "integer"
                 },
                 "shift_passes": {
