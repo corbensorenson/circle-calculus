@@ -163,6 +163,8 @@ circle-prime big-fuzzy-search MODEL START \
   --json
 circle-prime big-test-server --rounds 64
 circle-prime big-next-server --rounds 64 --max-candidates 1000000
+circle-prime big-test-server --profile bpsw
+circle-prime big-next-server --profile bpsw --max-candidates 1000000
 circle-prime big-fuzzy-server MODEL \
   --candidate-window 512 \
   --top-k 16 \
@@ -176,8 +178,9 @@ For larger `BigUint` inputs, accepted candidates are probable primes from
 trial division plus a selected probable-prime profile. The default `mr`
 profile uses configured fixed Miller-Rabin bases. The optional `bpsw` profile
 uses base-2 Miller-Rabin plus a strong Lucas-Selfridge check. Composite results
-are exact when a small factor or witness is found; prime results above `u64`
-are still probable-prime reports, not formal primality certificates.
+are exact when a small factor, perfect square, Miller-Rabin witness, or
+Lucas-Selfridge witness is found; prime results above `u64` are still
+probable-prime reports, not formal primality certificates.
 
 `big-fuzzy-search` keeps the same safety rule as the smaller fuzzy lane: the
 model only ranks candidates, and every reported candidate must pass the
@@ -209,17 +212,23 @@ Current local smoke status from 2026-06-21:
   selected large-prime case.
 - Hot Circle `big-test-server` is faster than OpenSSL `prime -checks 16` on
   every selected 127/255/256/521-bit primality case. Latest medians include
-  `0.595 ms` for the Curve25519 prime, `0.657 ms` for the secp256k1 field
-  prime, and `2.465 ms` for the 521-bit Mersenne prime. SymPy `isprime`
-  remains faster on most raw primality checks, though Circle is now close on
-  the Curve25519 case in this local smoke.
-- Hot Circle `big-next-server` agrees with SymPy on the selected 127-bit and
-  near-255-bit starts. It is still slower than SymPy on the 127-bit start
-  (`0.237 ms` versus `0.175 ms`), but is faster than SymPy on the near-255-bit
-  start (`0.991 ms` versus `1.715 ms`) in the latest 16-round smoke.
-- A single-sample 64-check probe still agrees on every case. Hot Circle
-  `big-test-server` beats OpenSSL on every selected primality check at that
-  setting, including the 521-bit Mersenne prime, but remains slower than SymPy.
+  `0.631 ms` for the Curve25519 prime, `0.629 ms` for the secp256k1 field
+  prime, and `2.540 ms` for the 521-bit Mersenne prime under fixed-base MR.
+- Hot Circle BPSW agrees with SymPy on every selected case and is faster than
+  the fixed-base MR profile on prime-heavy inputs. Latest medians include
+  `0.172 ms` for the 127-bit Mersenne prime, `0.628 ms` for the Curve25519
+  prime, `0.588 ms` for the secp256k1 field prime, and `0.858 ms` for the
+  521-bit Mersenne prime. In this local smoke, BPSW beats SymPy on the
+  521-bit Mersenne prime but still trails SymPy on the selected 127/255/256-bit
+  raw primality checks.
+- Hot Circle BPSW `big-next-server` agrees with SymPy on the selected 127-bit
+  and near-255-bit starts and beats SymPy on both in the latest 16-round smoke:
+  `0.104 ms` versus `0.182 ms` at `2^127`, and `1.085 ms` versus `1.756 ms`
+  near Curve25519.
+- A single-sample 64-check probe still agrees on every case. Hot Circle BPSW
+  beats SymPy on the 127-bit and 521-bit Mersenne prime checks and on both
+  selected next-prime searches, but still trails SymPy on the selected
+  Curve25519 and secp256k1 raw primality checks.
 - BigUint fuzzy any-prime search is correct in the smoke and its value-only
   server path now skips diagnostic baseline scans. It beats SymPy on the
   near-255-bit any-prime case (`1.104 ms` versus SymPy next-prime at

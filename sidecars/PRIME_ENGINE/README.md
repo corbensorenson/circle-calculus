@@ -111,8 +111,11 @@ status above `u64`; it is not a Lean-certified primality certificate yet.
 `big-test` and `big-next` now accept `--profile mr|bpsw`: `mr` uses the fixed
 Miller-Rabin base bank, while `bpsw` uses base-2 Miller-Rabin plus strong
 Lucas-Selfridge. The BigUint smoke records hot BPSW profile rows for test and
-next-prime searches beside the default Miller-Rabin rows. The current hot path
-caches limb digits for small-prime trial division, keeps incremental
+next-prime searches beside the default Miller-Rabin rows. In the latest local
+smoke, hot BPSW beats SymPy on both selected large next-prime searches and on
+the 521-bit Mersenne primality check while still trailing SymPy on selected
+255/256-bit raw primality checks. The current hot path caches limb digits for
+small-prime trial division, keeps incremental
 small-prime residues during `big-next` wheel search, and uses a value-only
 fuzzy server path when JSON diagnostics are not requested.
 
