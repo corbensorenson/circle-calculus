@@ -25,8 +25,6 @@ from circle_math.applications import (  # noqa: E402
     build_contract_request_validation_json_schema,
     build_rope_model_config_import_json_schema,
     build_rope_model_config_import_report,
-    build_rope_request_parameters_from_model_config,
-    build_validated_contract_receipt,
     build_validated_contract_receipt_from_request,
     load_contract_pack,
     receipt_summary_lines,
@@ -402,16 +400,6 @@ def _validate_receipt_check_report(
 
 def _parameters_from_args(args: argparse.Namespace) -> dict[str, Any]:
     if args.kind == "rope":
-        if args.model_config is not None:
-            return build_rope_request_parameters_from_model_config(
-                _load_json_object(args.model_config, label="model config JSON"),
-                head_dim=args.head_dim,
-                base=args.base,
-                context=args.context,
-                tolerance=args.tolerance,
-                discretization=args.discretization,
-                requested_margin=args.requested_margin,
-            )
         return {
             "head_dim": 128 if args.head_dim is None else args.head_dim,
             "base": 10000.0 if args.base is None else args.base,
@@ -540,6 +528,7 @@ def main() -> int:
     else:
         pack = _pack_from_args(args)
         try:
+            request: dict[str, Any] | None = None
             if args.kind == "rope" and args.model_config is not None:
                 config = _load_json_object(args.model_config, label="model config JSON")
                 import_report = build_rope_model_config_import_report(
@@ -559,14 +548,14 @@ def main() -> int:
                     write_json(args.model_config_import_report_out, import_report)
                 if not import_report["ok"]:
                     raise ValueError("; ".join(import_report["failures"]))
-            request = build_contract_request(args.kind, _parameters_from_args(args))
+                if not isinstance(import_report["request"], dict):
+                    raise ValueError("model config import report did not emit a request")
+                request = import_report["request"]
+            if request is None:
+                request = build_contract_request(args.kind, _parameters_from_args(args))
             if args.request_out is not None:
                 write_json(args.request_out, request)
-            receipt = build_validated_contract_receipt(
-                request["kind"],
-                request["parameters"],
-                pack=pack,
-            )
+            receipt = build_validated_contract_receipt_from_request(request, pack=pack)
         except ValueError as exc:
             raise SystemExit(str(exc)) from exc
     assert pack is not None

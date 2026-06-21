@@ -1605,6 +1605,7 @@ def test_circle_ai_certify_cli_imports_checked_in_model_config(
 ) -> None:
     request_path = tmp_path / "request.json"
     receipt_path = tmp_path / "receipt.json"
+    import_report_path = tmp_path / "rope_model_config_import.json"
 
     result = subprocess.run(
         [
@@ -1619,6 +1620,8 @@ def test_circle_ai_certify_cli_imports_checked_in_model_config(
             str(request_path),
             "--json-out",
             str(receipt_path),
+            "--model-config-import-report-out",
+            str(import_report_path),
             "--require-status",
             "proved",
             "--require-decision",
@@ -1638,7 +1641,11 @@ def test_circle_ai_certify_cli_imports_checked_in_model_config(
     payload = json.loads(result.stdout)
     saved_request = json.loads(request_path.read_text())
     saved_receipt = json.loads(receipt_path.read_text())
+    import_report = json.loads(import_report_path.read_text())
     assert payload == saved_receipt
+    jsonschema.validate(import_report, build_rope_model_config_import_json_schema())
+    assert import_report["ok"] is True
+    assert import_report["request"] == saved_request
     assert saved_request == saved_receipt["request"]
     assert saved_receipt["normalized_request"]["head_dim"] == 128
     assert saved_receipt["normalized_request"]["base"] == 10000.0
