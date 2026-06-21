@@ -1,0 +1,235 @@
+{
+  "$id": "https://circle-calculus.local/schemas/circle_ai_contract_artifact_manifest.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "artifact_count": {
+      "minimum": 0,
+      "type": "integer"
+    },
+    "artifact_dir": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "artifact_fingerprint_algorithm": {
+      "const": "sha256-file-v1"
+    },
+    "artifact_prefix": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "artifacts": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "content_schema_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "exists": {
+            "type": "boolean"
+          },
+          "label": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "path": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "sha256": {
+            "anyOf": [
+              {
+                "pattern": "^[0-9a-f]{64}$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "label",
+          "path",
+          "exists",
+          "sha256",
+          "content_schema_id"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "decision_assurance": {
+      "enum": [
+        "theorem_backed",
+        "mixed_theorem_and_computation",
+        "numerical_only",
+        "unsupported",
+        "undecided",
+        null
+      ],
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "decision_verdict": {
+      "enum": [
+        "passed",
+        "failed",
+        "undecided",
+        "numerical_only",
+        "outside_scope",
+        null
+      ],
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "gate_policy": {
+      "additionalProperties": false,
+      "properties": {
+        "allowed_assurance_levels": {
+          "items": {
+            "enum": [
+              "theorem_backed",
+              "mixed_theorem_and_computation",
+              "numerical_only",
+              "unsupported",
+              "undecided"
+            ]
+          },
+          "type": "array"
+        },
+        "allowed_decision_verdicts": {
+          "items": {
+            "enum": [
+              "passed",
+              "failed",
+              "undecided",
+              "numerical_only",
+              "outside_scope"
+            ]
+          },
+          "type": "array"
+        },
+        "allowed_statuses": {
+          "items": {
+            "enum": [
+              "proved",
+              "impossible",
+              "undecided",
+              "numerical_only",
+              "outside_scope"
+            ]
+          },
+          "type": "array"
+        },
+        "require_passed": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "allowed_statuses",
+        "allowed_decision_verdicts",
+        "allowed_assurance_levels",
+        "require_passed"
+      ],
+      "type": "object"
+    },
+    "kind": {
+      "enum": [
+        "rope_position_distinguishability",
+        "kv_cache_ring_buffer",
+        "sparse_attention_coverage",
+        "recurrence_schedule",
+        null
+      ],
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "normalized_request_fingerprint": {
+      "anyOf": [
+        {
+          "pattern": "^[0-9a-f]{64}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "receipt_content_fingerprint": {
+      "anyOf": [
+        {
+          "pattern": "^[0-9a-f]{64}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "request_content_fingerprint": {
+      "anyOf": [
+        {
+          "pattern": "^[0-9a-f]{64}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "request_passed": {
+      "type": [
+        "boolean",
+        "null"
+      ]
+    },
+    "schema_id": {
+      "const": "circle_calculus.ai_contract_artifact_manifest.v0"
+    },
+    "status": {
+      "enum": [
+        "proved",
+        "impossible",
+        "undecided",
+        "numerical_only",
+        "outside_scope",
+        null
+      ],
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  },
+  "required": [
+    "schema_id",
+    "artifact_fingerprint_algorithm",
+    "kind",
+    "artifact_prefix",
+    "artifact_dir",
+    "status",
+    "request_passed",
+    "decision_verdict",
+    "decision_assurance",
+    "request_content_fingerprint",
+    "normalized_request_fingerprint",
+    "receipt_content_fingerprint",
+    "gate_policy",
+    "artifact_count",
+    "artifacts"
+  ],
+  "title": "Circle AI Contract Artifact Manifest",
+  "type": "object"
+}

@@ -160,9 +160,9 @@ python scripts/circle_ai_certify.py rope \
 
 That runner also supports `kv-cache`, `sparse-attention`, and `recurrence`.
 `--artifact-dir` writes the request, preflight report, receipt, gate report,
-certification bundle, and bundle-check report with stable names. The receipt
-and bundle are theorem-linked audit artifacts; they do not claim better model
-quality, speed, memory, or deployment safety.
+certification bundle, bundle-check report, and artifact manifest with stable
+names. The receipt and bundle are theorem-linked audit artifacts; they do not
+claim better model quality, speed, memory, or deployment safety.
 
 For the optional Theseus-Hive AI transfer compatibility lane, run:
 

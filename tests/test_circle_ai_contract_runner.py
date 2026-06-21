@@ -10,6 +10,7 @@ import jsonschema
 import pytest
 
 from circle_math.applications import (
+    build_contract_artifact_manifest_json_schema,
     build_contract_certification_bundle,
     build_contract_certification_bundle_file_check_json_schema,
     build_contract_certification_bundle_json_schema,
@@ -2202,6 +2203,7 @@ def test_circle_ai_certify_cli_artifact_dir_writes_standard_audit_set(
         "certification_bundle": artifact_dir / f"{prefix}_certification_bundle.json",
         "certification_bundle_check": artifact_dir
         / f"{prefix}_certification_bundle_check.json",
+        "artifact_manifest": artifact_dir / f"{prefix}_artifact_manifest.json",
     }
 
     result = subprocess.run(
@@ -2247,6 +2249,7 @@ def test_circle_ai_certify_cli_artifact_dir_writes_standard_audit_set(
     gate_report = json.loads(expected_paths["gate_report"].read_text())
     bundle = json.loads(expected_paths["certification_bundle"].read_text())
     bundle_check = json.loads(expected_paths["certification_bundle_check"].read_text())
+    artifact_manifest = json.loads(expected_paths["artifact_manifest"].read_text())
 
     jsonschema.validate(
         request_validation,
@@ -2261,6 +2264,10 @@ def test_circle_ai_certify_cli_artifact_dir_writes_standard_audit_set(
         bundle_check,
         build_contract_certification_bundle_file_check_json_schema(),
     )
+    jsonschema.validate(
+        artifact_manifest,
+        build_contract_artifact_manifest_json_schema(),
+    )
     assert request_validation["ok"] is True
     assert model_config_import["ok"] is True
     assert receipt["status"] == "proved"
@@ -2269,6 +2276,21 @@ def test_circle_ai_certify_cli_artifact_dir_writes_standard_audit_set(
     assert bundle["ok"] is True
     assert bundle_check["ok"] is True
     assert bundle["model_config_import_report"] == model_config_import
+    assert artifact_manifest["kind"] == "rope_position_distinguishability"
+    assert artifact_manifest["status"] == "proved"
+    assert artifact_manifest["request_passed"] is True
+    assert artifact_manifest["decision_verdict"] == "passed"
+    assert artifact_manifest["artifact_count"] == 8
+    manifest_artifacts = {
+        artifact["label"]: artifact for artifact in artifact_manifest["artifacts"]
+    }
+    assert set(manifest_artifacts) == {
+        label for label in expected_paths if label != "artifact_manifest"
+    }
+    for label, artifact in manifest_artifacts.items():
+        assert artifact["exists"] is True
+        assert len(artifact["sha256"]) == 64
+        assert artifact["path"] == str(expected_paths[label])
 
 
 def test_circle_ai_certify_cli_writes_model_config_certification_bundle(

@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import sys
 from pathlib import Path
@@ -16,6 +17,7 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from circle_math.applications import (  # noqa: E402
+    build_contract_artifact_manifest_json_schema,
     build_contract_certification_bundle,
     build_contract_certification_bundle_file_check_json_schema,
     build_contract_certification_bundle_file_check_report,
@@ -34,13 +36,22 @@ from circle_math.applications import (  # noqa: E402
     receipt_summary_lines,
 )
 from circle_math.applications.circle_ai_contract_runner import (  # noqa: E402
+    ARTIFACT_MANIFEST_SCHEMA_ID,
+    ARTIFACT_MANIFEST_SCHEMA_PATH,
     CERTIFICATION_BUNDLE_FILE_CHECK_SCHEMA_PATH,
     CERTIFICATION_BUNDLE_SCHEMA_PATH,
+    CERTIFICATION_BUNDLE_FILE_CHECK_SCHEMA_ID,
+    CERTIFICATION_BUNDLE_SCHEMA_ID,
     DECISION_ASSURANCE_LEVELS,
     DECISION_VERDICTS,
+    RECEIPT_FILE_CHECK_SCHEMA_ID,
     RECEIPT_FILE_CHECK_SCHEMA_PATH,
+    RECEIPT_SCHEMA_ID,
     RECEIPT_SCHEMA_PATH,
+    REQUEST_SCHEMA_ID,
     REQUEST_VALIDATION_SCHEMA_PATH,
+    REQUEST_VALIDATION_SCHEMA_ID,
+    ROPE_MODEL_CONFIG_IMPORT_SCHEMA_ID,
     ROPE_MODEL_CONFIG_IMPORT_SCHEMA_PATH,
 )
 
@@ -60,6 +71,7 @@ DEFAULT_CERTIFICATION_BUNDLE_SCHEMA = ROOT / CERTIFICATION_BUNDLE_SCHEMA_PATH
 DEFAULT_CERTIFICATION_BUNDLE_CHECK_SCHEMA = (
     ROOT / CERTIFICATION_BUNDLE_FILE_CHECK_SCHEMA_PATH
 )
+DEFAULT_ARTIFACT_MANIFEST_SCHEMA = ROOT / ARTIFACT_MANIFEST_SCHEMA_PATH
 DEFAULT_PACK_PATH = ROOT / "site" / "data" / "generated" / "circle_ai_contract_pack.json"
 
 
@@ -122,6 +134,24 @@ def add_common_options(parser: argparse.ArgumentParser) -> None:
             "Optional filename prefix to use with --artifact-dir. Defaults to "
             "the request/model-config stem when available, otherwise the "
             "contract family name."
+        ),
+    )
+    parser.add_argument(
+        "--artifact-manifest-out",
+        type=Path,
+        help=(
+            "Optional path for a schema-validated JSON manifest indexing "
+            "the artifact files written by this invocation."
+        ),
+    )
+    parser.add_argument(
+        "--artifact-manifest-schema",
+        type=Path,
+        default=DEFAULT_ARTIFACT_MANIFEST_SCHEMA,
+        help=(
+            "Generated JSON Schema used to validate --artifact-manifest-out. "
+            "Defaults to "
+            "site/data/generated/circle_ai_contract_artifact_manifest.schema.json."
         ),
     )
     parser.add_argument(
@@ -534,6 +564,16 @@ def write_json(path: Path, payload: dict[str, Any]) -> None:
     path.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
 
 
+def _file_sha256(path: Path) -> str | None:
+    if not path.exists():
+        return None
+    digest = hashlib.sha256()
+    with path.open("rb") as handle:
+        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
+
+
 def _safe_artifact_prefix(raw: str) -> str:
     safe = "".join(
         char if char.isalnum() or char in {"-", "_", "."} else "_"
@@ -586,6 +626,13 @@ def _apply_artifact_dir_defaults(args: argparse.Namespace) -> None:
         "request_validation",
     )
     if args.kind == "request" and args.validate_only:
+        _fill_artifact_path(
+            args,
+            "artifact_manifest_out",
+            artifact_dir,
+            prefix,
+            "artifact_manifest",
+        )
         return
     if args.kind == "rope" and args.model_config is not None:
         _fill_artifact_path(
@@ -612,6 +659,171 @@ def _apply_artifact_dir_defaults(args: argparse.Namespace) -> None:
         prefix,
         "certification_bundle_check",
     )
+    _fill_artifact_path(
+        args,
+        "artifact_manifest_out",
+        artifact_dir,
+        prefix,
+        "artifact_manifest",
+    )
+
+
+def _artifact_paths_for_manifest(args: argparse.Namespace) -> list[tuple[str, Path, str]]:
+    artifacts = [
+        ("request_json", args.request_out, REQUEST_SCHEMA_ID),
+        (
+            "request_validation_report",
+            args.request_validation_report_out,
+            REQUEST_VALIDATION_SCHEMA_ID,
+        ),
+        ("receipt_json", args.json_out, RECEIPT_SCHEMA_ID),
+        ("receipt_check", args.receipt_check_out, RECEIPT_FILE_CHECK_SCHEMA_ID),
+        ("gate_report", args.gate_report_out, RECEIPT_FILE_CHECK_SCHEMA_ID),
+        (
+            "certification_bundle",
+            args.certification_bundle_out,
+            CERTIFICATION_BUNDLE_SCHEMA_ID,
+        ),
+        (
+            "certification_bundle_check",
+            args.certification_bundle_check_out,
+            CERTIFICATION_BUNDLE_FILE_CHECK_SCHEMA_ID,
+        ),
+    ]
+    model_config_import_report_out = getattr(
+        args,
+        "model_config_import_report_out",
+        None,
+    )
+    artifacts.insert(
+        2,
+        (
+            "model_config_import_report",
+            model_config_import_report_out,
+            ROPE_MODEL_CONFIG_IMPORT_SCHEMA_ID,
+        ),
+    )
+    return [
+        (label, path, schema_id)
+        for label, path, schema_id in artifacts
+        if path is not None
+    ]
+
+
+def _artifact_gate_policy(args: argparse.Namespace) -> dict[str, Any]:
+    return {
+        "allowed_statuses": list(args.require_status),
+        "allowed_decision_verdicts": list(args.require_decision),
+        "allowed_assurance_levels": list(args.require_assurance),
+        "require_passed": args.require_passed,
+    }
+
+
+def _artifact_status_fields(
+    *,
+    receipt: dict[str, Any] | None,
+    request_validation_report: dict[str, Any] | None,
+) -> dict[str, Any]:
+    if receipt is not None:
+        decision = receipt.get("decision")
+        decision_dict = decision if isinstance(decision, dict) else {}
+        return {
+            "kind": receipt.get("kind"),
+            "status": receipt.get("status"),
+            "request_passed": receipt.get("request_passed"),
+            "decision_verdict": decision_dict.get("verdict"),
+            "decision_assurance": decision_dict.get("assurance"),
+            "request_content_fingerprint": receipt.get("request_content_fingerprint"),
+            "normalized_request_fingerprint": receipt.get(
+                "normalized_request_fingerprint"
+            ),
+            "receipt_content_fingerprint": receipt.get("receipt_content_fingerprint"),
+        }
+    if request_validation_report is not None:
+        return {
+            "kind": request_validation_report.get("canonical_kind"),
+            "status": None,
+            "request_passed": None,
+            "decision_verdict": None,
+            "decision_assurance": None,
+            "request_content_fingerprint": request_validation_report.get(
+                "request_content_fingerprint"
+            ),
+            "normalized_request_fingerprint": None,
+            "receipt_content_fingerprint": None,
+        }
+    return {
+        "kind": None,
+        "status": None,
+        "request_passed": None,
+        "decision_verdict": None,
+        "decision_assurance": None,
+        "request_content_fingerprint": None,
+        "normalized_request_fingerprint": None,
+        "receipt_content_fingerprint": None,
+    }
+
+
+def _build_artifact_manifest(
+    args: argparse.Namespace,
+    *,
+    receipt: dict[str, Any] | None,
+    request_validation_report: dict[str, Any] | None,
+) -> dict[str, Any]:
+    artifacts = [
+        {
+            "label": label,
+            "path": _display_path(path),
+            "exists": path.exists(),
+            "sha256": _file_sha256(path),
+            "content_schema_id": schema_id,
+        }
+        for label, path, schema_id in _artifact_paths_for_manifest(args)
+    ]
+    status_fields = _artifact_status_fields(
+        receipt=receipt,
+        request_validation_report=request_validation_report,
+    )
+    return {
+        "schema_id": ARTIFACT_MANIFEST_SCHEMA_ID,
+        "artifact_fingerprint_algorithm": "sha256-file-v1",
+        "artifact_prefix": _default_artifact_prefix(args),
+        "artifact_dir": (
+            None if args.artifact_dir is None else _display_path(args.artifact_dir)
+        ),
+        "gate_policy": _artifact_gate_policy(args),
+        "artifact_count": len(artifacts),
+        "artifacts": artifacts,
+        **status_fields,
+    }
+
+
+def _validate_artifact_manifest(manifest: dict[str, Any], schema_path: Path) -> None:
+    schema = _load_json_object(schema_path, label="artifact manifest schema")
+    jsonschema.Draft202012Validator.check_schema(schema)
+    jsonschema.validate(manifest, schema)
+    generated_schema = build_contract_artifact_manifest_json_schema()
+    if schema != generated_schema:
+        raise jsonschema.SchemaError(
+            "artifact manifest schema drifted from application builder"
+        )
+
+
+def _write_artifact_manifest(
+    args: argparse.Namespace,
+    *,
+    receipt: dict[str, Any] | None,
+    request_validation_report: dict[str, Any] | None,
+) -> None:
+    if args.artifact_manifest_out is None:
+        return
+    manifest = _build_artifact_manifest(
+        args,
+        receipt=receipt,
+        request_validation_report=request_validation_report,
+    )
+    _validate_artifact_manifest(manifest, args.artifact_manifest_schema)
+    write_json(args.artifact_manifest_out, manifest)
 
 
 def _receipt_gate_failures(receipt: dict[str, Any], args: argparse.Namespace) -> list[str]:
@@ -656,6 +868,7 @@ def _artifact_summary_line(args: argparse.Namespace) -> str | None:
         ("gate_report", args.gate_report_out),
         ("certification_bundle", args.certification_bundle_out),
         ("certification_bundle_check", args.certification_bundle_check_out),
+        ("artifact_manifest", args.artifact_manifest_out),
     ]
     model_config_import_report_out = getattr(
         args,
@@ -726,6 +939,11 @@ def main() -> int:
                 write_json(args.request_validation_report_out, report)
             if args.json_out is not None:
                 write_json(args.json_out, report)
+            _write_artifact_manifest(
+                args,
+                receipt=None,
+                request_validation_report=report,
+            )
             if args.format == "json":
                 print(json.dumps(report, indent=2, sort_keys=True))
             else:
@@ -863,6 +1081,11 @@ def main() -> int:
                 args.certification_bundle_check_schema,
             )
             write_json(args.certification_bundle_check_out, bundle_check_report)
+    _write_artifact_manifest(
+        args,
+        receipt=receipt,
+        request_validation_report=None,
+    )
     if args.format == "json":
         print(json.dumps(receipt, indent=2, sort_keys=True))
     else:

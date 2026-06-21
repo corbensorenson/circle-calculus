@@ -22,6 +22,7 @@ from circle_math.applications.circle_ai_contracts import (
     build_downstream_rejection_report_json_schema,
 )
 from circle_math.applications.circle_ai_contract_runner import (
+    ARTIFACT_MANIFEST_SCHEMA_PATH as CONTRACT_ARTIFACT_MANIFEST_SCHEMA_PATH,
     CERTIFICATION_BUNDLE_FILE_CHECK_SCHEMA_PATH as CONTRACT_CERTIFICATION_BUNDLE_FILE_CHECK_SCHEMA_PATH,
     CERTIFICATION_BUNDLE_SCHEMA_PATH as CONTRACT_CERTIFICATION_BUNDLE_SCHEMA_PATH,
     RECEIPT_SCHEMA_PATH as CONTRACT_RUNNER_RECEIPT_SCHEMA_PATH,
@@ -30,6 +31,7 @@ from circle_math.applications.circle_ai_contract_runner import (
     REQUEST_VALIDATION_SCHEMA_PATH as CONTRACT_RUNNER_REQUEST_VALIDATION_SCHEMA_PATH,
     ROPE_MODEL_CONFIG_IMPORT_SCHEMA_PATH,
     RUNNER_CHECK_SCHEMA_PATH as CONTRACT_RUNNER_CHECK_SCHEMA_PATH,
+    build_contract_artifact_manifest_json_schema,
     build_contract_certification_bundle_file_check_json_schema,
     build_contract_certification_bundle_json_schema,
     build_contract_runner_check_json_schema,
@@ -63,6 +65,9 @@ DEFAULT_CONTRACT_CERTIFICATION_BUNDLE_SCHEMA_OUT = (
 )
 DEFAULT_CONTRACT_CERTIFICATION_BUNDLE_FILE_CHECK_SCHEMA_OUT = (
     ROOT / CONTRACT_CERTIFICATION_BUNDLE_FILE_CHECK_SCHEMA_PATH
+)
+DEFAULT_CONTRACT_ARTIFACT_MANIFEST_SCHEMA_OUT = (
+    ROOT / CONTRACT_ARTIFACT_MANIFEST_SCHEMA_PATH
 )
 
 
@@ -186,6 +191,15 @@ def main() -> int:
             "circle_ai_contract_certification_bundle_file_check.schema.json."
         ),
     )
+    parser.add_argument(
+        "--contract-artifact-manifest-schema-out",
+        default=str(DEFAULT_CONTRACT_ARTIFACT_MANIFEST_SCHEMA_OUT),
+        help=(
+            "Output JSON Schema path for standard artifact-directory manifests. "
+            "Defaults to "
+            "site/data/generated/circle_ai_contract_artifact_manifest.schema.json."
+        ),
+    )
     args = parser.parse_args()
 
     out = Path(args.out)
@@ -240,6 +254,9 @@ def main() -> int:
         certification_bundle_file_check_schema_out = (
             ROOT / certification_bundle_file_check_schema_out
         )
+    artifact_manifest_schema_out = Path(args.contract_artifact_manifest_schema_out)
+    if not artifact_manifest_schema_out.is_absolute():
+        artifact_manifest_schema_out = ROOT / artifact_manifest_schema_out
     out.parent.mkdir(parents=True, exist_ok=True)
     schema_out.parent.mkdir(parents=True, exist_ok=True)
     policy_schema_out.parent.mkdir(parents=True, exist_ok=True)
@@ -257,6 +274,7 @@ def main() -> int:
         parents=True,
         exist_ok=True,
     )
+    artifact_manifest_schema_out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(json.dumps(build_contract_pack(), indent=2, sort_keys=True) + "\n")
     schema_out.write_text(
         json.dumps(build_contract_pack_json_schema(), indent=2, sort_keys=True) + "\n"
@@ -341,6 +359,14 @@ def main() -> int:
         )
         + "\n"
     )
+    artifact_manifest_schema_out.write_text(
+        json.dumps(
+            build_contract_artifact_manifest_json_schema(),
+            indent=2,
+            sort_keys=True,
+        )
+        + "\n"
+    )
     try:
         display_path = out.relative_to(ROOT)
     except ValueError:
@@ -415,6 +441,12 @@ def main() -> int:
         display_certification_bundle_file_check_schema_path = (
             certification_bundle_file_check_schema_out
         )
+    try:
+        display_artifact_manifest_schema_path = (
+            artifact_manifest_schema_out.relative_to(ROOT)
+        )
+    except ValueError:
+        display_artifact_manifest_schema_path = artifact_manifest_schema_out
     print(f"wrote {display_path}")
     print(f"wrote {display_schema_path}")
     print(f"wrote {display_policy_schema_path}")
@@ -429,6 +461,7 @@ def main() -> int:
     print(f"wrote {display_receipt_file_check_schema_path}")
     print(f"wrote {display_certification_bundle_schema_path}")
     print(f"wrote {display_certification_bundle_file_check_schema_path}")
+    print(f"wrote {display_artifact_manifest_schema_path}")
     return 0
 
 

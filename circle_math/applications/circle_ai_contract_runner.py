@@ -59,6 +59,9 @@ CERTIFICATION_BUNDLE_SCHEMA_ID = (
 CERTIFICATION_BUNDLE_FILE_CHECK_SCHEMA_ID = (
     "circle_calculus.ai_contract_certification_bundle_file_check.v0"
 )
+ARTIFACT_MANIFEST_SCHEMA_ID = (
+    "circle_calculus.ai_contract_artifact_manifest.v0"
+)
 REQUEST_SCHEMA_PATH = "site/data/generated/circle_ai_contract_request.schema.json"
 REQUEST_VALIDATION_SCHEMA_PATH = (
     "site/data/generated/circle_ai_contract_request_validation.schema.json"
@@ -79,6 +82,9 @@ CERTIFICATION_BUNDLE_SCHEMA_PATH = (
 CERTIFICATION_BUNDLE_FILE_CHECK_SCHEMA_PATH = (
     "site/data/generated/"
     "circle_ai_contract_certification_bundle_file_check.schema.json"
+)
+ARTIFACT_MANIFEST_SCHEMA_PATH = (
+    "site/data/generated/circle_ai_contract_artifact_manifest.schema.json"
 )
 
 SUPPORTED_CONTRACT_KINDS = (
@@ -3076,6 +3082,114 @@ def build_contract_runner_check_json_schema() -> dict[str, Any]:
             "failures": string_list,
             "gate_policy": gate_policy,
             "summaries": {"type": "array", "items": summary},
+        },
+        "additionalProperties": False,
+    }
+
+
+def build_contract_artifact_manifest_json_schema() -> dict[str, Any]:
+    fingerprint = {
+        "anyOf": [
+            {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+            {"type": "null"},
+        ]
+    }
+    gate_policy = {
+        "type": "object",
+        "required": [
+            "allowed_statuses",
+            "allowed_decision_verdicts",
+            "allowed_assurance_levels",
+            "require_passed",
+        ],
+        "properties": {
+            "allowed_statuses": {
+                "type": "array",
+                "items": {"enum": list(STATUS_VALUES)},
+            },
+            "allowed_decision_verdicts": {
+                "type": "array",
+                "items": {"enum": list(DECISION_VERDICTS)},
+            },
+            "allowed_assurance_levels": {
+                "type": "array",
+                "items": {"enum": list(DECISION_ASSURANCE_LEVELS)},
+            },
+            "require_passed": {"type": "boolean"},
+        },
+        "additionalProperties": False,
+    }
+    artifact = {
+        "type": "object",
+        "required": [
+            "label",
+            "path",
+            "exists",
+            "sha256",
+            "content_schema_id",
+        ],
+        "properties": {
+            "label": {"type": "string", "minLength": 1},
+            "path": {"type": "string", "minLength": 1},
+            "exists": {"type": "boolean"},
+            "sha256": fingerprint,
+            "content_schema_id": {"type": ["string", "null"]},
+        },
+        "additionalProperties": False,
+    }
+    return {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "$id": (
+            "https://circle-calculus.local/schemas/"
+            "circle_ai_contract_artifact_manifest.schema.json"
+        ),
+        "title": "Circle AI Contract Artifact Manifest",
+        "type": "object",
+        "required": [
+            "schema_id",
+            "artifact_fingerprint_algorithm",
+            "kind",
+            "artifact_prefix",
+            "artifact_dir",
+            "status",
+            "request_passed",
+            "decision_verdict",
+            "decision_assurance",
+            "request_content_fingerprint",
+            "normalized_request_fingerprint",
+            "receipt_content_fingerprint",
+            "gate_policy",
+            "artifact_count",
+            "artifacts",
+        ],
+        "properties": {
+            "schema_id": {"const": ARTIFACT_MANIFEST_SCHEMA_ID},
+            "artifact_fingerprint_algorithm": {"const": "sha256-file-v1"},
+            "kind": {
+                "type": ["string", "null"],
+                "enum": [*SUPPORTED_CONTRACT_KINDS, None],
+            },
+            "artifact_prefix": {"type": "string", "minLength": 1},
+            "artifact_dir": {"type": ["string", "null"]},
+            "status": {
+                "type": ["string", "null"],
+                "enum": [*STATUS_VALUES, None],
+            },
+            "request_passed": {"type": ["boolean", "null"]},
+            "decision_verdict": {
+                "type": ["string", "null"],
+                "enum": [*DECISION_VERDICTS, None],
+            },
+            "decision_assurance": {
+                "type": ["string", "null"],
+                "enum": [*DECISION_ASSURANCE_LEVELS, None],
+            },
+            "request_content_fingerprint": fingerprint,
+            "normalized_request_fingerprint": fingerprint,
+            "receipt_content_fingerprint": fingerprint,
+            "gate_policy": gate_policy,
+            "artifact_count": {"type": "integer", "minimum": 0},
+            "artifacts": {"type": "array", "items": artifact},
         },
         "additionalProperties": False,
     }

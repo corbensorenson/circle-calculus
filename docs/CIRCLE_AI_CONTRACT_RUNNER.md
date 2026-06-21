@@ -204,10 +204,13 @@ without naming every file. It fills unset paths for:
 <prefix>_gate_report.json
 <prefix>_certification_bundle.json
 <prefix>_certification_bundle_check.json
+<prefix>_artifact_manifest.json
 ```
 
 The default prefix is the request or model-config filename stem when available,
-otherwise the contract family name. Use `--artifact-prefix` to override it.
+otherwise the contract family name. Use `--artifact-prefix` to override it. The
+manifest indexes the generated files, their schema ids, and their file SHA-256
+hashes.
 
 Copyable starting points live under:
 
@@ -515,6 +518,7 @@ site/data/generated/circle_ai_contract_runner_check.schema.json
 site/data/generated/circle_ai_contract_receipt_file_check.schema.json
 site/data/generated/circle_ai_contract_certification_bundle.schema.json
 site/data/generated/circle_ai_contract_certification_bundle_file_check.schema.json
+site/data/generated/circle_ai_contract_artifact_manifest.schema.json
 ```
 
 The request schema has contract-specific parameter shapes. RoPE and recurrence

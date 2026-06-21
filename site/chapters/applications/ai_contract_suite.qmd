@@ -213,7 +213,8 @@ python scripts/circle_ai_certify.py rope \
 
 `--artifact-dir` writes the request, request-validation report, model-config
 import report when present, receipt, receipt-check report, gate report,
-certification bundle, and bundle-check report with stable names.
+certification bundle, bundle-check report, and artifact manifest with stable
+names.
 
 `make circle-ai-contracts-check` validates the generated JSON artifact itself: schema id, required contract keys, minimum fields, theorem ids, proof-status metadata, dictionary ids, source paths, quickstart docs, Living Book pages, and Python entrypoint paths.
 

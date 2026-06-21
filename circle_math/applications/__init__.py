@@ -22,6 +22,7 @@ from .circle_ai_contract_consumer import (
     validate_consumer_pack,
 )
 from .circle_ai_contract_runner import (
+    ARTIFACT_MANIFEST_SCHEMA_ID,
     RECEIPT_SCHEMA_ID as CIRCLE_AI_CONTRACT_RECEIPT_SCHEMA_ID,
     RECEIPT_FILE_CHECK_SCHEMA_ID as CIRCLE_AI_CONTRACT_RECEIPT_FILE_CHECK_SCHEMA_ID,
     CERTIFICATION_BUNDLE_SCHEMA_ID,
@@ -34,6 +35,7 @@ from .circle_ai_contract_runner import (
     build_contract_certification_bundle_file_check_report,
     build_contract_certification_bundle_file_check_json_schema,
     build_contract_certification_bundle_json_schema,
+    build_contract_artifact_manifest_json_schema,
     build_contract_receipt,
     build_contract_receipt_file_check_report,
     build_contract_receipt_gate_report,
@@ -69,6 +71,7 @@ CIRCLE_AI_CONTRACT_CERTIFICATION_BUNDLE_SCHEMA_ID = CERTIFICATION_BUNDLE_SCHEMA_
 CIRCLE_AI_CONTRACT_CERTIFICATION_BUNDLE_FILE_CHECK_SCHEMA_ID = (
     CERTIFICATION_BUNDLE_FILE_CHECK_SCHEMA_ID
 )
+CIRCLE_AI_CONTRACT_ARTIFACT_MANIFEST_SCHEMA_ID = ARTIFACT_MANIFEST_SCHEMA_ID
 
 from .coil_data import (
     PeriodBenchmarkResult,
@@ -500,6 +503,7 @@ from .rope_certifier import (
 
 __all__ = [
     "CIRCLE_AI_CONTRACT_PACK_SCHEMA_ID",
+    "CIRCLE_AI_CONTRACT_ARTIFACT_MANIFEST_SCHEMA_ID",
     "CIRCLE_AI_CONTRACT_CERTIFICATION_BUNDLE_SCHEMA_ID",
     "CIRCLE_AI_CONTRACT_RECEIPT_SCHEMA_ID",
     "CIRCLE_AI_CONTRACT_RECEIPT_FILE_CHECK_SCHEMA_ID",
@@ -508,6 +512,7 @@ __all__ = [
     "CIRCLE_AI_CONTRACT_RUNNER_CHECK_SCHEMA_ID",
     "CIRCLE_AI_RUNNER_CONTRACT_KINDS",
     "build_circle_ai_contract_pack",
+    "build_contract_artifact_manifest_json_schema",
     "build_contract_certification_bundle",
     "build_contract_certification_bundle_file_check_report",
     "build_contract_certification_bundle_file_check_json_schema",
