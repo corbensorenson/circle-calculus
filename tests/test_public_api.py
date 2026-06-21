@@ -47,13 +47,51 @@ def test_package_console_script_target_functions() -> None:
             "-c",
             (
                 "from circle_math.cli import contract_ready_main, "
-                "rope_certify_main, sparse_attention_certify_main; "
+                "contract_receipt_main, rope_certify_main, "
+                "sparse_attention_certify_main; "
                 "print(callable(contract_ready_main), callable(rope_certify_main), "
-                "callable(sparse_attention_certify_main))"
+                "callable(sparse_attention_certify_main), "
+                "callable(contract_receipt_main))"
             ),
         ],
         text=True,
         capture_output=True,
         check=True,
     )
-    assert result.stdout.strip() == "True True True"
+    assert result.stdout.strip() == "True True True True"
+
+
+def test_package_cli_contract_receipt_json() -> None:
+    result = subprocess.run(
+        [
+            sys.executable,
+            "-c",
+            (
+                "import sys; "
+                "from circle_math.cli import contract_receipt_main; "
+                "sys.exit(contract_receipt_main())"
+            ),
+            "--kind",
+            "sparse-attention",
+            "--parameters",
+            json.dumps(
+                {
+                    "context": 9,
+                    "strides": [3, 4, 7],
+                    "path_length": 2,
+                    "local_window": 2,
+                }
+            ),
+            "--format",
+            "json",
+        ],
+        text=True,
+        capture_output=True,
+        check=True,
+    )
+    receipt = json.loads(result.stdout)
+    assert receipt["schema_id"] == "circle_calculus.ai_contract_receipt.v0"
+    assert receipt["kind"] == "sparse_attention_coverage"
+    assert receipt["status"] == "proved"
+    assert receipt["request_passed"] is True
+    assert receipt["proof_status"]["all_theorem_ids_proved"] is True

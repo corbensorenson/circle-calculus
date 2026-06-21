@@ -40,6 +40,12 @@ from circle_math.core import finite_orbit, finite_period
 from circle_math.ai_contracts import build_contract_pack, build_rope_receipt
 ```
 
+CLI receipt path:
+
+```bash
+circle-ai-contract-receipt --kind sparse-attention --parameters '{"context": 9, "strides": [3, 4, 7], "path_length": 2, "local_window": 2}'
+```
+
 Lean:
 
 ```lean

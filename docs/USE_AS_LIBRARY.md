@@ -92,9 +92,14 @@ available:
 
 ```bash
 circle-ai-contract-ready --kind sparse_attention_coverage
+circle-ai-contract-receipt --kind sparse-attention --parameters '{"context": 9, "strides": [3, 4, 7], "path_length": 2, "local_window": 2}'
 circle-rope-certify --preset llama_style_10000_4k
 circle-sparse-attention-certify --context 9 --strides 3,4,7 --path-length 2 --local-window 2
 ```
+
+`circle-ai-contract-receipt` is the installed-package path for producing a
+theorem-linked receipt without using the repository-only scripts. It accepts
+`--parameters-file` when the request should come from checked-in JSON.
 
 The richer repository maintenance commands under `scripts/` are still the
 source-tree tools for generating and validating all artifacts.

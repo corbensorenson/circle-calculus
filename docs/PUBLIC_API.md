@@ -55,6 +55,15 @@ contract = require_ready_contract(pack, "sparse_attention_coverage")
 print(contract["id"])
 ```
 
+The installed CLI exposes the same receipt path for shell users:
+
+```bash
+circle-ai-contract-receipt \
+  --kind sparse-attention \
+  --parameters '{"context": 9, "strides": [3, 4, 7], "path_length": 2, "local_window": 2}' \
+  --format json
+```
+
 ## Lean Imports
 
 Finite cyclic mathematics:

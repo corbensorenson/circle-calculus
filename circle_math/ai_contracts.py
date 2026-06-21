@@ -17,6 +17,7 @@ from .applications.circle_ai_contract_runner import (
     build_sparse_attention_receipt,
     build_validated_contract_receipt,
     canonical_contract_kind,
+    receipt_summary_lines,
 )
 from .applications.circle_ai_contracts import (
     SCHEMA_ID as CONTRACT_PACK_SCHEMA_ID,
@@ -48,4 +49,5 @@ __all__ = [
     "build_strided_candidate_fanout_contract",
     "build_validated_contract_receipt",
     "canonical_contract_kind",
+    "receipt_summary_lines",
 ]

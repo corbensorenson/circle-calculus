@@ -13,7 +13,13 @@ from dataclasses import asdict, is_dataclass
 from pathlib import Path
 from typing import Any
 
-from .ai_contracts import CONTRACT_PACK_SCHEMA_ID, build_contract_pack
+from .ai_contracts import (
+    CONTRACT_PACK_SCHEMA_ID,
+    SUPPORTED_CONTRACT_KINDS,
+    build_contract_pack,
+    build_validated_contract_receipt,
+    receipt_summary_lines,
+)
 from .applications.circle_ai import certify_stride_family_coverage
 from .applications.rope_certifier import (
     ROPE_CERTIFIER_PRESETS,
@@ -148,8 +154,82 @@ def sparse_attention_certify_main() -> int:
     return 0
 
 
+def _load_json_object_from_args(
+    parser: argparse.ArgumentParser,
+    *,
+    inline_json: str | None,
+    json_file: Path | None,
+    label: str,
+) -> dict[str, Any]:
+    if inline_json is not None and json_file is not None:
+        parser.error(f"use either --{label} or --{label}-file, not both")
+    if json_file is not None:
+        raw = json_file.read_text()
+    else:
+        raw = inline_json or "{}"
+    try:
+        payload = json.loads(raw)
+    except json.JSONDecodeError as exc:
+        parser.error(f"{label} must be valid JSON: {exc}")
+    if not isinstance(payload, dict):
+        parser.error(f"{label} must be a JSON object")
+    return payload
+
+
+def contract_receipt_main() -> int:
+    """Build a theorem-linked public contract receipt from JSON parameters."""
+    parser = argparse.ArgumentParser(
+        description=(
+            "Build a Circle AI contract receipt for one public contract kind. "
+            "The receipt carries proof-status fields and explicit non-claims; "
+            "it is not a benchmark result."
+        )
+    )
+    parser.add_argument(
+        "--kind",
+        required=True,
+        help=(
+            "Contract kind or alias. Public kinds: "
+            + ", ".join(SUPPORTED_CONTRACT_KINDS)
+        ),
+    )
+    parser.add_argument(
+        "--parameters",
+        help="Inline JSON object containing contract parameters.",
+    )
+    parser.add_argument(
+        "--parameters-file",
+        type=Path,
+        help="Path to a JSON object containing contract parameters.",
+    )
+    parser.add_argument(
+        "--pack",
+        type=Path,
+        default=None,
+        help="Optional exported contract pack path. Defaults to a fresh public pack.",
+    )
+    parser.add_argument("--format", choices=("text", "json"), default="text")
+    args = parser.parse_args()
+
+    parameters = _load_json_object_from_args(
+        parser,
+        inline_json=args.parameters,
+        json_file=args.parameters_file,
+        label="parameters",
+    )
+    pack = build_contract_pack() if args.pack is None else load_contract_pack(args.pack)
+    receipt = build_validated_contract_receipt(args.kind, parameters, pack=pack)
+    if args.format == "json":
+        print(json.dumps(receipt, indent=2, sort_keys=True))
+    else:
+        for line in receipt_summary_lines(receipt):
+            print(line)
+    return 0
+
+
 __all__ = [
     "contract_ready_main",
+    "contract_receipt_main",
     "rope_certify_main",
     "sparse_attention_certify_main",
 ]
