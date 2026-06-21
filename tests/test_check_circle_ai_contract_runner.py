@@ -159,6 +159,7 @@ def test_check_circle_ai_contract_runner_emits_json_report() -> None:
     assert payload["example_count"] == 6
     assert payload["failure_count"] == 0
     assert payload["failures"] == []
+    assert payload["selected_kinds"] == []
     assert payload["gate_policy"] == {
         "allowed_statuses": [],
         "allowed_decision_verdicts": [],
@@ -207,6 +208,63 @@ def test_check_circle_ai_contract_runner_emits_json_report() -> None:
         for summary in payload["summaries"]
         if summary["source_type"] == "model_config"
     )
+
+
+def test_check_circle_ai_contract_runner_filters_by_kind() -> None:
+    result = subprocess.run(
+        [
+            sys.executable,
+            "scripts/check_circle_ai_contract_runner.py",
+            "--kind",
+            "sparse-attention",
+            "--format",
+            "json",
+        ],
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+
+    payload = json.loads(result.stdout)
+    jsonschema.validate(payload, _runner_check_schema())
+    assert payload["ok"] is True
+    assert payload["selected_kinds"] == ["sparse_attention_coverage"]
+    assert payload["example_count"] == 1
+    assert {summary["kind"] for summary in payload["summaries"]} == {
+        "sparse_attention_coverage"
+    }
+    assert {summary["source_type"] for summary in payload["summaries"]} == {
+        "request"
+    }
+
+
+def test_check_circle_ai_contract_runner_filters_model_configs_with_rope_alias() -> None:
+    result = subprocess.run(
+        [
+            sys.executable,
+            "scripts/check_circle_ai_contract_runner.py",
+            "--kind",
+            "rope",
+            "--format",
+            "json",
+        ],
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+
+    payload = json.loads(result.stdout)
+    jsonschema.validate(payload, _runner_check_schema())
+    assert payload["ok"] is True
+    assert payload["selected_kinds"] == ["rope_position_distinguishability"]
+    assert payload["example_count"] == 3
+    assert {summary["kind"] for summary in payload["summaries"]} == {
+        "rope_position_distinguishability"
+    }
+    assert {summary["source_type"] for summary in payload["summaries"]} == {
+        "request",
+        "model_config",
+    }
 
 
 def test_check_circle_ai_contract_runner_writes_receipts(tmp_path: Path) -> None:
@@ -480,6 +538,7 @@ def test_check_circle_ai_contract_runner_accepts_batch_gate() -> None:
         "allowed_assurance_levels": [],
         "require_passed": True,
     }
+    assert payload["selected_kinds"] == []
     assert payload["example_count"] == 6
 
 
@@ -508,6 +567,7 @@ def test_check_circle_ai_contract_runner_rejects_batch_gate() -> None:
         "allowed_assurance_levels": [],
         "require_passed": False,
     }
+    assert payload["selected_kinds"] == []
     assert payload["failure_count"] == 6
     assert all("did not match required status set" in failure for failure in payload["failures"])
 

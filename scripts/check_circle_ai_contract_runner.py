@@ -25,6 +25,7 @@ from circle_math.applications import (  # noqa: E402
     build_contract_runner_check_json_schema,
     build_rope_model_config_import_report,
     build_validated_contract_receipt_from_request,
+    canonical_contract_kind,
     load_contract_pack,
     validate_contract_request,
 )
@@ -94,6 +95,27 @@ def _model_config_paths(model_config_dir: Path | None) -> list[Path]:
     if not model_config_dir.exists():
         return []
     return sorted(model_config_dir.glob("*.json"))
+
+
+def _canonical_kind_filter(values: tuple[str, ...]) -> tuple[str, ...]:
+    selected: list[str] = []
+    seen: set[str] = set()
+    for raw in values:
+        canonical = canonical_contract_kind(raw)
+        if canonical not in seen:
+            seen.add(canonical)
+            selected.append(canonical)
+    return tuple(selected)
+
+
+def _request_kind_for_filter(request: dict[str, Any]) -> str | None:
+    raw_kind = request.get("kind")
+    if not isinstance(raw_kind, str):
+        return None
+    try:
+        return canonical_contract_kind(raw_kind)
+    except ValueError:
+        return None
 
 
 def _display_path(path: Path) -> str:
@@ -232,7 +254,9 @@ def check_runner_examples(
     required_decision_verdicts: tuple[str, ...] = (),
     required_assurance_levels: tuple[str, ...] = (),
     require_passed: bool = False,
+    selected_kinds: tuple[str, ...] = (),
 ) -> dict[str, Any]:
+    selected_kinds = _canonical_kind_filter(selected_kinds)
     request_schema = _json(request_schema_path)
     request_validation_schema = _json(request_validation_schema_path)
     model_config_import_schema = _json(model_config_import_schema_path)
@@ -272,6 +296,10 @@ def check_runner_examples(
     for path in _request_paths(example_dir):
         try:
             request = _json(path)
+            if selected_kinds:
+                request_kind = _request_kind_for_filter(request)
+                if request_kind not in selected_kinds:
+                    continue
             jsonschema.validate(request, request_schema)
             validation_report = build_contract_request_validation_report(request)
             jsonschema.validate(validation_report, request_validation_schema)
@@ -356,7 +384,14 @@ def check_runner_examples(
         except (ValueError, jsonschema.ValidationError, jsonschema.SchemaError) as exc:
             failures.append(f"{path}: {exc}")
 
-    for path in _model_config_paths(model_config_dir):
+    model_configs_in_scope = (
+        not selected_kinds
+        or "rope_position_distinguishability" in selected_kinds
+    )
+    model_config_paths = (
+        _model_config_paths(model_config_dir) if model_configs_in_scope else []
+    )
+    for path in model_config_paths:
         try:
             config = _json(path)
             import_report = build_rope_model_config_import_report(
@@ -465,12 +500,19 @@ def check_runner_examples(
         except (ValueError, jsonschema.ValidationError, jsonschema.SchemaError) as exc:
             failures.append(f"{path}: {exc}")
 
+    if selected_kinds and not summaries:
+        failures.append(
+            "no request or model-config examples matched selected kinds: "
+            + ", ".join(selected_kinds)
+        )
+
     report = {
         "schema_id": RUNNER_CHECK_SCHEMA_ID,
         "ok": not failures,
         "example_count": len(summaries),
         "failure_count": len(failures),
         "failures": failures,
+        "selected_kinds": list(selected_kinds),
         "gate_policy": {
             "allowed_statuses": list(required_statuses),
             "allowed_decision_verdicts": list(required_decision_verdicts),
@@ -553,6 +595,16 @@ def main() -> int:
         ),
     )
     parser.add_argument("--format", choices=("text", "json"), default="text")
+    parser.add_argument(
+        "--kind",
+        action="append",
+        default=[],
+        help=(
+            "Only check examples for this contract kind or alias, such as "
+            "rope, kv-cache, sparse-attention, or recurrence. May be passed "
+            "more than once."
+        ),
+    )
     parser.add_argument(
         "--receipt-out-dir",
         type=Path,
@@ -657,6 +709,7 @@ def main() -> int:
         required_decision_verdicts=tuple(args.require_decision),
         required_assurance_levels=tuple(args.require_assurance),
         require_passed=args.require_passed,
+        selected_kinds=tuple(args.kind),
     )
     if args.report_out is not None:
         _write_json(args.report_out, report)
@@ -667,6 +720,7 @@ def main() -> int:
             "circle AI runner examples "
             f"ok={report['ok']} examples={report['example_count']} "
             f"failures={report['failure_count']} "
+            f"selected_kinds={report['selected_kinds']} "
             f"required_statuses={report['gate_policy']['allowed_statuses']} "
             "required_decisions="
             f"{report['gate_policy']['allowed_decision_verdicts']} "

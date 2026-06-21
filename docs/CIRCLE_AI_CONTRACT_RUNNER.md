@@ -317,6 +317,20 @@ python scripts/check_circle_ai_contract_runner.py \
   --require-passed
 ```
 
+Run the same checker for only one contract family:
+
+```bash
+python scripts/check_circle_ai_contract_runner.py \
+  --kind sparse-attention \
+  --report-out reports/sparse_runner_check.json
+```
+
+`--kind` accepts the same aliases as the request schema, including `rope`,
+`kv-cache`, `sparse-attention`, and `recurrence`, and may be passed more than
+once. The runner-check report records the canonical `selected_kinds` list so a
+downstream CI log can show whether it checked the whole example set or one
+contract lane.
+
 The batch checker records its gate policy in
 `circle_ai_runner_check.json`. If any receipt violates `--require-status`,
 `--require-decision`, `--require-assurance`, or `--require-passed`, the report

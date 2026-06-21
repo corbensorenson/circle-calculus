@@ -3581,6 +3581,7 @@ def build_contract_runner_check_json_schema() -> dict[str, Any]:
             "example_count",
             "failure_count",
             "failures",
+            "selected_kinds",
             "gate_policy",
             "summaries",
         ],
@@ -3590,6 +3591,10 @@ def build_contract_runner_check_json_schema() -> dict[str, Any]:
             "example_count": {"type": "integer", "minimum": 0},
             "failure_count": {"type": "integer", "minimum": 0},
             "failures": string_list,
+            "selected_kinds": {
+                "type": "array",
+                "items": {"enum": list(SUPPORTED_CONTRACT_KINDS)},
+            },
             "gate_policy": gate_policy,
             "summaries": {"type": "array", "items": summary},
         },

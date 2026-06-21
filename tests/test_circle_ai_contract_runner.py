@@ -2027,6 +2027,7 @@ def test_runner_check_report_schema_accepts_public_report() -> None:
         "example_count": 1,
         "failure_count": 0,
         "failures": [],
+        "selected_kinds": [],
         "gate_policy": {
             "allowed_statuses": ["proved"],
             "allowed_decision_verdicts": ["passed"],

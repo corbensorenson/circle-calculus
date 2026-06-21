@@ -74,6 +74,17 @@
     "schema_id": {
       "const": "circle_calculus.ai_contract_runner_check.v0"
     },
+    "selected_kinds": {
+      "items": {
+        "enum": [
+          "rope_position_distinguishability",
+          "kv_cache_ring_buffer",
+          "sparse_attention_coverage",
+          "recurrence_schedule"
+        ]
+      },
+      "type": "array"
+    },
     "summaries": {
       "items": {
         "additionalProperties": false,
@@ -458,6 +469,7 @@
     "example_count",
     "failure_count",
     "failures",
+    "selected_kinds",
     "gate_policy",
     "summaries"
   ],
