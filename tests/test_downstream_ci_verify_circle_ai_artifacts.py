@@ -299,6 +299,17 @@ def test_standalone_artifact_verifier_accepts_multi_contract_kind_gate(
         for command in required_validation_commands
         for arg in ("--require-validation-command", command)
     ]
+    required_normalized_params = [
+        ("head_dim", 128),
+        ("cache_size", 16),
+        ("sequence_length", 32),
+        ("loop_period", 5),
+    ]
+    require_normalized_args = [
+        arg
+        for key, value in required_normalized_params
+        for arg in ("--require-normalized-param", f"{key}={json.dumps(value)}")
+    ]
 
     result = subprocess.run(
         [
@@ -322,6 +333,7 @@ def test_standalone_artifact_verifier_accepts_multi_contract_kind_gate(
             *require_evidence_args,
             *require_recommendation_args,
             *require_validation_args,
+            *require_normalized_args,
         ],
         cwd=ROOT,
         check=True,
@@ -348,6 +360,9 @@ def test_standalone_artifact_verifier_accepts_multi_contract_kind_gate(
     assert payload["observed_validation_command_count"] >= len(
         required_validation_commands
     )
+    assert payload["required_normalized_params"] == [
+        {"key": key, "value": value} for key, value in required_normalized_params
+    ]
 
 
 def test_standalone_artifact_verifier_rejects_missing_required_kind(
@@ -484,6 +499,39 @@ def test_standalone_artifact_verifier_rejects_missing_validation_command(
     assert payload["observed_validation_command_count"] > 0
     assert any(
         "required receipt validation command is missing" in failure
+        for failure in payload["failures"]
+    )
+
+
+def test_standalone_artifact_verifier_rejects_missing_normalized_param(
+    tmp_path: Path,
+) -> None:
+    manifest_path, _ = _emit_standard_rope_artifacts(tmp_path)
+
+    result = subprocess.run(
+        [
+            sys.executable,
+            str(SCRIPT),
+            str(manifest_path),
+            "--format",
+            "json",
+            "--require-normalized-param",
+            "head_dim=256",
+        ],
+        cwd=ROOT,
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+
+    assert result.returncode == 4
+    payload = json.loads(result.stderr)
+    assert payload["accepted"] is False
+    assert payload["required_normalized_params"] == [
+        {"key": "head_dim", "value": 256}
+    ]
+    assert any(
+        "required normalized request parameter is missing" in failure
         for failure in payload["failures"]
     )
 

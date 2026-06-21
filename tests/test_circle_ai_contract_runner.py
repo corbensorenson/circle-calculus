@@ -2342,6 +2342,9 @@ def test_circle_ai_certify_cli_artifact_dir_writes_standard_audit_set(
     assert receipt["validation_commands"][0] in (
         artifact_manifest_report["summaries"][0]["validation_commands"]
     )
+    assert artifact_manifest_report["summaries"][0]["normalized_request"] == (
+        receipt["normalized_request"]
+    )
 
     assert artifact_manifest_check["summaries"][0]["artifact_count"] == 8
     assert artifact_manifest_check["summaries"][0]["failure_count"] == 0
@@ -2364,6 +2367,10 @@ def test_circle_ai_certify_cli_artifact_dir_writes_standard_audit_set(
             "ROPE-USE-D19-MARGIN-FRONTIER",
             "--require-validation-command",
             receipt["validation_commands"][0],
+            "--require-normalized-param",
+            "head_dim=128",
+            "--require-normalized-param",
+            "context_length=131072",
         ],
         cwd=ROOT,
         check=True,
@@ -2413,6 +2420,24 @@ def test_circle_ai_certify_cli_artifact_dir_writes_standard_audit_set(
     assert missing_command_cli.returncode == 1
     assert "required receipt validation command is missing" in (
         missing_command_cli.stderr
+    )
+
+    missing_normalized_cli = subprocess.run(
+        [
+            sys.executable,
+            str(ARTIFACT_MANIFEST_CHECK_SCRIPT),
+            str(expected_paths["artifact_manifest"]),
+            "--require-normalized-param",
+            "head_dim=256",
+        ],
+        cwd=ROOT,
+        check=False,
+        text=True,
+        capture_output=True,
+    )
+    assert missing_normalized_cli.returncode == 1
+    assert "required normalized request parameter is missing" in (
+        missing_normalized_cli.stderr
     )
 
     expected_paths["request_json"].write_text(

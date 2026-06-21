@@ -152,6 +152,26 @@ def _check_policy_values(
         raise ValueError(f"unsupported required assurances: {unknown_assurances}")
 
 
+def _parse_normalized_param_pin(raw: str) -> tuple[str, Any]:
+    if "=" not in raw:
+        raise ValueError(
+            "--require-normalized-param must be KEY=JSON_VALUE, for example "
+            "head_dim=128"
+        )
+    key, raw_value = raw.split("=", 1)
+    key = key.strip()
+    if not key:
+        raise ValueError("--require-normalized-param key must be non-empty")
+    raw_value = raw_value.strip()
+    if not raw_value:
+        raise ValueError("--require-normalized-param value must be non-empty")
+    try:
+        value = json.loads(raw_value)
+    except json.JSONDecodeError:
+        value = raw_value
+    return key, value
+
+
 def _artifact_report(
     artifact: dict[str, Any],
     *,
@@ -448,6 +468,9 @@ def verify_manifest(
     receipt_evidence_fields = _receipt_evidence_fields(receipt)
     receipt_recommendation_ids = _receipt_recommendation_ids(receipt)
     receipt_validation_commands = _receipt_validation_commands(receipt)
+    normalized_request = (
+        receipt.get("normalized_request") if isinstance(receipt, dict) else None
+    )
 
     status = manifest.get("status")
     decision = manifest.get("decision_verdict")
@@ -491,6 +514,11 @@ def verify_manifest(
         "recommendation_ids": receipt_recommendation_ids,
         "validation_command_count": len(receipt_validation_commands),
         "validation_commands": receipt_validation_commands,
+        "normalized_request": (
+            dict(normalized_request)
+            if isinstance(normalized_request, dict)
+            else None
+        ),
         "request_content_fingerprint": manifest.get("request_content_fingerprint"),
         "normalized_request_fingerprint": manifest.get(
             "normalized_request_fingerprint"
@@ -524,6 +552,7 @@ def verify_manifests(
     required_evidence_fields: list[str],
     required_recommendation_ids: list[str],
     required_validation_commands: list[str],
+    required_normalized_params: list[tuple[str, Any]],
     required_statuses: list[str],
     required_decisions: list[str],
     required_assurances: list[str],
@@ -615,6 +644,15 @@ def verify_manifests(
             failures.append(
                 f"required receipt validation command is missing: {command}"
             )
+    for key, value in required_normalized_params:
+        if not any(
+            isinstance(summary.get("normalized_request"), dict)
+            and summary["normalized_request"].get(key) == value
+            for summary in summaries
+        ):
+            failures.append(
+                f"required normalized request parameter is missing: {key}={value!r}"
+            )
     return {
         "schema_id": EXAMPLE_SCHEMA_ID,
         "accepted": not failures,
@@ -632,6 +670,9 @@ def verify_manifests(
         "observed_recommendation_id_count": len(observed_recommendation_ids),
         "required_validation_commands": required_validation_commands,
         "observed_validation_command_count": len(observed_validation_commands),
+        "required_normalized_params": [
+            {"key": key, "value": value} for key, value in required_normalized_params
+        ],
         "required_statuses": required_statuses,
         "required_decisions": required_decisions,
         "required_assurances": required_assurances,
@@ -749,6 +790,16 @@ def main() -> int:
         ),
     )
     parser.add_argument(
+        "--require-normalized-param",
+        action="append",
+        default=[],
+        metavar="KEY=JSON_VALUE",
+        help=(
+            "Require at least one saved receipt artifact to have this top-level "
+            "normalized_request parameter value. May be repeated."
+        ),
+    )
+    parser.add_argument(
         "--require-decision",
         action="append",
         default=[],
@@ -779,6 +830,10 @@ def main() -> int:
     args = parser.parse_args()
 
     try:
+        required_normalized_params = [
+            _parse_normalized_param_pin(raw)
+            for raw in args.require_normalized_param
+        ]
         report = verify_manifests(
             args.manifests,
             base_dir=args.base_dir,
@@ -787,6 +842,7 @@ def main() -> int:
             required_evidence_fields=args.require_evidence_field,
             required_recommendation_ids=args.require_recommendation_id,
             required_validation_commands=args.require_validation_command,
+            required_normalized_params=required_normalized_params,
             required_statuses=args.require_status,
             required_decisions=args.require_decision,
             required_assurances=args.require_assurance,

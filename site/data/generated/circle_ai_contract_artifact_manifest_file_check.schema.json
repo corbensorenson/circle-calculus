@@ -247,6 +247,16 @@
             "minimum": 0,
             "type": "integer"
           },
+          "normalized_request": {
+            "anyOf": [
+              {
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
           "normalized_request_fingerprint": {
             "anyOf": [
               {
@@ -351,6 +361,7 @@
           "artifact_prefix",
           "artifact_dir",
           "gate_policy",
+          "normalized_request",
           "request_content_fingerprint",
           "normalized_request_fingerprint",
           "receipt_content_fingerprint",

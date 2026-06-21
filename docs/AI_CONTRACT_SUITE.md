@@ -654,6 +654,8 @@ python examples/downstream_ci_verify_circle_ai_artifacts.py \
   --require-evidence-field real_phase_dirichlet_guardrail \
   --require-recommendation-id ROPE-USE-D19-MARGIN-FRONTIER \
   --require-validation-command "python scripts/rope_certify.py --preset llama_style_10000_4k --format json" \
+  --require-normalized-param head_dim=128 \
+  --require-normalized-param context_length=131072 \
   --require-status proved \
   --require-decision passed \
   --require-assurance mixed_theorem_and_computation \
@@ -667,7 +669,8 @@ repeat `--require-kind` for every contract family that must be present. Add
 on, `--require-evidence-field` for receipt fields it reads, and
 `--require-recommendation-id` for planner actions it invokes. Add
 `--require-validation-command` when CI depends on an exact receipt-emitted
-recheck command.
+recheck command, and `--require-normalized-param` when it must pin the certified
+configuration values.
 
 A downstream project should fail fast if the readiness index or contract-level
 `ready_for_downstream_fixture_use` is false. That gate only means the public

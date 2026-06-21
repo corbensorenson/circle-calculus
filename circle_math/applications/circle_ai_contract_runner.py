@@ -3283,6 +3283,7 @@ def build_contract_artifact_manifest_file_check_json_schema() -> dict[str, Any]:
             "artifact_prefix",
             "artifact_dir",
             "gate_policy",
+            "normalized_request",
             "request_content_fingerprint",
             "normalized_request_fingerprint",
             "receipt_content_fingerprint",
@@ -3318,6 +3319,9 @@ def build_contract_artifact_manifest_file_check_json_schema() -> dict[str, Any]:
             "artifact_prefix": {"type": "string", "minLength": 1},
             "artifact_dir": {"type": ["string", "null"]},
             "gate_policy": gate_policy,
+            "normalized_request": {
+                "anyOf": [{"type": "object"}, {"type": "null"}],
+            },
             "request_content_fingerprint": fingerprint,
             "normalized_request_fingerprint": fingerprint,
             "receipt_content_fingerprint": fingerprint,
@@ -3677,6 +3681,11 @@ def build_contract_artifact_manifest_file_check_report(
         receipt_validation_commands = _receipt_artifact_validation_commands(
             receipt_payload
         )
+        normalized_request = (
+            receipt_payload.get("normalized_request")
+            if isinstance(receipt_payload, Mapping)
+            else None
+        )
         summary = {
             "path": _display_manifest_check_path(manifest_path),
             "kind": manifest.get("kind"),
@@ -3695,6 +3704,11 @@ def build_contract_artifact_manifest_file_check_report(
             "artifact_prefix": manifest.get("artifact_prefix"),
             "artifact_dir": manifest.get("artifact_dir"),
             "gate_policy": manifest.get("gate_policy"),
+            "normalized_request": (
+                dict(normalized_request)
+                if isinstance(normalized_request, Mapping)
+                else None
+            ),
             "request_content_fingerprint": manifest.get(
                 "request_content_fingerprint"
             ),
