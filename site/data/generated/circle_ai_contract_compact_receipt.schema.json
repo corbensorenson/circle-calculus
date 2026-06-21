@@ -1,0 +1,306 @@
+{
+  "$id": "https://circle-calculus.local/schemas/circle_ai_contract_compact_receipt.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "contract_id": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "decision": {
+      "additionalProperties": false,
+      "properties": {
+        "all_theorem_ids_proved": {
+          "type": "boolean"
+        },
+        "assurance": {
+          "enum": [
+            "theorem_backed",
+            "mixed_theorem_and_computation",
+            "numerical_only",
+            "unsupported",
+            "undecided"
+          ]
+        },
+        "claim_status": {
+          "enum": [
+            "proved",
+            "impossible",
+            "undecided",
+            "numerical_only",
+            "outside_scope"
+          ]
+        },
+        "next_action": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "proof_layer_counts": {
+          "additionalProperties": false,
+          "properties": {
+            "computed_fields": {
+              "minimum": 0,
+              "type": "integer"
+            },
+            "numerical_only_fields": {
+              "minimum": 0,
+              "type": "integer"
+            },
+            "proved_fields": {
+              "minimum": 0,
+              "type": "integer"
+            },
+            "unsupported_fields": {
+              "minimum": 0,
+              "type": "integer"
+            }
+          },
+          "required": [
+            "proved_fields",
+            "computed_fields",
+            "numerical_only_fields",
+            "unsupported_fields"
+          ],
+          "type": "object"
+        },
+        "request_passed": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "schema_id": {
+          "const": "circle_calculus.ai_contract_decision.v0"
+        },
+        "summary": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "theorem_count": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "verdict": {
+          "enum": [
+            "passed",
+            "failed",
+            "undecided",
+            "numerical_only",
+            "outside_scope"
+          ]
+        }
+      },
+      "required": [
+        "schema_id",
+        "verdict",
+        "assurance",
+        "claim_status",
+        "request_passed",
+        "theorem_count",
+        "all_theorem_ids_proved",
+        "proof_layer_counts",
+        "summary",
+        "next_action"
+      ],
+      "type": "object"
+    },
+    "evidence_field_names": {
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "type": "array",
+      "uniqueItems": true
+    },
+    "fingerprints": {
+      "additionalProperties": false,
+      "properties": {
+        "content_fingerprint_algorithm": {
+          "const": "sha256-json-v1"
+        },
+        "contract_content_fingerprint": {
+          "pattern": "^[0-9a-f]{64}$",
+          "type": "string"
+        },
+        "contract_pack_fingerprint": {
+          "pattern": "^[0-9a-f]{64}$",
+          "type": "string"
+        },
+        "normalized_request_fingerprint": {
+          "pattern": "^[0-9a-f]{64}$",
+          "type": "string"
+        },
+        "receipt_content_fingerprint": {
+          "pattern": "^[0-9a-f]{64}$",
+          "type": "string"
+        },
+        "request_content_fingerprint": {
+          "pattern": "^[0-9a-f]{64}$",
+          "type": "string"
+        }
+      },
+      "required": [
+        "content_fingerprint_algorithm",
+        "request_content_fingerprint",
+        "normalized_request_fingerprint",
+        "receipt_content_fingerprint",
+        "contract_pack_fingerprint",
+        "contract_content_fingerprint"
+      ],
+      "type": "object"
+    },
+    "kind": {
+      "enum": [
+        "rope_position_distinguishability",
+        "kv_cache_ring_buffer",
+        "sparse_attention_coverage",
+        "recurrence_schedule"
+      ]
+    },
+    "normalized_request": {
+      "type": "object"
+    },
+    "not_claimed": {
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "type": "array",
+      "uniqueItems": true
+    },
+    "proof_layer_counts": {
+      "additionalProperties": false,
+      "properties": {
+        "computed_fields": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "numerical_only_fields": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "proved_fields": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "unsupported_fields": {
+          "minimum": 0,
+          "type": "integer"
+        }
+      },
+      "required": [
+        "proved_fields",
+        "computed_fields",
+        "numerical_only_fields",
+        "unsupported_fields"
+      ],
+      "type": "object"
+    },
+    "proof_status_summary": {
+      "additionalProperties": false,
+      "properties": {
+        "all_theorem_ids_proved": {
+          "type": "boolean"
+        },
+        "all_theorem_ids_resolved": {
+          "type": "boolean"
+        },
+        "theorem_count": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "theorem_ids": {
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "type": "array",
+          "uniqueItems": true
+        },
+        "unproved_theorem_ids": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array",
+          "uniqueItems": true
+        },
+        "unresolved_theorem_ids": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array",
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "theorem_ids",
+        "theorem_count",
+        "all_theorem_ids_resolved",
+        "all_theorem_ids_proved",
+        "unresolved_theorem_ids",
+        "unproved_theorem_ids"
+      ],
+      "type": "object"
+    },
+    "receipt_schema_id": {
+      "const": "circle_calculus.ai_contract_receipt.v0"
+    },
+    "recommendation_ids": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array",
+      "uniqueItems": true
+    },
+    "request_passed": {
+      "type": [
+        "boolean",
+        "null"
+      ]
+    },
+    "schema_id": {
+      "const": "circle_calculus.ai_contract_compact_receipt.v0"
+    },
+    "selected_evidence": {
+      "additionalProperties": true,
+      "type": "object"
+    },
+    "status": {
+      "enum": [
+        "proved",
+        "impossible",
+        "undecided",
+        "numerical_only",
+        "outside_scope"
+      ]
+    },
+    "validation_commands": {
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "type": "array",
+      "uniqueItems": true
+    }
+  },
+  "required": [
+    "schema_id",
+    "receipt_schema_id",
+    "kind",
+    "contract_id",
+    "status",
+    "request_passed",
+    "decision",
+    "normalized_request",
+    "proof_status_summary",
+    "proof_layer_counts",
+    "evidence_field_names",
+    "selected_evidence",
+    "recommendation_ids",
+    "validation_commands",
+    "not_claimed",
+    "fingerprints"
+  ],
+  "title": "Circle AI Contract Compact Receipt",
+  "type": "object"
+}

@@ -33,6 +33,8 @@ from circle_math.applications import (  # noqa: E402
     build_contract_request,
     build_contract_request_validation_report,
     build_contract_request_validation_json_schema,
+    build_compact_contract_receipt,
+    build_compact_contract_receipt_json_schema,
     build_rope_model_config_import_json_schema,
     build_rope_model_config_import_report,
     build_validated_contract_receipt_from_request,
@@ -47,6 +49,8 @@ from circle_math.applications.circle_ai_contract_runner import (  # noqa: E402
     CERTIFICATION_BUNDLE_SCHEMA_PATH,
     CERTIFICATION_BUNDLE_FILE_CHECK_SCHEMA_ID,
     CERTIFICATION_BUNDLE_SCHEMA_ID,
+    COMPACT_RECEIPT_SCHEMA_ID,
+    COMPACT_RECEIPT_SCHEMA_PATH,
     DECISION_ASSURANCE_LEVELS,
     DECISION_VERDICTS,
     RECEIPT_FILE_CHECK_SCHEMA_ID,
@@ -73,6 +77,7 @@ RECEIPT_STATUS_VALUES = (
 DEFAULT_REQUEST_VALIDATION_SCHEMA = ROOT / REQUEST_VALIDATION_SCHEMA_PATH
 DEFAULT_ROPE_MODEL_CONFIG_IMPORT_SCHEMA = ROOT / ROPE_MODEL_CONFIG_IMPORT_SCHEMA_PATH
 DEFAULT_RECEIPT_SCHEMA = ROOT / RECEIPT_SCHEMA_PATH
+DEFAULT_COMPACT_RECEIPT_SCHEMA = ROOT / COMPACT_RECEIPT_SCHEMA_PATH
 DEFAULT_RECEIPT_CHECK_SCHEMA = ROOT / RECEIPT_FILE_CHECK_SCHEMA_PATH
 DEFAULT_RECEIPT_REPLAY_CHECK_SCHEMA = ROOT / RECEIPT_REPLAY_CHECK_SCHEMA_PATH
 DEFAULT_CERTIFICATION_BUNDLE_SCHEMA = ROOT / CERTIFICATION_BUNDLE_SCHEMA_PATH
@@ -102,14 +107,25 @@ def parse_strides(raw: str) -> tuple[int, ...]:
 def add_common_options(parser: argparse.ArgumentParser) -> None:
     parser.add_argument(
         "--format",
-        choices=("text", "json"),
+        choices=("text", "json", "compact-json"),
         default="text",
-        help="Print either a human summary or the full receipt JSON.",
+        help=(
+            "Print a human summary, the full receipt JSON, or a compact "
+            "downstream-consumer receipt view."
+        ),
     )
     parser.add_argument(
         "--json-out",
         type=Path,
         help="Optional path for the machine-readable receipt JSON.",
+    )
+    parser.add_argument(
+        "--compact-json-out",
+        type=Path,
+        help=(
+            "Optional path for the compact downstream-consumer receipt JSON. "
+            "--json-out remains the full audit receipt."
+        ),
     )
     parser.add_argument(
         "--request-out",
@@ -293,6 +309,16 @@ def add_common_options(parser: argparse.ArgumentParser) -> None:
         help=(
             "Generated JSON Schema used to validate emitted receipts. Defaults "
             "to site/data/generated/circle_ai_contract_receipt.schema.json."
+        ),
+    )
+    parser.add_argument(
+        "--compact-receipt-schema",
+        type=Path,
+        default=DEFAULT_COMPACT_RECEIPT_SCHEMA,
+        help=(
+            "Generated JSON Schema used to validate compact receipt views. "
+            "Defaults to "
+            "site/data/generated/circle_ai_contract_compact_receipt.schema.json."
         ),
     )
     parser.add_argument(
@@ -607,6 +633,20 @@ def _validate_receipt_schema(receipt: dict[str, Any], schema_path: Path) -> None
         )
 
 
+def _validate_compact_receipt_schema(
+    compact_receipt: dict[str, Any],
+    schema_path: Path,
+) -> None:
+    schema = _load_json_object(schema_path, label="compact receipt schema")
+    jsonschema.Draft202012Validator.check_schema(schema)
+    jsonschema.validate(compact_receipt, schema)
+    generated_schema = build_compact_contract_receipt_json_schema()
+    if schema != generated_schema:
+        raise jsonschema.SchemaError(
+            "compact receipt schema drifted from application builder"
+        )
+
+
 def _validate_receipt_check_report(
     report: dict[str, Any],
     schema_path: Path,
@@ -795,6 +835,13 @@ def _apply_artifact_dir_defaults(args: argparse.Namespace) -> None:
             "model_config_import",
         )
     _fill_artifact_path(args, "json_out", artifact_dir, prefix, "receipt")
+    _fill_artifact_path(
+        args,
+        "compact_json_out",
+        artifact_dir,
+        prefix,
+        "compact_receipt",
+    )
     _fill_artifact_path(args, "receipt_check_out", artifact_dir, prefix, "receipt_check")
     _fill_artifact_path(
         args,
@@ -843,6 +890,7 @@ def _artifact_paths_for_manifest(args: argparse.Namespace) -> list[tuple[str, Pa
             REQUEST_VALIDATION_SCHEMA_ID,
         ),
         ("receipt_json", args.json_out, RECEIPT_SCHEMA_ID),
+        ("compact_receipt_json", args.compact_json_out, COMPACT_RECEIPT_SCHEMA_ID),
         ("receipt_check", args.receipt_check_out, RECEIPT_FILE_CHECK_SCHEMA_ID),
         (
             "receipt_replay_check",
@@ -1332,6 +1380,7 @@ def _artifact_summary_line(args: argparse.Namespace) -> str | None:
         ("request_json", args.request_out),
         ("request_validation_report", args.request_validation_report_out),
         ("receipt_json", args.json_out),
+        ("compact_receipt_json", args.compact_json_out),
         ("receipt_check", args.receipt_check_out),
         ("receipt_replay_check", args.receipt_replay_check_out),
         ("gate_report", args.gate_report_out),
@@ -1414,13 +1463,15 @@ def main() -> int:
                 or args.gate_report_out
                 or args.certification_bundle_out
                 or args.certification_bundle_check_out
+                or args.compact_json_out
+                or args.format == "compact-json"
             ):
                 raise SystemExit(
                     "--require-status, --require-decision, --require-assurance, "
                     "--require-passed, --receipt-check-out, --gate-report-out, "
                     "--certification-bundle-out, and "
-                    "--certification-bundle-check-out require a receipt; omit "
-                    "--validate-only"
+                    "--certification-bundle-check-out, --compact-json-out, and "
+                    "--format compact-json require a receipt; omit --validate-only"
                 )
             report = _validated_request_validation_report(
                 request_object,
@@ -1516,6 +1567,15 @@ def main() -> int:
     gate_failures = _receipt_gate_failures(receipt, args)
     if args.json_out is not None:
         write_json(args.json_out, receipt)
+    compact_receipt = None
+    if args.format == "compact-json" or args.compact_json_out is not None:
+        compact_receipt = build_compact_contract_receipt(receipt)
+        _validate_compact_receipt_schema(
+            compact_receipt,
+            args.compact_receipt_schema,
+        )
+        if args.compact_json_out is not None:
+            write_json(args.compact_json_out, compact_receipt)
     if args.receipt_check_out is not None:
         check_report = build_contract_receipt_file_check_report(
             receipt,
@@ -1599,6 +1659,9 @@ def main() -> int:
     )
     if args.format == "json":
         print(json.dumps(receipt, indent=2, sort_keys=True))
+    elif args.format == "compact-json":
+        assert compact_receipt is not None
+        print(json.dumps(compact_receipt, indent=2, sort_keys=True))
     else:
         for line in receipt_summary_lines(receipt):
             print(line)

@@ -21,6 +21,8 @@ from circle_math.applications import (  # noqa: E402
     build_contract_certification_bundle_file_check_json_schema,
     build_contract_certification_bundle_file_check_report,
     build_contract_certification_bundle_json_schema,
+    build_compact_contract_receipt,
+    build_compact_contract_receipt_json_schema,
     build_contract_request_validation_report,
     build_contract_runner_check_json_schema,
     build_rope_model_config_import_report,
@@ -55,6 +57,13 @@ DEFAULT_MODEL_CONFIG_IMPORT_SCHEMA = (
 )
 DEFAULT_RECEIPT_SCHEMA = (
     ROOT / "site" / "data" / "generated" / "circle_ai_contract_receipt.schema.json"
+)
+DEFAULT_COMPACT_RECEIPT_SCHEMA = (
+    ROOT
+    / "site"
+    / "data"
+    / "generated"
+    / "circle_ai_contract_compact_receipt.schema.json"
 )
 DEFAULT_RUNNER_CHECK_SCHEMA = (
     ROOT / "site" / "data" / "generated" / "circle_ai_contract_runner_check.schema.json"
@@ -242,6 +251,7 @@ def check_runner_examples(
     request_validation_schema_path: Path = DEFAULT_REQUEST_VALIDATION_SCHEMA,
     model_config_import_schema_path: Path = DEFAULT_MODEL_CONFIG_IMPORT_SCHEMA,
     receipt_schema_path: Path = DEFAULT_RECEIPT_SCHEMA,
+    compact_receipt_schema_path: Path = DEFAULT_COMPACT_RECEIPT_SCHEMA,
     runner_check_schema_path: Path = DEFAULT_RUNNER_CHECK_SCHEMA,
     certification_bundle_schema_path: Path = DEFAULT_CERTIFICATION_BUNDLE_SCHEMA,
     certification_bundle_check_schema_path: Path = DEFAULT_CERTIFICATION_BUNDLE_CHECK_SCHEMA,
@@ -261,6 +271,7 @@ def check_runner_examples(
     request_validation_schema = _json(request_validation_schema_path)
     model_config_import_schema = _json(model_config_import_schema_path)
     receipt_schema = _json(receipt_schema_path)
+    compact_receipt_schema = _json(compact_receipt_schema_path)
     runner_check_schema = _json(runner_check_schema_path)
     certification_bundle_schema = _json(certification_bundle_schema_path)
     certification_bundle_check_schema = _json(certification_bundle_check_schema_path)
@@ -268,6 +279,7 @@ def check_runner_examples(
     jsonschema.Draft202012Validator.check_schema(request_validation_schema)
     jsonschema.Draft202012Validator.check_schema(model_config_import_schema)
     jsonschema.Draft202012Validator.check_schema(receipt_schema)
+    jsonschema.Draft202012Validator.check_schema(compact_receipt_schema)
     jsonschema.Draft202012Validator.check_schema(runner_check_schema)
     jsonschema.Draft202012Validator.check_schema(certification_bundle_schema)
     jsonschema.Draft202012Validator.check_schema(certification_bundle_check_schema)
@@ -288,6 +300,10 @@ def check_runner_examples(
     ):
         raise jsonschema.SchemaError(
             "certification-bundle check schema drifted from application builder"
+        )
+    if compact_receipt_schema != build_compact_contract_receipt_json_schema():
+        raise jsonschema.SchemaError(
+            "compact contract receipt schema drifted from application builder"
         )
     pack = load_contract_pack(pack_path)
     summaries: list[dict[str, Any]] = []
@@ -316,6 +332,10 @@ def check_runner_examples(
                 continue
             receipt = build_validated_contract_receipt_from_request(request, pack=pack)
             jsonschema.validate(receipt, receipt_schema)
+            jsonschema.validate(
+                build_compact_contract_receipt(receipt),
+                compact_receipt_schema,
+            )
             receipt_path = None
             if receipt_out_dir is not None:
                 receipt_path = receipt_out_dir / f"{path.stem.removesuffix('_request')}_receipt.json"
@@ -428,6 +448,10 @@ def check_runner_examples(
                 continue
             receipt = build_validated_contract_receipt_from_request(request, pack=pack)
             jsonschema.validate(receipt, receipt_schema)
+            jsonschema.validate(
+                build_compact_contract_receipt(receipt),
+                compact_receipt_schema,
+            )
             request_path = None
             receipt_path = None
             if receipt_out_dir is not None:
@@ -559,6 +583,15 @@ def main() -> int:
         "--receipt-schema",
         type=Path,
         default=DEFAULT_RECEIPT_SCHEMA,
+    )
+    parser.add_argument(
+        "--compact-receipt-schema",
+        type=Path,
+        default=DEFAULT_COMPACT_RECEIPT_SCHEMA,
+        help=(
+            "Generated JSON Schema used to validate compact downstream receipt "
+            "views derived from every checked receipt."
+        ),
     )
     parser.add_argument(
         "--request-validation-schema",
@@ -697,6 +730,7 @@ def main() -> int:
         request_validation_schema_path=args.request_validation_schema,
         model_config_import_schema_path=args.model_config_import_schema,
         receipt_schema_path=args.receipt_schema,
+        compact_receipt_schema_path=args.compact_receipt_schema,
         runner_check_schema_path=args.runner_check_schema,
         certification_bundle_schema_path=args.certification_bundle_schema,
         certification_bundle_check_schema_path=args.certification_bundle_check_schema,

@@ -1,7 +1,8 @@
 # Circle AI Contract Runner
 
 The contract runner is the parameterized surface for the proof-carrying AI lane.
-It takes a user configuration and emits a text or JSON receipt with:
+It takes a user configuration and emits a text summary, full JSON receipt, or
+compact JSON receipt view with:
 
 - normalized input parameters,
 - a compact `decision` block for downstream gates,
@@ -31,6 +32,14 @@ python scripts/circle_ai_certify.py rope \
   --request-out reports/rope_request.json \
   --json-out reports/rope_receipt.json
 
+python scripts/circle_ai_certify.py rope \
+  --head-dim 128 \
+  --base 10000 \
+  --context 131072 \
+  --requested-margin 1/328459 \
+  --format compact-json \
+  --compact-json-out reports/rope_compact_receipt.json
+
 python scripts/circle_ai_certify.py kv-cache \
   --cache-size 16 \
   --current 31 \
@@ -47,11 +56,17 @@ python scripts/circle_ai_certify.py sparse-attention \
 python scripts/circle_ai_certify.py recurrence
 ```
 
-Add `--format json` for a machine-readable receipt, `--json-out PATH` to write
-one to disk, and `--request-out PATH` to save the exact versioned request JSON
-used by the run. Add `--request-validation-report-out PATH` when a direct
-single-config run should also save the schema-validated preflight report for
-the exact request that produced the receipt. Add
+Add `--format json` for the full machine-readable audit receipt, `--json-out
+PATH` to write that full receipt to disk, and `--request-out PATH` to save the
+exact versioned request JSON used by the run. Add `--format compact-json` when
+another project only needs the stable downstream-consumer view: decision,
+proof-status summary, selected evidence fields, theorem ids, validation
+commands, non-claims, and fingerprints. Use `--compact-json-out PATH` to write
+that compact view; `--json-out` remains the full audit receipt so receipt-check
+and artifact-manifest checks keep their source of truth. Add
+`--request-validation-report-out PATH` when a direct single-config run should
+also save the schema-validated preflight report for the exact request that
+produced the receipt. Add
 `--certification-bundle-out PATH` when CI wants one schema-validated artifact
 containing request preflight, receipt, gate report, and, for `--model-config`
 runs, the model-config import report that records parameter provenance.
@@ -136,7 +151,7 @@ The validate-only report is checked against
 is printed or written. It includes the request-content fingerprint so CI can pin
 the exact request JSON that was preflighted.
 
-Every emitted receipt is checked against
+Every emitted full receipt is checked against
 `site/data/generated/circle_ai_contract_receipt.schema.json` and then validated
 against the loaded contract pack before it is printed or written. The pack-aware
 check covers the claimed pack fingerprint, contract fingerprint, contract id,
@@ -146,6 +161,11 @@ By default, emitted receipts are issued against
 `site/data/generated/circle_ai_contract_pack.json`, the same public pack used by
 the saved-receipt verifier. Use `--pack` only when intentionally testing a
 different generated pack.
+Compact receipt views are checked against
+`site/data/generated/circle_ai_contract_compact_receipt.schema.json`. They are
+derived from a validated full receipt and carry the full
+`receipt_content_fingerprint`; they are not a substitute for the audit receipt
+when reproducing or debugging a contract run.
 Use `--receipt-check-out` with `--json-out` to write the same schema-validated
 pack-aware check report that a later `scripts/check_circle_ai_receipt.py` run
 would produce for the saved receipt.
@@ -659,6 +679,7 @@ site/data/generated/circle_ai_contract_request.schema.json
 site/data/generated/circle_ai_contract_request_validation.schema.json
 site/data/generated/circle_ai_rope_model_config_import.schema.json
 site/data/generated/circle_ai_contract_receipt.schema.json
+site/data/generated/circle_ai_contract_compact_receipt.schema.json
 site/data/generated/circle_ai_contract_runner_check.schema.json
 site/data/generated/circle_ai_contract_receipt_file_check.schema.json
 site/data/generated/circle_ai_contract_receipt_replay_check.schema.json

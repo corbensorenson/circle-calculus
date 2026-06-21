@@ -49,6 +49,7 @@ from .rope_certifier import (
 
 REQUEST_SCHEMA_ID = "circle_calculus.ai_contract_request.v0"
 RECEIPT_SCHEMA_ID = "circle_calculus.ai_contract_receipt.v0"
+COMPACT_RECEIPT_SCHEMA_ID = "circle_calculus.ai_contract_compact_receipt.v0"
 REQUEST_VALIDATION_SCHEMA_ID = "circle_calculus.ai_contract_request_validation.v0"
 ROPE_MODEL_CONFIG_IMPORT_SCHEMA_ID = (
     "circle_calculus.rope_model_config_import.v0"
@@ -78,6 +79,9 @@ ROPE_MODEL_CONFIG_IMPORT_SCHEMA_PATH = (
     "site/data/generated/circle_ai_rope_model_config_import.schema.json"
 )
 RECEIPT_SCHEMA_PATH = "site/data/generated/circle_ai_contract_receipt.schema.json"
+COMPACT_RECEIPT_SCHEMA_PATH = (
+    "site/data/generated/circle_ai_contract_compact_receipt.schema.json"
+)
 RUNNER_CHECK_SCHEMA_PATH = (
     "site/data/generated/circle_ai_contract_runner_check.schema.json"
 )
@@ -178,6 +182,63 @@ RECEIPT_TOP_LEVEL_KEYS = {
     "not_claimed",
     "content_fingerprint_algorithm",
     "receipt_content_fingerprint",
+}
+COMPACT_RECEIPT_EVIDENCE_PATHS_BY_KIND = {
+    "rope_position_distinguishability": (
+        "exact_discrete_pass",
+        "exact_total_bank_collision_pair_count",
+        "exact_common_collision_gap",
+        "real_phase_numerical_pass_margin",
+        "real_phase_numerical_worst_gap",
+        "real_phase_numerical_worst_margin_radians",
+        "standard_channel0_d19_request_classifier.request_status",
+        "standard_channel0_d19_request_classifier.theorem_backed_classification",
+        "standard_channel0_d19_request_classifier.requested_margin",
+        "standard_channel0_d19_request_classifier.requested_context",
+        "standard_channel0_d19_bank_bridge.applies",
+        "standard_channel0_d19_bank_bridge.request_status",
+        "standard_channel0_d19_bank_bridge.theorem_backed",
+        "standard_channel0_d19_bank_bridge.bank_shape",
+        "real_phase_dirichlet_guardrail.applies",
+        "real_phase_dirichlet_guardrail.requested_margin_relation_to_ceiling",
+        "real_phase_dirichlet_guardrail.requested_margin_exceeds_ceiling",
+    ),
+    "kv_cache_ring_buffer": (
+        "window_certificate.retained",
+        "window_certificate.slot",
+        "window_certificate.lag",
+        "window_certificate.next_overwrite_token",
+        "adapter_request_trace_certificate.pass_certificate",
+        "adapter_request_trace_certificate.stale_requested_count",
+        "adapter_request_trace_certificate.first_stale_token",
+        "live_window_certificate.full_coverage_contract",
+        "live_window_certificate.start",
+        "live_window_certificate.length",
+        "sink_window_certificate.token_count",
+        "sink_window_certificate.token_count_bound",
+    ),
+    "sparse_attention_coverage": (
+        "coverage_complete",
+        "covered_lag_count",
+        "uncovered_lag_count",
+        "first_uncovered_lag",
+        "complete_repair_window",
+        "complete_repair_window_covers_context",
+        "complete_repair_window_minimal_for_declared_stride_family",
+        "uncovered_lag_interval_count",
+        "largest_uncovered_interval_length",
+        "theorem_side_lag_candidate_collision_pair_count",
+        "theorem_side_query_candidate_collision_pair_count",
+    ),
+    "recurrence_schedule": (
+        "fields.loop_period",
+        "fields.sample_index",
+        "fields.exit_step",
+        "fields.total_active_token_work",
+        "fields.total_inactive_token_work",
+        "fields.scheduled_work_saving",
+        "fields.post_period_multi_extension_horizon_steps",
+    ),
 }
 ROPE_DIRICHLET_GUARDRAIL_THEOREM_IDS = (
     "AIRA-T0239",
@@ -3179,6 +3240,135 @@ def receipt_summary_lines(receipt: Mapping[str, Any]) -> list[str]:
     return lines
 
 
+_COMPACT_MISSING = object()
+
+
+def _dot_path_value(value: Any, path: str) -> Any:
+    current = value
+    for part in path.split("."):
+        if not isinstance(current, Mapping) or part not in current:
+            return _COMPACT_MISSING
+        current = current[part]
+    return current
+
+
+def _compact_recommendation_ids(recommendations: Any) -> list[str]:
+    if not isinstance(recommendations, Sequence) or isinstance(
+        recommendations,
+        (str, bytes),
+    ):
+        return []
+    ids: list[str] = []
+    for recommendation in recommendations:
+        if not isinstance(recommendation, Mapping):
+            continue
+        value = recommendation.get("id")
+        if isinstance(value, str) and value:
+            ids.append(value)
+    return list(_unique_strings(ids))
+
+
+def build_compact_contract_receipt(
+    receipt: Mapping[str, Any],
+    *,
+    evidence_paths: Sequence[str] | None = None,
+) -> dict[str, Any]:
+    """Return a small downstream-consumer view of a validated full receipt.
+
+    The compact receipt is not a replacement for the audit receipt. It exposes
+    gate-friendly fields while pointing back to the full receipt fingerprint.
+    """
+
+    failures = validate_contract_receipt(receipt)
+    if failures:
+        raise ValueError(
+            "invalid source Circle AI contract receipt: " + "; ".join(failures)
+        )
+
+    kind = str(receipt["kind"])
+    proof_status = receipt["proof_status"]
+    proof_layers = receipt["proof_layers"]
+    evidence = receipt["evidence"]
+    decision = receipt["decision"]
+    support = receipt["support"]
+    selected_paths = tuple(
+        evidence_paths
+        if evidence_paths is not None
+        else COMPACT_RECEIPT_EVIDENCE_PATHS_BY_KIND.get(kind, ())
+    )
+    selected_evidence = {
+        path: found
+        for path in selected_paths
+        if (found := _dot_path_value(evidence, path)) is not _COMPACT_MISSING
+    }
+    proof_layer_counts = {
+        bucket: len(proof_layers.get(bucket, [])) for bucket in PROOF_LAYER_BUCKETS
+    }
+    compact = {
+        "schema_id": COMPACT_RECEIPT_SCHEMA_ID,
+        "receipt_schema_id": RECEIPT_SCHEMA_ID,
+        "kind": kind,
+        "contract_id": receipt["contract_id"],
+        "status": receipt["status"],
+        "request_passed": receipt["request_passed"],
+        "decision": {
+            "schema_id": decision["schema_id"],
+            "verdict": decision["verdict"],
+            "assurance": decision["assurance"],
+            "claim_status": decision["claim_status"],
+            "request_passed": decision["request_passed"],
+            "theorem_count": decision["theorem_count"],
+            "all_theorem_ids_proved": decision["all_theorem_ids_proved"],
+            "proof_layer_counts": dict(decision["proof_layer_counts"]),
+            "summary": decision["summary"],
+            "next_action": decision["next_action"],
+        },
+        "normalized_request": dict(receipt["normalized_request"]),
+        "proof_status_summary": {
+            "theorem_ids": list(proof_status["theorem_ids"]),
+            "theorem_count": proof_status["theorem_count"],
+            "all_theorem_ids_resolved": proof_status[
+                "all_theorem_ids_resolved"
+            ],
+            "all_theorem_ids_proved": proof_status["all_theorem_ids_proved"],
+            "unresolved_theorem_ids": list(
+                proof_status["unresolved_theorem_ids"]
+            ),
+            "unproved_theorem_ids": list(proof_status["unproved_theorem_ids"]),
+        },
+        "proof_layer_counts": proof_layer_counts,
+        "evidence_field_names": sorted(str(key) for key in evidence),
+        "selected_evidence": selected_evidence,
+        "recommendation_ids": _compact_recommendation_ids(
+            receipt["recommendations"]
+        ),
+        "validation_commands": list(receipt["validation_commands"]),
+        "not_claimed": list(receipt["not_claimed"]),
+        "fingerprints": {
+            "content_fingerprint_algorithm": receipt[
+                "content_fingerprint_algorithm"
+            ],
+            "request_content_fingerprint": receipt[
+                "request_content_fingerprint"
+            ],
+            "normalized_request_fingerprint": receipt[
+                "normalized_request_fingerprint"
+            ],
+            "receipt_content_fingerprint": receipt[
+                "receipt_content_fingerprint"
+            ],
+            "contract_pack_fingerprint": support[
+                "contract_pack_fingerprint"
+            ],
+            "contract_content_fingerprint": support[
+                "contract_content_fingerprint"
+            ],
+        },
+    }
+    jsonschema.validate(compact, build_compact_contract_receipt_json_schema())
+    return compact
+
+
 def build_contract_request_json_schema() -> dict[str, Any]:
     rope_aliases = [
         alias
@@ -5510,6 +5700,161 @@ def build_contract_certification_bundle_file_check_report(
         build_contract_certification_bundle_file_check_json_schema(),
     )
     return report
+
+
+def build_compact_contract_receipt_json_schema() -> dict[str, Any]:
+    unique_string_list = {
+        "type": "array",
+        "items": {"type": "string"},
+        "uniqueItems": True,
+    }
+    nonempty_unique_string_list = {
+        "type": "array",
+        "items": {"type": "string"},
+        "minItems": 1,
+        "uniqueItems": True,
+    }
+    proof_layer_counts_schema = {
+        "type": "object",
+        "required": list(PROOF_LAYER_BUCKETS),
+        "properties": {
+            bucket: {"type": "integer", "minimum": 0}
+            for bucket in PROOF_LAYER_BUCKETS
+        },
+        "additionalProperties": False,
+    }
+    decision_schema = {
+        "type": "object",
+        "required": [
+            "schema_id",
+            "verdict",
+            "assurance",
+            "claim_status",
+            "request_passed",
+            "theorem_count",
+            "all_theorem_ids_proved",
+            "proof_layer_counts",
+            "summary",
+            "next_action",
+        ],
+        "properties": {
+            "schema_id": {"const": "circle_calculus.ai_contract_decision.v0"},
+            "verdict": {"enum": list(DECISION_VERDICTS)},
+            "assurance": {"enum": list(DECISION_ASSURANCE_LEVELS)},
+            "claim_status": {"enum": list(STATUS_VALUES)},
+            "request_passed": {"type": ["boolean", "null"]},
+            "theorem_count": {"type": "integer", "minimum": 0},
+            "all_theorem_ids_proved": {"type": "boolean"},
+            "proof_layer_counts": proof_layer_counts_schema,
+            "summary": {"type": "string", "minLength": 1},
+            "next_action": {"type": "string", "minLength": 1},
+        },
+        "additionalProperties": False,
+    }
+    return {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "$id": (
+            "https://circle-calculus.local/schemas/"
+            "circle_ai_contract_compact_receipt.schema.json"
+        ),
+        "title": "Circle AI Contract Compact Receipt",
+        "type": "object",
+        "required": [
+            "schema_id",
+            "receipt_schema_id",
+            "kind",
+            "contract_id",
+            "status",
+            "request_passed",
+            "decision",
+            "normalized_request",
+            "proof_status_summary",
+            "proof_layer_counts",
+            "evidence_field_names",
+            "selected_evidence",
+            "recommendation_ids",
+            "validation_commands",
+            "not_claimed",
+            "fingerprints",
+        ],
+        "properties": {
+            "schema_id": {"const": COMPACT_RECEIPT_SCHEMA_ID},
+            "receipt_schema_id": {"const": RECEIPT_SCHEMA_ID},
+            "kind": {"enum": list(SUPPORTED_CONTRACT_KINDS)},
+            "contract_id": {"type": "string", "minLength": 1},
+            "status": {"enum": list(STATUS_VALUES)},
+            "request_passed": {"type": ["boolean", "null"]},
+            "decision": decision_schema,
+            "normalized_request": {"type": "object"},
+            "proof_status_summary": {
+                "type": "object",
+                "required": [
+                    "theorem_ids",
+                    "theorem_count",
+                    "all_theorem_ids_resolved",
+                    "all_theorem_ids_proved",
+                    "unresolved_theorem_ids",
+                    "unproved_theorem_ids",
+                ],
+                "properties": {
+                    "theorem_ids": nonempty_unique_string_list,
+                    "theorem_count": {"type": "integer", "minimum": 0},
+                    "all_theorem_ids_resolved": {"type": "boolean"},
+                    "all_theorem_ids_proved": {"type": "boolean"},
+                    "unresolved_theorem_ids": unique_string_list,
+                    "unproved_theorem_ids": unique_string_list,
+                },
+                "additionalProperties": False,
+            },
+            "proof_layer_counts": proof_layer_counts_schema,
+            "evidence_field_names": nonempty_unique_string_list,
+            "selected_evidence": {
+                "type": "object",
+                "additionalProperties": True,
+            },
+            "recommendation_ids": unique_string_list,
+            "validation_commands": nonempty_unique_string_list,
+            "not_claimed": nonempty_unique_string_list,
+            "fingerprints": {
+                "type": "object",
+                "required": [
+                    "content_fingerprint_algorithm",
+                    "request_content_fingerprint",
+                    "normalized_request_fingerprint",
+                    "receipt_content_fingerprint",
+                    "contract_pack_fingerprint",
+                    "contract_content_fingerprint",
+                ],
+                "properties": {
+                    "content_fingerprint_algorithm": {
+                        "const": FINGERPRINT_ALGORITHM
+                    },
+                    "request_content_fingerprint": {
+                        "type": "string",
+                        "pattern": "^[0-9a-f]{64}$",
+                    },
+                    "normalized_request_fingerprint": {
+                        "type": "string",
+                        "pattern": "^[0-9a-f]{64}$",
+                    },
+                    "receipt_content_fingerprint": {
+                        "type": "string",
+                        "pattern": "^[0-9a-f]{64}$",
+                    },
+                    "contract_pack_fingerprint": {
+                        "type": "string",
+                        "pattern": "^[0-9a-f]{64}$",
+                    },
+                    "contract_content_fingerprint": {
+                        "type": "string",
+                        "pattern": "^[0-9a-f]{64}$",
+                    },
+                },
+                "additionalProperties": False,
+            },
+        },
+        "additionalProperties": False,
+    }
 
 
 def build_contract_receipt_json_schema() -> dict[str, Any]:

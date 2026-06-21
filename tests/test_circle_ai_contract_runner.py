@@ -29,6 +29,8 @@ from circle_math.applications import (
     build_contract_request_json_schema,
     build_contract_request_validation_report,
     build_contract_request_validation_json_schema,
+    build_compact_contract_receipt,
+    build_compact_contract_receipt_json_schema,
     build_kv_cache_receipt,
     build_recurrence_receipt,
     build_rope_contract_request_from_model_config,
@@ -251,6 +253,68 @@ def test_rope_receipt_classifies_d19_margin_request(contract_pack: dict) -> None
         for field in receipt["proof_layers"]["unsupported_fields"]
     )
     assert len(receipt["receipt_content_fingerprint"]) == 64
+
+
+def test_compact_receipt_public_api_surfaces_downstream_fields(
+    contract_pack: dict,
+) -> None:
+    receipt = build_rope_receipt(
+        head_dim=128,
+        base=10000.0,
+        context=131072,
+        requested_margin="1/328459",
+        pack=contract_pack,
+    )
+
+    compact = build_compact_contract_receipt(receipt)
+
+    jsonschema.validate(compact, build_compact_contract_receipt_json_schema())
+    assert compact["schema_id"] == "circle_calculus.ai_contract_compact_receipt.v0"
+    assert compact["receipt_schema_id"] == receipt["schema_id"]
+    assert compact["kind"] == receipt["kind"]
+    assert compact["contract_id"] == receipt["contract_id"]
+    assert compact["status"] == "proved"
+    assert compact["request_passed"] is True
+    assert compact["decision"]["verdict"] == receipt["decision"]["verdict"]
+    assert compact["decision"]["assurance"] == receipt["decision"]["assurance"]
+    assert compact["decision"]["proof_layer_counts"] == {
+        bucket: len(receipt["proof_layers"][bucket]) for bucket in PROOF_LAYER_BUCKETS
+    }
+    assert compact["proof_status_summary"]["theorem_ids"] == receipt[
+        "proof_status"
+    ]["theorem_ids"]
+    assert compact["proof_status_summary"]["all_theorem_ids_proved"] is True
+    assert "AIRA-T0238" in compact["proof_status_summary"]["theorem_ids"]
+    assert compact["normalized_request"] == receipt["normalized_request"]
+    assert compact["proof_layer_counts"] == compact["decision"][
+        "proof_layer_counts"
+    ]
+    assert "standard_channel0_d19_request_classifier.request_status" in compact[
+        "selected_evidence"
+    ]
+    assert (
+        compact["selected_evidence"][
+            "standard_channel0_d19_request_classifier.request_status"
+        ]
+        == "proved"
+    )
+    assert "exact_total_bank_collision_pair_count" in compact["selected_evidence"]
+    assert "standard_channel0_d19_request_classifier" in compact[
+        "evidence_field_names"
+    ]
+    assert "evidence" not in compact
+    assert compact["recommendation_ids"]
+    assert compact["validation_commands"] == receipt["validation_commands"]
+    assert compact["not_claimed"] == receipt["not_claimed"]
+    assert compact["fingerprints"]["receipt_content_fingerprint"] == receipt[
+        "receipt_content_fingerprint"
+    ]
+    assert compact["fingerprints"]["contract_pack_fingerprint"] == receipt[
+        "support"
+    ]["contract_pack_fingerprint"]
+    assert compact["fingerprints"]["contract_content_fingerprint"] == receipt[
+        "support"
+    ]["contract_content_fingerprint"]
 
 
 def test_rope_receipt_uses_d19_bank_bridge_for_smaller_context(
@@ -1925,6 +1989,39 @@ def test_receipt_schema_exposes_runner_metadata() -> None:
     )
 
 
+def test_compact_receipt_schema_exposes_downstream_view() -> None:
+    schema = build_compact_contract_receipt_json_schema()
+
+    jsonschema.Draft202012Validator.check_schema(schema)
+    assert schema["properties"]["schema_id"]["const"] == (
+        "circle_calculus.ai_contract_compact_receipt.v0"
+    )
+    assert schema["additionalProperties"] is False
+    assert "proof_status_summary" in schema["required"]
+    assert "selected_evidence" in schema["required"]
+    assert "fingerprints" in schema["required"]
+    assert "evidence" not in schema["properties"]
+    assert schema["properties"]["decision"]["additionalProperties"] is False
+    assert (
+        schema["properties"]["proof_layer_counts"]["required"]
+        == list(PROOF_LAYER_BUCKETS)
+    )
+    assert (
+        schema["properties"]["fingerprints"]["properties"][
+            "receipt_content_fingerprint"
+        ]["pattern"]
+        == "^[0-9a-f]{64}$"
+    )
+    assert (
+        schema["properties"]["proof_status_summary"]["properties"][
+            "theorem_ids"
+        ]["uniqueItems"]
+        is True
+    )
+    assert schema["properties"]["validation_commands"]["minItems"] == 1
+    assert schema["properties"]["not_claimed"]["minItems"] == 1
+
+
 def test_receipt_schema_rejects_missing_proof_layer_bucket(
     contract_pack: dict,
 ) -> None:
@@ -2107,6 +2204,49 @@ def test_circle_ai_certify_cli_emits_json_receipt() -> None:
     assert payload["evidence"]["standard_channel0_d19_request_classifier"][
         "request_status"
     ] == "proved"
+
+
+def test_circle_ai_certify_cli_emits_compact_json_receipt() -> None:
+    result = subprocess.run(
+        [
+            sys.executable,
+            str(SCRIPT),
+            "rope",
+            "--head-dim",
+            "128",
+            "--base",
+            "10000",
+            "--context",
+            "131072",
+            "--requested-margin",
+            "1/328459",
+            "--format",
+            "compact-json",
+        ],
+        cwd=ROOT,
+        check=True,
+        text=True,
+        capture_output=True,
+    )
+
+    payload = json.loads(result.stdout)
+    jsonschema.validate(payload, build_compact_contract_receipt_json_schema())
+    assert payload["schema_id"] == "circle_calculus.ai_contract_compact_receipt.v0"
+    assert payload["receipt_schema_id"] == "circle_calculus.ai_contract_receipt.v0"
+    assert payload["kind"] == "rope_position_distinguishability"
+    assert payload["status"] == "proved"
+    assert payload["request_passed"] is True
+    assert payload["decision"]["verdict"] == "passed"
+    assert payload["proof_status_summary"]["all_theorem_ids_proved"] is True
+    assert "AIRA-T0238" in payload["proof_status_summary"]["theorem_ids"]
+    assert "evidence" not in payload
+    assert (
+        payload["selected_evidence"][
+            "standard_channel0_d19_request_classifier.request_status"
+        ]
+        == "proved"
+    )
+    assert "receipt_content_fingerprint" in payload["fingerprints"]
 
 
 def test_circle_ai_certify_cli_imports_standard_rope_model_config(
@@ -2513,6 +2653,7 @@ def test_circle_ai_certify_cli_artifact_dir_writes_standard_audit_set(
         "model_config_import_report": artifact_dir
         / f"{prefix}_model_config_import.json",
         "receipt_json": artifact_dir / f"{prefix}_receipt.json",
+        "compact_receipt_json": artifact_dir / f"{prefix}_compact_receipt.json",
         "receipt_check": artifact_dir / f"{prefix}_receipt_check.json",
         "receipt_replay_check": artifact_dir / f"{prefix}_receipt_replay_check.json",
         "gate_report": artifact_dir / f"{prefix}_gate_report.json",
@@ -2577,6 +2718,7 @@ def test_circle_ai_certify_cli_artifact_dir_writes_standard_audit_set(
         expected_paths["model_config_import_report"].read_text()
     )
     receipt = json.loads(expected_paths["receipt_json"].read_text())
+    compact_receipt = json.loads(expected_paths["compact_receipt_json"].read_text())
     receipt_check = json.loads(expected_paths["receipt_check"].read_text())
     receipt_replay_check = json.loads(
         expected_paths["receipt_replay_check"].read_text()
@@ -2595,6 +2737,7 @@ def test_circle_ai_certify_cli_artifact_dir_writes_standard_audit_set(
     )
     jsonschema.validate(model_config_import, build_rope_model_config_import_json_schema())
     jsonschema.validate(receipt, build_contract_receipt_json_schema())
+    jsonschema.validate(compact_receipt, build_compact_contract_receipt_json_schema())
     jsonschema.validate(receipt_check, build_contract_receipt_file_check_json_schema())
     jsonschema.validate(
         receipt_replay_check,
@@ -2617,6 +2760,9 @@ def test_circle_ai_certify_cli_artifact_dir_writes_standard_audit_set(
     assert request_validation["ok"] is True
     assert model_config_import["ok"] is True
     assert receipt["status"] == "proved"
+    assert compact_receipt["fingerprints"]["receipt_content_fingerprint"] == (
+        receipt["receipt_content_fingerprint"]
+    )
     assert receipt_check["ok"] is True
     assert receipt_replay_check["ok"] is True
     assert receipt_replay_check["comparison"]["all_replay_fields_match"] is True
@@ -2629,7 +2775,7 @@ def test_circle_ai_certify_cli_artifact_dir_writes_standard_audit_set(
     assert artifact_manifest["status"] == "proved"
     assert artifact_manifest["request_passed"] is True
     assert artifact_manifest["decision_verdict"] == "passed"
-    assert artifact_manifest["artifact_count"] == 9
+    assert artifact_manifest["artifact_count"] == 10
     manifest_artifacts = {
         artifact["label"]: artifact for artifact in artifact_manifest["artifacts"]
     }
@@ -2653,7 +2799,7 @@ def test_circle_ai_certify_cli_artifact_dir_writes_standard_audit_set(
     )
     assert artifact_manifest_report["ok"] is True
     assert artifact_manifest_report["manifest_count"] == 1
-    assert artifact_manifest_report["summaries"][0]["artifact_count"] == 9
+    assert artifact_manifest_report["summaries"][0]["artifact_count"] == 10
     assert (
         artifact_manifest_report["summaries"][0]["fingerprint_mismatch_count"]
         == 0
@@ -2723,7 +2869,7 @@ def test_circle_ai_certify_cli_artifact_dir_writes_standard_audit_set(
         == 0
     )
 
-    assert artifact_manifest_check["summaries"][0]["artifact_count"] == 9
+    assert artifact_manifest_check["summaries"][0]["artifact_count"] == 10
     assert artifact_manifest_check["summaries"][0]["failure_count"] == 0
     assert artifact_manifest_check["pin_policy"] == {
         "required_kinds": ["rope_position_distinguishability"],

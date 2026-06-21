@@ -98,19 +98,20 @@ python scripts/circle_ai_certify.py rope \
 ```
 
 `--artifact-dir` writes the request, request-validation report, model-config
-import report when present, receipt, receipt-check report,
-receipt-replay-check report, gate report, certification bundle,
+import report when present, full receipt, compact receipt, receipt-check
+report, receipt-replay-check report, gate report, certification bundle,
 bundle-check report, artifact manifest, and artifact-manifest-check report with
 stable names.
 `scripts/check_circle_ai_artifact_manifest.py` can re-run that manifest check
 after handoff by re-hashing each referenced file.
 
-The runner receipt schema is `circle_calculus.ai_contract_receipt.v0`; the
-request schema is `circle_calculus.ai_contract_request.v0`; the request
-validation report schema is
-`circle_calculus.ai_contract_request_validation.v0`; and the batch runner-check
-report schema is `circle_calculus.ai_contract_runner_check.v0`. The generated
-schemas live under `site/data/generated/`.
+The runner full-receipt schema is
+`circle_calculus.ai_contract_receipt.v0`; the compact downstream receipt-view
+schema is `circle_calculus.ai_contract_compact_receipt.v0`; the request schema
+is `circle_calculus.ai_contract_request.v0`; the request validation report
+schema is `circle_calculus.ai_contract_request_validation.v0`; and the batch
+runner-check report schema is `circle_calculus.ai_contract_runner_check.v0`.
+The generated schemas live under `site/data/generated/`.
 
 The common contract shape is:
 
@@ -181,6 +182,7 @@ parameterized runner schema sidecars
 `site/data/generated/circle_ai_contract_request.schema.json`,
 `site/data/generated/circle_ai_contract_request_validation.schema.json`,
 `site/data/generated/circle_ai_contract_receipt.schema.json`,
+`site/data/generated/circle_ai_contract_compact_receipt.schema.json`,
 `site/data/generated/circle_ai_contract_runner_check.schema.json`, and
 `site/data/generated/circle_ai_contract_receipt_file_check.schema.json`,
 `site/data/generated/circle_ai_contract_receipt_replay_check.schema.json`, plus

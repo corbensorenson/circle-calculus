@@ -28,6 +28,13 @@ DEFAULT_RUNNER_REQUEST_VALIDATION_SCHEMA = (
 DEFAULT_RUNNER_RECEIPT_SCHEMA = (
     ROOT / "site" / "data" / "generated" / "circle_ai_contract_receipt.schema.json"
 )
+DEFAULT_RUNNER_COMPACT_RECEIPT_SCHEMA = (
+    ROOT
+    / "site"
+    / "data"
+    / "generated"
+    / "circle_ai_contract_compact_receipt.schema.json"
+)
 DEFAULT_RUNNER_CHECK_SCHEMA = (
     ROOT / "site" / "data" / "generated" / "circle_ai_contract_runner_check.schema.json"
 )
@@ -1303,6 +1310,12 @@ def main() -> int:
         validate_json_schema_file(
             DEFAULT_RUNNER_RECEIPT_SCHEMA,
             label="contract-runner receipt",
+        )
+    )
+    failures.extend(
+        validate_json_schema_file(
+            DEFAULT_RUNNER_COMPACT_RECEIPT_SCHEMA,
+            label="contract-runner compact receipt",
         )
     )
     failures.extend(

@@ -549,6 +549,7 @@ AI_CONTRACT_GENERATED_PACK_ARTIFACTS = (
     "circle_ai_contract_request.schema.json",
     "circle_ai_contract_request_validation.schema.json",
     "circle_ai_contract_receipt.schema.json",
+    "circle_ai_contract_compact_receipt.schema.json",
     "circle_ai_contract_runner_check.schema.json",
     "circle_ai_contract_receipt_file_check.schema.json",
     "circle_ai_contract_receipt_replay_check.schema.json",

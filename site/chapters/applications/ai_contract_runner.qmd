@@ -82,7 +82,7 @@ fields directly:
 
 ```bash
 circle-ai-certify rope \
-  --model-config-file examples/circle_ai_model_configs/standard_rope_config.json \
+  --model-config examples/circle_ai_model_configs/standard_rope_config.json \
   --requested-margin 1/328459 \
   --format json \
   --request-out reports/rope_request.json \
@@ -117,6 +117,25 @@ The `--require-*` flags are CI gates: the receipt is still printed or written,
 then the command exits nonzero if the requested status/pass policy is not met.
 Use `--json-out reports/rope_receipt.json` when CI also needs the receipt saved
 as a file.
+Use `--format compact-json` when a downstream tool needs a small stable object
+instead of the full audit receipt:
+
+```bash
+python scripts/circle_ai_certify.py rope \
+  --head-dim 128 \
+  --base 10000 \
+  --context 131072 \
+  --requested-margin 1/328459 \
+  --format compact-json \
+  --compact-json-out reports/rope_compact_receipt.json
+```
+
+The compact receipt is validated against
+`site/data/generated/circle_ai_contract_compact_receipt.schema.json`. It keeps
+the decision, proof-status summary, selected evidence fields, theorem ids,
+validation commands, non-claims, and fingerprints, including the full
+`receipt_content_fingerprint`. It does not replace the full receipt for audit
+or replay.
 Use `--gate-report-out reports/rope_gate.json` for a compact pack-aware
 pass/fail report, `--receipt-check-out reports/rope_receipt_check.json` for a
 saved receipt validation report, and `--receipt-replay-check-out
@@ -204,7 +223,7 @@ repair threshold, and the deterministic interval-repair plan. They are finite
 coverage and budget facts, not claims about attention quality, layout optimality,
 runtime speed, or model accuracy.
 
-Use `--format json` when another project will consume the result:
+Use `--format json` when another project will consume the full audit result:
 
 ```bash
 python scripts/circle_ai_certify.py sparse-attention \
@@ -217,6 +236,10 @@ python scripts/circle_ai_certify.py sparse-attention \
   --json-out reports/sparse_attention_receipt.json \
   --require-status proved
 ```
+
+Use `--format compact-json` for a smaller pass/fail receipt view when the
+consumer only needs proof status, selected evidence fields, non-claims, and
+fingerprints.
 
 Add `--request-validation-report-out reports/request_validation.json` when a
 single-config run should also save the schema-validated preflight report for the
@@ -754,6 +777,7 @@ site/data/generated/circle_ai_contract_request.schema.json
 site/data/generated/circle_ai_contract_request_validation.schema.json
 site/data/generated/circle_ai_rope_model_config_import.schema.json
 site/data/generated/circle_ai_contract_receipt.schema.json
+site/data/generated/circle_ai_contract_compact_receipt.schema.json
 site/data/generated/circle_ai_contract_runner_check.schema.json
 site/data/generated/circle_ai_contract_receipt_file_check.schema.json
 site/data/generated/circle_ai_contract_receipt_replay_check.schema.json

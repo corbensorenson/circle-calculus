@@ -24,6 +24,7 @@ from circle_math.applications.circle_ai_contracts import (
 from circle_math.applications.circle_ai_contract_runner import (
     ARTIFACT_MANIFEST_FILE_CHECK_SCHEMA_PATH as CONTRACT_ARTIFACT_MANIFEST_FILE_CHECK_SCHEMA_PATH,
     ARTIFACT_MANIFEST_SCHEMA_PATH as CONTRACT_ARTIFACT_MANIFEST_SCHEMA_PATH,
+    COMPACT_RECEIPT_SCHEMA_PATH as CONTRACT_RUNNER_COMPACT_RECEIPT_SCHEMA_PATH,
     CERTIFICATION_BUNDLE_FILE_CHECK_SCHEMA_PATH as CONTRACT_CERTIFICATION_BUNDLE_FILE_CHECK_SCHEMA_PATH,
     CERTIFICATION_BUNDLE_SCHEMA_PATH as CONTRACT_CERTIFICATION_BUNDLE_SCHEMA_PATH,
     RECEIPT_SCHEMA_PATH as CONTRACT_RUNNER_RECEIPT_SCHEMA_PATH,
@@ -37,6 +38,7 @@ from circle_math.applications.circle_ai_contract_runner import (
     build_contract_artifact_manifest_json_schema,
     build_contract_certification_bundle_file_check_json_schema,
     build_contract_certification_bundle_json_schema,
+    build_compact_contract_receipt_json_schema,
     build_contract_runner_check_json_schema,
     build_contract_receipt_file_check_json_schema,
     build_contract_receipt_json_schema,
@@ -59,6 +61,9 @@ DEFAULT_CONTRACT_RUNNER_REQUEST_VALIDATION_SCHEMA_OUT = (
     ROOT / CONTRACT_RUNNER_REQUEST_VALIDATION_SCHEMA_PATH
 )
 DEFAULT_CONTRACT_RUNNER_RECEIPT_SCHEMA_OUT = ROOT / CONTRACT_RUNNER_RECEIPT_SCHEMA_PATH
+DEFAULT_CONTRACT_RUNNER_COMPACT_RECEIPT_SCHEMA_OUT = (
+    ROOT / CONTRACT_RUNNER_COMPACT_RECEIPT_SCHEMA_PATH
+)
 DEFAULT_CONTRACT_RUNNER_CHECK_SCHEMA_OUT = ROOT / CONTRACT_RUNNER_CHECK_SCHEMA_PATH
 DEFAULT_ROPE_MODEL_CONFIG_IMPORT_SCHEMA_OUT = ROOT / ROPE_MODEL_CONFIG_IMPORT_SCHEMA_PATH
 DEFAULT_CONTRACT_RECEIPT_FILE_CHECK_SCHEMA_OUT = (
@@ -144,6 +149,15 @@ def main() -> int:
         help=(
             "Output JSON Schema path for parameterized contract-runner receipts. "
             "Defaults to site/data/generated/circle_ai_contract_receipt.schema.json."
+        ),
+    )
+    parser.add_argument(
+        "--contract-runner-compact-receipt-schema-out",
+        default=str(DEFAULT_CONTRACT_RUNNER_COMPACT_RECEIPT_SCHEMA_OUT),
+        help=(
+            "Output JSON Schema path for compact contract-runner receipt views. "
+            "Defaults to "
+            "site/data/generated/circle_ai_contract_compact_receipt.schema.json."
         ),
     )
     parser.add_argument(
@@ -255,6 +269,11 @@ def main() -> int:
     runner_receipt_schema_out = Path(args.contract_runner_receipt_schema_out)
     if not runner_receipt_schema_out.is_absolute():
         runner_receipt_schema_out = ROOT / runner_receipt_schema_out
+    runner_compact_receipt_schema_out = Path(
+        args.contract_runner_compact_receipt_schema_out
+    )
+    if not runner_compact_receipt_schema_out.is_absolute():
+        runner_compact_receipt_schema_out = ROOT / runner_compact_receipt_schema_out
     runner_request_validation_schema_out = Path(
         args.contract_runner_request_validation_schema_out
     )
@@ -306,6 +325,7 @@ def main() -> int:
     rejection_report_schema_out.parent.mkdir(parents=True, exist_ok=True)
     runner_request_schema_out.parent.mkdir(parents=True, exist_ok=True)
     runner_receipt_schema_out.parent.mkdir(parents=True, exist_ok=True)
+    runner_compact_receipt_schema_out.parent.mkdir(parents=True, exist_ok=True)
     runner_request_validation_schema_out.parent.mkdir(parents=True, exist_ok=True)
     runner_check_schema_out.parent.mkdir(parents=True, exist_ok=True)
     rope_model_config_import_schema_out.parent.mkdir(parents=True, exist_ok=True)
@@ -360,6 +380,14 @@ def main() -> int:
     )
     runner_receipt_schema_out.write_text(
         json.dumps(build_contract_receipt_json_schema(), indent=2, sort_keys=True)
+        + "\n"
+    )
+    runner_compact_receipt_schema_out.write_text(
+        json.dumps(
+            build_compact_contract_receipt_json_schema(),
+            indent=2,
+            sort_keys=True,
+        )
         + "\n"
     )
     runner_check_schema_out.write_text(
@@ -469,6 +497,14 @@ def main() -> int:
     except ValueError:
         display_runner_receipt_schema_path = runner_receipt_schema_out
     try:
+        display_runner_compact_receipt_schema_path = (
+            runner_compact_receipt_schema_out.relative_to(ROOT)
+        )
+    except ValueError:
+        display_runner_compact_receipt_schema_path = (
+            runner_compact_receipt_schema_out
+        )
+    try:
         display_runner_check_schema_path = runner_check_schema_out.relative_to(ROOT)
     except ValueError:
         display_runner_check_schema_path = runner_check_schema_out
@@ -529,6 +565,7 @@ def main() -> int:
     print(f"wrote {display_runner_request_schema_path}")
     print(f"wrote {display_runner_request_validation_schema_path}")
     print(f"wrote {display_runner_receipt_schema_path}")
+    print(f"wrote {display_runner_compact_receipt_schema_path}")
     print(f"wrote {display_runner_check_schema_path}")
     print(f"wrote {display_rope_model_config_import_schema_path}")
     print(f"wrote {display_receipt_file_check_schema_path}")

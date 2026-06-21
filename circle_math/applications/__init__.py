@@ -24,6 +24,7 @@ from .circle_ai_contract_consumer import (
 from .circle_ai_contract_runner import (
     ARTIFACT_MANIFEST_SCHEMA_ID,
     ARTIFACT_MANIFEST_FILE_CHECK_SCHEMA_ID,
+    COMPACT_RECEIPT_SCHEMA_ID as CIRCLE_AI_CONTRACT_COMPACT_RECEIPT_SCHEMA_ID,
     RECEIPT_SCHEMA_ID as CIRCLE_AI_CONTRACT_RECEIPT_SCHEMA_ID,
     RECEIPT_FILE_CHECK_SCHEMA_ID as CIRCLE_AI_CONTRACT_RECEIPT_FILE_CHECK_SCHEMA_ID,
     RECEIPT_REPLAY_CHECK_SCHEMA_ID as CIRCLE_AI_CONTRACT_RECEIPT_REPLAY_CHECK_SCHEMA_ID,
@@ -39,6 +40,8 @@ from .circle_ai_contract_runner import (
     build_contract_certification_bundle_file_check_report,
     build_contract_certification_bundle_file_check_json_schema,
     build_contract_certification_bundle_json_schema,
+    build_compact_contract_receipt,
+    build_compact_contract_receipt_json_schema,
     build_contract_artifact_manifest_file_check_report,
     build_contract_artifact_manifest_file_check_json_schema,
     build_contract_artifact_manifest_json_schema,

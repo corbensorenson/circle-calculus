@@ -24,6 +24,7 @@ site/data/generated/circle_ai_downstream_rejection_report.schema.json
 site/data/generated/circle_ai_contract_request.schema.json
 site/data/generated/circle_ai_contract_request_validation.schema.json
 site/data/generated/circle_ai_contract_receipt.schema.json
+site/data/generated/circle_ai_contract_compact_receipt.schema.json
 site/data/generated/circle_ai_contract_runner_check.schema.json
 site/data/generated/circle_ai_contract_receipt_file_check.schema.json
 site/data/generated/circle_ai_contract_receipt_replay_check.schema.json
@@ -358,9 +359,11 @@ fingerprint refresh command, and pinned requirement keys.
 The parameterized runner sidecars
 `site/data/generated/circle_ai_contract_request.schema.json`,
 `site/data/generated/circle_ai_contract_request_validation.schema.json`,
-`site/data/generated/circle_ai_contract_receipt.schema.json`, and
+`site/data/generated/circle_ai_contract_receipt.schema.json`,
+`site/data/generated/circle_ai_contract_compact_receipt.schema.json`, and
 `site/data/generated/circle_ai_contract_runner_check.schema.json` cover the
-config-to-receipt flow and the batch example-check report;
+config-to-receipt flow, the compact downstream-consumer receipt view, and the
+batch example-check report;
 `site/data/generated/circle_ai_contract_receipt_file_check.schema.json` covers
 saved-receipt verification reports;
 `site/data/generated/circle_ai_contract_receipt_replay_check.schema.json` covers

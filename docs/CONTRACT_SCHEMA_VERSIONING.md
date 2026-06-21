@@ -10,6 +10,20 @@ The public Circle AI contract pack uses:
 circle_calculus.ai_contract_pack.v0
 ```
 
+The parameterized runner surface currently publishes:
+
+```text
+circle_calculus.ai_contract_request.v0
+circle_calculus.ai_contract_request_validation.v0
+circle_calculus.ai_contract_receipt.v0
+circle_calculus.ai_contract_compact_receipt.v0
+circle_calculus.ai_contract_runner_check.v0
+```
+
+The compact receipt is a downstream view over a validated full receipt. It must
+carry the full receipt fingerprint and non-claims; it is not the archival audit
+object for reproducing a contract run.
+
 The generated pack and schemas are written under:
 
 ```text
