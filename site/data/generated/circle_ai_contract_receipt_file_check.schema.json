@@ -78,8 +78,19 @@
       "items": {
         "additionalProperties": false,
         "properties": {
+          "content_fingerprint_algorithm": {
+            "const": "sha256-json-v1"
+          },
+          "contract_content_fingerprint": {
+            "pattern": "^[0-9a-f]{64}$",
+            "type": "string"
+          },
           "contract_id": {
             "minLength": 1,
+            "type": "string"
+          },
+          "contract_pack_fingerprint": {
+            "pattern": "^[0-9a-f]{64}$",
             "type": "string"
           },
           "decision_assurance": {
@@ -156,6 +167,9 @@
           "path",
           "kind",
           "contract_id",
+          "content_fingerprint_algorithm",
+          "contract_pack_fingerprint",
+          "contract_content_fingerprint",
           "status",
           "request_passed",
           "decision_verdict",

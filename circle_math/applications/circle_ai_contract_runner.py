@@ -2124,6 +2124,8 @@ def build_contract_receipt_file_check_report(
             f"(got {receipt.get('request_passed')!r})"
         )
     proof_status = receipt.get("proof_status")
+    support = receipt.get("support")
+    support_map = support if isinstance(support, Mapping) else {}
     report = {
         "schema_id": RECEIPT_FILE_CHECK_SCHEMA_ID,
         "ok": not failures,
@@ -2141,6 +2143,15 @@ def build_contract_receipt_file_check_report(
                 "path": receipt_path,
                 "kind": receipt.get("kind"),
                 "contract_id": receipt.get("contract_id"),
+                "content_fingerprint_algorithm": receipt.get(
+                    "content_fingerprint_algorithm"
+                ),
+                "contract_pack_fingerprint": support_map.get(
+                    "contract_pack_fingerprint"
+                ),
+                "contract_content_fingerprint": support_map.get(
+                    "contract_content_fingerprint"
+                ),
                 "status": status,
                 "request_passed": receipt.get("request_passed"),
                 "decision_verdict": (
@@ -2746,6 +2757,9 @@ def build_contract_receipt_file_check_json_schema() -> dict[str, Any]:
             "path",
             "kind",
             "contract_id",
+            "content_fingerprint_algorithm",
+            "contract_pack_fingerprint",
+            "contract_content_fingerprint",
             "status",
             "request_passed",
             "decision_verdict",
@@ -2761,6 +2775,9 @@ def build_contract_receipt_file_check_json_schema() -> dict[str, Any]:
             "path": {"type": "string", "minLength": 1},
             "kind": {"enum": list(SUPPORTED_CONTRACT_KINDS)},
             "contract_id": {"type": "string", "minLength": 1},
+            "content_fingerprint_algorithm": {"const": FINGERPRINT_ALGORITHM},
+            "contract_pack_fingerprint": fingerprint,
+            "contract_content_fingerprint": fingerprint,
             "status": {"enum": list(STATUS_VALUES)},
             "request_passed": {"type": ["boolean", "null"]},
             "decision_verdict": {"enum": list(DECISION_VERDICTS)},
