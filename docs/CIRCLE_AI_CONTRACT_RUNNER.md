@@ -335,14 +335,15 @@ embedded receipt against the loaded contract pack, embedded gate report,
 optional model-config import provenance, and optional status, decision,
 assurance, pass, theorem-id, evidence-field, recommendation-id,
 validation-command, normalized-parameter, or model-config fingerprint gates. Add
-`--require-theorem-id THEOREM_ID`, `--require-evidence-field FIELD`,
-`--require-recommendation-id ID`, `--require-validation-command COMMAND`, or
-`--require-normalized-param KEY=JSON_VALUE` when a downstream project depends on
-specific embedded receipt content. Add `--require-model-config-fingerprint
-FINGERPRINT` with the `model_config_fingerprint` from the embedded import
-report when the bundle came from an imported RoPE `config.json`. It is the
-preferred CI-facing command when a downstream project stores the full
-certification bundle rather than just the receipt.
+`--require-kind KIND`, `--require-theorem-id THEOREM_ID`,
+`--require-evidence-field FIELD`, `--require-recommendation-id ID`,
+`--require-validation-command COMMAND`, or `--require-normalized-param
+KEY=JSON_VALUE` when a downstream project depends on specific embedded receipt
+content. Add `--require-model-config-fingerprint FINGERPRINT` with the
+`model_config_fingerprint` from the embedded import report when the bundle came
+from an imported RoPE `config.json`. It is the preferred CI-facing command when
+a downstream project stores the full certification bundle rather than just the
+receipt.
 The bundle-check report records those requested dependencies in `pin_policy`.
 
 Validate a saved receipt file that another project has already produced:
@@ -361,9 +362,10 @@ the receipt fingerprint, the loaded contract-pack fingerprint, the contract
 fingerprint, theorem-id membership in the loaded contract, and optional status
 decision, assurance, pass, theorem-id, evidence-field, recommendation-id,
 validation-command, or normalized-parameter gates. Add `--require-theorem-id
-THEOREM_ID`, `--require-evidence-field FIELD`, `--require-recommendation-id ID`,
-`--require-validation-command COMMAND`, or `--require-normalized-param
-KEY=JSON_VALUE` when a downstream project depends on specific receipt content.
+THEOREM_ID`, `--require-kind KIND`, `--require-evidence-field FIELD`,
+`--require-recommendation-id ID`, `--require-validation-command COMMAND`, or
+`--require-normalized-param KEY=JSON_VALUE` when a downstream project depends on
+specific receipt content.
 It validates its own report against
 `site/data/generated/circle_ai_contract_receipt_file_check.schema.json` and can
 write that report to disk for audit logs. It is the smallest CI-facing command

@@ -66,6 +66,8 @@ def test_check_circle_ai_receipt_accepts_saved_receipt(tmp_path: Path) -> None:
             "--require-assurance",
             "mixed_theorem_and_computation",
             "--require-passed",
+            "--require-kind",
+            "rope_position_distinguishability",
             "--require-theorem-id",
             "AIRA-T0239",
             "--require-evidence-field",
@@ -101,7 +103,7 @@ def test_check_circle_ai_receipt_accepts_saved_receipt(tmp_path: Path) -> None:
         "require_passed": True,
     }
     assert payload["pin_policy"] == {
-        "required_kinds": [],
+        "required_kinds": ["rope_position_distinguishability"],
         "required_theorem_ids": ["AIRA-T0239"],
         "required_evidence_fields": ["real_phase_dirichlet_guardrail"],
         "required_recommendation_ids": ["ROPE-USE-D19-MARGIN-FRONTIER"],
@@ -169,6 +171,8 @@ def test_check_circle_ai_receipt_rejects_missing_receipt_pins(
             str(receipt_path),
             "--require-theorem-id",
             "NONEXISTENT-T0000",
+            "--require-kind",
+            "kv_cache_ring_buffer",
             "--require-evidence-field",
             "nonexistent_evidence_field",
             "--require-recommendation-id",
@@ -190,6 +194,10 @@ def test_check_circle_ai_receipt_rejects_missing_receipt_pins(
     jsonschema.validate(payload, build_contract_receipt_file_check_json_schema())
     assert result.returncode == 1
     assert payload["ok"] is False
+    assert any(
+        "required contract kind is missing" in failure
+        for failure in payload["failures"]
+    )
     assert any(
         "required receipt theorem id is missing" in failure
         for failure in payload["failures"]

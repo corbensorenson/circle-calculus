@@ -98,6 +98,7 @@ def _parse_normalized_param_pin(raw: str) -> tuple[str, Any]:
 def _pin_failures(
     summaries: list[dict[str, Any]],
     *,
+    required_kinds: tuple[str, ...],
     required_theorem_ids: tuple[str, ...],
     required_evidence_fields: tuple[str, ...],
     required_recommendation_ids: tuple[str, ...],
@@ -106,6 +107,9 @@ def _pin_failures(
     required_normalized_params: tuple[tuple[str, Any], ...],
 ) -> list[str]:
     failures: list[str] = []
+    observed_kinds = {
+        summary["kind"] for summary in summaries if isinstance(summary.get("kind"), str)
+    }
     observed_theorem_ids = {
         theorem_id
         for summary in summaries
@@ -137,6 +141,9 @@ def _pin_failures(
         if isinstance(fingerprint, str)
     }
 
+    for kind in required_kinds:
+        if kind not in observed_kinds:
+            failures.append(f"required contract kind is missing: {kind}")
     for theorem_id in required_theorem_ids:
         if theorem_id not in observed_theorem_ids:
             failures.append(f"required receipt theorem id is missing: {theorem_id}")
@@ -170,6 +177,7 @@ def _pin_failures(
 
 def _pin_policy(
     *,
+    required_kinds: tuple[str, ...],
     required_theorem_ids: tuple[str, ...],
     required_evidence_fields: tuple[str, ...],
     required_recommendation_ids: tuple[str, ...],
@@ -178,7 +186,7 @@ def _pin_policy(
     required_normalized_params: tuple[tuple[str, Any], ...],
 ) -> dict[str, Any]:
     return {
-        "required_kinds": [],
+        "required_kinds": list(required_kinds),
         "required_theorem_ids": list(required_theorem_ids),
         "required_evidence_fields": list(required_evidence_fields),
         "required_recommendation_ids": list(required_recommendation_ids),
@@ -204,6 +212,7 @@ def check_certification_bundle_files(
     required_decision_verdicts: tuple[str, ...] = (),
     required_assurance_levels: tuple[str, ...] = (),
     require_passed: bool = False,
+    required_kinds: tuple[str, ...] = (),
     required_theorem_ids: tuple[str, ...] = (),
     required_evidence_fields: tuple[str, ...] = (),
     required_recommendation_ids: tuple[str, ...] = (),
@@ -261,6 +270,7 @@ def check_certification_bundle_files(
     failures.extend(
         _pin_failures(
             summaries,
+            required_kinds=required_kinds,
             required_theorem_ids=required_theorem_ids,
             required_evidence_fields=required_evidence_fields,
             required_recommendation_ids=required_recommendation_ids,
@@ -282,6 +292,7 @@ def check_certification_bundle_files(
             "require_passed": require_passed,
         },
         "pin_policy": _pin_policy(
+            required_kinds=required_kinds,
             required_theorem_ids=required_theorem_ids,
             required_evidence_fields=required_evidence_fields,
             required_recommendation_ids=required_recommendation_ids,
@@ -362,6 +373,12 @@ def main() -> int:
         help="Exit nonzero unless every embedded receipt has request_passed=true.",
     )
     parser.add_argument(
+        "--require-kind",
+        action="append",
+        default=[],
+        help="Require at least one embedded receipt for this contract kind.",
+    )
+    parser.add_argument(
         "--require-theorem-id",
         action="append",
         default=[],
@@ -431,6 +448,7 @@ def main() -> int:
         required_decision_verdicts=tuple(args.require_decision),
         required_assurance_levels=tuple(args.require_assurance),
         require_passed=args.require_passed,
+        required_kinds=tuple(args.require_kind),
         required_theorem_ids=tuple(args.require_theorem_id),
         required_evidence_fields=tuple(args.require_evidence_field),
         required_recommendation_ids=tuple(args.require_recommendation_id),
