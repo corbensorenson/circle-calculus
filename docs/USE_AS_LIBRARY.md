@@ -145,7 +145,8 @@ receipt diagnostics without using repository-only scripts. Use
 installed CLI should also archive a request-validation, receipt, gate, and
 bundle-check handoff object. Use `--artifact-manifest-out` with
 `--artifact-manifest-check-out` when it should also fingerprint the sidecar
-files and verify the manifest.
+files and verify the manifest. Use `--artifact-dir` when it should choose
+stable names for the full sidecar set automatically.
 
 Non-default `rope_scaling` values are rejected by the standard-RoPE importer.
 That rejection is intentional: scaled-RoPE variants need separate theorem

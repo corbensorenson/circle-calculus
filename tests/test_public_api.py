@@ -456,6 +456,83 @@ def test_package_cli_unified_certify_rejects_manifest_check_without_manifest(
     )
 
 
+def test_package_cli_unified_certify_artifact_dir_writes_full_bundle(
+    tmp_path,
+) -> None:
+    artifact_dir = tmp_path / "artifacts"
+    result = subprocess.run(
+        [
+            sys.executable,
+            "-c",
+            (
+                "import sys; "
+                "from circle_math.cli import contract_certify_main; "
+                "sys.exit(contract_certify_main())"
+            ),
+            "recurrence",
+            "--artifact-dir",
+            str(artifact_dir),
+            "--artifact-prefix",
+            "loop-check",
+            "--require-passed",
+            "--require-status",
+            "proved",
+            "--format",
+            "json",
+        ],
+        text=True,
+        capture_output=True,
+        check=True,
+    )
+    receipt = json.loads(result.stdout)
+    assert receipt["kind"] == "recurrence_schedule"
+
+    expected_paths = {
+        "request": artifact_dir / "loop-check_request.json",
+        "request_validation": artifact_dir / "loop-check_request_validation.json",
+        "receipt": artifact_dir / "loop-check_receipt.json",
+        "receipt_check": artifact_dir / "loop-check_receipt_check.json",
+        "receipt_replay_check": artifact_dir / "loop-check_receipt_replay_check.json",
+        "gate_report": artifact_dir / "loop-check_gate_report.json",
+        "certification_bundle": artifact_dir / "loop-check_certification_bundle.json",
+        "certification_bundle_check": (
+            artifact_dir / "loop-check_certification_bundle_check.json"
+        ),
+        "artifact_manifest": artifact_dir / "loop-check_artifact_manifest.json",
+        "artifact_manifest_check": (
+            artifact_dir / "loop-check_artifact_manifest_check.json"
+        ),
+    }
+    assert all(path.exists() for path in expected_paths.values())
+    manifest = json.loads(expected_paths["artifact_manifest"].read_text())
+    manifest_check = json.loads(expected_paths["artifact_manifest_check"].read_text())
+    assert manifest["artifact_prefix"] == "loop-check"
+    assert manifest["artifact_dir"] == str(artifact_dir)
+    assert manifest["artifact_count"] == 8
+    assert manifest_check["ok"] is True
+
+
+def test_package_cli_unified_certify_rejects_artifact_prefix_without_dir() -> None:
+    result = subprocess.run(
+        [
+            sys.executable,
+            "-c",
+            (
+                "import sys; "
+                "from circle_math.cli import contract_certify_main; "
+                "sys.exit(contract_certify_main())"
+            ),
+            "recurrence",
+            "--artifact-prefix",
+            "loop-check",
+        ],
+        text=True,
+        capture_output=True,
+    )
+    assert result.returncode == 2
+    assert "--artifact-prefix requires --artifact-dir" in result.stderr
+
+
 def test_package_cli_unified_certify_writes_failed_gate_report(tmp_path) -> None:
     gate_path = tmp_path / "failed_gate.json"
 

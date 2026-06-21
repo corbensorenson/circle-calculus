@@ -78,9 +78,13 @@ Use `--artifact-manifest-out reports/rope_manifest.json` plus
 `--artifact-manifest-check-out reports/rope_manifest_check.json` when the
 installed CLI should fingerprint every sidecar it wrote and produce a
 CI-readable manifest verification report.
+Use `--artifact-dir reports/rope_contract` when the installed CLI should choose
+stable sidecar names for the request, request-validation report, receipt,
+receipt diagnostics, certification bundle, artifact manifest, and their check
+reports.
 Use `python scripts/circle_ai_certify.py` when you need repository-only audit
-workflows such as artifact-dir default naming, artifact pin policies, or
-whole-directory artifact bundles:
+workflows such as artifact pin policies or batch whole-directory artifact
+bundles:
 
 ```bash
 python scripts/circle_ai_certify.py rope \

@@ -251,6 +251,22 @@ def _parse_positive_int_csv(raw: str) -> tuple[int, ...]:
 
 def _add_certify_common_options(parser: argparse.ArgumentParser) -> None:
     parser.add_argument("--pack", type=Path, default=None)
+    parser.add_argument(
+        "--artifact-dir",
+        type=Path,
+        help=(
+            "Optional directory where the package certifier writes the request, "
+            "receipt, diagnostics, certification bundle, and manifest sidecars "
+            "using stable names."
+        ),
+    )
+    parser.add_argument(
+        "--artifact-prefix",
+        help=(
+            "Optional filename prefix for --artifact-dir outputs. Requires "
+            "--artifact-dir."
+        ),
+    )
     parser.add_argument("--request-out", type=Path)
     parser.add_argument(
         "--request-validation-report-out",
@@ -352,6 +368,122 @@ def _certify_pack_from_args(args: argparse.Namespace) -> dict[str, Any]:
     return build_contract_pack() if args.pack is None else load_contract_pack(args.pack)
 
 
+def _safe_certify_artifact_prefix(raw: str) -> str:
+    cleaned = "".join(
+        character if character.isalnum() or character in {"-", "_"} else "_"
+        for character in raw.strip()
+    ).strip("_-")
+    return cleaned or "circle_ai_contract"
+
+
+def _default_certify_artifact_prefix(args: argparse.Namespace) -> str:
+    explicit = getattr(args, "artifact_prefix", None)
+    if explicit:
+        return _safe_certify_artifact_prefix(explicit)
+    command = str(getattr(args, "command", "circle_ai_contract"))
+    if command == "request":
+        request_file = getattr(args, "request_file", None)
+        if request_file is not None:
+            return _safe_certify_artifact_prefix(
+                Path(request_file).stem.removesuffix("_request")
+            )
+    if command == "rope":
+        model_config_file = getattr(args, "model_config_file", None)
+        if model_config_file is not None:
+            return _safe_certify_artifact_prefix(Path(model_config_file).stem)
+    return _safe_certify_artifact_prefix(command.replace("-", "_"))
+
+
+def _fill_certify_artifact_path(
+    args: argparse.Namespace,
+    attr: str,
+    artifact_dir: Path,
+    prefix: str,
+    suffix: str,
+) -> None:
+    if getattr(args, attr, None) is None:
+        setattr(args, attr, artifact_dir / f"{prefix}_{suffix}.json")
+
+
+def _apply_certify_artifact_dir_defaults(args: argparse.Namespace) -> None:
+    artifact_dir = getattr(args, "artifact_dir", None)
+    if getattr(args, "artifact_prefix", None) and artifact_dir is None:
+        raise ValueError("--artifact-prefix requires --artifact-dir")
+    if artifact_dir is None:
+        return
+    prefix = _default_certify_artifact_prefix(args)
+    args._artifact_prefix_value = prefix
+    _fill_certify_artifact_path(args, "request_out", artifact_dir, prefix, "request")
+    _fill_certify_artifact_path(
+        args,
+        "request_validation_report_out",
+        artifact_dir,
+        prefix,
+        "request_validation",
+    )
+    if (
+        getattr(args, "command", None) == "rope"
+        and getattr(args, "model_config_file", None) is not None
+    ):
+        _fill_certify_artifact_path(
+            args,
+            "model_config_import_report_out",
+            artifact_dir,
+            prefix,
+            "model_config_import",
+        )
+    _fill_certify_artifact_path(args, "json_out", artifact_dir, prefix, "receipt")
+    _fill_certify_artifact_path(
+        args,
+        "receipt_check_out",
+        artifact_dir,
+        prefix,
+        "receipt_check",
+    )
+    _fill_certify_artifact_path(
+        args,
+        "receipt_replay_check_out",
+        artifact_dir,
+        prefix,
+        "receipt_replay_check",
+    )
+    _fill_certify_artifact_path(
+        args,
+        "gate_report_out",
+        artifact_dir,
+        prefix,
+        "gate_report",
+    )
+    _fill_certify_artifact_path(
+        args,
+        "certification_bundle_out",
+        artifact_dir,
+        prefix,
+        "certification_bundle",
+    )
+    _fill_certify_artifact_path(
+        args,
+        "certification_bundle_check_out",
+        artifact_dir,
+        prefix,
+        "certification_bundle_check",
+    )
+    _fill_certify_artifact_path(
+        args,
+        "artifact_manifest_out",
+        artifact_dir,
+        prefix,
+        "artifact_manifest",
+    )
+    _fill_certify_artifact_path(
+        args,
+        "artifact_manifest_check_out",
+        artifact_dir,
+        prefix,
+        "artifact_manifest_check",
+    )
+
+
 def _certify_artifact_paths(
     args: argparse.Namespace,
 ) -> list[tuple[str, Path, str | None]]:
@@ -406,6 +538,9 @@ def _certify_artifact_paths(
 
 
 def _certify_artifact_prefix(args: argparse.Namespace, receipt: dict[str, Any]) -> str:
+    artifact_prefix_value = getattr(args, "_artifact_prefix_value", None)
+    if isinstance(artifact_prefix_value, str) and artifact_prefix_value:
+        return artifact_prefix_value
     kind = receipt.get("kind")
     if isinstance(kind, str) and kind:
         return kind
@@ -491,6 +626,7 @@ def _certify_print_and_gate(
         manifest = build_contract_artifact_manifest(
             _certify_artifact_paths(args),
             artifact_prefix=_certify_artifact_prefix(args, receipt),
+            artifact_dir=getattr(args, "artifact_dir", None),
             receipt=receipt,
             request_validation_report=request_validation_report,
             required_statuses=tuple(args.require_status),
@@ -595,6 +731,10 @@ def contract_certify_main() -> int:
     recurrence_parser.add_argument("--shift-passes", type=int, default=3)
 
     args = parser.parse_args()
+    try:
+        _apply_certify_artifact_dir_defaults(args)
+    except ValueError as exc:
+        parser.error(str(exc))
     if (
         args.certification_bundle_check_out is not None
         and args.certification_bundle_out is None

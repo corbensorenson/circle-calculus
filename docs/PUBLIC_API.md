@@ -76,6 +76,7 @@ The installed CLI exposes a guided subcommand runner for shell users:
 ```bash
 circle-ai-certify rope \
   --model-config-file examples/circle_ai_model_configs/standard_rope_config.json \
+  --artifact-dir /tmp/circle_rope_contract \
   --request-out /tmp/circle_rope_request.json \
   --request-validation-report-out /tmp/circle_rope_request_validation.json \
   --model-config-import-report-out /tmp/circle_rope_import_report.json \
@@ -116,7 +117,9 @@ handoff should carry the request preflight, theorem-linked receipt, gate
 report, and bundle validation result as one archived object. Use
 `--artifact-manifest-out` and `--artifact-manifest-check-out` when the handoff
 also needs file fingerprints and a manifest self-check for every sidecar this
-invocation wrote.
+invocation wrote. Use `--artifact-dir` when the installed command should choose
+stable names for the complete request, receipt, diagnostics, bundle, manifest,
+and check-report set.
 
 The lower-level installed receipt command accepts kind aliases plus JSON
 parameters directly:
