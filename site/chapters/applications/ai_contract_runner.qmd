@@ -171,8 +171,9 @@ Add `--request-validation-report-out reports/request_validation.json` when a
 single-config run should also save the schema-validated preflight report for the
 exact request that produced the receipt. Add
 `--certification-bundle-out reports/certification_bundle.json` when CI wants one
-schema-validated artifact containing request preflight, receipt, and gate
-report.
+schema-validated artifact containing request preflight, receipt, gate report,
+and, for `--model-config` RoPE runs, the model-config import report that records
+parameter provenance.
 
 For a project that already stores configs as files, use the request schema:
 
@@ -454,9 +455,12 @@ assert bundle["gate_report"]["ok"] is True
 ```
 
 The bundle's top-level `request_content_fingerprint` hashes the submitted
-request object used for preflight. The embedded receipt carries its own
-`request_content_fingerprint` for the canonical request emitted after contract
-defaults are applied.
+request object used for preflight. If the request came from
+`--model-config` or from `build_rope_model_config_import_report`, the optional
+`model_config_import_report` section carries the model-config fingerprint, the
+config-to-request parameter sources, and the emitted request fingerprint. The
+embedded receipt carries its own `request_content_fingerprint` for the canonical
+request emitted after contract defaults are applied.
 
 That returns the same schema as the CLI:
 

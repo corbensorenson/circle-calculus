@@ -2367,6 +2367,7 @@ def build_contract_certification_bundle(
     request: Mapping[str, Any],
     *,
     pack: Mapping[str, Any] | None = None,
+    model_config_import_report: Mapping[str, Any] | None = None,
     receipt_path: str = "<in-memory-receipt>",
     required_statuses: Sequence[str] = (),
     required_decision_verdicts: Sequence[str] = (),
@@ -2376,11 +2377,13 @@ def build_contract_certification_bundle(
     """Return request validation, receipt, and gate report in one public shape.
 
     The bundle is the Python API counterpart to running
-    ``circle_ai_certify.py`` with request preflight and a receipt gate. Invalid
-    requests return a failed bundle with ``receipt = None`` instead of forcing
-    downstream callers to catch an exception just to see validation failures.
-    Invalid gate-policy values still raise ``ValueError`` because that is a
-    caller bug rather than a property of the request being certified.
+    ``circle_ai_certify.py`` with request preflight and a receipt gate. When the
+    request came from a RoPE model config, callers may include the matching
+    import report so the bundle carries the config-to-request provenance too.
+    Invalid requests return a failed bundle with ``receipt = None`` instead of
+    forcing downstream callers to catch an exception just to see validation
+    failures. Invalid gate-policy values still raise ``ValueError`` because
+    that is a caller bug rather than a property of the request being certified.
     """
 
     _validate_receipt_gate_policy(
@@ -2401,6 +2404,46 @@ def build_contract_certification_bundle(
     ]
     receipt: dict[str, Any] | None = None
     gate_report: dict[str, Any] | None = None
+    import_report = (
+        None
+        if model_config_import_report is None
+        else dict(model_config_import_report)
+    )
+
+    if import_report is not None:
+        if import_report.get("schema_id") != ROPE_MODEL_CONFIG_IMPORT_SCHEMA_ID:
+            failures.append(
+                "model config import report schema_id must be "
+                f"{ROPE_MODEL_CONFIG_IMPORT_SCHEMA_ID}"
+            )
+        if import_report.get("request_schema_id") != REQUEST_SCHEMA_ID:
+            failures.append(
+                "model config import report request_schema_id must be "
+                f"{REQUEST_SCHEMA_ID}"
+            )
+        if import_report.get("kind") != "rope_position_distinguishability":
+            failures.append(
+                "model config import report kind must be "
+                "rope_position_distinguishability"
+            )
+        if import_report.get("ok") is not True:
+            report_failures = import_report.get("failures", ())
+            if isinstance(report_failures, (list, tuple)):
+                detail = "; ".join(str(failure) for failure in report_failures)
+            else:
+                detail = str(report_failures)
+            failures.append(
+                "model config import report failed"
+                + (f": {detail}" if detail else "")
+            )
+        if (
+            import_report.get("request_content_fingerprint")
+            != request_validation_report["request_content_fingerprint"]
+        ):
+            failures.append(
+                "model config import report request_content_fingerprint does "
+                "not match the bundled request"
+            )
 
     if request_validation_report["ok"]:
         pack_dict = _default_pack(pack)
@@ -2427,6 +2470,7 @@ def build_contract_certification_bundle(
         "request_schema_id": REQUEST_SCHEMA_ID,
         "receipt_schema_id": RECEIPT_SCHEMA_ID,
         "gate_report_schema_id": RECEIPT_FILE_CHECK_SCHEMA_ID,
+        "model_config_import_report_schema_id": ROPE_MODEL_CONFIG_IMPORT_SCHEMA_ID,
         "content_fingerprint_algorithm": FINGERPRINT_ALGORITHM,
         "ok": not failures,
         "failure_count": len(failures),
@@ -2444,6 +2488,7 @@ def build_contract_certification_bundle(
         "request_validation_report": request_validation_report,
         "receipt": receipt,
         "gate_report": gate_report,
+        "model_config_import_report": import_report,
     }
 
 
@@ -3169,6 +3214,7 @@ def build_contract_certification_bundle_json_schema() -> dict[str, Any]:
             "request_schema_id",
             "receipt_schema_id",
             "gate_report_schema_id",
+            "model_config_import_report_schema_id",
             "content_fingerprint_algorithm",
             "ok",
             "failure_count",
@@ -3180,12 +3226,16 @@ def build_contract_certification_bundle_json_schema() -> dict[str, Any]:
             "request_validation_report",
             "receipt",
             "gate_report",
+            "model_config_import_report",
         ],
         "properties": {
             "schema_id": {"const": CERTIFICATION_BUNDLE_SCHEMA_ID},
             "request_schema_id": {"const": REQUEST_SCHEMA_ID},
             "receipt_schema_id": {"const": RECEIPT_SCHEMA_ID},
             "gate_report_schema_id": {"const": RECEIPT_FILE_CHECK_SCHEMA_ID},
+            "model_config_import_report_schema_id": {
+                "const": ROPE_MODEL_CONFIG_IMPORT_SCHEMA_ID
+            },
             "content_fingerprint_algorithm": {"const": FINGERPRINT_ALGORITHM},
             "ok": {"type": "boolean"},
             "failure_count": {"type": "integer", "minimum": 0},
@@ -3206,6 +3256,12 @@ def build_contract_certification_bundle_json_schema() -> dict[str, Any]:
             "gate_report": {
                 "anyOf": [
                     inline(build_contract_receipt_file_check_json_schema()),
+                    {"type": "null"},
+                ],
+            },
+            "model_config_import_report": {
+                "anyOf": [
+                    inline(build_rope_model_config_import_json_schema()),
                     {"type": "null"},
                 ],
             },

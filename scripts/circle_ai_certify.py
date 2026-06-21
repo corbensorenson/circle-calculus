@@ -524,6 +524,7 @@ def main() -> int:
             "a saved receipt file"
         )
     request_for_bundle: dict[str, Any] | None = None
+    model_config_import_report_for_bundle: dict[str, Any] | None = None
     if args.kind == "request":
         request_object = _load_request_json(args.request_json)
         if args.request_out is not None:
@@ -600,6 +601,7 @@ def main() -> int:
                         args.model_config_import_schema,
                     )
                     write_json(args.model_config_import_report_out, import_report)
+                model_config_import_report_for_bundle = import_report
                 if not import_report["ok"]:
                     raise ValueError("; ".join(import_report["failures"]))
                 if not isinstance(import_report["request"], dict):
@@ -657,6 +659,7 @@ def main() -> int:
         bundle = build_contract_certification_bundle(
             request_for_bundle,
             pack=pack,
+            model_config_import_report=model_config_import_report_for_bundle,
             receipt_path=(
                 _display_path(args.json_out)
                 if args.json_out is not None

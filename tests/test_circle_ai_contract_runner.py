@@ -862,6 +862,77 @@ def test_certification_bundle_public_api_accepts_valid_request(
     assert bundle["receipt_content_fingerprint"] == bundle["receipt"][
         "receipt_content_fingerprint"
     ]
+    assert bundle["model_config_import_report_schema_id"] == (
+        "circle_calculus.rope_model_config_import.v0"
+    )
+    assert bundle["model_config_import_report"] is None
+
+
+def test_certification_bundle_public_api_embeds_model_config_import_report(
+    contract_pack: dict,
+) -> None:
+    config = json.loads(STANDARD_ROPE_MODEL_CONFIG.read_text(encoding="utf-8"))
+    import_report = build_rope_model_config_import_report(
+        config,
+        requested_margin="1/328459",
+    )
+    assert import_report["ok"] is True
+    assert isinstance(import_report["request"], dict)
+
+    bundle = build_contract_certification_bundle(
+        import_report["request"],
+        pack=contract_pack,
+        model_config_import_report=import_report,
+        required_statuses=("proved",),
+        required_decision_verdicts=("passed",),
+        required_assurance_levels=("mixed_theorem_and_computation",),
+        require_passed=True,
+    )
+
+    jsonschema.validate(bundle, build_contract_certification_bundle_json_schema())
+    assert bundle["ok"] is True
+    assert bundle["model_config_import_report"] == import_report
+    assert bundle["model_config_import_report"]["request"] == (
+        bundle["receipt"]["request"]
+    )
+    assert bundle["model_config_import_report"]["request_content_fingerprint"] == (
+        bundle["request_content_fingerprint"]
+    )
+    assert bundle["model_config_import_report"]["parameter_sources"]["head_dim"][
+        "source"
+    ] == "derived_config_fields"
+
+
+def test_certification_bundle_public_api_rejects_mismatched_model_config_import_report(
+    contract_pack: dict,
+) -> None:
+    config = json.loads(STANDARD_ROPE_MODEL_CONFIG.read_text(encoding="utf-8"))
+    import_report = build_rope_model_config_import_report(
+        config,
+        requested_margin="1/328459",
+    )
+    request = build_contract_request(
+        "rope",
+        {
+            "head_dim": 128,
+            "base": 10000.0,
+            "context": 131072,
+            "requested_margin": "1/328458",
+        },
+    )
+
+    bundle = build_contract_certification_bundle(
+        request,
+        pack=contract_pack,
+        model_config_import_report=import_report,
+    )
+
+    jsonschema.validate(bundle, build_contract_certification_bundle_json_schema())
+    assert bundle["ok"] is False
+    assert any(
+        "model config import report request_content_fingerprint" in failure
+        for failure in bundle["failures"]
+    )
 
 
 def test_certification_bundle_public_api_reports_invalid_request(
@@ -1974,6 +2045,57 @@ def test_circle_ai_certify_cli_writes_certification_bundle(
     assert bundle["receipt_content_fingerprint"] == receipt[
         "receipt_content_fingerprint"
     ]
+
+
+def test_circle_ai_certify_cli_writes_model_config_certification_bundle(
+    tmp_path: Path,
+) -> None:
+    receipt_path = tmp_path / "receipt.json"
+    bundle_path = tmp_path / "certification_bundle.json"
+
+    result = subprocess.run(
+        [
+            sys.executable,
+            str(SCRIPT),
+            "rope",
+            "--model-config",
+            str(STANDARD_ROPE_MODEL_CONFIG),
+            "--requested-margin",
+            "1/328459",
+            "--json-out",
+            str(receipt_path),
+            "--certification-bundle-out",
+            str(bundle_path),
+            "--require-status",
+            "proved",
+            "--require-decision",
+            "passed",
+            "--require-assurance",
+            "mixed_theorem_and_computation",
+            "--require-passed",
+            "--format",
+            "json",
+        ],
+        cwd=ROOT,
+        check=True,
+        text=True,
+        capture_output=True,
+    )
+
+    receipt = json.loads(receipt_path.read_text())
+    bundle = json.loads(bundle_path.read_text())
+    assert json.loads(result.stdout) == receipt
+    jsonschema.validate(bundle, build_contract_certification_bundle_json_schema())
+    assert bundle["ok"] is True
+    assert bundle["receipt"] == receipt
+    assert bundle["model_config_import_report"]["ok"] is True
+    assert bundle["model_config_import_report"]["request"] == receipt["request"]
+    assert bundle["model_config_import_report"]["request_content_fingerprint"] == (
+        bundle["request_content_fingerprint"]
+    )
+    assert bundle["model_config_import_report"]["parameter_sources"]["head_dim"][
+        "source"
+    ] == "derived_config_fields"
 
 
 @pytest.mark.parametrize(
