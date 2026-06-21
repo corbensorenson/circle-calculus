@@ -1,7 +1,7 @@
 {
   "$id": "https://circle-calculus.local/schemas/circle_ai_contract_receipt.schema.json",
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "additionalProperties": true,
+  "additionalProperties": false,
   "properties": {
     "content_fingerprint_algorithm": {
       "const": "sha256-json-v1"
@@ -9,6 +9,9 @@
     "contract_id": {
       "minLength": 1,
       "type": "string"
+    },
+    "contract_pack_schema_id": {
+      "const": "circle_calculus.ai_contract_pack.v0"
     },
     "evidence": {
       "type": "object"

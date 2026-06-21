@@ -241,6 +241,9 @@ checker validates its own report against
 `site/data/generated/circle_ai_contract_receipt_file_check.schema.json` and can
 write that report to disk for audit logs.
 
+Receipt JSON is strict at the top level: unknown fields are rejected, while
+contract-specific details live under `evidence`, `support`, and `proof_layers`.
+
 ## Receipt Reading Loop
 
 Read every receipt in this order:

@@ -157,6 +157,9 @@ write that report to disk for audit logs. It is the smallest CI-facing command
 for downstream projects that want to reject stale or tampered Circle AI receipts
 without running Lean.
 
+Receipt JSON is strict at the top level: unknown fields are rejected, while
+contract-specific details live under `evidence`, `support`, and `proof_layers`.
+
 ## Receipt Statuses
 
 | Status | Meaning |

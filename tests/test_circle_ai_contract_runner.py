@@ -274,6 +274,23 @@ def test_receipt_validator_requires_typed_proof_layer_buckets(
         for failure in failures
     )
 
+    extra_key = json.loads(json.dumps(receipt))
+    extra_key["proof_statuz"] = {}
+    extra_key["receipt_content_fingerprint"] = _receipt_fingerprint(extra_key)
+    failures = validate_contract_receipt(extra_key)
+    assert any(
+        "receipt contains unsupported keys: proof_statuz" in failure
+        for failure in failures
+    )
+
+    wrong_pack_schema = json.loads(json.dumps(receipt))
+    wrong_pack_schema["contract_pack_schema_id"] = "wrong"
+    wrong_pack_schema["receipt_content_fingerprint"] = _receipt_fingerprint(
+        wrong_pack_schema
+    )
+    failures = validate_contract_receipt(wrong_pack_schema)
+    assert any("contract_pack_schema_id" in failure for failure in failures)
+
 
 def test_receipt_pack_validator_rejects_stale_support_fingerprints(
     contract_pack: dict,
@@ -590,6 +607,8 @@ def test_request_schema_validates_public_parameter_shapes() -> None:
 def test_receipt_schema_exposes_runner_metadata() -> None:
     schema = build_contract_receipt_json_schema()
 
+    assert "contract_pack_schema_id" in schema["properties"]
+    assert schema["additionalProperties"] is False
     assert "recommendations" in schema["required"]
     assert "validation_commands" in schema["required"]
     assert "request_content_fingerprint" in schema["required"]
@@ -610,6 +629,14 @@ def test_receipt_schema_rejects_missing_proof_layer_bucket(
     jsonschema.Draft202012Validator.check_schema(schema)
     with pytest.raises(jsonschema.ValidationError):
         jsonschema.validate(receipt, schema)
+
+    receipt_with_extra_key = build_rope_receipt(pack=contract_pack)
+    receipt_with_extra_key["proof_statuz"] = {}
+    receipt_with_extra_key["receipt_content_fingerprint"] = _receipt_fingerprint(
+        receipt_with_extra_key
+    )
+    with pytest.raises(jsonschema.ValidationError):
+        jsonschema.validate(receipt_with_extra_key, schema)
 
 
 def test_request_validation_report_schema_accepts_public_reports() -> None:

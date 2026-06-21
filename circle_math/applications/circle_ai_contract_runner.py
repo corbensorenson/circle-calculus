@@ -31,7 +31,11 @@ from .circle_ai_contract_consumer import (
     require_ready_contract,
     validate_consumer_pack,
 )
-from .circle_ai_contracts import build_contract_pack, build_recurrence_schedule_contract
+from .circle_ai_contracts import (
+    SCHEMA_ID as CONTRACT_PACK_SCHEMA_ID,
+    build_contract_pack,
+    build_recurrence_schedule_contract,
+)
 from .rope_certifier import (
     RoPEConfig,
     certify_rope_positions,
@@ -90,6 +94,28 @@ PROOF_LAYER_BUCKETS = (
     "numerical_only_fields",
     "unsupported_fields",
 )
+RECEIPT_TOP_LEVEL_KEYS = {
+    "schema_id",
+    "request_schema_id",
+    "contract_pack_schema_id",
+    "kind",
+    "contract_id",
+    "status",
+    "request_passed",
+    "request",
+    "request_content_fingerprint",
+    "normalized_request",
+    "normalized_request_fingerprint",
+    "evidence",
+    "proof_status",
+    "proof_layers",
+    "recommendations",
+    "validation_commands",
+    "support",
+    "not_claimed",
+    "content_fingerprint_algorithm",
+    "receipt_content_fingerprint",
+}
 ROPE_DIRICHLET_GUARDRAIL_THEOREM_IDS = (
     "AIRA-T0239",
     "AIRA-T0240",
@@ -1323,10 +1349,17 @@ def validate_contract_receipt(receipt: Mapping[str, Any]) -> list[str]:
     """Return receipt-shape failures. This is a JSON-level check, not Lean."""
 
     failures: list[str] = []
+    extra_keys = sorted(str(key) for key in receipt if key not in RECEIPT_TOP_LEVEL_KEYS)
+    if extra_keys:
+        failures.append(
+            "receipt contains unsupported keys: " + ", ".join(extra_keys)
+        )
     if receipt.get("schema_id") != RECEIPT_SCHEMA_ID:
         failures.append(f"schema_id must be {RECEIPT_SCHEMA_ID!r}")
     if receipt.get("request_schema_id") != REQUEST_SCHEMA_ID:
         failures.append(f"request_schema_id must be {REQUEST_SCHEMA_ID!r}")
+    if receipt.get("contract_pack_schema_id") != CONTRACT_PACK_SCHEMA_ID:
+        failures.append(f"contract_pack_schema_id must be {CONTRACT_PACK_SCHEMA_ID!r}")
     kind = receipt.get("kind")
     if kind not in SUPPORTED_CONTRACT_KINDS:
         failures.append("kind must be a supported Circle AI contract kind")
@@ -1981,6 +2014,7 @@ def build_contract_receipt_json_schema() -> dict[str, Any]:
         "properties": {
             "schema_id": {"const": RECEIPT_SCHEMA_ID},
             "request_schema_id": {"const": REQUEST_SCHEMA_ID},
+            "contract_pack_schema_id": {"const": CONTRACT_PACK_SCHEMA_ID},
             "kind": {"enum": list(SUPPORTED_CONTRACT_KINDS)},
             "contract_id": {"type": "string", "minLength": 1},
             "status": {"enum": list(STATUS_VALUES)},
@@ -2042,5 +2076,5 @@ def build_contract_receipt_json_schema() -> dict[str, Any]:
                 "pattern": "^[0-9a-f]{64}$",
             },
         },
-        "additionalProperties": True,
+        "additionalProperties": False,
     }
