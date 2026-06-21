@@ -59,14 +59,15 @@ Those handoff checkers can also require embedded receipt theorem ids, evidence
 fields, recommendation ids, validation commands, and normalized request
 parameters, so downstream CI can fail on missing dependencies without parsing
 the receipt by hand.
-Use `python scripts/circle_ai_certify.py` when you need repository-only audit
-artifacts such as request-validation reports, receipt-check reports, replay
-checks, certification bundles, artifact manifests, or artifact pin policies.
 Add `--gate-report-out reports/rope_gate.json` when CI needs a compact
 schema-validated JSON gate report without saving the full receipt. Use
 `--json-out reports/rope_receipt.json --receipt-check-out
 reports/rope_receipt_check.json` when the audit log should point at a saved
-receipt file. Use `--certification-bundle-out` plus
+receipt file, and add `--receipt-replay-check-out reports/rope_replay.json` to
+rebuild the receipt from its embedded request and compare stable fingerprints.
+Use `python scripts/circle_ai_certify.py` when you need repository-only audit
+artifacts such as request-validation reports, certification bundles, artifact
+manifests, or artifact pin policies. Use `--certification-bundle-out` plus
 `--certification-bundle-check-out` when the audit log should retain the full
 request preflight, theorem-linked receipt, gate report, model-config provenance
 when present, and a CI-readable verification report for the bundle:

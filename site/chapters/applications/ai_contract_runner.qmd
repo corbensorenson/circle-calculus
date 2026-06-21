@@ -114,12 +114,16 @@ The `--require-*` flags are CI gates: the receipt is still printed or written,
 then the command exits nonzero if the requested status/pass policy is not met.
 Use `--json-out reports/rope_receipt.json` when CI also needs the receipt saved
 as a file.
+Use `--gate-report-out reports/rope_gate.json` for a compact pack-aware
+pass/fail report, `--receipt-check-out reports/rope_receipt_check.json` for a
+saved receipt validation report, and `--receipt-replay-check-out
+reports/rope_replay.json` to rebuild the receipt from its embedded request and
+compare stable fingerprints.
 
 The repository-only `python scripts/circle_ai_certify.py` runner adds heavier
-audit outputs such as request-validation reports, gate reports, receipt checks,
-receipt-replay checks, certification bundles, artifact manifests, and pin-policy
-checks. Use that script when a handoff needs the full audit bundle rather than a
-single installed-package receipt.
+audit outputs such as request-validation reports, certification bundles,
+artifact manifests, and pin-policy checks. Use that script when a handoff needs
+the full audit bundle rather than a single installed-package receipt.
 
 Expected shape:
 

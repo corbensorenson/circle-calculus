@@ -239,6 +239,107 @@ def test_package_cli_unified_certify_request_file_gate() -> None:
     assert receipt["request_passed"] is True
 
 
+def test_package_cli_unified_certify_writes_gate_and_replay_reports(tmp_path) -> None:
+    receipt_path = tmp_path / "receipt.json"
+    gate_path = tmp_path / "gate.json"
+    check_path = tmp_path / "receipt_check.json"
+    replay_path = tmp_path / "replay.json"
+
+    result = subprocess.run(
+        [
+            sys.executable,
+            "-c",
+            (
+                "import sys; "
+                "from circle_math.cli import contract_certify_main; "
+                "sys.exit(contract_certify_main())"
+            ),
+            "sparse-attention",
+            "--context",
+            "9",
+            "--strides",
+            "3,4,7",
+            "--path-length",
+            "2",
+            "--local-window",
+            "2",
+            "--json-out",
+            str(receipt_path),
+            "--gate-report-out",
+            str(gate_path),
+            "--receipt-check-out",
+            str(check_path),
+            "--receipt-replay-check-out",
+            str(replay_path),
+            "--require-passed",
+            "--require-status",
+            "proved",
+            "--format",
+            "json",
+        ],
+        text=True,
+        capture_output=True,
+        check=True,
+    )
+    receipt = json.loads(result.stdout)
+    saved_receipt = json.loads(receipt_path.read_text())
+    gate_report = json.loads(gate_path.read_text())
+    check_report = json.loads(check_path.read_text())
+    replay_report = json.loads(replay_path.read_text())
+
+    assert receipt == saved_receipt
+    assert gate_report["schema_id"] == "circle_calculus.ai_contract_receipt_file_check.v0"
+    assert gate_report["ok"] is True
+    assert gate_report["gate_policy"]["require_passed"] is True
+    assert gate_report["summaries"][0]["path"] == str(receipt_path)
+    assert check_report["ok"] is True
+    assert check_report["summaries"][0]["receipt_content_fingerprint"] == receipt[
+        "receipt_content_fingerprint"
+    ]
+    assert replay_report["schema_id"] == "circle_calculus.ai_contract_receipt_replay_check.v0"
+    assert replay_report["ok"] is True
+    assert replay_report["comparison"]["all_replay_fields_match"] is True
+
+
+def test_package_cli_unified_certify_writes_failed_gate_report(tmp_path) -> None:
+    gate_path = tmp_path / "failed_gate.json"
+
+    result = subprocess.run(
+        [
+            sys.executable,
+            "-c",
+            (
+                "import sys; "
+                "from circle_math.cli import contract_certify_main; "
+                "sys.exit(contract_certify_main())"
+            ),
+            "rope",
+            "--head-dim",
+            "128",
+            "--base",
+            "10000",
+            "--context",
+            "1000",
+            "--requested-margin",
+            "1/999",
+            "--gate-report-out",
+            str(gate_path),
+            "--require-passed",
+            "--format",
+            "json",
+        ],
+        text=True,
+        capture_output=True,
+    )
+    receipt = json.loads(result.stdout)
+    gate_report = json.loads(gate_path.read_text())
+    assert result.returncode == 2
+    assert receipt["request_passed"] is False
+    assert gate_report["ok"] is False
+    assert gate_report["failure_count"] >= 1
+    assert any("request_passed" in failure for failure in gate_report["failures"])
+
+
 def test_package_cli_unified_certify_sparse_and_recurrence() -> None:
     sparse_result = subprocess.run(
         [

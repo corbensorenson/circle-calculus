@@ -122,6 +122,9 @@ requests, use `--request-file` with a
 Use `--require-passed`, `--require-status`, `--require-decision`, and
 `--require-assurance` when the command should fail CI unless the emitted
 receipt satisfies a narrow acceptance policy.
+Use `--gate-report-out`, `--receipt-check-out`, and
+`--receipt-replay-check-out` when CI should save compact machine-readable
+receipt diagnostics without using repository-only scripts.
 
 Non-default `rope_scaling` values are rejected by this standard-RoPE importer
 until there is separate theorem coverage for the scaled variant.

@@ -26,6 +26,11 @@ from .ai_contracts import (
     canonical_contract_kind,
     receipt_summary_lines,
 )
+from .applications import (
+    build_contract_receipt_file_check_report,
+    build_contract_receipt_gate_report,
+    build_contract_receipt_replay_check_report,
+)
 from .applications.circle_ai import certify_stride_family_coverage
 from .applications.rope_certifier import (
     ROPE_CERTIFIER_PRESETS,
@@ -235,6 +240,30 @@ def _add_certify_common_options(parser: argparse.ArgumentParser) -> None:
     parser.add_argument("--pack", type=Path, default=None)
     parser.add_argument("--request-out", type=Path)
     parser.add_argument("--json-out", type=Path)
+    parser.add_argument(
+        "--gate-report-out",
+        type=Path,
+        help=(
+            "Optional compact JSON gate report for the emitted receipt. This "
+            "does not require saving the full receipt."
+        ),
+    )
+    parser.add_argument(
+        "--receipt-check-out",
+        type=Path,
+        help=(
+            "Optional JSON report validating the emitted receipt against the "
+            "contract pack and gate policy."
+        ),
+    )
+    parser.add_argument(
+        "--receipt-replay-check-out",
+        type=Path,
+        help=(
+            "Optional JSON report rebuilding the emitted receipt from its "
+            "embedded request and comparing stable fingerprints."
+        ),
+    )
     parser.add_argument("--format", choices=("text", "json"), default="text")
     parser.add_argument(
         "--require-passed",
@@ -273,12 +302,43 @@ def _certify_pack_from_args(args: argparse.Namespace) -> dict[str, Any]:
 
 def _certify_print_and_gate(
     receipt: dict[str, Any],
+    pack: dict[str, Any],
     args: argparse.Namespace,
 ) -> int:
     if args.request_out is not None:
         _write_json_file(args.request_out, receipt["request"])
     if args.json_out is not None:
         _write_json_file(args.json_out, receipt)
+    receipt_path = str(args.json_out) if args.json_out is not None else "<in-memory-receipt>"
+    if args.gate_report_out is not None:
+        gate_report = build_contract_receipt_gate_report(
+            receipt,
+            pack,
+            receipt_path=receipt_path,
+            required_statuses=tuple(args.require_status),
+            required_decision_verdicts=tuple(args.require_decision),
+            required_assurance_levels=tuple(args.require_assurance),
+            require_passed=args.require_passed,
+        )
+        _write_json_file(args.gate_report_out, gate_report)
+    if args.receipt_check_out is not None:
+        receipt_check = build_contract_receipt_file_check_report(
+            receipt,
+            pack,
+            receipt_path=receipt_path,
+            required_statuses=tuple(args.require_status),
+            required_decision_verdicts=tuple(args.require_decision),
+            required_assurance_levels=tuple(args.require_assurance),
+            require_passed=args.require_passed,
+        )
+        _write_json_file(args.receipt_check_out, receipt_check)
+    if args.receipt_replay_check_out is not None:
+        replay_check = build_contract_receipt_replay_check_report(
+            receipt,
+            pack,
+            receipt_path=receipt_path,
+        )
+        _write_json_file(args.receipt_replay_check_out, replay_check)
     gate_failures = _receipt_gate_failures(receipt, args)
     if args.format == "json":
         print(json.dumps(receipt, indent=2, sort_keys=True))
@@ -472,7 +532,7 @@ def contract_certify_main() -> int:
             parser.error(f"unsupported command: {args.command}")
     except ValueError as exc:
         parser.error(str(exc))
-    return _certify_print_and_gate(receipt, args)
+    return _certify_print_and_gate(receipt, pack, args)
 
 
 def contract_receipt_main() -> int:

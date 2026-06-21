@@ -137,6 +137,9 @@ Use `--require-passed`, `--require-status`, `--require-decision`, and
 `--require-assurance` when the command is part of downstream CI. Gate failures
 return exit code `2` after writing the receipt, so CI logs keep the theorem
 ids, proof layers, and non-claims needed to debug the rejection.
+Use `--gate-report-out`, `--receipt-check-out`, and
+`--receipt-replay-check-out` when CI should save compact machine-readable
+receipt diagnostics without using repository-only scripts.
 
 Non-default `rope_scaling` values are rejected by the standard-RoPE importer.
 That rejection is intentional: scaled-RoPE variants need separate theorem
