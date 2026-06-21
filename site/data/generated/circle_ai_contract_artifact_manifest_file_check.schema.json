@@ -247,6 +247,17 @@
             "minimum": 0,
             "type": "integer"
           },
+          "model_config_fingerprint": {
+            "anyOf": [
+              {
+                "pattern": "^[0-9a-f]{64}$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
           "normalized_request": {
             "anyOf": [
               {
@@ -334,6 +345,12 @@
             },
             "type": "array"
           },
+          "unsupported_model_config_fields": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
           "validation_command_count": {
             "minimum": 0,
             "type": "integer"
@@ -362,6 +379,8 @@
           "artifact_dir",
           "gate_policy",
           "normalized_request",
+          "model_config_fingerprint",
+          "unsupported_model_config_fields",
           "request_content_fingerprint",
           "normalized_request_fingerprint",
           "receipt_content_fingerprint",

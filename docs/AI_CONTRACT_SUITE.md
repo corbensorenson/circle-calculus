@@ -51,6 +51,10 @@ request fingerprints for downstream audit logs.
 The `--require-*` flags are optional CI gates: the receipt is still emitted, but
 the command exits nonzero if the requested status, decision, assurance, or pass
 policy is not met.
+For model-config imports, pin the source `config.json` by passing the
+`model_config_fingerprint` from the import report to
+`--require-model-config-fingerprint` in the artifact-manifest checker or
+standalone downstream verifier.
 Add `--gate-report-out reports/rope_gate.json` when CI needs a compact
 schema-validated JSON gate report without saving the full receipt. Use
 `--json-out reports/rope_receipt.json --receipt-check-out
@@ -669,8 +673,9 @@ repeat `--require-kind` for every contract family that must be present. Add
 on, `--require-evidence-field` for receipt fields it reads, and
 `--require-recommendation-id` for planner actions it invokes. Add
 `--require-validation-command` when CI depends on an exact receipt-emitted
-recheck command, and `--require-normalized-param` when it must pin the certified
-configuration values.
+recheck command, `--require-model-config-fingerprint` when the RoPE receipt came
+from an imported model `config.json`, and `--require-normalized-param` when it
+must pin the certified configuration values.
 
 A downstream project should fail fast if the readiness index or contract-level
 `ready_for_downstream_fixture_use` is false. That gate only means the public

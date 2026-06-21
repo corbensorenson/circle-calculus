@@ -85,6 +85,7 @@ def _pin_failures(
     required_evidence_fields: tuple[str, ...],
     required_recommendation_ids: tuple[str, ...],
     required_validation_commands: tuple[str, ...],
+    required_model_config_fingerprints: tuple[str, ...],
     required_normalized_params: tuple[tuple[str, Any], ...],
 ) -> list[str]:
     failures: list[str] = []
@@ -115,6 +116,12 @@ def _pin_failures(
         for command in summary.get("validation_commands", [])
         if isinstance(command, str)
     }
+    observed_model_config_fingerprints = {
+        fingerprint
+        for summary in summaries
+        for fingerprint in (summary.get("model_config_fingerprint"),)
+        if isinstance(fingerprint, str)
+    }
 
     for kind in required_kinds:
         if kind not in observed_kinds:
@@ -133,6 +140,11 @@ def _pin_failures(
     for command in required_validation_commands:
         if command not in observed_validation_commands:
             failures.append(f"required receipt validation command is missing: {command}")
+    for fingerprint in required_model_config_fingerprints:
+        if fingerprint not in observed_model_config_fingerprints:
+            failures.append(
+                f"required model config fingerprint is missing: {fingerprint}"
+            )
     for key, value in required_normalized_params:
         if not any(
             isinstance(summary.get("normalized_request"), dict)
@@ -155,6 +167,7 @@ def check_artifact_manifest_files(
     required_evidence_fields: tuple[str, ...] = (),
     required_recommendation_ids: tuple[str, ...] = (),
     required_validation_commands: tuple[str, ...] = (),
+    required_model_config_fingerprints: tuple[str, ...] = (),
     required_normalized_params: tuple[tuple[str, Any], ...] = (),
 ) -> dict[str, Any]:
     manifest_schema = _validate_schema_file(
@@ -197,6 +210,7 @@ def check_artifact_manifest_files(
             required_evidence_fields=required_evidence_fields,
             required_recommendation_ids=required_recommendation_ids,
             required_validation_commands=required_validation_commands,
+            required_model_config_fingerprints=required_model_config_fingerprints,
             required_normalized_params=required_normalized_params,
         )
     )
@@ -286,6 +300,15 @@ def main() -> int:
             "normalized_request parameter value."
         ),
     )
+    parser.add_argument(
+        "--require-model-config-fingerprint",
+        action="append",
+        default=[],
+        help=(
+            "Require at least one RoPE model-config import artifact to expose "
+            "this source config SHA-256 fingerprint."
+        ),
+    )
     args = parser.parse_args()
     try:
         required_normalized_params = tuple(
@@ -305,6 +328,9 @@ def main() -> int:
         required_evidence_fields=tuple(args.require_evidence_field),
         required_recommendation_ids=tuple(args.require_recommendation_id),
         required_validation_commands=tuple(args.require_validation_command),
+        required_model_config_fingerprints=tuple(
+            args.require_model_config_fingerprint
+        ),
         required_normalized_params=required_normalized_params,
     )
     if args.report_out is not None:

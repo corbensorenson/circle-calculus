@@ -3284,6 +3284,8 @@ def build_contract_artifact_manifest_file_check_json_schema() -> dict[str, Any]:
             "artifact_dir",
             "gate_policy",
             "normalized_request",
+            "model_config_fingerprint",
+            "unsupported_model_config_fields",
             "request_content_fingerprint",
             "normalized_request_fingerprint",
             "receipt_content_fingerprint",
@@ -3322,6 +3324,8 @@ def build_contract_artifact_manifest_file_check_json_schema() -> dict[str, Any]:
             "normalized_request": {
                 "anyOf": [{"type": "object"}, {"type": "null"}],
             },
+            "model_config_fingerprint": fingerprint,
+            "unsupported_model_config_fields": string_list,
             "request_content_fingerprint": fingerprint,
             "normalized_request_fingerprint": fingerprint,
             "receipt_content_fingerprint": fingerprint,
@@ -3561,6 +3565,34 @@ def _receipt_artifact_validation_commands(
     return [command for command in commands if isinstance(command, str)]
 
 
+def _load_model_config_import_artifact_payload(
+    *,
+    artifact_by_label: Mapping[str, Mapping[str, Any]],
+    manifest_path: Path,
+) -> Mapping[str, Any] | None:
+    import_artifact = artifact_by_label.get("model_config_import_report")
+    if not isinstance(import_artifact, Mapping):
+        return None
+    raw_path = import_artifact.get("path")
+    if not isinstance(raw_path, str):
+        return None
+    import_path = next(
+        (
+            candidate
+            for candidate in _artifact_resolution_candidates(raw_path, manifest_path)
+            if candidate.exists()
+        ),
+        None,
+    )
+    if import_path is None:
+        return None
+    try:
+        payload = json.loads(import_path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError, UnicodeDecodeError):
+        return None
+    return payload if isinstance(payload, Mapping) else None
+
+
 def build_contract_artifact_manifest_file_check_report(
     manifest: Mapping[str, Any],
     *,
@@ -3686,6 +3718,15 @@ def build_contract_artifact_manifest_file_check_report(
             if isinstance(receipt_payload, Mapping)
             else None
         )
+        model_config_import = _load_model_config_import_artifact_payload(
+            artifact_by_label=artifact_by_label,
+            manifest_path=manifest_path,
+        )
+        unsupported_model_config_fields = (
+            model_config_import.get("unsupported_model_config_fields")
+            if isinstance(model_config_import, Mapping)
+            else []
+        )
         summary = {
             "path": _display_manifest_check_path(manifest_path),
             "kind": manifest.get("kind"),
@@ -3708,6 +3749,20 @@ def build_contract_artifact_manifest_file_check_report(
                 dict(normalized_request)
                 if isinstance(normalized_request, Mapping)
                 else None
+            ),
+            "model_config_fingerprint": (
+                model_config_import.get("model_config_fingerprint")
+                if isinstance(model_config_import, Mapping)
+                else None
+            ),
+            "unsupported_model_config_fields": (
+                [
+                    field
+                    for field in unsupported_model_config_fields
+                    if isinstance(field, str)
+                ]
+                if isinstance(unsupported_model_config_fields, list)
+                else []
             ),
             "request_content_fingerprint": manifest.get(
                 "request_content_fingerprint"

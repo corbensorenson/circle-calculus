@@ -122,6 +122,7 @@ def _emit_standard_artifacts(
     )
     return artifact_dir / f"{prefix}_artifact_manifest.json", {
         "request": artifact_dir / f"{prefix}_request.json",
+        "model_config_import": artifact_dir / f"{prefix}_model_config_import.json",
         "receipt": artifact_dir / f"{prefix}_receipt.json",
         "manifest_check": artifact_dir / f"{prefix}_artifact_manifest_check.json",
     }
@@ -218,6 +219,17 @@ def test_standalone_artifact_verifier_accepts_standard_artifact_dirs(
     assert summary["manifest_check_ok"] is True
     assert set(summary["artifact_labels"]) == expected_labels
     assert Path(summary["manifest_check_path"]) == paths["manifest_check"]
+    if "model_config_import_report" in expected_labels:
+        model_config_import = json.loads(
+            paths["model_config_import"].read_text(encoding="utf-8")
+        )
+        assert summary["model_config_fingerprint"] == (
+            model_config_import["model_config_fingerprint"]
+        )
+        assert summary["unsupported_model_config_fields"] == []
+    else:
+        assert summary["model_config_fingerprint"] is None
+        assert summary["unsupported_model_config_fields"] == []
     assert summary["receipt_content_fingerprint_short"]
     assert "mathematical proof" in payload["not_claimed"]
 
@@ -227,6 +239,7 @@ def test_standalone_artifact_verifier_accepts_multi_contract_kind_gate(
 ) -> None:
     manifests: list[Path] = []
     expected_kinds: list[str] = []
+    required_model_config_fingerprints: list[str] = []
     for (
         slug,
         subcommand_args,
@@ -247,6 +260,13 @@ def test_standalone_artifact_verifier_accepts_multi_contract_kind_gate(
         expected_kinds.append(expected_kind)
         receipt = json.loads(paths["receipt"].read_text(encoding="utf-8"))
         assert receipt["validation_commands"]
+        if paths["model_config_import"].exists():
+            model_config_import = json.loads(
+                paths["model_config_import"].read_text(encoding="utf-8")
+            )
+            required_model_config_fingerprints.append(
+                model_config_import["model_config_fingerprint"]
+            )
 
     require_kind_args = [
         arg
@@ -299,6 +319,11 @@ def test_standalone_artifact_verifier_accepts_multi_contract_kind_gate(
         for command in required_validation_commands
         for arg in ("--require-validation-command", command)
     ]
+    require_model_config_fingerprint_args = [
+        arg
+        for fingerprint in required_model_config_fingerprints
+        for arg in ("--require-model-config-fingerprint", fingerprint)
+    ]
     required_normalized_params = [
         ("head_dim", 128),
         ("cache_size", 16),
@@ -333,6 +358,7 @@ def test_standalone_artifact_verifier_accepts_multi_contract_kind_gate(
             *require_evidence_args,
             *require_recommendation_args,
             *require_validation_args,
+            *require_model_config_fingerprint_args,
             *require_normalized_args,
         ],
         cwd=ROOT,
@@ -359,6 +385,12 @@ def test_standalone_artifact_verifier_accepts_multi_contract_kind_gate(
     assert payload["required_validation_commands"] == required_validation_commands
     assert payload["observed_validation_command_count"] >= len(
         required_validation_commands
+    )
+    assert payload["required_model_config_fingerprints"] == (
+        required_model_config_fingerprints
+    )
+    assert payload["observed_model_config_fingerprint_count"] >= len(
+        required_model_config_fingerprints
     )
     assert payload["required_normalized_params"] == [
         {"key": key, "value": value} for key, value in required_normalized_params
@@ -532,6 +564,38 @@ def test_standalone_artifact_verifier_rejects_missing_normalized_param(
     ]
     assert any(
         "required normalized request parameter is missing" in failure
+        for failure in payload["failures"]
+    )
+
+
+def test_standalone_artifact_verifier_rejects_missing_model_config_fingerprint(
+    tmp_path: Path,
+) -> None:
+    manifest_path, _ = _emit_standard_rope_artifacts(tmp_path)
+
+    result = subprocess.run(
+        [
+            sys.executable,
+            str(SCRIPT),
+            str(manifest_path),
+            "--format",
+            "json",
+            "--require-model-config-fingerprint",
+            "0" * 64,
+        ],
+        cwd=ROOT,
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+
+    assert result.returncode == 4
+    payload = json.loads(result.stderr)
+    assert payload["accepted"] is False
+    assert payload["required_model_config_fingerprints"] == ["0" * 64]
+    assert payload["observed_model_config_fingerprint_count"] == 1
+    assert any(
+        "required model config fingerprint is missing" in failure
         for failure in payload["failures"]
     )
 

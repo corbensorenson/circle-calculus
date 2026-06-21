@@ -630,8 +630,9 @@ repeat `--require-kind` for every contract family that must be present. Add
 on, `--require-evidence-field` for receipt fields it reads, and
 `--require-recommendation-id` for planner actions it invokes. Add
 `--require-validation-command` when CI depends on an exact receipt-emitted
-recheck command, and `--require-normalized-param` when it must pin the certified
-configuration values.
+recheck command, `--require-model-config-fingerprint` when the RoPE receipt came
+from an imported model `config.json`, and `--require-normalized-param` when it
+must pin the certified configuration values.
 
 That script checks the manifest, referenced file SHA-256 hashes, declared schema
 ids, mirrored receipt status, and optional manifest-check report without

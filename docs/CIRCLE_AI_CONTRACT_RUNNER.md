@@ -228,7 +228,10 @@ fields mirrored into the manifest.
 It also accepts `--require-kind`, `--require-theorem-id`,
 `--require-evidence-field`, `--require-recommendation-id`, and
 `--require-validation-command` for first-party CI jobs that need the same
-policy pins as the copyable standalone verifier. Use
+policy pins as the copyable standalone verifier. For RoPE model-config imports,
+add `--require-model-config-fingerprint FINGERPRINT` with the SHA-256 value
+from the model-config import report when CI must prove it is checking the same
+source `config.json`. Use
 `--require-normalized-param KEY=JSON_VALUE` to pin the parameter value a
 downstream job depends on.
 For a copyable standard-library-only downstream gate, use
@@ -246,6 +249,9 @@ Add `--require-evidence-field FIELD` or `--require-recommendation-id ID` when
 automation consumes a specific receipt field or planner recommendation.
 Add `--require-validation-command COMMAND` when CI depends on an exact recheck
 command emitted by the receipt.
+Add `--require-model-config-fingerprint FINGERPRINT` when a RoPE artifact
+directory was produced from a model `config.json` and CI must pin that source
+config hash.
 Add `--require-normalized-param KEY=JSON_VALUE` when CI needs to pin a top-level
 `normalized_request` value such as `head_dim=128` or `sequence_length=32`.
 

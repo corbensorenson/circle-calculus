@@ -329,6 +329,31 @@ def _load_receipt_artifact(
         return None
 
 
+def _load_model_config_import_artifact(
+    *,
+    artifacts_by_label: dict[str, dict[str, Any]],
+    manifest_path: Path,
+    base_dir: Path | None,
+) -> dict[str, Any] | None:
+    import_artifact = artifacts_by_label.get("model_config_import_report")
+    if import_artifact is None:
+        return None
+    raw_path = import_artifact.get("path")
+    if not isinstance(raw_path, str):
+        return None
+    import_path = _resolve_existing_artifact(
+        raw_path,
+        manifest_path=manifest_path,
+        base_dir=base_dir,
+    )
+    if import_path is None:
+        return None
+    try:
+        return _load_json_object(import_path)
+    except (OSError, ValueError, json.JSONDecodeError, UnicodeDecodeError):
+        return None
+
+
 def _receipt_theorem_ids(receipt: dict[str, Any] | None) -> list[str]:
     if receipt is None:
         return []
@@ -471,6 +496,16 @@ def verify_manifest(
     normalized_request = (
         receipt.get("normalized_request") if isinstance(receipt, dict) else None
     )
+    model_config_import = _load_model_config_import_artifact(
+        artifacts_by_label=artifacts_by_label,
+        manifest_path=path,
+        base_dir=base_dir,
+    )
+    unsupported_model_config_fields = (
+        model_config_import.get("unsupported_model_config_fields")
+        if isinstance(model_config_import, dict)
+        else []
+    )
 
     status = manifest.get("status")
     decision = manifest.get("decision_verdict")
@@ -519,6 +554,25 @@ def verify_manifest(
             if isinstance(normalized_request, dict)
             else None
         ),
+        "model_config_fingerprint": (
+            model_config_import.get("model_config_fingerprint")
+            if isinstance(model_config_import, dict)
+            else None
+        ),
+        "model_config_fingerprint_short": _short(
+            model_config_import.get("model_config_fingerprint")
+            if isinstance(model_config_import, dict)
+            else None
+        ),
+        "unsupported_model_config_fields": (
+            [
+                field
+                for field in unsupported_model_config_fields
+                if isinstance(field, str)
+            ]
+            if isinstance(unsupported_model_config_fields, list)
+            else []
+        ),
         "request_content_fingerprint": manifest.get("request_content_fingerprint"),
         "normalized_request_fingerprint": manifest.get(
             "normalized_request_fingerprint"
@@ -552,6 +606,7 @@ def verify_manifests(
     required_evidence_fields: list[str],
     required_recommendation_ids: list[str],
     required_validation_commands: list[str],
+    required_model_config_fingerprints: list[str],
     required_normalized_params: list[tuple[str, Any]],
     required_statuses: list[str],
     required_decisions: list[str],
@@ -644,6 +699,20 @@ def verify_manifests(
             failures.append(
                 f"required receipt validation command is missing: {command}"
             )
+    observed_model_config_fingerprints = sorted(
+        {
+            fingerprint
+            for summary in summaries
+            for fingerprint in (summary.get("model_config_fingerprint"),)
+            if isinstance(fingerprint, str)
+        }
+    )
+    observed_model_config_fingerprint_set = set(observed_model_config_fingerprints)
+    for fingerprint in required_model_config_fingerprints:
+        if fingerprint not in observed_model_config_fingerprint_set:
+            failures.append(
+                f"required model config fingerprint is missing: {fingerprint}"
+            )
     for key, value in required_normalized_params:
         if not any(
             isinstance(summary.get("normalized_request"), dict)
@@ -670,6 +739,10 @@ def verify_manifests(
         "observed_recommendation_id_count": len(observed_recommendation_ids),
         "required_validation_commands": required_validation_commands,
         "observed_validation_command_count": len(observed_validation_commands),
+        "required_model_config_fingerprints": required_model_config_fingerprints,
+        "observed_model_config_fingerprint_count": len(
+            observed_model_config_fingerprints
+        ),
         "required_normalized_params": [
             {"key": key, "value": value} for key, value in required_normalized_params
         ],
@@ -800,6 +873,15 @@ def main() -> int:
         ),
     )
     parser.add_argument(
+        "--require-model-config-fingerprint",
+        action="append",
+        default=[],
+        help=(
+            "Require at least one RoPE model-config import artifact to expose "
+            "this source config SHA-256 fingerprint. May be repeated."
+        ),
+    )
+    parser.add_argument(
         "--require-decision",
         action="append",
         default=[],
@@ -842,6 +924,9 @@ def main() -> int:
             required_evidence_fields=args.require_evidence_field,
             required_recommendation_ids=args.require_recommendation_id,
             required_validation_commands=args.require_validation_command,
+            required_model_config_fingerprints=(
+                args.require_model_config_fingerprint
+            ),
             required_normalized_params=required_normalized_params,
             required_statuses=args.require_status,
             required_decisions=args.require_decision,
