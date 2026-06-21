@@ -88,6 +88,8 @@ python scripts/circle_ai_certify.py rope \
   --request-out reports/rope_request.json \
   --json-out reports/rope_receipt.json \
   --require-status proved \
+  --require-decision passed \
+  --require-assurance mixed_theorem_and_computation \
   --require-passed
 ```
 
@@ -227,15 +229,18 @@ python scripts/check_circle_ai_contract_runner.py \
   --receipt-out-dir reports/circle_ai_receipts \
   --report-out reports/circle_ai_runner_check.json \
   --require-status proved \
+  --require-decision passed \
   --require-passed
 ```
 
 The report file uses schema id `circle_calculus.ai_contract_runner_check.v0` and
 records the source type, source path, optional generated request path, optional
 receipt path, status, theorem count, recommendation count,
-validation-command count, and fingerprints for each checked item.
+validation-command count, decision verdict, assurance level, and fingerprints
+for each checked item.
 It also records the batch gate policy. If a receipt violates the required
-status or pass condition, the checker still writes the report and exits nonzero.
+status, decision, assurance, or pass condition, the checker still writes the
+report and exits nonzero.
 By default the batch includes both request-file examples and standard RoPE
 model-config examples.
 
@@ -244,6 +249,8 @@ Validate a receipt file after it has been handed to another project:
 ```bash
 python scripts/check_circle_ai_receipt.py reports/rope_receipt.json \
   --require-status proved \
+  --require-decision passed \
+  --require-assurance mixed_theorem_and_computation \
   --require-passed \
   --report-out reports/rope_receipt_check.json
 ```
@@ -349,7 +356,9 @@ circle_calculus.ai_contract_receipt.v0
 Downstream gates should read the receipt's `decision` block before digging into
 contract-specific evidence. It carries the stable verdict, assurance level,
 claim status, `request_passed`, theorem count, and proof-layer counts, and the
-receipt validator rejects it if it drifts from the rest of the receipt.
+receipt validator rejects it if it drifts from the rest of the receipt. The CLI
+and saved-receipt checker can gate directly on it with `--require-decision` and
+`--require-assurance`.
 
 The generated request and receipt schemas live at:
 

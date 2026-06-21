@@ -682,6 +682,8 @@ def test_receipt_file_check_report_public_api(contract_pack: dict) -> None:
     assert report["receipt_count"] == 1
     assert report["gate_policy"] == {
         "allowed_statuses": ["proved"],
+        "allowed_decision_verdicts": [],
+        "allowed_assurance_levels": [],
         "require_passed": True,
     }
     assert report["summaries"][0]["path"] == "reports/rope_receipt.json"
@@ -707,6 +709,25 @@ def test_receipt_file_check_report_public_api(contract_pack: dict) -> None:
     assert failed["failure_count"] == 1
     assert "did not match required status set" in failed["failures"][0]
 
+    decision_failed = build_contract_receipt_file_check_report(
+        receipt,
+        contract_pack,
+        receipt_path="reports/rope_receipt.json",
+        required_decision_verdicts=("failed",),
+        required_assurance_levels=("theorem_backed",),
+    )
+    jsonschema.validate(decision_failed, build_contract_receipt_file_check_json_schema())
+    assert decision_failed["ok"] is False
+    assert decision_failed["failure_count"] == 2
+    assert any(
+        "did not match required decision set" in failure
+        for failure in decision_failed["failures"]
+    )
+    assert any(
+        "did not match required assurance set" in failure
+        for failure in decision_failed["failures"]
+    )
+
 
 def test_receipt_file_check_report_rejects_invalid_api_inputs(
     contract_pack: dict,
@@ -726,6 +747,22 @@ def test_receipt_file_check_report_rejects_invalid_api_inputs(
             contract_pack,
             receipt_path="reports/rope_receipt.json",
             required_statuses=("green",),
+        )
+
+    with pytest.raises(ValueError, match="unsupported verdicts"):
+        build_contract_receipt_file_check_report(
+            receipt,
+            contract_pack,
+            receipt_path="reports/rope_receipt.json",
+            required_decision_verdicts=("green",),
+        )
+
+    with pytest.raises(ValueError, match="unsupported assurance levels"):
+        build_contract_receipt_file_check_report(
+            receipt,
+            contract_pack,
+            receipt_path="reports/rope_receipt.json",
+            required_assurance_levels=("green",),
         )
 
 
@@ -1230,6 +1267,8 @@ def test_runner_check_report_schema_accepts_public_report() -> None:
         "failures": [],
         "gate_policy": {
             "allowed_statuses": ["proved"],
+            "allowed_decision_verdicts": ["passed"],
+            "allowed_assurance_levels": ["mixed_theorem_and_computation"],
             "require_passed": True,
         },
         "summaries": [
@@ -1367,6 +1406,10 @@ def test_circle_ai_certify_cli_imports_checked_in_model_config(
             str(receipt_path),
             "--require-status",
             "proved",
+            "--require-decision",
+            "passed",
+            "--require-assurance",
+            "mixed_theorem_and_computation",
             "--require-passed",
             "--format",
             "json",
@@ -1408,6 +1451,10 @@ def test_circle_ai_certify_cli_writes_receipt_check_report(
             str(report_path),
             "--require-status",
             "proved",
+            "--require-decision",
+            "passed",
+            "--require-assurance",
+            "mixed_theorem_and_computation",
             "--require-passed",
             "--format",
             "json",
@@ -1426,6 +1473,8 @@ def test_circle_ai_certify_cli_writes_receipt_check_report(
     assert report["receipt_count"] == 1
     assert report["gate_policy"] == {
         "allowed_statuses": ["proved"],
+        "allowed_decision_verdicts": ["passed"],
+        "allowed_assurance_levels": ["mixed_theorem_and_computation"],
         "require_passed": True,
     }
     assert report["summaries"][0]["path"] == str(receipt_path)
@@ -1645,6 +1694,10 @@ def test_circle_ai_certify_cli_receipt_gate_accepts_passing_receipt() -> None:
             "json",
             "--require-status",
             "proved",
+            "--require-decision",
+            "passed",
+            "--require-assurance",
+            "mixed_theorem_and_computation",
             "--require-passed",
         ],
         cwd=ROOT,
@@ -1656,6 +1709,7 @@ def test_circle_ai_certify_cli_receipt_gate_accepts_passing_receipt() -> None:
     payload = json.loads(result.stdout)
     assert payload["status"] == "proved"
     assert payload["request_passed"] is True
+    assert payload["decision"]["verdict"] == "passed"
     assert result.stderr == ""
 
 
@@ -1772,6 +1826,33 @@ def test_circle_ai_certify_cli_receipt_gate_rejects_failed_request() -> None:
     assert "request_passed was not true" in result.stderr
 
 
+def test_circle_ai_certify_cli_rejects_mismatched_decision_gate() -> None:
+    result = subprocess.run(
+        [
+            sys.executable,
+            str(SCRIPT),
+            "rope",
+            "--context",
+            "131072",
+            "--requested-margin",
+            "1/328459",
+            "--format",
+            "json",
+            "--require-decision",
+            "failed",
+        ],
+        cwd=ROOT,
+        check=False,
+        text=True,
+        capture_output=True,
+    )
+
+    payload = json.loads(result.stdout)
+    assert result.returncode == 1
+    assert payload["decision"]["verdict"] == "passed"
+    assert "did not match required decision set" in result.stderr
+
+
 def test_circle_ai_certify_cli_validates_request_without_receipt(
     tmp_path: Path,
 ) -> None:
@@ -1859,6 +1940,10 @@ def test_circle_ai_certify_cli_validate_only_rejects_receipt_gate_options(
             "--validate-only",
             "--require-status",
             "proved",
+            "--require-decision",
+            "passed",
+            "--require-assurance",
+            "theorem_backed",
         ],
         cwd=ROOT,
         check=False,

@@ -51,9 +51,11 @@ Add `--format json` for a machine-readable receipt, `--json-out PATH` to write
 one to disk, and `--request-out PATH` to save the exact versioned request JSON
 used by the run.
 
-For CI gates, add `--require-status STATUS` and/or `--require-passed`. The
-runner still prints or writes the receipt, then exits nonzero if the emitted
-receipt does not match the required status or if `request_passed` is not `true`.
+For CI gates, add `--require-status STATUS`, `--require-decision VERDICT`,
+`--require-assurance LEVEL`, and/or `--require-passed`. The runner still prints
+or writes the receipt, then exits nonzero if the emitted receipt does not match
+the required status, decision verdict, assurance level, or if `request_passed`
+is not `true`.
 
 For standard RoPE model configs, `--model-config` infers `head_dim` from
 `head_dim` or `hidden_size / num_attention_heads`, `base` from `rope_theta`
@@ -89,6 +91,8 @@ python scripts/circle_ai_certify.py request \
   --json-out path/to/receipt.json \
   --receipt-check-out path/to/receipt_check.json \
   --require-status proved \
+  --require-decision passed \
+  --require-assurance mixed_theorem_and_computation \
   --require-passed
 ```
 
@@ -143,13 +147,14 @@ python scripts/check_circle_ai_contract_runner.py \
   --receipt-out-dir reports/circle_ai_receipts \
   --report-out reports/circle_ai_runner_check.json \
   --require-status proved \
+  --require-decision passed \
   --require-passed
 ```
 
 The batch checker records its gate policy in
-`circle_ai_runner_check.json`. If any receipt violates `--require-status` or
-`--require-passed`, the report is still written with the receipt summaries and
-the command exits nonzero.
+`circle_ai_runner_check.json`. If any receipt violates `--require-status`,
+`--require-decision`, `--require-assurance`, or `--require-passed`, the report
+is still written with the receipt summaries and the command exits nonzero.
 By default it checks both `examples/circle_ai_requests/*.json` request files and
 `examples/circle_ai_model_configs/*.json` standard RoPE model configs. Model
 config examples are first converted into versioned Circle request JSON, then
@@ -160,6 +165,8 @@ Validate a saved receipt file that another project has already produced:
 ```bash
 python scripts/check_circle_ai_receipt.py reports/rope_receipt.json \
   --require-status proved \
+  --require-decision passed \
+  --require-assurance mixed_theorem_and_computation \
   --require-passed \
   --report-out reports/rope_receipt_check.json
 ```
@@ -167,7 +174,7 @@ python scripts/check_circle_ai_receipt.py reports/rope_receipt.json \
 This checker validates the receipt JSON Schema, the in-process receipt shape,
 the receipt fingerprint, the loaded contract-pack fingerprint, the contract
 fingerprint, theorem-id membership in the loaded contract, and optional status
-or pass gates. It validates its own report against
+decision, assurance, or pass gates. It validates its own report against
 `site/data/generated/circle_ai_contract_receipt_file_check.schema.json` and can
 write that report to disk for audit logs. It is the smallest CI-facing command
 for downstream projects that want to reject stale or tampered Circle AI receipts

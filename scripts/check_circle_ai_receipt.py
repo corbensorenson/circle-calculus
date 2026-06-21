@@ -22,6 +22,8 @@ from circle_math.applications import (  # noqa: E402
     load_contract_pack,
 )
 from circle_math.applications.circle_ai_contract_runner import (  # noqa: E402
+    DECISION_ASSURANCE_LEVELS,
+    DECISION_VERDICTS,
     RECEIPT_FILE_CHECK_SCHEMA_PATH,
     STATUS_VALUES,
 )
@@ -71,6 +73,8 @@ def check_receipt_files(
     pack_path: Path = DEFAULT_PACK_PATH,
     receipt_schema_path: Path = DEFAULT_RECEIPT_SCHEMA,
     required_statuses: tuple[str, ...] = (),
+    required_decision_verdicts: tuple[str, ...] = (),
+    required_assurance_levels: tuple[str, ...] = (),
     require_passed: bool = False,
 ) -> dict[str, Any]:
     receipt_schema = _json_object(receipt_schema_path)
@@ -89,6 +93,8 @@ def check_receipt_files(
                 pack,
                 receipt_path=_display_path(path),
                 required_statuses=required_statuses,
+                required_decision_verdicts=required_decision_verdicts,
+                required_assurance_levels=required_assurance_levels,
                 require_passed=require_passed,
             )
             path_failures.extend(receipt_report["failures"])
@@ -112,6 +118,8 @@ def check_receipt_files(
         "failures": failures,
         "gate_policy": {
             "allowed_statuses": list(required_statuses),
+            "allowed_decision_verdicts": list(required_decision_verdicts),
+            "allowed_assurance_levels": list(required_assurance_levels),
             "require_passed": require_passed,
         },
         "summaries": summaries,
@@ -147,6 +155,26 @@ def main() -> int:
         ),
     )
     parser.add_argument(
+        "--require-decision",
+        action="append",
+        choices=DECISION_VERDICTS,
+        default=[],
+        help=(
+            "Require every receipt decision.verdict to match this value. May be "
+            "passed more than once."
+        ),
+    )
+    parser.add_argument(
+        "--require-assurance",
+        action="append",
+        choices=DECISION_ASSURANCE_LEVELS,
+        default=[],
+        help=(
+            "Require every receipt decision.assurance to match this value. May "
+            "be passed more than once."
+        ),
+    )
+    parser.add_argument(
         "--require-passed",
         action="store_true",
         help="Exit nonzero unless every receipt has request_passed=true.",
@@ -158,6 +186,8 @@ def main() -> int:
         pack_path=args.pack,
         receipt_schema_path=args.receipt_schema,
         required_statuses=tuple(args.require_status),
+        required_decision_verdicts=tuple(args.require_decision),
+        required_assurance_levels=tuple(args.require_assurance),
         require_passed=args.require_passed,
     )
     _validate_report_schema(report, args.report_schema)
@@ -171,6 +201,10 @@ def main() -> int:
             f"ok={report['ok']} receipts={report['receipt_count']} "
             f"failures={report['failure_count']} "
             f"required_statuses={report['gate_policy']['allowed_statuses']} "
+            "required_decisions="
+            f"{report['gate_policy']['allowed_decision_verdicts']} "
+            "required_assurances="
+            f"{report['gate_policy']['allowed_assurance_levels']} "
             f"require_passed={report['gate_policy']['require_passed']}"
         )
         for summary in report["summaries"]:

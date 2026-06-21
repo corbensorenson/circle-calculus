@@ -36,6 +36,8 @@ python scripts/circle_ai_certify.py rope \
   --request-out reports/rope_request.json \
   --json-out reports/rope_receipt.json \
   --require-status proved \
+  --require-decision passed \
+  --require-assurance mixed_theorem_and_computation \
   --require-passed
 ```
 
@@ -43,7 +45,8 @@ This imports only the standard-RoPE fields used by the current theorem-backed
 receipt. Non-default `rope_scaling` metadata is rejected instead of being
 treated as covered by the proof status.
 The `--require-*` flags are optional CI gates: the receipt is still emitted, but
-the command exits nonzero if the requested status/pass policy is not met.
+the command exits nonzero if the requested status, decision, assurance, or pass
+policy is not met.
 
 The runner receipt schema is `circle_calculus.ai_contract_receipt.v0`; the
 request schema is `circle_calculus.ai_contract_request.v0`; the request

@@ -61,6 +61,10 @@ def test_check_circle_ai_receipt_accepts_saved_receipt(tmp_path: Path) -> None:
             str(receipt_path),
             "--require-status",
             "proved",
+            "--require-decision",
+            "passed",
+            "--require-assurance",
+            "mixed_theorem_and_computation",
             "--require-passed",
             "--report-out",
             str(report_path),
@@ -80,6 +84,12 @@ def test_check_circle_ai_receipt_accepts_saved_receipt(tmp_path: Path) -> None:
     assert payload["schema_id"] == "circle_calculus.ai_contract_receipt_file_check.v0"
     assert payload["ok"] is True
     assert payload["receipt_count"] == 1
+    assert payload["gate_policy"] == {
+        "allowed_statuses": ["proved"],
+        "allowed_decision_verdicts": ["passed"],
+        "allowed_assurance_levels": ["mixed_theorem_and_computation"],
+        "require_passed": True,
+    }
     assert payload["summaries"][0]["kind"] == "rope_position_distinguishability"
     assert payload["summaries"][0]["decision_verdict"] == receipt["decision"][
         "verdict"
@@ -121,6 +131,48 @@ def test_check_circle_ai_receipt_rejects_status_gate(tmp_path: Path) -> None:
     assert payload["ok"] is False
     assert payload["failure_count"] == 1
     assert "did not match required status set" in payload["failures"][0]
+
+
+def test_check_circle_ai_receipt_rejects_decision_gate(tmp_path: Path) -> None:
+    receipt_path = tmp_path / "rope_receipt.json"
+    receipt = build_rope_receipt(
+        context=131072,
+        requested_margin="1/328459",
+        pack=load_contract_pack(PACK),
+    )
+    _write_receipt(receipt_path, receipt)
+
+    result = subprocess.run(
+        [
+            sys.executable,
+            str(SCRIPT),
+            str(receipt_path),
+            "--require-decision",
+            "failed",
+            "--require-assurance",
+            "theorem_backed",
+            "--format",
+            "json",
+        ],
+        cwd=ROOT,
+        check=False,
+        text=True,
+        capture_output=True,
+    )
+
+    payload = json.loads(result.stdout)
+    jsonschema.validate(payload, build_contract_receipt_file_check_json_schema())
+    assert result.returncode == 1
+    assert payload["ok"] is False
+    assert payload["failure_count"] == 2
+    assert any(
+        "did not match required decision set" in failure
+        for failure in payload["failures"]
+    )
+    assert any(
+        "did not match required assurance set" in failure
+        for failure in payload["failures"]
+    )
 
 
 def test_check_circle_ai_receipt_rejects_stale_pack_fingerprint(

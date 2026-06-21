@@ -121,6 +121,8 @@ def test_check_circle_ai_contract_runner_emits_json_report() -> None:
     assert payload["failures"] == []
     assert payload["gate_policy"] == {
         "allowed_statuses": [],
+        "allowed_decision_verdicts": [],
+        "allowed_assurance_levels": [],
         "require_passed": False,
     }
     assert all(
@@ -205,6 +207,8 @@ def test_check_circle_ai_contract_runner_accepts_batch_gate() -> None:
             "scripts/check_circle_ai_contract_runner.py",
             "--require-status",
             "proved",
+            "--require-decision",
+            "passed",
             "--require-passed",
             "--format",
             "json",
@@ -219,6 +223,8 @@ def test_check_circle_ai_contract_runner_accepts_batch_gate() -> None:
     assert payload["ok"] is True
     assert payload["gate_policy"] == {
         "allowed_statuses": ["proved"],
+        "allowed_decision_verdicts": ["passed"],
+        "allowed_assurance_levels": [],
         "require_passed": True,
     }
     assert payload["example_count"] == 5
@@ -245,10 +251,76 @@ def test_check_circle_ai_contract_runner_rejects_batch_gate() -> None:
     assert payload["ok"] is False
     assert payload["gate_policy"] == {
         "allowed_statuses": ["impossible"],
+        "allowed_decision_verdicts": [],
+        "allowed_assurance_levels": [],
         "require_passed": False,
     }
     assert payload["failure_count"] == 5
     assert all("did not match required status set" in failure for failure in payload["failures"])
+
+
+def test_check_circle_ai_contract_runner_rejects_decision_gate() -> None:
+    result = subprocess.run(
+        [
+            sys.executable,
+            "scripts/check_circle_ai_contract_runner.py",
+            "--require-decision",
+            "failed",
+            "--format",
+            "json",
+        ],
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+
+    payload = json.loads(result.stdout)
+    jsonschema.validate(payload, _runner_check_schema())
+    assert result.returncode == 1
+    assert payload["ok"] is False
+    assert payload["gate_policy"] == {
+        "allowed_statuses": [],
+        "allowed_decision_verdicts": ["failed"],
+        "allowed_assurance_levels": [],
+        "require_passed": False,
+    }
+    assert payload["failure_count"] == 5
+    assert all(
+        "did not match required decision set" in failure
+        for failure in payload["failures"]
+    )
+
+
+def test_check_circle_ai_contract_runner_rejects_assurance_gate() -> None:
+    result = subprocess.run(
+        [
+            sys.executable,
+            "scripts/check_circle_ai_contract_runner.py",
+            "--require-assurance",
+            "theorem_backed",
+            "--format",
+            "json",
+        ],
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+
+    payload = json.loads(result.stdout)
+    jsonschema.validate(payload, _runner_check_schema())
+    assert result.returncode == 1
+    assert payload["ok"] is False
+    assert payload["gate_policy"] == {
+        "allowed_statuses": [],
+        "allowed_decision_verdicts": [],
+        "allowed_assurance_levels": ["theorem_backed"],
+        "require_passed": False,
+    }
+    assert payload["failure_count"] == 2
+    assert all(
+        "did not match required assurance set" in failure
+        for failure in payload["failures"]
+    )
 
 
 def test_check_circle_ai_contract_runner_rejects_pack_missing_receipt_theorem(

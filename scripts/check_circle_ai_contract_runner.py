@@ -25,6 +25,8 @@ from circle_math.applications import (  # noqa: E402
     validate_contract_request,
 )
 from circle_math.applications.circle_ai_contract_runner import (  # noqa: E402
+    DECISION_ASSURANCE_LEVELS,
+    DECISION_VERDICTS,
     RUNNER_CHECK_SCHEMA_ID,
     STATUS_VALUES,
 )
@@ -119,12 +121,32 @@ def _append_gate_failures(
     summary: dict[str, Any],
     failures: list[str],
     required_statuses: tuple[str, ...],
+    required_decision_verdicts: tuple[str, ...],
+    required_assurance_levels: tuple[str, ...],
     require_passed: bool,
 ) -> None:
     if required_statuses and summary["status"] not in required_statuses:
         failures.append(
             f"{path}: receipt status {summary['status']!r} did not match "
             "required status set: " + ", ".join(required_statuses)
+        )
+    if (
+        required_decision_verdicts
+        and summary["decision_verdict"] not in required_decision_verdicts
+    ):
+        failures.append(
+            f"{path}: receipt decision verdict {summary['decision_verdict']!r} "
+            "did not match required decision set: "
+            + ", ".join(required_decision_verdicts)
+        )
+    if (
+        required_assurance_levels
+        and summary["decision_assurance"] not in required_assurance_levels
+    ):
+        failures.append(
+            f"{path}: receipt assurance {summary['decision_assurance']!r} "
+            "did not match required assurance set: "
+            + ", ".join(required_assurance_levels)
         )
     if require_passed and summary["request_passed"] is not True:
         failures.append(
@@ -145,6 +167,8 @@ def check_runner_examples(
     runner_check_schema_path: Path = DEFAULT_RUNNER_CHECK_SCHEMA,
     receipt_out_dir: Path | None = None,
     required_statuses: tuple[str, ...] = (),
+    required_decision_verdicts: tuple[str, ...] = (),
+    required_assurance_levels: tuple[str, ...] = (),
     require_passed: bool = False,
 ) -> dict[str, Any]:
     request_schema = _json(request_schema_path)
@@ -188,6 +212,8 @@ def check_runner_examples(
                 summary=summary,
                 failures=failures,
                 required_statuses=required_statuses,
+                required_decision_verdicts=required_decision_verdicts,
+                required_assurance_levels=required_assurance_levels,
                 require_passed=require_passed,
             )
         except (ValueError, jsonschema.ValidationError, jsonschema.SchemaError) as exc:
@@ -230,6 +256,8 @@ def check_runner_examples(
                 summary=summary,
                 failures=failures,
                 required_statuses=required_statuses,
+                required_decision_verdicts=required_decision_verdicts,
+                required_assurance_levels=required_assurance_levels,
                 require_passed=require_passed,
             )
         except (ValueError, jsonschema.ValidationError, jsonschema.SchemaError) as exc:
@@ -243,6 +271,8 @@ def check_runner_examples(
         "failures": failures,
         "gate_policy": {
             "allowed_statuses": list(required_statuses),
+            "allowed_decision_verdicts": list(required_decision_verdicts),
+            "allowed_assurance_levels": list(required_assurance_levels),
             "require_passed": require_passed,
         },
         "summaries": summaries,
@@ -318,6 +348,26 @@ def main() -> int:
         ),
     )
     parser.add_argument(
+        "--require-decision",
+        action="append",
+        choices=DECISION_VERDICTS,
+        default=[],
+        help=(
+            "Require every emitted receipt decision.verdict to match this value. "
+            "May be passed more than once."
+        ),
+    )
+    parser.add_argument(
+        "--require-assurance",
+        action="append",
+        choices=DECISION_ASSURANCE_LEVELS,
+        default=[],
+        help=(
+            "Require every emitted receipt decision.assurance to match this value. "
+            "May be passed more than once."
+        ),
+    )
+    parser.add_argument(
         "--require-passed",
         action="store_true",
         help="Exit nonzero unless every emitted receipt has request_passed=true.",
@@ -339,6 +389,8 @@ def main() -> int:
         runner_check_schema_path=args.runner_check_schema,
         receipt_out_dir=args.receipt_out_dir,
         required_statuses=tuple(args.require_status),
+        required_decision_verdicts=tuple(args.require_decision),
+        required_assurance_levels=tuple(args.require_assurance),
         require_passed=args.require_passed,
     )
     if args.report_out is not None:
@@ -351,6 +403,10 @@ def main() -> int:
             f"ok={report['ok']} examples={report['example_count']} "
             f"failures={report['failure_count']} "
             f"required_statuses={report['gate_policy']['allowed_statuses']} "
+            "required_decisions="
+            f"{report['gate_policy']['allowed_decision_verdicts']} "
+            "required_assurances="
+            f"{report['gate_policy']['allowed_assurance_levels']} "
             f"require_passed={report['gate_policy']['require_passed']}"
         )
         for summary in report["summaries"]:

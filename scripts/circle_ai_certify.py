@@ -29,6 +29,8 @@ from circle_math.applications import (  # noqa: E402
     receipt_summary_lines,
 )
 from circle_math.applications.circle_ai_contract_runner import (  # noqa: E402
+    DECISION_ASSURANCE_LEVELS,
+    DECISION_VERDICTS,
     RECEIPT_FILE_CHECK_SCHEMA_PATH,
     RECEIPT_SCHEMA_PATH,
     REQUEST_VALIDATION_SCHEMA_PATH,
@@ -128,6 +130,26 @@ def add_common_options(parser: argparse.ArgumentParser) -> None:
         help=(
             "Require the emitted receipt status to match this value. May be "
             "passed more than once to allow a small set."
+        ),
+    )
+    parser.add_argument(
+        "--require-decision",
+        action="append",
+        choices=DECISION_VERDICTS,
+        default=[],
+        help=(
+            "Require the emitted receipt decision.verdict to match this value. "
+            "May be passed more than once to allow a small set."
+        ),
+    )
+    parser.add_argument(
+        "--require-assurance",
+        action="append",
+        choices=DECISION_ASSURANCE_LEVELS,
+        default=[],
+        help=(
+            "Require the emitted receipt decision.assurance to match this value. "
+            "May be passed more than once to allow a small set."
         ),
     )
     parser.add_argument(
@@ -394,6 +416,23 @@ def _receipt_gate_failures(receipt: dict[str, Any], args: argparse.Namespace) ->
             f"receipt status {receipt.get('status')!r} did not match required "
             f"status set: {allowed}"
         )
+    decision = receipt.get("decision")
+    decision_verdict = decision.get("verdict") if isinstance(decision, dict) else None
+    decision_assurance = (
+        decision.get("assurance") if isinstance(decision, dict) else None
+    )
+    if args.require_decision and decision_verdict not in set(args.require_decision):
+        allowed = ", ".join(args.require_decision)
+        failures.append(
+            f"receipt decision verdict {decision_verdict!r} did not match "
+            f"required decision set: {allowed}"
+        )
+    if args.require_assurance and decision_assurance not in set(args.require_assurance):
+        allowed = ", ".join(args.require_assurance)
+        failures.append(
+            f"receipt assurance {decision_assurance!r} did not match "
+            f"required assurance set: {allowed}"
+        )
     if args.require_passed and receipt.get("request_passed") is not True:
         failures.append(
             "receipt request_passed was not true "
@@ -413,10 +452,17 @@ def main() -> int:
         if args.request_out is not None:
             write_json(args.request_out, _load_request_json(args.request_json))
         if args.validate_only:
-            if args.require_status or args.require_passed or args.receipt_check_out:
+            if (
+                args.require_status
+                or args.require_decision
+                or args.require_assurance
+                or args.require_passed
+                or args.receipt_check_out
+            ):
                 raise SystemExit(
-                    "--require-status, --require-passed, and --receipt-check-out "
-                    "require a receipt; omit --validate-only"
+                    "--require-status, --require-decision, --require-assurance, "
+                    "--require-passed, and --receipt-check-out require a receipt; "
+                    "omit --validate-only"
                 )
             report = _request_validation_report(args.request_json)
             _validate_request_validation_report(
@@ -463,6 +509,8 @@ def main() -> int:
             pack=pack,
             receipt_path=_display_path(args.json_out),
             required_statuses=tuple(args.require_status),
+            required_decision_verdicts=tuple(args.require_decision),
+            required_assurance_levels=tuple(args.require_assurance),
             require_passed=args.require_passed,
         )
         _validate_receipt_check_report(check_report, args.receipt_check_schema)

@@ -173,9 +173,10 @@ python scripts/circle_ai_certify.py rope \
 ```
 
 The receipt schema is `circle_calculus.ai_contract_receipt.v0`. Its core fields
-are `normalized_request`, `evidence`, `proof_status`, `proof_layers`, `support`,
-and `not_claimed`. Read the [AI Contract Runner](ai_contract_runner.qmd) lesson
-before wiring the JSON into another project.
+are `decision`, `normalized_request`, `evidence`, `proof_status`,
+`proof_layers`, `support`, and `not_claimed`. Read the
+[AI Contract Runner](ai_contract_runner.qmd) lesson before wiring the JSON into
+another project.
 
 `make circle-ai-contracts-check` validates the generated JSON artifact itself: schema id, required contract keys, minimum fields, theorem ids, proof-status metadata, dictionary ids, source paths, quickstart docs, Living Book pages, and Python entrypoint paths.
 

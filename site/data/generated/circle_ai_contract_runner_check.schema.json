@@ -20,6 +20,30 @@
     "gate_policy": {
       "additionalProperties": false,
       "properties": {
+        "allowed_assurance_levels": {
+          "items": {
+            "enum": [
+              "theorem_backed",
+              "mixed_theorem_and_computation",
+              "numerical_only",
+              "unsupported",
+              "undecided"
+            ]
+          },
+          "type": "array"
+        },
+        "allowed_decision_verdicts": {
+          "items": {
+            "enum": [
+              "passed",
+              "failed",
+              "undecided",
+              "numerical_only",
+              "outside_scope"
+            ]
+          },
+          "type": "array"
+        },
         "allowed_statuses": {
           "items": {
             "enum": [
@@ -38,6 +62,8 @@
       },
       "required": [
         "allowed_statuses",
+        "allowed_decision_verdicts",
+        "allowed_assurance_levels",
         "require_passed"
       ],
       "type": "object"

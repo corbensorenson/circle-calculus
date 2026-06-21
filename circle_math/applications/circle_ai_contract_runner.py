@@ -1875,6 +1875,8 @@ def build_contract_receipt_file_check_report(
     *,
     receipt_path: str,
     required_statuses: Sequence[str] = (),
+    required_decision_verdicts: Sequence[str] = (),
+    required_assurance_levels: Sequence[str] = (),
     require_passed: bool = False,
 ) -> dict[str, Any]:
     """Build a saved-receipt validation report with the public report shape.
@@ -1893,6 +1895,26 @@ def build_contract_receipt_file_check_report(
             "required_statuses contains unsupported statuses: "
             + ", ".join(str(status) for status in unsupported_statuses)
         )
+    unsupported_verdicts = [
+        verdict
+        for verdict in required_decision_verdicts
+        if verdict not in DECISION_VERDICTS
+    ]
+    if unsupported_verdicts:
+        raise ValueError(
+            "required_decision_verdicts contains unsupported verdicts: "
+            + ", ".join(str(verdict) for verdict in unsupported_verdicts)
+        )
+    unsupported_assurance_levels = [
+        level
+        for level in required_assurance_levels
+        if level not in DECISION_ASSURANCE_LEVELS
+    ]
+    if unsupported_assurance_levels:
+        raise ValueError(
+            "required_assurance_levels contains unsupported assurance levels: "
+            + ", ".join(str(level) for level in unsupported_assurance_levels)
+        )
     failures = validate_contract_receipt_against_pack(receipt, pack)
     status = receipt.get("status")
     if required_statuses and status not in set(required_statuses):
@@ -1900,13 +1922,33 @@ def build_contract_receipt_file_check_report(
             f"receipt status {status!r} did not match required status set: "
             + ", ".join(required_statuses)
         )
+    decision = receipt.get("decision")
+    decision_verdict = decision.get("verdict") if isinstance(decision, Mapping) else None
+    decision_assurance = (
+        decision.get("assurance") if isinstance(decision, Mapping) else None
+    )
+    if required_decision_verdicts and decision_verdict not in set(
+        required_decision_verdicts
+    ):
+        failures.append(
+            f"receipt decision verdict {decision_verdict!r} did not match "
+            "required decision set: "
+            + ", ".join(required_decision_verdicts)
+        )
+    if required_assurance_levels and decision_assurance not in set(
+        required_assurance_levels
+    ):
+        failures.append(
+            f"receipt assurance {decision_assurance!r} did not match "
+            "required assurance set: "
+            + ", ".join(required_assurance_levels)
+        )
     if require_passed and receipt.get("request_passed") is not True:
         failures.append(
             "receipt request_passed was not true "
             f"(got {receipt.get('request_passed')!r})"
         )
     proof_status = receipt.get("proof_status")
-    decision = receipt.get("decision")
     report = {
         "schema_id": RECEIPT_FILE_CHECK_SCHEMA_ID,
         "ok": not failures,
@@ -1915,6 +1957,8 @@ def build_contract_receipt_file_check_report(
         "failures": failures,
         "gate_policy": {
             "allowed_statuses": list(required_statuses),
+            "allowed_decision_verdicts": list(required_decision_verdicts),
+            "allowed_assurance_levels": list(required_assurance_levels),
             "require_passed": require_passed,
         },
         "summaries": [
@@ -2285,11 +2329,24 @@ def build_contract_runner_check_json_schema() -> dict[str, Any]:
     }
     gate_policy = {
         "type": "object",
-        "required": ["allowed_statuses", "require_passed"],
+        "required": [
+            "allowed_statuses",
+            "allowed_decision_verdicts",
+            "allowed_assurance_levels",
+            "require_passed",
+        ],
         "properties": {
             "allowed_statuses": {
                 "type": "array",
                 "items": {"enum": list(STATUS_VALUES)},
+            },
+            "allowed_decision_verdicts": {
+                "type": "array",
+                "items": {"enum": list(DECISION_VERDICTS)},
+            },
+            "allowed_assurance_levels": {
+                "type": "array",
+                "items": {"enum": list(DECISION_ASSURANCE_LEVELS)},
             },
             "require_passed": {"type": "boolean"},
         },
@@ -2330,11 +2387,24 @@ def build_contract_receipt_file_check_json_schema() -> dict[str, Any]:
     fingerprint = {"type": "string", "pattern": "^[0-9a-f]{64}$"}
     gate_policy = {
         "type": "object",
-        "required": ["allowed_statuses", "require_passed"],
+        "required": [
+            "allowed_statuses",
+            "allowed_decision_verdicts",
+            "allowed_assurance_levels",
+            "require_passed",
+        ],
         "properties": {
             "allowed_statuses": {
                 "type": "array",
                 "items": {"enum": list(STATUS_VALUES)},
+            },
+            "allowed_decision_verdicts": {
+                "type": "array",
+                "items": {"enum": list(DECISION_VERDICTS)},
+            },
+            "allowed_assurance_levels": {
+                "type": "array",
+                "items": {"enum": list(DECISION_ASSURANCE_LEVELS)},
             },
             "require_passed": {"type": "boolean"},
         },
