@@ -1927,6 +1927,55 @@ def test_circle_ai_certify_cli_writes_receipt_check_report(
     ]
 
 
+def test_circle_ai_certify_cli_writes_certification_bundle(
+    tmp_path: Path,
+) -> None:
+    receipt_path = tmp_path / "receipt.json"
+    bundle_path = tmp_path / "certification_bundle.json"
+
+    result = subprocess.run(
+        [
+            sys.executable,
+            str(SCRIPT),
+            "rope",
+            "--context",
+            "131072",
+            "--requested-margin",
+            "1/328459",
+            "--json-out",
+            str(receipt_path),
+            "--certification-bundle-out",
+            str(bundle_path),
+            "--require-status",
+            "proved",
+            "--require-decision",
+            "passed",
+            "--require-assurance",
+            "mixed_theorem_and_computation",
+            "--require-passed",
+            "--format",
+            "json",
+        ],
+        cwd=ROOT,
+        check=True,
+        text=True,
+        capture_output=True,
+    )
+
+    receipt = json.loads(receipt_path.read_text())
+    bundle = json.loads(bundle_path.read_text())
+    assert json.loads(result.stdout) == receipt
+    jsonschema.validate(bundle, build_contract_certification_bundle_json_schema())
+    assert bundle["ok"] is True
+    assert bundle["request_validation_report"]["ok"] is True
+    assert bundle["receipt"] == receipt
+    assert bundle["gate_report"]["ok"] is True
+    assert bundle["gate_report"]["summaries"][0]["path"] == str(receipt_path)
+    assert bundle["receipt_content_fingerprint"] == receipt[
+        "receipt_content_fingerprint"
+    ]
+
+
 @pytest.mark.parametrize(
     ("subcommand_args", "expected_kind"),
     [
@@ -2483,6 +2532,8 @@ def test_circle_ai_certify_cli_validate_only_rejects_receipt_gate_options(
             "theorem_backed",
             "--gate-report-out",
             str(tmp_path / "gate_report.json"),
+            "--certification-bundle-out",
+            str(tmp_path / "certification_bundle.json"),
         ],
         cwd=ROOT,
         check=False,

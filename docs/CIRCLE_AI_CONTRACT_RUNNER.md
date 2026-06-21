@@ -51,7 +51,9 @@ Add `--format json` for a machine-readable receipt, `--json-out PATH` to write
 one to disk, and `--request-out PATH` to save the exact versioned request JSON
 used by the run. Add `--request-validation-report-out PATH` when a direct
 single-config run should also save the schema-validated preflight report for
-the exact request that produced the receipt.
+the exact request that produced the receipt. Add
+`--certification-bundle-out PATH` when CI wants one schema-validated artifact
+containing request preflight, receipt, and gate report.
 
 For CI gates, add `--require-status STATUS`, `--require-decision VERDICT`,
 `--require-assurance LEVEL`, and/or `--require-passed`. The runner still prints
@@ -160,6 +162,8 @@ python scripts/circle_ai_certify.py rope \
 
 Both report paths are validated against
 `site/data/generated/circle_ai_contract_receipt_file_check.schema.json`.
+Certification bundles are validated against
+`site/data/generated/circle_ai_contract_certification_bundle.schema.json`.
 
 Copyable starting points live under:
 
