@@ -162,6 +162,7 @@ def test_package_cli_unified_certify_rope_model_config(
     config_path = tmp_path / "config.json"
     request_path = tmp_path / "request.json"
     import_report_path = tmp_path / "import_report.json"
+    bundle_path = tmp_path / "bundle.json"
     config_path.write_text(
         json.dumps(
             {
@@ -189,6 +190,8 @@ def test_package_cli_unified_certify_rope_model_config(
             str(request_path),
             "--model-config-import-report-out",
             str(import_report_path),
+            "--certification-bundle-out",
+            str(bundle_path),
             "--format",
             "json",
         ],
@@ -205,6 +208,13 @@ def test_package_cli_unified_certify_rope_model_config(
     import_report = json.loads(import_report_path.read_text())
     assert import_report["ok"] is True
     assert import_report["request"] == receipt["request"]
+    bundle = json.loads(bundle_path.read_text())
+    assert bundle["schema_id"] == "circle_calculus.ai_contract_certification_bundle.v0"
+    assert bundle["ok"] is True
+    assert bundle["receipt"]["receipt_content_fingerprint"] == receipt[
+        "receipt_content_fingerprint"
+    ]
+    assert bundle["model_config_import_report"]["request"] == receipt["request"]
 
 
 def test_package_cli_unified_certify_request_file_gate() -> None:
@@ -244,6 +254,8 @@ def test_package_cli_unified_certify_writes_gate_and_replay_reports(tmp_path) ->
     gate_path = tmp_path / "gate.json"
     check_path = tmp_path / "receipt_check.json"
     replay_path = tmp_path / "replay.json"
+    bundle_path = tmp_path / "bundle.json"
+    bundle_check_path = tmp_path / "bundle_check.json"
 
     result = subprocess.run(
         [
@@ -271,6 +283,10 @@ def test_package_cli_unified_certify_writes_gate_and_replay_reports(tmp_path) ->
             str(check_path),
             "--receipt-replay-check-out",
             str(replay_path),
+            "--certification-bundle-out",
+            str(bundle_path),
+            "--certification-bundle-check-out",
+            str(bundle_check_path),
             "--require-passed",
             "--require-status",
             "proved",
@@ -286,6 +302,8 @@ def test_package_cli_unified_certify_writes_gate_and_replay_reports(tmp_path) ->
     gate_report = json.loads(gate_path.read_text())
     check_report = json.loads(check_path.read_text())
     replay_report = json.loads(replay_path.read_text())
+    bundle = json.loads(bundle_path.read_text())
+    bundle_check = json.loads(bundle_check_path.read_text())
 
     assert receipt == saved_receipt
     assert gate_report["schema_id"] == "circle_calculus.ai_contract_receipt_file_check.v0"
@@ -299,6 +317,43 @@ def test_package_cli_unified_certify_writes_gate_and_replay_reports(tmp_path) ->
     assert replay_report["schema_id"] == "circle_calculus.ai_contract_receipt_replay_check.v0"
     assert replay_report["ok"] is True
     assert replay_report["comparison"]["all_replay_fields_match"] is True
+    assert bundle["schema_id"] == "circle_calculus.ai_contract_certification_bundle.v0"
+    assert bundle["ok"] is True
+    assert bundle["request_validation_report"]["ok"] is True
+    assert bundle["receipt"]["receipt_content_fingerprint"] == receipt[
+        "receipt_content_fingerprint"
+    ]
+    assert (
+        bundle_check["schema_id"]
+        == "circle_calculus.ai_contract_certification_bundle_file_check.v0"
+    )
+    assert bundle_check["ok"] is True
+
+
+def test_package_cli_unified_certify_rejects_bundle_check_without_bundle(
+    tmp_path,
+) -> None:
+    result = subprocess.run(
+        [
+            sys.executable,
+            "-c",
+            (
+                "import sys; "
+                "from circle_math.cli import contract_certify_main; "
+                "sys.exit(contract_certify_main())"
+            ),
+            "recurrence",
+            "--certification-bundle-check-out",
+            str(tmp_path / "bundle_check.json"),
+        ],
+        text=True,
+        capture_output=True,
+    )
+    assert result.returncode == 2
+    assert (
+        "--certification-bundle-check-out requires --certification-bundle-out"
+        in result.stderr
+    )
 
 
 def test_package_cli_unified_certify_writes_failed_gate_report(tmp_path) -> None:

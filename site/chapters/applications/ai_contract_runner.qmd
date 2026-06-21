@@ -119,11 +119,17 @@ pass/fail report, `--receipt-check-out reports/rope_receipt_check.json` for a
 saved receipt validation report, and `--receipt-replay-check-out
 reports/rope_replay.json` to rebuild the receipt from its embedded request and
 compare stable fingerprints.
+Use `--certification-bundle-out reports/rope_bundle.json` with
+`--certification-bundle-check-out reports/rope_bundle_check.json` when the
+installed command should also archive the request preflight, theorem-linked
+receipt, gate report, model-config provenance when present, and bundle
+verification result.
 
 The repository-only `python scripts/circle_ai_certify.py` runner adds heavier
-audit outputs such as request-validation reports, certification bundles,
-artifact manifests, and pin-policy checks. Use that script when a handoff needs
-the full audit bundle rather than a single installed-package receipt.
+audit outputs such as standalone request-validation reports, artifact
+manifests, pin-policy checks, and whole-directory artifact bundles. Use that
+script when a handoff needs the full repository audit trail rather than a
+single installed-package receipt or certification bundle.
 
 Expected shape:
 

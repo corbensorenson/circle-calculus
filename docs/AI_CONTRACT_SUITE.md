@@ -65,12 +65,14 @@ schema-validated JSON gate report without saving the full receipt. Use
 reports/rope_receipt_check.json` when the audit log should point at a saved
 receipt file, and add `--receipt-replay-check-out reports/rope_replay.json` to
 rebuild the receipt from its embedded request and compare stable fingerprints.
+Use `--certification-bundle-out reports/rope_bundle.json` plus
+`--certification-bundle-check-out reports/rope_bundle_check.json` when the
+installed CLI should retain the full request preflight, theorem-linked receipt,
+gate report, model-config provenance when present, and a CI-readable
+verification report for the bundle.
 Use `python scripts/circle_ai_certify.py` when you need repository-only audit
-artifacts such as request-validation reports, certification bundles, artifact
-manifests, or artifact pin policies. Use `--certification-bundle-out` plus
-`--certification-bundle-check-out` when the audit log should retain the full
-request preflight, theorem-linked receipt, gate report, model-config provenance
-when present, and a CI-readable verification report for the bundle:
+artifacts such as standalone request-validation reports, artifact manifests,
+artifact pin policies, or whole-directory artifact bundles:
 
 ```bash
 python scripts/circle_ai_certify.py rope \

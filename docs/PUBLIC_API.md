@@ -97,13 +97,18 @@ circle-ai-certify sparse-attention \
   --json-out /tmp/circle_sparse_receipt.json \
   --gate-report-out /tmp/circle_sparse_gate.json \
   --receipt-replay-check-out /tmp/circle_sparse_replay.json \
+  --certification-bundle-out /tmp/circle_sparse_bundle.json \
+  --certification-bundle-check-out /tmp/circle_sparse_bundle_check.json \
   --format json
 ```
 
 Use `--gate-report-out` when downstream CI needs a compact machine-readable
 pass/fail report, `--receipt-check-out` when it wants a pack-aware receipt
 validation artifact, and `--receipt-replay-check-out` when it wants to rebuild
-the receipt from the embedded request and compare stable fingerprints.
+the receipt from the embedded request and compare stable fingerprints. Use
+`--certification-bundle-out` and `--certification-bundle-check-out` when the
+handoff should carry the request preflight, theorem-linked receipt, gate
+report, and bundle validation result as one archived object.
 
 The lower-level installed receipt command accepts kind aliases plus JSON
 parameters directly:
