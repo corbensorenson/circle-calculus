@@ -1090,8 +1090,33 @@ def build_sparse_attention_receipt(
                 "first_uncovered_lag",
                 "uncovered_lag_intervals",
                 "candidate_budget_per_query",
+                "raw_candidate_budget_upper_bound",
+                "deduplicated_candidate_budget_upper_bound",
+                "raw_budget_shortfall_certifies_incomplete",
                 "theorem_side_lag_candidates",
+                "theorem_side_unique_lag_candidate_count",
+                "theorem_side_lag_candidate_dedup_loss",
+                "theorem_side_lag_candidate_collision_pair_count",
+                "lag_collision_pair_count_zero_matches_no_collision",
+                "lag_collision_pair_count_positive_matches_collision",
+                "lag_collision_pair_count_bounds_dedup_loss",
+                "lag_dedup_loss_accounting_matches_raw",
                 "theorem_side_query_candidates",
+                "theorem_side_unique_query_candidate_count",
+                "theorem_side_query_candidate_dedup_loss",
+                "theorem_side_query_candidate_collision_pair_count",
+                "query_collision_pair_count_zero_matches_no_collision",
+                "query_collision_pair_count_positive_matches_collision",
+                "query_collision_pair_count_bounds_dedup_loss",
+                "query_dedup_loss_accounting_matches_raw",
+                "stride_family_periods",
+                "no_zero_period_thresholds",
+                "stride_family_zero_residue_step_counts",
+                "stride_family_zero_residue_total_step_count",
+                "zero_residue_step_counts_match_period_formula",
+                "zero_residue_total_count_matches_sum_formula",
+                "zero_residue_total_count_zero_matches_no_zero_condition",
+                "no_zero_period_threshold_matches_condition",
             ],
             "computed_fields": [],
             "numerical_only_fields": [],
@@ -2164,6 +2189,29 @@ def receipt_summary_lines(receipt: Mapping[str, Any]) -> list[str]:
             "sparse_repair="
             f"complete_repair_window={evidence['complete_repair_window']} "
             f"largest_interval_repair={evidence['largest_uncovered_interval_repair_window']}"
+        )
+        lines.append(
+            "sparse_budget="
+            f"raw={evidence['raw_candidate_budget_upper_bound']} "
+            f"dedup_bound={evidence['deduplicated_candidate_budget_upper_bound']} "
+            f"per_query={evidence['candidate_budget_per_query']} "
+            f"lag_unique={evidence['theorem_side_unique_lag_candidate_count']} "
+            f"lag_dedup_loss={evidence['theorem_side_lag_candidate_dedup_loss']} "
+            "lag_collision_pairs="
+            f"{evidence['theorem_side_lag_candidate_collision_pair_count']} "
+            f"query_unique={evidence['theorem_side_unique_query_candidate_count']} "
+            "query_collision_pairs="
+            f"{evidence['theorem_side_query_candidate_collision_pair_count']}"
+        )
+        lines.append(
+            "sparse_zero_residue="
+            f"periods={evidence['stride_family_periods']} "
+            f"period_thresholds={evidence['no_zero_period_thresholds']} "
+            "zero_residue_steps="
+            f"{evidence['stride_family_zero_residue_step_counts']} "
+            f"total={evidence['stride_family_zero_residue_total_step_count']} "
+            "threshold_matches_condition="
+            f"{evidence['no_zero_period_threshold_matches_condition']}"
         )
     elif kind == "recurrence_schedule":
         fields = evidence["fields"]

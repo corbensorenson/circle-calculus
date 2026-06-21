@@ -346,6 +346,18 @@ def test_kv_sparse_and_recurrence_receipts_preserve_family_semantics(
     )
     assert sparse["evidence"]["coverage_complete"] is False
     assert sparse["evidence"]["first_uncovered_lag"] == 5
+    assert "raw_candidate_budget_upper_bound" in sparse["proof_layers"][
+        "proved_fields"
+    ]
+    assert "theorem_side_lag_candidate_collision_pair_count" in sparse[
+        "proof_layers"
+    ]["proved_fields"]
+    assert "stride_family_zero_residue_total_step_count" in sparse["proof_layers"][
+        "proved_fields"
+    ]
+    sparse_lines = receipt_summary_lines(sparse)
+    assert any(line.startswith("sparse_budget=") for line in sparse_lines)
+    assert any(line.startswith("sparse_zero_residue=") for line in sparse_lines)
     assert sparse["proof_status"]["all_theorem_ids_proved"] is True
 
     assert recurrence["status"] == "proved"
