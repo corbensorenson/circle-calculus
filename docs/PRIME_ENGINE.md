@@ -543,8 +543,8 @@ Current CPU findings:
   best and `0.825x` median.
   Treat the cold one-shot lane as below-parity until a candidate beats cold
   `primesieve` by both median and best time. The same exact-repeat
-  probe has persistent Circle `count-server` at `15.668x` median versus
-  persistent `libprimesieve`, and the slim count-binary server row at `15.494x`
+  probe has persistent Circle `count-server` at `16.144x` median versus
+  persistent `libprimesieve`, and the slim count-binary server row at `14.442x`
   median versus persistent `libprimesieve`; those are hot-service repeat
   throughput numbers, while the shifted fresh-interval count-binary probe is
   the cleaner competitive count claim at `1.227x` median versus persistent
@@ -552,13 +552,13 @@ Current CPU findings:
   prime-engine-high-offset-count-binary-check`
   verifies the count-binary artifact provenance, validates that the current
   `circle-prime-count` hash matches the recorded benchmark metadata, keeps the
-  stable cold adaptive-default count-binary row above its regression floor, and
-  keeps the persistent Circle server default row above persistent
+  cold adaptive-default count-binary row above its regression floor, and keeps
+  the persistent Circle server default row above persistent
   `libprimesieve`. `make
   prime-engine-high-offset-count-binary-overhead-check` classifies that same
   artifact so the next step is explicit; the current diagnosis remains
   `cold_process_or_startup_bound`: the slim count-binary server is already
-  `15.494x` versus persistent `libprimesieve`, while cold one-shot rows still
+  `14.442x` versus persistent `libprimesieve`, while cold one-shot rows still
   trail cold `primesieve` on best time. `make
   prime-engine-high-offset-count-binary-cold-confirm` is the focused one-shot
   confirmation target for the weak lane: it runs 17 interleaved rounds of only

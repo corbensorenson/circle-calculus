@@ -312,13 +312,13 @@ as below-parity until a candidate beats cold `primesieve` by both median and
 best time. Earlier probes also rejected `presieve13:1703936`,
 `presieve13:1835008`, and one-shot worker-pool variants; noisy median parity
 without best-time parity is not a promotion. The same exact-repeat probe has persistent Circle
-`count-server` at `15.668x` median versus persistent `libprimesieve`, and the
-slim count-binary server row at `15.494x` median versus persistent
+`count-server` at `16.144x` median versus persistent `libprimesieve`, and the
+slim count-binary server row at `14.442x` median versus persistent
 `libprimesieve`; those are hot-service repeat throughput numbers, while the
 shifted fresh-interval count-binary probe is the cleaner competitive count
 claim at `1.227x` median versus persistent `libprimesieve`.
 `make prime-engine-high-offset-count-binary-check` validates that artifact,
-including the recorded `circle-prime-count` hash, the stable cold count-binary
+including the recorded `circle-prime-count` hash, the cold count-binary
 adaptive-default row against cold `primesieve`, and the persistent Circle
 server default row against persistent `libprimesieve`. The provenance gate also
 requires the recorded external controls to be at least the current release
@@ -330,7 +330,7 @@ including control versions, helper methods, paths, and helper binary/source
 hashes.
 `make prime-engine-high-offset-count-binary-overhead-check` classifies the same
 artifact; the current diagnosis remains `cold_process_or_startup_bound`: the
-slim count-binary server is already `15.494x` versus persistent `libprimesieve`,
+slim count-binary server is already `14.442x` versus persistent `libprimesieve`,
 while cold one-shot rows still trail cold `primesieve` on best time.
 `make prime-engine-high-offset-count-binary-cold-confirm` is the focused
 one-shot confirmation for this weak lane: it runs 17 interleaved rounds of only
