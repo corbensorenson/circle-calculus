@@ -100,10 +100,12 @@ CIRCLE_PRIME_HIGH_OFFSET_COUNT_BINARY_SERVER_NOISY_MEDIAN_BYPASS ?= 1.05
 CIRCLE_PRIME_HIGH_OFFSET_COUNT_BINARY_MAX_SIZE_BYTES ?= 7000000
 CIRCLE_PRIME_HIGH_OFFSET_COUNT_BINARY_OVERHEAD_MIN_COLD_SPEEDUP ?= 0.80
 CIRCLE_PRIME_HIGH_OFFSET_COUNT_BINARY_OVERHEAD_MIN_HOT_SPEEDUP ?= 1.0
+CIRCLE_PRIME_HIGH_OFFSET_COUNT_BINARY_OVERHEAD_MIN_HOT_COLD_RATIO ?= 1.50
+CIRCLE_PRIME_HIGH_OFFSET_COUNT_BINARY_OVERHEAD_MIN_NOOP_SHARE ?= 0.20
 CIRCLE_PRIME_HIGH_OFFSET_COUNT_BINARY_SWEEP_ROUNDS ?= 9
 CIRCLE_PRIME_HIGH_OFFSET_COUNT_BINARY_SWEEP_BATCH_SIZE ?= 20
 CIRCLE_PRIME_HIGH_OFFSET_COUNT_BINARY_SWEEP_WARMUP_ROUNDS ?= 2
-CIRCLE_PRIME_HIGH_OFFSET_COUNT_BINARY_SWEEP_VARIANTS ?= default:0:8,segmented:1310720:8,balanced:0:8,dynamic:0:8,presieve13:1310720:8,presieve13:1507328:8,presieve13:1572864:8,presieve13:1638400:8,presieve13:1638400:7,presieve13:1835008:6,presieve17:1310720:8
+CIRCLE_PRIME_HIGH_OFFSET_COUNT_BINARY_SWEEP_VARIANTS ?= default:0:8,segmented:1310720:8,balanced:0:8,dynamic:0:8,presieve13:1310720:8,presieve13:1441792:8,presieve13:1507328:8,presieve13:1572864:8,presieve13:1638400:8,presieve13:1638400:7,presieve13:1835008:6,presieve13:4194304:3,presieve17:1310720:8,presieve17:3670016:3
 CIRCLE_PRIME_HIGH_OFFSET_COUNT_BINARY_SWEEP_OUTPUT ?= sidecars/PRIME_ENGINE/results/prime_engine_high_offset_count_binary_segment_sweep_latest.csv
 CIRCLE_PRIME_HIGH_OFFSET_COUNT_BINARY_SWEEP_SAMPLES ?= sidecars/PRIME_ENGINE/results/prime_engine_high_offset_count_binary_segment_sweep_samples_latest.csv
 CIRCLE_PRIME_HIGH_OFFSET_COUNT_BINARY_SWEEP_METADATA ?= sidecars/PRIME_ENGINE/results/prime_engine_high_offset_count_binary_segment_sweep_latest.json
@@ -577,6 +579,7 @@ prime-engine-competitive-status:
 	$(MAKE) prime-engine-competitive-smoke
 	$(MAKE) prime-engine-external-controls-parallel-check
 	$(MAKE) prime-engine-high-offset-count-binary-check
+	$(MAKE) prime-engine-high-offset-hot-cold
 	$(MAKE) prime-engine-high-offset-count-binary-overhead-check
 	$(MAKE) prime-engine-high-offset-count-binary-cold-candidate-check
 	$(MAKE) prime-engine-high-offset-hot-server-check
@@ -636,6 +639,7 @@ prime-engine-competitive-short:
 	$(MAKE) prime-engine-prefix-cache-promotion-check
 	$(MAKE) prime-engine-high-offset-count-binary
 	$(MAKE) prime-engine-high-offset-count-binary-check
+	$(MAKE) prime-engine-high-offset-hot-cold
 	$(MAKE) prime-engine-high-offset-count-binary-overhead-check
 	$(MAKE) prime-engine-high-offset-count-binary-cold-confirm
 	$(MAKE) prime-engine-high-offset-count-binary-sweep
@@ -700,7 +704,7 @@ prime-engine-high-offset-count-binary-check:
 	python scripts/compare_prime_external_controls.py $(CIRCLE_PRIME_HIGH_OFFSET_COUNT_BINARY_OUTPUT) --baseline $(CIRCLE_PRIME_HIGH_OFFSET_COUNT_BINARY_OUTPUT) --names circle_prime_server_default_count --baselines external_primesieve_count_server --ranges $(CIRCLE_PRIME_HIGH_OFFSET_COMPARE_RANGES) --min-median-speedup-ratio 0.0 --min-best-speedup-ratio 0.0 --require-each-median-speedup-at-least $(CIRCLE_PRIME_HIGH_OFFSET_COUNT_BINARY_SERVER_MIN_MEDIAN_SPEEDUP) --require-stable-samples --allow-noisy-when-median-speedup-at-least $(CIRCLE_PRIME_HIGH_OFFSET_COUNT_BINARY_SERVER_NOISY_MEDIAN_BYPASS)
 
 prime-engine-high-offset-count-binary-overhead-check:
-	python scripts/check_prime_count_binary_overhead_readout.py --csv $(CIRCLE_PRIME_HIGH_OFFSET_COUNT_BINARY_OUTPUT) --metadata $(CIRCLE_PRIME_HIGH_OFFSET_COUNT_BINARY_METADATA) --min-cold-speedup-floor $(CIRCLE_PRIME_HIGH_OFFSET_COUNT_BINARY_OVERHEAD_MIN_COLD_SPEEDUP) --min-hot-speedup $(CIRCLE_PRIME_HIGH_OFFSET_COUNT_BINARY_OVERHEAD_MIN_HOT_SPEEDUP)
+	python scripts/check_prime_count_binary_overhead_readout.py --csv $(CIRCLE_PRIME_HIGH_OFFSET_COUNT_BINARY_OUTPUT) --metadata $(CIRCLE_PRIME_HIGH_OFFSET_COUNT_BINARY_METADATA) --hot-cold-csv $(CIRCLE_PRIME_HIGH_OFFSET_HOT_COLD_OUTPUT) --min-cold-speedup-floor $(CIRCLE_PRIME_HIGH_OFFSET_COUNT_BINARY_OVERHEAD_MIN_COLD_SPEEDUP) --min-hot-speedup $(CIRCLE_PRIME_HIGH_OFFSET_COUNT_BINARY_OVERHEAD_MIN_HOT_SPEEDUP) --min-hot-cold-best-ratio $(CIRCLE_PRIME_HIGH_OFFSET_COUNT_BINARY_OVERHEAD_MIN_HOT_COLD_RATIO) --min-noop-share-of-cold-extra $(CIRCLE_PRIME_HIGH_OFFSET_COUNT_BINARY_OVERHEAD_MIN_NOOP_SHARE)
 
 prime-engine-high-offset-tight:
 	python scripts/benchmark_prime_external_controls.py --ranges $(CIRCLE_PRIME_HIGH_OFFSET_COMPARE_RANGES) --rounds $(CIRCLE_PRIME_HIGH_OFFSET_TIGHT_ROUNDS) --interleaved --require-tool primesieve --require-tool primecount --circle-threads $(CIRCLE_PRIME_THREADS) --external-threads $(EXTERNAL_PRIME_THREADS) --segment-sizes $(CIRCLE_PRIME_HIGH_OFFSET_TIGHT_SEGMENT_SIZES) --circle-count-modes $(CIRCLE_PRIME_HIGH_OFFSET_TIGHT_COUNT_MODES) --output $(CIRCLE_PRIME_HIGH_OFFSET_TIGHT_OUTPUT) --sample-output $(CIRCLE_PRIME_HIGH_OFFSET_TIGHT_SAMPLES) --metadata-output $(CIRCLE_PRIME_HIGH_OFFSET_TIGHT_METADATA)

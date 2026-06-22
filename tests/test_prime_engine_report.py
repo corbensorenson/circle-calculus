@@ -1931,6 +1931,16 @@ def test_prime_engine_report_summarizes_artifacts(tmp_path: Path) -> None:
     assert overhead["cold_external_primesieve_best_ms"] == 4.9
     assert overhead["cold_count_binary_minus_noop_ms"] == pytest.approx(3.5)
     assert overhead["cold_count_binary_minus_binary_noop_ms"] == pytest.approx(3.6)
+    assert overhead["cold_count_binary_server_extra_ms"] == pytest.approx(1.85)
+    assert overhead["cold_count_binary_noop_share_of_server_extra"] == pytest.approx(
+        0.7 / 1.85
+    )
+    assert overhead["cold_count_binary_residual_after_binary_noop_ms"] == pytest.approx(
+        1.15
+    )
+    assert overhead["cold_count_binary_next_action"] == (
+        "thread_first_touch_reduction_required"
+    )
     assert overhead["cold_count_binary_over_external_primesieve"] == pytest.approx(
         4.3 / 4.9
     )
@@ -2057,7 +2067,7 @@ def test_prime_engine_report_summarizes_artifacts(tmp_path: Path) -> None:
     assert "High-offset cold/hot overhead (source: `high_offset_hot_cold`)" in markdown
     assert "| 10000000 | `parallel_high_offset_presieve17_range_count_8t` | 2.050 | `hot_cli_count_server_parallel_high_offset_segmented_count_8t` | 2.450 | 1.20x | 0.57x | 4.300 | 2.10x | 4.400 | 4.200 | 4.100 |" in markdown
     assert "High-offset cold diagnostics" in markdown
-    assert "| 10000000 | 0.800 | 0.900 | 0.700 | 0.750 | 6.300 | 4.300 | 3.600 | 4.900 | 0.88x |" in markdown
+    assert "| 10000000 | 0.800 | 0.900 | 0.700 | 0.750 | 6.300 | 4.300 | 1.850 | 0.38x | 1.150 | `thread_first_touch_reduction_required` | 4.900 | 0.88x |" in markdown
     assert "High-offset server/external best-time comparison" in markdown
     assert "| 10000000 | `hot_cli_count_server_parallel_high_offset_segmented_count_8t` | 2.450 | `external_primesieve_count` | 4.900 | 2.000 | 7.000 | 0.700 |" in markdown
     assert (

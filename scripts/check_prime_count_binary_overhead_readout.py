@@ -60,6 +60,16 @@ class SpeedupRow:
 
 
 @dataclass(frozen=True)
+class TimingRow:
+    name: str
+    workload: int
+    segment_size: int
+    result: int
+    rounds: int
+    best_ms: float
+
+
+@dataclass(frozen=True)
 class CountBinaryOverhead:
     low: int
     high: int
@@ -76,6 +86,20 @@ class CountBinaryOverhead:
     diagnosis: str
 
 
+@dataclass(frozen=True)
+class HotColdDecomposition:
+    cold_count_binary_best_ms: float
+    hot_count_server_best_ms: float
+    cold_noop_best_ms: float
+    cold_plan_best_ms: float
+    cold_over_hot_best: float
+    cold_extra_best_ms: float
+    noop_share_of_cold_extra: float
+    residual_after_noop_ms: float
+    diagnosis: str
+    next_action: str
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(
         description=(
@@ -85,6 +109,15 @@ def main() -> int:
     )
     parser.add_argument("--csv", type=Path, default=DEFAULT_CSV)
     parser.add_argument("--metadata", type=Path, default=DEFAULT_METADATA)
+    parser.add_argument(
+        "--hot-cold-csv",
+        type=Path,
+        default=None,
+        help=(
+            "Optional circle-prime-bench high-offset hot/cold artifact used to "
+            "prove the local cold launch/thread/first-touch split."
+        ),
+    )
     parser.add_argument("--circle-prime", type=Path, default=DEFAULT_CIRCLE_PRIME)
     parser.add_argument(
         "--circle-prime-count",
@@ -105,6 +138,24 @@ def main() -> int:
         help="Minimum cold count-binary speedup floor required to pass.",
     )
     parser.add_argument(
+        "--min-hot-cold-best-ratio",
+        type=float,
+        default=1.50,
+        help=(
+            "When --hot-cold-csv is provided, require cold count-binary best time "
+            "to be at least this multiple of persistent count-server best time."
+        ),
+    )
+    parser.add_argument(
+        "--min-noop-share-of-cold-extra",
+        type=float,
+        default=0.20,
+        help=(
+            "When --hot-cold-csv is provided, require the no-op fresh-process "
+            "floor to explain at least this share of the cold-over-hot best-time gap."
+        ),
+    )
+    parser.add_argument(
         "--skip-provenance",
         action="store_true",
         help="Skip current-binary/defaults provenance checks. Intended for tests only.",
@@ -115,9 +166,16 @@ def main() -> int:
         parser.error("--min-hot-speedup must be nonnegative")
     if args.min_cold_speedup_floor < 0:
         parser.error("--min-cold-speedup-floor must be nonnegative")
+    if args.min_hot_cold_best_ratio < 0:
+        parser.error("--min-hot-cold-best-ratio must be nonnegative")
+    if args.min_noop_share_of_cold_extra < 0:
+        parser.error("--min-noop-share-of-cold-extra must be nonnegative")
 
     try:
         rows = load_speedup_rows(args.csv)
+        hot_cold_rows = (
+            load_timing_rows(args.hot_cold_csv) if args.hot_cold_csv is not None else None
+        )
         provenance_failures = []
         if not args.skip_provenance:
             provenance_failures = current_provenance_failures(
@@ -140,18 +198,34 @@ def main() -> int:
 
     result = check_count_binary_overhead(
         rows,
+        hot_cold_rows=hot_cold_rows,
         min_hot_speedup=args.min_hot_speedup,
         min_cold_speedup_floor=args.min_cold_speedup_floor,
+        min_hot_cold_best_ratio=args.min_hot_cold_best_ratio,
+        min_noop_share_of_cold_extra=args.min_noop_share_of_cold_extra,
     )
     if result["ok"]:
         overhead: CountBinaryOverhead = result["overhead"]
-        print(
+        message = (
             "OK: high-offset count-binary overhead diagnosis: "
             f"{overhead.diagnosis}; cold={overhead.cold_vs_primesieve_speedup:.3f}x "
             f"vs primesieve CLI, hot={overhead.hot_vs_libprimesieve_speedup:.3f}x "
             f"vs libprimesieve, Circle cold/hot={overhead.circle_cold_over_hot:.2f}x "
-            f"(+{overhead.circle_cold_extra_ms:.3f} ms)."
+            f"(+{overhead.circle_cold_extra_ms:.3f} ms)"
         )
+        if result.get("hot_cold") is not None:
+            hot_cold: HotColdDecomposition = result["hot_cold"]
+            message += (
+                "; hot/cold best-time split "
+                f"cold={hot_cold.cold_count_binary_best_ms:.3f} ms, "
+                f"hot={hot_cold.hot_count_server_best_ms:.3f} ms, "
+                f"noop={hot_cold.cold_noop_best_ms:.3f} ms, "
+                f"cold/hot={hot_cold.cold_over_hot_best:.2f}x, "
+                f"noop-share={hot_cold.noop_share_of_cold_extra:.2f}x, "
+                f"residual-after-noop={hot_cold.residual_after_noop_ms:.3f} ms, "
+                f"next-action={hot_cold.next_action}"
+            )
+        print(message + ".")
         return 0
 
     print(result["message"], file=sys.stderr)
@@ -209,16 +283,43 @@ def load_speedup_rows(path: Path) -> list[SpeedupRow]:
     return rows
 
 
+def load_timing_rows(path: Path) -> list[TimingRow]:
+    rows = []
+    with path.open(newline="") as handle:
+        for row in csv.DictReader(handle):
+            if row.get("kind") != "timing":
+                continue
+            rows.append(
+                TimingRow(
+                    name=row.get("name", ""),
+                    workload=int(row.get("workload", "0")),
+                    segment_size=int(row.get("segment_size", "0")),
+                    result=int(row.get("result", "0")),
+                    rounds=int(row.get("rounds", "0")),
+                    best_ms=float(row["best_ms"]),
+                )
+            )
+    return rows
+
+
 def check_count_binary_overhead(
     rows: list[SpeedupRow],
     *,
+    hot_cold_rows: list[TimingRow] | None = None,
     min_hot_speedup: float = 1.0,
     min_cold_speedup_floor: float = 0.80,
+    min_hot_cold_best_ratio: float = 1.50,
+    min_noop_share_of_cold_extra: float = 0.20,
 ) -> dict[str, Any]:
     try:
         overhead = summarize_count_binary_overhead(rows)
+        hot_cold = (
+            summarize_hot_cold_decomposition(hot_cold_rows)
+            if hot_cold_rows is not None
+            else None
+        )
     except ValueError as exc:
-        return {"ok": False, "message": f"ERROR: {exc}", "overhead": None}
+        return {"ok": False, "message": f"ERROR: {exc}", "overhead": None, "hot_cold": None}
 
     failures = []
     if overhead.cold_vs_primesieve_speedup < min_cold_speedup_floor:
@@ -233,13 +334,27 @@ def check_count_binary_overhead(
             f"{overhead.hot_vs_libprimesieve_speedup:.3f}x is below floor "
             f"{min_hot_speedup:.3f}x"
         )
+    if hot_cold is not None:
+        if hot_cold.cold_over_hot_best < min_hot_cold_best_ratio:
+            failures.append(
+                "hot/cold best-time ratio "
+                f"{hot_cold.cold_over_hot_best:.3f}x is below floor "
+                f"{min_hot_cold_best_ratio:.3f}x"
+            )
+        if hot_cold.noop_share_of_cold_extra < min_noop_share_of_cold_extra:
+            failures.append(
+                "fresh-process no-op share of cold-over-hot gap "
+                f"{hot_cold.noop_share_of_cold_extra:.3f}x is below floor "
+                f"{min_noop_share_of_cold_extra:.3f}x"
+            )
     if failures:
         return {
             "ok": False,
             "message": "ERROR: " + "; ".join(failures) + ".",
             "overhead": overhead,
+            "hot_cold": hot_cold,
         }
-    return {"ok": True, "message": "OK", "overhead": overhead}
+    return {"ok": True, "message": "OK", "overhead": overhead, "hot_cold": hot_cold}
 
 
 def summarize_count_binary_overhead(rows: list[SpeedupRow]) -> CountBinaryOverhead:
@@ -284,6 +399,56 @@ def summarize_count_binary_overhead(rows: list[SpeedupRow]) -> CountBinaryOverhe
         primesieve_cli_extra_ms=primesieve_cli_median - libprimesieve_median,
         diagnosis=diagnosis,
     )
+
+
+def summarize_hot_cold_decomposition(rows: list[TimingRow]) -> HotColdDecomposition:
+    cold_noop = find_timing_row(rows, "cold_count_binary_high_offset_noop")
+    cold_plan = find_timing_row(rows, "cold_count_binary_high_offset_default_plan_8t")
+    cold_count = find_timing_row(
+        rows,
+        "cold_count_binary_parallel_high_offset_default_range_count_8t",
+    )
+    hot_count = find_timing_row(
+        rows,
+        "hot_cli_count_server_parallel_high_offset_default_range_count_8t",
+    )
+    if cold_count.best_ms <= 0 or hot_count.best_ms <= 0:
+        raise ValueError("nonpositive best time in high-offset hot/cold rows")
+    cold_extra = cold_count.best_ms - hot_count.best_ms
+    if cold_extra <= 0:
+        raise ValueError(
+            "high-offset hot/cold artifact does not show a cold-over-hot best-time gap"
+        )
+    residual_after_noop = max(0.0, cold_extra - cold_noop.best_ms)
+    noop_share = cold_noop.best_ms / cold_extra
+    return HotColdDecomposition(
+        cold_count_binary_best_ms=cold_count.best_ms,
+        hot_count_server_best_ms=hot_count.best_ms,
+        cold_noop_best_ms=cold_noop.best_ms,
+        cold_plan_best_ms=cold_plan.best_ms,
+        cold_over_hot_best=cold_count.best_ms / hot_count.best_ms,
+        cold_extra_best_ms=cold_extra,
+        noop_share_of_cold_extra=noop_share,
+        residual_after_noop_ms=residual_after_noop,
+        diagnosis="cold_launch_thread_first_touch_bound",
+        next_action=classify_hot_cold_next_action(noop_share, residual_after_noop),
+    )
+
+
+def classify_hot_cold_next_action(noop_share: float, residual_after_noop_ms: float) -> str:
+    if noop_share >= 0.50:
+        return "launch_amortization_required"
+    if residual_after_noop_ms >= 0.50:
+        return "thread_first_touch_reduction_required"
+    return "cold_core_rebenchmark_required"
+
+
+def find_timing_row(rows: list[TimingRow], name: str) -> TimingRow:
+    matches = [row for row in rows if row.name == name]
+    if not matches:
+        raise ValueError(f"missing timing row {name!r} in high-offset hot/cold artifact")
+    matches.sort(key=lambda row: row.best_ms)
+    return matches[0]
 
 
 def find_row(

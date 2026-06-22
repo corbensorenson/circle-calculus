@@ -1167,6 +1167,29 @@ def summarize_high_offset_cold_hot_overhead(
         return []
 
     hot_ms = float(hot["best_ms"])
+    hot_server_ms = float(hot_server["best_ms"]) if hot_server else None
+    cold_count_binary_ms = float(cold_count_binary["best_ms"]) if cold_count_binary else None
+    cold_count_binary_noop_ms = (
+        float(cold_count_binary_noop["best_ms"]) if cold_count_binary_noop else None
+    )
+    cold_count_binary_server_extra_ms = (
+        cold_count_binary_ms - hot_server_ms
+        if cold_count_binary_ms is not None and hot_server_ms is not None
+        else None
+    )
+    cold_count_binary_noop_share_of_server_extra = (
+        cold_count_binary_noop_ms / cold_count_binary_server_extra_ms
+        if cold_count_binary_noop_ms is not None
+        and cold_count_binary_server_extra_ms is not None
+        and cold_count_binary_server_extra_ms > 0
+        else None
+    )
+    cold_count_binary_residual_after_binary_noop_ms = (
+        max(0.0, cold_count_binary_server_extra_ms - cold_count_binary_noop_ms)
+        if cold_count_binary_server_extra_ms is not None
+        and cold_count_binary_noop_ms is not None
+        else None
+    )
     summary = {
         "workload": hot["workload"],
         "result": hot["result"],
@@ -1175,7 +1198,7 @@ def summarize_high_offset_cold_hot_overhead(
         "hot_best_ms": hot_ms,
         "hot_server_name": hot_server["name"] if hot_server else None,
         "hot_server_segment_size": hot_server["segment_size"] if hot_server else None,
-        "hot_server_best_ms": float(hot_server["best_ms"]) if hot_server else None,
+        "hot_server_best_ms": hot_server_ms,
         "hot_server_over_hot": (
             float(hot_server["best_ms"]) / hot_ms if hot_server and hot_ms > 0 else None
         ),
@@ -1202,9 +1225,7 @@ def summarize_high_offset_cold_hot_overhead(
         "cold_count_binary_segment_size": (
             cold_count_binary["segment_size"] if cold_count_binary else None
         ),
-        "cold_count_binary_best_ms": (
-            float(cold_count_binary["best_ms"]) if cold_count_binary else None
-        ),
+        "cold_count_binary_best_ms": cold_count_binary_ms,
         "cold_count_binary_over_hot": (
             float(cold_count_binary["best_ms"]) / hot_ms
             if cold_count_binary and hot_ms > 0
@@ -1218,9 +1239,7 @@ def summarize_high_offset_cold_hot_overhead(
         "cold_count_binary_noop_name": (
             cold_count_binary_noop["name"] if cold_count_binary_noop else None
         ),
-        "cold_count_binary_noop_best_ms": (
-            float(cold_count_binary_noop["best_ms"]) if cold_count_binary_noop else None
-        ),
+        "cold_count_binary_noop_best_ms": cold_count_binary_noop_ms,
         "cold_count_binary_plan_name": (
             cold_count_binary_plan["name"] if cold_count_binary_plan else None
         ),
@@ -1236,6 +1255,17 @@ def summarize_high_offset_cold_hot_overhead(
             float(cold_count_binary["best_ms"]) - float(cold_count_binary_noop["best_ms"])
             if cold_count_binary is not None and cold_count_binary_noop is not None
             else None
+        ),
+        "cold_count_binary_server_extra_ms": cold_count_binary_server_extra_ms,
+        "cold_count_binary_noop_share_of_server_extra": (
+            cold_count_binary_noop_share_of_server_extra
+        ),
+        "cold_count_binary_residual_after_binary_noop_ms": (
+            cold_count_binary_residual_after_binary_noop_ms
+        ),
+        "cold_count_binary_next_action": classify_cold_count_binary_next_action(
+            cold_count_binary_noop_share_of_server_extra,
+            cold_count_binary_residual_after_binary_noop_ms,
         ),
         "cold_process_noop_name": cold_noop["name"] if cold_noop else None,
         "cold_process_noop_best_ms": float(cold_noop["best_ms"]) if cold_noop else None,
@@ -1292,6 +1322,19 @@ def summarize_high_offset_cold_hot_overhead(
         ),
     }
     return [summary]
+
+
+def classify_cold_count_binary_next_action(
+    noop_share_of_server_extra: float | None,
+    residual_after_noop_ms: float | None,
+) -> str | None:
+    if noop_share_of_server_extra is None or residual_after_noop_ms is None:
+        return None
+    if noop_share_of_server_extra >= 0.50:
+        return "launch_amortization_required"
+    if residual_after_noop_ms >= 0.50:
+        return "thread_first_touch_reduction_required"
+    return "cold_core_rebenchmark_required"
 
 
 def summarize_high_offset_server_external(
@@ -4945,8 +4988,8 @@ def render_benchmark_markdown(summary: dict[str, Any]) -> list[str]:
                 [
                     "High-offset cold diagnostics:",
                     "",
-                    "| Workload | Bench Noop ms | Bench Plan ms | Count Binary Noop ms | Count Binary Plan ms | Serial Default ms | Count Binary ms | Count Binary - Binary Noop ms | primesieve Cold ms | Count Binary / primesieve |",
-                    "| ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |",
+                    "| Workload | Bench Noop ms | Bench Plan ms | Count Binary Noop ms | Count Binary Plan ms | Serial Default ms | Count Binary ms | Count Binary - Server ms | Noop Share | Residual After Noop ms | Next Action | primesieve Cold ms | Count Binary / primesieve |",
+                    "| ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- | ---: | ---: |",
                 ]
             )
             for row in diagnostic_rows:
@@ -4958,7 +5001,10 @@ def render_benchmark_markdown(summary: dict[str, Any]) -> list[str]:
                     f"{format_optional_ms(row['cold_count_binary_plan_best_ms'])} | "
                     f"{format_optional_ms(row['cold_process_serial_default_best_ms'])} | "
                     f"{format_optional_ms(row['cold_count_binary_best_ms'])} | "
-                    f"{format_optional_ms(row['cold_count_binary_minus_binary_noop_ms'])} | "
+                    f"{format_optional_ms(row['cold_count_binary_server_extra_ms'])} | "
+                    f"{format_optional_ratio(row['cold_count_binary_noop_share_of_server_extra'])} | "
+                    f"{format_optional_ms(row['cold_count_binary_residual_after_binary_noop_ms'])} | "
+                    f"{format_optional_code(row['cold_count_binary_next_action'])} | "
                     f"{format_optional_ms(row['cold_external_primesieve_best_ms'])} | "
                     f"{format_optional_ratio(row['cold_count_binary_over_external_primesieve'])} |"
                 )

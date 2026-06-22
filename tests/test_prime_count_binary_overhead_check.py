@@ -4,8 +4,10 @@ import pytest
 
 from scripts.check_prime_count_binary_overhead_readout import (
     SpeedupRow,
+    TimingRow,
     check_count_binary_overhead,
     summarize_count_binary_overhead,
+    summarize_hot_cold_decomposition,
 )
 
 
@@ -46,6 +48,43 @@ def startup_bound_rows() -> list[SpeedupRow]:
     ]
 
 
+def hot_cold_rows() -> list[TimingRow]:
+    return [
+        TimingRow(
+            name="cold_count_binary_high_offset_noop",
+            workload=0,
+            segment_size=0,
+            result=0,
+            rounds=17,
+            best_ms=1.50,
+        ),
+        TimingRow(
+            name="cold_count_binary_high_offset_default_plan_8t",
+            workload=10_000_000,
+            segment_size=1_507_328,
+            result=7,
+            rounds=17,
+            best_ms=1.25,
+        ),
+        TimingRow(
+            name="cold_count_binary_parallel_high_offset_default_range_count_8t",
+            workload=10_000_000,
+            segment_size=1_507_328,
+            result=361_726,
+            rounds=17,
+            best_ms=4.05,
+        ),
+        TimingRow(
+            name="hot_cli_count_server_parallel_high_offset_default_range_count_8t",
+            workload=10_000_000,
+            segment_size=1_507_328,
+            result=361_726,
+            rounds=17,
+            best_ms=1.65,
+        ),
+    ]
+
+
 def test_count_binary_overhead_classifies_startup_bound_lane() -> None:
     overhead = summarize_count_binary_overhead(startup_bound_rows())
 
@@ -56,11 +95,94 @@ def test_count_binary_overhead_classifies_startup_bound_lane() -> None:
     assert overhead.libprimesieve_median_ms == pytest.approx(2.4)
 
 
+def test_hot_cold_decomposition_quantifies_launch_and_thread_gap() -> None:
+    decomposition = summarize_hot_cold_decomposition(hot_cold_rows())
+
+    assert decomposition.diagnosis == "cold_launch_thread_first_touch_bound"
+    assert decomposition.cold_over_hot_best == pytest.approx(4.05 / 1.65)
+    assert decomposition.cold_extra_best_ms == pytest.approx(2.4)
+    assert decomposition.noop_share_of_cold_extra == pytest.approx(1.5 / 2.4)
+    assert decomposition.residual_after_noop_ms == pytest.approx(0.9)
+    assert decomposition.next_action == "launch_amortization_required"
+
+
+def test_hot_cold_decomposition_classifies_residual_thread_gap() -> None:
+    rows = [
+        row
+        if row.name != "cold_count_binary_high_offset_noop"
+        else TimingRow(
+            name=row.name,
+            workload=row.workload,
+            segment_size=row.segment_size,
+            result=row.result,
+            rounds=row.rounds,
+            best_ms=0.40,
+        )
+        for row in hot_cold_rows()
+    ]
+
+    decomposition = summarize_hot_cold_decomposition(rows)
+
+    assert decomposition.noop_share_of_cold_extra == pytest.approx(0.40 / 2.4)
+    assert decomposition.residual_after_noop_ms == pytest.approx(2.0)
+    assert decomposition.next_action == "thread_first_touch_reduction_required"
+
+
 def test_count_binary_overhead_passes_when_hot_lane_still_wins() -> None:
     result = check_count_binary_overhead(startup_bound_rows())
 
     assert result["ok"] is True
     assert result["overhead"].diagnosis == "cold_process_or_startup_bound"
+
+
+def test_count_binary_overhead_accepts_supporting_hot_cold_decomposition() -> None:
+    result = check_count_binary_overhead(startup_bound_rows(), hot_cold_rows=hot_cold_rows())
+
+    assert result["ok"] is True
+    assert result["hot_cold"].cold_over_hot_best == pytest.approx(4.05 / 1.65)
+    assert result["hot_cold"].next_action == "launch_amortization_required"
+
+
+def test_count_binary_overhead_rejects_weak_hot_cold_gap() -> None:
+    rows = [
+        row
+        if row.name != "cold_count_binary_parallel_high_offset_default_range_count_8t"
+        else TimingRow(
+            name=row.name,
+            workload=row.workload,
+            segment_size=row.segment_size,
+            result=row.result,
+            rounds=row.rounds,
+            best_ms=2.0,
+        )
+        for row in hot_cold_rows()
+    ]
+
+    result = check_count_binary_overhead(startup_bound_rows(), hot_cold_rows=rows)
+
+    assert result["ok"] is False
+    assert "hot/cold best-time ratio" in result["message"]
+
+
+def test_count_binary_overhead_rejects_weak_noop_share() -> None:
+    rows = [
+        row
+        if row.name != "cold_count_binary_high_offset_noop"
+        else TimingRow(
+            name=row.name,
+            workload=row.workload,
+            segment_size=row.segment_size,
+            result=row.result,
+            rounds=row.rounds,
+            best_ms=0.10,
+        )
+        for row in hot_cold_rows()
+    ]
+
+    result = check_count_binary_overhead(startup_bound_rows(), hot_cold_rows=rows)
+
+    assert result["ok"] is False
+    assert "fresh-process no-op share" in result["message"]
 
 
 def test_count_binary_overhead_fails_when_hot_lane_loses() -> None:
