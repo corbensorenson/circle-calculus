@@ -234,6 +234,12 @@ the short competitive workflow.
   launch, scoped-spawn, and post-spawn first-touch cost or beat cold
   `primesieve` by both median and
   best time.
+  The current goalpost is therefore two-lane, not a vague "prime search"
+  claim: cold one-shot range-count work must still beat the latest local
+  `primesieve` CLI by both median and best before promotion, while the Circle
+  advantage lane should lean into proof-backed persistent, shifted, adjacent,
+  and batched requests where the engine reuses phase/plan structure that a
+  one-shot external CLI cannot amortize.
 - Benchmarks include control implementations: a straightforward full
   Sieve-of-Eratosthenes count, a guarded scalar trial-division count, and the
   optimized pure-Rust `primal` sieve.
@@ -256,11 +262,14 @@ For best-current external comparisons, use:
 - `primesieve` for prime generation and range counting
   (`https://github.com/kimwalisch/primesieve`). It uses a segmented sieve with
   wheel factorization, cache-size tuning, bucket sieving for large values, and
-  multi-threading where ordering permits.
+  multi-threading where ordering permits. The online check on 2026-06-22 found
+  `primesieve-12.14` as the latest release, so local comparisons should require
+  at least that version.
 - `primecount` for the prime-counting function `pi(x)`
   (`https://github.com/kimwalisch/primecount`). This is not the same task as
   enumerating/counting a materialized range; it uses combinatorial
-  prime-counting algorithms such as Deleglise-Rivat and Xavier Gourdon.
+  prime-counting algorithms such as Deleglise-Rivat and Xavier Gourdon. The
+  online check on 2026-06-22 found `primecount-8.5` as the latest release.
 - GMP/gmpy2 for in-process arbitrary-precision probable-prime and next-prime
   controls when the Python `gmpy2` binding is installed. The BigUint benchmark
   auto-records `gmpy2_is_prime` and `gmpy2_next_prime` rows when available; use
@@ -543,6 +552,27 @@ Current CPU findings:
   with direct casts was also rejected: the focused run still had the slim cold
   count-binary row below parity at `0.893x` best and `0.807x` median versus
   cold `primesieve`.
+  A low-level Unix `pthread_create` worker-launch probe also failed to close
+  the gap. The safe variant with a Rust panic catch left the slim cold
+  count-binary row at `0.862x` median and `0.881x` best versus cold
+  `primesieve`; a no-catch measurement-only variant reached `0.931x` median
+  and `0.919x` best, but worsened absolute cold time and would weaken panic
+  behavior. The scoped-thread path remains the implementation.
+  A fresh current-source sweep found `presieve17:1310720` at eight effective
+  workers as the nearest cold count-binary candidate: one short sweep showed
+  `1.047x` median but only `0.964x` best versus cold `primesieve`, and the
+  focused 31-round confirmation fell back to `0.930x` median and `0.984x` best.
+  `presieve17:1507328` likewise failed confirmation at `0.933x` median and
+  `0.966x` best. The result is evidence, not a promotion.
+  A presieve13/17 single-segment tracked-count probe that decremented the live
+  candidate total while marking composites was also rejected. It avoided the
+  final flag-byte scan but added a branch/load on every composite mark, dropping
+  the slim cold default to `0.723x` median and `0.732x` best versus cold
+  `primesieve`. The existing mark-then-popcount scan remains faster.
+  Existing full-CLI `wheel30-mark` and `hybrid-wheel30-mark` modes were also
+  probed before considering a slim-binary port; they landed around `0.55x` to
+  `0.60x` median versus cold `primesieve`, so the port is not justified for the
+  tracked high-offset cold lane.
   Smaller cold worker-count/segment-size variants remain tracked as evidence
   lanes. The latest full competitive status rejects a cold one-shot promotion:
   the default count-binary row is `0.862x` median and `0.902x` best versus cold

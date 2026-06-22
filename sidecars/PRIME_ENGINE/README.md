@@ -343,6 +343,11 @@ cold/hot `2.87x`, no-op share `0.53x`, and scoped-spawn share `0.57x`
 of the cold-over-hot gap; residual after no-op is `1.536 ms`, residual after
 scoped spawn is `1.400 ms`, and the enforced next action is
 `launch_amortization_required`.
+The active goalpost is now explicit: cold one-shot range-count work must beat
+the latest local `primesieve` CLI by both median and best before promotion, and
+the durable Circle advantage lane should focus on proof-backed persistent,
+shifted, adjacent, and batched requests where phase/plan reuse can be
+amortized rather than hidden inside a fresh process.
 `make prime-engine-high-offset-count-binary-cold-confirm` is the focused
 one-shot confirmation for this weak lane: it runs 17 interleaved rounds of only
 cold `circle-prime-count` default versus cold `primesieve`, writes
@@ -407,6 +412,26 @@ Replacing checked `u64`-to-`usize` conversions for single-segment mark steps
 with direct casts was also rejected: the focused run still had the slim cold
 count-binary row below parity at `0.893x` best and `0.807x` median versus cold
 `primesieve`.
+A low-level Unix `pthread_create` worker-launch probe was also rejected. The
+safe panic-catching variant left the slim cold count-binary row at `0.862x`
+median and `0.881x` best versus cold `primesieve`; a no-catch measurement-only
+variant reached `0.931x` median and `0.919x` best, but worsened absolute cold
+time and would weaken panic behavior. The scoped-thread implementation stays in
+place. A fresh current-source sweep found `presieve17:1310720` at eight
+effective workers as the nearest cold count-binary candidate: one short sweep
+showed `1.047x` median but only `0.964x` best versus cold `primesieve`, and the
+focused 31-round confirmation fell back to `0.930x` median and `0.984x` best.
+`presieve17:1507328` also failed confirmation at `0.933x` median and `0.966x`
+best, so no presieve17 default promotion is trial-ready.
+A presieve13/17 single-segment tracked-count probe that decremented the live
+candidate total while marking composites was also rejected. It avoided the
+final flag-byte scan but added a branch/load on every composite mark, dropping
+the slim cold default to `0.723x` median and `0.732x` best versus cold
+`primesieve`. The current mark-then-popcount scan remains the faster path.
+Existing full-CLI `wheel30-mark` and `hybrid-wheel30-mark` modes were also
+probed before considering a slim-binary port; they landed around `0.55x` to
+`0.60x` median versus cold `primesieve`, so the port is not justified for the
+tracked high-offset cold lane.
 A separate one-shot-only `circle-prime-count-cold` prototype removed stdin
 server and shifted-batch code and cut the binary from `1395168` to `1310896`
 bytes, but a 25-round interleaved A/B still left the existing

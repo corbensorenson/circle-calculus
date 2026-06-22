@@ -1,5 +1,8 @@
 use std::env;
+use std::fs;
 use std::io::{self, BufRead, Write};
+#[cfg(unix)]
+use std::os::unix::net::{UnixListener, UnixStream};
 use std::process;
 use std::sync::atomic::{AtomicUsize, Ordering};
 use std::sync::mpsc;
@@ -97,6 +100,14 @@ fn run_args(mut args: impl Iterator<Item = String>) -> Result<(), String> {
             return Ok(());
         }
         return count_server_command(&server_args);
+    }
+    if matches!(first.as_str(), "socket-server" | "daemon-server") {
+        let server_args = args.collect::<Vec<_>>();
+        return socket_server_command(&server_args);
+    }
+    if matches!(first.as_str(), "socket-client" | "daemon-client") {
+        let client_args = args.collect::<Vec<_>>();
+        return socket_client_command(&client_args);
     }
 
     let low = first
@@ -344,28 +355,7 @@ fn count_json(plan: &CountPlan, count: usize) -> String {
 
 fn count_server_command(args: &[String]) -> Result<(), String> {
     let json = args.iter().any(|arg| arg == "--json");
-    let default_requested_threads = optional_value(args, "--threads")
-        .map(|value| {
-            value
-                .parse::<usize>()
-                .map_err(|_| "--threads must fit in usize".to_string())
-        })
-        .transpose()?
-        .unwrap_or(1);
-    if default_requested_threads == 0 {
-        return Err("--threads must be greater than zero".to_string());
-    }
-    let default_segment_size = optional_value(args, "--segment-size")
-        .map(|value| {
-            value
-                .parse::<u64>()
-                .map_err(|_| "--segment-size must fit in u64".to_string())
-        })
-        .transpose()?;
-    let default_mode = optional_value(args, "--count-mode")
-        .map(parse_count_mode_override)
-        .transpose()?
-        .flatten();
+    let defaults = count_server_defaults_from_args(args)?;
 
     let stdin = io::stdin();
     let mut stdout = io::BufWriter::new(io::stdout().lock());
@@ -380,47 +370,223 @@ fn count_server_command(args: &[String]) -> Result<(), String> {
             break;
         }
 
-        match parse_count_server_batch_request(request)? {
-            CountServerBatchRequest::Identical {
-                repetitions,
-                raw_request,
-            } => {
-                let plan = parse_count_server_request(
-                    &raw_request,
-                    default_segment_size,
-                    default_requested_threads,
-                    default_mode,
-                )?;
-                let count = count_range_with_pool(&mut pool, &plan)
-                    .map_err(|err| format!("range sieve failed: {err:?}"))?;
-                for _ in 0..repetitions {
-                    write_count_response(&mut stdout, &plan, count, json)?;
-                }
-            }
-            CountServerBatchRequest::Shifted {
-                repetitions,
-                shift,
-                raw_request,
-            } => {
-                let plans = shifted_count_plans(
-                    &raw_request,
-                    default_segment_size,
-                    default_requested_threads,
-                    default_mode,
-                    repetitions,
-                    shift,
-                )?;
-                let counts = count_shifted_plans_with_pool(&mut pool, &plans, shift)
-                    .map_err(|err| format!("range sieve failed: {err:?}"))?;
-                for (plan, count) in plans.iter().zip(counts) {
-                    write_count_response(&mut stdout, plan, count, json)?;
-                }
-            }
-        }
+        handle_count_server_request(request, defaults, &mut pool, &mut stdout, json)?;
         stdout
             .flush()
             .map_err(|err| format!("failed to flush response: {err}"))?;
     }
+    Ok(())
+}
+
+#[derive(Clone, Copy)]
+struct CountServerDefaults {
+    segment_size: Option<u64>,
+    requested_threads: usize,
+    mode: Option<CountMode>,
+}
+
+fn count_server_defaults_from_args(args: &[String]) -> Result<CountServerDefaults, String> {
+    let requested_threads = optional_value(args, "--threads")
+        .map(|value| {
+            value
+                .parse::<usize>()
+                .map_err(|_| "--threads must fit in usize".to_string())
+        })
+        .transpose()?
+        .unwrap_or(1);
+    if requested_threads == 0 {
+        return Err("--threads must be greater than zero".to_string());
+    }
+    let segment_size = optional_value(args, "--segment-size")
+        .map(|value| {
+            value
+                .parse::<u64>()
+                .map_err(|_| "--segment-size must fit in u64".to_string())
+        })
+        .transpose()?;
+    let mode = optional_value(args, "--count-mode")
+        .map(parse_count_mode_override)
+        .transpose()?
+        .flatten();
+    Ok(CountServerDefaults {
+        segment_size,
+        requested_threads,
+        mode,
+    })
+}
+
+fn handle_count_server_request<W: Write>(
+    request: &str,
+    defaults: CountServerDefaults,
+    pool: &mut CountWorkerPool,
+    stdout: &mut W,
+    json: bool,
+) -> Result<(), String> {
+    match parse_count_server_batch_request(request)? {
+        CountServerBatchRequest::Identical {
+            repetitions,
+            raw_request,
+        } => {
+            let plan = parse_count_server_request(
+                &raw_request,
+                defaults.segment_size,
+                defaults.requested_threads,
+                defaults.mode,
+            )?;
+            let count = count_range_with_pool(pool, &plan)
+                .map_err(|err| format!("range sieve failed: {err:?}"))?;
+            for _ in 0..repetitions {
+                write_count_response(stdout, &plan, count, json)?;
+            }
+        }
+        CountServerBatchRequest::Shifted {
+            repetitions,
+            shift,
+            raw_request,
+        } => {
+            let plans = shifted_count_plans(
+                &raw_request,
+                defaults.segment_size,
+                defaults.requested_threads,
+                defaults.mode,
+                repetitions,
+                shift,
+            )?;
+            let counts = count_shifted_plans_with_pool(pool, &plans, shift)
+                .map_err(|err| format!("range sieve failed: {err:?}"))?;
+            for (plan, count) in plans.iter().zip(counts) {
+                write_count_response(stdout, plan, count, json)?;
+            }
+        }
+    }
+    Ok(())
+}
+
+#[cfg(unix)]
+fn socket_server_command(args: &[String]) -> Result<(), String> {
+    if args.iter().any(|arg| matches!(arg.as_str(), "--help" | "-h")) {
+        println!("{}", usage());
+        return Ok(());
+    }
+    let socket_path = args
+        .first()
+        .filter(|arg| !arg.starts_with("--"))
+        .ok_or_else(|| "socket-server requires SOCKET_PATH".to_string())?;
+    let json = args.iter().any(|arg| arg == "--json");
+    let defaults = count_server_defaults_from_args(args)?;
+    let _ = fs::remove_file(socket_path);
+    let listener = UnixListener::bind(socket_path)
+        .map_err(|err| format!("failed to bind socket {socket_path}: {err}"))?;
+    let mut pool = CountWorkerPool::new();
+
+    for stream in listener.incoming() {
+        let stream = stream.map_err(|err| format!("failed to accept socket request: {err}"))?;
+        let mut reader = io::BufReader::new(stream);
+        let mut request = String::new();
+        reader
+            .read_line(&mut request)
+            .map_err(|err| format!("failed to read socket request: {err}"))?;
+        let request = request.trim();
+        let mut stream = reader.into_inner();
+        if request.is_empty() {
+            continue;
+        }
+        if matches!(request, "quit" | "exit") {
+            writeln!(stream, "bye").map_err(|err| format!("failed to write response: {err}"))?;
+            break;
+        }
+        handle_count_server_request(request, defaults, &mut pool, &mut stream, json)?;
+        stream
+            .flush()
+            .map_err(|err| format!("failed to flush response: {err}"))?;
+    }
+
+    let _ = fs::remove_file(socket_path);
+    Ok(())
+}
+
+#[cfg(not(unix))]
+fn socket_server_command(_args: &[String]) -> Result<(), String> {
+    Err("socket-server is only supported on Unix platforms".to_string())
+}
+
+#[cfg(unix)]
+fn socket_client_command(args: &[String]) -> Result<(), String> {
+    if args.iter().any(|arg| matches!(arg.as_str(), "--help" | "-h")) {
+        println!("{}", usage());
+        return Ok(());
+    }
+    let socket_path = args
+        .first()
+        .ok_or_else(|| "socket-client requires SOCKET_PATH LOW HIGH".to_string())?;
+    if args.get(1).is_some_and(|arg| matches!(arg.as_str(), "quit" | "exit")) {
+        return socket_client_send_request(socket_path, args[1].as_str());
+    }
+    let low = args
+        .get(1)
+        .ok_or_else(|| "socket-client requires SOCKET_PATH LOW HIGH".to_string())?
+        .parse::<u64>()
+        .map_err(|_| "LOW must fit in u64".to_string())?;
+    let high = args
+        .get(2)
+        .ok_or_else(|| "socket-client requires SOCKET_PATH LOW HIGH".to_string())?
+        .parse::<u64>()
+        .map_err(|_| "HIGH must fit in u64".to_string())?;
+    let requested_threads = optional_value(args, "--threads")
+        .map(|value| {
+            value
+                .parse::<usize>()
+                .map_err(|_| "--threads must fit in usize".to_string())
+        })
+        .transpose()?;
+    let explicit_segment_size = optional_value(args, "--segment-size")
+        .map(|value| {
+            value
+                .parse::<u64>()
+                .map_err(|_| "--segment-size must fit in u64".to_string())
+        })
+        .transpose()?;
+    let explicit_mode = optional_value(args, "--count-mode")
+        .map(parse_count_mode_override)
+        .transpose()?
+        .flatten();
+    let request = if requested_threads.is_some()
+        || explicit_segment_size.is_some()
+        || explicit_mode.is_some()
+    {
+        let threads = requested_threads.unwrap_or(1);
+        if threads == 0 {
+            return Err("--threads must be greater than zero".to_string());
+        }
+        let segment_size = explicit_segment_size
+            .unwrap_or_else(|| recommended_count_segment_size(low, high, threads));
+        let mode = explicit_mode.unwrap_or_else(|| {
+            CountMode::parse(recommended_count_mode(low, high, threads))
+                .unwrap_or(CountMode::Presieve13)
+        });
+        format!("{low} {high} {segment_size} {threads} {}", mode.as_str())
+    } else {
+        format!("{low} {high}")
+    };
+    socket_client_send_request(socket_path, &request)
+}
+
+#[cfg(not(unix))]
+fn socket_client_command(_args: &[String]) -> Result<(), String> {
+    Err("socket-client is only supported on Unix platforms".to_string())
+}
+
+#[cfg(unix)]
+fn socket_client_send_request(socket_path: &str, request: &str) -> Result<(), String> {
+    let mut stream = UnixStream::connect(socket_path)
+        .map_err(|err| format!("failed to connect to socket {socket_path}: {err}"))?;
+    writeln!(stream, "{request}").map_err(|err| format!("failed to write request: {err}"))?;
+    let mut reader = io::BufReader::new(stream);
+    let mut response = String::new();
+    reader
+        .read_line(&mut response)
+        .map_err(|err| format!("failed to read response: {err}"))?;
+    print!("{response}");
     Ok(())
 }
 
@@ -1438,10 +1604,13 @@ fn usage() -> String {
         "usage:",
         "  circle-prime-count LOW HIGH [--json] [--segment-size N] [--threads N] [--count-mode MODE]",
         "  circle-prime-count count-server [--json] [--segment-size N] [--threads N] [--count-mode MODE]",
+        "  circle-prime-count socket-server SOCKET_PATH [--json] [--segment-size N] [--threads N] [--count-mode MODE]",
+        "  circle-prime-count socket-client SOCKET_PATH LOW HIGH [--segment-size N] [--threads N] [--count-mode MODE]",
         "",
         "count-server request: LOW HIGH or LOW HIGH SEGMENT_SIZE THREADS MODE",
         "count-server repeat request: repeat COUNT LOW HIGH [SEGMENT_SIZE THREADS MODE] (replays the same computed response)",
         "count-server shifted request: shifted COUNT SHIFT LOW HIGH [SEGMENT_SIZE THREADS MODE]",
+        "socket-server exposes the same request protocol over a Unix socket for prewarmed local clients",
         "count modes: default, segmented, balanced, dynamic, presieve13, presieve17",
     ]
     .join("\n")
