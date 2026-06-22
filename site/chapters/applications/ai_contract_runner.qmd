@@ -157,29 +157,29 @@ circle-ai-certify batch \
   --request-file examples/circle_ai_requests/sparse_attention_request.json \
   --model-config-file examples/circle_ai_model_configs/standard_rope_config.json \
   --architecture-config-file examples/circle_ai_architecture_configs/basic_transformer_contract_config.json \
-  --receipt-out-dir reports/circle_ai_receipts \
-  --compact-receipt-out-dir reports/circle_ai_compact_receipts \
-  --model-config-import-report-out-dir reports/circle_ai_import_reports \
-  --architecture-config-import-report-out-dir reports/circle_ai_architecture_import_reports \
-  --report-out reports/circle_ai_runner_check.json \
+  --artifact-dir reports/circle_ai_contract_batch \
+  --artifact-prefix architecture-suite \
   --require-passed \
   --require-status proved \
   --require-decision passed \
   --format json
 ```
 
-That writes one full receipt per accepted source, one compact receipt per
-accepted source, optional standard-RoPE model-config import reports, optional
-architecture-config import reports, and one runner-check report with schema id
-`circle_calculus.ai_contract_runner_check.v0`. Model-config summaries include
-parameter-source provenance, so a downstream reader can see whether RoPE values
-came from config fields, derived fields, explicit overrides, defaults, or
-omitted optional inputs. Architecture-config summaries include parameter-source
-provenance for the architecture-derived receipts emitted from that config. The
-default batch emits RoPE, KV-cache, sparse-attention, and recurrence receipts;
-pass `--architecture-config-kind` to restrict the set. It is
-the package-native batch handoff path and does not require importing
-repository-only scripts.
+That writes a portable handoff directory with subdirectories for full receipts,
+compact receipts, model-config import reports, architecture-config import
+reports, request-validation preflight reports, certification bundles, and
+bundle checks, plus one runner-check report named from the artifact prefix. The
+runner-check schema id is `circle_calculus.ai_contract_runner_check.v0`.
+Model-config summaries include parameter-source provenance, so a downstream
+reader can see whether RoPE values came from config fields, derived fields,
+explicit overrides, defaults, or omitted optional inputs. Architecture-config
+summaries include parameter-source provenance for the architecture-derived
+receipts emitted from that config. The default batch emits RoPE, KV-cache,
+sparse-attention, and recurrence receipts; pass `--architecture-config-kind` to
+restrict the set. It is the package-native batch handoff path and does not
+require importing repository-only scripts. Use the explicit `--receipt-out-dir`
+and related directory flags only when a downstream CI system needs a custom
+layout instead of the standard artifact directory.
 
 Python callers can build the same schema-valid runner-check report in memory
 with `build_contract_runner_check_report`. The helper accepts versioned request
