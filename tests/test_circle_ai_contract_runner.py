@@ -2400,6 +2400,7 @@ def test_runner_check_report_schema_accepts_public_report() -> None:
                 "certification_bundle_path": None,
                 "certification_bundle_check_path": None,
                 "receipt_path": None,
+                "compact_receipt_path": None,
                 "kind": "rope_position_distinguishability",
                 "status": "proved",
                 "request_passed": True,

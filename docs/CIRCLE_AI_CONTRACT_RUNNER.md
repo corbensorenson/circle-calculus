@@ -375,6 +375,7 @@ Write receipt JSON files for a request directory:
 python scripts/check_circle_ai_contract_runner.py \
   --example-dir examples/circle_ai_requests \
   --receipt-out-dir reports/circle_ai_receipts \
+  --compact-receipt-out-dir reports/circle_ai_compact_receipts \
   --model-config-import-report-out-dir reports/circle_ai_imports \
   --request-validation-report-out-dir reports/circle_ai_request_validation \
   --certification-bundle-out-dir reports/circle_ai_certification_bundles \
@@ -388,8 +389,10 @@ python scripts/check_circle_ai_contract_runner.py \
 The checker also builds the compact receipt for every request/model-config
 example. It fails if selected compact evidence is empty, if proof-layer labels
 do not cover exactly the selected evidence paths, or if any selected path is
-still `unclassified`. Its JSON report records the compact selected-evidence
-count, unclassified count, and label set for each example.
+still `unclassified`. Add `--compact-receipt-out-dir` to save those compact
+handoff files for every checked item. Its JSON report records the compact
+receipt path, selected-evidence count, unclassified count, and label set for
+each example.
 
 Run the same checker for only one contract family:
 

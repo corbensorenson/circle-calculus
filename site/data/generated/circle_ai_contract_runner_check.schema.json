@@ -106,6 +106,12 @@
               "null"
             ]
           },
+          "compact_receipt_path": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
           "compact_selected_evidence_count": {
             "minimum": 1,
             "type": "integer"
@@ -477,6 +483,7 @@
           "certification_bundle_path",
           "certification_bundle_check_path",
           "receipt_path",
+          "compact_receipt_path",
           "kind",
           "status",
           "request_passed",

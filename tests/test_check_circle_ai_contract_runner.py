@@ -27,6 +27,12 @@ REQUEST_VALIDATION_SCHEMA = (
     / "generated"
     / "circle_ai_contract_request_validation.schema.json"
 )
+COMPACT_RECEIPT_SCHEMA = (
+    Path("site")
+    / "data"
+    / "generated"
+    / "circle_ai_contract_compact_receipt.schema.json"
+)
 CERTIFICATION_BUNDLE_SCHEMA = (
     Path("site")
     / "data"
@@ -58,6 +64,10 @@ def _model_config_import_schema() -> dict:
 
 def _request_validation_schema() -> dict:
     return json.loads(REQUEST_VALIDATION_SCHEMA.read_text())
+
+
+def _compact_receipt_schema() -> dict:
+    return json.loads(COMPACT_RECEIPT_SCHEMA.read_text())
 
 
 def _certification_bundle_schema() -> dict:
@@ -280,6 +290,7 @@ def test_check_circle_ai_contract_runner_filters_model_configs_with_rope_alias()
 
 def test_check_circle_ai_contract_runner_writes_receipts(tmp_path: Path) -> None:
     out_dir = tmp_path / "receipts"
+    compact_receipt_dir = tmp_path / "compact_receipts"
     import_report_dir = tmp_path / "imports"
     request_validation_dir = tmp_path / "request_validation"
     certification_bundle_dir = tmp_path / "certification_bundles"
@@ -291,6 +302,8 @@ def test_check_circle_ai_contract_runner_writes_receipts(tmp_path: Path) -> None
             "scripts/check_circle_ai_contract_runner.py",
             "--receipt-out-dir",
             str(out_dir),
+            "--compact-receipt-out-dir",
+            str(compact_receipt_dir),
             "--model-config-import-report-out-dir",
             str(import_report_dir),
             "--request-validation-report-out-dir",
@@ -329,6 +342,11 @@ def test_check_circle_ai_contract_runner_writes_receipts(tmp_path: Path) -> None
     receipt_paths = [Path(summary["receipt_path"]) for summary in payload["summaries"]]
     assert len(receipt_paths) == summary_count
     assert all(path.exists() for path in receipt_paths)
+    compact_receipt_paths = [
+        Path(summary["compact_receipt_path"]) for summary in payload["summaries"]
+    ]
+    assert len(compact_receipt_paths) == summary_count
+    assert all(path.exists() for path in compact_receipt_paths)
     validation_report_paths = [
         Path(summary["request_validation_report_path"])
         for summary in payload["summaries"]
@@ -348,6 +366,13 @@ def test_check_circle_ai_contract_runner_writes_receipts(tmp_path: Path) -> None
     assert len(certification_bundle_check_paths) == summary_count
     assert all(path.exists() for path in certification_bundle_check_paths)
     for summary in payload["summaries"]:
+        compact_receipt = json.loads(Path(summary["compact_receipt_path"]).read_text())
+        jsonschema.validate(compact_receipt, _compact_receipt_schema())
+        assert compact_receipt["status"] == summary["status"]
+        assert compact_receipt["request_passed"] == summary["request_passed"]
+        assert compact_receipt["fingerprints"]["receipt_content_fingerprint"] == summary[
+            "receipt_content_fingerprint"
+        ]
         validation_report = json.loads(
             Path(summary["request_validation_report_path"]).read_text()
         )
@@ -453,6 +478,7 @@ def test_check_circle_ai_contract_runner_writes_receipts(tmp_path: Path) -> None
 def test_check_circle_ai_contract_runner_writes_report_file(tmp_path: Path) -> None:
     report_path = tmp_path / "runner_check_report.json"
     receipt_dir = tmp_path / "receipts"
+    compact_receipt_dir = tmp_path / "compact_receipts"
     import_report_dir = tmp_path / "imports"
     request_validation_dir = tmp_path / "request_validation"
     certification_bundle_dir = tmp_path / "certification_bundles"
@@ -464,6 +490,8 @@ def test_check_circle_ai_contract_runner_writes_report_file(tmp_path: Path) -> N
             "scripts/check_circle_ai_contract_runner.py",
             "--receipt-out-dir",
             str(receipt_dir),
+            "--compact-receipt-out-dir",
+            str(compact_receipt_dir),
             "--model-config-import-report-out-dir",
             str(import_report_dir),
             "--request-validation-report-out-dir",
@@ -486,6 +514,7 @@ def test_check_circle_ai_contract_runner_writes_report_file(tmp_path: Path) -> N
     assert payload["ok"] is True
     assert len(payload["summaries"]) == 11
     assert all(summary["receipt_path"] for summary in payload["summaries"])
+    assert all(summary["compact_receipt_path"] for summary in payload["summaries"])
     assert all(
         summary["request_validation_report_path"] for summary in payload["summaries"]
     )

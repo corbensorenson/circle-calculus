@@ -156,6 +156,7 @@ def _summary_from_receipt(
     certification_bundle_path: Path | None,
     certification_bundle_check_path: Path | None,
     receipt_path: Path | None,
+    compact_receipt_path: Path | None,
     receipt: dict[str, Any],
     compact_receipt: dict[str, Any],
 ) -> dict[str, Any]:
@@ -189,6 +190,11 @@ def _summary_from_receipt(
             else _display_path(certification_bundle_check_path)
         ),
         "receipt_path": None if receipt_path is None else _display_path(receipt_path),
+        "compact_receipt_path": (
+            None
+            if compact_receipt_path is None
+            else _display_path(compact_receipt_path)
+        ),
         "kind": receipt["kind"],
         "status": receipt["status"],
         "request_passed": receipt["request_passed"],
@@ -293,6 +299,7 @@ def check_runner_examples(
     receipt_out_dir: Path | None = None,
     model_config_import_report_out_dir: Path | None = None,
     request_validation_report_out_dir: Path | None = None,
+    compact_receipt_out_dir: Path | None = None,
     certification_bundle_out_dir: Path | None = None,
     certification_bundle_check_out_dir: Path | None = None,
     required_statuses: tuple[str, ...] = (),
@@ -375,9 +382,16 @@ def check_runner_examples(
                 failures=failures,
             )
             receipt_path = None
+            compact_receipt_path = None
             if receipt_out_dir is not None:
                 receipt_path = receipt_out_dir / f"{path.stem.removesuffix('_request')}_receipt.json"
                 _write_json(receipt_path, receipt)
+            if compact_receipt_out_dir is not None:
+                compact_receipt_path = (
+                    compact_receipt_out_dir
+                    / f"{path.stem.removesuffix('_request')}_compact_receipt.json"
+                )
+                _write_json(compact_receipt_path, compact_receipt)
             certification_bundle_path = None
             certification_bundle_check_path = None
             if certification_bundle_out_dir is not None:
@@ -427,6 +441,7 @@ def check_runner_examples(
                 certification_bundle_path=certification_bundle_path,
                 certification_bundle_check_path=certification_bundle_check_path,
                 receipt_path=receipt_path,
+                compact_receipt_path=compact_receipt_path,
                 receipt=receipt,
                 compact_receipt=compact_receipt,
             )
@@ -496,11 +511,15 @@ def check_runner_examples(
             )
             request_path = None
             receipt_path = None
+            compact_receipt_path = None
             if receipt_out_dir is not None:
                 request_path = receipt_out_dir / f"{path.stem}_request.json"
                 receipt_path = receipt_out_dir / f"{path.stem}_receipt.json"
                 _write_json(request_path, request)
                 _write_json(receipt_path, receipt)
+            if compact_receipt_out_dir is not None:
+                compact_receipt_path = compact_receipt_out_dir / f"{path.stem}_compact_receipt.json"
+                _write_json(compact_receipt_path, compact_receipt)
             certification_bundle_path = None
             certification_bundle_check_path = None
             if certification_bundle_out_dir is not None:
@@ -551,6 +570,7 @@ def check_runner_examples(
                 certification_bundle_path=certification_bundle_path,
                 certification_bundle_check_path=certification_bundle_check_path,
                 receipt_path=receipt_path,
+                compact_receipt_path=compact_receipt_path,
                 receipt=receipt,
                 compact_receipt=compact_receipt,
             )
@@ -687,6 +707,11 @@ def main() -> int:
         help="Optional directory where validated receipt JSON files are written.",
     )
     parser.add_argument(
+        "--compact-receipt-out-dir",
+        type=Path,
+        help="Optional directory where compact downstream receipt JSON files are written.",
+    )
+    parser.add_argument(
         "--model-config-import-report-out-dir",
         type=Path,
         help=(
@@ -780,6 +805,7 @@ def main() -> int:
         receipt_out_dir=args.receipt_out_dir,
         model_config_import_report_out_dir=args.model_config_import_report_out_dir,
         request_validation_report_out_dir=args.request_validation_report_out_dir,
+        compact_receipt_out_dir=args.compact_receipt_out_dir,
         certification_bundle_out_dir=args.certification_bundle_out_dir,
         certification_bundle_check_out_dir=args.certification_bundle_check_out_dir,
         required_statuses=tuple(args.require_status),
@@ -814,6 +840,7 @@ def main() -> int:
                 f"request_validation={summary['request_validation_report_path']} "
                 f"bundle={summary['certification_bundle_path']} "
                 f"bundle_check={summary['certification_bundle_check_path']} "
+                f"compact_receipt={summary['compact_receipt_path']} "
                 f"status={summary['status']} "
                 f"passed={summary['request_passed']} "
                 f"decision={summary['decision_verdict']} "

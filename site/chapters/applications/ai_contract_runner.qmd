@@ -478,6 +478,7 @@ For a directory of request files, write all generated receipt JSON files:
 python scripts/check_circle_ai_contract_runner.py \
   --example-dir examples/circle_ai_requests \
   --receipt-out-dir reports/circle_ai_receipts \
+  --compact-receipt-out-dir reports/circle_ai_compact_receipts \
   --model-config-import-report-out-dir reports/circle_ai_imports \
   --request-validation-report-out-dir reports/circle_ai_request_validation \
   --certification-bundle-out-dir reports/circle_ai_certification_bundles \
@@ -519,8 +520,9 @@ report and exits nonzero.
 The checker also builds the compact receipt for every request/model-config
 example and fails if selected compact evidence is empty, if proof-layer labels
 do not cover exactly those selected paths, or if any selected path is
-`unclassified`. Each summary records the compact selected-evidence count,
-unclassified count, and label set.
+`unclassified`. Add `--compact-receipt-out-dir` to save those compact handoff
+files for every checked item. Each summary records the compact receipt path,
+selected-evidence count, unclassified count, and label set.
 Use `--model-config-import-report-out-dir` when the model-config conversion
 itself should be saved as an audit artifact.
 Use `--request-validation-report-out-dir` when the request preflight report
