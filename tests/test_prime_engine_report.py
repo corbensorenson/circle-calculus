@@ -1305,10 +1305,14 @@ def test_prime_engine_report_summarizes_artifacts(tmp_path: Path) -> None:
                 "timing,hot_cli_count_server_parallel_high_offset_segmented_count_8t,10000000,1376256,361726,7,2.450,4081632653,,",
                 "timing,hot_cli_count_server_parallel_high_offset_presieve13_count_8t,10000000,1376256,361726,7,2.500,4000000000,,",
                 "timing,hot_cli_count_server_parallel_high_offset_presieve17_count_8t,10000000,1376256,361726,7,2.550,3921568627,,",
+                "timing,cold_process_high_offset_noop_worker,0,0,0,7,0.800,0,,",
+                "timing,cold_process_high_offset_default_plan_8t,10000000,1376256,7,7,0.900,11111111111,,",
+                "timing,cold_process_parallel_high_offset_default_range_count_1t,10000000,1376256,361726,7,6.300,1587301587,,",
                 "timing,cold_cli_parallel_high_offset_default_range_count_8t,10000000,1376256,361726,7,4.400,2272727273,,",
                 "timing,cold_count_binary_parallel_high_offset_default_range_count_8t,10000000,1376256,361726,7,4.300,2325581395,,",
                 "timing,cold_process_parallel_high_offset_default_range_count_8t,10000000,1376256,361726,7,4.200,2380952381,,",
                 "timing,cold_process_parallel_high_offset_segmented_range_count_8t,10000000,1376256,361726,7,4.100,2439024390,,",
+                "timing,cold_external_primesieve_high_offset_count_8t,10000000,0,361726,7,4.900,2040816326,,",
             ]
         )
         + "\n"
@@ -1917,6 +1921,14 @@ def test_prime_engine_report_summarizes_artifacts(tmp_path: Path) -> None:
     assert overhead["cold_cli_extra_ms"] == pytest.approx(2.35)
     assert overhead["cold_process_best_ms"] == 4.1
     assert overhead["cold_process_over_hot"] == pytest.approx(4.1 / 2.05)
+    assert overhead["cold_process_noop_best_ms"] == 0.8
+    assert overhead["cold_process_plan_best_ms"] == 0.9
+    assert overhead["cold_process_serial_default_best_ms"] == 6.3
+    assert overhead["cold_external_primesieve_best_ms"] == 4.9
+    assert overhead["cold_count_binary_minus_noop_ms"] == pytest.approx(3.5)
+    assert overhead["cold_count_binary_over_external_primesieve"] == pytest.approx(
+        4.3 / 4.9
+    )
     server_external = report["benchmark"]["high_offset_server_external"]
     assert [row["baseline"] for row in server_external] == [
         "external_primecount_pi_diff",
@@ -2039,6 +2051,8 @@ def test_prime_engine_report_summarizes_artifacts(tmp_path: Path) -> None:
     assert "High-offset cold/hot overhead" in markdown
     assert "High-offset cold/hot overhead (source: `high_offset_hot_cold`)" in markdown
     assert "| 10000000 | `parallel_high_offset_presieve17_range_count_8t` | 2.050 | `hot_cli_count_server_parallel_high_offset_segmented_count_8t` | 2.450 | 1.20x | 0.57x | 4.300 | 2.10x | 4.400 | 4.200 | 4.100 |" in markdown
+    assert "High-offset cold diagnostics" in markdown
+    assert "| 10000000 | 0.800 | 0.900 | 6.300 | 4.300 | 3.500 | 4.900 | 0.88x |" in markdown
     assert "High-offset server/external best-time comparison" in markdown
     assert "| 10000000 | `hot_cli_count_server_parallel_high_offset_segmented_count_8t` | 2.450 | `external_primesieve_count` | 4.900 | 2.000 | 7.000 | 0.700 |" in markdown
     assert (

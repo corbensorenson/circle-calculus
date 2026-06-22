@@ -102,6 +102,13 @@ fn main() {
 }
 
 fn run(args: Vec<String>) -> Result<(), String> {
+    if args.first().map(String::as_str) == Some("--cold-noop-worker") {
+        println!("0");
+        return Ok(());
+    }
+    if args.first().map(String::as_str) == Some("--cold-plan-worker") {
+        return cold_plan_worker(&args[1..]);
+    }
     if args.first().map(String::as_str) == Some("--cold-worker") {
         return cold_worker(&args[1..]);
     }
@@ -223,16 +230,37 @@ fn should_run_section(sections: &BTreeSet<&'static str>, section: &str) -> bool 
     sections.is_empty() || sections.contains(section)
 }
 
-fn cold_worker(args: &[String]) -> Result<(), String> {
-    let low = required_value(args, 0, "--cold-worker requires LOW HIGH SEGMENT_SIZE")?
-        .parse::<u64>()
-        .map_err(|_| "LOW must fit in u64".to_string())?;
-    let high = required_value(args, 1, "--cold-worker requires LOW HIGH SEGMENT_SIZE")?
-        .parse::<u64>()
-        .map_err(|_| "HIGH must fit in u64".to_string())?;
-    let segment_size = required_value(args, 2, "--cold-worker requires LOW HIGH SEGMENT_SIZE")?
-        .parse::<u64>()
-        .map_err(|_| "SEGMENT_SIZE must fit in u64".to_string())?;
+#[derive(Debug, Clone, Copy)]
+struct ColdWorkerPlan {
+    low: u64,
+    high: u64,
+    segment_size: u64,
+    mode: CountMode,
+    worker_threads: usize,
+}
+
+fn parse_cold_worker_plan(args: &[String], command: &str) -> Result<ColdWorkerPlan, String> {
+    let low = required_value(
+        args,
+        0,
+        &format!("{command} requires LOW HIGH SEGMENT_SIZE"),
+    )?
+    .parse::<u64>()
+    .map_err(|_| "LOW must fit in u64".to_string())?;
+    let high = required_value(
+        args,
+        1,
+        &format!("{command} requires LOW HIGH SEGMENT_SIZE"),
+    )?
+    .parse::<u64>()
+    .map_err(|_| "HIGH must fit in u64".to_string())?;
+    let segment_size = required_value(
+        args,
+        2,
+        &format!("{command} requires LOW HIGH SEGMENT_SIZE"),
+    )?
+    .parse::<u64>()
+    .map_err(|_| "SEGMENT_SIZE must fit in u64".to_string())?;
     let requested_threads = args
         .get(3)
         .map(|value| {
@@ -258,10 +286,33 @@ fn cold_worker(args: &[String]) -> Result<(), String> {
         effective_parallel_thread_count(low, high, segment_size, requested_threads),
         requested_threads,
     );
-    let count = if matches!(mode, CountMode::Segmented) && worker_threads == 1 {
-        prime_count_in_range(low, high, segment_size)
+    Ok(ColdWorkerPlan {
+        low,
+        high,
+        segment_size,
+        mode,
+        worker_threads,
+    })
+}
+
+fn cold_plan_worker(args: &[String]) -> Result<(), String> {
+    let plan = parse_cold_worker_plan(args, "--cold-plan-worker")?;
+    println!("{}", plan.worker_threads);
+    Ok(())
+}
+
+fn cold_worker(args: &[String]) -> Result<(), String> {
+    let plan = parse_cold_worker_plan(args, "--cold-worker")?;
+    let count = if matches!(plan.mode, CountMode::Segmented) && plan.worker_threads == 1 {
+        prime_count_in_range(plan.low, plan.high, plan.segment_size)
     } else {
-        count_range_with_mode(low, high, segment_size, worker_threads, mode)
+        count_range_with_mode(
+            plan.low,
+            plan.high,
+            plan.segment_size,
+            plan.worker_threads,
+            plan.mode,
+        )
     }
     .map_err(|err| format!("range sieve benchmark failed: {err:?}"))?;
     println!("{count}");
@@ -944,6 +995,43 @@ fn bench_cold_process_counts(rounds: usize) -> Vec<BenchRow> {
     let high_offset_segment_size =
         recommended_count_segment_size(HIGH_OFFSET_LOW, HIGH_OFFSET_HIGH, 8);
     rows.push(measure(
+        "cold_process_high_offset_noop_worker",
+        0,
+        0,
+        rounds,
+        cold_process_noop_worker,
+    ));
+    rows.push(measure(
+        "cold_process_high_offset_default_plan_8t",
+        HIGH_OFFSET_HIGH - HIGH_OFFSET_LOW,
+        high_offset_segment_size,
+        rounds,
+        || {
+            cold_process_plan_resolution(
+                HIGH_OFFSET_LOW,
+                HIGH_OFFSET_HIGH,
+                high_offset_segment_size,
+                8,
+                Some("default"),
+            )
+        },
+    ));
+    rows.push(measure(
+        "cold_process_parallel_high_offset_default_range_count_1t",
+        HIGH_OFFSET_HIGH - HIGH_OFFSET_LOW,
+        high_offset_segment_size,
+        rounds,
+        || {
+            cold_process_prime_count(
+                HIGH_OFFSET_LOW,
+                HIGH_OFFSET_HIGH,
+                high_offset_segment_size,
+                1,
+                Some("default"),
+            )
+        },
+    ));
+    rows.push(measure(
         "cold_process_parallel_high_offset_segmented_range_count_8t",
         HIGH_OFFSET_HIGH - HIGH_OFFSET_LOW,
         high_offset_segment_size,
@@ -1001,6 +1089,15 @@ fn bench_cold_process_counts(rounds: usize) -> Vec<BenchRow> {
             )
         },
     ));
+    if external_primesieve_available() {
+        rows.push(measure(
+            "cold_external_primesieve_high_offset_count_8t",
+            HIGH_OFFSET_HIGH - HIGH_OFFSET_LOW,
+            0,
+            rounds,
+            || cold_external_primesieve_prime_count(HIGH_OFFSET_LOW, HIGH_OFFSET_HIGH, 8),
+        ));
+    }
     rows.push(measure_count_server_prime_count(
         "hot_cli_count_server_parallel_high_offset_default_range_count_8t",
         HIGH_OFFSET_LOW,
@@ -1252,6 +1349,94 @@ fn cold_process_prime_count(
         .trim()
         .parse::<u64>()
         .expect("cold benchmark worker did not emit a count")
+}
+
+fn cold_process_noop_worker() -> u64 {
+    let executable = env::current_exe().expect("failed to locate benchmark executable");
+    let output = Command::new(executable)
+        .arg("--cold-noop-worker")
+        .output()
+        .expect("failed to spawn cold benchmark noop worker");
+    assert!(
+        output.status.success(),
+        "cold benchmark noop worker failed: {}",
+        String::from_utf8_lossy(&output.stderr)
+    );
+    String::from_utf8(output.stdout)
+        .expect("cold benchmark noop worker emitted invalid UTF-8")
+        .trim()
+        .parse::<u64>()
+        .expect("cold benchmark noop worker did not emit a count")
+}
+
+fn cold_process_plan_resolution(
+    low: u64,
+    high: u64,
+    segment_size: u64,
+    threads: usize,
+    count_mode: Option<&str>,
+) -> u64 {
+    let executable = env::current_exe().expect("failed to locate benchmark executable");
+    let mut command = Command::new(executable);
+    command
+        .arg("--cold-plan-worker")
+        .arg(low.to_string())
+        .arg(high.to_string())
+        .arg(segment_size.to_string())
+        .arg(threads.to_string());
+    if let Some(count_mode) = count_mode {
+        command.arg(count_mode);
+    }
+    let output = command
+        .output()
+        .expect("failed to spawn cold benchmark plan worker");
+    assert!(
+        output.status.success(),
+        "cold benchmark plan worker failed: {}",
+        String::from_utf8_lossy(&output.stderr)
+    );
+    String::from_utf8(output.stdout)
+        .expect("cold benchmark plan worker emitted invalid UTF-8")
+        .trim()
+        .parse::<u64>()
+        .expect("cold benchmark plan worker did not emit a worker count")
+}
+
+fn external_primesieve_available() -> bool {
+    match Command::new("primesieve")
+        .arg("--version")
+        .stdout(Stdio::null())
+        .stderr(Stdio::null())
+        .status()
+    {
+        Ok(status) => status.success(),
+        Err(_) => false,
+    }
+}
+
+fn cold_external_primesieve_prime_count(low: u64, high: u64, threads: usize) -> u64 {
+    assert!(
+        high > low,
+        "external primesieve benchmark requires nonempty range"
+    );
+    let output = Command::new("primesieve")
+        .arg(low.to_string())
+        .arg((high - 1).to_string())
+        .arg("--count")
+        .arg("--quiet")
+        .arg(format!("--threads={threads}"))
+        .output()
+        .expect("failed to spawn external primesieve");
+    assert!(
+        output.status.success(),
+        "external primesieve failed: {}",
+        String::from_utf8_lossy(&output.stderr)
+    );
+    String::from_utf8(output.stdout)
+        .expect("external primesieve emitted invalid UTF-8")
+        .trim()
+        .parse::<u64>()
+        .expect("external primesieve did not emit a count")
 }
 
 fn cold_cli_prime_count(low: u64, high: u64, segment_size: u64, threads: usize) -> u64 {

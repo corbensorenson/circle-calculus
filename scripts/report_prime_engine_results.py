@@ -166,8 +166,11 @@ COLD_PROCESS_ROWS = {
     "cold_cli_parallel_default_range_count_8t",
     "cold_cli_parallel_high_offset_default_range_count_8t",
     "cold_count_binary_parallel_high_offset_default_range_count_8t",
+    "cold_process_high_offset_default_plan_8t",
+    "cold_process_high_offset_noop_worker",
     "cold_process_segmented_range_count",
     "cold_process_parallel_segmented_range_count_8t",
+    "cold_process_parallel_high_offset_default_range_count_1t",
     "cold_process_parallel_high_offset_segmented_range_count_8t",
     "cold_process_parallel_high_offset_default_range_count_8t",
 }
@@ -1136,9 +1139,17 @@ def summarize_high_offset_cold_hot_overhead(
     cold_count_binary = rows_by_name.get(
         "cold_count_binary_parallel_high_offset_default_range_count_8t"
     )
+    cold_noop = rows_by_name.get("cold_process_high_offset_noop_worker")
+    cold_plan = rows_by_name.get("cold_process_high_offset_default_plan_8t")
+    cold_serial_default = rows_by_name.get(
+        "cold_process_parallel_high_offset_default_range_count_1t"
+    )
     cold_process = rows_by_name.get("cold_process_parallel_high_offset_segmented_range_count_8t")
     cold_process_default = rows_by_name.get(
         "cold_process_parallel_high_offset_default_range_count_8t"
+    )
+    cold_external_primesieve = rows_by_name.get(
+        "cold_external_primesieve_high_offset_count_8t"
     )
     if hot is None or (
         hot_server is None
@@ -1196,6 +1207,36 @@ def summarize_high_offset_cold_hot_overhead(
         "cold_count_binary_extra_ms": (
             float(cold_count_binary["best_ms"]) - hot_ms
             if cold_count_binary is not None
+            else None
+        ),
+        "cold_count_binary_minus_noop_ms": (
+            float(cold_count_binary["best_ms"]) - float(cold_noop["best_ms"])
+            if cold_count_binary is not None and cold_noop is not None
+            else None
+        ),
+        "cold_process_noop_name": cold_noop["name"] if cold_noop else None,
+        "cold_process_noop_best_ms": float(cold_noop["best_ms"]) if cold_noop else None,
+        "cold_process_plan_name": cold_plan["name"] if cold_plan else None,
+        "cold_process_plan_best_ms": float(cold_plan["best_ms"]) if cold_plan else None,
+        "cold_process_serial_default_name": (
+            cold_serial_default["name"] if cold_serial_default else None
+        ),
+        "cold_process_serial_default_best_ms": (
+            float(cold_serial_default["best_ms"]) if cold_serial_default else None
+        ),
+        "cold_external_primesieve_name": (
+            cold_external_primesieve["name"] if cold_external_primesieve else None
+        ),
+        "cold_external_primesieve_best_ms": (
+            float(cold_external_primesieve["best_ms"])
+            if cold_external_primesieve
+            else None
+        ),
+        "cold_count_binary_over_external_primesieve": (
+            float(cold_count_binary["best_ms"]) / float(cold_external_primesieve["best_ms"])
+            if cold_count_binary
+            and cold_external_primesieve
+            and float(cold_external_primesieve["best_ms"]) > 0
             else None
         ),
         "cold_process_name": cold_process["name"] if cold_process else None,
@@ -4859,6 +4900,41 @@ def render_benchmark_markdown(summary: dict[str, Any]) -> list[str]:
                 f"{format_optional_ms(row['cold_process_best_ms'])} |"
             )
         lines.append("")
+        diagnostic_rows = [
+            row
+            for row in summary["high_offset_cold_hot_overhead"]
+            if any(
+                row.get(field) is not None
+                for field in (
+                    "cold_process_noop_best_ms",
+                    "cold_process_plan_best_ms",
+                    "cold_process_serial_default_best_ms",
+                    "cold_count_binary_minus_noop_ms",
+                    "cold_external_primesieve_best_ms",
+                )
+            )
+        ]
+        if diagnostic_rows:
+            lines.extend(
+                [
+                    "High-offset cold diagnostics:",
+                    "",
+                    "| Workload | Noop ms | Plan ms | Serial Default ms | Count Binary ms | Count Binary - Noop ms | primesieve Cold ms | Count Binary / primesieve |",
+                    "| ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |",
+                ]
+            )
+            for row in diagnostic_rows:
+                lines.append(
+                    f"| {row['workload']} | "
+                    f"{format_optional_ms(row['cold_process_noop_best_ms'])} | "
+                    f"{format_optional_ms(row['cold_process_plan_best_ms'])} | "
+                    f"{format_optional_ms(row['cold_process_serial_default_best_ms'])} | "
+                    f"{format_optional_ms(row['cold_count_binary_best_ms'])} | "
+                    f"{format_optional_ms(row['cold_count_binary_minus_noop_ms'])} | "
+                    f"{format_optional_ms(row['cold_external_primesieve_best_ms'])} | "
+                    f"{format_optional_ratio(row['cold_count_binary_over_external_primesieve'])} |"
+                )
+            lines.append("")
     if summary.get("high_offset_server_external"):
         lines.extend(
             [
