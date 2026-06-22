@@ -459,7 +459,8 @@ def main() -> int:
         description=(
             "Validate saved Circle AI certification bundle JSON against the "
             "public bundle schema, embedded receipt, loaded contract pack, "
-            "model-config provenance, and optional CI gate requirements."
+            "model-config or architecture-config provenance, and optional CI "
+            "gate requirements."
         ),
     )
     parser.add_argument("bundles", nargs="+", type=Path)

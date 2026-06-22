@@ -952,6 +952,38 @@ def test_standalone_artifact_verifier_rejects_missing_model_config_fingerprint(
     )
 
 
+def test_standalone_artifact_verifier_rejects_missing_architecture_config_fingerprint(
+    tmp_path: Path,
+) -> None:
+    manifest_path, _ = _emit_sparse_architecture_artifacts(tmp_path)
+
+    result = subprocess.run(
+        [
+            sys.executable,
+            str(SCRIPT),
+            str(manifest_path),
+            "--format",
+            "json",
+            "--require-architecture-config-fingerprint",
+            "0" * 64,
+        ],
+        cwd=ROOT,
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+
+    assert result.returncode == 4
+    payload = json.loads(result.stderr)
+    assert payload["accepted"] is False
+    assert payload["required_architecture_config_fingerprints"] == ["0" * 64]
+    assert payload["observed_architecture_config_fingerprint_count"] == 1
+    assert any(
+        "required architecture config fingerprint is missing" in failure
+        for failure in payload["failures"]
+    )
+
+
 def test_standalone_artifact_verifier_rejects_stale_artifact(
     tmp_path: Path,
 ) -> None:
