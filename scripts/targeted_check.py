@@ -388,6 +388,12 @@ AI_CONTRACT_DIGEST_FIELDS = {
     ),
 }
 
+ARCHITECTURE_CONFIG_CONTRACT_KINDS = (
+    "kv_cache_ring_buffer",
+    "sparse_attention_coverage",
+    "recurrence_schedule",
+)
+
 
 def add_circle_ai_contract_core_checks(
     checks: list[Check],
@@ -450,6 +456,55 @@ def add_circle_ai_contract_kind_checks(
             ),
             reason,
         )
+
+
+def add_architecture_config_example_checks(
+    checks: list[Check],
+    seen: set[tuple[str, ...]],
+    reason: str,
+) -> None:
+    add(
+        checks,
+        seen,
+        "Circle AI architecture-config runner tests",
+        pytest(
+            "tests/test_circle_ai_contract_runner.py::test_architecture_config_import_builds_non_rope_contract_requests",
+            "tests/test_circle_ai_contract_runner.py::test_certification_bundle_public_api_embeds_architecture_config_import_report",
+            "tests/test_circle_ai_contract_runner.py::test_circle_ai_certify_cli_accepts_architecture_config_non_rope",
+        ),
+        reason,
+    )
+    add(
+        checks,
+        seen,
+        "Circle AI architecture-config public API tests",
+        pytest(
+            "tests/test_public_api.py::test_stable_architecture_config_api_builds_non_rope_receipts",
+            "tests/test_public_api.py::test_package_cli_unified_certify_batch_architecture_config_writes_import_reports",
+            "tests/test_public_api.py::test_package_cli_unified_certify_architecture_config_non_rope",
+        ),
+        reason,
+    )
+    add(
+        checks,
+        seen,
+        "Circle AI architecture-config artifact verifier tests",
+        pytest(
+            "tests/test_downstream_ci_verify_circle_ai_artifacts.py::test_standalone_artifact_verifier_accepts_architecture_config_artifact_dir",
+            "tests/test_downstream_ci_verify_circle_ai_artifacts.py::test_standalone_artifact_verifier_rejects_stale_architecture_config_import_sidecar",
+            "tests/test_downstream_ci_verify_circle_ai_artifacts.py::test_standalone_artifact_verifier_rejects_missing_architecture_config_fingerprint",
+        ),
+        reason,
+    )
+    add(
+        checks,
+        seen,
+        "Circle AI contract runner example check",
+        py("scripts/check_circle_ai_contract_runner.py"),
+        reason,
+    )
+    for kind in ARCHITECTURE_CONFIG_CONTRACT_KINDS:
+        add_circle_ai_contract_kind_checks(checks, seen, reason, kind)
 
 
 AI_CONTRACT_SITE_PAGE_KINDS = {
@@ -603,6 +658,10 @@ def ai_contract_impact(files: Iterable[str], *, full: bool = False) -> tuple[str
             or "circle_ai_contract" in path
         ):
             all_contracts = True
+            continue
+
+        if path.startswith("examples/circle_ai_architecture_configs/"):
+            impacted.update(ARCHITECTURE_CONFIG_CONTRACT_KINDS)
             continue
 
         if path == "Makefile":
@@ -821,6 +880,13 @@ def plan_for_files(files: Iterable[str], *, full: bool = False) -> list[Check]:
                 checks,
                 seen,
                 f"{path} changed a public AI model config example",
+            )
+
+        if path.startswith("examples/circle_ai_architecture_configs/"):
+            add_architecture_config_example_checks(
+                checks,
+                seen,
+                f"{path} changed a public AI architecture config example",
             )
 
         if path == "pyproject.toml" or path.startswith(".github/workflows/"):

@@ -514,6 +514,44 @@ def test_public_api_docs_change_runs_public_api_checks() -> None:
         assert_public_api_surface_checks(commands)
 
 
+def test_architecture_config_example_change_runs_import_and_kind_checks() -> None:
+    path = "examples/circle_ai_architecture_configs/basic_transformer_contract_config.json"
+    commands = commands_for([path])
+    payload = plan_payload(plan_for_files([path]), [path])
+
+    assert payload["ai_contract_validation_scope"] == "kind_specific"
+    assert payload["impacted_ai_contract_kinds"] == [
+        "kv_cache_ring_buffer",
+        "sparse_attention_coverage",
+        "recurrence_schedule",
+    ]
+    assert contains_command(
+        commands,
+        "pytest",
+        "tests/test_circle_ai_contract_runner.py::test_architecture_config_import_builds_non_rope_contract_requests",
+    )
+    assert contains_command(
+        commands,
+        "pytest",
+        "tests/test_public_api.py::test_package_cli_unified_certify_architecture_config_non_rope",
+    )
+    assert contains_command(
+        commands,
+        "pytest",
+        "tests/test_downstream_ci_verify_circle_ai_artifacts.py::test_standalone_artifact_verifier_accepts_architecture_config_artifact_dir",
+    )
+    assert contains_command(commands, "scripts/check_circle_ai_contract_runner.py")
+    for kind in payload["impacted_ai_contract_kinds"]:
+        assert_kind_contract_checks(commands, kind)
+    assert not contains_command(
+        commands,
+        "scripts/circle_ai_contract_ready.py",
+        "--kind",
+        "seed_rule_exact_regeneration",
+    )
+    assert not contains_command(commands, "make", "circle-ai-contracts-ready")
+
+
 def test_generic_contract_exporter_change_runs_pack_tests_not_sparse_tests() -> None:
     commands = commands_for(["scripts/export_circle_ai_contracts.py"])
 

@@ -123,6 +123,12 @@ The mapping is conservative:
   deciding whether to run kind-specific checks or a full public pack gate.
 - Single-contract certifier, quickstart, results note, review packet, and guided Living Book lesson changes run the matching certifier tests plus `scripts/export_circle_ai_contracts.py`, `scripts/check_circle_ai_contract_pack.py`, `scripts/check_circle_ai_contract_docs.py`, and `scripts/circle_ai_contract_ready.py --kind ...` with a kind-specific digest. This keeps RoPE, KV-cache, sparse-attention, recurrence, fanout, cyclic-memory, phase-feature, mixer, and seed-rule edits from running unrelated contract lanes during the edit loop.
 - For the four flagship contracts, the same kind-specific path also runs the strict receipt command that a downstream consumer would pin: RoPE D19 position distinguishability, KV stale/sink-window freshness, sparse coverage/gap repair, and recurrence schedule/work-saving. Those receipt commands require named evidence fields, theorem ids, planner recommendations, recommendation evidence fields, recommendation theorem ids, and action-parameter paths. Secondary contracts still use readiness and digest checks only, unless they later gain a strict receipt policy.
+- Architecture-config examples under `examples/circle_ai_architecture_configs/`
+  run focused import, public-API, artifact-verifier, runner-example, and
+  kind-specific checks for the three contract families they can emit today:
+  KV-cache, sparse attention, and recurrence schedules. This keeps real config
+  fixture edits from falling back to manifest/dictionary checks while avoiding
+  unrelated RoPE, mixer, cyclic-memory, and seed-rule lanes.
 - Circle AI contract documentation changes under `docs/AI_CONTRACT_SUITE.md`, `docs/CIRCLE_AI_CONTRACTS_INTEGRATION.md`, `docs/CIRCLE_AI_CONTRACT_RUNNER.md`, and `site/chapters/applications/ai_contract_pack_audit.qmd` still use the broad pack path because those files document the whole generated minimum-field schema and the downstream runner surface.
 - The AI Contract Ladder lesson and audit page also use the broad pack path because they teach the whole public sequence across RoPE, KV cache, sparse attention, recurrence, and mixer contracts.
 - generative seed-rule source changes run the generative sidecar tests and the seed-rule contract readiness/digest path because seed-rule provenance is exported as a downstream-consumable AI contract.
