@@ -708,6 +708,10 @@ def test_package_cli_unified_certify_batch_request_files_writes_compact_receipts
     for summary in report["summaries"]:
         assert len(summary["theorem_ids"]) == summary["theorem_count"]
         assert summary["theorem_ids"]
+        assert summary["all_theorem_ids_resolved"] is True
+        assert summary["all_theorem_ids_proved"] is True
+        assert summary["unresolved_theorem_ids"] == []
+        assert summary["unproved_theorem_ids"] == []
         receipt_path = Path(summary["receipt_path"])
         compact_path = Path(summary["compact_receipt_path"])
         assert receipt_path.exists()
@@ -1284,6 +1288,10 @@ def test_public_api_runner_check_report_builds_from_in_memory_sources() -> None:
     for summary in report["summaries"]:
         assert len(summary["theorem_ids"]) == summary["theorem_count"]
         assert summary["theorem_ids"]
+        assert summary["all_theorem_ids_resolved"] is True
+        assert summary["all_theorem_ids_proved"] is True
+        assert summary["unresolved_theorem_ids"] == []
+        assert summary["unproved_theorem_ids"] == []
     assert model_summary["compact_selected_evidence_unclassified_count"] == 0
 
 
@@ -1339,6 +1347,16 @@ def test_contract_runner_check_schema_rejects_duplicate_gate_and_kind_values() -
     duplicate_theorem_report["summaries"] = [duplicate_summary]
     with pytest.raises(jsonschema.ValidationError):
         jsonschema.validate(duplicate_theorem_report, schema)
+
+    duplicate_unproved_report = dict(report)
+    duplicate_unproved_summary = dict(report["summaries"][0])
+    duplicate_unproved_summary["unproved_theorem_ids"] = [
+        "AIM-T0001",
+        "AIM-T0001",
+    ]
+    duplicate_unproved_report["summaries"] = [duplicate_unproved_summary]
+    with pytest.raises(jsonschema.ValidationError):
+        jsonschema.validate(duplicate_unproved_report, schema)
 
 
 def test_package_cli_unified_certify_writes_gate_and_replay_reports(tmp_path) -> None:

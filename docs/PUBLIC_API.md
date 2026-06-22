@@ -411,7 +411,8 @@ preflights, certification bundles, bundle checks, and one runner-check summary
 without importing repository-only scripts. Use `--artifact-dir` when the
 installed batch command should choose stable subdirectories for that portable
 handoff set. Each runner summary includes both `theorem_count` and the concrete
-`theorem_ids` cited by the receipt. Architecture configs emit RoPE, KV-cache,
+`theorem_ids` cited by the receipt, plus resolved/proved booleans and any
+unresolved or unproved theorem ids. Architecture configs emit RoPE, KV-cache,
 sparse-attention, and recurrence receipts by default; pass
 `--architecture-config-kind` to restrict that set globally, or set
 `circle_ai_contract_kinds` inside one architecture config to restrict that file

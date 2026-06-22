@@ -4117,6 +4117,18 @@ def _contract_runner_check_summary_from_receipt(
         "decision_assurance": decision["assurance"],
         "theorem_count": receipt["proof_status"]["theorem_count"],
         "theorem_ids": list(receipt["proof_status"]["theorem_ids"]),
+        "all_theorem_ids_resolved": receipt["proof_status"][
+            "all_theorem_ids_resolved"
+        ],
+        "all_theorem_ids_proved": receipt["proof_status"][
+            "all_theorem_ids_proved"
+        ],
+        "unresolved_theorem_ids": list(
+            receipt["proof_status"]["unresolved_theorem_ids"]
+        ),
+        "unproved_theorem_ids": list(
+            receipt["proof_status"]["unproved_theorem_ids"]
+        ),
         "recommendation_count": len(receipt["recommendations"]),
         "validation_command_count": len(receipt["validation_commands"]),
         "normalized_request": receipt["normalized_request"],
@@ -6026,6 +6038,10 @@ def build_contract_runner_check_json_schema() -> dict[str, Any]:
             "decision_assurance",
             "theorem_count",
             "theorem_ids",
+            "all_theorem_ids_resolved",
+            "all_theorem_ids_proved",
+            "unresolved_theorem_ids",
+            "unproved_theorem_ids",
             "recommendation_count",
             "validation_command_count",
             "normalized_request",
@@ -6068,6 +6084,10 @@ def build_contract_runner_check_json_schema() -> dict[str, Any]:
                 "items": {"type": "string", "minLength": 1},
                 "uniqueItems": True,
             },
+            "all_theorem_ids_resolved": {"type": "boolean"},
+            "all_theorem_ids_proved": {"type": "boolean"},
+            "unresolved_theorem_ids": string_list | {"uniqueItems": True},
+            "unproved_theorem_ids": string_list | {"uniqueItems": True},
             "recommendation_count": {"type": "integer", "minimum": 0},
             "validation_command_count": {"type": "integer", "minimum": 0},
             "normalized_request": {"type": "object", "minProperties": 1},

@@ -102,6 +102,12 @@
       "items": {
         "additionalProperties": false,
         "properties": {
+          "all_theorem_ids_proved": {
+            "type": "boolean"
+          },
+          "all_theorem_ids_resolved": {
+            "type": "boolean"
+          },
           "architecture_config_import_report_path": {
             "type": [
               "string",
@@ -500,6 +506,20 @@
             "type": "array",
             "uniqueItems": true
           },
+          "unproved_theorem_ids": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "uniqueItems": true
+          },
+          "unresolved_theorem_ids": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "uniqueItems": true
+          },
           "unsupported_architecture_config_fields": {
             "items": {
               "type": "string"
@@ -533,6 +553,10 @@
           "decision_assurance",
           "theorem_count",
           "theorem_ids",
+          "all_theorem_ids_resolved",
+          "all_theorem_ids_proved",
+          "unresolved_theorem_ids",
+          "unproved_theorem_ids",
           "recommendation_count",
           "validation_command_count",
           "normalized_request",

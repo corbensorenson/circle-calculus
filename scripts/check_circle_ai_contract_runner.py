@@ -243,6 +243,18 @@ def _summary_from_receipt(
         "decision_assurance": decision["assurance"],
         "theorem_count": receipt["proof_status"]["theorem_count"],
         "theorem_ids": list(receipt["proof_status"]["theorem_ids"]),
+        "all_theorem_ids_resolved": receipt["proof_status"][
+            "all_theorem_ids_resolved"
+        ],
+        "all_theorem_ids_proved": receipt["proof_status"][
+            "all_theorem_ids_proved"
+        ],
+        "unresolved_theorem_ids": list(
+            receipt["proof_status"]["unresolved_theorem_ids"]
+        ),
+        "unproved_theorem_ids": list(
+            receipt["proof_status"]["unproved_theorem_ids"]
+        ),
         "recommendation_count": len(receipt["recommendations"]),
         "validation_command_count": len(receipt["validation_commands"]),
         "normalized_request": receipt["normalized_request"],

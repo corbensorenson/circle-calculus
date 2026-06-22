@@ -202,6 +202,26 @@ def _receipt_consistency_failures(
             summary.get("theorem_ids"),
             proof_status_obj.get("theorem_ids"),
         ),
+        (
+            "all_theorem_ids_resolved",
+            summary.get("all_theorem_ids_resolved"),
+            proof_status_obj.get("all_theorem_ids_resolved"),
+        ),
+        (
+            "all_theorem_ids_proved",
+            summary.get("all_theorem_ids_proved"),
+            proof_status_obj.get("all_theorem_ids_proved"),
+        ),
+        (
+            "unresolved_theorem_ids",
+            summary.get("unresolved_theorem_ids"),
+            proof_status_obj.get("unresolved_theorem_ids"),
+        ),
+        (
+            "unproved_theorem_ids",
+            summary.get("unproved_theorem_ids"),
+            proof_status_obj.get("unproved_theorem_ids"),
+        ),
     )
     failures: list[str] = []
     for field, summary_value, receipt_value in comparisons:
