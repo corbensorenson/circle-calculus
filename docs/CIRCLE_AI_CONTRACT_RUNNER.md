@@ -60,7 +60,14 @@ python scripts/circle_ai_certify.py sparse-attention \
   --path-length 3 \
   --local-window 4
 
-python scripts/circle_ai_certify.py recurrence
+python scripts/circle_ai_certify.py recurrence \
+  --period 6 \
+  --position 9 \
+  --horizon-steps 8 \
+  --sequence-length 24 \
+  --block-start 6 \
+  --block-width 6 \
+  --shift-amount 18
 
 python scripts/circle_ai_certify.py strided-fanout
 
@@ -152,6 +159,10 @@ Each family emits the same receipt shape: normalized parameters, theorem ids,
 computed fields, unsupported fields, non-claims, recommendations, and
 fingerprints. The runner does not claim these contracts improve model quality;
 it certifies the finite structural facts that the contract pack actually backs.
+For recurrence, looped-transformer aliases such as `--period`,
+`--horizon-steps`, and `--shift-amount` normalize to the canonical request
+fields `loop_period`, `max_loops`, and `shift_passes`; non-periodic shift
+amounts are rejected instead of silently weakening the contract.
 
 For project-level AI configs that already store explicit RoPE, cache,
 sparse-attention, or recurrence settings, the runner can translate a small

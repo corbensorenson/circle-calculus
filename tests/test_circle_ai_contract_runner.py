@@ -4492,6 +4492,76 @@ def test_circle_ai_certify_cli_writes_receipt_checks_for_non_rope_families(
     ]
 
 
+def test_circle_ai_certify_recurrence_accepts_looped_transformer_aliases() -> None:
+    result = subprocess.run(
+        [
+            sys.executable,
+            str(SCRIPT),
+            "recurrence",
+            "--period",
+            "6",
+            "--position",
+            "9",
+            "--horizon-steps",
+            "8",
+            "--sequence-length",
+            "24",
+            "--block-start",
+            "6",
+            "--block-width",
+            "6",
+            "--shift-amount",
+            "18",
+            "--format",
+            "json",
+        ],
+        cwd=ROOT,
+        check=True,
+        text=True,
+        capture_output=True,
+    )
+
+    receipt = json.loads(result.stdout)
+    assert receipt["kind"] == "recurrence_schedule"
+    assert receipt["request_passed"] is True
+    assert receipt["normalized_request"] == {
+        "loop_period": 6,
+        "sample_index": 9,
+        "max_loops": 8,
+        "token_count": 24,
+        "selected_block_start": 6,
+        "selected_block_width": 6,
+        "periodic_shift_passes": 3,
+    }
+    assert receipt["evidence"]["fields"]["periodic_shift_amount"] == 18
+
+
+def test_circle_ai_certify_recurrence_rejects_nonperiodic_shift_amount() -> None:
+    result = subprocess.run(
+        [
+            sys.executable,
+            str(SCRIPT),
+            "recurrence",
+            "--period",
+            "6",
+            "--shift-amount",
+            "7",
+            "--format",
+            "json",
+        ],
+        cwd=ROOT,
+        check=False,
+        text=True,
+        capture_output=True,
+    )
+
+    assert result.returncode != 0
+    assert result.stdout == ""
+    assert "--shift-amount must be an exact multiple of the loop period" in (
+        result.stderr
+    )
+
+
 def test_circle_ai_certify_cli_receipt_check_requires_saved_receipt(
     tmp_path: Path,
 ) -> None:

@@ -640,13 +640,55 @@ def parse_args() -> argparse.Namespace:
         type=Path,
         default=DEFAULT_ARCHITECTURE_CONFIG_IMPORT_SCHEMA,
     )
-    recurrence.add_argument("--loop-period", type=int)
-    recurrence.add_argument("--sample-index", type=int)
-    recurrence.add_argument("--max-loops", type=int)
-    recurrence.add_argument("--token-count", type=int)
-    recurrence.add_argument("--selected-block-start", type=int)
-    recurrence.add_argument("--selected-block-width", type=int)
-    recurrence.add_argument("--shift-passes", type=int)
+    recurrence.add_argument("--loop-period", "--period", dest="loop_period", type=int)
+    recurrence.add_argument(
+        "--sample-index",
+        "--position",
+        dest="sample_index",
+        type=int,
+    )
+    recurrence.add_argument(
+        "--max-loops",
+        "--horizon-steps",
+        "--loop-budget",
+        dest="max_loops",
+        type=int,
+    )
+    recurrence.add_argument(
+        "--token-count",
+        "--sequence-length",
+        "--seq-len",
+        "--tokens",
+        dest="token_count",
+        type=int,
+    )
+    recurrence.add_argument(
+        "--selected-block-start",
+        "--block-start",
+        dest="selected_block_start",
+        type=int,
+    )
+    recurrence.add_argument(
+        "--selected-block-width",
+        "--block-width",
+        dest="selected_block_width",
+        type=int,
+    )
+    recurrence.add_argument(
+        "--shift-passes",
+        "--shift-periods",
+        dest="shift_passes",
+        type=int,
+    )
+    recurrence.add_argument(
+        "--shift-amount",
+        type=int,
+        help=(
+            "Whole-token shift amount for the periodic-shift check. Must be "
+            "a nonnegative multiple of the loop period; converted to "
+            "--shift-passes in the emitted canonical request."
+        ),
+    )
 
     fanout = subparsers.add_parser(
         "strided-fanout",
@@ -914,6 +956,45 @@ def _architecture_overrides_from_args(args: argparse.Namespace) -> dict[str, Any
     raise ValueError(f"{args.kind} does not support --architecture-config")
 
 
+def _recurrence_shift_passes_from_amount(
+    *,
+    loop_period: int,
+    shift_amount: int,
+) -> int:
+    if loop_period <= 0:
+        raise SystemExit("--shift-amount requires a positive loop period")
+    if shift_amount < 0:
+        raise SystemExit("--shift-amount must be nonnegative")
+    if shift_amount % loop_period != 0:
+        raise SystemExit(
+            "--shift-amount must be an exact multiple of the loop period "
+            f"({shift_amount} is not divisible by {loop_period})"
+        )
+    return shift_amount // loop_period
+
+
+def _recurrence_shift_passes_from_args(
+    args: argparse.Namespace,
+    *,
+    loop_period: int,
+    default_shift_passes: int | None = None,
+) -> int | None:
+    if args.shift_amount is None:
+        if args.shift_passes is None:
+            return default_shift_passes
+        return args.shift_passes
+    derived = _recurrence_shift_passes_from_amount(
+        loop_period=loop_period,
+        shift_amount=args.shift_amount,
+    )
+    if args.shift_passes is not None and args.shift_passes != derived:
+        raise SystemExit(
+            "--shift-passes and --shift-amount disagree "
+            f"({args.shift_passes} passes != {derived} passes from shift amount)"
+        )
+    return derived
+
+
 def _architecture_parameters_from_args(
     args: argparse.Namespace,
     kind: str,
@@ -982,12 +1063,26 @@ def _parameters_from_args(args: argparse.Namespace) -> dict[str, Any]:
         }
     if args.kind == "recurrence":
         if args.architecture_config is not None:
-            return _architecture_parameters_from_args(
+            parameters = _architecture_parameters_from_args(
                 args,
                 "recurrence",
             )
+            if args.shift_amount is not None:
+                loop_period = int(parameters["loop_period"])
+                parameters["shift_passes"] = _recurrence_shift_passes_from_args(
+                    args,
+                    loop_period=loop_period,
+                    default_shift_passes=None,
+                )
+            return parameters
+        loop_period = 5 if args.loop_period is None else args.loop_period
+        shift_passes = _recurrence_shift_passes_from_args(
+            args,
+            loop_period=loop_period,
+            default_shift_passes=3,
+        )
         return {
-            "loop_period": 5 if args.loop_period is None else args.loop_period,
+            "loop_period": loop_period,
             "sample_index": 8 if args.sample_index is None else args.sample_index,
             "max_loops": 7 if args.max_loops is None else args.max_loops,
             "token_count": 8 if args.token_count is None else args.token_count,
@@ -997,7 +1092,7 @@ def _parameters_from_args(args: argparse.Namespace) -> dict[str, Any]:
             "selected_block_width": 3
             if args.selected_block_width is None
             else args.selected_block_width,
-            "shift_passes": 3 if args.shift_passes is None else args.shift_passes,
+            "shift_passes": shift_passes,
         }
     if args.kind == "strided-fanout":
         return {

@@ -10,8 +10,17 @@ experiments, not for claiming model-quality gains.
 python scripts/recurrence_schedule_certify.py
 python scripts/recurrence_schedule_certify.py --format json
 python scripts/recurrence_schedule_certify.py --shift-passes 4 --json-out /tmp/recurrence_schedule_contract.json
+python scripts/circle_ai_certify.py recurrence --period 6 --position 9 --horizon-steps 8 --sequence-length 24 --block-start 6 --block-width 6 --shift-amount 18
 python scripts/circle_ai_contract_ready.py --kind recurrence_schedule --digest --field scheduled_work_saving --field post_period_multi_extension_scheduled_work_saving --include-recommendations
 ```
+
+The unified runner accepts looped-transformer-friendly aliases and normalizes
+them into the canonical receipt fields: `--period` is `loop_period`,
+`--position` is `sample_index`, `--horizon-steps` is `max_loops`,
+`--sequence-length` is `token_count`, and `--block-start`/`--block-width`
+select the routed block. `--shift-amount` is accepted only when it is an exact
+multiple of the loop period; the receipt records the corresponding
+`periodic_shift_passes`.
 
 For a strict downstream receipt over both recurrence planner actions:
 

@@ -138,8 +138,15 @@ The v0.2 work-budget extension sums those per-step active-token counts over a fi
 The generic AI contract pack now exposes those planner fields as two recommendation records. `RECURRENCE-USE-ACTIVE-TOKEN-WORK-SCHEDULE` packages the theorem-backed active-token work schedule, while `RECURRENCE-REUSE-WHOLE-PERIOD-SHIFT` packages the whole-period index-reuse witness. A downstream project can read them with:
 
 ```bash
+python scripts/circle_ai_certify.py recurrence --period 6 --position 9 --horizon-steps 8 --sequence-length 24 --block-start 6 --block-width 6 --shift-amount 18
 python scripts/circle_ai_contract_ready.py --kind recurrence_schedule --digest --field scheduled_work_saving --field post_period_multi_extension_scheduled_work_saving --include-recommendations
 ```
+
+The first command uses looped-transformer aliases and emits the same canonical
+receipt fields as `--loop-period`, `--sample-index`, `--max-loops`,
+`--token-count`, `--selected-block-start`, `--selected-block-width`, and
+`--shift-passes`. `--shift-amount` must be a whole multiple of the period, so
+the whole-period index-reuse theorem remains the checked object.
 
 The flagship acceptance policy pins both records, so consumers preserve the work-accounting fixture and the periodic index-reuse fixture together. They are finite schedule/index fixtures, not claims about runtime, memory savings, adaptive halting, or reasoning quality.
 
