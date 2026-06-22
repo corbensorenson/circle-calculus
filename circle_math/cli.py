@@ -733,24 +733,32 @@ def _certify_batch_output_path(
 
 def _certify_batch_summary_from_receipt(
     *,
+    source_type: str,
     source_path: Path,
     source: dict[str, Any],
     receipt: dict[str, Any],
     compact_receipt: dict[str, Any],
-    receipt_path: Path | None,
-    compact_receipt_path: Path | None,
+    request_path: Path | None = None,
+    model_config_import_report_path: Path | None = None,
+    model_config_parameter_sources: dict[str, Any] | None = None,
+    receipt_path: Path | None = None,
+    compact_receipt_path: Path | None = None,
 ) -> dict[str, Any]:
     decision = receipt["decision"]
     selected_evidence_layers = compact_receipt[
         "selected_evidence_proof_layers"
     ]
     return {
-        "source_type": "request",
+        "source_type": source_type,
         "source_path": str(source_path),
         "source_content_fingerprint": _certify_json_fingerprint(source),
-        "request_path": None,
-        "model_config_import_report_path": None,
-        "model_config_parameter_sources": None,
+        "request_path": None if request_path is None else str(request_path),
+        "model_config_import_report_path": (
+            None
+            if model_config_import_report_path is None
+            else str(model_config_import_report_path)
+        ),
+        "model_config_parameter_sources": model_config_parameter_sources,
         "request_validation_report_path": None,
         "certification_bundle_path": None,
         "certification_bundle_check_path": None,
@@ -791,8 +799,10 @@ def _certify_batch_requests(args: argparse.Namespace) -> int:
     failures: list[str] = []
     summaries: list[dict[str, Any]] = []
     selected_kinds: set[str] = set()
+    request_files = tuple(args.request_file or ())
+    model_config_files = tuple(args.model_config_file or ())
 
-    for index, source_path in enumerate(args.request_file, start=1):
+    for index, source_path in enumerate(request_files, start=1):
         try:
             source = _load_json_object_from_args(
                 argparse.ArgumentParser(prog="circle-ai-certify batch"),
@@ -829,6 +839,7 @@ def _certify_batch_requests(args: argparse.Namespace) -> int:
 
             summaries.append(
                 _certify_batch_summary_from_receipt(
+                    source_type="request",
                     source_path=source_path,
                     source=source,
                     receipt=receipt,
@@ -844,10 +855,100 @@ def _certify_batch_requests(args: argparse.Namespace) -> int:
         except (OSError, ValueError, json.JSONDecodeError) as exc:
             failures.append(f"{source_path}: {exc}")
 
+    model_config_start_index = len(request_files) + 1
+    for index, source_path in enumerate(
+        model_config_files,
+        start=model_config_start_index,
+    ):
+        try:
+            source = _load_json_object_from_args(
+                argparse.ArgumentParser(prog="circle-ai-certify batch"),
+                inline_json=None,
+                json_file=source_path,
+                label="model-config",
+            )
+            import_report = build_rope_model_config_import_report(
+                source,
+                head_dim=args.head_dim,
+                base=args.base,
+                context=args.context,
+                tolerance=args.tolerance,
+                discretization=args.discretization,
+                requested_margin=args.requested_margin,
+            )
+            model_config_import_report_path = None
+            if args.model_config_import_report_out_dir is not None:
+                model_config_import_report_path = _certify_batch_output_path(
+                    args.model_config_import_report_out_dir,
+                    index=index,
+                    source_path=source_path,
+                    suffix="model_config_import",
+                )
+                _write_json_file(model_config_import_report_path, import_report)
+            if not import_report["ok"]:
+                failures.append(
+                    f"{source_path}: " + "; ".join(import_report["failures"])
+                )
+                continue
+            receipt = build_validated_rope_receipt_from_model_config(
+                source,
+                head_dim=args.head_dim,
+                base=args.base,
+                context=args.context,
+                tolerance=args.tolerance,
+                discretization=args.discretization,
+                requested_margin=args.requested_margin,
+                pack=pack,
+            )
+            compact_receipt = build_compact_contract_receipt(receipt)
+            selected_kinds.add(receipt["kind"])
+
+            receipt_path = None
+            if args.receipt_out_dir is not None:
+                receipt_path = _certify_batch_output_path(
+                    args.receipt_out_dir,
+                    index=index,
+                    source_path=source_path,
+                    suffix="receipt",
+                )
+                _write_json_file(receipt_path, receipt)
+
+            compact_receipt_path = None
+            if args.compact_receipt_out_dir is not None:
+                compact_receipt_path = _certify_batch_output_path(
+                    args.compact_receipt_out_dir,
+                    index=index,
+                    source_path=source_path,
+                    suffix="compact_receipt",
+                )
+                _write_json_file(compact_receipt_path, compact_receipt)
+
+            summaries.append(
+                _certify_batch_summary_from_receipt(
+                    source_type="model_config",
+                    source_path=source_path,
+                    source=source,
+                    receipt=receipt,
+                    compact_receipt=compact_receipt,
+                    model_config_import_report_path=model_config_import_report_path,
+                    model_config_parameter_sources=import_report["parameter_sources"],
+                    receipt_path=receipt_path,
+                    compact_receipt_path=compact_receipt_path,
+                )
+            )
+            for failure in _receipt_gate_failures(receipt, args):
+                failures.append(f"{source_path}: {failure}")
+        except SystemExit as exc:
+            failures.append(
+                f"{source_path}: model config JSON could not be loaded ({exc})"
+            )
+        except (OSError, ValueError, json.JSONDecodeError) as exc:
+            failures.append(f"{source_path}: {exc}")
+
     report = {
         "schema_id": CIRCLE_AI_CONTRACT_RUNNER_CHECK_SCHEMA_ID,
         "ok": not failures,
-        "example_count": len(args.request_file),
+        "example_count": len(summaries),
         "failure_count": len(failures),
         "failures": failures,
         "selected_kinds": sorted(selected_kinds),
@@ -881,6 +982,7 @@ def _certify_batch_requests(args: argparse.Namespace) -> int:
                     [
                         f"source={summary['source_path']}",
                         f"kind={summary['kind']}",
+                        f"type={summary['source_type']}",
                         f"status={summary['status']}",
                         f"decision={summary['decision_verdict']}",
                         f"compact_receipt={summary['compact_receipt_path']}",
@@ -920,8 +1022,8 @@ def contract_certify_main() -> int:
     batch_parser = subparsers.add_parser(
         "batch",
         help=(
-            "Issue receipts for several versioned request JSON files and "
-            "write a runner-check summary."
+            "Issue receipts for several versioned request JSON files or "
+            "standard RoPE model configs and write a runner-check summary."
         ),
     )
     batch_parser.add_argument("--pack", type=Path, default=None)
@@ -930,13 +1032,43 @@ def contract_certify_main() -> int:
         "--request-json",
         dest="request_file",
         action="append",
-        required=True,
+        default=[],
         type=Path,
         help=(
             "Path to a versioned Circle AI contract request JSON object. "
             "May be passed more than once."
         ),
     )
+    batch_parser.add_argument(
+        "--model-config-file",
+        "--model-config",
+        dest="model_config_file",
+        action="append",
+        default=[],
+        type=Path,
+        help=(
+            "Path to a standard RoPE model config JSON object. May be passed "
+            "more than once."
+        ),
+    )
+    batch_parser.add_argument(
+        "--model-config-import-report-out-dir",
+        type=Path,
+        help=(
+            "Optional directory where standard-RoPE model-config import "
+            "reports are written."
+        ),
+    )
+    batch_parser.add_argument("--head-dim", type=int, default=None)
+    batch_parser.add_argument("--base", type=float, default=None)
+    batch_parser.add_argument("--context", type=int, default=None)
+    batch_parser.add_argument("--tolerance", type=float, default=None)
+    batch_parser.add_argument(
+        "--discretization",
+        choices=("round", "floor", "ceil"),
+        default=None,
+    )
+    batch_parser.add_argument("--requested-margin", default=None)
     batch_parser.add_argument(
         "--receipt-out-dir",
         type=Path,
@@ -1055,6 +1187,10 @@ def contract_certify_main() -> int:
 
     args = parser.parse_args()
     if args.command == "batch":
+        if not args.request_file and not args.model_config_file:
+            batch_parser.error(
+                "at least one --request-file or --model-config-file is required"
+            )
         return _certify_batch_requests(args)
     try:
         _apply_certify_artifact_dir_defaults(args)

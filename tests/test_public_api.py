@@ -478,6 +478,82 @@ def test_package_cli_unified_certify_batch_request_files_writes_compact_receipts
         assert "unclassified" not in summary["compact_selected_evidence_labels"]
 
 
+def test_package_cli_unified_certify_batch_model_configs_write_import_reports(
+    tmp_path,
+) -> None:
+    receipt_dir = tmp_path / "receipts"
+    compact_dir = tmp_path / "compact_receipts"
+    import_dir = tmp_path / "imports"
+    report_path = tmp_path / "runner_report.json"
+    config_file = (
+        ROOT / "examples" / "circle_ai_model_configs" / "standard_rope_config.json"
+    )
+
+    result = subprocess.run(
+        [
+            sys.executable,
+            "-c",
+            (
+                "import sys; "
+                "from circle_math.cli import contract_certify_main; "
+                "sys.exit(contract_certify_main())"
+            ),
+            "batch",
+            "--model-config-file",
+            str(config_file),
+            "--model-config-import-report-out-dir",
+            str(import_dir),
+            "--receipt-out-dir",
+            str(receipt_dir),
+            "--compact-receipt-out-dir",
+            str(compact_dir),
+            "--report-out",
+            str(report_path),
+            "--require-status",
+            "proved",
+            "--require-decision",
+            "passed",
+            "--format",
+            "json",
+        ],
+        text=True,
+        capture_output=True,
+        check=True,
+    )
+
+    report = json.loads(result.stdout)
+    saved_report = json.loads(report_path.read_text())
+    assert saved_report == report
+    jsonschema.validate(report, build_contract_runner_check_json_schema())
+    assert report["ok"] is True
+    assert report["example_count"] == 1
+    assert report["selected_kinds"] == ["rope_position_distinguishability"]
+    summary = report["summaries"][0]
+    assert summary["source_type"] == "model_config"
+    assert summary["kind"] == "rope_position_distinguishability"
+    assert summary["status"] == "proved"
+    assert summary["decision_verdict"] == "passed"
+    assert summary["model_config_parameter_sources"]["head_dim"]["source"] == (
+        "derived_config_fields"
+    )
+    assert summary["model_config_parameter_sources"]["base"]["field"] == "rope_theta"
+    assert summary["model_config_parameter_sources"]["context"]["field"] == (
+        "max_position_embeddings"
+    )
+    import_report = json.loads(
+        Path(summary["model_config_import_report_path"]).read_text()
+    )
+    assert import_report["schema_id"] == "circle_calculus.rope_model_config_import.v0"
+    assert import_report["ok"] is True
+    receipt = json.loads(Path(summary["receipt_path"]).read_text())
+    compact = json.loads(Path(summary["compact_receipt_path"]).read_text())
+    assert receipt["request"]["parameters"]["context"] == 131072
+    assert compact["fingerprints"]["receipt_content_fingerprint"] == summary[
+        "receipt_content_fingerprint"
+    ]
+    assert summary["compact_selected_evidence_unclassified_count"] == 0
+
+
 def test_package_cli_unified_certify_batch_gate_writes_report_on_failure(
     tmp_path,
 ) -> None:
@@ -525,6 +601,30 @@ def test_package_cli_unified_certify_batch_gate_writes_report_on_failure(
     assert report["summaries"][0]["decision_verdict"] == "passed"
     assert Path(report["summaries"][0]["receipt_path"]).exists()
     assert Path(report["summaries"][0]["compact_receipt_path"]).exists()
+
+
+def test_package_cli_unified_certify_batch_requires_a_source() -> None:
+    result = subprocess.run(
+        [
+            sys.executable,
+            "-c",
+            (
+                "import sys; "
+                "from circle_math.cli import contract_certify_main; "
+                "sys.exit(contract_certify_main())"
+            ),
+            "batch",
+            "--format",
+            "json",
+        ],
+        text=True,
+        capture_output=True,
+    )
+
+    assert result.returncode == 2
+    assert "at least one --request-file or --model-config-file is required" in (
+        result.stderr
+    )
 
 
 def test_package_cli_unified_certify_writes_gate_and_replay_reports(tmp_path) -> None:

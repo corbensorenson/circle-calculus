@@ -55,7 +55,9 @@ circle-ai-contract-receipt --kind rope --model-config-file examples/circle_ai_mo
 circle-ai-certify batch \
   --request-file examples/circle_ai_requests/kv_cache_request.json \
   --request-file examples/circle_ai_requests/sparse_attention_request.json \
+  --model-config-file examples/circle_ai_model_configs/standard_rope_config.json \
   --compact-receipt-out-dir reports/compact_receipts \
+  --model-config-import-report-out-dir reports/import_reports \
   --report-out reports/circle_ai_runner_check.json \
   --require-passed \
   --require-status proved \
@@ -109,8 +111,8 @@ deployment-safety, physics, or universal-compression improvements.
 
 The current contract surface distinguishes 9 public contract families from 6
 compatibility downstream-transfer contract families. The public package CLI can
-issue single-config receipts or batch request-file handoff reports without
-importing repository-only scripts.
+issue single-config receipts or batch request/model-config handoff reports
+without importing repository-only scripts.
 
 ## Repository Layout
 
