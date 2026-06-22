@@ -348,6 +348,17 @@ the latest local `primesieve` CLI by both median and best before promotion, and
 the durable Circle advantage lane should focus on proof-backed persistent,
 shifted, adjacent, and batched requests where phase/plan reuse can be
 amortized rather than hidden inside a fresh process.
+A retained Unix socket lane now gives that advantage a fresh-client service
+shape: `circle-prime-count socket-server` keeps the reusable count engine warm,
+and `socket-client` is a fresh subprocess per request. A clean formal run on
+2026-06-22 measured the socket client at `3.867 ms` best and `5.090 ms` median
+versus quiet local `primesieve 12.14` at `4.603 ms` best and `5.229 ms`
+median (`1.190x` best, `1.027x` median). This is a daemon/service win, not a
+promotion of direct `circle-prime-count LOW HIGH` cold CLI. The persistent
+one-request lib-control row is still mixed (`1.210x` best but `0.914x` median
+versus persistent `libprimesieve`), while shifted adjacent batch-16 service
+requests are ahead at `1.320x` best and `1.223x` median versus persistent
+`libprimesieve`.
 `make prime-engine-high-offset-count-binary-cold-confirm` is the focused
 one-shot confirmation for this weak lane: it runs 17 interleaved rounds of only
 cold `circle-prime-count` default versus cold `primesieve`, writes
@@ -432,6 +443,14 @@ Existing full-CLI `wheel30-mark` and `hybrid-wheel30-mark` modes were also
 probed before considering a slim-binary port; they landed around `0.55x` to
 `0.60x` median versus cold `primesieve`, so the port is not justified for the
 tracked high-offset cold lane.
+A Unix socket daemon/client path is retained as the first launch-residual
+workaround. The external-control harness flag is
+`--include-circle-count-binary-socket-client`; it starts
+`circle-prime-count socket-server` and times fresh `socket-client` subprocesses.
+The cleaner service schedule beats quiet local `primesieve 12.14` by both best
+and median, but a fuller cold-row rotation was effectively parity (`1.062x`
+best, `0.999x` median), so the direct cold CLI classification remains
+below-parity.
 A separate one-shot-only `circle-prime-count-cold` prototype removed stdin
 server and shifted-batch code and cut the binary from `1395168` to `1310896`
 bytes, but a 25-round interleaved A/B still left the existing

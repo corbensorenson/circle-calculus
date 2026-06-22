@@ -9,6 +9,7 @@ import re
 import shutil
 import subprocess
 import sys
+import tempfile
 import time
 from dataclasses import asdict, dataclass, replace
 from datetime import datetime, timezone
@@ -275,6 +276,15 @@ def main() -> int:
         ),
     )
     parser.add_argument(
+        "--include-circle-count-binary-socket-client",
+        action="store_true",
+        help=(
+            "Also benchmark fresh circle-prime-count socket-client subprocesses "
+            "against a persistent Unix socket-server for the same Circle variants. "
+            "Requires --interleaved."
+        ),
+    )
+    parser.add_argument(
         "--circle-server-only",
         action="store_true",
         help=(
@@ -404,6 +414,10 @@ def main() -> int:
         parser.error("--include-circle-count-binary requires --interleaved")
     if args.include_circle_count_binary_server and not args.interleaved:
         parser.error("--include-circle-count-binary-server requires --interleaved")
+    if args.include_circle_count_binary_socket_client and not args.interleaved:
+        parser.error("--include-circle-count-binary-socket-client requires --interleaved")
+    if args.include_circle_count_binary_socket_client and os.name != "posix":
+        parser.error("--include-circle-count-binary-socket-client requires Unix sockets")
     if args.circle_server_only and not args.include_circle_server:
         parser.error("--circle-server-only requires --include-circle-server")
     if (
@@ -434,10 +448,15 @@ def main() -> int:
     except argparse.ArgumentTypeError as exc:
         parser.error(str(exc))
     if args.batch_request_profile == "shifted":
-        if not args.include_circle_server and not args.include_circle_count_binary_server:
+        if (
+            not args.include_circle_server
+            and not args.include_circle_count_binary_server
+            and not args.include_circle_count_binary_socket_client
+        ):
             parser.error(
-                "--batch-request-profile=shifted requires --include-circle-server "
-                "or --include-circle-count-binary-server"
+                "--batch-request-profile=shifted requires --include-circle-server, "
+                "--include-circle-count-binary-server, or "
+                "--include-circle-count-binary-socket-client"
             )
         shifted_supported_baselines = {
             "external_primesieve_count_server",
@@ -592,7 +611,9 @@ def main() -> int:
         return 0
 
     needs_circle_count_binary = (
-        args.include_circle_count_binary or args.include_circle_count_binary_server
+        args.include_circle_count_binary
+        or args.include_circle_count_binary_server
+        or args.include_circle_count_binary_socket_client
     )
     needs_cargo_build = args.circle_prime_bin is None or (
         needs_circle_count_binary and args.circle_prime_count_bin is None
@@ -627,6 +648,9 @@ def main() -> int:
                 warmup_rounds=args.warmup_rounds,
                 include_circle_server=args.include_circle_server,
                 include_circle_count_binary_server=args.include_circle_count_binary_server,
+                include_circle_count_binary_socket_client=(
+                    args.include_circle_count_binary_socket_client
+                ),
                 circle_server_only=args.circle_server_only,
                 primesieve_count_server=primesieve_count_server,
                 primecount_pi_server=primecount_pi_server,
@@ -1392,6 +1416,108 @@ def circle_prime_count_binary_server_measurement(
     )
 
 
+def circle_prime_count_binary_socket_client_measurement(
+    binary: Path,
+    low: int,
+    high: int,
+    segment_size: int,
+    threads: int,
+    count_mode: str = "segmented",
+    *,
+    batch_request_profile: str = "identical",
+) -> Measurement:
+    use_request_defaults = count_mode == "default"
+    metadata_command = circle_prime_count_command(
+        binary,
+        low,
+        high,
+        segment_size,
+        threads,
+        count_mode,
+        json_output=True,
+    )
+    metadata_completed = subprocess.run(
+        metadata_command,
+        cwd=ROOT,
+        check=True,
+        text=True,
+        capture_output=True,
+    )
+    metadata = json.loads(metadata_completed.stdout)
+    actual_segment_size = int(metadata["segment_size"])
+    actual_threads = int(metadata["threads"])
+    metadata_count = int(metadata["count"])
+    resolved_count_mode = str(metadata.get("count_mode", count_mode))
+    client = CountSocketClient(
+        binary,
+        default_segment_size=segment_size if use_request_defaults else 0,
+        default_threads=threads if use_request_defaults else 1,
+        default_count_mode=count_mode if use_request_defaults else "default",
+    )
+
+    def run_count(request_low: int, request_high: int) -> int:
+        count = client.count(
+            request_low,
+            request_high,
+            actual_segment_size,
+            threads,
+            resolved_count_mode,
+            use_request_defaults=use_request_defaults,
+        )
+        return count
+
+    def run_once() -> int:
+        count = run_count(low, high)
+        if count != metadata_count:
+            raise AssertionError(
+                "Circle count-binary socket client disagreed with JSON metadata for "
+                f"[{low},{high}): metadata {metadata_count}, socket client {count}"
+            )
+        return count
+
+    def run_batch(batch_size: int) -> int:
+        count = metadata_count
+        for _ in range(batch_size):
+            count = run_count(low, high)
+            if count != metadata_count:
+                raise AssertionError(
+                    "Circle count-binary socket client disagreed with JSON metadata for "
+                    f"[{low},{high}): metadata {metadata_count}, socket client {count}"
+                )
+        return count
+
+    def run_shifted_batch(batch_size: int, shift: int) -> int:
+        count = metadata_count
+        for index in range(batch_size):
+            request_low = low + shift * index
+            request_high = high + shift * index
+            count = run_count(request_low, request_high)
+            if index == 0 and count != metadata_count:
+                raise AssertionError(
+                    "Circle count-binary socket client disagreed with JSON metadata for "
+                    f"[{low},{high}): metadata {metadata_count}, socket client {count}"
+                )
+        return count
+
+    name = circle_count_binary_socket_client_measurement_name(
+        count_mode,
+        actual_threads,
+    )
+    return Measurement(
+        name=name,
+        low=low,
+        high=high,
+        segment_size=actual_segment_size,
+        threads=actual_threads,
+        requested_threads=threads,
+        run_once=run_once,
+        run_batch=run_batch,
+        run_shifted_batch=run_shifted_batch if batch_request_profile == "shifted" else None,
+        count_mode=resolved_count_mode,
+        close=client.close,
+    )
+
+
 def count_server_command(
     binary: Path,
     *,
@@ -1427,6 +1553,142 @@ def count_server_request(
     if use_request_defaults:
         return f"{low} {high}\n"
     return f"{low} {high} {segment_size} {threads} {count_mode}\n"
+
+
+def count_socket_server_command(
+    binary: Path,
+    socket_path: Path | str,
+    *,
+    default_segment_size: int = 0,
+    default_threads: int = 1,
+    default_count_mode: str = "default",
+    json_output: bool = False,
+) -> list[str]:
+    command = [str(binary), "socket-server", str(socket_path)]
+    if default_segment_size > 0:
+        command.extend(["--segment-size", str(default_segment_size)])
+    if default_threads != 1:
+        command.extend(["--threads", str(default_threads)])
+    if default_count_mode != "default":
+        command.extend(["--count-mode", default_count_mode])
+    if json_output:
+        command.append("--json")
+    return command
+
+
+def count_socket_client_command(
+    binary: Path,
+    socket_path: Path | str,
+    low: int,
+    high: int,
+    segment_size: int,
+    threads: int,
+    count_mode: str,
+    *,
+    use_request_defaults: bool = False,
+) -> list[str]:
+    command = [str(binary), "socket-client", str(socket_path), str(low), str(high)]
+    if use_request_defaults:
+        return command
+    if segment_size > 0:
+        command.extend(["--segment-size", str(segment_size)])
+    if threads != 1:
+        command.extend(["--threads", str(threads)])
+    if count_mode != "default":
+        command.extend(["--count-mode", count_mode])
+    return command
+
+
+class CountSocketClient:
+    def __init__(
+        self,
+        binary: Path,
+        *,
+        default_segment_size: int = 0,
+        default_threads: int = 1,
+        default_count_mode: str = "default",
+    ) -> None:
+        self.binary = binary
+        self.tempdir = tempfile.TemporaryDirectory(prefix="cpc-", dir="/tmp")
+        self.socket_path = Path(self.tempdir.name) / "count.sock"
+        self.process = subprocess.Popen(
+            count_socket_server_command(
+                binary,
+                self.socket_path,
+                default_segment_size=default_segment_size,
+                default_threads=default_threads,
+                default_count_mode=default_count_mode,
+            ),
+            cwd=ROOT,
+            text=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+        )
+        deadline = time.monotonic() + 5.0
+        while not self.socket_path.exists():
+            if self.process.poll() is not None:
+                stderr = self._read_stderr()
+                self.tempdir.cleanup()
+                raise RuntimeError(f"socket-server exited during startup: {stderr}")
+            if time.monotonic() > deadline:
+                self.close()
+                raise RuntimeError("socket-server did not create its Unix socket")
+            time.sleep(0.005)
+
+    def count(
+        self,
+        low: int,
+        high: int,
+        segment_size: int,
+        threads: int,
+        count_mode: str,
+        *,
+        use_request_defaults: bool = False,
+    ) -> int:
+        completed = subprocess.run(
+            count_socket_client_command(
+                self.binary,
+                self.socket_path,
+                low,
+                high,
+                segment_size,
+                threads,
+                count_mode,
+                use_request_defaults=use_request_defaults,
+            ),
+            cwd=ROOT,
+            check=True,
+            text=True,
+            capture_output=True,
+        )
+        return parse_integer_output(completed.stdout)
+
+    def close(self) -> None:
+        if self.process.poll() is None:
+            try:
+                subprocess.run(
+                    [str(self.binary), "socket-client", str(self.socket_path), "quit"],
+                    cwd=ROOT,
+                    text=True,
+                    capture_output=True,
+                    timeout=2,
+                )
+            except (OSError, subprocess.SubprocessError):
+                pass
+            try:
+                self.process.wait(timeout=5)
+            except subprocess.TimeoutExpired:
+                self.process.kill()
+                self.process.wait(timeout=5)
+        self.tempdir.cleanup()
+
+    def _read_stderr(self) -> str:
+        if self.process.stderr is None:
+            return ""
+        try:
+            return self.process.stderr.read()
+        except OSError:
+            return ""
 
 
 def count_server_json_metadata_probe(
@@ -1546,6 +1808,17 @@ def circle_count_binary_server_measurement_name(count_mode: str, actual_threads:
     name = f"circle_prime_count_binary_server_{suffix}_count"
     if actual_threads != 1:
         name = f"circle_prime_count_binary_server_parallel_{suffix}_count_{actual_threads}t"
+    return name
+
+
+def circle_count_binary_socket_client_measurement_name(
+    count_mode: str,
+    actual_threads: int,
+) -> str:
+    suffix = count_mode.replace("-", "_")
+    name = f"circle_prime_count_binary_socket_client_{suffix}_count"
+    if actual_threads != 1:
+        name = f"circle_prime_count_binary_socket_client_parallel_{suffix}_count_{actual_threads}t"
     return name
 
 
@@ -1964,6 +2237,7 @@ def measure_range_interleaved(
     warmup_rounds: int = 0,
     include_circle_server: bool = False,
     include_circle_count_binary_server: bool = False,
+    include_circle_count_binary_socket_client: bool = False,
     circle_server_only: bool = False,
 ) -> tuple[list[ExternalBenchRow], list[ExternalBenchSample]]:
     circle_measurements: list[Measurement] = []
@@ -2053,6 +2327,28 @@ def measure_range_interleaved(
                 seen_circle_variants.add(count_binary_server_variant_key)
             elif count_binary_server_measurement.close is not None:
                 count_binary_server_measurement.close()
+        if include_circle_count_binary_socket_client and circle_prime_count is not None:
+            count_binary_socket_measurement = (
+                circle_prime_count_binary_socket_client_measurement(
+                    circle_prime_count,
+                    low,
+                    high,
+                    variant.segment_size,
+                    variant_threads,
+                    variant.count_mode,
+                    batch_request_profile=batch_request_profile,
+                )
+            )
+            count_binary_socket_variant_key = (
+                count_binary_socket_measurement.name,
+                count_binary_socket_measurement.segment_size,
+                count_binary_socket_measurement.threads,
+            )
+            if count_binary_socket_variant_key not in seen_circle_variants:
+                circle_measurements.append(count_binary_socket_measurement)
+                seen_circle_variants.add(count_binary_socket_variant_key)
+            elif count_binary_socket_measurement.close is not None:
+                count_binary_socket_measurement.close()
 
     baseline_measurements = []
     if (
@@ -2602,6 +2898,9 @@ def build_run_metadata(
         "include_circle_count_binary_server": bool(
             getattr(args, "include_circle_count_binary_server", False)
         ),
+        "include_circle_count_binary_socket_client": bool(
+            getattr(args, "include_circle_count_binary_socket_client", False)
+        ),
         "circle_server_only": bool(getattr(args, "circle_server_only", False)),
         "include_primesieve_count_server": bool(
             getattr(args, "include_primesieve_count_server", False)
@@ -2689,6 +2988,18 @@ def build_run_metadata(
                 "path": str(circle_prime_count) if circle_prime_count is not None else None,
                 "method": "persistent slim circle-prime-count count-server requests",
             },
+            "circle_prime_count_socket_server": {
+                "available": bool(
+                    getattr(args, "include_circle_count_binary_socket_client", False)
+                )
+                and circle_prime_count is not None
+                and circle_prime_count.exists(),
+                "path": str(circle_prime_count) if circle_prime_count is not None else None,
+                "method": (
+                    "fresh slim circle-prime-count socket-client subprocesses "
+                    "against a persistent Unix socket-server"
+                ),
+            },
             "primesieve": external_tool_metadata("primesieve", primesieve, ["--version"]),
             "primecount": external_tool_metadata("primecount", primecount, ["--version"]),
             "primesieve_count_server": {
@@ -2733,6 +3044,9 @@ def build_run_metadata(
             include_circle_server=bool(getattr(args, "include_circle_server", False)),
             include_circle_count_binary_server=bool(
                 getattr(args, "include_circle_count_binary_server", False)
+            ),
+            include_circle_count_binary_socket_client=bool(
+                getattr(args, "include_circle_count_binary_socket_client", False)
             ),
         ),
     }
@@ -2849,6 +3163,38 @@ def circle_count_server_variant_metadata(
         )
         metadata["request_resolves_segment_size_from_json_probe"] = True
     return metadata
+
+
+def circle_count_binary_socket_variant_metadata(
+    circle_prime_count: Path,
+    low: int,
+    high: int,
+    variant: CircleVariant,
+    circle_threads: int,
+) -> dict[str, Any]:
+    variant_threads = variant.threads or circle_threads
+    use_request_defaults = variant.count_mode == "default"
+    socket_path = "<socket-path>"
+    return {
+        "server_command": count_socket_server_command(
+            circle_prime_count,
+            socket_path,
+            default_segment_size=variant.segment_size if use_request_defaults else 0,
+            default_threads=variant_threads if use_request_defaults else 1,
+            default_count_mode=variant.count_mode if use_request_defaults else "default",
+        ),
+        "client_command": count_socket_client_command(
+            circle_prime_count,
+            socket_path,
+            low,
+            high,
+            variant.segment_size,
+            variant_threads,
+            variant.count_mode,
+            use_request_defaults=use_request_defaults,
+        ),
+        "uses_server_defaults": use_request_defaults,
+    }
 
 
 def external_tool_metadata(name: str, path: str | None, version_args: list[str]) -> dict[str, Any]:
@@ -3050,6 +3396,7 @@ def range_command_metadata(
     *,
     include_circle_server: bool = False,
     include_circle_count_binary_server: bool = False,
+    include_circle_count_binary_socket_client: bool = False,
 ) -> list[dict[str, Any]]:
     commands = []
     for low, high in ranges:
@@ -3112,6 +3459,16 @@ def range_command_metadata(
                     default_threads=variant_threads,
                     default_count_mode=variant.count_mode,
                 )
+            if include_circle_count_binary_socket_client and circle_prime_count is not None:
+                variant_metadata["count_binary_socket_client"] = (
+                    circle_count_binary_socket_variant_metadata(
+                        circle_prime_count,
+                        low,
+                        high,
+                        variant,
+                        circle_threads,
+                    )
+                )
             circle_variant_commands.append(variant_metadata)
         first_variant = circle_variant_commands[0]
         entry: dict[str, Any] = {
@@ -3127,6 +3484,12 @@ def range_command_metadata(
             entry["circle_count_binary_server"] = [
                 str(circle_prime_count),
                 "count-server",
+            ]
+        if include_circle_count_binary_socket_client and circle_prime_count is not None:
+            entry["circle_count_binary_socket_client"] = [
+                str(circle_prime_count),
+                "socket-client",
+                "<socket-path>",
             ]
         if (
             external_baseline_enabled(external_baselines, "external_primesieve_count")

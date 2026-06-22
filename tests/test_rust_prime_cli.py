@@ -1,9 +1,11 @@
 from __future__ import annotations
 
 import json
+import os
 import shutil
 import subprocess
 import sys
+import time
 from pathlib import Path
 
 import pytest
@@ -1264,6 +1266,78 @@ def test_rust_prime_count_binary_server_json_reports_count_contract(
     assert payload["segment_size"] == DEFAULTS["parallel_edge_high_offset_segment_size"]
     assert payload["count_mode"] == DEFAULTS["parallel_edge_high_offset_count_mode"]
     assert_prime_range_count_proof_contract(payload)
+
+
+def test_rust_prime_count_binary_socket_client_reports_count_contract(
+    circle_prime_count_bin: Path,
+    tmp_path: Path,
+) -> None:
+    if sys.platform == "win32":
+        pytest.skip("circle-prime-count socket-client requires Unix sockets")
+    socket_path = Path(f"/tmp/cpc-test-{os.getpid()}-{tmp_path.name[-6:]}.sock")
+    socket_path.unlink(missing_ok=True)
+    server = subprocess.Popen(
+        [
+            str(circle_prime_count_bin),
+            "socket-server",
+            str(socket_path),
+            "--json",
+            "--threads",
+            "8",
+        ],
+        cwd=ROOT,
+        text=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+    )
+    try:
+        for _ in range(200):
+            if socket_path.exists():
+                break
+            if server.poll() is not None:
+                stderr = server.stderr.read() if server.stderr is not None else ""
+                raise AssertionError(f"socket server exited early: {stderr}")
+            time.sleep(0.01)
+        else:
+            raise AssertionError("socket server did not create its Unix socket")
+
+        completed = subprocess.run(
+            [
+                str(circle_prime_count_bin),
+                "socket-client",
+                str(socket_path),
+                "1000000000000",
+                "1000010000000",
+            ],
+            cwd=ROOT,
+            text=True,
+            capture_output=True,
+            check=True,
+        )
+        payload = json.loads(completed.stdout)
+        assert payload["count"] == 361726
+        assert payload["segment_size"] == DEFAULTS["parallel_edge_high_offset_segment_size"]
+        assert payload["count_mode"] == DEFAULTS["parallel_edge_high_offset_count_mode"]
+        assert_prime_range_count_proof_contract(payload)
+    finally:
+        if socket_path.exists():
+            subprocess.run(
+                [
+                    str(circle_prime_count_bin),
+                    "socket-client",
+                    str(socket_path),
+                    "quit",
+                ],
+                cwd=ROOT,
+                text=True,
+                capture_output=True,
+            )
+        try:
+            server.wait(timeout=5)
+        except subprocess.TimeoutExpired:
+            server.kill()
+            server.wait(timeout=5)
+        socket_path.unlink(missing_ok=True)
 
 
 def test_rust_prime_cli_recommends_count_defaults(circle_prime_bin: Path) -> None:

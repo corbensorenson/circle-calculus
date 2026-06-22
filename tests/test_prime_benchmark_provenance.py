@@ -113,6 +113,37 @@ def test_benchmark_provenance_accepts_matching_count_binary_hash(
     assert failures == []
 
 
+def test_benchmark_provenance_checks_count_binary_socket_client_hash(
+    tmp_path: Path,
+) -> None:
+    binary = tmp_path / "circle-prime"
+    count_binary = tmp_path / "circle-prime-count"
+    defaults = tmp_path / "prime_engine_defaults.json"
+    binary.write_bytes(b"circle-prime")
+    count_binary.write_bytes(b"old-circle-prime-count")
+    stale_count_hash = sha256_hex(count_binary)
+    count_binary.write_bytes(b"new-circle-prime-count")
+    defaults.write_text('{"segment":1507328}\n')
+
+    failures = benchmark_provenance_failures(
+        {
+            "include_circle_count_binary_socket_client": True,
+            "circle_prime_defaults": {"sha256": sha256_hex(defaults)},
+            "tools": {
+                "circle_prime": {"binary": {"sha256": sha256_hex(binary)}},
+                "circle_prime_count": {"binary": {"sha256": stale_count_hash}},
+            },
+        },
+        circle_prime=binary,
+        circle_prime_count=count_binary,
+        defaults_path=defaults,
+    )
+
+    assert len(failures) == 1
+    assert "circle-prime-count" in failures[0]
+    assert "current binary" in failures[0]
+
+
 def test_benchmark_provenance_accepts_count_binary_under_size_limit(
     tmp_path: Path,
 ) -> None:

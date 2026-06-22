@@ -381,6 +381,47 @@ def test_count_binary_server_default_keeps_separate_comparison_key() -> None:
     assert server_comparisons[0].candidate_median_speedup == 3.200
 
 
+def test_count_binary_socket_client_default_keeps_separate_comparison_key() -> None:
+    count_binary = speedup_row(
+        name="circle_prime_count_binary_parallel_default_count_8t",
+        segment_size=1_310_720,
+        best_speedup=0.930,
+        median_speedup=0.940,
+        count_mode="presieve13",
+    )
+    socket_client = speedup_row(
+        name="circle_prime_count_binary_socket_client_parallel_default_count_7t",
+        segment_size=1_507_328,
+        threads=7,
+        requested_threads=8,
+        best_speedup=1.080,
+        median_speedup=1.020,
+        count_mode="presieve13",
+    )
+
+    rows = {count_binary.key: count_binary, socket_client.key: socket_client}
+
+    socket_comparisons = compare_speedup_rows(
+        baseline_rows=rows,
+        candidate_rows=rows,
+        names={"circle_prime_count_binary_socket_client_default_count"},
+        baselines={"external_primesieve_count"},
+    )
+
+    assert len(socket_comparisons) == 1
+    assert socket_comparisons[0].key == (
+        "circle_prime_count_binary_socket_client_default_count",
+        0,
+        10_000_000,
+        0,
+        8,
+        8,
+        "external_primesieve_count",
+    )
+    assert socket_comparisons[0].candidate_median_speedup == 1.020
+    assert socket_comparisons[0].candidate_best_speedup == 1.080
+
+
 def test_adaptive_server_default_rows_keep_separate_comparison_key() -> None:
     cold_baseline = speedup_row(
         name="circle_prime_parallel_default_count_7t",
@@ -637,6 +678,33 @@ def test_comparison_failures_rejects_selected_row_below_required_win_floor() -> 
         "circle_prime_default_count range=[0,10000000) segment=0 "
         "threads=8 requested_threads=8 baseline=external_primesieve_count "
         "median speedup below required floor: 0.990 < 1.000"
+    ]
+
+
+def test_comparison_failures_rejects_selected_row_below_best_win_floor() -> None:
+    comparisons = [
+        ExternalComparison(
+            key=speedup_row().key,
+            baseline_result=664_579,
+            candidate_result=664_579,
+            baseline_best_speedup=0.900,
+            candidate_best_speedup=0.990,
+            baseline_median_speedup=0.950,
+            candidate_median_speedup=1.010,
+        )
+    ]
+
+    failures = comparison_failures(
+        comparisons,
+        min_median_speedup_ratio=0.95,
+        min_best_speedup_ratio=0.90,
+        require_each_best_speedup_at_least=1.0,
+    )
+
+    assert failures == [
+        "circle_prime_default_count range=[0,10000000) segment=0 "
+        "threads=8 requested_threads=8 baseline=external_primesieve_count "
+        "best speedup below required floor: 0.990 < 1.000"
     ]
 
 

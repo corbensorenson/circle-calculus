@@ -1,6 +1,7 @@
 use std::env;
-use std::fs;
 use std::io::{self, BufRead, Write};
+#[cfg(unix)]
+use std::fs;
 #[cfg(unix)]
 use std::os::unix::net::{UnixListener, UnixStream};
 use std::process;

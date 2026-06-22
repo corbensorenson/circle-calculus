@@ -48,6 +48,8 @@ class ExternalSpeedupRow:
     def comparison_name(self) -> str:
         if not is_adaptive_default_row(self.name):
             return self.name
+        if is_count_binary_socket_client_row(self.name):
+            return "circle_prime_count_binary_socket_client_default_count"
         if is_count_binary_server_row(self.name):
             return "circle_prime_count_binary_server_default_count"
         if is_count_binary_row(self.name):
@@ -199,6 +201,14 @@ def main() -> int:
         ),
     )
     parser.add_argument(
+        "--require-each-best-speedup-at-least",
+        type=float,
+        help=(
+            "Fail when any compared row has candidate best_speedup below "
+            "this threshold. Use with --names/--baselines for focused best-time gates."
+        ),
+    )
+    parser.add_argument(
         "--require-stable-samples",
         action="store_true",
         help=(
@@ -258,6 +268,11 @@ def main() -> int:
         and args.require_each_median_speedup_at_least < 0.0
     ):
         parser.error("--require-each-median-speedup-at-least must be nonnegative")
+    if (
+        args.require_each_best_speedup_at_least is not None
+        and args.require_each_best_speedup_at_least < 0.0
+    ):
+        parser.error("--require-each-best-speedup-at-least must be nonnegative")
     if (
         args.allow_best_regression_when_median_speedup_at_least is not None
         and args.allow_best_regression_when_median_speedup_at_least < 0.0
@@ -319,6 +334,7 @@ def main() -> int:
         ),
         require_any_median_speedup_at_least=args.require_any_median_speedup_at_least,
         require_each_median_speedup_at_least=args.require_each_median_speedup_at_least,
+        require_each_best_speedup_at_least=args.require_each_best_speedup_at_least,
         require_stable_samples=args.require_stable_samples,
         allow_noisy_when_median_speedup_at_least=(
             args.allow_noisy_when_median_speedup_at_least
@@ -500,6 +516,7 @@ def comparison_failures(
     | None = None,
     require_any_median_speedup_at_least: float | None = None,
     require_each_median_speedup_at_least: float | None = None,
+    require_each_best_speedup_at_least: float | None = None,
     require_stable_samples: bool = False,
     allow_noisy_when_median_speedup_at_least: float | None = None,
     fail_on_count_mode_change: bool = False,
@@ -599,6 +616,15 @@ def comparison_failures(
                 f"{row.candidate_median_speedup:.3f} < "
                 f"{require_each_median_speedup_at_least:.3f}"
             )
+        if (
+            require_each_best_speedup_at_least is not None
+            and row.candidate_best_speedup < require_each_best_speedup_at_least
+        ):
+            failures.append(
+                f"{label} best speedup below required floor: "
+                f"{row.candidate_best_speedup:.3f} < "
+                f"{require_each_best_speedup_at_least:.3f}"
+            )
 
     if require_any_median_speedup_at_least is not None and not any(
         row.candidate_median_speedup >= require_any_median_speedup_at_least
@@ -672,9 +698,15 @@ def is_count_binary_server_row(name: str) -> bool:
     return name.startswith("circle_prime_count_binary_server_")
 
 
+def is_count_binary_socket_client_row(name: str) -> bool:
+    return name.startswith("circle_prime_count_binary_socket_client_")
+
+
 def is_count_binary_row(name: str) -> bool:
-    return name.startswith("circle_prime_count_binary_") and not is_count_binary_server_row(
-        name
+    return (
+        name.startswith("circle_prime_count_binary_")
+        and not is_count_binary_server_row(name)
+        and not is_count_binary_socket_client_row(name)
     )
 
 

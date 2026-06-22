@@ -240,6 +240,15 @@ the short competitive workflow.
   advantage lane should lean into proof-backed persistent, shifted, adjacent,
   and batched requests where the engine reuses phase/plan structure that a
   one-shot external CLI cannot amortize.
+  The first daemonized fresh-client lane is now explicit:
+  `circle-prime-count socket-server` keeps the reusable Circle count engine
+  warm behind a Unix socket, while `socket-client` is a fresh subprocess per
+  request. A clean 61-round formal run on 2026-06-22 had
+  `circle_prime_count_binary_socket_client_parallel_default_count_7t` at
+  `3.867 ms` best and `5.090 ms` median versus quiet local `primesieve 12.14`
+  at `4.603 ms` best and `5.229 ms` median, or `1.190x` best and `1.027x`
+  median. Treat that as a daemon/service win, not as proof that the direct
+  cold `circle-prime-count LOW HIGH` row is promoted.
 - Benchmarks include control implementations: a straightforward full
   Sieve-of-Eratosthenes count, a guarded scalar trial-division count, and the
   optimized pure-Rust `primal` sieve.
@@ -573,6 +582,25 @@ Current CPU findings:
   probed before considering a slim-binary port; they landed around `0.55x` to
   `0.60x` median versus cold `primesieve`, so the port is not justified for the
   tracked high-offset cold lane.
+  A Unix socket daemon/client path is the first retained workaround for the
+  launch-bound residual. The formal harness now supports
+  `--include-circle-count-binary-socket-client`, which starts a persistent
+  `circle-prime-count socket-server` and times fresh `socket-client`
+  subprocesses. A clean schedule with the cold Circle rows excluded reported
+  `3.867 ms` best and `5.090 ms` median for the socket client versus
+  `4.603 ms` best and `5.229 ms` median for quiet local `primesieve 12.14`;
+  the same row in a fuller cold-row rotation was effectively parity
+  (`1.062x` best, `0.999x` median). Keep the direct cold CLI below-parity
+  classification, but keep the socket lane as a proof-backed service interface
+  that lets external callers avoid reinitializing Circle's count engine.
+  The persistent one-request lib-control comparison is also not fully closed:
+  in a 41-round run the slim count-binary server beat persistent
+  `libprimesieve` on best time (`1.210x`) but not median (`0.914x`). The
+  stronger structural lane is shifted adjacent service work: a 41-round,
+  batch-16 shifted run measured the slim count-binary server at `1.400 ms`
+  best and `1.585 ms` median per request versus persistent `libprimesieve` at
+  `1.848 ms` best and `1.939 ms` median, or `1.320x` best and `1.223x`
+  median.
   Smaller cold worker-count/segment-size variants remain tracked as evidence
   lanes. The latest full competitive status rejects a cold one-shot promotion:
   the default count-binary row is `0.862x` median and `0.902x` best versus cold
@@ -596,8 +624,13 @@ Current CPU findings:
   count-server batches detect adjacent windows when the shift equals the range
   span and sieve the full union once, binning flags back into the requested
   intervals for both `presieve13` and `presieve17`; non-adjacent shifted
-  requests fall back to the shifted single-segment mark plan. It is measured
-  only when the external-control harness is passed
+  requests fall back to the shifted single-segment mark plan. The same binary
+  also exposes Unix socket commands:
+  `socket-server SOCKET_PATH [--json] [--segment-size N] [--threads N]
+  [--count-mode MODE]` and `socket-client SOCKET_PATH LOW HIGH ...`. The
+  external-control harness measures that fresh-client daemon lane with
+  `--include-circle-count-binary-socket-client`. The slim binary is measured as
+  a direct cold CLI row only when the external-control harness is passed
   `--include-circle-count-binary`; the latest full competitive status has the
   default count-only row at `0.862x` median and `0.902x` best versus cold
   `primesieve`, while the current expanded sweep's best cold row

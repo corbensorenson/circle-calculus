@@ -152,7 +152,11 @@ def benchmark_provenance_failures(
             "benchmark metadata used defaults "
             f"{short_hash(recorded_defaults)}, current defaults are {short_hash(current_defaults)}."
         )
-    if metadata.get("include_circle_count_binary"):
+    if (
+        metadata.get("include_circle_count_binary")
+        or metadata.get("include_circle_count_binary_server")
+        or metadata.get("include_circle_count_binary_socket_client")
+    ):
         failures.extend(
             count_binary_provenance_failures(
                 metadata,

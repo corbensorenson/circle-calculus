@@ -21,6 +21,8 @@ from scripts.benchmark_prime_external_controls import (
     circle_measurement_name,
     count_server_command,
     count_server_request,
+    count_socket_client_command,
+    count_socket_server_command,
     circle_prime_command,
     circle_server_measurement_name,
     external_baseline_enabled,
@@ -775,6 +777,141 @@ def test_external_metadata_records_count_server_request_shape(monkeypatch) -> No
         ),
         "request_resolves_segment_size_from_json_probe": True,
     }
+
+
+def test_external_metadata_records_count_binary_socket_client(monkeypatch) -> None:
+    monkeypatch.setattr(
+        benchmark_prime_external_controls,
+        "circle_prime_package_metadata",
+        lambda cargo: {"name": "circle-prime", "version": "0.1.0"},
+    )
+    args = SimpleNamespace(
+        rounds=3,
+        batch_size=1,
+        warmup_rounds=0,
+        segment_size=0,
+        segment_sizes=None,
+        circle_count_modes="segmented",
+        circle_variant=["default:0", "presieve13:131072"],
+        circle_threads=8,
+        external_threads=8,
+        require_tool=[],
+        include_circle_server=False,
+        include_circle_count_binary=False,
+        include_circle_count_binary_server=False,
+        include_circle_count_binary_socket_client=True,
+        circle_server_only=False,
+    )
+
+    metadata = build_run_metadata(
+        args=args,
+        ranges=[(1_000_000_000_000, 1_000_010_000_000)],
+        started_at_utc="2026-01-01T00:00:00Z",
+        cargo=None,
+        circle_prime=Path("target/release/circle-prime"),
+        circle_prime_count=Path("target/release/circle-prime-count"),
+        primesieve="/opt/bin/primesieve",
+        primecount=None,
+        row_count=4,
+    )
+
+    assert metadata["include_circle_count_binary_socket_client"] is True
+    assert metadata["tools"]["circle_prime_count_socket_server"]["method"] == (
+        "fresh slim circle-prime-count socket-client subprocesses "
+        "against a persistent Unix socket-server"
+    )
+    variants = metadata["range_commands"][0]["circle_variants"]
+    assert variants[0]["count_binary_socket_client"] == {
+        "server_command": [
+            "target/release/circle-prime-count",
+            "socket-server",
+            "<socket-path>",
+            "--threads",
+            "8",
+        ],
+        "client_command": [
+            "target/release/circle-prime-count",
+            "socket-client",
+            "<socket-path>",
+            "1000000000000",
+            "1000010000000",
+        ],
+        "uses_server_defaults": True,
+    }
+    assert variants[1]["count_binary_socket_client"] == {
+        "server_command": [
+            "target/release/circle-prime-count",
+            "socket-server",
+            "<socket-path>",
+        ],
+        "client_command": [
+            "target/release/circle-prime-count",
+            "socket-client",
+            "<socket-path>",
+            "1000000000000",
+            "1000010000000",
+            "--segment-size",
+            "131072",
+            "--threads",
+            "8",
+            "--count-mode",
+            "presieve13",
+        ],
+        "uses_server_defaults": False,
+    }
+
+
+def test_count_socket_commands_preserve_default_and_explicit_shapes() -> None:
+    binary = Path("target/release/circle-prime-count")
+
+    assert count_socket_server_command(
+        binary,
+        "<socket-path>",
+        default_threads=8,
+    ) == [
+        "target/release/circle-prime-count",
+        "socket-server",
+        "<socket-path>",
+        "--threads",
+        "8",
+    ]
+    assert count_socket_client_command(
+        binary,
+        "<socket-path>",
+        0,
+        1000,
+        0,
+        8,
+        "default",
+        use_request_defaults=True,
+    ) == [
+        "target/release/circle-prime-count",
+        "socket-client",
+        "<socket-path>",
+        "0",
+        "1000",
+    ]
+    assert count_socket_client_command(
+        binary,
+        "<socket-path>",
+        0,
+        1000,
+        131072,
+        8,
+        "presieve13",
+    ) == [
+        "target/release/circle-prime-count",
+        "socket-client",
+        "<socket-path>",
+        "0",
+        "1000",
+        "--segment-size",
+        "131072",
+        "--threads",
+        "8",
+        "--count-mode",
+        "presieve13",
+    ]
 
 
 def test_external_metadata_records_circle_sweep_commands(monkeypatch) -> None:
