@@ -322,7 +322,9 @@ theorem-linked artifact. The saved import report is
 validated against
 `site/data/generated/circle_ai_architecture_config_import.schema.json`; it
 records the source config fingerprint, the emitted request fingerprint, and
-which field or explicit override supplied each request parameter.
+which field or explicit override supplied each request parameter. It also lists
+unsupported target-section fields so extra architecture behavior is visible but
+not silently promoted into the theorem-linked receipt.
 In default text mode, config-backed runs also print a `source_config=` line with
 the source path, source config fingerprint, derived request kind, and request
 fingerprint, so a terminal log can be replayed or pinned later.

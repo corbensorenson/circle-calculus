@@ -204,7 +204,11 @@ receipt. Use
 import report for audit logs. Its schema is
 `site/data/generated/circle_ai_architecture_config_import.schema.json`, and its
 fields record the source architecture-config fingerprint, the emitted request
-fingerprint, parameter-source provenance, and any import failures.
+fingerprint, parameter-source provenance, unsupported target-section fields,
+and any import failures. Unsupported target-section fields do not make the
+translation fail by themselves, but they are not part of the theorem-linked
+claim and must be reviewed before treating the receipt as a gate for the whole
+architecture behavior.
 In default text mode, config-backed runs also print a `source_config=` line with
 the source path, source config fingerprint, derived request kind, and request
 fingerprint, so a terminal log can be replayed or pinned later.

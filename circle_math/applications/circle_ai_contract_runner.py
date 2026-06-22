@@ -988,6 +988,55 @@ def _architecture_config_sections(
     return tuple(sections)
 
 
+def _architecture_config_section_mappings(
+    canonical: str,
+    config: Mapping[str, Any],
+) -> tuple[tuple[str, Mapping[str, Any]], ...]:
+    sections: list[tuple[str, Mapping[str, Any]]] = []
+    for key in ARCHITECTURE_CONFIG_SECTION_KEYS.get(canonical, ()):
+        value = config.get(key)
+        if isinstance(value, Mapping):
+            sections.append((key, value))
+    return tuple(sections)
+
+
+def _architecture_supported_config_fields(canonical: str) -> set[str]:
+    supported: set[str] = set()
+    for aliases in ARCHITECTURE_CONFIG_PARAMETER_ALIASES[canonical].values():
+        supported.update(aliases)
+    if canonical == "recurrence_schedule":
+        supported.update(RECURRENCE_ARCHITECTURE_SHIFT_AMOUNT_ALIASES)
+    return supported
+
+
+def _unsupported_architecture_config_fields(
+    canonical: str | None,
+    config: Mapping[str, Any],
+) -> list[str]:
+    if canonical not in ARCHITECTURE_CONFIG_SUPPORTED_KINDS:
+        return []
+    supported = _architecture_supported_config_fields(canonical)
+    section_mappings = _architecture_config_section_mappings(canonical, config)
+    if section_mappings:
+        return sorted(
+            f"{section_key}.{field}"
+            for section_key, section in section_mappings
+            for field in section
+            if field not in supported
+        )
+
+    known_sections = {
+        section_key
+        for keys in ARCHITECTURE_CONFIG_SECTION_KEYS.values()
+        for section_key in keys
+    }
+    return sorted(
+        str(field)
+        for field in config
+        if field not in supported and field not in known_sections
+    )
+
+
 def _architecture_config_lookup(
     canonical: str,
     config: Mapping[str, Any],
@@ -1516,6 +1565,9 @@ def build_architecture_config_import_report(
         "ok": not failures,
         "failure_count": len(failures),
         "failures": failures,
+        "unsupported_architecture_config_fields": (
+            _unsupported_architecture_config_fields(canonical, config)
+        ),
         "parameters": _json_ready_value(parameters),
         "parameter_sources": parameter_sources,
         "request": request,
@@ -5630,6 +5682,7 @@ def build_architecture_config_import_json_schema() -> dict[str, Any]:
             "ok",
             "failure_count",
             "failures",
+            "unsupported_architecture_config_fields",
             "parameters",
             "parameter_sources",
             "request",
@@ -5653,6 +5706,7 @@ def build_architecture_config_import_json_schema() -> dict[str, Any]:
             "ok": {"type": "boolean"},
             "failure_count": {"type": "integer", "minimum": 0},
             "failures": string_list,
+            "unsupported_architecture_config_fields": string_list,
             "parameters": {"type": "object"},
             "parameter_sources": {
                 "type": "object",

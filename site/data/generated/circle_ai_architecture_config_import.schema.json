@@ -499,6 +499,12 @@
     },
     "schema_id": {
       "const": "circle_calculus.ai_architecture_config_import.v0"
+    },
+    "unsupported_architecture_config_fields": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
     }
   },
   "required": [
@@ -511,6 +517,7 @@
     "ok",
     "failure_count",
     "failures",
+    "unsupported_architecture_config_fields",
     "parameters",
     "parameter_sources",
     "request",

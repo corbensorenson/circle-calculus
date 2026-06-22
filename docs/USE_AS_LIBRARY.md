@@ -320,6 +320,9 @@ The architecture import report is provenance, not proof. It records which config
 field or explicit override supplied each request parameter; the receipt remains
 the theorem-linked artifact. The schema builder above matches
 `site/data/generated/circle_ai_architecture_config_import.schema.json`.
+The report also lists unsupported fields inside the target section, so a
+downstream project can see when extra architecture behavior was present but not
+certified by the emitted request.
 For recurrence configs, `shift_amount` is translated to `shift_passes` only when
 it is a nonnegative exact multiple of `loop_period`; the import report labels
 that parameter source as derived instead of treating a token shift as a pass

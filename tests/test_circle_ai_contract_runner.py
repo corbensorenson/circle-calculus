@@ -231,6 +231,7 @@ def test_architecture_config_import_builds_contract_requests(
         "field": "rope.base",
         "value": 10000.0,
     }
+    assert rope_report["unsupported_architecture_config_fields"] == []
     rope_receipt = build_validated_contract_receipt_from_architecture_config(
         "rope",
         config,
@@ -259,6 +260,7 @@ def test_architecture_config_import_builds_contract_requests(
     assert sparse_report["parameter_sources"]["path_length"]["field"] == (
         "sparse_attention.max_hops"
     )
+    assert sparse_report["unsupported_architecture_config_fields"] == []
     sparse_request = build_contract_request_from_architecture_config(
         "sparse-attention",
         config,
@@ -297,6 +299,7 @@ def test_architecture_config_import_builds_contract_requests(
         "derived_architecture_config_field"
     )
     assert recurrence_report["request"]["parameters"]["shift_passes"] == 3
+    assert recurrence_report["unsupported_architecture_config_fields"] == []
 
     sparse_bundle = build_architecture_config_certification_bundle(
         "sparse-attention",
@@ -329,6 +332,28 @@ def test_architecture_config_import_builds_contract_requests(
     assert rope_bundle["architecture_config_import_report"] == rope_report
     assert rope_bundle["receipt"]["kind"] == "rope_position_distinguishability"
     assert rope_bundle["gate_report"]["ok"] is True
+
+
+def test_architecture_config_import_reports_unsupported_target_section_fields() -> None:
+    config = {
+        "recurrence": {
+            "period": 5,
+            "horizon_steps": 7,
+            "shift_amount": 15,
+            "adaptive_exit_policy": "entropy",
+        },
+        "kv_cache": {"cache_size": 16},
+        "project_name": "example",
+    }
+
+    report = build_architecture_config_import_report("recurrence", config)
+
+    jsonschema.validate(report, build_architecture_config_import_json_schema())
+    assert report["ok"] is True
+    assert report["unsupported_architecture_config_fields"] == [
+        "recurrence.adaptive_exit_policy"
+    ]
+    assert report["request"]["parameters"]["shift_passes"] == 3
 
 
 def test_recurrence_architecture_config_accepts_looped_transformer_vocabulary(
