@@ -186,6 +186,9 @@ without changing the whole batch command. It is the package-native batch
 handoff path and does not require importing repository-only scripts. Use the
 explicit `--receipt-out-dir` and related directory flags only when a downstream
 CI system needs a custom layout instead of the standard artifact directory.
+Add `--require-no-unsupported-architecture-fields` when the generated
+runner-check report should fail if an architecture config contains fields that
+Circle did not map into a theorem-linked request.
 
 After copying that directory into another project, a standard-library verifier
 can check the runner report and every named sidecar without importing Circle:

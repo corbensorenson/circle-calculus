@@ -1359,6 +1359,20 @@ def _certify_batch_requests(args: argparse.Namespace) -> int:
                 )
                 for failure in _receipt_gate_failures(receipt, args):
                     failures.append(f"{source_path}:{architecture_kind}: {failure}")
+                unsupported_architecture_fields = import_report[
+                    "unsupported_architecture_config_fields"
+                ]
+                if (
+                    args.require_no_unsupported_architecture_fields
+                    and unsupported_architecture_fields
+                ):
+                    failures.append(
+                        f"{source_path}:{architecture_kind}: unsupported "
+                        "architecture-config fields: "
+                        + ", ".join(
+                            str(field) for field in unsupported_architecture_fields
+                        )
+                    )
             except (OSError, ValueError, json.JSONDecodeError) as exc:
                 failures.append(f"{source_path}:{architecture_kind}: {exc}")
             finally:
@@ -1376,6 +1390,9 @@ def _certify_batch_requests(args: argparse.Namespace) -> int:
             "allowed_decision_verdicts": list(args.require_decision),
             "allowed_assurance_levels": list(args.require_assurance),
             "require_passed": args.require_passed,
+            "require_no_unsupported_architecture_fields": (
+                args.require_no_unsupported_architecture_fields
+            ),
         },
         "summaries": summaries,
     }
@@ -1392,6 +1409,8 @@ def _certify_batch_requests(args: argparse.Namespace) -> int:
                     f"ok={report['ok']}",
                     f"source_count={report['example_count']}",
                     f"failure_count={report['failure_count']}",
+                    "require_no_unsupported_architecture_fields="
+                    f"{report['gate_policy']['require_no_unsupported_architecture_fields']}",
                 ]
             )
         )
@@ -1575,6 +1594,14 @@ def contract_certify_main() -> int:
     )
     batch_parser.add_argument("--format", choices=("text", "json"), default="text")
     _add_receipt_gate_options(batch_parser)
+    batch_parser.add_argument(
+        "--require-no-unsupported-architecture-fields",
+        action="store_true",
+        help=(
+            "Exit nonzero if an architecture-config batch source includes "
+            "fields that were not mapped into the theorem-linked request."
+        ),
+    )
 
     rope_parser = subparsers.add_parser(
         "rope",

@@ -417,6 +417,10 @@ circle-rope-certify --preset llama_style_10000_4k
 circle-sparse-attention-certify --context 9 --strides 3,4,7 --path-length 2 --local-window 2
 ```
 
+Add `--require-no-unsupported-architecture-fields` to `circle-ai-certify batch`
+when the generated runner-check report should fail if an architecture config
+contains fields that Circle did not map into a theorem-linked request.
+
 `circle-ai-certify` is the installed-package path for guided RoPE, KV-cache,
 sparse-attention, recurrence, strided-fanout, cyclic-memory, multicoil-phase,
 cyclic-mixer, seed-rule, and request-file receipts without using the

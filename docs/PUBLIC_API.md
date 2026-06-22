@@ -389,6 +389,10 @@ circle-ai-certify cyclic-mixer --format compact-json
 circle-ai-certify seed-rule --format compact-json
 ```
 
+Add `--require-no-unsupported-architecture-fields` to `circle-ai-certify batch`
+when the generated runner-check report should fail if an architecture config
+contains fields that Circle did not map into a theorem-linked request.
+
 For RoPE imports, `--model-config-file` may point directly at a JSON file or at
 a model directory containing `config.json`.
 

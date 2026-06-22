@@ -772,6 +772,7 @@ def test_package_cli_unified_certify_batch_model_configs_write_import_reports(
     jsonschema.validate(report, build_contract_runner_check_json_schema())
     assert report["ok"] is True
     assert report["example_count"] == 1
+    assert report["gate_policy"]["require_no_unsupported_architecture_fields"] is False
     assert report["selected_kinds"] == ["rope_position_distinguishability"]
     summary = report["summaries"][0]
     assert summary["source_type"] == "model_config"
@@ -1001,6 +1002,50 @@ def test_package_cli_batch_honors_architecture_config_kind_hints(tmp_path) -> No
     assert import_report["request"] == json.loads(
         Path(summary["receipt_path"]).read_text()
     )["request"]
+
+
+def test_package_cli_batch_rejects_unsupported_architecture_fields_when_required(
+    tmp_path,
+) -> None:
+    result = subprocess.run(
+        [
+            sys.executable,
+            "-c",
+            (
+                "import sys; "
+                "from circle_math.cli import contract_certify_main; "
+                "sys.exit(contract_certify_main())"
+            ),
+            "batch",
+            "--architecture-config-file",
+            str(ROPE_MODEL_ONLY_ARCHITECTURE_CONFIG),
+            "--require-status",
+            "proved",
+            "--require-decision",
+            "passed",
+            "--require-passed",
+            "--require-no-unsupported-architecture-fields",
+            "--format",
+            "json",
+        ],
+        text=True,
+        capture_output=True,
+        check=False,
+    )
+
+    assert result.returncode == 2
+    report = json.loads(result.stdout)
+    jsonschema.validate(report, build_contract_runner_check_json_schema())
+    assert report["ok"] is False
+    assert report["gate_policy"]["require_no_unsupported_architecture_fields"] is True
+    assert report["failure_count"] == 1
+    assert any(
+        "unsupported architecture-config fields: model.model_type" in failure
+        for failure in report["failures"]
+    )
+    assert report["summaries"][0]["unsupported_architecture_config_fields"] == [
+        "model.model_type"
+    ]
 
 
 def test_package_cli_unified_certify_batch_artifact_dir_writes_portable_set(
