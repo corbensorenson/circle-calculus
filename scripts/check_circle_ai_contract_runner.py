@@ -879,6 +879,7 @@ def check_runner_examples(
         },
         "artifact_manifest_path": None,
         "artifact_manifest_check_path": None,
+        "validation_commands": [],
         "gate_policy": {
             "allowed_statuses": list(required_statuses),
             "allowed_decision_verdicts": list(required_decision_verdicts),

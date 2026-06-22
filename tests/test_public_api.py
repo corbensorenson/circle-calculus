@@ -1157,6 +1157,11 @@ def test_package_cli_unified_certify_batch_artifact_dir_writes_portable_set(
     assert json.loads(report_path.read_text()) == report
     assert report["artifact_manifest_path"] == str(manifest_path)
     assert report["artifact_manifest_check_path"] == str(manifest_check_path)
+    assert report["validation_commands"] == [
+        "python examples/downstream_ci_verify_circle_ai_batch.py "
+        f"{report_path} --format json --require-status proved "
+        "--require-decision passed --require-passed"
+    ]
     assert manifest_path.exists()
     assert manifest_check_path.exists()
     jsonschema.validate(report, build_contract_runner_check_json_schema())
@@ -1344,6 +1349,7 @@ def test_public_api_runner_check_report_builds_from_in_memory_sources() -> None:
         "rope_position_distinguishability",
         "sparse_attention_coverage",
     ]
+    assert report["validation_commands"] == []
     assert report["required_kinds"] == [
         "kv_cache_ring_buffer",
         "rope_position_distinguishability",

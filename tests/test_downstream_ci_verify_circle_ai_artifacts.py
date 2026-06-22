@@ -443,6 +443,7 @@ def test_standalone_batch_artifact_verifier_accepts_rope_only_architecture_batch
     assert payload["artifact_manifest"]["ok"] is True
     assert payload["artifact_manifest"]["artifact_count"] == 7
     assert payload["artifact_manifest_check"]["ok"] is True
+    assert payload["runner_validation_commands"] == runner_check["validation_commands"]
     assert payload["source_count"] == 1
     assert payload["failure_count"] == 0
     assert payload["runner_gate_policy"][

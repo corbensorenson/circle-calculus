@@ -10,6 +10,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import shlex
 import sys
 from dataclasses import asdict, is_dataclass
 from pathlib import Path
@@ -748,6 +749,39 @@ def _certify_batch_artifact_paths(
                 )
             )
     return artifact_paths
+
+
+def _quote_cli_argument(value: Any) -> str:
+    return shlex.quote(str(value))
+
+
+def _certify_batch_validation_commands(
+    args: argparse.Namespace,
+    *,
+    required_kinds: tuple[str, ...],
+) -> list[str]:
+    if args.report_out is None:
+        return []
+    parts: list[str] = [
+        "python",
+        "examples/downstream_ci_verify_circle_ai_batch.py",
+        str(args.report_out),
+        "--format",
+        "json",
+    ]
+    for kind in required_kinds:
+        parts.extend(["--require-kind", kind])
+    for status in args.require_status:
+        parts.extend(["--require-status", status])
+    for decision in args.require_decision:
+        parts.extend(["--require-decision", decision])
+    for assurance in args.require_assurance:
+        parts.extend(["--require-assurance", assurance])
+    if args.require_passed:
+        parts.append("--require-passed")
+    if args.require_no_unsupported_architecture_fields:
+        parts.append("--require-no-unsupported-architecture-fields")
+    return [" ".join(_quote_cli_argument(part) for part in parts)]
 
 
 def _certify_artifact_paths(
@@ -1515,6 +1549,10 @@ def _certify_batch_requests(args: argparse.Namespace) -> int:
             None
             if args.artifact_manifest_check_out is None
             else str(args.artifact_manifest_check_out)
+        ),
+        "validation_commands": _certify_batch_validation_commands(
+            args,
+            required_kinds=required_kinds,
         ),
         "gate_policy": {
             "allowed_statuses": list(args.require_status),

@@ -4443,6 +4443,7 @@ def build_contract_runner_check_report(
         "kind_counts": kind_counts,
         "artifact_manifest_path": None,
         "artifact_manifest_check_path": None,
+        "validation_commands": [],
         "gate_policy": _contract_runner_gate_policy(
             required_statuses=required_statuses,
             required_decision_verdicts=required_decision_verdicts,
@@ -6174,6 +6175,7 @@ def build_contract_runner_check_json_schema() -> dict[str, Any]:
             "kind_counts",
             "artifact_manifest_path",
             "artifact_manifest_check_path",
+            "validation_commands",
             "gate_policy",
             "summaries",
         ],
@@ -6200,6 +6202,11 @@ def build_contract_runner_check_json_schema() -> dict[str, Any]:
             },
             "artifact_manifest_path": {"type": ["string", "null"]},
             "artifact_manifest_check_path": {"type": ["string", "null"]},
+            "validation_commands": {
+                "type": "array",
+                "items": {"type": "string", "minLength": 1},
+                "uniqueItems": True,
+            },
             "gate_policy": gate_policy,
             "summaries": {"type": "array", "items": summary},
         },

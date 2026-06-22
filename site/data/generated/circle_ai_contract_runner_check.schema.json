@@ -619,6 +619,14 @@
         "type": "object"
       },
       "type": "array"
+    },
+    "validation_commands": {
+      "items": {
+        "minLength": 1,
+        "type": "string"
+      },
+      "type": "array",
+      "uniqueItems": true
     }
   },
   "required": [
@@ -632,6 +640,7 @@
     "kind_counts",
     "artifact_manifest_path",
     "artifact_manifest_check_path",
+    "validation_commands",
     "gate_policy",
     "summaries"
   ],

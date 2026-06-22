@@ -427,7 +427,9 @@ request-validation report, certification bundle, and bundle-check sidecar that
 the batch report names. When the runner report names a batch artifact manifest,
 the verifier also checks its SHA-256 fingerprints and coverage of the runner
 report plus every emitted sidecar; pass `--artifact-manifest` only to override
-or supply a relocated manifest. It validates the runner report's own `gate_policy`,
+or supply a relocated manifest. The runner report also records a top-level
+`validation_commands` list with the JSON-mode verifier command for the handoff.
+It validates the runner report's own `gate_policy`,
 `example_count`, `selected_kinds`, `required_kinds`, and `kind_counts`, so stale
 reports with mismatched metadata or missing current policy fields fail before
 being accepted as CI evidence. An

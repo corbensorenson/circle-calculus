@@ -356,6 +356,26 @@ def _verify_artifact_manifest_check(
     return summary, failures
 
 
+def _runner_validation_commands(
+    report: dict[str, Any],
+) -> tuple[list[str], list[str]]:
+    raw_commands = report.get("validation_commands")
+    commands: list[str] = []
+    failures: list[str] = []
+    if not isinstance(raw_commands, list):
+        return [], ["runner-check validation_commands must be a list"]
+    for command in raw_commands:
+        if not isinstance(command, str) or not command:
+            failures.append(
+                "runner-check validation_commands entries must be non-empty strings"
+            )
+            continue
+        commands.append(command)
+    if len(commands) != len(set(commands)):
+        failures.append("runner-check validation_commands entries must be unique")
+    return commands, failures
+
+
 def _check_policy_values(
     *,
     statuses: list[str],
@@ -840,6 +860,10 @@ def verify_runner_check(
         failures.append("runner-check report ok was not true")
     if report.get("failure_count") != 0:
         failures.append("runner-check failure_count was not zero")
+    runner_validation_commands, runner_validation_command_failures = (
+        _runner_validation_commands(report)
+    )
+    failures.extend(runner_validation_command_failures)
     runner_gate_policy, runner_gate_policy_failures = _runner_gate_policy(report)
     failures.extend(runner_gate_policy_failures)
     report_manifest_path, report_manifest_failures = (
@@ -1073,6 +1097,7 @@ def verify_runner_check(
         "runner_check_path": str(path),
         "artifact_manifest": artifact_manifest_summary,
         "artifact_manifest_check": artifact_manifest_check_summary,
+        "runner_validation_commands": runner_validation_commands,
         "source_count": len(summaries),
         "failure_count": len(failures),
         "failures": failures,
