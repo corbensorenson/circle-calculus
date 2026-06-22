@@ -547,7 +547,7 @@ Current CPU findings:
   persistent `libprimesieve`, and the slim count-binary server row at `15.494x`
   median versus persistent `libprimesieve`; those are hot-service repeat
   throughput numbers, while the shifted fresh-interval count-binary probe is
-  the cleaner competitive count claim at `1.073x` median versus persistent
+  the cleaner competitive count claim at `1.227x` median versus persistent
   `libprimesieve`. `make
   prime-engine-high-offset-count-binary-check`
   verifies the count-binary artifact provenance, validates that the current
@@ -1170,8 +1170,8 @@ is more exposed to helper timing noise, while batch `80` can over-widen the
 adjacent-union count and lose median stability on this machine. Use it when
 you need a current competitive read without starting the long tuner.
 The latest refreshed smoke on 2026-06-22 passes current-binary provenance and
-has `circle_prime_count_binary_server_default_count` at `1.116x` median over
-persistent `libprimesieve` and `6.546x` median over persistent `libprimecount`
+has `circle_prime_count_binary_server_default_count` at `1.312x` median over
+persistent `libprimesieve` and `7.893x` median over persistent `libprimecount`
 pi-diff on `[1e12, 1e12 + 1e7)` shifted batches. The matching external
 correctness matrix checked `826` Circle variants against `primesieve` and
 `primecount`.
@@ -1256,15 +1256,15 @@ the default clears
 `CIRCLE_PRIME_HIGH_OFFSET_SHIFTED_CHECK_NOISY_MEDIAN_BYPASS` (default `1.15`)
 by median speed. The latest focused confirmation on
 `[1e12, 1e12 + 1e7)` with a `10000000` shift has the adaptive default at
-`1.083x` median and `1.167x` best speedup versus persistent `libprimesieve`,
-and `5.537x` median and `5.241x` best speedup over persistent
-`libprimecount` pi-diff, with stable
+`1.286x` median and `1.416x` best speedup versus persistent `libprimesieve`,
+and `7.674x` median and `7.054x` best speedup over persistent
+`libprimecount` pi-diff, with mixed
 samples. Native shifted default batches now use the measured edge high-offset
 `presieve13:1310720` plan, which resolves to 8 effective workers for this
-10M span while leaving fixed high-offset defaults unchanged. The slim
-count-binary server also over-splits adjacent shifted unions into multiple
-chunks per worker and uses scoped atomic work pulling so a single slow worker
-does not dominate the batch. The apparent
+10M span while leaving fixed high-offset defaults unchanged. The full and slim
+shifted servers also over-split adjacent shifted unions into multiple chunks
+per worker and use scoped atomic work pulling so a single slow worker does not
+dominate the batch. The apparent
 best-vs-default gain in the latest shifted-candidate readout is `1.000x`, so
 the shifted-candidate gate records `keep_default`. The combined report only
 flags a shifted trial when a

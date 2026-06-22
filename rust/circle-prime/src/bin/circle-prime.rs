@@ -3,6 +3,7 @@ use std::env;
 use std::fs;
 use std::io::{self, BufRead, Write};
 use std::process;
+use std::sync::atomic::{AtomicUsize, Ordering};
 use std::sync::mpsc;
 use std::thread::{self, JoinHandle};
 
@@ -15,7 +16,9 @@ use circle_prime::{
     fuzzy_any_prime_value_with_score_limit, fuzzy_search_with_score_limit, inspect_horizon,
     is_bpsw_probable_prime_biguint, is_prime_u64, is_probable_prime_biguint,
     next_bpsw_probable_prime_biguint, next_prime_u64, next_prime_value_u64,
-    next_probable_prime_biguint, parse_biguint, prime_count_in_range,
+    next_probable_prime_biguint, parse_biguint,
+    prime_count_adjacent_shifted_presieve13_with_scratch,
+    prime_count_adjacent_shifted_presieve17_with_scratch, prime_count_in_range,
     prime_count_in_range_hybrid_wheel30_marks, prime_count_in_range_hybrid_wheel30_marks_parallel,
     prime_count_in_range_parallel, prime_count_in_range_parallel_balanced,
     prime_count_in_range_parallel_dynamic, prime_count_in_range_prefix_pi,
@@ -2210,12 +2213,112 @@ fn count_range_shifted_with_server_pool(
         return Ok(None);
     }
 
+    let span = high - low;
+    if shift == span && matches!(mode, CountMode::Presieve13 | CountMode::Presieve17) {
+        let chunk_count =
+            adjacent_shifted_dynamic_chunk_count(low, final_high, segment_size, worker_threads);
+        let chunks = split_range_evenly(low, final_high, chunk_count);
+        if chunks.len() <= 1 {
+            return Ok(None);
+        }
+        return count_adjacent_shifted_chunks_scoped(
+            &chunks,
+            low,
+            span,
+            segment_size,
+            mode,
+            repetitions,
+            worker_threads,
+        )
+        .map(Some);
+    }
+
     let chunks = split_range_evenly(low, high, worker_threads);
     if chunks.len() <= 1 {
         return Ok(None);
     }
     pool.count_shifted_chunks(&chunks, segment_size, mode, repetitions, shift)
         .map(Some)
+}
+
+fn adjacent_shifted_dynamic_chunk_count(
+    low: u64,
+    high: u64,
+    segment_size: u64,
+    threads: usize,
+) -> usize {
+    let workers = threads.max(1);
+    if high <= low || segment_size == 0 {
+        return workers;
+    }
+    let segment_count = (high - low).div_ceil(segment_size);
+    let target_chunks = workers.saturating_mul(4).max(workers);
+    usize::try_from(segment_count)
+        .unwrap_or(usize::MAX)
+        .min(target_chunks)
+        .max(workers)
+}
+
+fn count_adjacent_shifted_chunks_scoped(
+    chunks: &[(u64, u64)],
+    batch_low: u64,
+    span: u64,
+    segment_size: u64,
+    mode: CountMode,
+    repetitions: usize,
+    threads: usize,
+) -> Result<Vec<usize>, circle_prime::RangeError> {
+    if chunks.is_empty() {
+        return Ok(vec![0; repetitions]);
+    }
+    let worker_count = threads.max(1).min(chunks.len());
+    let next_chunk = AtomicUsize::new(0);
+    thread::scope(|scope| {
+        let mut handles = Vec::with_capacity(worker_count);
+        for _ in 0..worker_count {
+            handles.push(scope.spawn(|| {
+                let mut scratch = PrimeCountScratch::new();
+                let mut totals = vec![0usize; repetitions];
+                loop {
+                    let chunk_index = next_chunk.fetch_add(1, Ordering::Relaxed);
+                    let Some(&(low, high)) = chunks.get(chunk_index) else {
+                        break;
+                    };
+                    let counts = count_adjacent_shifted_range_with_mode_scratch(
+                        batch_low,
+                        span,
+                        low,
+                        high,
+                        segment_size,
+                        mode,
+                        repetitions,
+                        &mut scratch,
+                    )?;
+                    if counts.len() != totals.len() {
+                        return Err(circle_prime::RangeError::WorkerPanic);
+                    }
+                    for (total, count) in totals.iter_mut().zip(counts) {
+                        *total += count;
+                    }
+                }
+                Ok(totals)
+            }));
+        }
+
+        let mut totals = vec![0usize; repetitions];
+        for handle in handles {
+            let counts = handle
+                .join()
+                .map_err(|_| circle_prime::RangeError::WorkerPanic)??;
+            if counts.len() != totals.len() {
+                return Err(circle_prime::RangeError::WorkerPanic);
+            }
+            for (total, count) in totals.iter_mut().zip(counts) {
+                *total += count;
+            }
+        }
+        Ok(totals)
+    })
 }
 
 fn split_range_evenly(low: u64, high: u64, parts: usize) -> Vec<(u64, u64)> {
@@ -2330,6 +2433,80 @@ fn count_range_with_mode_scratch(
         }
         _ => count_range_with_mode(low, high, segment_size, worker_threads, mode),
     }
+}
+
+fn count_adjacent_shifted_range_with_mode_scratch(
+    batch_low: u64,
+    span: u64,
+    range_low: u64,
+    range_high: u64,
+    segment_size: u64,
+    mode: CountMode,
+    repetitions: usize,
+    scratch: &mut PrimeCountScratch,
+) -> Result<Vec<usize>, circle_prime::RangeError> {
+    match mode {
+        CountMode::Presieve13 => {
+            if let Some(counts) = prime_count_adjacent_shifted_presieve13_with_scratch(
+                batch_low,
+                span,
+                repetitions,
+                range_low,
+                range_high,
+                segment_size,
+                scratch,
+            )? {
+                return Ok(counts);
+            }
+        }
+        CountMode::Presieve17 => {
+            if let Some(counts) = prime_count_adjacent_shifted_presieve17_with_scratch(
+                batch_low,
+                span,
+                repetitions,
+                range_low,
+                range_high,
+                segment_size,
+                scratch,
+            )? {
+                return Ok(counts);
+            }
+        }
+        CountMode::Segmented
+        | CountMode::Balanced
+        | CountMode::Dynamic
+        | CountMode::PrefixPi
+        | CountMode::Wheel30Marks
+        | CountMode::HybridWheel30Marks => {}
+    }
+
+    let mut counts = vec![0; repetitions];
+    for index in 0..repetitions {
+        let bin_low = batch_low
+            .checked_add(
+                span.checked_mul(
+                    u64::try_from(index).map_err(|_| circle_prime::RangeError::SegmentTooLarge)?,
+                )
+                .ok_or(circle_prime::RangeError::SegmentTooLarge)?,
+            )
+            .ok_or(circle_prime::RangeError::SegmentTooLarge)?;
+        let bin_high = bin_low
+            .checked_add(span)
+            .ok_or(circle_prime::RangeError::SegmentTooLarge)?;
+        let overlap_low = range_low.max(bin_low);
+        let overlap_high = range_high.min(bin_high);
+        if overlap_low < overlap_high {
+            counts[index] = count_range_with_mode_scratch(
+                overlap_low,
+                overlap_high,
+                segment_size,
+                1,
+                mode,
+                scratch,
+            )?;
+        }
+    }
+    Ok(counts)
 }
 
 fn count_shifted_range_with_mode_scratch(
