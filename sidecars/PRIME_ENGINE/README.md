@@ -17,6 +17,7 @@ make prime-engine-benchmark-record
 make prime-engine-external-controls
 make prime-engine-external-next
 make prime-engine-external-next-server
+make prime-engine-high-offset-count-binary-socket-client
 make prime-engine-high-offset-shifted-hot-server
 make prime-engine-high-offset-shifted-hot-server-confirm
 make prime-engine-tune
@@ -52,7 +53,8 @@ daytime iteration. It runs the external correctness matrix, warmed persistent
 count controls, the prime proof-contract gate, the high-offset hot-server
 scorecard, a focused hot-server win/stability gate against persistent
 `libprimesieve` and `libprimecount`, repeated high-offset default
-confirmation, refreshed shifted high-offset confirmation, fresh high-offset
+confirmation, the socket-client count-binary service gate, refreshed shifted
+high-offset confirmation, fresh high-offset
 candidate confirmation, the focused next-prime server-only scorecard, the
 broader next-prime comparison, default-calibration drift check, and the combined
 report plus promotion/readout gates. The control rows use interleaved samples,
@@ -318,6 +320,14 @@ slim count-binary server row at `18.722x` median versus persistent
 `libprimesieve`; those are hot-service repeat throughput numbers, while the
 shifted fresh-interval count-binary probe is the cleaner competitive count
 claim at `1.227x` median versus persistent `libprimesieve`.
+`make prime-engine-high-offset-count-binary-socket-client` is the focused
+service-shaped cold-control gate. It starts a persistent
+`circle-prime-count socket-server`, times fresh `socket-client` subprocesses
+against cold quiet `primesieve`, writes
+`prime_engine_high_offset_count_binary_socket_client_latest.{csv,json}` plus
+samples, and fails unless the socket-client row beats `primesieve` by both
+median and best speedup. This preserves the direct cold CLI below-parity
+classification while making the daemonized fresh-client advantage enforceable.
 `make prime-engine-high-offset-count-binary-check` validates that artifact,
 including the recorded `circle-prime-count` hash, the cold count-binary
 adaptive-default row against cold `primesieve`, and the persistent Circle

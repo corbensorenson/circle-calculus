@@ -44,6 +44,7 @@ make prime-engine-external-mode-confirm
 make prime-engine-high-offset-hot-cold
 make prime-engine-high-offset-count-binary
 make prime-engine-high-offset-count-binary-check
+make prime-engine-high-offset-count-binary-socket-client
 make prime-engine-high-offset-shifted-hot-server
 make prime-engine-high-offset-shifted-hot-server-confirm
 make prime-engine-external-throughput
@@ -593,6 +594,13 @@ Current CPU findings:
   (`1.062x` best, `0.999x` median). Keep the direct cold CLI below-parity
   classification, but keep the socket lane as a proof-backed service interface
   that lets external callers avoid reinitializing Circle's count engine.
+  `make prime-engine-high-offset-count-binary-socket-client` is the durable
+  short gate for that lane. It writes
+  `prime_engine_high_offset_count_binary_socket_client_latest.{csv,json}` plus
+  sample CSV, validates current `circle-prime-count` provenance, requires
+  local `primesieve >= 12.14`, and fails unless
+  `circle_prime_count_binary_socket_client_default_count` beats cold
+  `external_primesieve_count` by both median and best speedup.
   The persistent one-request lib-control comparison is also not fully closed:
   in a 41-round run the slim count-binary server beat persistent
   `libprimesieve` on best time (`1.210x`) but not median (`0.914x`). The
@@ -1271,7 +1279,8 @@ speed rows.
 external correctness, the prime proof-contract gate, warmed persistent count
 controls, the 2B prefix-cache probe and promotion gate, the high-offset
 count-binary diagnostic, focused cold count-binary confirmation, sweep, and
-cold-candidate check, the high-offset hot-server scorecard, a shifted
+socket-client service gate, cold-candidate check, the high-offset hot-server
+scorecard, a shifted
 competitive smoke with `40` requests per timed sample, the focused hot-server
 win/stability gate against persistent
 `libprimesieve` and persistent `libprimecount` pi-diff controls, repeated
