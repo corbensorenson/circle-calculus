@@ -951,6 +951,8 @@ def test_contract_runner_schema_json_change_runs_receipt_verifier_tests() -> Non
         "site/data/generated/circle_ai_contract_request_validation.schema.json",
         "site/data/generated/circle_ai_contract_receipt.schema.json",
         "site/data/generated/circle_ai_contract_runner_check.schema.json",
+        "site/data/generated/circle_ai_rope_model_config_import.schema.json",
+        "site/data/generated/circle_ai_architecture_config_import.schema.json",
         "site/data/generated/circle_ai_contract_receipt_file_check.schema.json",
         "site/data/generated/circle_ai_contract_receipt_replay_check.schema.json",
         "site/data/generated/circle_ai_contract_certification_bundle.schema.json",
@@ -970,6 +972,16 @@ def test_contract_runner_schema_json_change_runs_receipt_verifier_tests() -> Non
             commands,
             "pytest",
             "tests/test_check_circle_ai_receipt_replay.py",
+        )
+        assert contains_command(
+            commands,
+            "pytest",
+            "tests/test_check_circle_ai_certification_bundle.py",
+        )
+        assert contains_command(
+            commands,
+            "pytest",
+            "tests/test_downstream_ci_verify_circle_ai_artifacts.py",
         )
 
 
