@@ -30,6 +30,8 @@ from circle_math.applications import (  # noqa: E402
     build_contract_receipt_replay_check_json_schema,
     build_contract_receipt_replay_check_report,
     build_contract_receipt_json_schema,
+    build_architecture_config_import_json_schema,
+    build_architecture_config_import_report,
     build_contract_request,
     build_contract_request_from_architecture_config,
     build_contract_request_validation_report,
@@ -63,6 +65,8 @@ from circle_math.applications.circle_ai_contract_runner import (  # noqa: E402
     REQUEST_SCHEMA_ID,
     REQUEST_VALIDATION_SCHEMA_PATH,
     REQUEST_VALIDATION_SCHEMA_ID,
+    ARCHITECTURE_CONFIG_IMPORT_SCHEMA_ID,
+    ARCHITECTURE_CONFIG_IMPORT_SCHEMA_PATH,
     ROPE_MODEL_CONFIG_IMPORT_SCHEMA_ID,
     ROPE_MODEL_CONFIG_IMPORT_SCHEMA_PATH,
 )
@@ -76,6 +80,7 @@ RECEIPT_STATUS_VALUES = (
     "outside_scope",
 )
 DEFAULT_REQUEST_VALIDATION_SCHEMA = ROOT / REQUEST_VALIDATION_SCHEMA_PATH
+DEFAULT_ARCHITECTURE_CONFIG_IMPORT_SCHEMA = ROOT / ARCHITECTURE_CONFIG_IMPORT_SCHEMA_PATH
 DEFAULT_ROPE_MODEL_CONFIG_IMPORT_SCHEMA = ROOT / ROPE_MODEL_CONFIG_IMPORT_SCHEMA_PATH
 DEFAULT_RECEIPT_SCHEMA = ROOT / RECEIPT_SCHEMA_PATH
 DEFAULT_COMPACT_RECEIPT_SCHEMA = ROOT / COMPACT_RECEIPT_SCHEMA_PATH
@@ -532,6 +537,12 @@ def parse_args() -> argparse.Namespace:
             "and lets explicit flags override imported values."
         ),
     )
+    kv.add_argument("--architecture-config-import-report-out", type=Path)
+    kv.add_argument(
+        "--architecture-config-import-schema",
+        type=Path,
+        default=DEFAULT_ARCHITECTURE_CONFIG_IMPORT_SCHEMA,
+    )
     kv.add_argument("--cache-size", type=int)
     kv.add_argument("--current", type=int)
     kv.add_argument("--token", type=int)
@@ -552,6 +563,12 @@ def parse_args() -> argparse.Namespace:
             "attention aliases and lets explicit flags override imported values."
         ),
     )
+    sparse.add_argument("--architecture-config-import-report-out", type=Path)
+    sparse.add_argument(
+        "--architecture-config-import-schema",
+        type=Path,
+        default=DEFAULT_ARCHITECTURE_CONFIG_IMPORT_SCHEMA,
+    )
     sparse.add_argument("--context", type=int)
     sparse.add_argument("--strides", type=parse_strides)
     sparse.add_argument("--path-length", type=int)
@@ -569,6 +586,12 @@ def parse_args() -> argparse.Namespace:
             "Optional AI architecture config JSON. Reads recurrence/loop aliases "
             "and lets explicit flags override imported values."
         ),
+    )
+    recurrence.add_argument("--architecture-config-import-report-out", type=Path)
+    recurrence.add_argument(
+        "--architecture-config-import-schema",
+        type=Path,
+        default=DEFAULT_ARCHITECTURE_CONFIG_IMPORT_SCHEMA,
     )
     recurrence.add_argument("--loop-period", type=int)
     recurrence.add_argument("--sample-index", type=int)
@@ -705,6 +728,23 @@ def _validate_rope_model_config_import_report(
         )
 
 
+def _validate_architecture_config_import_report(
+    report: dict[str, Any],
+    schema_path: Path,
+) -> None:
+    schema = _load_json_object(
+        schema_path,
+        label="architecture config import schema",
+    )
+    jsonschema.Draft202012Validator.check_schema(schema)
+    jsonschema.validate(report, schema)
+    generated_schema = build_architecture_config_import_json_schema()
+    if schema != generated_schema:
+        raise jsonschema.SchemaError(
+            "architecture config import schema drifted from application builder"
+        )
+
+
 def _validate_receipt_schema(receipt: dict[str, Any], schema_path: Path) -> None:
     schema = _load_json_object(schema_path, label="receipt schema")
     jsonschema.Draft202012Validator.check_schema(schema)
@@ -786,10 +826,39 @@ def _validate_certification_bundle_check_report(
         )
 
 
+def _architecture_overrides_from_args(args: argparse.Namespace) -> dict[str, Any]:
+    if args.kind == "kv-cache":
+        return {
+            "cache_size": args.cache_size,
+            "current": args.current,
+            "token": args.token,
+            "batch_tokens": args.batch_tokens,
+            "sink_size": args.sink_size,
+            "request_id": args.request_id,
+        }
+    if args.kind == "sparse-attention":
+        return {
+            "context": args.context,
+            "strides": args.strides,
+            "path_length": args.path_length,
+            "local_window": args.local_window,
+        }
+    if args.kind == "recurrence":
+        return {
+            "loop_period": args.loop_period,
+            "sample_index": args.sample_index,
+            "max_loops": args.max_loops,
+            "token_count": args.token_count,
+            "selected_block_start": args.selected_block_start,
+            "selected_block_width": args.selected_block_width,
+            "shift_passes": args.shift_passes,
+        }
+    raise ValueError(f"{args.kind} does not support --architecture-config")
+
+
 def _architecture_parameters_from_args(
     args: argparse.Namespace,
     kind: str,
-    overrides: Mapping[str, Any],
 ) -> dict[str, Any]:
     config = _load_json_object(
         args.architecture_config,
@@ -798,7 +867,7 @@ def _architecture_parameters_from_args(
     request = build_contract_request_from_architecture_config(
         kind,
         config,
-        overrides=overrides,
+        overrides=_architecture_overrides_from_args(args),
     )
     parameters = request["parameters"]
     assert isinstance(parameters, dict)
@@ -818,19 +887,10 @@ def _parameters_from_args(args: argparse.Namespace) -> dict[str, Any]:
             "requested_margin": args.requested_margin,
         }
     if args.kind == "kv-cache":
-        overrides = {
-            "cache_size": args.cache_size,
-            "current": args.current,
-            "token": args.token,
-            "batch_tokens": args.batch_tokens,
-            "sink_size": args.sink_size,
-            "request_id": args.request_id,
-        }
         if args.architecture_config is not None:
             return _architecture_parameters_from_args(
                 args,
                 "kv-cache",
-                overrides,
             )
         return {
             "cache_size": args.cache_size,
@@ -841,17 +901,10 @@ def _parameters_from_args(args: argparse.Namespace) -> dict[str, Any]:
             "request_id": "read_request" if args.request_id is None else args.request_id,
         }
     if args.kind == "sparse-attention":
-        overrides = {
-            "context": args.context,
-            "strides": args.strides,
-            "path_length": args.path_length,
-            "local_window": args.local_window,
-        }
         if args.architecture_config is not None:
             return _architecture_parameters_from_args(
                 args,
                 "sparse-attention",
-                overrides,
             )
         return {
             "context": args.context,
@@ -860,20 +913,10 @@ def _parameters_from_args(args: argparse.Namespace) -> dict[str, Any]:
             "local_window": args.local_window,
         }
     if args.kind == "recurrence":
-        overrides = {
-            "loop_period": args.loop_period,
-            "sample_index": args.sample_index,
-            "max_loops": args.max_loops,
-            "token_count": args.token_count,
-            "selected_block_start": args.selected_block_start,
-            "selected_block_width": args.selected_block_width,
-            "shift_passes": args.shift_passes,
-        }
         if args.architecture_config is not None:
             return _architecture_parameters_from_args(
                 args,
                 "recurrence",
-                overrides,
             )
         return {
             "loop_period": 5 if args.loop_period is None else args.loop_period,
@@ -1014,6 +1057,17 @@ def _apply_artifact_dir_defaults(args: argparse.Namespace) -> None:
             prefix,
             "model_config_import",
         )
+    if (
+        args.kind in {"kv-cache", "sparse-attention", "recurrence"}
+        and getattr(args, "architecture_config", None) is not None
+    ):
+        _fill_artifact_path(
+            args,
+            "architecture_config_import_report_out",
+            artifact_dir,
+            prefix,
+            "architecture_config_import",
+        )
     _fill_artifact_path(args, "json_out", artifact_dir, prefix, "receipt")
     _fill_artifact_path(
         args,
@@ -1100,6 +1154,19 @@ def _artifact_paths_for_manifest(args: argparse.Namespace) -> list[tuple[str, Pa
             "model_config_import_report",
             model_config_import_report_out,
             ROPE_MODEL_CONFIG_IMPORT_SCHEMA_ID,
+        ),
+    )
+    architecture_config_import_report_out = getattr(
+        args,
+        "architecture_config_import_report_out",
+        None,
+    )
+    artifacts.insert(
+        3,
+        (
+            "architecture_config_import_report",
+            architecture_config_import_report_out,
+            ARCHITECTURE_CONFIG_IMPORT_SCHEMA_ID,
         ),
     )
     return [
@@ -1609,6 +1676,13 @@ def main() -> int:
         and getattr(args, "model_config", None) is None
     ):
         raise SystemExit("--model-config-import-report-out requires --model-config")
+    if (
+        getattr(args, "architecture_config_import_report_out", None) is not None
+        and getattr(args, "architecture_config", None) is None
+    ):
+        raise SystemExit(
+            "--architecture-config-import-report-out requires --architecture-config"
+        )
     if args.receipt_check_out is not None and args.json_out is None:
         raise SystemExit(
             "--receipt-check-out requires --json-out so the report points at "
@@ -1731,6 +1805,36 @@ def main() -> int:
                     raise ValueError("; ".join(import_report["failures"]))
                 if not isinstance(import_report["request"], dict):
                     raise ValueError("model config import report did not emit a request")
+                request = import_report["request"]
+            if (
+                request is None
+                and args.kind in {"kv-cache", "sparse-attention", "recurrence"}
+                and getattr(args, "architecture_config", None) is not None
+            ):
+                config = _load_json_object(
+                    args.architecture_config,
+                    label="architecture config JSON",
+                )
+                import_report = build_architecture_config_import_report(
+                    args.kind,
+                    config,
+                    overrides=_architecture_overrides_from_args(args),
+                )
+                if args.architecture_config_import_report_out is not None:
+                    _validate_architecture_config_import_report(
+                        import_report,
+                        args.architecture_config_import_schema,
+                    )
+                    write_json(
+                        args.architecture_config_import_report_out,
+                        import_report,
+                    )
+                if not import_report["ok"]:
+                    raise ValueError("; ".join(import_report["failures"]))
+                if not isinstance(import_report["request"], dict):
+                    raise ValueError(
+                        "architecture config import report did not emit a request"
+                    )
                 request = import_report["request"]
             if request is None:
                 request = build_contract_request(args.kind, _parameters_from_args(args))

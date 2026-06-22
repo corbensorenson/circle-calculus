@@ -19,6 +19,7 @@ from .ai_contracts import (
     CONTRACT_PACK_SCHEMA_ID,
     SUPPORTED_CONTRACT_KINDS,
     build_contract_pack,
+    build_architecture_config_import_report,
     build_contract_request,
     build_contract_request_from_architecture_config,
     build_rope_model_config_import_report,
@@ -426,11 +427,19 @@ def _contract_request_from_architecture_config_args(
         label="architecture-config",
     )
     try:
-        return build_contract_request_from_architecture_config(
+        report = build_architecture_config_import_report(
             kind,
             config,
             overrides=overrides,
         )
+        if args.architecture_config_import_report_out is not None:
+            _write_json_file(args.architecture_config_import_report_out, report)
+        if not report["ok"]:
+            raise ValueError("; ".join(report["failures"]))
+        request = report["request"]
+        if not isinstance(request, dict):
+            raise ValueError("architecture config import report did not emit a request")
+        return request
     except ValueError as exc:
         parser.error(str(exc))
     raise AssertionError("parser.error should exit")
@@ -503,6 +512,17 @@ def _apply_certify_artifact_dir_defaults(args: argparse.Namespace) -> None:
             artifact_dir,
             prefix,
             "model_config_import",
+        )
+    if (
+        getattr(args, "command", None) in {"kv-cache", "sparse-attention", "recurrence"}
+        and getattr(args, "architecture_config_file", None) is not None
+    ):
+        _fill_certify_artifact_path(
+            args,
+            "architecture_config_import_report_out",
+            artifact_dir,
+            prefix,
+            "architecture_config_import",
         )
     _fill_certify_artifact_path(args, "json_out", artifact_dir, prefix, "receipt")
     _fill_certify_artifact_path(
@@ -1163,6 +1183,7 @@ def contract_certify_main() -> int:
             "and lets explicit flags override imported values."
         ),
     )
+    kv_parser.add_argument("--architecture-config-import-report-out", type=Path)
     kv_parser.add_argument("--cache-size", type=int)
     kv_parser.add_argument("--current", type=int)
     kv_parser.add_argument("--token", type=int)
@@ -1184,6 +1205,7 @@ def contract_certify_main() -> int:
             "attention aliases and lets explicit flags override imported values."
         ),
     )
+    sparse_parser.add_argument("--architecture-config-import-report-out", type=Path)
     sparse_parser.add_argument("--context", type=int)
     sparse_parser.add_argument("--strides", type=_parse_positive_int_csv)
     sparse_parser.add_argument("--path-length", type=int)
@@ -1203,6 +1225,7 @@ def contract_certify_main() -> int:
             "and lets explicit flags override imported values."
         ),
     )
+    recurrence_parser.add_argument("--architecture-config-import-report-out", type=Path)
     recurrence_parser.add_argument("--loop-period", type=int)
     recurrence_parser.add_argument("--sample-index", type=int)
     recurrence_parser.add_argument("--max-loops", type=int)
@@ -1280,6 +1303,14 @@ def contract_certify_main() -> int:
     ):
         parser.error(
             "--artifact-manifest-check-out requires --artifact-manifest-out"
+        )
+    if (
+        getattr(args, "architecture_config_import_report_out", None) is not None
+        and getattr(args, "architecture_config_file", None) is None
+    ):
+        parser.error(
+            "--architecture-config-import-report-out requires "
+            "--architecture-config-file"
         )
     pack = _certify_pack_from_args(args)
     model_config_import_report: dict[str, Any] | None = None

@@ -256,6 +256,7 @@ versioned request for the KV-cache, sparse-attention, or recurrence surfaces:
 ```bash
 python scripts/circle_ai_certify.py sparse-attention \
   --architecture-config examples/circle_ai_architecture_configs/basic_transformer_contract_config.json \
+  --architecture-config-import-report-out reports/sparse_architecture_import.json \
   --format json \
   --require-passed
 ```
@@ -263,7 +264,11 @@ python scripts/circle_ai_certify.py sparse-attention \
 The adapter reads documented sections such as `kv_cache`, `sparse_attention`,
 and `recurrence`, plus aliases like `context_length`, `sliding_window`,
 `max_hops`, and `max_recurrence_steps`. The config import is provenance only;
-the receipt remains the theorem-linked artifact.
+the receipt remains the theorem-linked artifact. The saved import report is
+validated against
+`site/data/generated/circle_ai_architecture_config_import.schema.json`; it
+records the source config fingerprint, the emitted request fingerprint, and
+which field or explicit override supplied each request parameter.
 
 For KV-cache requests with positive `--sink-size`, the human receipt includes a
 `kv_cache_sink_window=` line with the generated pinned-prefix plus rolling-window
@@ -419,6 +424,7 @@ without naming every file. It fills unset paths for:
 <prefix>_request.json
 <prefix>_request_validation.json
 <prefix>_model_config_import.json       # RoPE model-config runs only
+<prefix>_architecture_config_import.json # non-RoPE architecture-config runs only
 <prefix>_receipt.json
 <prefix>_receipt_check.json
 <prefix>_receipt_replay_check.json
@@ -441,9 +447,10 @@ and replayed receipt fingerprints match the saved receipt. The saved
 `_receipt_check.json`, `_gate_report.json`, and
 `_certification_bundle_check.json` sidecars are also audited: each must be `ok`,
 use the manifest's gate policy, and point back to the same receipt fingerprint.
-Request preflight sidecars are checked too: `_request_validation.json` and, for
-RoPE config imports, `_model_config_import.json` must be `ok` and must point
-back to the same request fingerprint.
+Request preflight sidecars are checked too: `_request_validation.json`, RoPE
+`_model_config_import.json`, and non-RoPE
+`_architecture_config_import.json` must be `ok` and must point back to the same
+request fingerprint.
 Pass the dependency-pin flags below directly to `scripts/circle_ai_certify.py`
 with `--artifact-dir` when the first generated `_artifact_manifest_check.json`
 should already carry and enforce the reusable `pin_policy`.

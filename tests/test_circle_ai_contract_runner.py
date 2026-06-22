@@ -34,6 +34,7 @@ from circle_math.applications import (
     build_circulant_block_cyclic_mixer_receipt,
     build_cyclic_memory_receipt,
     build_architecture_config_import_report,
+    build_architecture_config_import_json_schema,
     build_kv_cache_receipt,
     build_multicoil_phase_feature_receipt,
     build_recurrence_receipt,
@@ -210,6 +211,7 @@ def test_architecture_config_import_builds_non_rope_contract_requests(
         "sparse-attention",
         config,
     )
+    jsonschema.validate(sparse_report, build_architecture_config_import_json_schema())
     assert sparse_report["schema_id"] == "circle_calculus.ai_architecture_config_import.v0"
     assert sparse_report["ok"] is True
     assert sparse_report["kind"] == "sparse_attention_coverage"
@@ -2528,7 +2530,10 @@ def test_circle_ai_certify_cli_emits_json_receipt() -> None:
     ] == "proved"
 
 
-def test_circle_ai_certify_cli_accepts_architecture_config_non_rope() -> None:
+def test_circle_ai_certify_cli_accepts_architecture_config_non_rope(
+    tmp_path: Path,
+) -> None:
+    import_report_path = tmp_path / "kv_architecture_import.json"
     result = subprocess.run(
         [
             sys.executable,
@@ -2536,6 +2541,8 @@ def test_circle_ai_certify_cli_accepts_architecture_config_non_rope() -> None:
             "kv-cache",
             "--architecture-config",
             str(ARCHITECTURE_CONFIG),
+            "--architecture-config-import-report-out",
+            str(import_report_path),
             "--format",
             "json",
             "--require-passed",
@@ -2551,6 +2558,11 @@ def test_circle_ai_certify_cli_accepts_architecture_config_non_rope() -> None:
     assert payload["request"]["parameters"]["sink_size"] == 4
     assert payload["request"]["parameters"]["batch_tokens"] == [20, 24, 29, 31]
     assert payload["request_passed"] is True
+    import_report = json.loads(import_report_path.read_text(encoding="utf-8"))
+    jsonschema.validate(import_report, build_architecture_config_import_json_schema())
+    assert import_report["ok"] is True
+    assert import_report["kind"] == "kv_cache_ring_buffer"
+    assert import_report["request"]["kind"] == "kv_cache_ring_buffer"
 
 
 def test_circle_ai_certify_cli_emits_compact_json_receipt() -> None:
@@ -3470,6 +3482,77 @@ def test_circle_ai_certify_cli_artifact_dir_writes_standard_audit_set(
     )
     assert stale_cli.returncode == 1
     assert "sha256 mismatch" in stale_cli.stderr
+
+
+def test_circle_ai_certify_cli_artifact_dir_writes_architecture_import_sidecar(
+    tmp_path: Path,
+) -> None:
+    artifact_dir = tmp_path / "artifacts"
+    prefix = "sparse_attention"
+    subprocess.run(
+        [
+            sys.executable,
+            str(SCRIPT),
+            "sparse-attention",
+            "--architecture-config",
+            str(ARCHITECTURE_CONFIG),
+            "--artifact-dir",
+            str(artifact_dir),
+            "--require-status",
+            "proved",
+            "--require-passed",
+        ],
+        cwd=ROOT,
+        check=True,
+        text=True,
+        capture_output=True,
+    )
+
+    import_report_path = artifact_dir / f"{prefix}_architecture_config_import.json"
+    manifest_path = artifact_dir / f"{prefix}_artifact_manifest.json"
+    manifest_check_path = artifact_dir / f"{prefix}_artifact_manifest_check.json"
+    assert import_report_path.exists()
+    assert manifest_path.exists()
+    assert manifest_check_path.exists()
+
+    import_report = json.loads(import_report_path.read_text(encoding="utf-8"))
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    manifest_check = json.loads(manifest_check_path.read_text(encoding="utf-8"))
+    jsonschema.validate(import_report, build_architecture_config_import_json_schema())
+    assert import_report["ok"] is True
+    assert import_report["request"]["kind"] == "sparse_attention_coverage"
+
+    manifest_artifacts = {
+        artifact["label"]: artifact for artifact in manifest["artifacts"]
+    }
+    assert (
+        manifest_artifacts["architecture_config_import_report"]["path"]
+        == str(import_report_path)
+    )
+    assert manifest_artifacts["architecture_config_import_report"][
+        "content_schema_id"
+    ] == "circle_calculus.ai_architecture_config_import.v0"
+
+    report = build_contract_artifact_manifest_file_check_report(
+        manifest,
+        manifest_path=manifest_path,
+    )
+    jsonschema.validate(
+        report,
+        build_contract_artifact_manifest_file_check_json_schema(),
+    )
+    assert report["ok"] is True
+    assert report["summaries"][0]["preflight_sidecar_count"] == 2
+    assert report["summaries"][0]["preflight_sidecar_labels"] == [
+        "request_validation_report",
+        "architecture_config_import_report",
+    ]
+    assert report["summaries"][0]["preflight_sidecar_failure_count"] == 0
+    assert manifest_check["ok"] is True
+    assert manifest_check["summaries"][0]["preflight_sidecar_labels"] == [
+        "request_validation_report",
+        "architecture_config_import_report",
+    ]
 
 
 def test_artifact_manifest_check_rejects_stale_receipt_replay_sidecar(

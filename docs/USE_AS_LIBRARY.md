@@ -250,6 +250,7 @@ currently covers the KV-cache, sparse-attention, and recurrence contracts:
 ```python
 from circle_math.ai_contracts import (
     build_architecture_config_import_report,
+    build_architecture_config_import_json_schema,
     build_validated_contract_receipt_from_architecture_config,
 )
 
@@ -269,6 +270,7 @@ report = build_architecture_config_import_report(
     architecture_config,
 )
 assert report["ok"]
+schema = build_architecture_config_import_json_schema()
 
 receipt = build_validated_contract_receipt_from_architecture_config(
     "kv-cache",
@@ -280,7 +282,8 @@ assert receipt["kind"] == "kv_cache_ring_buffer"
 
 The architecture import report is provenance, not proof. It records which config
 field or explicit override supplied each request parameter; the receipt remains
-the theorem-linked artifact.
+the theorem-linked artifact. The schema builder above matches
+`site/data/generated/circle_ai_architecture_config_import.schema.json`.
 
 For in-memory batch checks, use the same runner-check report shape without a
 subprocess:
@@ -336,6 +339,7 @@ available:
 ```bash
 circle-ai-certify rope --model-config-file examples/circle_ai_model_configs/standard_rope_config.json --request-out /tmp/circle_rope_request.json --request-validation-report-out /tmp/circle_rope_request_validation.json --model-config-import-report-out /tmp/circle_rope_import_report.json --format json
 circle-ai-certify kv-cache --cache-size 16 --current 31 --token 20 --batch-tokens 20,24,29,31 --sink-size 4 --require-passed --format json
+circle-ai-certify kv-cache --architecture-config-file examples/circle_ai_architecture_configs/basic_transformer_contract_config.json --architecture-config-import-report-out /tmp/circle_kv_architecture_import.json --format json
 circle-ai-certify sparse-attention --context 9 --strides 3,4,7 --path-length 2 --local-window 2 --format json
 circle-ai-certify sparse-attention --context 9 --strides 3,4,7 --path-length 2 --local-window 2 --format compact-json
 circle-ai-certify batch --request-file examples/circle_ai_requests/kv_cache_request.json --request-file examples/circle_ai_requests/sparse_attention_request.json --model-config-file examples/circle_ai_model_configs/standard_rope_config.json --receipt-out-dir /tmp/circle_ai_receipts --compact-receipt-out-dir /tmp/circle_ai_compact_receipts --model-config-import-report-out-dir /tmp/circle_ai_import_reports --report-out /tmp/circle_ai_runner_report.json --require-passed --require-status proved --require-decision passed --format json
@@ -364,7 +368,10 @@ the JSON file or at the containing model directory with `config.json`. Use
 `--request-out` to save the exact versioned Circle request and
 `--request-validation-report-out` to save the schema-validated request preflight
 report. Use `--model-config-import-report-out` to save the parameter-source
-audit report for a RoPE model config.
+audit report for a RoPE model config. Use
+`--architecture-config-import-report-out` with `--architecture-config-file` on
+KV-cache, sparse-attention, or recurrence runs to save the same parameter-source
+audit boundary for non-RoPE architecture configs.
 Installed wheels carry a generated theorem-status snapshot under
 `circle_math/data/generated/theorem_status_index.json`, so contract readiness
 can still resolve theorem ids when the repository `manifests/` directory is not

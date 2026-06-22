@@ -21,6 +21,8 @@ from circle_math.core import (
 )
 from circle_math.ai_contracts import (
     CONTRACT_PACK_SCHEMA_ID,
+    build_architecture_config_import_json_schema,
+    build_architecture_config_import_report,
     build_contract_request_from_architecture_config,
     build_contract_pack,
     build_contract_runner_check_report,
@@ -223,6 +225,13 @@ def test_stable_request_api_builds_kv_cache_receipt() -> None:
 
 def test_stable_architecture_config_api_builds_non_rope_receipts() -> None:
     config = json.loads(ARCHITECTURE_CONFIG.read_text(encoding="utf-8"))
+
+    sparse_report = build_architecture_config_import_report(
+        "sparse-attention",
+        config,
+    )
+    jsonschema.validate(sparse_report, build_architecture_config_import_json_schema())
+    assert sparse_report["ok"] is True
 
     sparse_request = build_contract_request_from_architecture_config(
         "sparse-attention",
@@ -1112,7 +1121,10 @@ def test_package_cli_unified_certify_sparse_and_recurrence() -> None:
     assert recurrence_receipt["request_passed"] is True
 
 
-def test_package_cli_unified_certify_architecture_config_non_rope() -> None:
+def test_package_cli_unified_certify_architecture_config_non_rope(
+    tmp_path: Path,
+) -> None:
+    sparse_import_report_path = tmp_path / "sparse_architecture_import.json"
     sparse_result = subprocess.run(
         [
             sys.executable,
@@ -1125,6 +1137,8 @@ def test_package_cli_unified_certify_architecture_config_non_rope() -> None:
             "sparse-attention",
             "--architecture-config-file",
             str(ARCHITECTURE_CONFIG),
+            "--architecture-config-import-report-out",
+            str(sparse_import_report_path),
             "--format",
             "json",
             "--require-passed",
@@ -1139,7 +1153,16 @@ def test_package_cli_unified_certify_architecture_config_non_rope() -> None:
     assert sparse_receipt["kind"] == "sparse_attention_coverage"
     assert sparse_receipt["request"]["parameters"]["strides"] == [3, 4, 7]
     assert sparse_receipt["request_passed"] is True
+    sparse_import_report = json.loads(
+        sparse_import_report_path.read_text(encoding="utf-8")
+    )
+    jsonschema.validate(
+        sparse_import_report,
+        build_architecture_config_import_json_schema(),
+    )
+    assert sparse_import_report["request"]["kind"] == "sparse_attention_coverage"
 
+    recurrence_import_report_path = tmp_path / "recurrence_architecture_import.json"
     recurrence_result = subprocess.run(
         [
             sys.executable,
@@ -1152,6 +1175,8 @@ def test_package_cli_unified_certify_architecture_config_non_rope() -> None:
             "recurrence",
             "--architecture-config-file",
             str(ARCHITECTURE_CONFIG),
+            "--architecture-config-import-report-out",
+            str(recurrence_import_report_path),
             "--sample-index",
             "9",
             "--format",
@@ -1164,6 +1189,14 @@ def test_package_cli_unified_certify_architecture_config_non_rope() -> None:
     recurrence_receipt = json.loads(recurrence_result.stdout)
     assert recurrence_receipt["kind"] == "recurrence_schedule"
     assert recurrence_receipt["normalized_request"]["sample_index"] == 9
+    recurrence_import_report = json.loads(
+        recurrence_import_report_path.read_text(encoding="utf-8")
+    )
+    jsonschema.validate(
+        recurrence_import_report,
+        build_architecture_config_import_json_schema(),
+    )
+    assert recurrence_import_report["request"]["parameters"]["sample_index"] == 9
 
 
 @pytest.mark.parametrize(

@@ -152,6 +152,8 @@ adapter for the KV-cache, sparse-attention, and recurrence contracts:
 
 ```python
 from circle_math.ai_contracts import (
+    build_architecture_config_import_json_schema,
+    build_architecture_config_import_report,
     build_contract_request_from_architecture_config,
     build_validated_contract_receipt_from_architecture_config,
 )
@@ -164,6 +166,13 @@ architecture_config = {
         "local_window": 2,
     }
 }
+
+report = build_architecture_config_import_report(
+    "sparse-attention",
+    architecture_config,
+)
+schema = build_architecture_config_import_json_schema()
+assert report["ok"] is True
 
 request = build_contract_request_from_architecture_config(
     "sparse-attention",
@@ -178,7 +187,8 @@ assert receipt["request"] == request
 ```
 
 The config adapter is deterministic translation/provenance only; the receipt is
-the theorem-linked artifact.
+the theorem-linked artifact. The import-report schema builder matches
+`site/data/generated/circle_ai_architecture_config_import.schema.json`.
 
 The same facade exposes reusable integer phase-bank helpers for sinusoidal,
 RoPE-family, scaled, and 2D positional phase descriptors:

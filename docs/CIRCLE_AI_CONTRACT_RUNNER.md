@@ -143,11 +143,13 @@ versioned request shape:
 ```bash
 python scripts/circle_ai_certify.py sparse-attention \
   --architecture-config examples/circle_ai_architecture_configs/basic_transformer_contract_config.json \
+  --architecture-config-import-report-out reports/sparse_architecture_import.json \
   --format json \
   --require-passed
 
 python scripts/circle_ai_certify.py recurrence \
   --architecture-config examples/circle_ai_architecture_configs/basic_transformer_contract_config.json \
+  --architecture-config-import-report-out reports/recurrence_architecture_import.json \
   --sample-index 9 \
   --format json
 ```
@@ -157,7 +159,11 @@ small set of documented aliases such as `kv_cache_size`, `context_length`,
 `sliding_window`, `max_hops`, `max_recurrence_steps`, and
 `middle_block_width`. Explicit CLI flags override imported fields. This import
 step is only deterministic translation/provenance; the theorem-backed claim is
-the emitted receipt.
+the emitted receipt. Use `--architecture-config-import-report-out PATH` to save
+the schema-validated import report for audit logs. Its schema is
+`site/data/generated/circle_ai_architecture_config_import.schema.json`, and its
+fields record the source architecture-config fingerprint, the emitted request
+fingerprint, parameter-source provenance, and any import failures.
 
 External projects can also use the versioned request schema directly:
 
@@ -285,6 +291,7 @@ without naming every file. It fills unset paths for:
 <prefix>_request.json
 <prefix>_request_validation.json
 <prefix>_model_config_import.json       # RoPE model-config runs only
+<prefix>_architecture_config_import.json # non-RoPE architecture-config runs only
 <prefix>_receipt.json
 <prefix>_receipt_check.json
 <prefix>_receipt_replay_check.json
@@ -307,9 +314,10 @@ and replayed receipt fingerprints match the saved receipt. The saved
 `_receipt_check.json`, `_gate_report.json`, and
 `_certification_bundle_check.json` sidecars are also audited: each must be `ok`,
 use the manifest's gate policy, and point back to the same receipt fingerprint.
-Request preflight sidecars are checked too: `_request_validation.json` and, for
-RoPE config imports, `_model_config_import.json` must be `ok` and must point
-back to the same request fingerprint.
+Request preflight sidecars are checked too: `_request_validation.json`, RoPE
+`_model_config_import.json`, and non-RoPE
+`_architecture_config_import.json` must be `ok` and must point back to the same
+request fingerprint.
 Pass the dependency-pin flags below directly to `scripts/circle_ai_certify.py`
 with `--artifact-dir` when the first generated `_artifact_manifest_check.json`
 should already carry and enforce the reusable `pin_policy`.

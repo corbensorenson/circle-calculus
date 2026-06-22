@@ -4950,6 +4950,84 @@ def build_rope_model_config_import_json_schema() -> dict[str, Any]:
     }
 
 
+def build_architecture_config_import_json_schema() -> dict[str, Any]:
+    string_list = {"type": "array", "items": {"type": "string"}}
+    fingerprint = {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+    parameter_source = {
+        "type": "object",
+        "required": ["source"],
+        "properties": {
+            "source": {
+                "enum": [
+                    "explicit_override",
+                    "architecture_config_field",
+                    "missing",
+                ],
+            },
+            "field": {"type": "string", "minLength": 1},
+            "value": {},
+            "note": {"type": "string", "minLength": 1},
+        },
+        "additionalProperties": False,
+    }
+    return {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "$id": (
+            "https://circle-calculus.local/schemas/"
+            "circle_ai_architecture_config_import.schema.json"
+        ),
+        "title": "Circle AI Architecture Config Import Report",
+        "type": "object",
+        "required": [
+            "schema_id",
+            "request_schema_id",
+            "content_fingerprint_algorithm",
+            "architecture_config_fingerprint",
+            "request_content_fingerprint",
+            "kind",
+            "ok",
+            "failure_count",
+            "failures",
+            "parameters",
+            "parameter_sources",
+            "request",
+            "notes",
+        ],
+        "properties": {
+            "schema_id": {"const": ARCHITECTURE_CONFIG_IMPORT_SCHEMA_ID},
+            "request_schema_id": {"const": REQUEST_SCHEMA_ID},
+            "content_fingerprint_algorithm": {"const": FINGERPRINT_ALGORITHM},
+            "architecture_config_fingerprint": fingerprint,
+            "request_content_fingerprint": {
+                "anyOf": [
+                    fingerprint,
+                    {"type": "null"},
+                ],
+            },
+            "kind": {
+                "type": ["string", "null"],
+                "enum": [*ARCHITECTURE_CONFIG_SUPPORTED_KINDS, None],
+            },
+            "ok": {"type": "boolean"},
+            "failure_count": {"type": "integer", "minimum": 0},
+            "failures": string_list,
+            "parameters": {"type": "object"},
+            "parameter_sources": {
+                "type": "object",
+                "additionalProperties": parameter_source,
+            },
+            "request": {
+                "anyOf": [
+                    build_contract_request_json_schema(),
+                    {"type": "null"},
+                ],
+            },
+            "notes": string_list,
+        },
+        "additionalProperties": False,
+    }
+
+
 def build_contract_runner_check_json_schema() -> dict[str, Any]:
     string_list = {"type": "array", "items": {"type": "string"}}
     fingerprint = {"type": "string", "pattern": "^[0-9a-f]{64}$"}
@@ -6024,6 +6102,9 @@ def _preflight_sidecar_summary_and_failures(
     preflight_schemas = {
         "request_validation_report": build_contract_request_validation_json_schema,
         "model_config_import_report": build_rope_model_config_import_json_schema,
+        "architecture_config_import_report": (
+            build_architecture_config_import_json_schema
+        ),
     }
     for label, schema_builder in preflight_schemas.items():
         if label not in artifact_by_label:
