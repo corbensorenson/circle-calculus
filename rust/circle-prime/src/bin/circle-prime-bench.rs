@@ -233,7 +233,7 @@ fn cold_worker(args: &[String]) -> Result<(), String> {
     let segment_size = required_value(args, 2, "--cold-worker requires LOW HIGH SEGMENT_SIZE")?
         .parse::<u64>()
         .map_err(|_| "SEGMENT_SIZE must fit in u64".to_string())?;
-    let threads = args
+    let requested_threads = args
         .get(3)
         .map(|value| {
             value
@@ -242,14 +242,26 @@ fn cold_worker(args: &[String]) -> Result<(), String> {
         })
         .transpose()?
         .unwrap_or(1);
-    if threads == 0 {
+    if requested_threads == 0 {
         return Err("THREADS must be greater than zero".to_string());
     }
-    let worker_threads = effective_parallel_thread_count(low, high, segment_size, threads);
-    let count = if worker_threads == 1 {
+
+    let mode = match args.get(4).map(String::as_str) {
+        Some("default") => CountMode::parse(recommended_count_mode(low, high, requested_threads))
+            .expect("compiled count-mode default must be valid"),
+        Some(raw) => CountMode::parse(raw)?,
+        None => CountMode::Segmented,
+    };
+    let worker_threads = mode.effective_threads(
+        low,
+        high,
+        effective_parallel_thread_count(low, high, segment_size, requested_threads),
+        requested_threads,
+    );
+    let count = if matches!(mode, CountMode::Segmented) && worker_threads == 1 {
         prime_count_in_range(low, high, segment_size)
     } else {
-        prime_count_in_range_parallel(low, high, segment_size, worker_threads)
+        count_range_with_mode(low, high, segment_size, worker_threads, mode)
     }
     .map_err(|err| format!("range sieve benchmark failed: {err:?}"))?;
     println!("{count}");
@@ -906,7 +918,7 @@ fn bench_cold_process_counts(rounds: usize) -> Vec<BenchRow> {
                 high,
                 segment_size,
                 rounds,
-                || cold_process_prime_count(0, high, segment_size, 1),
+                || cold_process_prime_count(0, high, segment_size, 1, None),
             )
         })
         .collect();
@@ -918,7 +930,7 @@ fn bench_cold_process_counts(rounds: usize) -> Vec<BenchRow> {
             high,
             segment_size,
             rounds,
-            || cold_process_prime_count(0, high, segment_size, 8),
+            || cold_process_prime_count(0, high, segment_size, 8, None),
         ));
         rows.push(measure(
             "cold_cli_parallel_default_range_count_8t",
@@ -942,6 +954,22 @@ fn bench_cold_process_counts(rounds: usize) -> Vec<BenchRow> {
                 HIGH_OFFSET_HIGH,
                 high_offset_segment_size,
                 8,
+                None,
+            )
+        },
+    ));
+    rows.push(measure(
+        "cold_process_parallel_high_offset_default_range_count_8t",
+        HIGH_OFFSET_HIGH - HIGH_OFFSET_LOW,
+        high_offset_segment_size,
+        rounds,
+        || {
+            cold_process_prime_count(
+                HIGH_OFFSET_LOW,
+                HIGH_OFFSET_HIGH,
+                high_offset_segment_size,
+                8,
+                Some("default"),
             )
         },
     ));
@@ -952,6 +980,20 @@ fn bench_cold_process_counts(rounds: usize) -> Vec<BenchRow> {
         rounds,
         || {
             cold_cli_prime_count(
+                HIGH_OFFSET_LOW,
+                HIGH_OFFSET_HIGH,
+                high_offset_segment_size,
+                8,
+            )
+        },
+    ));
+    rows.push(measure(
+        "cold_count_binary_parallel_high_offset_default_range_count_8t",
+        HIGH_OFFSET_HIGH - HIGH_OFFSET_LOW,
+        high_offset_segment_size,
+        rounds,
+        || {
+            cold_count_binary_prime_count(
                 HIGH_OFFSET_LOW,
                 HIGH_OFFSET_HIGH,
                 high_offset_segment_size,
@@ -1179,14 +1221,25 @@ fn count_range_with_mode(
     }
 }
 
-fn cold_process_prime_count(low: u64, high: u64, segment_size: u64, threads: usize) -> u64 {
+fn cold_process_prime_count(
+    low: u64,
+    high: u64,
+    segment_size: u64,
+    threads: usize,
+    count_mode: Option<&str>,
+) -> u64 {
     let executable = env::current_exe().expect("failed to locate benchmark executable");
-    let output = Command::new(executable)
+    let mut command = Command::new(executable);
+    command
         .arg("--cold-worker")
         .arg(low.to_string())
         .arg(high.to_string())
         .arg(segment_size.to_string())
-        .arg(threads.to_string())
+        .arg(threads.to_string());
+    if let Some(count_mode) = count_mode {
+        command.arg(count_mode);
+    }
+    let output = command
         .output()
         .expect("failed to spawn cold benchmark worker");
     assert!(
@@ -1225,6 +1278,30 @@ fn cold_cli_prime_count(low: u64, high: u64, segment_size: u64, threads: usize) 
         .trim()
         .parse::<u64>()
         .expect("cold CLI benchmark worker did not emit a count")
+}
+
+fn cold_count_binary_prime_count(low: u64, high: u64, segment_size: u64, threads: usize) -> u64 {
+    let executable = circle_prime_count_executable();
+    let output = Command::new(&executable)
+        .arg(low.to_string())
+        .arg(high.to_string())
+        .arg("--segment-size")
+        .arg(segment_size.to_string())
+        .arg("--threads")
+        .arg(threads.to_string())
+        .output()
+        .expect("failed to spawn cold count-binary benchmark worker");
+    assert!(
+        output.status.success(),
+        "cold count-binary benchmark worker failed: {}\nexecutable: {}",
+        String::from_utf8_lossy(&output.stderr),
+        executable.display(),
+    );
+    String::from_utf8(output.stdout)
+        .expect("cold count-binary benchmark worker emitted invalid UTF-8")
+        .trim()
+        .parse::<u64>()
+        .expect("cold count-binary benchmark worker did not emit a count")
 }
 
 fn measure_count_server_prime_count(
@@ -1312,6 +1389,18 @@ fn circle_prime_cli_executable() -> std::path::PathBuf {
     assert!(
         executable.exists(),
         "circle-prime CLI not found at {}; build it before running CLI cold benchmarks",
+        executable.display()
+    );
+    executable
+}
+
+fn circle_prime_count_executable() -> std::path::PathBuf {
+    let bench_executable = env::current_exe().expect("failed to locate benchmark executable");
+    let executable =
+        bench_executable.with_file_name(format!("circle-prime-count{}", env::consts::EXE_SUFFIX));
+    assert!(
+        executable.exists(),
+        "circle-prime-count CLI not found at {}; build it before running count-binary cold benchmarks",
         executable.display()
     );
     executable

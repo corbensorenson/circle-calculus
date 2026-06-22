@@ -18,6 +18,11 @@ try:
 except ModuleNotFoundError:  # pragma: no cover - exercised in minimal CI envs.
     sympy = None
 
+try:
+    import gmpy2
+except ModuleNotFoundError:  # pragma: no cover - optional stronger local control.
+    gmpy2 = None
+
 
 ROOT = Path(__file__).resolve().parents[1]
 RESULTS_DIR = ROOT / "sidecars" / "PRIME_ENGINE" / "results"
@@ -83,6 +88,34 @@ def parse_args() -> argparse.Namespace:
         "--openssl-bin",
         default=shutil.which("openssl") or "openssl",
         help="OpenSSL executable used for prime checks.",
+    )
+    parser.add_argument(
+        "--pari-gp-bin",
+        default=shutil.which("gp") or shutil.which("pari-gp") or "",
+        help=(
+            "Optional PARI/GP executable used for certified isprime and nextprime "
+            "control rows when available."
+        ),
+    )
+    parser.add_argument(
+        "--skip-gmpy2",
+        action="store_true",
+        help="Do not record optional GMP/gmpy2 control rows even when gmpy2 is importable.",
+    )
+    parser.add_argument(
+        "--require-gmpy2",
+        action="store_true",
+        help="Fail if optional GMP/gmpy2 control rows cannot be recorded.",
+    )
+    parser.add_argument(
+        "--skip-pari-gp",
+        action="store_true",
+        help="Do not record optional PARI/GP control rows even when gp is available.",
+    )
+    parser.add_argument(
+        "--require-pari-gp",
+        action="store_true",
+        help="Fail if optional PARI/GP control rows cannot be recorded.",
     )
     parser.add_argument(
         "--bench-rounds",
@@ -367,11 +400,74 @@ def openssl_prime(binary: str, n: int, mr_rounds: int) -> bool:
     raise RuntimeError(f"could not parse OpenSSL prime output: {out!r}")
 
 
+def gmpy2_is_prime(n: int, mr_rounds: int) -> bool:
+    if gmpy2 is None:
+        raise RuntimeError("gmpy2 is not available")
+    return int(gmpy2.is_prime(n, mr_rounds)) > 0
+
+
+def gmpy2_next_prime_at_or_above(start: int, mr_rounds: int) -> int:
+    if gmpy2_is_prime(start, mr_rounds):
+        return start
+    return int(gmpy2.next_prime(start))
+
+
 def sympy_next_prime_at_or_above(start: int) -> int:
     sympy_module = require_sympy()
     if sympy_module.isprime(start):
         return start
     return int(sympy_module.nextprime(start))
+
+
+def resolve_executable(raw: str) -> str | None:
+    if not raw:
+        return None
+    path = Path(raw)
+    if path.is_file():
+        return str(path)
+    return shutil.which(raw)
+
+
+def pari_gp_eval(binary: str, expression: str) -> str:
+    script = f"print({expression})\n\\q\n"
+    completed = subprocess.run(
+        [binary, "-q", "-f"],
+        cwd=ROOT,
+        input=script,
+        check=True,
+        text=True,
+        capture_output=True,
+    )
+    return completed.stdout
+
+
+def parse_pari_gp_scalar(stdout: str) -> int:
+    for line in reversed(stdout.splitlines()):
+        stripped = line.strip()
+        if not stripped:
+            continue
+        if "=" in stripped and stripped.startswith("%"):
+            stripped = stripped.split("=", 1)[1].strip()
+        if stripped in {"true", "True"}:
+            return 1
+        if stripped in {"false", "False"}:
+            return 0
+        return int(stripped)
+    raise RuntimeError(f"could not parse PARI/GP output: {stdout!r}")
+
+
+def pari_gp_isprime(binary: str, n: int) -> bool:
+    return parse_pari_gp_scalar(pari_gp_eval(binary, f"isprime({n})")) != 0
+
+
+def pari_gp_ispseudoprime(binary: str, n: int) -> bool:
+    return parse_pari_gp_scalar(pari_gp_eval(binary, f"ispseudoprime({n})")) != 0
+
+
+def pari_gp_next_prime_at_or_above(binary: str, start: int) -> int:
+    if pari_gp_isprime(binary, start):
+        return start
+    return parse_pari_gp_scalar(pari_gp_eval(binary, f"nextprime({start})"))
 
 
 def write_big_fuzzy_model(path: Path, bit_width: int) -> None:
@@ -417,6 +513,13 @@ def tool_version(command: list[str]) -> str:
     return (completed.stdout or completed.stderr).strip().splitlines()[0]
 
 
+def gmpy2_version() -> str:
+    if gmpy2 is None:
+        return "unavailable: import gmpy2 failed"
+    mp_version = getattr(gmpy2, "mp_version", lambda: "unknown")()
+    return f"gmpy2 {gmpy2.version()} / GMP {mp_version}"
+
+
 def add_row(
     rows: list[dict[str, object]],
     *,
@@ -459,6 +562,13 @@ def main() -> int:
     if args.server_batch_size <= 0:
         raise SystemExit("--server-batch-size must be positive")
     sympy_module = require_sympy()
+    pari_gp_bin = resolve_executable(args.pari_gp_bin)
+    use_gmpy2 = gmpy2 is not None and not args.skip_gmpy2
+    use_pari_gp = pari_gp_bin is not None and not args.skip_pari_gp
+    if args.require_gmpy2 and not use_gmpy2:
+        raise SystemExit("gmpy2 is required but is not importable")
+    if args.require_pari_gp and not use_pari_gp:
+        raise SystemExit("PARI/GP is required but no gp executable is available")
 
     max_bits = max([case.n.bit_length() for case in prime_cases()] + [521])
     model_path = ROOT / "target" / "prime-controls" / "prime-big-fuzzy-model.txt"
@@ -566,13 +676,48 @@ def main() -> int:
                 warmup_rounds=args.warmup_rounds,
                 bench_rounds=args.bench_rounds,
             )
-            for engine, sample_set in [
+            prime_samples = [
                 ("circle_big_test", circle),
                 ("circle_big_test_server", circle_server),
                 ("circle_big_bpsw_test_server", circle_bpsw_server),
                 ("openssl_prime", openssl),
                 ("sympy_isprime", sympy_result),
-            ]:
+            ]
+            if use_gmpy2:
+                prime_samples.append(
+                    (
+                        "gmpy2_is_prime",
+                        timed(
+                            lambda case=case: gmpy2_is_prime(case.n, args.mr_rounds),
+                            warmup_rounds=args.warmup_rounds,
+                            bench_rounds=args.bench_rounds,
+                        ),
+                    )
+                )
+            if use_pari_gp and pari_gp_bin is not None:
+                prime_samples.extend(
+                    [
+                        (
+                            "pari_gp_ispseudoprime",
+                            timed(
+                                lambda case=case: pari_gp_ispseudoprime(
+                                    pari_gp_bin, case.n
+                                ),
+                                warmup_rounds=args.warmup_rounds,
+                                bench_rounds=args.bench_rounds,
+                            ),
+                        ),
+                        (
+                            "pari_gp_isprime",
+                            timed(
+                                lambda case=case: pari_gp_isprime(pari_gp_bin, case.n),
+                                warmup_rounds=args.warmup_rounds,
+                                bench_rounds=args.bench_rounds,
+                            ),
+                        ),
+                    ]
+                )
+            for engine, sample_set in prime_samples:
                 agreed = sample_set.result == case.expected_prime
                 if not agreed:
                     failures.append(
@@ -646,14 +791,43 @@ def main() -> int:
                 bench_rounds=args.bench_rounds,
                 sample_divisor=args.server_batch_size,
             )
-            for engine, sample_set, require_exact in [
+            next_samples = [
                 ("circle_big_next", circle, True),
                 ("circle_big_next_server", circle_server, True),
                 ("circle_big_bpsw_next_server", circle_bpsw_server, True),
                 ("sympy_nextprime", sympy_next, True),
                 ("circle_big_fuzzy_any", fuzzy, False),
                 ("circle_big_fuzzy_any_server", fuzzy_server, False),
-            ]:
+            ]
+            if use_gmpy2:
+                next_samples.append(
+                    (
+                        "gmpy2_next_prime",
+                        timed(
+                            lambda case=case: gmpy2_next_prime_at_or_above(
+                                case.start, args.mr_rounds
+                            ),
+                            warmup_rounds=args.warmup_rounds,
+                            bench_rounds=args.bench_rounds,
+                        ),
+                        True,
+                    )
+                )
+            if use_pari_gp and pari_gp_bin is not None:
+                next_samples.append(
+                    (
+                        "pari_gp_nextprime",
+                        timed(
+                            lambda case=case: pari_gp_next_prime_at_or_above(
+                                pari_gp_bin, case.start
+                            ),
+                            warmup_rounds=args.warmup_rounds,
+                            bench_rounds=args.bench_rounds,
+                        ),
+                        True,
+                    )
+                )
+            for engine, sample_set, require_exact in next_samples:
                 if require_exact:
                     agreed = sample_set.result == expected
                 else:
@@ -716,9 +890,20 @@ def main() -> int:
         "circle_server_protocol": "stdin lines: N or N COUNT; non-json response per request",
         "circle_prime": file_fingerprint(args.circle_prime_bin),
         "big_fuzzy_model": file_fingerprint(model_path),
+        "optional_controls": {
+            "gmpy2_enabled": use_gmpy2,
+            "pari_gp_enabled": use_pari_gp,
+            "pari_gp_binary": pari_gp_bin,
+        },
         "tools": {
             "openssl": tool_version([args.openssl_bin, "version"]),
             "sympy": sympy_module.__version__,
+            "gmpy2": gmpy2_version(),
+            "pari_gp": (
+                tool_version([pari_gp_bin, "-v"])
+                if pari_gp_bin is not None
+                else "unavailable: gp not found"
+            ),
         },
         "failures": failures,
     }

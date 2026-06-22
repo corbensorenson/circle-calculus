@@ -202,12 +202,12 @@ the short competitive workflow.
   thread count allows it.
   Very-high-offset threaded counts with small spans use tuned segment defaults
   and an adaptive count-mode split. The tracked edge high-offset lane uses
-  `2097152` with `presieve13`; the lower tracked band uses `1310720` with
-  `presieve17`; the middle and upper tracked high-offset bands use `1310720`
-  with `presieve13`. The split follows the short
-  hot-server scorecard and repeated confirmation while avoiding boundary churn
-  unless a candidate clears the stricter promotion gate. Other ranges keep the
-  conservative segmented default.
+  `1507328` with `presieve13`, which resolves to 7 effective workers for the
+  tracked 10M span; the lower tracked band uses `1310720` with `presieve17`;
+  the middle and upper tracked high-offset bands use `1310720` with
+  `presieve13`. The split follows the short hot-server scorecard and repeated
+  confirmation while avoiding boundary churn unless a candidate clears the
+  stricter promotion gate. Other ranges keep the conservative segmented default.
   The threaded-count values live in
   `rust/circle-prime/prime_engine_defaults.json`; Cargo's build script renders
   them into Rust constants, and the CLI tests read the same JSON.
@@ -245,18 +245,32 @@ For best-current external comparisons, use:
   (`https://github.com/kimwalisch/primecount`). This is not the same task as
   enumerating/counting a materialized range; it uses combinatorial
   prime-counting algorithms such as Deleglise-Rivat and Xavier Gourdon.
+- GMP/gmpy2 for in-process arbitrary-precision probable-prime and next-prime
+  controls when the Python `gmpy2` binding is installed. The BigUint benchmark
+  auto-records `gmpy2_is_prime` and `gmpy2_next_prime` rows when available; use
+  `CIRCLE_PRIME_BIGINT_EXTRA_ARGS=--require-gmpy2` to make that a hard local
+  gate.
+- PARI/GP for arbitrary-precision `ispseudoprime`, certified `isprime`, and
+  `nextprime` control rows when a `gp` executable is installed. The BigUint
+  benchmark auto-records `pari_gp_ispseudoprime`, `pari_gp_isprime`, and
+  `pari_gp_nextprime` rows when available; use
+  `CIRCLE_PRIME_BIGINT_EXTRA_ARGS=--require-pari-gp` to require them.
 
-The Makefile external-control targets require both tools. This prevents a
-benchmark or overnight run from silently passing when the serious controls are
-not installed. The benchmark metadata records tool paths, versions, requested
-thread policy, command lines, sample CSV paths, and the required control list;
-the generated prime-engine report surfaces that required-control list beside
-the timing rows.
+The Makefile range-control targets require `primesieve` and `primecount`. This
+prevents a benchmark or overnight run from silently passing when the serious
+u64 controls are not installed. The BigUint benchmark records GMP/PARI
+availability in metadata and can require those optional controls with
+`CIRCLE_PRIME_BIGINT_EXTRA_ARGS`. The benchmark metadata records tool paths,
+versions, requested thread policy, command lines, sample CSV paths, and the
+required control list; the generated prime-engine report surfaces that
+required-control list beside the timing rows.
 
 On macOS these can be installed outside the repo with:
 
 ```bash
 brew install primesieve primecount
+python -m pip install gmpy2  # optional GMP-backed BigUint controls
+brew install pari            # optional PARI/GP BigUint controls
 ```
 
 Then run:
@@ -380,10 +394,13 @@ Current CPU findings:
   high-offset and cold-process benchmark sections, writes
   `prime_engine_high_offset_hot_cold_latest.csv`, and the report uses that
   artifact for the high-offset cold/hot overhead table when present. The same
-  artifact now includes persistent `count-server` CLI rows, which keep the
-  Circle binary loaded and time repeated stdin/stdout count requests. The report
-  calls out the fastest server row so candidate modes such as `segmented`,
-  `presieve13`, and `presieve17` are visible without a broad external sweep.
+  artifact includes minimal fresh-process rows for segmented and adaptive
+  default count modes, the full `circle-prime` CLI row, the slim
+  `circle-prime-count` CLI row, and persistent `count-server` CLI rows, which
+  keep the Circle binary loaded and time repeated stdin/stdout count requests.
+  The report calls out the fastest server row so candidate modes such as
+  `segmented`, `presieve13`, and `presieve17` are visible without a broad
+  external sweep.
   Use it after small hot-path changes before spending time on broader external
   sweeps.
 - The scalar `u64` primality lane uses the 7-base deterministic Miller-Rabin
@@ -440,18 +457,31 @@ Current CPU findings:
 - Focused cold high-offset probes rejected several startup-only levers:
   release symbol stripping did not reduce the macOS binary enough to help,
   removing or undersizing the embedded base-prime table reduced binary size
-  but made the broader high-offset path pay runtime base-prime generation, and
-  smaller scoped worker stacks did not improve the cold CLI median. A direct
-  ASCII integer writer for the count-only CLI also failed to produce a credible
-  focused-probe improvement, so formatted plain count output is not currently
-  the limiting factor. Reusing the shifted single-segment path across adjacent
-  cold chunks was also rejected by a local release probe: it measured roughly
-  `7.61 ms` median versus `2.47 ms` for the current parallel high-offset path,
-  so the loss of parallelism dominates the saved mark setup. Fat-LTO and
-  size-optimized alternate `circle-prime-count` builds were also rejected in
-  short cold probes: both reduced binary size slightly, but fat LTO regressed
-  the cold count-binary row from `1.080x` to `0.887x` versus cold `primesieve`
-  in the local A/B probe, and size optimization regressed it to `1.018x`.
+  but made the broader high-offset path pay runtime base-prime generation. A
+  direct ASCII integer writer for the count-only CLI also failed to produce a
+  credible focused-probe improvement, so formatted plain count output is not
+  currently the limiting factor. The scoped worker path now requests a 128 KiB
+  stack, but stack tuning alone did not close the cold gap. Reusing the shifted
+  single-segment path across adjacent cold chunks was also rejected by a local
+  release probe: it measured roughly `7.61 ms` median versus `2.47 ms` for the
+  current parallel high-offset path, so the loss of parallelism dominates the
+  saved mark setup. Serial shared-plan construction across adjacent cold chunks
+  was rejected after falling to about `0.595x` median versus cold `primesieve`.
+  A narrower 17-round cold worker-count probe also rejected nearby
+  `presieve13:1703936` and `presieve13:1835008` six-worker candidates: the
+  current `presieve13:1507328` default showed a noisy `1.102x` median over cold
+  `primesieve` in that run but still lost best time at `0.881x`, while the
+  six-worker candidates remained below median parity.
+  A one-shot-only `circle-prime-count-cold` prototype removed stdin server and
+  shifted-batch code and cut the binary from `1395168` to `1310896` bytes, but a
+  25-round interleaved A/B still had the existing Builder/128 KiB-stack
+  `circle-prime-count` row ahead at `0.989x` median versus cold `primesieve`;
+  the one-shot prototype stayed below parity, so it was not kept.
+  Fat-LTO and size-optimized alternate `circle-prime-count` builds were also
+  rejected in short cold probes: both reduced binary size slightly, but fat LTO
+  regressed the cold count-binary row from `1.080x` to `0.887x` versus cold
+  `primesieve` in the local A/B probe, and size optimization regressed it to
+  `1.018x`.
   A guarded attempt to route cold one-shot count-binary requests through the
   count-server worker-pool implementation was also rejected: the local A/B
   dropped the cold row from `0.916x` median versus cold `primesieve` to
@@ -481,10 +511,12 @@ Current CPU findings:
   intervals for both `presieve13` and `presieve17`; non-adjacent shifted
   requests fall back to the shifted single-segment mark plan. It is measured
   only when the external-control harness is passed
-  `--include-circle-count-binary`; the current high-offset probe has the
-  count-only adaptive default at `0.847x` median and `0.822x` best versus cold
-  `primesieve`. Treat the cold one-shot lane as below-parity until a candidate
-  beats cold `primesieve` by both median and best time. The same exact-repeat
+  `--include-circle-count-binary`; the latest focused cold candidate probe has
+  the best stable count-only row, `presieve13:1507328`, at `0.922x` median and
+  `0.906x` best versus cold `primesieve`. Noisy reruns sometimes clear median
+  parity, but not best-time parity. Treat the cold one-shot lane as below-parity
+  until a candidate beats cold `primesieve` by both median and best time. The
+  same exact-repeat
   probe has persistent Circle `count-server` at `15.668x` median versus
   persistent `libprimesieve`, and the slim count-binary server row at `15.494x`
   median versus persistent `libprimesieve`; those are hot-service repeat
@@ -498,11 +530,10 @@ Current CPU findings:
   keeps the persistent Circle server default row above persistent
   `libprimesieve`. `make
   prime-engine-high-offset-count-binary-overhead-check` classifies that same
-  artifact so the next step is explicit; the latest readout is
-  `cold_process_or_startup_bound`, with cold `circle-prime-count` at `0.847x`
-  versus cold `primesieve`, the slim count-binary server at `15.494x` versus
-  persistent `libprimesieve`, and Circle cold/hot overhead at `44.61x`
-  (`+5.620 ms`). `make
+  artifact so the next step is explicit; the current diagnosis remains
+  `cold_process_or_startup_bound`: the slim count-binary server is already
+  `15.494x` versus persistent `libprimesieve`, while cold one-shot rows still
+  trail cold `primesieve` on best time. `make
   prime-engine-high-offset-count-binary-cold-confirm` is the focused one-shot
   confirmation target for the weak lane: it runs 17 interleaved rounds of only
   cold `circle-prime-count` default versus cold `primesieve`, writes
@@ -689,6 +720,26 @@ sidecars/PRIME_ENGINE/results/prime_engine_external_controls_samples_latest.csv
 
 If `primesieve` or `primecount` are not installed, the script reports that and
 still exits cleanly unless `--require-external` is passed directly.
+
+Current external goalpost:
+
+- Use `primesieve` as the serious `u64` interval-count and prime-generation
+  control; its upstream project describes cache-sized segmented sieving,
+  multithreaded defaults, and prime generation/counting up to `2^64`
+  (https://github.com/kimwalisch/primesieve).
+- Use `primecount` as the serious `pi(x)` and `pi(high)-pi(low)` control; its
+  upstream project targets prime-counting up to `10^31` with optimized
+  combinatorial algorithms (https://github.com/kimwalisch/primecount).
+- For arbitrary-precision probable-prime and next-prime work, require the
+  BigUint smoke's optional GMP/gmpy2 and PARI/GP rows before claiming
+  large-prime parity. The concrete row names are `gmpy2_is_prime`,
+  `gmpy2_next_prime`, `pari_gp_ispseudoprime`, `pari_gp_isprime`, and
+  `pari_gp_nextprime`; use `CIRCLE_PRIME_BIGINT_EXTRA_ARGS=--require-gmpy2` or
+  `CIRCLE_PRIME_BIGINT_EXTRA_ARGS=--require-pari-gp` on machines with those
+  controls installed. For certified arbitrary-precision primality, treat PARI
+  `isprime`/ECPP or fastECPP-class tooling as the proof-certificate bar.
+  Mersenne/GIMPS/OpenPFGW-style tools remain a separate special-form category,
+  not a fair general interval count target.
 
 `prime-engine-external-controls-parallel` writes:
 
@@ -1126,7 +1177,8 @@ current controls.
 changes that should affect the Rust engine before they affect command-vs-command
 scorecards. It runs only the in-process high-offset rows plus persistent
 `count-server` candidate rows for the default, segmented, presieve13, and
-presieve17 lanes, cold process, and cold CLI rows, writing:
+presieve17 lanes; minimal fresh-process segmented/default rows; and cold
+full-CLI plus slim count-binary rows, writing:
 
 ```text
 sidecars/PRIME_ENGINE/results/prime_engine_high_offset_hot_cold_latest.csv
@@ -1135,10 +1187,11 @@ sidecars/PRIME_ENGINE/results/prime_engine_high_offset_hot_cold_latest.csv
 The report prefers this artifact for the high-offset cold/hot overhead table
 when it exists, so a quick run can show whether a change improved the engine or
 only moved process-startup noise. Treat the persistent server row as a
-hot-process application lane; the command-vs-command control remains the
-external `primesieve`/`primecount` scorecard. When both artifacts are present,
-the report also compares the fastest persistent server row directly against
-the external high-offset command controls by best time.
+hot-process application lane; treat the slim count-binary row as the closest
+local proxy for the external cold command-vs-command scorecard. The external
+`primesieve`/`primecount` scorecard remains the promotion control. When both
+artifacts are present, the report also compares the fastest persistent server
+row directly against the external high-offset command controls by best time.
 
 `prime-engine-high-offset-hot-server-check` reads the hot-server scorecard and
 fails unless the selected adaptive `circle_prime_server_default_count` rows
@@ -1426,8 +1479,8 @@ Current external-control readout on this machine:
   therefore noisy, but it records actual worker counts. With
   `CIRCLE_PRIME_THREADS=8`, true-prefix `prefix-pi` rows report `1/8`
   effective Circle thread, broad non-prefix `prefix-pi` rows can report `2/8`,
-  the edge high-offset interval currently uses `5/8` under the calibrated
-  `2097152` threaded-count default, while the other tracked high-offset ranges
+  the edge high-offset interval currently uses `7/8` under the calibrated
+  `1507328` threaded-count default, while the other tracked high-offset ranges
   still use the calibrated `1310720` default.
 - `primecount` remains the specialized prefix `pi(x)` bar, but the persistent
   Circle `count-server` now uses the reusable small-prefix table for tracked

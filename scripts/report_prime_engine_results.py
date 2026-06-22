@@ -165,9 +165,11 @@ NEXT_PRIME_SEARCH_ROWS = {
 COLD_PROCESS_ROWS = {
     "cold_cli_parallel_default_range_count_8t",
     "cold_cli_parallel_high_offset_default_range_count_8t",
+    "cold_count_binary_parallel_high_offset_default_range_count_8t",
     "cold_process_segmented_range_count",
     "cold_process_parallel_segmented_range_count_8t",
     "cold_process_parallel_high_offset_segmented_range_count_8t",
+    "cold_process_parallel_high_offset_default_range_count_8t",
 }
 
 
@@ -1131,8 +1133,20 @@ def summarize_high_offset_cold_hot_overhead(
         default=None,
     )
     cold_cli = rows_by_name.get("cold_cli_parallel_high_offset_default_range_count_8t")
+    cold_count_binary = rows_by_name.get(
+        "cold_count_binary_parallel_high_offset_default_range_count_8t"
+    )
     cold_process = rows_by_name.get("cold_process_parallel_high_offset_segmented_range_count_8t")
-    if hot is None or (hot_server is None and cold_cli is None and cold_process is None):
+    cold_process_default = rows_by_name.get(
+        "cold_process_parallel_high_offset_default_range_count_8t"
+    )
+    if hot is None or (
+        hot_server is None
+        and cold_cli is None
+        and cold_count_binary is None
+        and cold_process is None
+        and cold_process_default is None
+    ):
         return []
 
     hot_ms = float(hot["best_ms"])
@@ -1153,6 +1167,11 @@ def summarize_high_offset_cold_hot_overhead(
             if hot_server and cold_cli and float(cold_cli["best_ms"]) > 0
             else None
         ),
+        "hot_server_over_cold_count_binary": (
+            float(hot_server["best_ms"]) / float(cold_count_binary["best_ms"])
+            if hot_server and cold_count_binary and float(cold_count_binary["best_ms"]) > 0
+            else None
+        ),
         "cold_cli_name": cold_cli["name"] if cold_cli else None,
         "cold_cli_segment_size": cold_cli["segment_size"] if cold_cli else None,
         "cold_cli_best_ms": float(cold_cli["best_ms"]) if cold_cli else None,
@@ -1162,6 +1181,23 @@ def summarize_high_offset_cold_hot_overhead(
         "cold_cli_extra_ms": (
             float(cold_cli["best_ms"]) - hot_ms if cold_cli is not None else None
         ),
+        "cold_count_binary_name": cold_count_binary["name"] if cold_count_binary else None,
+        "cold_count_binary_segment_size": (
+            cold_count_binary["segment_size"] if cold_count_binary else None
+        ),
+        "cold_count_binary_best_ms": (
+            float(cold_count_binary["best_ms"]) if cold_count_binary else None
+        ),
+        "cold_count_binary_over_hot": (
+            float(cold_count_binary["best_ms"]) / hot_ms
+            if cold_count_binary and hot_ms > 0
+            else None
+        ),
+        "cold_count_binary_extra_ms": (
+            float(cold_count_binary["best_ms"]) - hot_ms
+            if cold_count_binary is not None
+            else None
+        ),
         "cold_process_name": cold_process["name"] if cold_process else None,
         "cold_process_segment_size": cold_process["segment_size"] if cold_process else None,
         "cold_process_best_ms": float(cold_process["best_ms"]) if cold_process else None,
@@ -1170,6 +1206,25 @@ def summarize_high_offset_cold_hot_overhead(
         ),
         "cold_process_extra_ms": (
             float(cold_process["best_ms"]) - hot_ms if cold_process is not None else None
+        ),
+        "cold_process_default_name": (
+            cold_process_default["name"] if cold_process_default else None
+        ),
+        "cold_process_default_segment_size": (
+            cold_process_default["segment_size"] if cold_process_default else None
+        ),
+        "cold_process_default_best_ms": (
+            float(cold_process_default["best_ms"]) if cold_process_default else None
+        ),
+        "cold_process_default_over_hot": (
+            float(cold_process_default["best_ms"]) / hot_ms
+            if cold_process_default and hot_ms > 0
+            else None
+        ),
+        "cold_process_default_extra_ms": (
+            float(cold_process_default["best_ms"]) - hot_ms
+            if cold_process_default is not None
+            else None
         ),
     }
     return [summary]
@@ -4785,7 +4840,7 @@ def render_benchmark_markdown(summary: dict[str, Any]) -> list[str]:
             [
                 f"High-offset cold/hot overhead (source: `{source_label}`):",
                 "",
-                "| Workload | Hot Row | Hot ms | Server Row | Count Server ms | Server / Hot | Server / Cold CLI | Cold CLI ms | CLI / Hot | CLI Extra ms | Cold Process ms | Process / Hot |",
+                "| Workload | Hot Row | Hot ms | Server Row | Count Server ms | Server / Hot | Server / Cold Count Binary | Cold Count Binary ms | Count Binary / Hot | Full CLI ms | Minimal Default Process ms | Segmented Process ms |",
                 "| ---: | --- | ---: | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |",
             ]
         )
@@ -4796,12 +4851,12 @@ def render_benchmark_markdown(summary: dict[str, Any]) -> list[str]:
                 f"{format_optional_code(row['hot_server_name'])} | "
                 f"{format_optional_ms(row['hot_server_best_ms'])} | "
                 f"{format_optional_ratio(row['hot_server_over_hot'])} | "
-                f"{format_optional_ratio(row['hot_server_over_cold_cli'])} | "
+                f"{format_optional_ratio(row['hot_server_over_cold_count_binary'])} | "
+                f"{format_optional_ms(row['cold_count_binary_best_ms'])} | "
+                f"{format_optional_ratio(row['cold_count_binary_over_hot'])} | "
                 f"{format_optional_ms(row['cold_cli_best_ms'])} | "
-                f"{format_optional_ratio(row['cold_cli_over_hot'])} | "
-                f"{format_optional_ms(row['cold_cli_extra_ms'])} | "
-                f"{format_optional_ms(row['cold_process_best_ms'])} | "
-                f"{format_optional_ratio(row['cold_process_over_hot'])} |"
+                f"{format_optional_ms(row['cold_process_default_best_ms'])} | "
+                f"{format_optional_ms(row['cold_process_best_ms'])} |"
             )
         lines.append("")
     if summary.get("high_offset_server_external"):

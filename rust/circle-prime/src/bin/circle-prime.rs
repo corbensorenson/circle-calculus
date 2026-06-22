@@ -2663,8 +2663,8 @@ mod tests {
         let shifted =
             resolve_count_server_shifted_plan(low, high, final_high, 8, None, None, None, None);
 
-        assert_eq!(normal.segment_size, 2_097_152);
-        assert_eq!(normal.worker_threads, 5);
+        assert_eq!(normal.segment_size, 1_507_328);
+        assert_eq!(normal.worker_threads, 7);
         assert_eq!(normal.count_mode, CountMode::Presieve13);
         assert_eq!(shifted.segment_size, SHIFTED_EDGE_HIGH_OFFSET_SEGMENT_SIZE);
         assert_eq!(shifted.worker_threads, 7);

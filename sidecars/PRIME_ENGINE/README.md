@@ -123,6 +123,12 @@ BigUint fuzzy any-prime smoke. The artifact includes both cold CLI rows and hot
 `big-test-server`/`big-next-server`/`big-fuzzy-server` rows so large-prime
 tuning is not dominated by process startup. This lane reports probable-prime
 status above `u64`; it is not a Lean-certified primality certificate yet.
+When available, the same benchmark now adds optional GMP/gmpy2 rows
+(`gmpy2_is_prime`, `gmpy2_next_prime`) and optional PARI/GP rows
+(`pari_gp_ispseudoprime`, `pari_gp_isprime`, `pari_gp_nextprime`). These rows
+are agreement-checked when present, and can be made mandatory with
+`CIRCLE_PRIME_BIGINT_EXTRA_ARGS=--require-gmpy2` or
+`CIRCLE_PRIME_BIGINT_EXTRA_ARGS=--require-pari-gp`.
 `big-test` and `big-next` now accept `--profile mr|bpsw`: `mr` uses the fixed
 Miller-Rabin base bank, while `bpsw` uses base-2 Miller-Rabin plus strong
 Lucas-Selfridge. The BigUint smoke records hot BPSW profile rows for test and
@@ -254,21 +260,25 @@ candidate-confirmation evidence after the hot-server scorecard, and also
 refreshes CLI controls, candidate spreads, next-prime evidence, the combined
 report, and the promotion-readout gate.
 
-The current adaptive high-offset default uses `presieve13` with the promoted
-edge-band segment at the tracked edge, `presieve17` through the lower tracked
-band, and `presieve13` through the middle and upper tracked high-offset bands.
-The scoped parallel counters run one chunk on the caller thread and spawn
-workers only for the remaining chunks. That trims cold command thread startup
-while keeping the same half-open range split; persistent `count-server` rows
-still matter because they avoid repeated process setup, keep a reusable worker
-pool, cache adaptive default plans, and count one chunk on
-the server thread while workers handle the rest.
+The current adaptive high-offset default uses `presieve13:1507328` with the
+promoted edge-band segment at the tracked edge, `presieve17` through the lower
+tracked band, and `presieve13` through the middle and upper tracked high-offset
+bands. The edge default resolves to 7 effective workers for the tracked 10M
+span. The scoped parallel counters run one chunk on the caller thread, request a
+128 KiB stack for worker threads, and spawn workers only for the remaining
+chunks. That trims cold command thread startup while keeping the same half-open
+range split; persistent `count-server` rows still matter because they avoid
+repeated process setup, keep a reusable worker pool, cache adaptive default
+plans, and count one chunk on the server thread while workers handle the rest.
 Rejected cold-startup-only levers now include release symbol stripping,
-undersizing/removing the embedded base-prime table, smaller scoped worker
-stacks, and direct ASCII count output; none produced a credible improvement on
-the tracked cold high-offset lane. A local release probe also rejected reusing
-the shifted single-segment path across adjacent cold chunks because its median
-was about `7.61 ms` versus `2.47 ms` for the current parallel path.
+undersizing/removing the embedded base-prime table, direct ASCII count output,
+and serial shared-plan construction across adjacent cold chunks; none produced a
+credible win on the tracked cold high-offset lane. The shared-plan probe fell to
+about `0.595x` median versus cold `primesieve`, so the repeated per-worker setup
+is still better than serializing mark-plan construction. A local release probe
+also rejected reusing the shifted single-segment path across adjacent cold chunks
+because its median was about `7.61 ms` versus `2.47 ms` for the current
+parallel path.
 The hot-server check passes across the full tracked range set, but the
 promotion readout is intentionally treated as a candidate scout rather than an
 automatic flip switch. Boundary candidates need repeated A/B confirmation plus
@@ -284,10 +294,17 @@ the slim binary to avoid cold-start bloat. Shifted count-server batches detect
 adjacent windows when the shift equals the range span and sieve the full union
 once, binning flags back into the requested intervals for both `presieve13` and
 `presieve17`; non-adjacent shifted requests fall back to the shifted
-single-segment mark plan. The current high-offset probe has the count-only CLI
-at `0.847x` median and `0.822x` best versus cold `primesieve`. Treat the cold
-one-shot lane as below-parity until a candidate beats cold `primesieve` by both
-median and best time. The same exact-repeat probe has persistent Circle
+single-segment mark plan. The latest focused cold candidate probe, run while the
+machine was otherwise loaded, keeps the count-only CLI below a clean promotion:
+`presieve13:1507328` reached `0.922x` median and `0.906x` best versus cold
+`primesieve` in the cleanest stable sample, while noisy reruns sometimes cleared
+median parity but not best-time parity. Treat the cold one-shot lane as
+below-parity until a candidate beats cold `primesieve` by both median and best
+time. A later narrow 17-round cold worker-count probe rejected
+`presieve13:1703936` and `presieve13:1835008` six-worker candidates. The
+current `presieve13:1507328` default had a noisy `1.102x` median over cold
+`primesieve` in that run, but still lost best time at `0.881x`; that is not a
+promotion. The same exact-repeat probe has persistent Circle
 `count-server` at `15.668x` median versus persistent `libprimesieve`, and the
 slim count-binary server row at `15.494x` median versus persistent
 `libprimesieve`; those are hot-service repeat throughput numbers, while the
@@ -305,10 +322,9 @@ table for the key count, smoke, high-offset, shifted, and next-server artifacts,
 including control versions, helper methods, paths, and helper binary/source
 hashes.
 `make prime-engine-high-offset-count-binary-overhead-check` classifies the same
-artifact; the latest readout is `cold_process_or_startup_bound`, with cold
-`circle-prime-count` at `0.847x` versus cold `primesieve`, the slim
-count-binary server at `15.494x` versus persistent `libprimesieve`, and Circle
-cold/hot overhead at `44.61x` (`+5.620 ms`).
+artifact; the current diagnosis remains `cold_process_or_startup_bound`: the
+slim count-binary server is already `15.494x` versus persistent `libprimesieve`,
+while cold one-shot rows still trail cold `primesieve` on best time.
 `make prime-engine-high-offset-count-binary-cold-confirm` is the focused
 one-shot confirmation for this weak lane: it runs 17 interleaved rounds of only
 cold `circle-prime-count` default versus cold `primesieve`, writes
@@ -337,6 +353,19 @@ The one-shot worker-pool path is also closed as a cold-start lever: a local A/B
 fell from `0.916x` median versus cold `primesieve` to `0.740x`, so the
 server-style mpsc/thread teardown cost is not worth paying for one-shot CLI
 work.
+A separate one-shot-only `circle-prime-count-cold` prototype removed stdin
+server and shifted-batch code and cut the binary from `1395168` to `1310896`
+bytes, but a 25-round interleaved A/B still left the existing
+Builder/128 KiB-stack `circle-prime-count` row ahead at `0.989x` median versus
+cold `primesieve`; the prototype remained below parity and was removed.
+`make prime-engine-high-offset-hot-cold` now records the local bottleneck split
+directly: minimal fresh-process segmented/default rows, the full `circle-prime`
+CLI row, the slim `circle-prime-count` CLI row, and persistent `count-server`
+candidate rows. The latest short diagnostic has the slim cold count binary at
+`5.189 ms` best, the minimal adaptive default cold worker at `5.803 ms`, and the
+persistent default count-server row at `2.022 ms` on the tracked high-offset
+span. Treat that as process/thread-startup evidence, not an external promotion
+claim.
 For build-profile probes, `scripts/benchmark_prime_external_controls.py` accepts
 `--circle-prime-bin` and `--circle-prime-count-bin` to measure alternate
 prebuilt binaries while keeping the normal `target/release` artifacts intact.

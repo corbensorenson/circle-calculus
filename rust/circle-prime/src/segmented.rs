@@ -34,6 +34,7 @@ const DENSE_MARKING_BASE_LIMIT: u64 = 300_000;
 const HYBRID_DENSE_STEP_DIVISOR: usize = 4;
 const DYNAMIC_PARALLEL_MAX_SEGMENTS_PER_BATCH: u64 = 64;
 const DYNAMIC_PARALLEL_TARGET_BATCHES_PER_WORKER: u64 = 4;
+const PARALLEL_WORKER_STACK_SIZE: usize = 128 * 1024;
 const PRIME_PI_PHI6_PRIME_COUNT: usize = 6;
 const PRIME_PI_PHI6_MODULUS: u64 = PRESIEVE13_MODULUS;
 const PRIME_PI_PHI6_PERIOD_COUNT: u64 = 5_760;
@@ -1547,7 +1548,12 @@ where
         let mut handles = Vec::with_capacity(remaining_chunks.len());
         for &(chunk_low, chunk_high) in remaining_chunks {
             let count_chunk = &count_chunk;
-            handles.push(scope.spawn(move || count_chunk(chunk_low, chunk_high)));
+            handles.push(
+                thread::Builder::new()
+                    .stack_size(PARALLEL_WORKER_STACK_SIZE)
+                    .spawn_scoped(scope, move || count_chunk(chunk_low, chunk_high))
+                    .map_err(|_| RangeError::WorkerPanic)?,
+            );
         }
 
         let mut total = count_chunk(first_chunk.0, first_chunk.1)?;

@@ -217,16 +217,29 @@ make prime-engine-bigint-smoke
 
 That target compares Circle `big-test` against OpenSSL `prime -checks N` and
 SymPy `isprime` on known 127/255/256/521-bit prime/composite cases, then
-compares `big-next` against SymPy `nextprime`. It also runs a fuzzy any-prime
-search smoke and verifies the reported candidate with SymPy. The benchmark
-records both cold one-shot CLI rows and hot `big-*-server` rows; use the hot
-server rows for engine tuning because they remove process startup from the
-measurement. It also records hot `bpsw` profile rows for `big-test-server` and
-`big-next-server`, so the fixed-base Miller-Rabin and Baillie-PSW-style
-profiles can be compared without changing the proof boundary. The Makefile
-target now runs `scripts/check_prime_bigint_controls.py`, which requires the
-BPSW rows, fuzzy any-prime rows, no agreement failures, and conservative
-speed floors over OpenSSL/SymPy controls. The output lives at
+compares `big-next` against SymPy `nextprime`. It also auto-records optional
+GMP/gmpy2 rows (`gmpy2_is_prime`, `gmpy2_next_prime`) when `gmpy2` is
+importable, and optional PARI/GP rows (`pari_gp_ispseudoprime`,
+`pari_gp_isprime`, `pari_gp_nextprime`) when `gp` is installed. Require those
+stronger local controls with:
+
+```bash
+make prime-engine-bigint-smoke CIRCLE_PRIME_BIGINT_EXTRA_ARGS=--require-gmpy2
+make prime-engine-bigint-smoke CIRCLE_PRIME_BIGINT_EXTRA_ARGS=--require-pari-gp
+```
+
+The target also runs a fuzzy any-prime search smoke and verifies the reported
+candidate with SymPy. The benchmark records both cold one-shot CLI rows and hot
+`big-*-server` rows; use the hot server rows for engine tuning because they
+remove process startup from the measurement. It also records hot `bpsw` profile
+rows for `big-test-server` and `big-next-server`, so the fixed-base
+Miller-Rabin and Baillie-PSW-style profiles can be compared without changing the
+proof boundary. The Makefile target now runs
+`scripts/check_prime_bigint_controls.py`, which requires the BPSW rows, fuzzy
+any-prime rows, no agreement failures, and conservative speed floors over
+OpenSSL/SymPy controls. Optional GMP/PARI rows are agreement-checked when
+present but are not required unless the benchmark is run with the corresponding
+`--require-*` flag. The output lives at
 `sidecars/PRIME_ENGINE/results/prime_bigint_controls_latest.csv` with metadata
 in `prime_bigint_controls_latest.json`.
 

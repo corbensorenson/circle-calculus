@@ -224,6 +224,7 @@ CIRCLE_PRIME_BIGINT_FUZZY_PROFILE ?= bpsw
 CIRCLE_PRIME_BIGINT_SERVER_BATCH_SIZE ?= 16
 CIRCLE_PRIME_BIGINT_OUTPUT ?= sidecars/PRIME_ENGINE/results/prime_bigint_controls_latest.csv
 CIRCLE_PRIME_BIGINT_METADATA ?= sidecars/PRIME_ENGINE/results/prime_bigint_controls_latest.json
+CIRCLE_PRIME_BIGINT_EXTRA_ARGS ?=
 CIRCLE_PRIME_BIGINT_MIN_HOT_TEST_VS_OPENSSL ?= 1.5
 CIRCLE_PRIME_BIGINT_MIN_BPSW_TEST_VS_OPENSSL ?= 1.5
 CIRCLE_PRIME_BIGINT_MIN_BPSW_NEXT_VS_SYMPY ?= 1.1
@@ -607,7 +608,7 @@ prime-engine-fuzzy-hybrid-next-smoke:
 
 prime-engine-bigint-smoke:
 	cargo build --release -p circle-prime --bin circle-prime
-	python scripts/benchmark_prime_bigint_controls.py --summary --circle-prime-bin target/release/circle-prime --bench-rounds $(CIRCLE_PRIME_BIGINT_BENCH_ROUNDS) --warmup-rounds $(CIRCLE_PRIME_BIGINT_WARMUP_ROUNDS) --mr-rounds $(CIRCLE_PRIME_BIGINT_MR_ROUNDS) --max-candidates $(CIRCLE_PRIME_BIGINT_MAX_CANDIDATES) --candidate-window $(CIRCLE_PRIME_BIGINT_CANDIDATE_WINDOW) --top-k $(CIRCLE_PRIME_BIGINT_TOP_K) --score-limit $(CIRCLE_PRIME_BIGINT_SCORE_LIMIT) --fuzzy-profile $(CIRCLE_PRIME_BIGINT_FUZZY_PROFILE) --server-batch-size $(CIRCLE_PRIME_BIGINT_SERVER_BATCH_SIZE) --output $(CIRCLE_PRIME_BIGINT_OUTPUT) --metadata-output $(CIRCLE_PRIME_BIGINT_METADATA)
+	python scripts/benchmark_prime_bigint_controls.py --summary --circle-prime-bin target/release/circle-prime --bench-rounds $(CIRCLE_PRIME_BIGINT_BENCH_ROUNDS) --warmup-rounds $(CIRCLE_PRIME_BIGINT_WARMUP_ROUNDS) --mr-rounds $(CIRCLE_PRIME_BIGINT_MR_ROUNDS) --max-candidates $(CIRCLE_PRIME_BIGINT_MAX_CANDIDATES) --candidate-window $(CIRCLE_PRIME_BIGINT_CANDIDATE_WINDOW) --top-k $(CIRCLE_PRIME_BIGINT_TOP_K) --score-limit $(CIRCLE_PRIME_BIGINT_SCORE_LIMIT) --fuzzy-profile $(CIRCLE_PRIME_BIGINT_FUZZY_PROFILE) --server-batch-size $(CIRCLE_PRIME_BIGINT_SERVER_BATCH_SIZE) --output $(CIRCLE_PRIME_BIGINT_OUTPUT) --metadata-output $(CIRCLE_PRIME_BIGINT_METADATA) $(CIRCLE_PRIME_BIGINT_EXTRA_ARGS)
 	$(MAKE) prime-engine-bigint-check
 
 prime-engine-bigint-check:
@@ -749,6 +750,7 @@ prime-engine-high-offset-shifted-candidate-check:
 prime-engine-high-offset-hot-cold:
 	mkdir -p sidecars/PRIME_ENGINE/results
 	cargo build --release -p circle-prime --bin circle-prime
+	cargo build --release -p circle-prime --bin circle-prime-count
 	cargo run --release -p circle-prime --bin circle-prime-bench -- --rounds $(CIRCLE_PRIME_HIGH_OFFSET_HOT_COLD_ROUNDS) --only high-offset,cold > $(CIRCLE_PRIME_HIGH_OFFSET_HOT_COLD_OUTPUT)
 
 prime-engine-high-offset-confirm:

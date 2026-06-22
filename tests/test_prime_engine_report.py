@@ -529,6 +529,8 @@ def test_prime_engine_report_summarizes_artifacts(tmp_path: Path) -> None:
                 "timing,parallel_high_offset_segmented_range_count_8t,10000000,3145728,361726,3,3.500,2857142857,,",
                 "timing,parallel_high_offset_balanced_segmented_range_count_8t,10000000,3145728,361726,3,3.700,2702702702,,",
                 "timing,cold_cli_parallel_high_offset_default_range_count_8t,10000000,3145728,361726,3,5.700,1754385965,,",
+                "timing,cold_count_binary_parallel_high_offset_default_range_count_8t,10000000,3145728,361726,3,5.600,1785714285,,",
+                "timing,cold_process_parallel_high_offset_default_range_count_8t,10000000,3145728,361726,3,5.900,1694915254,,",
                 "timing,cold_process_parallel_high_offset_segmented_range_count_8t,10000000,3145728,361726,3,6.000,1666666666,,",
                 "timing,high_offset_bitpacked_range_count,10000000,3145728,361726,3,10.500,952380952,,",
             ]
@@ -1304,6 +1306,8 @@ def test_prime_engine_report_summarizes_artifacts(tmp_path: Path) -> None:
                 "timing,hot_cli_count_server_parallel_high_offset_presieve13_count_8t,10000000,1376256,361726,7,2.500,4000000000,,",
                 "timing,hot_cli_count_server_parallel_high_offset_presieve17_count_8t,10000000,1376256,361726,7,2.550,3921568627,,",
                 "timing,cold_cli_parallel_high_offset_default_range_count_8t,10000000,1376256,361726,7,4.400,2272727273,,",
+                "timing,cold_count_binary_parallel_high_offset_default_range_count_8t,10000000,1376256,361726,7,4.300,2325581395,,",
+                "timing,cold_process_parallel_high_offset_default_range_count_8t,10000000,1376256,361726,7,4.200,2380952381,,",
                 "timing,cold_process_parallel_high_offset_segmented_range_count_8t,10000000,1376256,361726,7,4.100,2439024390,,",
             ]
         )
@@ -2034,7 +2038,7 @@ def test_prime_engine_report_summarizes_artifacts(tmp_path: Path) -> None:
     assert "High-offset hot/cold rows" in markdown
     assert "High-offset cold/hot overhead" in markdown
     assert "High-offset cold/hot overhead (source: `high_offset_hot_cold`)" in markdown
-    assert "| 10000000 | `parallel_high_offset_presieve17_range_count_8t` | 2.050 | `hot_cli_count_server_parallel_high_offset_segmented_count_8t` | 2.450 | 1.20x | 0.56x | 4.400 | 2.15x | 2.350 | 4.100 | 2.00x |" in markdown
+    assert "| 10000000 | `parallel_high_offset_presieve17_range_count_8t` | 2.050 | `hot_cli_count_server_parallel_high_offset_segmented_count_8t` | 2.450 | 1.20x | 0.57x | 4.300 | 2.10x | 4.400 | 4.200 | 4.100 |" in markdown
     assert "High-offset server/external best-time comparison" in markdown
     assert "| 10000000 | `hot_cli_count_server_parallel_high_offset_segmented_count_8t` | 2.450 | `external_primesieve_count` | 4.900 | 2.000 | 7.000 | 0.700 |" in markdown
     assert (
