@@ -50,7 +50,17 @@ from circle_math.ai_contracts import build_contract_pack, build_rope_receipt
 CLI receipt path:
 
 ```bash
+circle-ai-certify rope --model-config-file examples/circle_ai_model_configs/standard_rope_config.json --format json
 circle-ai-contract-receipt --kind rope --model-config-file examples/circle_ai_model_configs/standard_rope_config.json
+circle-ai-certify batch \
+  --request-file examples/circle_ai_requests/kv_cache_request.json \
+  --request-file examples/circle_ai_requests/sparse_attention_request.json \
+  --compact-receipt-out-dir reports/compact_receipts \
+  --report-out reports/circle_ai_runner_check.json \
+  --require-passed \
+  --require-status proved \
+  --require-decision passed \
+  --format json
 ```
 
 Lean:
@@ -97,8 +107,10 @@ ring-buffer freshness, recurrence schedules, and circulant/block-cyclic mixer
 laws. They do not claim model-quality, speed, memory, context-length,
 deployment-safety, physics, or universal-compression improvements.
 
-The current contract surface distinguishes 8 public contract families from 6 compatibility
-downstream-transfer contract families.
+The current contract surface distinguishes 9 public contract families from 6
+compatibility downstream-transfer contract families. The public package CLI can
+issue single-config receipts or batch request-file handoff reports without
+importing repository-only scripts.
 
 ## Repository Layout
 
