@@ -838,12 +838,15 @@ def test_public_api_runner_check_report_builds_from_in_memory_sources() -> None:
             / "standard_rope_config.json"
         ).read_text()
     )
+    architecture_config = json.loads(ARCHITECTURE_CONFIG.read_text())
 
     report = build_contract_runner_check_report(
         requests=[request],
         model_configs=[model_config],
+        architecture_configs=[architecture_config],
         request_source_paths=["requests/kv_cache_request.json"],
         model_config_source_paths=["configs/standard_rope_config.json"],
+        architecture_config_source_paths=["configs/basic_transformer.json"],
         required_statuses=("proved",),
         required_decision_verdicts=("passed",),
         require_passed=True,
@@ -851,14 +854,16 @@ def test_public_api_runner_check_report_builds_from_in_memory_sources() -> None:
 
     jsonschema.validate(report, build_facade_runner_check_json_schema())
     assert report["ok"] is True
-    assert report["example_count"] == 2
+    assert report["example_count"] == 5
     assert report["failure_count"] == 0
     assert report["gate_policy"]["allowed_statuses"] == ["proved"]
     assert report["gate_policy"]["allowed_decision_verdicts"] == ["passed"]
     assert report["gate_policy"]["require_passed"] is True
     assert report["selected_kinds"] == [
         "kv_cache_ring_buffer",
+        "recurrence_schedule",
         "rope_position_distinguishability",
+        "sparse_attention_coverage",
     ]
     summaries_by_type = {
         summary["source_type"]: summary for summary in report["summaries"]
@@ -873,6 +878,21 @@ def test_public_api_runner_check_report_builds_from_in_memory_sources() -> None:
     assert model_summary["model_config_parameter_sources"]["head_dim"]["source"] == (
         "derived_config_fields"
     )
+    architecture_summaries = [
+        summary
+        for summary in report["summaries"]
+        if summary["source_type"] == "architecture_config"
+    ]
+    assert len(architecture_summaries) == 3
+    assert {summary["kind"] for summary in architecture_summaries} == {
+        "kv_cache_ring_buffer",
+        "sparse_attention_coverage",
+        "recurrence_schedule",
+    }
+    for summary in architecture_summaries:
+        assert summary["source_path"] == "configs/basic_transformer.json"
+        assert summary["architecture_config_parameter_sources"]
+        assert summary["model_config_parameter_sources"] is None
     assert model_summary["compact_selected_evidence_unclassified_count"] == 0
 
 

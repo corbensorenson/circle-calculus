@@ -3441,6 +3441,7 @@ def _contract_runner_check_summary_from_receipt(
     source: Mapping[str, Any],
     receipt: Mapping[str, Any],
     model_config_parameter_sources: Mapping[str, Any] | None = None,
+    architecture_config_parameter_sources: Mapping[str, Any] | None = None,
 ) -> dict[str, Any]:
     compact_receipt = build_compact_contract_receipt(receipt)
     decision = receipt["decision"]
@@ -3455,6 +3456,12 @@ def _contract_runner_check_summary_from_receipt(
             None
             if model_config_parameter_sources is None
             else _json_ready_value(model_config_parameter_sources)
+        ),
+        "architecture_config_import_report_path": None,
+        "architecture_config_parameter_sources": (
+            None
+            if architecture_config_parameter_sources is None
+            else _json_ready_value(architecture_config_parameter_sources)
         ),
         "request_validation_report_path": None,
         "certification_bundle_path": None,
@@ -3529,9 +3536,12 @@ def build_contract_runner_check_report(
     *,
     requests: Sequence[Mapping[str, Any]] = (),
     model_configs: Sequence[Mapping[str, Any]] = (),
+    architecture_configs: Sequence[Mapping[str, Any]] = (),
     pack: Mapping[str, Any] | None = None,
     request_source_paths: Sequence[str] = (),
     model_config_source_paths: Sequence[str] = (),
+    architecture_config_source_paths: Sequence[str] = (),
+    architecture_config_kinds: Sequence[str] = (),
     head_dim: int | None = None,
     base: float | None = None,
     context: int | None = None,
@@ -3547,8 +3557,9 @@ def build_contract_runner_check_report(
 
     This is the public Python API equivalent of the installed
     ``circle-ai-certify batch`` command for callers that already loaded request
-    or standard-RoPE model-config objects. It returns summaries and gate
-    failures; it does not write receipts or sidecar files.
+    objects, standard-RoPE model configs, or non-RoPE architecture configs. It
+    returns summaries and gate failures; it does not write receipts or sidecar
+    files.
     """
 
     _validate_receipt_gate_policy(
@@ -3560,6 +3571,10 @@ def build_contract_runner_check_report(
     summaries: list[dict[str, Any]] = []
     failures: list[str] = []
     selected_kinds: set[str] = set()
+    selected_architecture_kinds = tuple(
+        architecture_config_kinds
+        or ("kv-cache", "sparse-attention", "recurrence")
+    )
 
     for index, request in enumerate(requests):
         source_path = _contract_runner_check_source_path(
@@ -3647,6 +3662,63 @@ def build_contract_runner_check_report(
             )
         except (ValueError, jsonschema.ValidationError, jsonschema.SchemaError) as exc:
             failures.append(f"{source_path}: {exc}")
+
+    for index, architecture_config in enumerate(architecture_configs):
+        source_path = _contract_runner_check_source_path(
+            architecture_config_source_paths,
+            index,
+            "architecture_config",
+        )
+        for architecture_kind in selected_architecture_kinds:
+            try:
+                import_report = build_architecture_config_import_report(
+                    architecture_kind,
+                    architecture_config,
+                )
+                if not import_report["ok"]:
+                    failures.append(
+                        f"{source_path}:{architecture_kind}: "
+                        + "; ".join(import_report["failures"])
+                    )
+                    continue
+                request = import_report["request"]
+                if not isinstance(request, Mapping):
+                    failures.append(
+                        f"{source_path}:{architecture_kind}: architecture "
+                        "config import report did not emit a request"
+                    )
+                    continue
+                receipt = build_validated_contract_receipt_from_request(
+                    request,
+                    pack=pack_dict,
+                )
+                selected_kinds.add(str(receipt["kind"]))
+                summaries.append(
+                    _contract_runner_check_summary_from_receipt(
+                        source_type="architecture_config",
+                        source_path=source_path,
+                        source=architecture_config,
+                        receipt=receipt,
+                        architecture_config_parameter_sources=import_report[
+                            "parameter_sources"
+                        ],
+                    )
+                )
+                _append_contract_runner_check_gate_failures(
+                    source_path=f"{source_path}:{architecture_kind}",
+                    receipt=receipt,
+                    failures=failures,
+                    required_statuses=required_statuses,
+                    required_decision_verdicts=required_decision_verdicts,
+                    required_assurance_levels=required_assurance_levels,
+                    require_passed=require_passed,
+                )
+            except (
+                ValueError,
+                jsonschema.ValidationError,
+                jsonschema.SchemaError,
+            ) as exc:
+                failures.append(f"{source_path}:{architecture_kind}: {exc}")
 
     report = {
         "schema_id": RUNNER_CHECK_SCHEMA_ID,

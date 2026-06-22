@@ -179,6 +179,16 @@ provenance for the KV-cache, sparse-attention, and recurrence receipts emitted
 from that config; pass `--architecture-config-kind` to restrict that set. It is
 the package-native batch handoff path and does not require importing
 repository-only scripts.
+
+Python callers can build the same schema-valid runner-check report in memory
+with `build_contract_runner_check_report`. The helper accepts versioned request
+objects, standard RoPE `model_configs`, and non-RoPE `architecture_configs`.
+When `architecture_configs` is populated, it emits KV-cache, sparse-attention,
+and recurrence summaries by default; pass `architecture_config_kinds` to
+restrict the contract families. This is the library path for downstream systems
+that already load configs and want the same pass/fail report without a
+subprocess.
+
 Use `--gate-report-out reports/rope_gate.json` for a compact pack-aware
 pass/fail report, `--receipt-check-out reports/rope_receipt_check.json` for a
 saved receipt validation report, and `--receipt-replay-check-out
