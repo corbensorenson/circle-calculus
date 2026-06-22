@@ -109,6 +109,7 @@ def test_check_circle_ai_receipt_accepts_saved_receipt(tmp_path: Path) -> None:
         "required_recommendation_ids": ["ROPE-USE-D19-MARGIN-FRONTIER"],
         "required_validation_commands": [receipt["validation_commands"][0]],
         "required_model_config_fingerprints": [],
+        "required_architecture_config_fingerprints": [],
         "required_normalized_params": [{"key": "head_dim", "value": 128}],
     }
     assert payload["summaries"][0]["kind"] == "rope_position_distinguishability"

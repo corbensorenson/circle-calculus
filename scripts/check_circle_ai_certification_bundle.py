@@ -198,6 +198,10 @@ def _pin_policy_values(policy: dict[str, Any]) -> dict[str, Any]:
             policy,
             "required_model_config_fingerprints",
         ),
+        "required_architecture_config_fingerprints": _policy_string_tuple(
+            policy,
+            "required_architecture_config_fingerprints",
+        ),
         "required_normalized_params": _policy_normalized_params(policy),
     }
 
@@ -211,6 +215,7 @@ def _pin_failures(
     required_recommendation_ids: tuple[str, ...],
     required_validation_commands: tuple[str, ...],
     required_model_config_fingerprints: tuple[str, ...],
+    required_architecture_config_fingerprints: tuple[str, ...],
     required_normalized_params: tuple[tuple[str, Any], ...],
 ) -> list[str]:
     failures: list[str] = []
@@ -247,6 +252,12 @@ def _pin_failures(
         for fingerprint in (summary.get("model_config_fingerprint"),)
         if isinstance(fingerprint, str)
     }
+    observed_architecture_config_fingerprints = {
+        fingerprint
+        for summary in summaries
+        for fingerprint in (summary.get("architecture_config_fingerprint"),)
+        if isinstance(fingerprint, str)
+    }
 
     for kind in required_kinds:
         if kind not in observed_kinds:
@@ -270,6 +281,12 @@ def _pin_failures(
             failures.append(
                 f"required model config fingerprint is missing: {fingerprint}"
             )
+    for fingerprint in required_architecture_config_fingerprints:
+        if fingerprint not in observed_architecture_config_fingerprints:
+            failures.append(
+                "required architecture config fingerprint is missing: "
+                f"{fingerprint}"
+            )
     for key, value in required_normalized_params:
         if not any(
             isinstance(summary.get("normalized_request"), dict)
@@ -290,6 +307,7 @@ def _pin_policy(
     required_recommendation_ids: tuple[str, ...],
     required_validation_commands: tuple[str, ...],
     required_model_config_fingerprints: tuple[str, ...],
+    required_architecture_config_fingerprints: tuple[str, ...],
     required_normalized_params: tuple[tuple[str, Any], ...],
 ) -> dict[str, Any]:
     return {
@@ -300,6 +318,9 @@ def _pin_policy(
         "required_validation_commands": list(required_validation_commands),
         "required_model_config_fingerprints": list(
             required_model_config_fingerprints
+        ),
+        "required_architecture_config_fingerprints": list(
+            required_architecture_config_fingerprints
         ),
         "required_normalized_params": [
             {"key": key, "value": value} for key, value in required_normalized_params
@@ -325,6 +346,7 @@ def check_certification_bundle_files(
     required_recommendation_ids: tuple[str, ...] = (),
     required_validation_commands: tuple[str, ...] = (),
     required_model_config_fingerprints: tuple[str, ...] = (),
+    required_architecture_config_fingerprints: tuple[str, ...] = (),
     required_normalized_params: tuple[tuple[str, Any], ...] = (),
 ) -> dict[str, Any]:
     _validate_schema_file(
@@ -383,6 +405,9 @@ def check_certification_bundle_files(
             required_recommendation_ids=required_recommendation_ids,
             required_validation_commands=required_validation_commands,
             required_model_config_fingerprints=required_model_config_fingerprints,
+            required_architecture_config_fingerprints=(
+                required_architecture_config_fingerprints
+            ),
             required_normalized_params=required_normalized_params,
         )
     )
@@ -405,6 +430,9 @@ def check_certification_bundle_files(
             required_recommendation_ids=required_recommendation_ids,
             required_validation_commands=required_validation_commands,
             required_model_config_fingerprints=required_model_config_fingerprints,
+            required_architecture_config_fingerprints=(
+                required_architecture_config_fingerprints
+            ),
             required_normalized_params=required_normalized_params,
         ),
         "summaries": summaries,
@@ -525,6 +553,15 @@ def main() -> int:
         ),
     )
     parser.add_argument(
+        "--require-architecture-config-fingerprint",
+        action="append",
+        default=[],
+        help=(
+            "Require at least one embedded architecture-config import report to "
+            "expose this source config SHA-256 fingerprint."
+        ),
+    )
+    parser.add_argument(
         "--require-normalized-param",
         action="append",
         default=[],
@@ -574,6 +611,10 @@ def main() -> int:
             policy_values["required_model_config_fingerprints"],
             tuple(args.require_model_config_fingerprint),
         )
+        required_architecture_config_fingerprints = _merge_strings(
+            policy_values["required_architecture_config_fingerprints"],
+            tuple(args.require_architecture_config_fingerprint),
+        )
         required_normalized_params = _merge_normalized_params(
             policy_values["required_normalized_params"],
             required_normalized_params,
@@ -599,6 +640,9 @@ def main() -> int:
         required_recommendation_ids=required_recommendation_ids,
         required_validation_commands=required_validation_commands,
         required_model_config_fingerprints=required_model_config_fingerprints,
+        required_architecture_config_fingerprints=(
+            required_architecture_config_fingerprints
+        ),
         required_normalized_params=required_normalized_params,
     )
     if args.report_out is not None:

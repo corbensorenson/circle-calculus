@@ -177,6 +177,16 @@ def _receipt_policy_values(policy: dict[str, Any]) -> dict[str, Any]:
             "receipt pin policies cannot require model config fingerprints; "
             "use the certification bundle or artifact manifest checker"
         )
+    architecture_config_fingerprints = _policy_string_tuple(
+        policy,
+        "required_architecture_config_fingerprints",
+    )
+    if architecture_config_fingerprints:
+        raise ValueError(
+            "receipt pin policies cannot require architecture config "
+            "fingerprints; use the certification bundle or artifact manifest "
+            "checker"
+        )
     return {
         "required_kinds": _policy_string_tuple(policy, "required_kinds"),
         "required_theorem_ids": _policy_string_tuple(
@@ -283,6 +293,7 @@ def _pin_policy(
         "required_recommendation_ids": list(required_recommendation_ids),
         "required_validation_commands": list(required_validation_commands),
         "required_model_config_fingerprints": [],
+        "required_architecture_config_fingerprints": [],
         "required_normalized_params": [
             {"key": key, "value": value} for key, value in required_normalized_params
         ],

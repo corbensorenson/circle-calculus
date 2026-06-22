@@ -3342,6 +3342,7 @@ def test_circle_ai_certify_cli_artifact_dir_writes_standard_audit_set(
         "required_recommendation_ids": ["ROPE-USE-D19-MARGIN-FRONTIER"],
         "required_validation_commands": [],
         "required_model_config_fingerprints": [model_config_fingerprint],
+        "required_architecture_config_fingerprints": [],
         "required_normalized_params": [
             {"key": "head_dim", "value": 128},
             {"key": "context_length", "value": 131072},
@@ -3396,6 +3397,7 @@ def test_circle_ai_certify_cli_artifact_dir_writes_standard_audit_set(
         "required_model_config_fingerprints": [
             model_config_import["model_config_fingerprint"]
         ],
+        "required_architecture_config_fingerprints": [],
         "required_normalized_params": [
             {"key": "head_dim", "value": 128},
             {"key": "context_length", "value": 131072},
@@ -3624,11 +3626,59 @@ def test_circle_ai_certify_cli_artifact_dir_writes_architecture_import_sidecar(
         "architecture_config_import_report",
     ]
     assert report["summaries"][0]["preflight_sidecar_failure_count"] == 0
+    assert report["summaries"][0]["architecture_config_fingerprint"] == (
+        import_report["architecture_config_fingerprint"]
+    )
+    assert report["summaries"][0]["architecture_config_import_kind"] == (
+        "sparse_attention_coverage"
+    )
     assert manifest_check["ok"] is True
     assert manifest_check["summaries"][0]["preflight_sidecar_labels"] == [
         "request_validation_report",
         "architecture_config_import_report",
     ]
+    assert manifest_check["summaries"][0]["architecture_config_fingerprint"] == (
+        import_report["architecture_config_fingerprint"]
+    )
+
+    pinned_manifest_check = subprocess.run(
+        [
+            sys.executable,
+            str(ARTIFACT_MANIFEST_CHECK_SCRIPT),
+            str(manifest_path),
+            "--format",
+            "json",
+            "--require-architecture-config-fingerprint",
+            import_report["architecture_config_fingerprint"],
+        ],
+        cwd=ROOT,
+        check=True,
+        text=True,
+        capture_output=True,
+    )
+    pinned_payload = json.loads(pinned_manifest_check.stdout)
+    assert pinned_payload["ok"] is True
+    assert pinned_payload["pin_policy"][
+        "required_architecture_config_fingerprints"
+    ] == [import_report["architecture_config_fingerprint"]]
+
+    missing_architecture_fingerprint = subprocess.run(
+        [
+            sys.executable,
+            str(ARTIFACT_MANIFEST_CHECK_SCRIPT),
+            str(manifest_path),
+            "--require-architecture-config-fingerprint",
+            "0" * 64,
+        ],
+        cwd=ROOT,
+        check=False,
+        text=True,
+        capture_output=True,
+    )
+    assert missing_architecture_fingerprint.returncode == 1
+    assert "required architecture config fingerprint is missing" in (
+        missing_architecture_fingerprint.stderr
+    )
 
 
 def test_artifact_manifest_check_rejects_stale_receipt_replay_sidecar(

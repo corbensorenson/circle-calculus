@@ -3410,6 +3410,7 @@ def _dependency_pin_policy_schema() -> dict[str, Any]:
             "required_recommendation_ids",
             "required_validation_commands",
             "required_model_config_fingerprints",
+            "required_architecture_config_fingerprints",
             "required_normalized_params",
         ],
         "properties": {
@@ -3419,6 +3420,7 @@ def _dependency_pin_policy_schema() -> dict[str, Any]:
             "required_recommendation_ids": string_list,
             "required_validation_commands": string_list,
             "required_model_config_fingerprints": string_list,
+            "required_architecture_config_fingerprints": string_list,
             "required_normalized_params": {
                 "type": "array",
                 "items": normalized_param_pin,
@@ -3436,6 +3438,7 @@ def _dependency_pin_policy(
     required_recommendation_ids: Sequence[str] = (),
     required_validation_commands: Sequence[str] = (),
     required_model_config_fingerprints: Sequence[str] = (),
+    required_architecture_config_fingerprints: Sequence[str] = (),
     required_normalized_params: Sequence[tuple[str, Any]] = (),
 ) -> dict[str, Any]:
     return {
@@ -3446,6 +3449,9 @@ def _dependency_pin_policy(
         "required_validation_commands": list(required_validation_commands),
         "required_model_config_fingerprints": list(
             required_model_config_fingerprints
+        ),
+        "required_architecture_config_fingerprints": list(
+            required_architecture_config_fingerprints
         ),
         "required_normalized_params": [
             {"key": key, "value": value} for key, value in required_normalized_params
@@ -5559,6 +5565,8 @@ def build_contract_artifact_manifest_file_check_json_schema() -> dict[str, Any]:
             "normalized_request",
             "model_config_fingerprint",
             "unsupported_model_config_fields",
+            "architecture_config_fingerprint",
+            "architecture_config_import_kind",
             "request_content_fingerprint",
             "normalized_request_fingerprint",
             "receipt_content_fingerprint",
@@ -5614,6 +5622,11 @@ def build_contract_artifact_manifest_file_check_json_schema() -> dict[str, Any]:
             },
             "model_config_fingerprint": fingerprint,
             "unsupported_model_config_fields": string_list,
+            "architecture_config_fingerprint": fingerprint,
+            "architecture_config_import_kind": {
+                "type": ["string", "null"],
+                "enum": [*SUPPORTED_CONTRACT_KINDS, None],
+            },
             "request_content_fingerprint": fingerprint,
             "normalized_request_fingerprint": fingerprint,
             "receipt_content_fingerprint": fingerprint,
@@ -6013,6 +6026,18 @@ def _load_model_config_import_artifact_payload(
         artifact_by_label=artifact_by_label,
         manifest_path=manifest_path,
         label="model_config_import_report",
+    )
+
+
+def _load_architecture_config_import_artifact_payload(
+    *,
+    artifact_by_label: Mapping[str, Mapping[str, Any]],
+    manifest_path: Path,
+) -> Mapping[str, Any] | None:
+    return _load_artifact_payload_by_label(
+        artifact_by_label=artifact_by_label,
+        manifest_path=manifest_path,
+        label="architecture_config_import_report",
     )
 
 
@@ -6437,6 +6462,10 @@ def build_contract_artifact_manifest_file_check_report(
             artifact_by_label=artifact_by_label,
             manifest_path=manifest_path,
         )
+        architecture_config_import = _load_architecture_config_import_artifact_payload(
+            artifact_by_label=artifact_by_label,
+            manifest_path=manifest_path,
+        )
         unsupported_model_config_fields = (
             model_config_import.get("unsupported_model_config_fields")
             if isinstance(model_config_import, Mapping)
@@ -6507,6 +6536,16 @@ def build_contract_artifact_manifest_file_check_report(
                 ]
                 if isinstance(unsupported_model_config_fields, list)
                 else []
+            ),
+            "architecture_config_fingerprint": (
+                architecture_config_import.get("architecture_config_fingerprint")
+                if isinstance(architecture_config_import, Mapping)
+                else None
+            ),
+            "architecture_config_import_kind": (
+                architecture_config_import.get("kind")
+                if isinstance(architecture_config_import, Mapping)
+                else None
             ),
             "request_content_fingerprint": manifest.get(
                 "request_content_fingerprint"

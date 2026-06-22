@@ -70,6 +70,12 @@
     "pin_policy": {
       "additionalProperties": false,
       "properties": {
+        "required_architecture_config_fingerprints": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
         "required_evidence_fields": {
           "items": {
             "type": "string"
@@ -132,6 +138,7 @@
         "required_recommendation_ids",
         "required_validation_commands",
         "required_model_config_fingerprints",
+        "required_architecture_config_fingerprints",
         "required_normalized_params"
       ],
       "type": "object"

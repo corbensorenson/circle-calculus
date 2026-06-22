@@ -423,6 +423,16 @@ def add_common_options(parser: argparse.ArgumentParser) -> None:
         ),
     )
     parser.add_argument(
+        "--require-architecture-config-fingerprint",
+        action="append",
+        default=[],
+        help=(
+            "Require the emitted artifact-manifest check report to include this "
+            "architecture-config SHA-256 fingerprint. Requires "
+            "--artifact-manifest-check-out or --artifact-dir."
+        ),
+    )
+    parser.add_argument(
         "--require-normalized-param",
         action="append",
         default=[],
@@ -1326,6 +1336,15 @@ def _merge_artifact_pin_policy(
             tuple(args.require_model_config_fingerprint),
         )
     )
+    args.require_architecture_config_fingerprint = list(
+        _merge_strings(
+            _policy_string_tuple(
+                policy,
+                "required_architecture_config_fingerprints",
+            ),
+            tuple(args.require_architecture_config_fingerprint),
+        )
+    )
     args.required_normalized_params = _merge_normalized_params(
         _policy_normalized_params(policy),
         cli_normalized_params,
@@ -1346,6 +1365,9 @@ def _artifact_pin_policy(args: argparse.Namespace) -> dict[str, Any]:
         "required_model_config_fingerprints": list(
             args.require_model_config_fingerprint
         ),
+        "required_architecture_config_fingerprints": list(
+            args.require_architecture_config_fingerprint
+        ),
         "required_normalized_params": normalized_params,
     }
 
@@ -1359,6 +1381,7 @@ def _has_artifact_pin_requirements(args: argparse.Namespace) -> bool:
             args.require_recommendation_id,
             args.require_validation_command,
             args.require_model_config_fingerprint,
+            args.require_architecture_config_fingerprint,
             getattr(args, "required_normalized_params", ()),
         )
     )
@@ -1402,6 +1425,12 @@ def _artifact_pin_failures(
         for fingerprint in (summary.get("model_config_fingerprint"),)
         if isinstance(fingerprint, str)
     }
+    observed_architecture_config_fingerprints = {
+        fingerprint
+        for summary in summaries
+        for fingerprint in (summary.get("architecture_config_fingerprint"),)
+        if isinstance(fingerprint, str)
+    }
 
     for kind in args.require_kind:
         if kind not in observed_kinds:
@@ -1424,6 +1453,12 @@ def _artifact_pin_failures(
         if fingerprint not in observed_model_config_fingerprints:
             failures.append(
                 f"required model config fingerprint is missing: {fingerprint}"
+            )
+    for fingerprint in args.require_architecture_config_fingerprint:
+        if fingerprint not in observed_architecture_config_fingerprints:
+            failures.append(
+                "required architecture config fingerprint is missing: "
+                f"{fingerprint}"
             )
     for key, value in getattr(args, "required_normalized_params", ()):
         if not any(

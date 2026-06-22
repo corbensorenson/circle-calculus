@@ -8,6 +8,7 @@ from pathlib import Path
 import jsonschema
 
 from circle_math.applications import (
+    build_architecture_config_import_report,
     build_contract_certification_bundle,
     build_contract_certification_bundle_file_check_report,
     build_contract_certification_bundle_file_check_json_schema,
@@ -22,6 +23,12 @@ SCRIPT = ROOT / "scripts" / "check_circle_ai_certification_bundle.py"
 PACK = ROOT / "site" / "data" / "generated" / "circle_ai_contract_pack.json"
 STANDARD_ROPE_MODEL_CONFIG = (
     ROOT / "examples" / "circle_ai_model_configs" / "standard_rope_config.json"
+)
+ARCHITECTURE_CONFIG = (
+    ROOT
+    / "examples"
+    / "circle_ai_architecture_configs"
+    / "basic_transformer_contract_config.json"
 )
 
 
@@ -194,6 +201,7 @@ def test_check_circle_ai_certification_bundle_accepts_model_config_bundle(
         "required_model_config_fingerprints": [
             import_report["model_config_fingerprint"]
         ],
+        "required_architecture_config_fingerprints": [],
         "required_normalized_params": [{"key": "head_dim", "value": 128}],
     }
     summary = payload["summaries"][0]
@@ -236,6 +244,85 @@ def test_check_circle_ai_certification_bundle_accepts_model_config_bundle(
     policy_payload = json.loads(policy_result.stdout)
     assert policy_payload["ok"] is True
     assert policy_payload["pin_policy"] == payload["pin_policy"]
+
+
+def test_check_circle_ai_certification_bundle_accepts_architecture_config_fingerprint_pin(
+    tmp_path: Path,
+) -> None:
+    bundle_path = tmp_path / "sparse_attention_certification_bundle.json"
+    pack = load_contract_pack(PACK)
+    config = json.loads(ARCHITECTURE_CONFIG.read_text(encoding="utf-8"))
+    import_report = build_architecture_config_import_report(
+        "sparse-attention",
+        config,
+    )
+    assert import_report["ok"] is True
+    bundle = build_contract_certification_bundle(
+        import_report["request"],
+        pack=pack,
+        architecture_config_import_report=import_report,
+        required_statuses=("proved",),
+        required_decision_verdicts=("passed",),
+        required_assurance_levels=("theorem_backed",),
+        require_passed=True,
+    )
+    _write_bundle(bundle_path, bundle)
+
+    result = subprocess.run(
+        [
+            sys.executable,
+            str(SCRIPT),
+            str(bundle_path),
+            "--format",
+            "json",
+            "--require-status",
+            "proved",
+            "--require-decision",
+            "passed",
+            "--require-assurance",
+            "theorem_backed",
+            "--require-passed",
+            "--require-kind",
+            "sparse_attention_coverage",
+            "--require-architecture-config-fingerprint",
+            import_report["architecture_config_fingerprint"],
+        ],
+        cwd=ROOT,
+        check=True,
+        text=True,
+        capture_output=True,
+    )
+
+    payload = json.loads(result.stdout)
+    jsonschema.validate(
+        payload,
+        build_contract_certification_bundle_file_check_json_schema(),
+    )
+    assert payload["ok"] is True
+    assert payload["pin_policy"]["required_architecture_config_fingerprints"] == [
+        import_report["architecture_config_fingerprint"]
+    ]
+    summary = payload["summaries"][0]
+    assert summary["has_architecture_config_import_report"] is True
+    assert summary["architecture_config_fingerprint"] == (
+        import_report["architecture_config_fingerprint"]
+    )
+
+    missing = subprocess.run(
+        [
+            sys.executable,
+            str(SCRIPT),
+            str(bundle_path),
+            "--require-architecture-config-fingerprint",
+            "0" * 64,
+        ],
+        cwd=ROOT,
+        check=False,
+        text=True,
+        capture_output=True,
+    )
+    assert missing.returncode == 1
+    assert "required architecture config fingerprint is missing" in missing.stderr
 
 
 def test_check_circle_ai_certification_bundle_rejects_missing_receipt_pins(

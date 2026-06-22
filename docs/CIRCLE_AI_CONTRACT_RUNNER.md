@@ -344,13 +344,14 @@ the manifest check still fails. Request-validation and model-config import
 sidecars are also checked against the manifest request fingerprint.
 It also accepts `--require-kind`, `--require-theorem-id`,
 `--require-evidence-field`, `--require-recommendation-id`, and
-`--require-validation-command` for first-party CI jobs that need core
-policy pins. For RoPE model-config imports,
+`--require-validation-command` for first-party CI jobs that need the same
+policy pins as the copyable standalone verifier. For RoPE model-config imports,
 add `--require-model-config-fingerprint FINGERPRINT` with the SHA-256 value
 from the model-config import report when CI must prove it is checking the same
-source `config.json`. Use
-`--require-normalized-param KEY=JSON_VALUE` to pin the parameter value a
-downstream job depends on.
+source `config.json`. For non-RoPE architecture-config imports, add
+`--require-architecture-config-fingerprint FINGERPRINT` with the SHA-256 value
+from the architecture-config import report. Use `--require-normalized-param
+KEY=JSON_VALUE` to pin the parameter value a downstream job depends on.
 For a copyable standard-library-only downstream gate, use
 `examples/downstream_ci_verify_circle_ai_artifacts.py`; it performs the same
 artifact-integrity checks without importing Circle or `jsonschema`. It also
@@ -358,9 +359,7 @@ accepts `--pin-policy` with either a whole prior report or just the
 `pin_policy` object, and its JSON report records the merged `pin_policy` for
 replay. The standalone verifier also validates
 `architecture_config_import_report` sidecars against the manifest request
-fingerprint and supports
-`--require-architecture-config-fingerprint FINGERPRINT` for non-RoPE
-architecture-config imports.
+fingerprint and supports the same architecture-config fingerprint pin.
 The standard artifact-directory path and standalone verifier are covered for all
 nine ready receipt families, so downstream CI can adopt one gate shape across
 the current contract suite.
@@ -507,16 +506,20 @@ This checker validates the bundle JSON Schema, request-validation report,
 embedded receipt against the loaded contract pack, embedded gate report,
 optional model-config or architecture-config import provenance, and optional
 status, decision, assurance, pass, theorem-id, evidence-field, recommendation-id,
-validation-command, normalized-parameter, or model-config fingerprint gates. Add
+validation-command, normalized-parameter, model-config fingerprint, or
+architecture-config fingerprint gates. Add
 `--require-kind KIND`, `--require-theorem-id THEOREM_ID`,
 `--require-evidence-field FIELD`, `--require-recommendation-id ID`,
 `--require-validation-command COMMAND`, or `--require-normalized-param
 KEY=JSON_VALUE` when a downstream project depends on specific embedded receipt
 content. Add `--require-model-config-fingerprint FINGERPRINT` with the
 `model_config_fingerprint` from the embedded import report when the bundle came
-from an imported RoPE `config.json`. It is the preferred CI-facing command when
-a downstream project stores the full certification bundle rather than just the
-receipt.
+from an imported RoPE `config.json`. Add
+`--require-architecture-config-fingerprint FINGERPRINT` with the
+`architecture_config_fingerprint` from the embedded import report when the
+bundle came from a non-RoPE architecture config. It is the preferred CI-facing
+command when a downstream project stores the full certification bundle rather
+than just the receipt.
 The bundle-check report records those requested dependencies in `pin_policy`.
 Reuse the same bundle dependency contract later with `--pin-policy
 reports/rope_certification_bundle_check.json`; the checker accepts either the
