@@ -165,6 +165,8 @@ def _receipt_consistency_failures(
         return []
     decision = receipt.get("decision")
     decision_obj = decision if isinstance(decision, dict) else {}
+    proof_status = receipt.get("proof_status")
+    proof_status_obj = proof_status if isinstance(proof_status, dict) else {}
     comparisons = (
         ("kind", summary.get("kind"), receipt.get("kind")),
         ("status", summary.get("status"), receipt.get("status")),
@@ -189,6 +191,16 @@ def _receipt_consistency_failures(
             "receipt_content_fingerprint",
             summary.get("receipt_content_fingerprint"),
             receipt.get("receipt_content_fingerprint"),
+        ),
+        (
+            "theorem_count",
+            summary.get("theorem_count"),
+            proof_status_obj.get("theorem_count"),
+        ),
+        (
+            "theorem_ids",
+            summary.get("theorem_ids"),
+            proof_status_obj.get("theorem_ids"),
         ),
     )
     failures: list[str] = []

@@ -492,6 +492,14 @@
             "minimum": 0,
             "type": "integer"
           },
+          "theorem_ids": {
+            "items": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "type": "array",
+            "uniqueItems": true
+          },
           "unsupported_architecture_config_fields": {
             "items": {
               "type": "string"
@@ -524,6 +532,7 @@
           "decision_verdict",
           "decision_assurance",
           "theorem_count",
+          "theorem_ids",
           "recommendation_count",
           "validation_command_count",
           "normalized_request",

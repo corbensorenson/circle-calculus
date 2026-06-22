@@ -706,6 +706,8 @@ def test_package_cli_unified_certify_batch_request_files_writes_compact_receipts
     }
 
     for summary in report["summaries"]:
+        assert len(summary["theorem_ids"]) == summary["theorem_count"]
+        assert summary["theorem_ids"]
         receipt_path = Path(summary["receipt_path"])
         compact_path = Path(summary["compact_receipt_path"])
         assert receipt_path.exists()
@@ -1279,6 +1281,9 @@ def test_public_api_runner_check_report_builds_from_in_memory_sources() -> None:
         assert summary["source_path"] == "configs/basic_transformer.json"
         assert summary["architecture_config_parameter_sources"]
         assert summary["model_config_parameter_sources"] is None
+    for summary in report["summaries"]:
+        assert len(summary["theorem_ids"]) == summary["theorem_count"]
+        assert summary["theorem_ids"]
     assert model_summary["compact_selected_evidence_unclassified_count"] == 0
 
 
@@ -1327,6 +1332,13 @@ def test_contract_runner_check_schema_rejects_duplicate_gate_and_kind_values() -
     duplicate_gate_report["gate_policy"]["allowed_statuses"] = ["proved", "proved"]
     with pytest.raises(jsonschema.ValidationError):
         jsonschema.validate(duplicate_gate_report, schema)
+
+    duplicate_theorem_report = dict(report)
+    duplicate_summary = dict(report["summaries"][0])
+    duplicate_summary["theorem_ids"] = ["AIM-T0001", "AIM-T0001"]
+    duplicate_theorem_report["summaries"] = [duplicate_summary]
+    with pytest.raises(jsonschema.ValidationError):
+        jsonschema.validate(duplicate_theorem_report, schema)
 
 
 def test_package_cli_unified_certify_writes_gate_and_replay_reports(tmp_path) -> None:

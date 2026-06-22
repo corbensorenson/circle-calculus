@@ -242,6 +242,7 @@ def _summary_from_receipt(
         "decision_verdict": decision["verdict"],
         "decision_assurance": decision["assurance"],
         "theorem_count": receipt["proof_status"]["theorem_count"],
+        "theorem_ids": list(receipt["proof_status"]["theorem_ids"]),
         "recommendation_count": len(receipt["recommendations"]),
         "validation_command_count": len(receipt["validation_commands"]),
         "normalized_request": receipt["normalized_request"],
