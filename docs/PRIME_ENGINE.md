@@ -547,7 +547,7 @@ Current CPU findings:
   persistent `libprimesieve`, and the slim count-binary server row at `15.494x`
   median versus persistent `libprimesieve`; those are hot-service repeat
   throughput numbers, while the shifted fresh-interval count-binary probe is
-  the cleaner competitive count claim at `1.220x` median versus persistent
+  the cleaner competitive count claim at `1.061x` median versus persistent
   `libprimesieve`. `make
   prime-engine-high-offset-count-binary-check`
   verifies the count-binary artifact provenance, validates that the current
@@ -1160,18 +1160,18 @@ external correctness, the prime proof-contract gate, warmed persistent count
 controls, the 2B prefix-cache probe and promotion gate, the high-offset
 count-binary diagnostic, focused cold count-binary confirmation, sweep, and
 cold-candidate check, the high-offset hot-server scorecard, a shifted
-competitive smoke with `80` requests per timed sample, the focused hot-server
+competitive smoke with `40` requests per timed sample, the focused hot-server
 win/stability gate against persistent
 `libprimesieve` and persistent `libprimecount` pi-diff controls, repeated
 high-offset default confirmation, refreshed shifted high-offset confirmation,
 fresh high-offset candidate confirmation, next-prime gates, default-calibration
-drift checks, and the combined report. The smoke uses batch `80` because batch
-`20` was too short to give a reliable fresh-interval `libprimesieve`
-comparison while still remaining a quick gate. Use it when you need a current
-competitive read without starting the long tuner.
-The latest refreshed smoke on 2026-06-21 passes current-binary provenance and
-has `circle_prime_count_binary_server_default_count` at `1.351x` median over
-persistent `libprimesieve` and `7.332x` median over persistent `libprimecount`
+drift checks, and the combined report. The smoke uses batch `40`: batch `20`
+is more exposed to helper timing noise, while batch `80` can over-widen the
+adjacent-union count and lose median stability on this machine. Use it when
+you need a current competitive read without starting the long tuner.
+The latest refreshed smoke on 2026-06-22 passes current-binary provenance and
+has `circle_prime_count_binary_server_default_count` at `1.099x` median over
+persistent `libprimesieve` and `6.854x` median over persistent `libprimecount`
 pi-diff on `[1e12, 1e12 + 1e7)` shifted batches. The matching external
 correctness matrix checked `826` Circle variants against `primesieve` and
 `primecount`.

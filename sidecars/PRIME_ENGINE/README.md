@@ -66,13 +66,14 @@ keeps sub-10 ms rows meaningful without turning the target into an overnight
 job. Circle's exact repeat path computes the identical range once and replays
 the response lines, so exact-repeat rows are service replay throughput evidence
 rather than fresh-interval evidence. The competitive smoke uses shifted batches
-of `80` requests per timed sample; batch `20` was too short for a reliable fresh-interval
-`libprimesieve` comparison on this lane. Overnight targets are optional
+of `40` requests per timed sample; batch `20` is more exposed to helper timing
+noise, while batch `80` can over-widen the adjacent-union count and lose median
+stability on this machine. Overnight targets are optional
 regression/tuning jobs, not the primary way to learn whether Circle is
 competitive.
-The latest refreshed smoke on 2026-06-21 passes current-binary provenance and
-has `circle_prime_count_binary_server_default_count` at `1.351x` median over
-persistent `libprimesieve` and `7.332x` median over persistent `libprimecount`
+The latest refreshed smoke on 2026-06-22 passes current-binary provenance and
+has `circle_prime_count_binary_server_default_count` at `1.099x` median over
+persistent `libprimesieve` and `6.854x` median over persistent `libprimecount`
 pi-diff on `[1e12, 1e12 + 1e7)` shifted batches. The matching external
 correctness matrix checked `826` Circle variants against `primesieve` and
 `primecount`.
@@ -312,7 +313,7 @@ without best-time parity is not a promotion. The same exact-repeat probe has per
 slim count-binary server row at `15.494x` median versus persistent
 `libprimesieve`; those are hot-service repeat throughput numbers, while the
 shifted fresh-interval count-binary probe is the cleaner competitive count
-claim at `1.220x` median versus persistent `libprimesieve`.
+claim at `1.061x` median versus persistent `libprimesieve`.
 `make prime-engine-high-offset-count-binary-check` validates that artifact,
 including the recorded `circle-prime-count` hash, the stable cold count-binary
 adaptive-default row against cold `primesieve`, and the persistent Circle
