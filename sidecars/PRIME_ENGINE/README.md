@@ -72,8 +72,8 @@ stability on this machine. Overnight targets are optional
 regression/tuning jobs, not the primary way to learn whether Circle is
 competitive.
 The latest refreshed smoke on 2026-06-22 passes current-binary provenance and
-has `circle_prime_count_binary_server_default_count` at `1.099x` median over
-persistent `libprimesieve` and `6.854x` median over persistent `libprimecount`
+has `circle_prime_count_binary_server_default_count` at `1.116x` median over
+persistent `libprimesieve` and `6.546x` median over persistent `libprimecount`
 pi-diff on `[1e12, 1e12 + 1e7)` shifted batches. The matching external
 correctness matrix checked `826` Circle variants against `primesieve` and
 `primecount`.
@@ -191,7 +191,10 @@ persistent `libprimesieve` on `[1e12, 1e12 + 1e7)` shifted batches, and
 pi-diff, with stable samples.
 Native shifted default batches now use the measured edge high-offset
 `presieve13:1310720` plan, which resolves to 8 effective workers for this
-10M span while leaving fixed high-offset defaults unchanged. The apparent
+10M span while leaving fixed high-offset defaults unchanged. The slim
+count-binary server also over-splits adjacent shifted unions into multiple
+chunks per worker and uses scoped atomic work pulling so a single slow worker
+does not dominate the batch. The apparent
 best-vs-default gain in the latest shifted-candidate readout is `1.000x`, so
 the shifted gate records `keep_default` rather than a new trial candidate.
 The combined report has a shifted-candidate readout: it records
@@ -313,7 +316,7 @@ without best-time parity is not a promotion. The same exact-repeat probe has per
 slim count-binary server row at `15.494x` median versus persistent
 `libprimesieve`; those are hot-service repeat throughput numbers, while the
 shifted fresh-interval count-binary probe is the cleaner competitive count
-claim at `1.061x` median versus persistent `libprimesieve`.
+claim at `1.073x` median versus persistent `libprimesieve`.
 `make prime-engine-high-offset-count-binary-check` validates that artifact,
 including the recorded `circle-prime-count` hash, the stable cold count-binary
 adaptive-default row against cold `primesieve`, and the persistent Circle

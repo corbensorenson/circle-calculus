@@ -1,6 +1,7 @@
 use std::env;
 use std::io::{self, BufRead, Write};
 use std::process;
+use std::sync::atomic::{AtomicUsize, Ordering};
 use std::sync::mpsc;
 use std::thread::{self, JoinHandle};
 
@@ -997,9 +998,27 @@ fn count_shifted_with_pool(
             .map(Some);
         }
 
-        let chunks = split_range_evenly(plan.low, final_high, plan.threads);
+        let chunk_count = adjacent_shifted_dynamic_chunk_count(
+            plan.low,
+            final_high,
+            plan.segment_size,
+            plan.threads,
+        );
+        let chunks = split_range_evenly(plan.low, final_high, chunk_count);
         if chunks.len() <= 1 {
             return Ok(None);
+        }
+        if chunks.len() > plan.threads {
+            return count_adjacent_shifted_chunks_scoped(
+                &chunks,
+                plan.low,
+                span,
+                plan.segment_size,
+                plan.mode,
+                repetitions,
+                plan.threads,
+            )
+            .map(Some);
         }
         return pool
             .count_adjacent_shifted_chunks(
@@ -1031,6 +1050,86 @@ fn count_shifted_with_pool(
     }
     pool.count_shifted_chunks(&chunks, plan.segment_size, plan.mode, repetitions, shift)
         .map(Some)
+}
+
+fn adjacent_shifted_dynamic_chunk_count(
+    low: u64,
+    high: u64,
+    segment_size: u64,
+    threads: usize,
+) -> usize {
+    let workers = threads.max(1);
+    if high <= low || segment_size == 0 {
+        return workers;
+    }
+    let segment_count = (high - low).div_ceil(segment_size);
+    let target_chunks = workers.saturating_mul(4).max(workers);
+    usize::try_from(segment_count)
+        .unwrap_or(usize::MAX)
+        .min(target_chunks)
+        .max(workers)
+}
+
+fn count_adjacent_shifted_chunks_scoped(
+    chunks: &[(u64, u64)],
+    batch_low: u64,
+    span: u64,
+    segment_size: u64,
+    mode: CountMode,
+    repetitions: usize,
+    threads: usize,
+) -> Result<Vec<usize>, circle_prime::RangeError> {
+    if chunks.is_empty() {
+        return Ok(vec![0; repetitions]);
+    }
+    let worker_count = threads.max(1).min(chunks.len());
+    let next_chunk = AtomicUsize::new(0);
+    thread::scope(|scope| {
+        let mut handles = Vec::with_capacity(worker_count);
+        for _ in 0..worker_count {
+            handles.push(scope.spawn(|| {
+                let mut scratch = PrimeCountScratch::new();
+                let mut totals = vec![0usize; repetitions];
+                loop {
+                    let chunk_index = next_chunk.fetch_add(1, Ordering::Relaxed);
+                    let Some(&(low, high)) = chunks.get(chunk_index) else {
+                        break;
+                    };
+                    let counts = count_adjacent_shifted_range_with_mode_scratch(
+                        batch_low,
+                        span,
+                        low,
+                        high,
+                        segment_size,
+                        mode,
+                        repetitions,
+                        &mut scratch,
+                    )?;
+                    if counts.len() != totals.len() {
+                        return Err(circle_prime::RangeError::WorkerPanic);
+                    }
+                    for (total, count) in totals.iter_mut().zip(counts) {
+                        *total += count;
+                    }
+                }
+                Ok(totals)
+            }));
+        }
+
+        let mut totals = vec![0usize; repetitions];
+        for handle in handles {
+            let counts = handle
+                .join()
+                .map_err(|_| circle_prime::RangeError::WorkerPanic)??;
+            if counts.len() != totals.len() {
+                return Err(circle_prime::RangeError::WorkerPanic);
+            }
+            for (total, count) in totals.iter_mut().zip(counts) {
+                *total += count;
+            }
+        }
+        Ok(totals)
+    })
 }
 
 fn split_range_evenly(low: u64, high: u64, parts: usize) -> Vec<(u64, u64)> {
