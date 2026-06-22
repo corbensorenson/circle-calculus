@@ -297,11 +297,24 @@ def test_compact_receipt_public_api_surfaces_downstream_fields(
     assert "standard_channel0_d19_request_classifier.request_status" in compact[
         "selected_evidence"
     ]
+    assert set(compact["selected_evidence_proof_layers"]) == set(
+        compact["selected_evidence"]
+    )
     assert (
         compact["selected_evidence"][
             "standard_channel0_d19_request_classifier.request_status"
         ]
         == "proved"
+    )
+    assert (
+        compact["selected_evidence_proof_layers"][
+            "standard_channel0_d19_request_classifier.request_status"
+        ]
+        == "proved"
+    )
+    assert (
+        compact["selected_evidence_proof_layers"]["real_phase_numerical_worst_gap"]
+        == "numerical_only"
     )
     assert "exact_total_bank_collision_pair_count" in compact["selected_evidence"]
     assert "standard_channel0_d19_request_classifier" in compact[
@@ -337,6 +350,8 @@ def test_compact_sparse_receipt_surfaces_collision_accounting(
 
     jsonschema.validate(compact, build_compact_contract_receipt_json_schema())
     selected = compact["selected_evidence"]
+    selected_layers = compact["selected_evidence_proof_layers"]
+    assert set(selected_layers) == set(selected)
     assert selected["coverage_complete"] is False
     assert selected["theorem_side_lag_candidates_no_collision"] is True
     assert selected["theorem_side_lag_candidate_dedup_loss"] == 0
@@ -348,6 +363,19 @@ def test_compact_sparse_receipt_surfaces_collision_accounting(
     assert selected["theorem_side_query_candidate_collision_pair_count"] == 0
     assert selected["query_collision_pair_count_bounds_dedup_loss"] is True
     assert selected["query_dedup_loss_accounting_matches_raw"] is True
+    for key in (
+        "theorem_side_lag_candidates_no_collision",
+        "theorem_side_lag_candidate_dedup_loss",
+        "theorem_side_lag_candidate_collision_pair_count",
+        "lag_collision_pair_count_bounds_dedup_loss",
+        "lag_dedup_loss_accounting_matches_raw",
+        "theorem_side_query_candidates_no_collision",
+        "theorem_side_query_candidate_dedup_loss",
+        "theorem_side_query_candidate_collision_pair_count",
+        "query_collision_pair_count_bounds_dedup_loss",
+        "query_dedup_loss_accounting_matches_raw",
+    ):
+        assert selected_layers[key] == "proved"
 
 
 def test_rope_receipt_uses_d19_bank_bridge_for_smaller_context(

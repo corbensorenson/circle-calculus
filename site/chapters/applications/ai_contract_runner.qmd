@@ -250,10 +250,12 @@ python scripts/circle_ai_certify.py sparse-attention \
 
 Use `--format compact-json` for a smaller pass/fail receipt view when the
 consumer only needs proof status, selected evidence fields, non-claims, and
-fingerprints. For sparse-attention receipts, the selected evidence includes
-lag-side and query-side no-collision booleans, dedup-loss counts,
-pair-collision counts, pair-count-bounds-dedup-loss checks, and
-unique-plus-loss-equals-raw accounting.
+fingerprints. The compact object includes `selected_evidence_proof_layers`,
+which labels each selected evidence path as `proved`, `computed`,
+`numerical_only`, `unsupported`, `mixed`, or `unclassified`. For
+sparse-attention receipts, the selected evidence includes lag-side and
+query-side no-collision booleans, dedup-loss counts, pair-collision counts,
+pair-count-bounds-dedup-loss checks, and unique-plus-loss-equals-raw accounting.
 
 Add `--request-validation-report-out reports/request_validation.json` when a
 single-config run should also save the schema-validated preflight report for the

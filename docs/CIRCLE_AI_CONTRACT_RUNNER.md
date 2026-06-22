@@ -194,7 +194,10 @@ Compact receipt views are checked against
 `site/data/generated/circle_ai_contract_compact_receipt.schema.json`. They are
 derived from a validated full receipt and carry the full
 `receipt_content_fingerprint`; they are not a substitute for the audit receipt
-when reproducing or debugging a contract run.
+when reproducing or debugging a contract run. Each compact receipt also includes
+`selected_evidence_proof_layers`, a path-to-label map that marks every selected
+evidence field as `proved`, `computed`, `numerical_only`, `unsupported`,
+`mixed`, or `unclassified`.
 For sparse-attention receipts, the compact view includes both lag-side and
 query-side collision accounting: no-collision booleans, dedup-loss counts,
 pair-collision counts, pair-count-bounds-dedup-loss checks, and

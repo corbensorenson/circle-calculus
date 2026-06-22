@@ -178,6 +178,20 @@ PROOF_LAYER_BUCKETS = (
     "numerical_only_fields",
     "unsupported_fields",
 )
+PROOF_LAYER_LABEL_BY_BUCKET = {
+    "proved_fields": "proved",
+    "computed_fields": "computed",
+    "numerical_only_fields": "numerical_only",
+    "unsupported_fields": "unsupported",
+}
+COMPACT_EVIDENCE_PROOF_LAYER_LABELS = (
+    "proved",
+    "computed",
+    "numerical_only",
+    "unsupported",
+    "mixed",
+    "unclassified",
+)
 DECISION_VERDICTS = (
     "passed",
     "failed",
@@ -1624,7 +1638,9 @@ def build_sparse_attention_receipt(
             "proved_fields": [
                 "coverage_complete",
                 "covered_lags",
+                "covered_lag_count",
                 "uncovered_lags",
+                "uncovered_lag_count",
                 "first_uncovered_lag",
                 "uncovered_lag_intervals",
                 "uncovered_lag_interval_count",
@@ -1670,6 +1686,7 @@ def build_sparse_attention_receipt(
                 "raw_budget_shortfall_certifies_incomplete",
                 "theorem_side_lag_candidates",
                 "theorem_side_unique_lag_candidate_count",
+                "theorem_side_lag_candidates_no_collision",
                 "theorem_side_lag_candidate_dedup_loss",
                 "theorem_side_lag_candidate_collision_pair_count",
                 "lag_collision_pair_count_zero_matches_no_collision",
@@ -1678,6 +1695,7 @@ def build_sparse_attention_receipt(
                 "lag_dedup_loss_accounting_matches_raw",
                 "theorem_side_query_candidates",
                 "theorem_side_unique_query_candidate_count",
+                "theorem_side_query_candidates_no_collision",
                 "theorem_side_query_candidate_dedup_loss",
                 "theorem_side_query_candidate_collision_pair_count",
                 "query_collision_pair_count_zero_matches_no_collision",
@@ -3751,6 +3769,32 @@ def _compact_recommendation_ids(recommendations: Any) -> list[str]:
     return list(_unique_strings(ids))
 
 
+def _selected_evidence_proof_layer(
+    path: str,
+    proof_layers: Mapping[str, Any],
+) -> str:
+    labels: set[str] = set()
+    path_prefix = f"{path}."
+    for bucket, label in PROOF_LAYER_LABEL_BY_BUCKET.items():
+        fields = proof_layers.get(bucket, [])
+        if not isinstance(fields, Sequence) or isinstance(fields, (str, bytes)):
+            continue
+        for field in fields:
+            if not isinstance(field, str):
+                continue
+            if (
+                field == path
+                or field.startswith(path_prefix)
+                or path.startswith(f"{field}.")
+            ):
+                labels.add(label)
+    if len(labels) == 1:
+        return next(iter(labels))
+    if len(labels) > 1:
+        return "mixed"
+    return "unclassified"
+
+
 def build_compact_contract_receipt(
     receipt: Mapping[str, Any],
     *,
@@ -3783,6 +3827,10 @@ def build_compact_contract_receipt(
         path: found
         for path in selected_paths
         if (found := _dot_path_value(evidence, path)) is not _COMPACT_MISSING
+    }
+    selected_evidence_proof_layers = {
+        path: _selected_evidence_proof_layer(path, proof_layers)
+        for path in selected_evidence
     }
     proof_layer_counts = {
         bucket: len(proof_layers.get(bucket, [])) for bucket in PROOF_LAYER_BUCKETS
@@ -3822,6 +3870,7 @@ def build_compact_contract_receipt(
         "proof_layer_counts": proof_layer_counts,
         "evidence_field_names": sorted(str(key) for key in evidence),
         "selected_evidence": selected_evidence,
+        "selected_evidence_proof_layers": selected_evidence_proof_layers,
         "recommendation_ids": _compact_recommendation_ids(
             receipt["recommendations"]
         ),
@@ -6354,6 +6403,7 @@ def build_compact_contract_receipt_json_schema() -> dict[str, Any]:
             "proof_layer_counts",
             "evidence_field_names",
             "selected_evidence",
+            "selected_evidence_proof_layers",
             "recommendation_ids",
             "validation_commands",
             "not_claimed",
@@ -6393,6 +6443,12 @@ def build_compact_contract_receipt_json_schema() -> dict[str, Any]:
             "selected_evidence": {
                 "type": "object",
                 "additionalProperties": True,
+            },
+            "selected_evidence_proof_layers": {
+                "type": "object",
+                "additionalProperties": {
+                    "enum": list(COMPACT_EVIDENCE_PROOF_LAYER_LABELS)
+                },
             },
             "recommendation_ids": unique_string_list,
             "validation_commands": nonempty_unique_string_list,

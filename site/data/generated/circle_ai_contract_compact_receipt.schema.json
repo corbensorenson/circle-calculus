@@ -270,6 +270,19 @@
       "additionalProperties": true,
       "type": "object"
     },
+    "selected_evidence_proof_layers": {
+      "additionalProperties": {
+        "enum": [
+          "proved",
+          "computed",
+          "numerical_only",
+          "unsupported",
+          "mixed",
+          "unclassified"
+        ]
+      },
+      "type": "object"
+    },
     "status": {
       "enum": [
         "proved",
@@ -301,6 +314,7 @@
     "proof_layer_counts",
     "evidence_field_names",
     "selected_evidence",
+    "selected_evidence_proof_layers",
     "recommendation_ids",
     "validation_commands",
     "not_claimed",
