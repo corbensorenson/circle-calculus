@@ -3965,6 +3965,7 @@ def build_contract_certification_bundle(
     *,
     pack: Mapping[str, Any] | None = None,
     model_config_import_report: Mapping[str, Any] | None = None,
+    architecture_config_import_report: Mapping[str, Any] | None = None,
     receipt_path: str = "<in-memory-receipt>",
     required_statuses: Sequence[str] = (),
     required_decision_verdicts: Sequence[str] = (),
@@ -3975,8 +3976,9 @@ def build_contract_certification_bundle(
 
     The bundle is the Python API counterpart to running
     ``circle_ai_certify.py`` with request preflight and a receipt gate. When the
-    request came from a RoPE model config, callers may include the matching
-    import report so the bundle carries the config-to-request provenance too.
+    request came from a RoPE model config or non-RoPE architecture config,
+    callers may include the matching import report so the bundle carries the
+    config-to-request provenance too.
     Invalid requests return a failed bundle with ``receipt = None`` instead of
     forcing downstream callers to catch an exception just to see validation
     failures. Invalid gate-policy values still raise ``ValueError`` because
@@ -4005,6 +4007,11 @@ def build_contract_certification_bundle(
         None
         if model_config_import_report is None
         else dict(model_config_import_report)
+    )
+    architecture_import_report = (
+        None
+        if architecture_config_import_report is None
+        else dict(architecture_config_import_report)
     )
 
     if import_report is not None:
@@ -4042,6 +4049,45 @@ def build_contract_certification_bundle(
                 "not match the bundled request"
             )
 
+    if architecture_import_report is not None:
+        if (
+            architecture_import_report.get("schema_id")
+            != ARCHITECTURE_CONFIG_IMPORT_SCHEMA_ID
+        ):
+            failures.append(
+                "architecture config import report schema_id must be "
+                f"{ARCHITECTURE_CONFIG_IMPORT_SCHEMA_ID}"
+            )
+        if architecture_import_report.get("request_schema_id") != REQUEST_SCHEMA_ID:
+            failures.append(
+                "architecture config import report request_schema_id must be "
+                f"{REQUEST_SCHEMA_ID}"
+            )
+        kind = architecture_import_report.get("kind")
+        if kind not in ARCHITECTURE_CONFIG_SUPPORTED_KINDS:
+            failures.append(
+                "architecture config import report kind must be one of "
+                f"{list(ARCHITECTURE_CONFIG_SUPPORTED_KINDS)!r}"
+            )
+        if architecture_import_report.get("ok") is not True:
+            report_failures = architecture_import_report.get("failures", ())
+            if isinstance(report_failures, (list, tuple)):
+                detail = "; ".join(str(failure) for failure in report_failures)
+            else:
+                detail = str(report_failures)
+            failures.append(
+                "architecture config import report failed"
+                + (f": {detail}" if detail else "")
+            )
+        if (
+            architecture_import_report.get("request_content_fingerprint")
+            != request_validation_report["request_content_fingerprint"]
+        ):
+            failures.append(
+                "architecture config import report request_content_fingerprint "
+                "does not match the bundled request"
+            )
+
     if request_validation_report["ok"]:
         pack_dict = _default_pack(pack)
         try:
@@ -4068,6 +4114,9 @@ def build_contract_certification_bundle(
         "receipt_schema_id": RECEIPT_SCHEMA_ID,
         "gate_report_schema_id": RECEIPT_FILE_CHECK_SCHEMA_ID,
         "model_config_import_report_schema_id": ROPE_MODEL_CONFIG_IMPORT_SCHEMA_ID,
+        "architecture_config_import_report_schema_id": (
+            ARCHITECTURE_CONFIG_IMPORT_SCHEMA_ID
+        ),
         "content_fingerprint_algorithm": FINGERPRINT_ALGORITHM,
         "ok": not failures,
         "failure_count": len(failures),
@@ -4086,6 +4135,7 @@ def build_contract_certification_bundle(
         "receipt": receipt,
         "gate_report": gate_report,
         "model_config_import_report": import_report,
+        "architecture_config_import_report": architecture_import_report,
     }
 
 
@@ -6653,6 +6703,7 @@ def build_contract_certification_bundle_json_schema() -> dict[str, Any]:
             "receipt_schema_id",
             "gate_report_schema_id",
             "model_config_import_report_schema_id",
+            "architecture_config_import_report_schema_id",
             "content_fingerprint_algorithm",
             "ok",
             "failure_count",
@@ -6665,6 +6716,7 @@ def build_contract_certification_bundle_json_schema() -> dict[str, Any]:
             "receipt",
             "gate_report",
             "model_config_import_report",
+            "architecture_config_import_report",
         ],
         "properties": {
             "schema_id": {"const": CERTIFICATION_BUNDLE_SCHEMA_ID},
@@ -6673,6 +6725,9 @@ def build_contract_certification_bundle_json_schema() -> dict[str, Any]:
             "gate_report_schema_id": {"const": RECEIPT_FILE_CHECK_SCHEMA_ID},
             "model_config_import_report_schema_id": {
                 "const": ROPE_MODEL_CONFIG_IMPORT_SCHEMA_ID
+            },
+            "architecture_config_import_report_schema_id": {
+                "const": ARCHITECTURE_CONFIG_IMPORT_SCHEMA_ID
             },
             "content_fingerprint_algorithm": {"const": FINGERPRINT_ALGORITHM},
             "ok": {"type": "boolean"},
@@ -6700,6 +6755,12 @@ def build_contract_certification_bundle_json_schema() -> dict[str, Any]:
             "model_config_import_report": {
                 "anyOf": [
                     inline(build_rope_model_config_import_json_schema()),
+                    {"type": "null"},
+                ],
+            },
+            "architecture_config_import_report": {
+                "anyOf": [
+                    inline(build_architecture_config_import_json_schema()),
                     {"type": "null"},
                 ],
             },
@@ -6753,6 +6814,9 @@ def build_contract_certification_bundle_file_check_json_schema() -> dict[str, An
             "has_model_config_import_report",
             "model_config_fingerprint",
             "model_config_request_content_fingerprint",
+            "has_architecture_config_import_report",
+            "architecture_config_fingerprint",
+            "architecture_config_request_content_fingerprint",
             "kind",
             "contract_id",
             "content_fingerprint_algorithm",
@@ -6785,6 +6849,9 @@ def build_contract_certification_bundle_file_check_json_schema() -> dict[str, An
             "has_model_config_import_report": {"type": "boolean"},
             "model_config_fingerprint": nullable_fingerprint,
             "model_config_request_content_fingerprint": nullable_fingerprint,
+            "has_architecture_config_import_report": {"type": "boolean"},
+            "architecture_config_fingerprint": nullable_fingerprint,
+            "architecture_config_request_content_fingerprint": nullable_fingerprint,
             "kind": {"enum": list(SUPPORTED_CONTRACT_KINDS)},
             "contract_id": {"type": "string", "minLength": 1},
             "content_fingerprint_algorithm": {"const": FINGERPRINT_ALGORITHM},
@@ -6949,8 +7016,8 @@ def _append_certification_bundle_consistency_failures(
 
     import_report = bundle.get("model_config_import_report")
     if import_report is None:
-        return
-    if isinstance(import_report, Mapping):
+        pass
+    elif isinstance(import_report, Mapping):
         jsonschema.validate(import_report, build_rope_model_config_import_json_schema())
         if import_report.get("request_content_fingerprint") != bundle.get(
             "request_content_fingerprint"
@@ -6966,6 +7033,34 @@ def _append_certification_bundle_consistency_failures(
             path_failures.append("model config import report ok was not true")
     else:
         path_failures.append("model_config_import_report was not an object or null")
+
+    architecture_import_report = bundle.get("architecture_config_import_report")
+    if architecture_import_report is None:
+        pass
+    elif isinstance(architecture_import_report, Mapping):
+        jsonschema.validate(
+            architecture_import_report,
+            build_architecture_config_import_json_schema(),
+        )
+        if architecture_import_report.get("request_content_fingerprint") != bundle.get(
+            "request_content_fingerprint"
+        ):
+            path_failures.append(
+                "architecture config import request fingerprint does not match bundle"
+            )
+        if (
+            isinstance(receipt, Mapping)
+            and architecture_import_report.get("request") != receipt.get("request")
+        ):
+            path_failures.append(
+                "architecture config import request does not match receipt"
+            )
+        if architecture_import_report.get("ok") is not True:
+            path_failures.append("architecture config import report ok was not true")
+    else:
+        path_failures.append(
+            "architecture_config_import_report was not an object or null"
+        )
 
 
 def build_contract_certification_bundle_file_check_report(
@@ -7019,6 +7114,13 @@ def build_contract_certification_bundle_file_check_report(
             receipt_summary = dict(receipt_report["summaries"][0])
             import_report = bundle.get("model_config_import_report")
             has_import_report = isinstance(import_report, Mapping)
+            architecture_import_report = bundle.get(
+                "architecture_config_import_report"
+            )
+            has_architecture_import_report = isinstance(
+                architecture_import_report,
+                Mapping,
+            )
             receipt_payload = receipt if isinstance(receipt, Mapping) else None
             receipt_theorem_ids = _receipt_artifact_theorem_ids(receipt_payload)
             receipt_evidence_fields = _receipt_artifact_evidence_fields(
@@ -7052,6 +7154,23 @@ def build_contract_certification_bundle_file_check_report(
                     "model_config_request_content_fingerprint": (
                         import_report.get("request_content_fingerprint")
                         if has_import_report
+                        else None
+                    ),
+                    "has_architecture_config_import_report": (
+                        has_architecture_import_report
+                    ),
+                    "architecture_config_fingerprint": (
+                        architecture_import_report.get(
+                            "architecture_config_fingerprint"
+                        )
+                        if has_architecture_import_report
+                        else None
+                    ),
+                    "architecture_config_request_content_fingerprint": (
+                        architecture_import_report.get(
+                            "request_content_fingerprint"
+                        )
+                        if has_architecture_import_report
                         else None
                     ),
                     "kind": receipt_summary["kind"],

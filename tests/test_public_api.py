@@ -39,6 +39,7 @@ from circle_math.applications import (
     CIRCLE_AI_CONTRACT_RECEIPT_SCHEMA_ID,
     build_contract_artifact_manifest,
     build_contract_artifact_manifest_file_check_report,
+    build_contract_certification_bundle_json_schema,
     build_contract_runner_check_json_schema,
     build_rope_model_config_import_json_schema,
 )
@@ -1125,6 +1126,7 @@ def test_package_cli_unified_certify_architecture_config_non_rope(
     tmp_path: Path,
 ) -> None:
     sparse_import_report_path = tmp_path / "sparse_architecture_import.json"
+    sparse_bundle_path = tmp_path / "sparse_bundle.json"
     sparse_result = subprocess.run(
         [
             sys.executable,
@@ -1139,6 +1141,8 @@ def test_package_cli_unified_certify_architecture_config_non_rope(
             str(ARCHITECTURE_CONFIG),
             "--architecture-config-import-report-out",
             str(sparse_import_report_path),
+            "--certification-bundle-out",
+            str(sparse_bundle_path),
             "--format",
             "json",
             "--require-passed",
@@ -1156,11 +1160,15 @@ def test_package_cli_unified_certify_architecture_config_non_rope(
     sparse_import_report = json.loads(
         sparse_import_report_path.read_text(encoding="utf-8")
     )
+    sparse_bundle = json.loads(sparse_bundle_path.read_text(encoding="utf-8"))
     jsonschema.validate(
         sparse_import_report,
         build_architecture_config_import_json_schema(),
     )
+    jsonschema.validate(sparse_bundle, build_contract_certification_bundle_json_schema())
     assert sparse_import_report["request"]["kind"] == "sparse_attention_coverage"
+    assert sparse_bundle["architecture_config_import_report"] == sparse_import_report
+    assert sparse_bundle["model_config_import_report"] is None
 
     recurrence_import_report_path = tmp_path / "recurrence_architecture_import.json"
     recurrence_result = subprocess.run(

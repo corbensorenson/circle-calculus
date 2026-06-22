@@ -147,6 +147,28 @@
       "items": {
         "additionalProperties": false,
         "properties": {
+          "architecture_config_fingerprint": {
+            "anyOf": [
+              {
+                "pattern": "^[0-9a-f]{64}$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "architecture_config_request_content_fingerprint": {
+            "anyOf": [
+              {
+                "pattern": "^[0-9a-f]{64}$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
           "bundle_failure_count": {
             "minimum": 0,
             "type": "integer"
@@ -210,6 +232,9 @@
               "boolean",
               "null"
             ]
+          },
+          "has_architecture_config_import_report": {
+            "type": "boolean"
           },
           "has_model_config_import_report": {
             "type": "boolean"
@@ -323,6 +348,9 @@
           "has_model_config_import_report",
           "model_config_fingerprint",
           "model_config_request_content_fingerprint",
+          "has_architecture_config_import_report",
+          "architecture_config_fingerprint",
+          "architecture_config_request_content_fingerprint",
           "kind",
           "contract_id",
           "content_fingerprint_algorithm",

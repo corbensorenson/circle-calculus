@@ -39,6 +39,7 @@ from .applications import (
     CIRCLE_AI_CONTRACT_REQUEST_SCHEMA_ID,
     CIRCLE_AI_CONTRACT_REQUEST_VALIDATION_SCHEMA_ID,
     CIRCLE_AI_CONTRACT_RUNNER_CHECK_SCHEMA_ID,
+    CIRCLE_AI_ARCHITECTURE_CONFIG_IMPORT_SCHEMA_ID,
     CIRCLE_AI_ROPE_MODEL_CONFIG_IMPORT_SCHEMA_ID,
     build_contract_artifact_manifest,
     build_contract_artifact_manifest_file_check_report,
@@ -419,7 +420,7 @@ def _contract_request_from_architecture_config_args(
     args: argparse.Namespace,
     kind: str,
     overrides: dict[str, Any],
-) -> dict[str, Any]:
+) -> tuple[dict[str, Any], dict[str, Any]]:
     config = _load_json_object_from_args(
         parser,
         inline_json=None,
@@ -439,7 +440,7 @@ def _contract_request_from_architecture_config_args(
         request = report["request"]
         if not isinstance(request, dict):
             raise ValueError("architecture config import report did not emit a request")
-        return request
+        return request, report
     except ValueError as exc:
         parser.error(str(exc))
     raise AssertionError("parser.error should exit")
@@ -634,6 +635,19 @@ def _certify_artifact_paths(
             CIRCLE_AI_ROPE_MODEL_CONFIG_IMPORT_SCHEMA_ID,
         ),
     )
+    architecture_config_import_report_out = getattr(
+        args,
+        "architecture_config_import_report_out",
+        None,
+    )
+    artifacts.insert(
+        3,
+        (
+            "architecture_config_import_report",
+            architecture_config_import_report_out,
+            CIRCLE_AI_ARCHITECTURE_CONFIG_IMPORT_SCHEMA_ID,
+        ),
+    )
     return [
         (label, path, schema_id)
         for label, path, schema_id in artifacts
@@ -659,6 +673,7 @@ def _certify_print_and_gate(
     *,
     request: dict[str, Any],
     model_config_import_report: dict[str, Any] | None = None,
+    architecture_config_import_report: dict[str, Any] | None = None,
 ) -> int:
     if args.request_out is not None:
         _write_json_file(args.request_out, receipt["request"])
@@ -713,6 +728,7 @@ def _certify_print_and_gate(
             request,
             pack=pack,
             model_config_import_report=model_config_import_report,
+            architecture_config_import_report=architecture_config_import_report,
             receipt_path=receipt_path,
             required_statuses=tuple(args.require_status),
             required_decision_verdicts=tuple(args.require_decision),
@@ -1314,6 +1330,7 @@ def contract_certify_main() -> int:
         )
     pack = _certify_pack_from_args(args)
     model_config_import_report: dict[str, Any] | None = None
+    architecture_config_import_report: dict[str, Any] | None = None
     try:
         if args.command == "request":
             request = _load_json_object_from_args(
@@ -1386,7 +1403,10 @@ def contract_certify_main() -> int:
                 "request_id": args.request_id,
             }
             if args.architecture_config_file is not None:
-                request = _contract_request_from_architecture_config_args(
+                (
+                    request,
+                    architecture_config_import_report,
+                ) = _contract_request_from_architecture_config_args(
                     kv_parser,
                     args,
                     "kv-cache",
@@ -1419,7 +1439,10 @@ def contract_certify_main() -> int:
                 "local_window": args.local_window,
             }
             if args.architecture_config_file is not None:
-                request = _contract_request_from_architecture_config_args(
+                (
+                    request,
+                    architecture_config_import_report,
+                ) = _contract_request_from_architecture_config_args(
                     sparse_parser,
                     args,
                     "sparse-attention",
@@ -1442,7 +1465,10 @@ def contract_certify_main() -> int:
                 "shift_passes": args.shift_passes,
             }
             if args.architecture_config_file is not None:
-                request = _contract_request_from_architecture_config_args(
+                (
+                    request,
+                    architecture_config_import_report,
+                ) = _contract_request_from_architecture_config_args(
                     recurrence_parser,
                     args,
                     "recurrence",
@@ -1533,6 +1559,7 @@ def contract_certify_main() -> int:
         args,
         request=request,
         model_config_import_report=model_config_import_report,
+        architecture_config_import_report=architecture_config_import_report,
     )
 
 

@@ -269,6 +269,9 @@ validated against
 `site/data/generated/circle_ai_architecture_config_import.schema.json`; it
 records the source config fingerprint, the emitted request fingerprint, and
 which field or explicit override supplied each request parameter.
+When `--certification-bundle-out` is also used with `--architecture-config`,
+that same architecture import report is embedded in the bundle beside the
+request preflight, receipt, and gate report.
 
 For KV-cache requests with positive `--sink-size`, the human receipt includes a
 `kv_cache_sink_window=` line with the generated pinned-prefix plus rolling-window
@@ -324,8 +327,8 @@ single-config run should also save the schema-validated preflight report for the
 exact request that produced the receipt. Add
 `--certification-bundle-out reports/certification_bundle.json` when CI wants one
 schema-validated artifact containing request preflight, receipt, gate report,
-and, for `--model-config` RoPE runs, the model-config import report that records
-parameter provenance.
+and any model-config or architecture-config import report that records parameter
+provenance.
 
 For a project that already stores configs as files, use the request schema:
 
@@ -841,7 +844,11 @@ The bundle's top-level `request_content_fingerprint` hashes the submitted
 request object used for preflight. If the request came from
 `--model-config` or from `build_rope_model_config_import_report`, the optional
 `model_config_import_report` section carries the model-config fingerprint, the
-config-to-request parameter sources, and the emitted request fingerprint. The
+config-to-request parameter sources, and the emitted request fingerprint. If it
+came from `--architecture-config` or
+`build_architecture_config_import_report`, the parallel
+`architecture_config_import_report` section carries the source config
+fingerprint, parameter sources, and emitted request fingerprint. The
 embedded receipt carries its own `request_content_fingerprint` for the canonical
 request emitted after contract defaults are applied.
 

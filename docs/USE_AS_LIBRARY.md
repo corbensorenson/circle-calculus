@@ -283,7 +283,10 @@ assert receipt["kind"] == "kv_cache_ring_buffer"
 The architecture import report is provenance, not proof. It records which config
 field or explicit override supplied each request parameter; the receipt remains
 the theorem-linked artifact. The schema builder above matches
-`site/data/generated/circle_ai_architecture_config_import.schema.json`.
+`site/data/generated/circle_ai_architecture_config_import.schema.json`. Pass the
+same report as `architecture_config_import_report` when building a certification
+bundle so the bundle includes config-to-request provenance alongside the request
+preflight, receipt, and gate report.
 
 For in-memory batch checks, use the same runner-check report shape without a
 subprocess:

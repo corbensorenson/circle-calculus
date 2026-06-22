@@ -1703,6 +1703,7 @@ def main() -> int:
         )
     request_for_bundle: dict[str, Any] | None = None
     model_config_import_report_for_bundle: dict[str, Any] | None = None
+    architecture_config_import_report_for_bundle: dict[str, Any] | None = None
     if args.kind == "request":
         request_object = _load_request_json(args.request_json)
         if args.request_out is not None:
@@ -1820,6 +1821,7 @@ def main() -> int:
                     config,
                     overrides=_architecture_overrides_from_args(args),
                 )
+                architecture_config_import_report_for_bundle = import_report
                 if args.architecture_config_import_report_out is not None:
                     _validate_architecture_config_import_report(
                         import_report,
@@ -1913,6 +1915,9 @@ def main() -> int:
             request_for_bundle,
             pack=pack,
             model_config_import_report=model_config_import_report_for_bundle,
+            architecture_config_import_report=(
+                architecture_config_import_report_for_bundle
+            ),
             receipt_path=(
                 _display_path(args.json_out)
                 if args.json_out is not None

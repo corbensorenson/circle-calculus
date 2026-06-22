@@ -188,7 +188,11 @@ assert receipt["request"] == request
 
 The config adapter is deterministic translation/provenance only; the receipt is
 the theorem-linked artifact. The import-report schema builder matches
-`site/data/generated/circle_ai_architecture_config_import.schema.json`.
+`site/data/generated/circle_ai_architecture_config_import.schema.json`. The same
+report can be passed as `architecture_config_import_report` to
+`build_contract_certification_bundle` when a downstream handoff should carry
+request preflight, receipt, gate report, and config-to-request provenance in one
+object.
 
 The same facade exposes reusable integer phase-bank helpers for sinusoidal,
 RoPE-family, scaled, and 2D positional phase descriptors:

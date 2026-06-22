@@ -78,8 +78,8 @@ and artifact-manifest checks keep their source of truth. Add
 also save the schema-validated preflight report for the exact request that
 produced the receipt. Add
 `--certification-bundle-out PATH` when CI wants one schema-validated artifact
-containing request preflight, receipt, gate report, and, for `--model-config`
-runs, the model-config import report that records parameter provenance.
+containing request preflight, receipt, gate report, and any model-config or
+architecture-config import report that records parameter provenance.
 
 For CI gates, add `--require-status STATUS`, `--require-decision VERDICT`,
 `--require-assurance LEVEL`, and/or `--require-passed`. The runner still prints
@@ -164,6 +164,9 @@ the schema-validated import report for audit logs. Its schema is
 `site/data/generated/circle_ai_architecture_config_import.schema.json`, and its
 fields record the source architecture-config fingerprint, the emitted request
 fingerprint, parameter-source provenance, and any import failures.
+When `--certification-bundle-out` is also used with `--architecture-config`,
+that same architecture import report is embedded in the bundle beside the
+request preflight, receipt, and gate report.
 
 External projects can also use the versioned request schema directly:
 
@@ -458,7 +461,7 @@ the schema-validated preflight report for the exact request that produced the
 receipt.
 When `--certification-bundle-out-dir` is set, every summary also points to a
 schema-validated certification bundle containing the preflight report, receipt,
-gate report, and any model-config import provenance.
+gate report, and any model-config or architecture-config import provenance.
 When `--certification-bundle-check-out-dir` is also set, every summary points to
 a schema-validated verification report for that bundle. This is useful when a
 batch job should leave both portable artifacts and CI-readable pass/fail
@@ -484,8 +487,8 @@ python scripts/check_circle_ai_certification_bundle.py \
 
 This checker validates the bundle JSON Schema, request-validation report,
 embedded receipt against the loaded contract pack, embedded gate report,
-optional model-config import provenance, and optional status, decision,
-assurance, pass, theorem-id, evidence-field, recommendation-id,
+optional model-config or architecture-config import provenance, and optional
+status, decision, assurance, pass, theorem-id, evidence-field, recommendation-id,
 validation-command, normalized-parameter, or model-config fingerprint gates. Add
 `--require-kind KIND`, `--require-theorem-id THEOREM_ID`,
 `--require-evidence-field FIELD`, `--require-recommendation-id ID`,
@@ -746,7 +749,12 @@ The bundle's top-level `request_content_fingerprint` is the fingerprint of the
 submitted request object used for preflight. If the request came from
 `--model-config` or from `build_rope_model_config_import_report`, the optional
 `model_config_import_report` section carries the model-config fingerprint, the
-config-to-request parameter sources, and the emitted request fingerprint. The
+config-to-request parameter sources, and the emitted request fingerprint. If it
+came from `--architecture-config` or
+`build_architecture_config_import_report`, the parallel
+`architecture_config_import_report` section carries the source
+architecture-config fingerprint, parameter sources, and emitted request
+fingerprint. The
 embedded receipt still carries its own `request_content_fingerprint` for the
 canonical request that the certifier emitted after applying contract defaults.
 

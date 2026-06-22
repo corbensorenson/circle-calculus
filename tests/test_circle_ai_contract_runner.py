@@ -14,6 +14,7 @@ from circle_math.applications import (
     build_contract_artifact_manifest_file_check_report,
     build_contract_artifact_manifest_json_schema,
     build_contract_certification_bundle,
+    build_contract_certification_bundle_file_check_report,
     build_contract_certification_bundle_file_check_json_schema,
     build_contract_certification_bundle_json_schema,
     build_contract_receipt,
@@ -1418,7 +1419,11 @@ def test_certification_bundle_public_api_accepts_valid_request(
     assert bundle["model_config_import_report_schema_id"] == (
         "circle_calculus.rope_model_config_import.v0"
     )
+    assert bundle["architecture_config_import_report_schema_id"] == (
+        "circle_calculus.ai_architecture_config_import.v0"
+    )
     assert bundle["model_config_import_report"] is None
+    assert bundle["architecture_config_import_report"] is None
 
 
 def test_certification_bundle_public_api_embeds_model_config_import_report(
@@ -1454,6 +1459,59 @@ def test_certification_bundle_public_api_embeds_model_config_import_report(
     assert bundle["model_config_import_report"]["parameter_sources"]["head_dim"][
         "source"
     ] == "derived_config_fields"
+    assert bundle["architecture_config_import_report"] is None
+
+
+def test_certification_bundle_public_api_embeds_architecture_config_import_report(
+    contract_pack: dict,
+) -> None:
+    config = json.loads(ARCHITECTURE_CONFIG.read_text(encoding="utf-8"))
+    import_report = build_architecture_config_import_report(
+        "sparse-attention",
+        config,
+    )
+    assert import_report["ok"] is True
+    assert isinstance(import_report["request"], dict)
+
+    bundle = build_contract_certification_bundle(
+        import_report["request"],
+        pack=contract_pack,
+        architecture_config_import_report=import_report,
+        required_statuses=("proved",),
+        required_decision_verdicts=("passed",),
+        require_passed=True,
+    )
+
+    jsonschema.validate(bundle, build_contract_certification_bundle_json_schema())
+    assert bundle["ok"] is True
+    assert bundle["model_config_import_report"] is None
+    assert bundle["architecture_config_import_report"] == import_report
+    assert bundle["architecture_config_import_report"]["request"] == (
+        bundle["receipt"]["request"]
+    )
+    assert bundle["architecture_config_import_report"][
+        "request_content_fingerprint"
+    ] == bundle["request_content_fingerprint"]
+
+    check_report = build_contract_certification_bundle_file_check_report(
+        bundle,
+        contract_pack,
+        bundle_path="sparse_architecture_bundle.json",
+        required_statuses=("proved",),
+        required_decision_verdicts=("passed",),
+        require_passed=True,
+    )
+    jsonschema.validate(
+        check_report,
+        build_contract_certification_bundle_file_check_json_schema(),
+    )
+    assert check_report["ok"] is True
+    summary = check_report["summaries"][0]
+    assert summary["has_model_config_import_report"] is False
+    assert summary["has_architecture_config_import_report"] is True
+    assert summary["architecture_config_fingerprint"] == (
+        import_report["architecture_config_fingerprint"]
+    )
 
 
 def test_certification_bundle_public_api_rejects_mismatched_model_config_import_report(
@@ -3509,18 +3567,36 @@ def test_circle_ai_certify_cli_artifact_dir_writes_architecture_import_sidecar(
     )
 
     import_report_path = artifact_dir / f"{prefix}_architecture_config_import.json"
+    bundle_path = artifact_dir / f"{prefix}_certification_bundle.json"
+    bundle_check_path = artifact_dir / f"{prefix}_certification_bundle_check.json"
     manifest_path = artifact_dir / f"{prefix}_artifact_manifest.json"
     manifest_check_path = artifact_dir / f"{prefix}_artifact_manifest_check.json"
     assert import_report_path.exists()
+    assert bundle_path.exists()
+    assert bundle_check_path.exists()
     assert manifest_path.exists()
     assert manifest_check_path.exists()
 
     import_report = json.loads(import_report_path.read_text(encoding="utf-8"))
+    bundle = json.loads(bundle_path.read_text(encoding="utf-8"))
+    bundle_check = json.loads(bundle_check_path.read_text(encoding="utf-8"))
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
     manifest_check = json.loads(manifest_check_path.read_text(encoding="utf-8"))
     jsonschema.validate(import_report, build_architecture_config_import_json_schema())
+    jsonschema.validate(bundle, build_contract_certification_bundle_json_schema())
+    jsonschema.validate(
+        bundle_check,
+        build_contract_certification_bundle_file_check_json_schema(),
+    )
     assert import_report["ok"] is True
     assert import_report["request"]["kind"] == "sparse_attention_coverage"
+    assert bundle["architecture_config_import_report"] == import_report
+    assert bundle["model_config_import_report"] is None
+    assert bundle_check["ok"] is True
+    assert bundle_check["summaries"][0]["has_architecture_config_import_report"] is True
+    assert bundle_check["summaries"][0]["architecture_config_fingerprint"] == (
+        import_report["architecture_config_fingerprint"]
+    )
 
     manifest_artifacts = {
         artifact["label"]: artifact for artifact in manifest["artifacts"]
