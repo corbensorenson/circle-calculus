@@ -141,6 +141,9 @@ explicit rotary dimension such as `rotary_dim`, `rotary_emb_dim`,
 `rotary_ndims`, `qk_rope_head_dim`, or `rope_head_dim`, that field is treated
 as the certified RoPE dimension and the rotary fraction is not applied again.
 Non-default `rope_scaling` remains outside the standard-RoPE importer.
+For context length, the importer accepts `max_position_embeddings`,
+`max_seq_len`, `max_seq_length`, `max_sequence_length`, `model_max_length`,
+`seq_len`, `context_length`, `seq_length`, or `n_positions`.
 
 The same facade exposes reusable integer phase-bank helpers for sinusoidal,
 RoPE-family, scaled, and 2D positional phase descriptors:

@@ -238,7 +238,10 @@ dimension source and the rotary-fraction source so downstream CI can audit the
 conversion. If the config already declares an explicit rotary dimension such as
 `rotary_dim`, `rotary_emb_dim`, `rotary_ndims`, `qk_rope_head_dim`, or
 `rope_head_dim`, the importer uses that value directly and does not apply the
-rotary fraction again.
+rotary fraction again. For context length, it accepts
+`max_position_embeddings`, `max_seq_len`, `max_seq_length`,
+`max_sequence_length`, `model_max_length`, `seq_len`, `context_length`,
+`seq_length`, or `n_positions`.
 
 For in-memory batch checks, use the same runner-check report shape without a
 subprocess:

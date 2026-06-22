@@ -353,6 +353,11 @@ ROPE_DIRICHLET_GUARDRAIL_THEOREM_IDS = (
 ROPE_MODEL_BASE_KEYS = ("rope_theta", "rope_base", "rotary_emb_base")
 ROPE_MODEL_CONTEXT_KEYS = (
     "max_position_embeddings",
+    "max_seq_len",
+    "max_seq_length",
+    "max_sequence_length",
+    "model_max_length",
+    "seq_len",
     "context_length",
     "seq_length",
     "n_positions",
