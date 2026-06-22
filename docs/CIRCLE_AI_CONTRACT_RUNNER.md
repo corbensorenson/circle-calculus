@@ -153,11 +153,17 @@ computed fields, unsupported fields, non-claims, recommendations, and
 fingerprints. The runner does not claim these contracts improve model quality;
 it certifies the finite structural facts that the contract pack actually backs.
 
-For non-RoPE AI configs that already store cache, sparse-attention, or recurrence
-settings, the runner can translate a small architecture config into the same
-versioned request shape:
+For project-level AI configs that already store explicit RoPE, cache,
+sparse-attention, or recurrence settings, the runner can translate a small
+architecture config into the same versioned request shape:
 
 ```bash
+python scripts/circle_ai_certify.py rope \
+  --architecture-config examples/circle_ai_architecture_configs/basic_transformer_contract_config.json \
+  --architecture-config-import-report-out reports/rope_architecture_import.json \
+  --format json \
+  --require-passed
+
 python scripts/circle_ai_certify.py sparse-attention \
   --architecture-config examples/circle_ai_architecture_configs/basic_transformer_contract_config.json \
   --architecture-config-import-report-out reports/sparse_architecture_import.json \
@@ -171,13 +177,14 @@ python scripts/circle_ai_certify.py recurrence \
   --format json
 ```
 
-Supported sections are `kv_cache`, `sparse_attention`, and `recurrence`, with a
-small set of documented aliases such as `kv_cache_size`, `context_length`,
-`sliding_window`, `max_hops`, `max_recurrence_steps`, and
-`middle_block_width`. Explicit CLI flags override imported fields. This import
-step is only deterministic translation/provenance; the theorem-backed claim is
-the emitted receipt. Use `--architecture-config-import-report-out PATH` to save
-the schema-validated import report for audit logs. Its schema is
+Supported sections are `rope`, `kv_cache`, `sparse_attention`, and
+`recurrence`, with a small set of documented aliases such as `rope_theta`,
+`rotary_dim`, `kv_cache_size`, `context_length`, `sliding_window`, `max_hops`,
+`max_recurrence_steps`, and `middle_block_width`. Explicit CLI flags override
+imported fields. This import step is only deterministic translation/provenance;
+the theorem-backed claim is the emitted receipt. Use
+`--architecture-config-import-report-out PATH` to save the schema-validated
+import report for audit logs. Its schema is
 `site/data/generated/circle_ai_architecture_config_import.schema.json`, and its
 fields record the source architecture-config fingerprint, the emitted request
 fingerprint, parameter-source provenance, and any import failures.
@@ -315,7 +322,7 @@ without naming every file. It fills unset paths for:
 <prefix>_request.json
 <prefix>_request_validation.json
 <prefix>_model_config_import.json       # RoPE model-config runs only
-<prefix>_architecture_config_import.json # non-RoPE architecture-config runs only
+<prefix>_architecture_config_import.json # architecture-config runs only
 <prefix>_receipt.json
 <prefix>_receipt_check.json
 <prefix>_receipt_replay_check.json
@@ -339,9 +346,8 @@ and replayed receipt fingerprints match the saved receipt. The saved
 `_certification_bundle_check.json` sidecars are also audited: each must be `ok`,
 use the manifest's gate policy, and point back to the same receipt fingerprint.
 Request preflight sidecars are checked too: `_request_validation.json`, RoPE
-`_model_config_import.json`, and non-RoPE
-`_architecture_config_import.json` must be `ok` and must point back to the same
-request fingerprint.
+`_model_config_import.json`, and `_architecture_config_import.json` must be `ok`
+and must point back to the same request fingerprint.
 Pass the dependency-pin flags below directly to `scripts/circle_ai_certify.py`
 with `--artifact-dir` when the first generated `_artifact_manifest_check.json`
 should already carry and enforce the reusable `pin_policy`.
@@ -369,7 +375,7 @@ It also accepts `--require-kind`, `--require-theorem-id`,
 policy pins as the copyable standalone verifier. For RoPE model-config imports,
 add `--require-model-config-fingerprint FINGERPRINT` with the SHA-256 value
 from the model-config import report when CI must prove it is checking the same
-source `config.json`. For non-RoPE architecture-config imports, add
+source `config.json`. For architecture-config imports, add
 `--require-architecture-config-fingerprint FINGERPRINT` with the SHA-256 value
 from the architecture-config import report. Use `--require-normalized-param
 KEY=JSON_VALUE` to pin the parameter value a downstream job depends on.
@@ -396,9 +402,9 @@ command emitted by the receipt.
 Add `--require-model-config-fingerprint FINGERPRINT` when a RoPE artifact
 directory was produced from a model `config.json` and CI must pin that source
 config hash.
-Add `--require-architecture-config-fingerprint FINGERPRINT` when a non-RoPE
-artifact directory was produced from an architecture config and CI must pin that
-source config hash.
+Add `--require-architecture-config-fingerprint FINGERPRINT` when an artifact
+directory was produced from an architecture config and CI must pin that source
+config hash.
 Add `--require-normalized-param KEY=JSON_VALUE` when CI needs to pin a top-level
 `normalized_request` value such as `head_dim=128` or `sequence_length=32`.
 First-party check reports include a `pin_policy` block recording these requested
@@ -505,11 +511,12 @@ evidence beside them.
 By default it checks both `examples/circle_ai_requests/*.json` request files and
 `examples/circle_ai_model_configs/*.json` standard RoPE model configs, currently
 including 128k examples at RoPE bases `10000` and `500000`, plus
-`examples/circle_ai_architecture_configs/*.json` non-RoPE architecture configs.
+`examples/circle_ai_architecture_configs/*.json` architecture configs.
 Model config and architecture config examples are first converted into versioned
 Circle request JSON, then checked by the same receipt path. Each architecture
 config emits KV-cache, sparse-attention, and recurrence receipts by default;
-pass `--architecture-config-kind` to restrict that set.
+pass `--architecture-config-kind rope` to include the explicit RoPE section or
+use the same flag to restrict any architecture-derived family.
 
 Validate a saved certification bundle that another project has already
 produced:
@@ -539,7 +546,7 @@ content. Add `--require-model-config-fingerprint FINGERPRINT` with the
 from an imported RoPE `config.json`. Add
 `--require-architecture-config-fingerprint FINGERPRINT` with the
 `architecture_config_fingerprint` from the embedded import report when the
-bundle came from a non-RoPE architecture config. It is the preferred CI-facing
+bundle came from an architecture config. It is the preferred CI-facing
 command when a downstream project stores the full certification bundle rather
 than just the receipt.
 The bundle-check report records those requested dependencies in `pin_policy`.

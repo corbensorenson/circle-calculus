@@ -518,6 +518,26 @@ def parse_args() -> argparse.Namespace:
             "site/data/generated/circle_ai_rope_model_config_import.schema.json."
         ),
     )
+    rope.add_argument(
+        "--architecture-config",
+        type=Path,
+        help=(
+            "Optional project-level AI architecture config JSON. Reads explicit "
+            "rope/rotary aliases and lets explicit flags override imported values. "
+            "Use --model-config for standard model config.json files."
+        ),
+    )
+    rope.add_argument("--architecture-config-import-report-out", type=Path)
+    rope.add_argument(
+        "--architecture-config-import-schema",
+        type=Path,
+        default=DEFAULT_ARCHITECTURE_CONFIG_IMPORT_SCHEMA,
+        help=(
+            "Generated JSON Schema used to validate "
+            "--architecture-config-import-report-out. Defaults to "
+            "site/data/generated/circle_ai_architecture_config_import.schema.json."
+        ),
+    )
     rope.add_argument("--head-dim", type=int)
     rope.add_argument("--base", type=float)
     rope.add_argument("--context", type=int)
@@ -854,6 +874,17 @@ def _validate_certification_bundle_check_report(
 
 
 def _architecture_overrides_from_args(args: argparse.Namespace) -> dict[str, Any]:
+    if args.kind == "rope":
+        return {
+            "head_dim": args.head_dim,
+            "base": args.base,
+            "context": args.context,
+            "tolerance": args.tolerance,
+            "discretization": args.discretization,
+            "requested_margin": args.requested_margin,
+            "turn_ratio_numerator": args.turn_ratio_numerator,
+            "turn_ratio_denominator": args.turn_ratio_denominator,
+        }
     if args.kind == "kv-cache":
         return {
             "cache_size": args.cache_size,
@@ -903,6 +934,11 @@ def _architecture_parameters_from_args(
 
 def _parameters_from_args(args: argparse.Namespace) -> dict[str, Any]:
     if args.kind == "rope":
+        if args.architecture_config is not None:
+            return _architecture_parameters_from_args(
+                args,
+                "rope",
+            )
         parameters = {
             "head_dim": 128 if args.head_dim is None else args.head_dim,
             "base": 10000.0 if args.base is None else args.base,
@@ -1779,6 +1815,11 @@ def main() -> int:
     ):
         raise SystemExit("--model-config-import-report-out requires --model-config")
     if (
+        getattr(args, "model_config", None) is not None
+        and getattr(args, "architecture_config", None) is not None
+    ):
+        raise SystemExit("--model-config and --architecture-config cannot be combined")
+    if (
         getattr(args, "architecture_config_import_report_out", None) is not None
         and getattr(args, "architecture_config", None) is None
     ):
@@ -1911,7 +1952,7 @@ def main() -> int:
                 request = import_report["request"]
             if (
                 request is None
-                and args.kind in {"kv-cache", "sparse-attention", "recurrence"}
+                and args.kind in {"rope", "kv-cache", "sparse-attention", "recurrence"}
                 and getattr(args, "architecture_config", None) is not None
             ):
                 config = _load_json_object(

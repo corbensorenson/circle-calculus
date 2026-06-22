@@ -205,10 +205,43 @@ def contract_pack() -> dict:
     return build_contract_pack()
 
 
-def test_architecture_config_import_builds_non_rope_contract_requests(
+def test_architecture_config_import_builds_contract_requests(
     contract_pack: dict,
 ) -> None:
     config = json.loads(ARCHITECTURE_CONFIG.read_text(encoding="utf-8"))
+
+    rope_report = build_architecture_config_import_report(
+        "rope",
+        config,
+    )
+    jsonschema.validate(rope_report, build_architecture_config_import_json_schema())
+    assert rope_report["ok"] is True
+    assert rope_report["kind"] == "rope_position_distinguishability"
+    assert rope_report["parameters"]["context"] == 4096
+    assert rope_report["parameters"]["requested_margin"] == "1/4099"
+    assert rope_report["parameters"]["turn_ratio_numerator"] == 1
+    assert rope_report["parameters"]["turn_ratio_denominator"] == 4099
+    assert rope_report["parameter_sources"]["head_dim"] == {
+        "source": "architecture_config_field",
+        "field": "rope.head_dim",
+        "value": 128,
+    }
+    assert rope_report["parameter_sources"]["base"] == {
+        "source": "architecture_config_field",
+        "field": "rope.base",
+        "value": 10000.0,
+    }
+    rope_receipt = build_validated_contract_receipt_from_architecture_config(
+        "rope",
+        config,
+        pack=contract_pack,
+    )
+    assert rope_receipt["kind"] == "rope_position_distinguishability"
+    assert rope_receipt["status"] == "proved"
+    assert rope_receipt["request_passed"] is True
+    assert "rational_turn_ratio_finite_margin_certificate" in rope_receipt[
+        "evidence"
+    ]
 
     sparse_report = build_architecture_config_import_report(
         "sparse-attention",
@@ -268,6 +301,22 @@ def test_architecture_config_import_builds_non_rope_contract_requests(
     assert sparse_bundle["architecture_config_import_report"] == sparse_report
     assert sparse_bundle["receipt"]["kind"] == "sparse_attention_coverage"
     assert sparse_bundle["gate_report"]["ok"] is True
+
+    rope_bundle = build_architecture_config_certification_bundle(
+        "rope",
+        config,
+        pack=contract_pack,
+        required_statuses=("proved",),
+        required_decision_verdicts=("passed",),
+        required_assurance_levels=("mixed_theorem_and_computation",),
+        require_passed=True,
+    )
+    jsonschema.validate(rope_bundle, build_contract_certification_bundle_json_schema())
+    assert rope_bundle["ok"] is True
+    assert rope_bundle["model_config_import_report"] is None
+    assert rope_bundle["architecture_config_import_report"] == rope_report
+    assert rope_bundle["receipt"]["kind"] == "rope_position_distinguishability"
+    assert rope_bundle["gate_report"]["ok"] is True
 
 
 def test_rope_receipt_classifies_d19_margin_request(contract_pack: dict) -> None:
@@ -2849,6 +2898,64 @@ def test_circle_ai_certify_cli_accepts_architecture_config_non_rope(
     assert "source_config=architecture_config" in text_result.stdout
     assert "architecture_config_fingerprint=" in text_result.stdout
     assert "kind=kv_cache_ring_buffer" in text_result.stdout
+
+
+def test_circle_ai_certify_cli_accepts_architecture_config_rope(
+    tmp_path: Path,
+) -> None:
+    import_report_path = tmp_path / "rope_architecture_import.json"
+    result = subprocess.run(
+        [
+            sys.executable,
+            str(SCRIPT),
+            "rope",
+            "--architecture-config",
+            str(ARCHITECTURE_CONFIG),
+            "--architecture-config-import-report-out",
+            str(import_report_path),
+            "--format",
+            "json",
+            "--require-passed",
+        ],
+        cwd=ROOT,
+        check=True,
+        text=True,
+        capture_output=True,
+    )
+
+    payload = json.loads(result.stdout)
+    assert payload["kind"] == "rope_position_distinguishability"
+    assert payload["status"] == "proved"
+    assert payload["request_passed"] is True
+    assert payload["request"]["parameters"]["turn_ratio_numerator"] == 1
+    assert payload["request"]["parameters"]["turn_ratio_denominator"] == 4099
+    assert "rational_turn_ratio_finite_margin_certificate" in payload["evidence"]
+    import_report = json.loads(import_report_path.read_text(encoding="utf-8"))
+    jsonschema.validate(import_report, build_architecture_config_import_json_schema())
+    assert import_report["ok"] is True
+    assert import_report["kind"] == "rope_position_distinguishability"
+    assert import_report["parameter_sources"]["context"]["field"] == (
+        "rope.context_length"
+    )
+
+    text_result = subprocess.run(
+        [
+            sys.executable,
+            str(SCRIPT),
+            "rope",
+            "--architecture-config",
+            str(ARCHITECTURE_CONFIG),
+            "--require-passed",
+        ],
+        cwd=ROOT,
+        check=True,
+        text=True,
+        capture_output=True,
+    )
+    assert "source_config=architecture_config" in text_result.stdout
+    assert "architecture_config_fingerprint=" in text_result.stdout
+    assert "kind=rope_position_distinguishability" in text_result.stdout
+    assert "rope_rational_turn_ratio=" in text_result.stdout
 
 
 def test_circle_ai_certify_cli_emits_compact_json_receipt() -> None:

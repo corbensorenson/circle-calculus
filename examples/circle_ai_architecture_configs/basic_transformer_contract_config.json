@@ -1,4 +1,12 @@
 {
+  "rope": {
+    "head_dim": 128,
+    "base": 10000.0,
+    "context_length": 4096,
+    "requested_margin": "1/4099",
+    "turn_ratio_numerator": 1,
+    "turn_ratio_denominator": 4099
+  },
   "kv_cache": {
     "cache_size": 16,
     "current": 31,

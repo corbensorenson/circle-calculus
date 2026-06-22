@@ -22,6 +22,7 @@
     },
     "kind": {
       "enum": [
+        "rope_position_distinguishability",
         "kv_cache_ring_buffer",
         "sparse_attention_coverage",
         "recurrence_schedule",

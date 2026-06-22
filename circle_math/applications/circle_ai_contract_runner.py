@@ -389,11 +389,19 @@ ROPE_MODEL_ROTARY_DIM_KEYS = (
 )
 ROPE_MODEL_ROTARY_FRACTION_KEYS = ("partial_rotary_factor", "rotary_pct")
 ARCHITECTURE_CONFIG_SUPPORTED_KINDS = (
+    "rope_position_distinguishability",
     "kv_cache_ring_buffer",
     "sparse_attention_coverage",
     "recurrence_schedule",
 )
 ARCHITECTURE_CONFIG_SECTION_KEYS = {
+    "rope_position_distinguishability": (
+        "rope",
+        "rotary",
+        "rotary_embedding",
+        "position_embedding",
+        "rope_position_distinguishability",
+    ),
     "kv_cache_ring_buffer": (
         "kv_cache",
         "kv-cache",
@@ -417,6 +425,63 @@ ARCHITECTURE_CONFIG_SECTION_KEYS = {
     ),
 }
 ARCHITECTURE_CONFIG_PARAMETER_ALIASES = {
+    "rope_position_distinguishability": {
+        "head_dim": (
+            "head_dim",
+            "attention_head_dim",
+            "rotary_dim",
+            "rotary_emb_dim",
+            "rotary_ndims",
+            "qk_rope_head_dim",
+            "rope_head_dim",
+        ),
+        "base": (
+            "base",
+            "rope_theta",
+            "rope_base",
+            "rotary_emb_base",
+            "rotary_base",
+            "rotary_theta",
+        ),
+        "context": (
+            "context",
+            "context_length",
+            "max_position_embeddings",
+            "max_seq_len",
+            "max_seq_length",
+            "max_sequence_length",
+            "model_max_length",
+            "seq_len",
+            "seq_length",
+            "n_positions",
+        ),
+        "tolerance": (
+            "tolerance",
+            "phase_tolerance",
+            "rope_tolerance",
+        ),
+        "discretization": (
+            "discretization",
+            "period_discretization",
+            "rope_discretization",
+        ),
+        "requested_margin": (
+            "requested_margin",
+            "phase_margin",
+            "real_phase_margin",
+            "margin",
+        ),
+        "turn_ratio_numerator": (
+            "turn_ratio_numerator",
+            "rational_turn_ratio_numerator",
+            "phase_ratio_numerator",
+        ),
+        "turn_ratio_denominator": (
+            "turn_ratio_denominator",
+            "rational_turn_ratio_denominator",
+            "phase_ratio_denominator",
+        ),
+    },
     "kv_cache_ring_buffer": {
         "cache_size": (
             "cache_size",
@@ -523,6 +588,14 @@ ARCHITECTURE_CONFIG_PARAMETER_ALIASES = {
     },
 }
 ARCHITECTURE_CONFIG_OPTIONAL_PARAMETERS = {
+    "rope_position_distinguishability": {
+        "base",
+        "tolerance",
+        "discretization",
+        "requested_margin",
+        "turn_ratio_numerator",
+        "turn_ratio_denominator",
+    },
     "kv_cache_ring_buffer": {"batch_tokens", "sink_size", "request_id"},
     "sparse_attention_coverage": set(),
     "recurrence_schedule": {
@@ -536,6 +609,11 @@ ARCHITECTURE_CONFIG_OPTIONAL_PARAMETERS = {
     },
 }
 ARCHITECTURE_CONFIG_PARAMETER_DEFAULTS: dict[str, dict[str, Any]] = {
+    "rope_position_distinguishability": {
+        "base": 10000.0,
+        "tolerance": 1e-6,
+        "discretization": "round",
+    },
     "kv_cache_ring_buffer": {
         "batch_tokens": [],
         "sink_size": 0,
@@ -1187,9 +1265,10 @@ def build_contract_request_from_architecture_config(
     """Build a versioned request from a small AI architecture config object.
 
     This adapter covers the finite structural contracts that have explicit
-    parameter aliases: KV-cache, sparse-attention coverage, and recurrence
-    schedules. RoPE keeps its more specific model-config importer because real
-    rotary configs need separate proof-boundary checks.
+    parameter aliases: RoPE, KV-cache, sparse-attention coverage, and recurrence
+    schedules. Standard model ``config.json`` files should still use the
+    model-config importer when available; this architecture importer is for
+    project-level config files with explicit contract sections.
     """
 
     report = build_architecture_config_import_report(
@@ -1213,7 +1292,7 @@ def build_architecture_config_import_report(
     *,
     overrides: Mapping[str, Any] | None = None,
 ) -> dict[str, Any]:
-    """Return a source-tracked config import report for non-RoPE AI contracts."""
+    """Return a source-tracked config import report for AI architecture contracts."""
 
     failures: list[str] = []
     request: dict[str, Any] | None = None
@@ -1328,7 +1407,7 @@ def build_validated_contract_receipt_from_architecture_config(
     overrides: Mapping[str, Any] | None = None,
     pack: Mapping[str, Any] | None = None,
 ) -> dict[str, Any]:
-    """Build a pack-validated receipt from a non-RoPE AI architecture config."""
+    """Build a pack-validated receipt from an AI architecture config."""
 
     request = build_contract_request_from_architecture_config(
         kind,
@@ -3689,7 +3768,7 @@ def build_contract_runner_check_report(
 
     This is the public Python API equivalent of the installed
     ``circle-ai-certify batch`` command for callers that already loaded request
-    objects, standard-RoPE model configs, or non-RoPE architecture configs. It
+    objects, standard-RoPE model configs, or AI architecture configs. It
     returns summaries and gate failures; it does not write receipts or sidecar
     files.
     """
@@ -4180,7 +4259,7 @@ def build_contract_certification_bundle(
 
     The bundle is the Python API counterpart to running
     ``circle_ai_certify.py`` with request preflight and a receipt gate. When the
-    request came from a RoPE model config or non-RoPE architecture config,
+    request came from a RoPE model config or AI architecture config,
     callers may include the matching import report so the bundle carries the
     config-to-request provenance too.
     Invalid requests return a failed bundle with ``receipt = None`` instead of

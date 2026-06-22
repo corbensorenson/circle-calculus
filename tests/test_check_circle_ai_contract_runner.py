@@ -311,6 +311,46 @@ def test_check_circle_ai_contract_runner_filters_model_configs_with_rope_alias()
     }
 
 
+def test_check_circle_ai_contract_runner_filters_rope_architecture_configs() -> None:
+    result = subprocess.run(
+        [
+            sys.executable,
+            "scripts/check_circle_ai_contract_runner.py",
+            "--kind",
+            "rope",
+            "--architecture-config-kind",
+            "rope",
+            "--format",
+            "json",
+        ],
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+
+    payload = json.loads(result.stdout)
+    jsonschema.validate(payload, _runner_check_schema())
+    assert payload["ok"] is True
+    assert payload["selected_kinds"] == ["rope_position_distinguishability"]
+    assert payload["example_count"] == 5
+    assert {summary["kind"] for summary in payload["summaries"]} == {
+        "rope_position_distinguishability"
+    }
+    assert {summary["source_type"] for summary in payload["summaries"]} == {
+        "request",
+        "model_config",
+        "architecture_config",
+    }
+    architecture_summary = next(
+        summary
+        for summary in payload["summaries"]
+        if summary["source_type"] == "architecture_config"
+    )
+    assert architecture_summary["architecture_config_parameter_sources"]["head_dim"][
+        "field"
+    ] == "rope.head_dim"
+
+
 def test_check_circle_ai_contract_runner_writes_receipts(tmp_path: Path) -> None:
     out_dir = tmp_path / "receipts"
     compact_receipt_dir = tmp_path / "compact_receipts"
