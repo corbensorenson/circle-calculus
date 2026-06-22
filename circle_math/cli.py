@@ -1610,6 +1610,8 @@ def _certify_batch_requests(args: argparse.Namespace) -> int:
                 ]
             )
         )
+        for command in report["validation_commands"]:
+            print(f"validation_command={command}")
         for summary in summaries:
             print(
                 " ".join(

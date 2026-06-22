@@ -742,6 +742,50 @@ def test_package_cli_unified_certify_batch_request_files_writes_compact_receipts
         assert "unclassified" not in summary["compact_selected_evidence_labels"]
 
 
+def test_package_cli_unified_certify_batch_text_prints_validation_command(
+    tmp_path,
+) -> None:
+    report_path = tmp_path / "runner_report.json"
+    request_file = ROOT / "examples" / "circle_ai_requests" / "kv_cache_request.json"
+
+    result = subprocess.run(
+        [
+            sys.executable,
+            "-c",
+            (
+                "import sys; "
+                "from circle_math.cli import contract_certify_main; "
+                "sys.exit(contract_certify_main())"
+            ),
+            "batch",
+            "--request-file",
+            str(request_file),
+            "--report-out",
+            str(report_path),
+            "--require-passed",
+            "--require-status",
+            "proved",
+            "--require-decision",
+            "passed",
+            "--format",
+            "text",
+        ],
+        text=True,
+        capture_output=True,
+        check=True,
+    )
+
+    report = json.loads(report_path.read_text())
+    assert report["validation_commands"] == [
+        "python examples/downstream_ci_verify_circle_ai_batch.py "
+        f"{report_path} --format json --require-status proved "
+        "--require-decision passed --require-passed"
+    ]
+    assert f"validation_command={report['validation_commands'][0]}" in (
+        result.stdout.splitlines()
+    )
+
+
 def test_package_cli_unified_certify_batch_rejects_missing_required_kind(
     tmp_path,
 ) -> None:

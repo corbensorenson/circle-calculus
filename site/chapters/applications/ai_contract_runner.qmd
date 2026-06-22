@@ -231,6 +231,8 @@ actually emitted instead of merely trusting that a full architecture-contract
 run happened. Use `circle-ai-certify batch --require-kind kv-cache` or the
 copyable verifier's `--require-kind` option when CI should reject a missing
 family before accepting the batch as evidence.
+When the batch command runs in text mode, it also prints each verifier command
+as a `validation_command=...` line for copyable human handoffs.
 
 Python callers can build the same schema-valid runner-check report in memory
 with `build_contract_runner_check_report`. The helper accepts versioned request
