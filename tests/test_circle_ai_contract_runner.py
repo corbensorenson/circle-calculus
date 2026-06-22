@@ -3551,7 +3551,7 @@ def test_circle_ai_certify_cli_artifact_dir_writes_architecture_import_sidecar(
 ) -> None:
     artifact_dir = tmp_path / "artifacts"
     prefix = "sparse_attention"
-    subprocess.run(
+    result = subprocess.run(
         [
             sys.executable,
             str(SCRIPT),
@@ -3569,6 +3569,7 @@ def test_circle_ai_certify_cli_artifact_dir_writes_architecture_import_sidecar(
         text=True,
         capture_output=True,
     )
+    assert "architecture_config_import_report=" in result.stdout
 
     import_report_path = artifact_dir / f"{prefix}_architecture_config_import.json"
     bundle_path = artifact_dir / f"{prefix}_certification_bundle.json"

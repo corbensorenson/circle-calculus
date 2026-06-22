@@ -1677,6 +1677,18 @@ def _artifact_summary_line(args: argparse.Namespace) -> str | None:
         None,
     )
     artifacts.insert(2, ("model_config_import_report", model_config_import_report_out))
+    architecture_config_import_report_out = getattr(
+        args,
+        "architecture_config_import_report_out",
+        None,
+    )
+    artifacts.insert(
+        3,
+        (
+            "architecture_config_import_report",
+            architecture_config_import_report_out,
+        ),
+    )
     written = [
         f"{label}={_display_path(path)}"
         for label, path in artifacts
