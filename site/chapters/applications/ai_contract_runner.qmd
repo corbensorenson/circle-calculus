@@ -94,7 +94,9 @@ circle-ai-certify rope \
   --require-passed
 ```
 
-The importer reads `head_dim` or `hidden_size / num_attention_heads`, optional
+The importer reads explicit RoPE dimensions such as `rotary_dim`,
+`rotary_emb_dim`, `rotary_ndims`, `qk_rope_head_dim`, or `rope_head_dim`;
+otherwise it reads `head_dim` or `hidden_size / num_attention_heads`, optional
 `partial_rotary_factor` or `rotary_pct`, `rope_theta` when present, and
 `max_position_embeddings` or related context fields. Explicit CLI flags override
 inferred values. Non-default `rope_scaling` metadata is rejected because the
@@ -106,8 +108,9 @@ schema-validated explanation of whether a real config converted into the
 standard-RoPE request frontier. That report is not a receipt and does not prove
 scaled-RoPE behavior. For partial-rotary configs, it records both the head
 dimension field and the rotary-fraction field used to derive the certified
-rotary sub-dimension. It includes fingerprints for the source config and the
-emitted request when one exists, so CI can pin the import boundary. Its
+rotary sub-dimension; when an explicit rotary-dimension field is present, the
+fraction is not applied again. It includes fingerprints for the source config
+and the emitted request when one exists, so CI can pin the import boundary. Its
 `parameter_sources` object records whether each standard-RoPE request parameter
 came from an explicit override, a config field, derived config fields, a
 default, or an omitted optional input.

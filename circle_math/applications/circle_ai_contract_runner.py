@@ -358,6 +358,13 @@ ROPE_MODEL_CONTEXT_KEYS = (
     "n_positions",
 )
 ROPE_MODEL_HEAD_DIM_KEYS = ("head_dim", "attention_head_dim")
+ROPE_MODEL_ROTARY_DIM_KEYS = (
+    "rotary_dim",
+    "rotary_emb_dim",
+    "rotary_ndims",
+    "qk_rope_head_dim",
+    "rope_head_dim",
+)
 ROPE_MODEL_ROTARY_FRACTION_KEYS = ("partial_rotary_factor", "rotary_pct")
 
 
@@ -456,6 +463,10 @@ def _ensure_standard_rope_scaling(config: Mapping[str, Any]) -> None:
 
 
 def _infer_rope_head_dim(config: Mapping[str, Any]) -> int:
+    direct_rope_dim = _model_config_value(config, ROPE_MODEL_ROTARY_DIM_KEYS)
+    if direct_rope_dim is not None:
+        return _even_rope_head_dim_value(direct_rope_dim, field="rotary_dim")
+
     direct = _model_config_value(config, ROPE_MODEL_HEAD_DIM_KEYS)
     if direct is not None:
         head_dim = _even_rope_head_dim_value(direct, field="head_dim")
@@ -563,6 +574,7 @@ def _rope_model_config_parameter_sources(
     """Describe where each standard-RoPE request parameter came from."""
 
     head_dim_key = _model_config_key(config, ROPE_MODEL_HEAD_DIM_KEYS)
+    rotary_dim_key = _model_config_key(config, ROPE_MODEL_ROTARY_DIM_KEYS)
     rotary_fraction_key = _model_config_key(config, ROPE_MODEL_ROTARY_FRACTION_KEYS)
     base_key = _model_config_key(config, ROPE_MODEL_BASE_KEYS)
     context_key = _model_config_key(config, ROPE_MODEL_CONTEXT_KEYS)
@@ -571,6 +583,18 @@ def _rope_model_config_parameter_sources(
         head_dim_source = {
             "source": "override",
             "field": "head_dim",
+        }
+    elif rotary_dim_key is not None:
+        note = "explicit RoPE rotary dimension"
+        if rotary_fraction_key is not None:
+            note = (
+                "explicit RoPE rotary dimension; rotary fraction was not "
+                "reapplied"
+            )
+        head_dim_source = {
+            "source": "config_field",
+            "field": rotary_dim_key,
+            "note": note,
         }
     elif head_dim_key is not None:
         if rotary_fraction_key is None:

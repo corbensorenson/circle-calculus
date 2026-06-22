@@ -235,7 +235,10 @@ If the model config declares `partial_rotary_factor` or `rotary_pct`, the
 standard-RoPE importer certifies the resulting rotary sub-dimension rather than
 the full attention-head dimension. The import report records both the head
 dimension source and the rotary-fraction source so downstream CI can audit the
-conversion.
+conversion. If the config already declares an explicit rotary dimension such as
+`rotary_dim`, `rotary_emb_dim`, `rotary_ndims`, `qk_rope_head_dim`, or
+`rope_head_dim`, the importer uses that value directly and does not apply the
+rotary fraction again.
 
 For in-memory batch checks, use the same runner-check report shape without a
 subprocess:

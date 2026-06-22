@@ -153,6 +153,29 @@ def test_rope_model_config_report_tracks_partial_rotary_head_dim_source() -> Non
     assert import_report["request"]["parameters"]["head_dim"] == 64
 
 
+def test_rope_model_config_import_uses_explicit_rotary_dimension_alias() -> None:
+    model_config = {
+        "hidden_size": 4096,
+        "num_attention_heads": 32,
+        "qk_rope_head_dim": 64,
+        "partial_rotary_factor": 0.5,
+        "max_position_embeddings": 8192,
+        "rope_theta": 10000.0,
+    }
+
+    parameters = build_rope_request_parameters_from_model_config(model_config)
+    assert parameters["head_dim"] == 64
+
+    import_report = build_rope_model_config_import_report(model_config)
+    jsonschema.validate(import_report, build_rope_model_config_import_json_schema())
+    assert import_report["parameter_sources"]["head_dim"] == {
+        "source": "config_field",
+        "field": "qk_rope_head_dim",
+        "note": "explicit RoPE rotary dimension; rotary fraction was not reapplied",
+    }
+    assert import_report["request"]["parameters"]["head_dim"] == 64
+
+
 def test_stable_request_api_builds_kv_cache_receipt() -> None:
     request = json.loads(
         (ROOT / "examples" / "circle_ai_requests" / "kv_cache_request.json").read_text()

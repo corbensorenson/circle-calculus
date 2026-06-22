@@ -136,8 +136,11 @@ assert runner_report["ok"] is True
 
 For partial-rotary configs, the importer uses `partial_rotary_factor` or
 `rotary_pct` to reduce the certified RoPE dimension and records both source
-fields in the model-config import report. Non-default `rope_scaling` remains
-outside the standard-RoPE importer.
+fields in the model-config import report. If the config already exposes an
+explicit rotary dimension such as `rotary_dim`, `rotary_emb_dim`,
+`rotary_ndims`, `qk_rope_head_dim`, or `rope_head_dim`, that field is treated
+as the certified RoPE dimension and the rotary fraction is not applied again.
+Non-default `rope_scaling` remains outside the standard-RoPE importer.
 
 The same facade exposes reusable integer phase-bank helpers for sinusoidal,
 RoPE-family, scaled, and 2D positional phase descriptors:
