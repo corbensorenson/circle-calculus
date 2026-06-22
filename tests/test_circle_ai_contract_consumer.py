@@ -837,6 +837,8 @@ def test_consumer_exposes_top_level_planner_recommendation_index() -> None:
         "d19_request_context",
         "d19_proved_margin",
         "d19_impossible_margin_floor",
+        "d19_impossible_obstruction_gap",
+        "d19_impossible_obstruction_turns",
         "d19_proved_request_status",
         "d19_proved_request_theorem_backed_classification",
         "d19_impossible_request_status",

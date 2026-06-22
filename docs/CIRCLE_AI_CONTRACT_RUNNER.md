@@ -210,8 +210,9 @@ translation fail by themselves, but they are not part of the theorem-linked
 claim and must be reviewed before treating the receipt as a gate for the whole
 architecture behavior.
 In default text mode, config-backed runs also print a `source_config=` line with
-the source path, source config fingerprint, derived request kind, and request
-fingerprint, so a terminal log can be replayed or pinned later.
+the source path, source config fingerprint, derived request kind, unsupported
+architecture-field count/names, and request fingerprint, so a terminal log can
+be replayed or pinned later.
 When `--certification-bundle-out` is also used with `--architecture-config`,
 that same architecture import report is embedded in the bundle beside the
 request preflight, receipt, and gate report.
@@ -519,6 +520,9 @@ reports for the KV-cache, sparse-attention, and recurrence receipts emitted from
 each architecture config. Optional architecture parameters that use receipt
 defaults are materialized in the emitted request and labeled with source
 `default`, so bundles can verify the import request against the receipt request.
+The same summaries also inline `unsupported_architecture_config_fields`, so
+batch reports expose target-section behavior that was present in the source
+config but not certified by the emitted request.
 When `--request-validation-report-out-dir` is set, every summary also points to
 the schema-validated preflight report for the exact request that produced the
 receipt.

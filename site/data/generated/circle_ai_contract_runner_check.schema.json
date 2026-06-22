@@ -484,6 +484,12 @@
             "minimum": 0,
             "type": "integer"
           },
+          "unsupported_architecture_config_fields": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
           "validation_command_count": {
             "minimum": 0,
             "type": "integer"
@@ -498,6 +504,7 @@
           "model_config_parameter_sources",
           "architecture_config_import_report_path",
           "architecture_config_parameter_sources",
+          "unsupported_architecture_config_fields",
           "request_validation_report_path",
           "certification_bundle_path",
           "certification_bundle_check_path",

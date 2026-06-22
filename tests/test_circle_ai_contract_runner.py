@@ -3107,6 +3107,8 @@ def test_circle_ai_certify_cli_accepts_architecture_config_non_rope(
     assert "source_config=architecture_config" in text_result.stdout
     assert "architecture_config_fingerprint=" in text_result.stdout
     assert "kind=kv_cache_ring_buffer" in text_result.stdout
+    assert "unsupported_architecture_fields=0" in text_result.stdout
+    assert "unsupported_architecture_field_names=-" in text_result.stdout
 
 
 def test_circle_ai_certify_cli_accepts_architecture_config_rope(
@@ -3164,7 +3166,48 @@ def test_circle_ai_certify_cli_accepts_architecture_config_rope(
     assert "source_config=architecture_config" in text_result.stdout
     assert "architecture_config_fingerprint=" in text_result.stdout
     assert "kind=rope_position_distinguishability" in text_result.stdout
+    assert "unsupported_architecture_fields=0" in text_result.stdout
     assert "rope_rational_turn_ratio=" in text_result.stdout
+
+
+def test_circle_ai_certify_cli_surfaces_unsupported_architecture_fields(
+    tmp_path: Path,
+) -> None:
+    config_path = tmp_path / "unsupported_recurrence_config.json"
+    config_path.write_text(
+        json.dumps(
+            {
+                "recurrence": {
+                    "period": 5,
+                    "horizon_steps": 7,
+                    "shift_amount": 15,
+                    "adaptive_exit_policy": "entropy",
+                }
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    result = subprocess.run(
+        [
+            sys.executable,
+            str(SCRIPT),
+            "recurrence",
+            "--architecture-config",
+            str(config_path),
+        ],
+        cwd=ROOT,
+        check=True,
+        text=True,
+        capture_output=True,
+    )
+
+    assert "source_config=architecture_config" in result.stdout
+    assert "unsupported_architecture_fields=1" in result.stdout
+    assert (
+        "unsupported_architecture_field_names=recurrence.adaptive_exit_policy"
+        in result.stdout
+    )
 
 
 def test_circle_ai_certify_cli_emits_compact_json_receipt() -> None:

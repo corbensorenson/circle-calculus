@@ -5681,6 +5681,8 @@
     "failure_reason": null,
     "impossible_margin_applies": true,
     "impossible_margin_floor": "1/328458",
+    "impossible_obstruction_gap": 103993,
+    "impossible_obstruction_turns": 16551,
     "in_range_semantic_trichotomy": true,
     "lean_declarations": [
       "Circle.Applications.ropeTurnRatioFiniteMargin_contextRange_request_bracket_of_obstruction",

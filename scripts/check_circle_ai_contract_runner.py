@@ -186,6 +186,7 @@ def _summary_from_receipt(
     compact_receipt_path: Path | None,
     receipt: dict[str, Any],
     compact_receipt: dict[str, Any],
+    unsupported_architecture_config_fields: list[str] | None = None,
 ) -> dict[str, Any]:
     decision = receipt["decision"]
     selected_evidence = compact_receipt["selected_evidence"]
@@ -208,6 +209,10 @@ def _summary_from_receipt(
         ),
         "architecture_config_parameter_sources": (
             architecture_config_parameter_sources
+        ),
+        "unsupported_architecture_config_fields": (
+            [] if unsupported_architecture_config_fields is None
+            else unsupported_architecture_config_fields
         ),
         "request_validation_report_path": (
             None
@@ -780,6 +785,9 @@ def check_runner_examples(
                     architecture_config_parameter_sources=import_report[
                         "parameter_sources"
                     ],
+                    unsupported_architecture_config_fields=import_report[
+                        "unsupported_architecture_config_fields"
+                    ],
                     request_validation_report_path=validation_report_path,
                     certification_bundle_path=certification_bundle_path,
                     certification_bundle_check_path=certification_bundle_check_path,
@@ -1117,6 +1125,8 @@ def main() -> int:
                 f"assurance={summary['decision_assurance']} "
                 f"theorems={summary['theorem_count']} "
                 f"recommendations={summary['recommendation_count']} "
+                "unsupported_architecture_fields="
+                f"{len(summary['unsupported_architecture_config_fields'])} "
                 f"receipt={summary['receipt_path']}"
             )
         for failure in report["failures"]:

@@ -1884,12 +1884,29 @@ def _source_import_summary_line(
     if architecture_config_import_report is not None:
         request = architecture_config_import_report.get("request")
         kind = request.get("kind") if isinstance(request, Mapping) else None
+        unsupported_fields = architecture_config_import_report.get(
+            "unsupported_architecture_config_fields",
+        )
+        unsupported_field_names = (
+            ",".join(
+                str(field)
+                for field in unsupported_fields
+                if isinstance(field, str)
+            )
+            if isinstance(unsupported_fields, list)
+            else ""
+        )
+        unsupported_field_count = (
+            len(unsupported_fields) if isinstance(unsupported_fields, list) else 0
+        )
         return (
             "source_config=architecture_config "
             f"path={_display_path(args.architecture_config)} "
             "architecture_config_fingerprint="
             f"{architecture_config_import_report.get('architecture_config_fingerprint')} "
             f"kind={kind} "
+            f"unsupported_architecture_fields={unsupported_field_count} "
+            f"unsupported_architecture_field_names={unsupported_field_names or '-'} "
             "request_fingerprint="
             f"{architecture_config_import_report.get('request_content_fingerprint')}"
         )

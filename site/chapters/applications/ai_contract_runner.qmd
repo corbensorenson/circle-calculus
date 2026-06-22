@@ -326,8 +326,9 @@ which field or explicit override supplied each request parameter. It also lists
 unsupported target-section fields so extra architecture behavior is visible but
 not silently promoted into the theorem-linked receipt.
 In default text mode, config-backed runs also print a `source_config=` line with
-the source path, source config fingerprint, derived request kind, and request
-fingerprint, so a terminal log can be replayed or pinned later.
+the source path, source config fingerprint, derived request kind, unsupported
+architecture-field count/names, and request fingerprint, so a terminal log can
+be replayed or pinned later.
 When `--certification-bundle-out` is also used with `--architecture-config`,
 that same architecture import report is embedded in the bundle beside the
 request preflight, receipt, and gate report.
@@ -653,6 +654,9 @@ Architecture-config summaries similarly inline
 use receipt defaults are materialized in the emitted request and labeled
 `default`, so certification bundles can verify the import request against the
 receipt request.
+They also inline `unsupported_architecture_config_fields`, so batch reports show
+target-section behavior that was present in the source config but not certified
+by the emitted request.
 It also records the batch gate policy. If a receipt violates the required
 status, decision, assurance, or pass condition, the checker still writes the
 report and exits nonzero.

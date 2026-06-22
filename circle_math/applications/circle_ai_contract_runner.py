@@ -3901,6 +3901,7 @@ def _contract_runner_check_summary_from_receipt(
     receipt: Mapping[str, Any],
     model_config_parameter_sources: Mapping[str, Any] | None = None,
     architecture_config_parameter_sources: Mapping[str, Any] | None = None,
+    unsupported_architecture_config_fields: Sequence[str] = (),
 ) -> dict[str, Any]:
     compact_receipt = build_compact_contract_receipt(receipt)
     decision = receipt["decision"]
@@ -3921,6 +3922,9 @@ def _contract_runner_check_summary_from_receipt(
             None
             if architecture_config_parameter_sources is None
             else _json_ready_value(architecture_config_parameter_sources)
+        ),
+        "unsupported_architecture_config_fields": list(
+            unsupported_architecture_config_fields
         ),
         "request_validation_report_path": None,
         "certification_bundle_path": None,
@@ -4160,6 +4164,9 @@ def build_contract_runner_check_report(
                         receipt=receipt,
                         architecture_config_parameter_sources=import_report[
                             "parameter_sources"
+                        ],
+                        unsupported_architecture_config_fields=import_report[
+                            "unsupported_architecture_config_fields"
                         ],
                     )
                 )
@@ -5781,6 +5788,7 @@ def build_contract_runner_check_json_schema() -> dict[str, Any]:
             "model_config_parameter_sources",
             "architecture_config_import_report_path",
             "architecture_config_parameter_sources",
+            "unsupported_architecture_config_fields",
             "request_validation_report_path",
             "certification_bundle_path",
             "certification_bundle_check_path",
@@ -5817,6 +5825,7 @@ def build_contract_runner_check_json_schema() -> dict[str, Any]:
             "architecture_config_parameter_sources": {
                 "anyOf": [{"type": "object"}, {"type": "null"}],
             },
+            "unsupported_architecture_config_fields": string_list,
             "request_validation_report_path": {"type": ["string", "null"]},
             "certification_bundle_path": {"type": ["string", "null"]},
             "certification_bundle_check_path": {"type": ["string", "null"]},

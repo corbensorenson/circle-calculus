@@ -800,6 +800,38 @@ def test_package_cli_unified_certify_batch_architecture_config_writes_import_rep
         "rope_position_distinguishability",
         "sparse_attention_coverage",
     ]
+    architecture_summaries = [
+        summary
+        for summary in report["summaries"]
+        if summary["source_type"] == "architecture_config"
+    ]
+    assert len(architecture_summaries) == 4
+    assert all(
+        summary["unsupported_architecture_config_fields"] == []
+        for summary in architecture_summaries
+    )
+
+    unsupported_architecture_report = build_contract_runner_check_report(
+        architecture_configs=[
+            {
+                "recurrence": {
+                    "period": 5,
+                    "horizon_steps": 7,
+                    "shift_amount": 15,
+                    "adaptive_exit_policy": "entropy",
+                }
+            }
+        ],
+        architecture_config_kinds=("recurrence",),
+    )
+    jsonschema.validate(
+        unsupported_architecture_report,
+        build_facade_runner_check_json_schema(),
+    )
+    assert unsupported_architecture_report["ok"] is True
+    assert unsupported_architecture_report["summaries"][0][
+        "unsupported_architecture_config_fields"
+    ] == ["recurrence.adaptive_exit_policy"]
     assert {summary["source_type"] for summary in report["summaries"]} == {
         "architecture_config"
     }
