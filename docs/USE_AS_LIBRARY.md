@@ -384,7 +384,7 @@ circle-ai-certify kv-cache --cache-size 16 --current 31 --token 20 --batch-token
 circle-ai-certify kv-cache --architecture-config-file examples/circle_ai_architecture_configs/basic_transformer_contract_config.json --architecture-config-import-report-out /tmp/circle_kv_architecture_import.json --format json
 circle-ai-certify sparse-attention --context 9 --strides 3,4,7 --path-length 2 --local-window 2 --format json
 circle-ai-certify sparse-attention --context 9 --strides 3,4,7 --path-length 2 --local-window 2 --format compact-json
-circle-ai-certify batch --request-file examples/circle_ai_requests/kv_cache_request.json --request-file examples/circle_ai_requests/sparse_attention_request.json --model-config-file examples/circle_ai_model_configs/standard_rope_config.json --architecture-config-file examples/circle_ai_architecture_configs/basic_transformer_contract_config.json --receipt-out-dir /tmp/circle_ai_receipts --compact-receipt-out-dir /tmp/circle_ai_compact_receipts --model-config-import-report-out-dir /tmp/circle_ai_import_reports --architecture-config-import-report-out-dir /tmp/circle_ai_architecture_import_reports --report-out /tmp/circle_ai_runner_report.json --require-passed --require-status proved --require-decision passed --format json
+circle-ai-certify batch --request-file examples/circle_ai_requests/kv_cache_request.json --request-file examples/circle_ai_requests/sparse_attention_request.json --model-config-file examples/circle_ai_model_configs/standard_rope_config.json --architecture-config-file examples/circle_ai_architecture_configs/basic_transformer_contract_config.json --artifact-dir /tmp/circle_ai_contract_batch --artifact-prefix architecture-suite --require-passed --require-status proved --require-decision passed --format json
 circle-ai-certify recurrence --format json
 circle-ai-certify strided-fanout --format compact-json
 circle-ai-certify cyclic-memory --format compact-json
@@ -424,11 +424,14 @@ Use `--request-file` when the input is already a versioned Circle request for
 RoPE, KV-cache, sparse attention, or recurrence.
 Use `circle-ai-certify batch` when downstream CI has several versioned request
 files, standard RoPE model configs, or architecture configs and should
-write per-source full receipts, compact receipts, optional model-config and
-architecture-config import reports, and one schema-validated runner-check
-report without depending on repository-only scripts. By default, each
-architecture config emits RoPE, KV-cache, sparse-attention, and recurrence
-receipts; pass `--architecture-config-kind` to restrict that set.
+write per-source full receipts, compact receipts, model-config and
+architecture-config import reports, request-validation preflights,
+certification bundles, bundle checks, and one schema-validated runner-check
+report without depending on repository-only scripts. Use `--artifact-dir` when
+the installed batch command should choose stable subdirectories for that
+portable handoff set. By default, each architecture config emits RoPE,
+KV-cache, sparse-attention, and recurrence receipts; pass
+`--architecture-config-kind` to restrict that set.
 Use `--require-passed`, `--require-status`, `--require-decision`, and
 `--require-assurance` when the command is part of downstream CI. Gate failures
 return exit code `2` after writing the receipt, so CI logs keep the theorem
@@ -441,10 +444,11 @@ the stable receipt decision, selected evidence, theorem summary, replay
 commands, non-claims, and the full receipt fingerprint. Use
 `--certification-bundle-out` with `--certification-bundle-check-out` when the
 installed CLI should also archive a request-validation, receipt, gate, and
-bundle-check handoff object. Use `--artifact-manifest-out` with
-`--artifact-manifest-check-out` when it should also fingerprint the sidecar
-files and verify the manifest. Use `--artifact-dir` when it should choose
-stable names for the full sidecar set automatically.
+bundle-check handoff object. For single-receipt commands, use
+`--artifact-manifest-out` with `--artifact-manifest-check-out` when it should
+also fingerprint the sidecar files and verify the manifest. Use
+`--artifact-dir` when it should choose stable names for the sidecar set
+automatically.
 
 Non-default `rope_scaling` values are rejected by the standard-RoPE importer.
 That rejection is intentional: scaled-RoPE variants need separate theorem

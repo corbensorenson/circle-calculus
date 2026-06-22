@@ -360,11 +360,8 @@ circle-ai-certify batch \
   --request-file examples/circle_ai_requests/sparse_attention_request.json \
   --model-config-file examples/circle_ai_model_configs/standard_rope_config.json \
   --architecture-config-file examples/circle_ai_architecture_configs/basic_transformer_contract_config.json \
-  --receipt-out-dir /tmp/circle_ai_receipts \
-  --compact-receipt-out-dir /tmp/circle_ai_compact_receipts \
-  --model-config-import-report-out-dir /tmp/circle_ai_import_reports \
-  --architecture-config-import-report-out-dir /tmp/circle_ai_architecture_import_reports \
-  --report-out /tmp/circle_ai_runner_report.json \
+  --artifact-dir /tmp/circle_ai_contract_batch \
+  --artifact-prefix architecture-suite \
   --require-passed \
   --require-status proved \
   --require-decision passed \
@@ -390,20 +387,15 @@ commands, non-claims, and full receipt fingerprint. Use
 `circle-ai-certify batch` when a downstream project already has several
 versioned Circle request files, standard RoPE model configs, or project-level
 architecture configs and wants per-source full receipts, compact receipts,
-optional model-config and architecture-config import reports, and one
-runner-check summary without importing repository-only scripts. Architecture
-configs emit RoPE, KV-cache, sparse-attention, and recurrence receipts by
-default; pass `--architecture-config-kind` to restrict that set. Use
-`--request-validation-report-out` when it wants the request preflight saved as
-a standalone JSON artifact. Use
-`--certification-bundle-out` and `--certification-bundle-check-out` when the
-handoff should carry the request preflight, theorem-linked receipt, gate
-report, and bundle validation result as one archived object. Use
-`--artifact-manifest-out` and `--artifact-manifest-check-out` when the handoff
-also needs file fingerprints and a manifest self-check for every sidecar this
-invocation wrote. Use `--artifact-dir` when the installed command should choose
-stable names for the complete request, receipt, diagnostics, bundle, manifest,
-and check-report set.
+model-config and architecture-config import reports, request-validation
+preflights, certification bundles, bundle checks, and one runner-check summary
+without importing repository-only scripts. Use `--artifact-dir` when the
+installed batch command should choose stable subdirectories for that portable
+handoff set. Architecture configs emit RoPE, KV-cache, sparse-attention, and
+recurrence receipts by default; pass `--architecture-config-kind` to restrict
+that set. For single-receipt commands, use `--artifact-manifest-out` and
+`--artifact-manifest-check-out` when the handoff also needs file fingerprints
+and a manifest self-check for every sidecar that invocation wrote.
 
 The lower-level installed receipt command accepts kind aliases plus JSON
 parameters directly. The same receipt shape works for all nine ready families:

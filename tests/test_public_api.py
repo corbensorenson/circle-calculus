@@ -400,14 +400,17 @@ def test_public_docs_show_architecture_config_runner_handoff() -> None:
         "--architecture-config-file "
         "examples/circle_ai_architecture_configs/basic_transformer_contract_config.json"
     ) in readme
-    assert "--architecture-config-import-report-out-dir" in readme
+    assert "--artifact-dir reports/circle_ai_contract_batch" in readme
+    assert "--artifact-prefix architecture-suite" in readme
     assert (
         "circle-ai-certify rope \\\n"
         "  --architecture-config-file "
         "examples/circle_ai_architecture_configs/basic_transformer_contract_config.json"
     ) in public_api
-    assert "Architecture\nconfigs emit RoPE, KV-cache" in public_api
+    assert "Architecture configs emit RoPE, KV-cache" in public_api.replace("\n", " ")
+    assert "--artifact-dir /tmp/circle_ai_contract_batch" in public_api
     assert "circle-ai-certify rope --architecture-config-file" in use_as_library
+    assert "--artifact-dir /tmp/circle_ai_contract_batch" in use_as_library
 
 
 def test_package_cli_contract_receipt_json() -> None:
@@ -830,6 +833,91 @@ def test_package_cli_unified_certify_batch_architecture_config_writes_import_rep
         assert summary["compact_selected_evidence_unclassified_count"] == 0
 
 
+def test_package_cli_unified_certify_batch_artifact_dir_writes_portable_set(
+    tmp_path,
+) -> None:
+    artifact_dir = tmp_path / "architecture_contracts"
+
+    result = subprocess.run(
+        [
+            sys.executable,
+            "-c",
+            (
+                "import sys; "
+                "from circle_math.cli import contract_certify_main; "
+                "sys.exit(contract_certify_main())"
+            ),
+            "batch",
+            "--architecture-config-file",
+            str(ARCHITECTURE_CONFIG),
+            "--artifact-dir",
+            str(artifact_dir),
+            "--artifact-prefix",
+            "architecture-suite",
+            "--require-status",
+            "proved",
+            "--require-decision",
+            "passed",
+            "--require-passed",
+            "--format",
+            "json",
+        ],
+        text=True,
+        capture_output=True,
+        check=True,
+    )
+
+    report = json.loads(result.stdout)
+    report_path = artifact_dir / "architecture-suite_runner_check.json"
+    assert json.loads(report_path.read_text()) == report
+    jsonschema.validate(report, build_contract_runner_check_json_schema())
+    assert report["ok"] is True
+    assert report["example_count"] == 4
+    assert report["selected_kinds"] == [
+        "kv_cache_ring_buffer",
+        "recurrence_schedule",
+        "rope_position_distinguishability",
+        "sparse_attention_coverage",
+    ]
+
+    expected_dirs = {
+        "receipts",
+        "compact_receipts",
+        "architecture_config_import_reports",
+        "request_validation_reports",
+        "certification_bundles",
+        "certification_bundle_checks",
+    }
+    assert expected_dirs.issubset(
+        {path.name for path in artifact_dir.iterdir() if path.is_dir()}
+    )
+
+    for summary in report["summaries"]:
+        for key in (
+            "receipt_path",
+            "compact_receipt_path",
+            "architecture_config_import_report_path",
+            "request_validation_report_path",
+            "certification_bundle_path",
+            "certification_bundle_check_path",
+        ):
+            assert summary[key] is not None
+            assert Path(summary[key]).exists()
+
+        request_validation = json.loads(
+            Path(summary["request_validation_report_path"]).read_text()
+        )
+        assert request_validation["ok"] is True
+        bundle = json.loads(Path(summary["certification_bundle_path"]).read_text())
+        jsonschema.validate(bundle, build_contract_certification_bundle_json_schema())
+        assert bundle["ok"] is True
+        bundle_check = json.loads(
+            Path(summary["certification_bundle_check_path"]).read_text()
+        )
+        assert bundle_check["ok"] is True
+        assert summary["compact_selected_evidence_unclassified_count"] == 0
+
+
 def test_package_cli_unified_certify_batch_gate_writes_report_on_failure(
     tmp_path,
 ) -> None:
@@ -1211,6 +1299,29 @@ def test_package_cli_unified_certify_rejects_artifact_prefix_without_dir() -> No
             "recurrence",
             "--artifact-prefix",
             "loop-check",
+        ],
+        text=True,
+        capture_output=True,
+    )
+    assert result.returncode == 2
+    assert "--artifact-prefix requires --artifact-dir" in result.stderr
+
+
+def test_package_cli_unified_certify_batch_rejects_artifact_prefix_without_dir() -> None:
+    result = subprocess.run(
+        [
+            sys.executable,
+            "-c",
+            (
+                "import sys; "
+                "from circle_math.cli import contract_certify_main; "
+                "sys.exit(contract_certify_main())"
+            ),
+            "batch",
+            "--request-file",
+            str(ROOT / "examples" / "circle_ai_requests" / "kv_cache_request.json"),
+            "--artifact-prefix",
+            "bad-batch",
         ],
         text=True,
         capture_output=True,

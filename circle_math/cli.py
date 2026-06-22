@@ -596,6 +596,69 @@ def _apply_certify_artifact_dir_defaults(args: argparse.Namespace) -> None:
     )
 
 
+def _fill_certify_batch_artifact_dir(
+    args: argparse.Namespace,
+    attr: str,
+    artifact_dir: Path,
+    subdir: str,
+) -> None:
+    if getattr(args, attr, None) is None:
+        setattr(args, attr, artifact_dir / subdir)
+
+
+def _apply_certify_batch_artifact_dir_defaults(args: argparse.Namespace) -> None:
+    artifact_dir = getattr(args, "artifact_dir", None)
+    if getattr(args, "artifact_prefix", None) and artifact_dir is None:
+        raise ValueError("--artifact-prefix requires --artifact-dir")
+    if artifact_dir is None:
+        return
+    prefix = _default_certify_artifact_prefix(args)
+    _fill_certify_batch_artifact_dir(
+        args,
+        "receipt_out_dir",
+        artifact_dir,
+        "receipts",
+    )
+    _fill_certify_batch_artifact_dir(
+        args,
+        "compact_receipt_out_dir",
+        artifact_dir,
+        "compact_receipts",
+    )
+    _fill_certify_batch_artifact_dir(
+        args,
+        "model_config_import_report_out_dir",
+        artifact_dir,
+        "model_config_import_reports",
+    )
+    _fill_certify_batch_artifact_dir(
+        args,
+        "architecture_config_import_report_out_dir",
+        artifact_dir,
+        "architecture_config_import_reports",
+    )
+    _fill_certify_batch_artifact_dir(
+        args,
+        "request_validation_report_out_dir",
+        artifact_dir,
+        "request_validation_reports",
+    )
+    _fill_certify_batch_artifact_dir(
+        args,
+        "certification_bundle_out_dir",
+        artifact_dir,
+        "certification_bundles",
+    )
+    _fill_certify_batch_artifact_dir(
+        args,
+        "certification_bundle_check_out_dir",
+        artifact_dir,
+        "certification_bundle_checks",
+    )
+    if args.report_out is None:
+        args.report_out = artifact_dir / f"{prefix}_runner_check.json"
+
+
 def _certify_artifact_paths(
     args: argparse.Namespace,
 ) -> list[tuple[str, Path, str | None]]:
@@ -826,6 +889,9 @@ def _certify_batch_summary_from_receipt(
     model_config_parameter_sources: dict[str, Any] | None = None,
     architecture_config_import_report_path: Path | None = None,
     architecture_config_parameter_sources: dict[str, Any] | None = None,
+    request_validation_report_path: Path | None = None,
+    certification_bundle_path: Path | None = None,
+    certification_bundle_check_path: Path | None = None,
     receipt_path: Path | None = None,
     compact_receipt_path: Path | None = None,
 ) -> dict[str, Any]:
@@ -852,9 +918,19 @@ def _certify_batch_summary_from_receipt(
         "architecture_config_parameter_sources": (
             architecture_config_parameter_sources
         ),
-        "request_validation_report_path": None,
-        "certification_bundle_path": None,
-        "certification_bundle_check_path": None,
+        "request_validation_report_path": (
+            None
+            if request_validation_report_path is None
+            else str(request_validation_report_path)
+        ),
+        "certification_bundle_path": (
+            None if certification_bundle_path is None else str(certification_bundle_path)
+        ),
+        "certification_bundle_check_path": (
+            None
+            if certification_bundle_check_path is None
+            else str(certification_bundle_check_path)
+        ),
         "receipt_path": None if receipt_path is None else str(receipt_path),
         "compact_receipt_path": (
             None if compact_receipt_path is None else str(compact_receipt_path)
@@ -885,6 +961,77 @@ def _certify_batch_summary_from_receipt(
             set(selected_evidence_layers.values())
         ),
     }
+
+
+def _write_certify_batch_request_sidecars(
+    args: argparse.Namespace,
+    *,
+    pack: dict[str, Any],
+    request: dict[str, Any],
+    index: int,
+    source_path: Path,
+    receipt_path: Path | None,
+    model_config_import_report: dict[str, Any] | None = None,
+    architecture_config_import_report: dict[str, Any] | None = None,
+) -> tuple[Path | None, Path | None, Path | None]:
+    request_validation_report_path = None
+    if args.request_validation_report_out_dir is not None:
+        request_validation_report_path = _certify_batch_output_path(
+            args.request_validation_report_out_dir,
+            index=index,
+            source_path=source_path,
+            suffix="request_validation",
+        )
+        _write_json_file(
+            request_validation_report_path,
+            build_contract_request_validation_report(request),
+        )
+
+    certification_bundle_path = None
+    certification_bundle_check_path = None
+    if args.certification_bundle_out_dir is not None:
+        certification_bundle_path = _certify_batch_output_path(
+            args.certification_bundle_out_dir,
+            index=index,
+            source_path=source_path,
+            suffix="certification_bundle",
+        )
+        bundle = build_contract_certification_bundle(
+            request,
+            pack=pack,
+            model_config_import_report=model_config_import_report,
+            architecture_config_import_report=architecture_config_import_report,
+            receipt_path=(
+                str(receipt_path) if receipt_path is not None else "<in-memory-receipt>"
+            ),
+            required_statuses=tuple(args.require_status),
+            required_decision_verdicts=tuple(args.require_decision),
+            required_assurance_levels=tuple(args.require_assurance),
+            require_passed=args.require_passed,
+        )
+        _write_json_file(certification_bundle_path, bundle)
+        if args.certification_bundle_check_out_dir is not None:
+            certification_bundle_check_path = _certify_batch_output_path(
+                args.certification_bundle_check_out_dir,
+                index=index,
+                source_path=source_path,
+                suffix="certification_bundle_check",
+            )
+            bundle_check = build_contract_certification_bundle_file_check_report(
+                bundle,
+                pack=pack,
+                bundle_path=str(certification_bundle_path),
+                required_statuses=tuple(args.require_status),
+                required_decision_verdicts=tuple(args.require_decision),
+                required_assurance_levels=tuple(args.require_assurance),
+                require_passed=args.require_passed,
+            )
+            _write_json_file(certification_bundle_check_path, bundle_check)
+    return (
+        request_validation_report_path,
+        certification_bundle_path,
+        certification_bundle_check_path,
+    )
 
 
 def _certify_batch_requests(args: argparse.Namespace) -> int:
@@ -934,6 +1081,19 @@ def _certify_batch_requests(args: argparse.Namespace) -> int:
                 )
                 _write_json_file(compact_receipt_path, compact_receipt)
 
+            (
+                request_validation_report_path,
+                certification_bundle_path,
+                certification_bundle_check_path,
+            ) = _write_certify_batch_request_sidecars(
+                args,
+                pack=pack,
+                request=receipt["request"],
+                index=index,
+                source_path=source_path,
+                receipt_path=receipt_path,
+            )
+
             summaries.append(
                 _certify_batch_summary_from_receipt(
                     source_type="request",
@@ -941,6 +1101,9 @@ def _certify_batch_requests(args: argparse.Namespace) -> int:
                     source=source,
                     receipt=receipt,
                     compact_receipt=compact_receipt,
+                    request_validation_report_path=request_validation_report_path,
+                    certification_bundle_path=certification_bundle_path,
+                    certification_bundle_check_path=certification_bundle_check_path,
                     receipt_path=receipt_path,
                     compact_receipt_path=compact_receipt_path,
                 )
@@ -1021,6 +1184,20 @@ def _certify_batch_requests(args: argparse.Namespace) -> int:
                 )
                 _write_json_file(compact_receipt_path, compact_receipt)
 
+            (
+                request_validation_report_path,
+                certification_bundle_path,
+                certification_bundle_check_path,
+            ) = _write_certify_batch_request_sidecars(
+                args,
+                pack=pack,
+                request=receipt["request"],
+                index=index,
+                source_path=source_path,
+                receipt_path=receipt_path,
+                model_config_import_report=import_report,
+            )
+
             summaries.append(
                 _certify_batch_summary_from_receipt(
                     source_type="model_config",
@@ -1030,6 +1207,9 @@ def _certify_batch_requests(args: argparse.Namespace) -> int:
                     compact_receipt=compact_receipt,
                     model_config_import_report_path=model_config_import_report_path,
                     model_config_parameter_sources=import_report["parameter_sources"],
+                    request_validation_report_path=request_validation_report_path,
+                    certification_bundle_path=certification_bundle_path,
+                    certification_bundle_check_path=certification_bundle_check_path,
                     receipt_path=receipt_path,
                     compact_receipt_path=compact_receipt_path,
                 )
@@ -1122,6 +1302,20 @@ def _certify_batch_requests(args: argparse.Namespace) -> int:
                     )
                     _write_json_file(compact_receipt_path, compact_receipt)
 
+                (
+                    request_validation_report_path,
+                    certification_bundle_path,
+                    certification_bundle_check_path,
+                ) = _write_certify_batch_request_sidecars(
+                    args,
+                    pack=pack,
+                    request=receipt["request"],
+                    index=architecture_index,
+                    source_path=source_path,
+                    receipt_path=receipt_path,
+                    architecture_config_import_report=import_report,
+                )
+
                 summaries.append(
                     _certify_batch_summary_from_receipt(
                         source_type="architecture_config",
@@ -1135,6 +1329,11 @@ def _certify_batch_requests(args: argparse.Namespace) -> int:
                         architecture_config_parameter_sources=import_report[
                             "parameter_sources"
                         ],
+                        request_validation_report_path=request_validation_report_path,
+                        certification_bundle_path=certification_bundle_path,
+                        certification_bundle_check_path=(
+                            certification_bundle_check_path
+                        ),
                         receipt_path=receipt_path,
                         compact_receipt_path=compact_receipt_path,
                     )
@@ -1229,6 +1428,23 @@ def contract_certify_main() -> int:
     )
     batch_parser.add_argument("--pack", type=Path, default=None)
     batch_parser.add_argument(
+        "--artifact-dir",
+        type=Path,
+        help=(
+            "Optional directory where the batch command writes receipts, "
+            "compact receipts, import reports, request-validation reports, "
+            "certification bundles, bundle checks, and the runner summary "
+            "using stable subdirectories."
+        ),
+    )
+    batch_parser.add_argument(
+        "--artifact-prefix",
+        help=(
+            "Optional filename prefix for the batch runner summary written by "
+            "--artifact-dir. Requires --artifact-dir."
+        ),
+    )
+    batch_parser.add_argument(
         "--request-file",
         "--request-json",
         dest="request_file",
@@ -1308,6 +1524,30 @@ def contract_certify_main() -> int:
         "--compact-receipt-out-dir",
         type=Path,
         help="Optional directory where compact downstream receipts are written.",
+    )
+    batch_parser.add_argument(
+        "--request-validation-report-out-dir",
+        type=Path,
+        help=(
+            "Optional directory where request preflight reports are written "
+            "for every emitted receipt."
+        ),
+    )
+    batch_parser.add_argument(
+        "--certification-bundle-out-dir",
+        type=Path,
+        help=(
+            "Optional directory where request, receipt, gate, and provenance "
+            "bundles are written for every emitted receipt."
+        ),
+    )
+    batch_parser.add_argument(
+        "--certification-bundle-check-out-dir",
+        type=Path,
+        help=(
+            "Optional directory where certification-bundle check reports are "
+            "written. Requires --certification-bundle-out-dir."
+        ),
     )
     batch_parser.add_argument(
         "--report-out",
@@ -1468,6 +1708,10 @@ def contract_certify_main() -> int:
 
     args = parser.parse_args()
     if args.command == "batch":
+        try:
+            _apply_certify_batch_artifact_dir_defaults(args)
+        except ValueError as exc:
+            batch_parser.error(str(exc))
         if (
             not args.request_file
             and not args.model_config_file
@@ -1476,6 +1720,14 @@ def contract_certify_main() -> int:
             batch_parser.error(
                 "at least one --request-file, --model-config-file, or "
                 "--architecture-config-file is required"
+            )
+        if (
+            args.certification_bundle_check_out_dir is not None
+            and args.certification_bundle_out_dir is None
+        ):
+            batch_parser.error(
+                "--certification-bundle-check-out-dir requires "
+                "--certification-bundle-out-dir"
             )
         return _certify_batch_requests(args)
     try:

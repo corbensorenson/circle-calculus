@@ -61,10 +61,8 @@ circle-ai-certify batch \
   --request-file examples/circle_ai_requests/sparse_attention_request.json \
   --model-config-file examples/circle_ai_model_configs/standard_rope_config.json \
   --architecture-config-file examples/circle_ai_architecture_configs/basic_transformer_contract_config.json \
-  --compact-receipt-out-dir reports/compact_receipts \
-  --model-config-import-report-out-dir reports/import_reports \
-  --architecture-config-import-report-out-dir reports/architecture_import_reports \
-  --report-out reports/circle_ai_runner_check.json \
+  --artifact-dir reports/circle_ai_contract_batch \
+  --artifact-prefix architecture-suite \
   --require-passed \
   --require-status proved \
   --require-decision passed \
