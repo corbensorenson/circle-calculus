@@ -5,12 +5,14 @@ use std::sync::mpsc;
 use std::thread::{self, JoinHandle};
 
 use circle_prime::{
-    effective_parallel_thread_count, prime_count_in_range, prime_count_in_range_parallel,
-    prime_count_in_range_parallel_balanced, prime_count_in_range_parallel_dynamic,
-    prime_count_in_range_presieve13, prime_count_in_range_presieve13_parallel,
-    prime_count_in_range_presieve13_with_scratch, prime_count_in_range_presieve17,
-    prime_count_in_range_presieve17_parallel, prime_count_in_range_presieve17_with_scratch,
-    prime_count_in_range_with_scratch, prime_count_shifted_single_segment_presieve13_with_scratch,
+    effective_parallel_thread_count, prime_count_adjacent_shifted_presieve13_with_scratch,
+    prime_count_adjacent_shifted_presieve17_with_scratch, prime_count_in_range,
+    prime_count_in_range_parallel, prime_count_in_range_parallel_balanced,
+    prime_count_in_range_parallel_dynamic, prime_count_in_range_presieve13,
+    prime_count_in_range_presieve13_parallel, prime_count_in_range_presieve13_with_scratch,
+    prime_count_in_range_presieve17, prime_count_in_range_presieve17_parallel,
+    prime_count_in_range_presieve17_with_scratch, prime_count_in_range_with_scratch,
+    prime_count_shifted_single_segment_presieve13_with_scratch,
     prime_count_shifted_single_segment_presieve17_with_scratch,
     prime_range_count_proof_contract_json, recommended_count_mode, recommended_count_segment_size,
     PrimeCountScratch, BASE_PRIME_CACHE_LIMIT, PARALLEL_EDGE_HIGH_OFFSET_MIN_BASE_LIMIT,
@@ -257,9 +259,9 @@ fn count_server_command(args: &[String]) -> Result<(), String> {
                     default_requested_threads,
                     default_mode,
                 )?;
+                let count = count_range_with_pool(&mut pool, &plan)
+                    .map_err(|err| format!("range sieve failed: {err:?}"))?;
                 for _ in 0..repetitions {
-                    let count = count_range_with_pool(&mut pool, &plan)
-                        .map_err(|err| format!("range sieve failed: {err:?}"))?;
                     write_count_response(&mut stdout, &plan, count, json)?;
                 }
             }
@@ -668,6 +670,64 @@ impl CountWorkerPool {
         Ok(totals)
     }
 
+    fn count_adjacent_shifted_chunks(
+        &mut self,
+        chunks: &[(u64, u64)],
+        batch_low: u64,
+        span: u64,
+        segment_size: u64,
+        mode: CountMode,
+        repetitions: usize,
+    ) -> Result<Vec<usize>, circle_prime::RangeError> {
+        let Some((&caller_chunk, worker_chunks)) = chunks.split_first() else {
+            return Ok(vec![0; repetitions]);
+        };
+
+        self.ensure_worker_count(worker_chunks.len());
+        for (worker_index, &(low, high)) in worker_chunks.iter().enumerate() {
+            self.senders[worker_index]
+                .send(CountWorkerCommand::AdjacentShiftedCount {
+                    batch_low,
+                    span,
+                    low,
+                    high,
+                    segment_size,
+                    mode,
+                    repetitions,
+                })
+                .map_err(|_| circle_prime::RangeError::WorkerPanic)?;
+        }
+
+        let mut totals = count_adjacent_shifted_range_with_mode_scratch(
+            batch_low,
+            span,
+            caller_chunk.0,
+            caller_chunk.1,
+            segment_size,
+            mode,
+            repetitions,
+            &mut self.caller_scratch,
+        )?;
+        for _ in worker_chunks {
+            match self
+                .result_receiver
+                .recv()
+                .map_err(|_| circle_prime::RangeError::WorkerPanic)??
+            {
+                CountWorkerReply::Shifted(counts) => {
+                    if counts.len() != totals.len() {
+                        return Err(circle_prime::RangeError::WorkerPanic);
+                    }
+                    for (total, count) in totals.iter_mut().zip(counts) {
+                        *total += count;
+                    }
+                }
+                CountWorkerReply::Count(_) => return Err(circle_prime::RangeError::WorkerPanic),
+            }
+        }
+        Ok(totals)
+    }
+
     fn ensure_worker_count(&mut self, worker_count: usize) {
         while self.senders.len() < worker_count {
             let (sender, receiver) = mpsc::channel();
@@ -704,6 +764,15 @@ enum CountWorkerCommand {
         mode: CountMode,
         repetitions: usize,
         shift: u64,
+    },
+    AdjacentShiftedCount {
+        batch_low: u64,
+        span: u64,
+        low: u64,
+        high: u64,
+        segment_size: u64,
+        mode: CountMode,
+        repetitions: usize,
     },
     Stop,
 }
@@ -745,6 +814,27 @@ fn count_worker_loop(
                     mode,
                     repetitions,
                     shift,
+                    &mut scratch,
+                );
+                let _ = result_sender.send(result.map(CountWorkerReply::Shifted));
+            }
+            CountWorkerCommand::AdjacentShiftedCount {
+                batch_low,
+                span,
+                low,
+                high,
+                segment_size,
+                mode,
+                repetitions,
+            } => {
+                let result = count_adjacent_shifted_range_with_mode_scratch(
+                    batch_low,
+                    span,
+                    low,
+                    high,
+                    segment_size,
+                    mode,
+                    repetitions,
                     &mut scratch,
                 );
                 let _ = result_sender.send(result.map(CountWorkerReply::Shifted));
@@ -824,6 +914,37 @@ fn count_shifted_with_pool(
     let (_, final_high) = shifted_bounds(plan.low, plan.high, shift, repetitions - 1)?;
     if (final_high - 1).isqrt() > BASE_PRIME_CACHE_LIMIT {
         return Ok(None);
+    }
+    let span = plan.high - plan.low;
+    if shift == span {
+        if plan.threads <= 1 {
+            return count_adjacent_shifted_range_with_mode_scratch(
+                plan.low,
+                span,
+                plan.low,
+                final_high,
+                plan.segment_size,
+                plan.mode,
+                repetitions,
+                &mut pool.caller_scratch,
+            )
+            .map(Some);
+        }
+
+        let chunks = split_range_evenly(plan.low, final_high, plan.threads);
+        if chunks.len() <= 1 {
+            return Ok(None);
+        }
+        return pool
+            .count_adjacent_shifted_chunks(
+                &chunks,
+                plan.low,
+                span,
+                plan.segment_size,
+                plan.mode,
+                repetitions,
+            )
+            .map(Some);
     }
     if plan.threads <= 1 {
         return count_shifted_range_with_mode_scratch(
@@ -933,6 +1054,74 @@ fn count_shifted_range_with_mode_scratch(
     Ok(counts)
 }
 
+fn count_adjacent_shifted_range_with_mode_scratch(
+    batch_low: u64,
+    span: u64,
+    range_low: u64,
+    range_high: u64,
+    segment_size: u64,
+    mode: CountMode,
+    repetitions: usize,
+    scratch: &mut PrimeCountScratch,
+) -> Result<Vec<usize>, circle_prime::RangeError> {
+    match mode {
+        CountMode::Presieve13 => {
+            if let Some(counts) = prime_count_adjacent_shifted_presieve13_with_scratch(
+                batch_low,
+                span,
+                repetitions,
+                range_low,
+                range_high,
+                segment_size,
+                scratch,
+            )? {
+                return Ok(counts);
+            }
+        }
+        CountMode::Presieve17 => {
+            if let Some(counts) = prime_count_adjacent_shifted_presieve17_with_scratch(
+                batch_low,
+                span,
+                repetitions,
+                range_low,
+                range_high,
+                segment_size,
+                scratch,
+            )? {
+                return Ok(counts);
+            }
+        }
+        CountMode::Segmented | CountMode::Balanced | CountMode::Dynamic => {}
+    }
+
+    let mut counts = vec![0; repetitions];
+    for index in 0..repetitions {
+        let bin_low = batch_low
+            .checked_add(
+                span.checked_mul(
+                    u64::try_from(index).map_err(|_| circle_prime::RangeError::SegmentTooLarge)?,
+                )
+                .ok_or(circle_prime::RangeError::SegmentTooLarge)?,
+            )
+            .ok_or(circle_prime::RangeError::SegmentTooLarge)?;
+        let bin_high = bin_low
+            .checked_add(span)
+            .ok_or(circle_prime::RangeError::SegmentTooLarge)?;
+        let overlap_low = range_low.max(bin_low);
+        let overlap_high = range_high.min(bin_high);
+        if overlap_low < overlap_high {
+            counts[index] = count_range_with_mode_scratch(
+                overlap_low,
+                overlap_high,
+                segment_size,
+                mode,
+                scratch,
+            )?;
+        }
+    }
+    Ok(counts)
+}
+
 fn count_range_with_mode_scratch(
     low: u64,
     high: u64,
@@ -1021,7 +1210,7 @@ fn usage() -> String {
         "  circle-prime-count count-server [--json] [--segment-size N] [--threads N] [--count-mode MODE]",
         "",
         "count-server request: LOW HIGH or LOW HIGH SEGMENT_SIZE THREADS MODE",
-        "count-server repeat request: repeat COUNT LOW HIGH [SEGMENT_SIZE THREADS MODE]",
+        "count-server repeat request: repeat COUNT LOW HIGH [SEGMENT_SIZE THREADS MODE] (replays the same computed response)",
         "count-server shifted request: shifted COUNT SHIFT LOW HIGH [SEGMENT_SIZE THREADS MODE]",
         "count modes: default, segmented, balanced, dynamic, presieve13, presieve17",
     ]

@@ -1737,7 +1737,10 @@ mod tests {
             .and_then(|raw| raw.parse::<u32>().ok())
             .unwrap_or(200);
         let cases = [
-            ("mersenne_127_prime", (BigUint::one() << 127usize) - BigUint::one()),
+            (
+                "mersenne_127_prime",
+                (BigUint::one() << 127usize) - BigUint::one(),
+            ),
             (
                 "curve25519_prime",
                 (BigUint::one() << 255usize) - BigUint::from(19u64),
@@ -1746,7 +1749,10 @@ mod tests {
                 "secp256k1_prime",
                 (BigUint::one() << 256usize) - (BigUint::one() << 32usize) - BigUint::from(977u64),
             ),
-            ("mersenne_521_prime", (BigUint::one() << 521usize) - BigUint::one()),
+            (
+                "mersenne_521_prime",
+                (BigUint::one() << 521usize) - BigUint::one(),
+            ),
         ];
 
         for (name, n) in cases {
@@ -1906,8 +1912,7 @@ mod tests {
     #[test]
     fn bpsw_fuzzy_big_value_uses_small_start_hybrid_fast_path() {
         let start = BigUint::one() << 127usize;
-        let value =
-            big_fuzzy_bpsw_any_prime_value(&zero_model(128), &start, 128, 8, 32).unwrap();
+        let value = big_fuzzy_bpsw_any_prime_value(&zero_model(128), &start, 128, 8, 32).unwrap();
         assert_eq!(
             value,
             Some(parse_biguint("170141183460469231731687303715884105757").unwrap())

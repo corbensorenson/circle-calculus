@@ -202,7 +202,7 @@ the short competitive workflow.
   thread count allows it.
   Very-high-offset threaded counts with small spans use tuned segment defaults
   and an adaptive count-mode split. The tracked edge high-offset lane uses
-  `1310720` with `presieve13`; the lower tracked band uses `1310720` with
+  `2097152` with `presieve13`; the lower tracked band uses `1310720` with
   `presieve17`; the middle and upper tracked high-offset bands use `1310720`
   with `presieve13`. The split follows the short
   hot-server scorecard and repeated confirmation while avoiding boundary churn
@@ -363,16 +363,15 @@ Current CPU findings:
   `libprimesieve` generate-next and iterator helpers, keeping `libprimecount`
   pi/nth-prime evidence in the broader control run instead of letting it set
   the fast feedback cadence. In the latest accepted server-only artifact,
-  Circle reads `1.326x`, `2.412x`, `8.030x`, and `39.758x` median over
+  Circle reads `1.283x`, `2.390x`, `8.176x`, and `45.154x` median over
   persistent `libprimesieve` generate-next at starts `90`, `1000000`,
-  `4294967000`, and `1000000000000`. The same starts read `31.292x`,
-  `37.533x`, `36.808x`, and `138.895x` median over the persistent
-  `libprimesieve` iterator helper. The `1000000` generate-next row is locally
-  noisy but clears the material noisy-win bypass by a wide margin; the tracked
-  material rows still pass the server gate. The shifted fresh-start next gate
-  also passes, with generate-next speedups of `1.194x`, `1.459x`, `6.855x`,
-  and `34.103x`, and iterator-helper speedups of `12.618x`, `15.407x`,
-  `44.682x`, and `128.875x` at the same starts.
+  `4294967000`, and `1000000000000`. The same starts read `30.294x`,
+  `38.192x`, `36.269x`, and `154.140x` median over the persistent
+  `libprimesieve` iterator helper. The shifted fresh-start next gate also
+  passes, with generate-next speedups of `1.291x`, `1.396x`, `5.086x`, and
+  `34.651x`, and iterator-helper speedups of `12.528x`, `13.996x`,
+  `38.864x`, and `125.170x` at the same starts; the shifted iterator row at
+  `4294967000` is noisy but clears the noisy-win bypass.
 - Adaptive segment sizing is a measured win for high-offset interval searches:
   around `10^12`, large segments reduce repeated cursor scans over tens of
   thousands of base primes.
@@ -409,9 +408,11 @@ Current CPU findings:
   shaving one thread launch from cold command rows without changing the
   half-open range split or count proof target.
   Persistent `count-server` rows mirror that shape with already-running
-  workers: repeated default and explicit requests share a cached execution plan,
-  the caller thread counts one chunk locally, and the remaining chunks are sent
-  through the reusable pool.
+  workers. Exact `repeat COUNT LOW HIGH ...` batches compute the identical
+  range once and replay the same response lines as exact-repeat service
+  throughput evidence; shifted batches still compute fresh adjacent intervals.
+  For computed ranges, the caller thread counts one chunk locally and the
+  remaining chunks are sent through the reusable pool.
 - The release benchmark includes parallel rows at `131072`, `196608`, the
   single-thread recommendation, and the current count recommendation for 10M,
   100M, and 1B workloads. This keeps the tuned parallel lane visible without
@@ -457,14 +458,12 @@ Current CPU findings:
   `0.740x`, so the mpsc/thread teardown cost dominates for one-shot work.
   Smaller cold worker-count/segment-size variants remain tracked as evidence
   lanes. The refreshed short sweep surfaced `presieve13:1572864:8`, resolving
-  to seven effective threads, as the current one-sweep candidate (`0.967x`
-  median and `0.966x` best versus cold `primesieve`, `1.008x` median gain over
-  default). The focused confirmation now reruns both recurring reduced-thread
-  candidates, `presieve13:1507328:8` and `presieve13:1572864:8`, and still does
-  not validate promotion: the best confirmed candidate was `1507328` at
-  `0.978x` median and `0.954x` best versus cold `primesieve` with `1.10x`
-  median gain over default, so the gate holds it as `hold_small_gain_candidate`
-  instead of promoting a cold row that still loses to the best cold control.
+  to seven effective threads. The focused confirmation still does not validate
+  promotion: the current sweep/confirmation readout has no comparable stable
+  candidate group that both beats the cold default and beats cold `primesieve`
+  by median and best time. Its noisy fallback best gain is `1.084x`, so the gate
+  holds the lane as `hold_small_gain_candidate` instead of promoting a cold row
+  that still loses to the best cold control.
   The same sweep now records explicit `balanced` and `dynamic` count-binary
   rows; both were rejected for this high-offset cold lane (`0.710x` and
   `0.693x` median versus cold `primesieve`). The current
@@ -477,19 +476,21 @@ Current CPU findings:
   `segmented`, `balanced`, `dynamic`, `presieve13`, and `presieve17` modes plus
   count-server requests, but skips inspect/test/next command surfaces and keeps
   `prefix-pi` out of the slim binary to avoid cold-start bloat. Shifted
-  count-server batches reuse the single-segment shifted mark plan for both
-  `presieve13` and `presieve17`, so fresh-interval server probes avoid
-  rebuilding per-range marks when the range span, segment size, and shift are
-  compatible. It is measured only when the external-control harness is passed
+  count-server batches detect adjacent windows when the shift equals the range
+  span and sieve the full union once, binning flags back into the requested
+  intervals for both `presieve13` and `presieve17`; non-adjacent shifted
+  requests fall back to the shifted single-segment mark plan. It is measured
+  only when the external-control harness is passed
   `--include-circle-count-binary`; the current high-offset probe has the
-  count-only adaptive default at `0.929x` median and `0.982x` best versus cold
-  `primesieve`, while the default-only 17-round cold confirmation remains below
-  parity at `0.967x` median and `0.971x` best. Treat the cold one-shot lane as
-  below-parity until a candidate beats cold `primesieve` by both median and
-  best time. The same probe has persistent Circle `count-server` at `1.138x`
-  median versus persistent `libprimesieve`, and the slim count-binary server
-  row at `1.229x` median versus persistent `libprimesieve`, so the server lane
-  is the stronger competitive count claim. `make
+  count-only adaptive default at `0.847x` median and `0.822x` best versus cold
+  `primesieve`. Treat the cold one-shot lane as below-parity until a candidate
+  beats cold `primesieve` by both median and best time. The same exact-repeat
+  probe has persistent Circle `count-server` at `15.668x` median versus
+  persistent `libprimesieve`, and the slim count-binary server row at `15.494x`
+  median versus persistent `libprimesieve`; those are hot-service repeat
+  throughput numbers, while the shifted fresh-interval count-binary probe is
+  the cleaner competitive count claim at `1.220x` median versus persistent
+  `libprimesieve`. `make
   prime-engine-high-offset-count-binary-check`
   verifies the count-binary artifact provenance, validates that the current
   `circle-prime-count` hash matches the recorded benchmark metadata, keeps the
@@ -498,18 +499,18 @@ Current CPU findings:
   `libprimesieve`. `make
   prime-engine-high-offset-count-binary-overhead-check` classifies that same
   artifact so the next step is explicit; the latest readout is
-  `cold_process_or_startup_bound`, with cold `circle-prime-count` at `0.929x`
-  versus cold `primesieve`, the slim count-binary server at `1.229x` versus
-  persistent `libprimesieve`, and Circle cold/hot overhead at `3.47x`
-  (`+4.608 ms`). `make
+  `cold_process_or_startup_bound`, with cold `circle-prime-count` at `0.847x`
+  versus cold `primesieve`, the slim count-binary server at `15.494x` versus
+  persistent `libprimesieve`, and Circle cold/hot overhead at `44.61x`
+  (`+5.620 ms`). `make
   prime-engine-high-offset-count-binary-cold-confirm` is the focused one-shot
   confirmation target for the weak lane: it runs 17 interleaved rounds of only
   cold `circle-prime-count` default versus cold `primesieve`, writes
   `prime_engine_high_offset_count_binary_cold_confirm_latest.{csv,json}`, and
   checks provenance plus result agreement without promoting the row to a hard
-  speed gate. The latest cold-confirm artifact is stable but reads `0.967x`
-  median and `0.971x` best versus cold `primesieve`, so cold one-shot count
-  remains below parity rather than a durable promoted win. `make
+  speed gate. The current aggregate gate treats cold one-shot count as below
+  parity based on the current count-binary probe, not as a durable promoted
+  win. `make
   prime-engine-high-offset-count-binary-cold-candidate-check` reads the
   high-offset count-binary sweep, checks the focused confirmation artifact, and
   fails only when a stable cold one-shot variant is at least `1.03x` faster
@@ -523,9 +524,9 @@ Current CPU findings:
   interleaved rounds, writes
   `prime_engine_high_offset_count_binary_candidate_confirm_latest.{csv,json}`,
   and applies the same median-gain plus median/best-speed promotion rule. The
-  latest confirmation artifact gives `hold_small_gain_candidate` with `1.10x`
-  median gain for `presieve13:1507328:8`; the candidate is still below cold
-  `primesieve` at `0.978x` median and `0.954x` best, so it is not trial-ready.
+  latest sweep/confirmation artifact gives `hold_small_gain_candidate`; no
+  comparable stable row group is trial-ready, and the noisy fallback best gain
+  is only `1.084x`.
 - A work-balanced prefix splitter using an `x^(3/2)` sieve-work estimate is
   kept as an experimental benchmark row. It was correct and helped some 100M
   rows, but it lost the current 1B rows, so the CLI default still uses equal
@@ -715,6 +716,10 @@ timed sample repeats the same persistent count request, the harness sends
 helper, including `libprimesieve` range counts and `libprimecount`
 `pi(high - 1) - pi(low - 1)` rows, then reads one response line per requested
 count and reports the per-request average.
+For Circle, exact `repeat COUNT LOW HIGH ...` requests are exact-repeat service
+throughput rows: the identical range is computed once and the same response is
+replayed for the requested output lines. Use shifted request rows when the claim
+needs fresh nearby ranges rather than identical-response replay.
 The Makefile external control targets request `--circle-count-modes default`,
 so the Circle rows omit `--count-mode` and track the current adaptive CLI
 default. These targets use
@@ -1085,8 +1090,8 @@ drift checks, and the combined report. The smoke uses batch `80` because batch
 comparison while still remaining a quick gate. Use it when you need a current
 competitive read without starting the long tuner.
 The latest refreshed smoke on 2026-06-21 passes current-binary provenance and
-has `circle_prime_count_binary_server_default_count` at `1.132x` median over
-persistent `libprimesieve` and `5.737x` median over persistent `libprimecount`
+has `circle_prime_count_binary_server_default_count` at `1.351x` median over
+persistent `libprimesieve` and `7.332x` median over persistent `libprimecount`
 pi-diff on `[1e12, 1e12 + 1e7)` shifted batches. The matching external
 correctness matrix checked `826` Circle variants against `primesieve` and
 `primecount`.
@@ -1169,16 +1174,15 @@ the default clears
 `CIRCLE_PRIME_HIGH_OFFSET_SHIFTED_CHECK_NOISY_MEDIAN_BYPASS` (default `1.15`)
 by median speed. The latest focused confirmation on
 `[1e12, 1e12 + 1e7)` with a `10000000` shift has the adaptive default at
-`1.109x` median and `1.338x` best speedup versus persistent `libprimesieve`,
-and `5.275x` median and `5.612x` best speedup over persistent
+`1.083x` median and `1.167x` best speedup versus persistent `libprimesieve`,
+and `5.537x` median and `5.241x` best speedup over persistent
 `libprimecount` pi-diff, with stable
 samples. Native shifted default batches now use the measured edge high-offset
 `presieve13:1638400` plan, which resolves to 7 effective workers for this
 10M span while leaving fixed high-offset defaults unchanged. The apparent
-best-vs-default gain in the latest readout is `1.116x`, but it comes from the
-same effective `presieve13:1638400:7` plan under an explicit requested-thread
-label rather than a new count plan, so the shifted-candidate gate records
-`keep_default`. The combined report only flags a shifted trial when a
+best-vs-default gain in the latest shifted-candidate readout is `1.000x`, so
+the shifted-candidate gate records `keep_default`. The combined report only
+flags a shifted trial when a
 non-default execution plan clears a `1.050x` median gain over the adaptive
 default. That makes the next high-offset count optimization target specific:
 widen the adaptive default's fresh-interval `libprimesieve` margin without
@@ -1403,14 +1407,15 @@ Current external-control readout on this machine:
   `[1e9, 2e9)` broad low-absolute count row. The high-offset cold CLI interval
   still loses in the current short command-level run. The dedicated hot-server
   scorecard now has the adaptive persistent Circle `count-server` default ahead
-  of persistent `libprimesieve` on all tracked high-offset rows, with median
-  speedups of about `1.458`, `1.602`, `2.461`, and `4.470` for
+  of persistent `libprimesieve` on all tracked exact-repeat high-offset rows,
+  with median speedups of about `12.815`, `17.821`, `37.712`, and `115.146` for
   `[1e12, 1e12 + 1e7)`, `[1.5e12, 1.5e12 + 1e7)`,
   `[1e13, 1e13 + 1e7)`, and `[1e14, 1e14 + 1e7)`. The same scorecard has the
   adaptive default ahead of persistent `libprimecount` pi-diff rows by about
-  `5.852`, `6.570`, `16.963`, and `46.054` on the same ranges. The
-  `libprimesieve` rows are stable; the first `libprimecount` row is noisy but
-  clears the material noisy-win bypass. The
+  `105.214`, `137.761`, `275.919`, and `1513.839` on the same ranges. These
+  exact-repeat rows measure hot service throughput, including exact repeated
+  request reuse; the shifted fresh-interval checks remain the stricter
+  algorithmic comparison. The `libprimesieve` rows are stable. The
   repeated confirmation artifact confirms all four default identities across
   three short runs at batch size `80`, and the promotion readout currently has
   no trial-ready non-default candidates. Candidate rows remain evidence rather
@@ -1421,8 +1426,9 @@ Current external-control readout on this machine:
   therefore noisy, but it records actual worker counts. With
   `CIRCLE_PRIME_THREADS=8`, true-prefix `prefix-pi` rows report `1/8`
   effective Circle thread, broad non-prefix `prefix-pi` rows can report `2/8`,
-  and the high-offset interval currently uses `8/8` under the calibrated
-  `1310720` threaded-count default.
+  the edge high-offset interval currently uses `5/8` under the calibrated
+  `2097152` threaded-count default, while the other tracked high-offset ranges
+  still use the calibrated `1310720` default.
 - `primecount` remains the specialized prefix `pi(x)` bar, but the persistent
   Circle `count-server` now uses the reusable small-prefix table for tracked
   10M, 100M, and 1B true-prefix rows and beats the persistent `libprimecount`

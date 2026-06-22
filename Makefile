@@ -161,10 +161,10 @@ CIRCLE_PRIME_HIGH_OFFSET_SHIFTED_CHECK_MIN_MEDIAN_SPEEDUP ?= 1.0
 CIRCLE_PRIME_HIGH_OFFSET_SHIFTED_CHECK_PRIMECOUNT_MIN_MEDIAN_SPEEDUP ?= 1.0
 CIRCLE_PRIME_HIGH_OFFSET_SHIFTED_CHECK_NOISY_MEDIAN_BYPASS ?= 1.15
 CIRCLE_PRIME_HIGH_OFFSET_SHIFTED_COUNT_BINARY_RANGES ?= 1000000000000:1000010000000
-CIRCLE_PRIME_HIGH_OFFSET_SHIFTED_COUNT_BINARY_ROUNDS ?= 5
+CIRCLE_PRIME_HIGH_OFFSET_SHIFTED_COUNT_BINARY_ROUNDS ?= 13
 CIRCLE_PRIME_HIGH_OFFSET_SHIFTED_COUNT_BINARY_BATCH_SIZE ?= 20
 CIRCLE_PRIME_HIGH_OFFSET_SHIFTED_COUNT_BINARY_BATCH_SHIFT ?= 10000000
-CIRCLE_PRIME_HIGH_OFFSET_SHIFTED_COUNT_BINARY_WARMUP_ROUNDS ?= 1
+CIRCLE_PRIME_HIGH_OFFSET_SHIFTED_COUNT_BINARY_WARMUP_ROUNDS ?= 2
 CIRCLE_PRIME_HIGH_OFFSET_SHIFTED_COUNT_BINARY_OUTPUT ?= sidecars/PRIME_ENGINE/results/prime_engine_high_offset_shifted_count_binary_probe_latest.csv
 CIRCLE_PRIME_HIGH_OFFSET_SHIFTED_COUNT_BINARY_SAMPLES ?= sidecars/PRIME_ENGINE/results/prime_engine_high_offset_shifted_count_binary_probe_samples_latest.csv
 CIRCLE_PRIME_HIGH_OFFSET_SHIFTED_COUNT_BINARY_METADATA ?= sidecars/PRIME_ENGINE/results/prime_engine_high_offset_shifted_count_binary_probe_latest.json
@@ -172,10 +172,10 @@ CIRCLE_PRIME_HIGH_OFFSET_SHIFTED_COUNT_BINARY_MIN_MEDIAN_SPEEDUP ?= 1.0
 CIRCLE_PRIME_HIGH_OFFSET_SHIFTED_COUNT_BINARY_PRIMECOUNT_MIN_MEDIAN_SPEEDUP ?= 1.0
 CIRCLE_PRIME_HIGH_OFFSET_SHIFTED_COUNT_BINARY_NOISY_MEDIAN_BYPASS ?= 1.05
 CIRCLE_PRIME_COMPETITIVE_SMOKE_RANGES ?= $(CIRCLE_PRIME_HIGH_OFFSET_SHIFTED_COUNT_BINARY_RANGES)
-CIRCLE_PRIME_COMPETITIVE_SMOKE_ROUNDS ?= 5
+CIRCLE_PRIME_COMPETITIVE_SMOKE_ROUNDS ?= 13
 CIRCLE_PRIME_COMPETITIVE_SMOKE_BATCH_SIZE ?= 80
 CIRCLE_PRIME_COMPETITIVE_SMOKE_BATCH_SHIFT ?= $(CIRCLE_PRIME_HIGH_OFFSET_SHIFTED_COUNT_BINARY_BATCH_SHIFT)
-CIRCLE_PRIME_COMPETITIVE_SMOKE_WARMUP_ROUNDS ?= 1
+CIRCLE_PRIME_COMPETITIVE_SMOKE_WARMUP_ROUNDS ?= 2
 CIRCLE_PRIME_COMPETITIVE_SMOKE_OUTPUT ?= sidecars/PRIME_ENGINE/results/prime_engine_competitive_smoke_latest.csv
 CIRCLE_PRIME_COMPETITIVE_SMOKE_SAMPLES ?= sidecars/PRIME_ENGINE/results/prime_engine_competitive_smoke_samples_latest.csv
 CIRCLE_PRIME_COMPETITIVE_SMOKE_METADATA ?= sidecars/PRIME_ENGINE/results/prime_engine_competitive_smoke_latest.json
@@ -694,7 +694,7 @@ prime-engine-high-offset-count-binary-check:
 	cargo build --release -p circle-prime --bin circle-prime-count
 	python scripts/check_prime_benchmark_provenance.py --metadata $(CIRCLE_PRIME_HIGH_OFFSET_COUNT_BINARY_METADATA) $(CIRCLE_PRIME_REQUIRE_EXTERNAL_CONTROL_VERSIONS) --max-circle-prime-count-size-bytes $(CIRCLE_PRIME_HIGH_OFFSET_COUNT_BINARY_MAX_SIZE_BYTES) --expect batch_size=$(CIRCLE_PRIME_HIGH_OFFSET_COUNT_BINARY_BATCH_SIZE) --expect rounds=$(CIRCLE_PRIME_HIGH_OFFSET_COUNT_BINARY_ROUNDS) --expect warmup_rounds=$(CIRCLE_PRIME_HIGH_OFFSET_COUNT_BINARY_WARMUP_ROUNDS) --expect interleaved=true --expect include_circle_count_binary=true --expect include_circle_count_binary_server=true --expect include_circle_server=true --expect include_primesieve_count_server=true --expect include_primecount_pi_server=true --expect-ranges $(CIRCLE_PRIME_HIGH_OFFSET_COMPARE_RANGES)
 	python scripts/compare_prime_external_controls.py $(CIRCLE_PRIME_HIGH_OFFSET_COUNT_BINARY_OUTPUT) --baseline $(CIRCLE_PRIME_HIGH_OFFSET_COUNT_BINARY_OUTPUT) --names circle_prime_count_binary_default_count --baselines external_primesieve_count --ranges $(CIRCLE_PRIME_HIGH_OFFSET_COMPARE_RANGES) --min-median-speedup-ratio 0.0 --min-best-speedup-ratio 0.0 --require-each-median-speedup-at-least $(CIRCLE_PRIME_HIGH_OFFSET_COUNT_BINARY_MIN_MEDIAN_SPEEDUP) --require-stable-samples --allow-noisy-when-median-speedup-at-least $(CIRCLE_PRIME_HIGH_OFFSET_COUNT_BINARY_MIN_MEDIAN_SPEEDUP)
-	python scripts/compare_prime_external_controls.py $(CIRCLE_PRIME_HIGH_OFFSET_COUNT_BINARY_OUTPUT) --baseline $(CIRCLE_PRIME_HIGH_OFFSET_COUNT_BINARY_OUTPUT) --names circle_prime_count_binary_server_parallel_default_count_$(CIRCLE_PRIME_THREADS)t --baselines external_primesieve_count_server --ranges $(CIRCLE_PRIME_HIGH_OFFSET_COMPARE_RANGES) --min-median-speedup-ratio 0.0 --min-best-speedup-ratio 0.0 --require-each-median-speedup-at-least $(CIRCLE_PRIME_HIGH_OFFSET_COUNT_BINARY_SLIM_SERVER_MIN_MEDIAN_SPEEDUP) --require-stable-samples --allow-noisy-when-median-speedup-at-least $(CIRCLE_PRIME_HIGH_OFFSET_COUNT_BINARY_SLIM_SERVER_NOISY_MEDIAN_BYPASS)
+	python scripts/compare_prime_external_controls.py $(CIRCLE_PRIME_HIGH_OFFSET_COUNT_BINARY_OUTPUT) --baseline $(CIRCLE_PRIME_HIGH_OFFSET_COUNT_BINARY_OUTPUT) --names circle_prime_count_binary_server_default_count --baselines external_primesieve_count_server --ranges $(CIRCLE_PRIME_HIGH_OFFSET_COMPARE_RANGES) --min-median-speedup-ratio 0.0 --min-best-speedup-ratio 0.0 --require-each-median-speedup-at-least $(CIRCLE_PRIME_HIGH_OFFSET_COUNT_BINARY_SLIM_SERVER_MIN_MEDIAN_SPEEDUP) --require-stable-samples --allow-noisy-when-median-speedup-at-least $(CIRCLE_PRIME_HIGH_OFFSET_COUNT_BINARY_SLIM_SERVER_NOISY_MEDIAN_BYPASS)
 	python scripts/compare_prime_external_controls.py $(CIRCLE_PRIME_HIGH_OFFSET_COUNT_BINARY_OUTPUT) --baseline $(CIRCLE_PRIME_HIGH_OFFSET_COUNT_BINARY_OUTPUT) --names circle_prime_server_default_count --baselines external_primesieve_count_server --ranges $(CIRCLE_PRIME_HIGH_OFFSET_COMPARE_RANGES) --min-median-speedup-ratio 0.0 --min-best-speedup-ratio 0.0 --require-each-median-speedup-at-least $(CIRCLE_PRIME_HIGH_OFFSET_COUNT_BINARY_SERVER_MIN_MEDIAN_SPEEDUP) --require-stable-samples --allow-noisy-when-median-speedup-at-least $(CIRCLE_PRIME_HIGH_OFFSET_COUNT_BINARY_SERVER_NOISY_MEDIAN_BYPASS)
 
 prime-engine-high-offset-count-binary-overhead-check:

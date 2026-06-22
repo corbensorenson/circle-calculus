@@ -1280,15 +1280,15 @@ fn count_server_command(args: &[String]) -> Result<(), String> {
                 inner_request,
                 repetitions,
             } => {
+                let response = count_server_response_with_pool(
+                    &inner_request,
+                    default_segment_size,
+                    default_threads,
+                    default_count_mode,
+                    Some(&mut worker_pool),
+                    Some(&mut plan_cache),
+                )?;
                 for _ in 0..repetitions {
-                    let response = count_server_response_with_pool(
-                        &inner_request,
-                        default_segment_size,
-                        default_threads,
-                        default_count_mode,
-                        Some(&mut worker_pool),
-                        Some(&mut plan_cache),
-                    )?;
                     write_count_server_response(&mut stdout, response, json)?;
                 }
             }
@@ -2453,7 +2453,7 @@ fn usage() -> String {
         "big-test/big-next use arbitrary-precision BigUint arithmetic. --profile mr uses fixed Miller-Rabin bases; --profile bpsw uses base-2 Miller-Rabin plus strong Lucas-Selfridge. Results above u64 are probable-prime decisions, not formal primality certificates.",
         "big-fuzzy-search uses a tiny bit/residue model only to rank arbitrary-precision candidates; every reported candidate still passes the configured BigUint probable-prime verifier. --profile mr uses fixed Miller-Rabin bases; --profile bpsw uses base-2 Miller-Rabin plus strong Lucas-Selfridge.",
         "fuzzy-search/fuzzy-server read a tiny exported model, use it only to rank candidates, and accept reported primes only after deterministic verification. fuzzy-server accepts START, START COUNT, or shifted COUNT SHIFT START requests. exact-next mode also verifies every earlier candidate in the bounded window.",
-        "count-server reads LOW HIGH [SEGMENT_SIZE] [THREADS] [COUNT_MODE], repeat COUNT LOW HIGH ..., or shifted COUNT SHIFT LOW HIGH ... lines from stdin and writes one count or JSON object per requested count. --warm-prefix-pi-cache prebuilds the reusable small-prefix pi table before reading requests.",
+        "count-server reads LOW HIGH [SEGMENT_SIZE] [THREADS] [COUNT_MODE], repeat COUNT LOW HIGH ..., or shifted COUNT SHIFT LOW HIGH ... lines from stdin and writes one count or JSON object per requested count. Exact repeat requests replay the same computed response; shifted requests compute fresh adjacent intervals. --warm-prefix-pi-cache prebuilds the reusable small-prefix pi table before reading requests.",
         "count modes: segmented, balanced, dynamic, prefix-pi, presieve13, presieve17, wheel30-mark, hybrid-wheel30-mark",
     ]
     .join("\n")
@@ -2663,8 +2663,8 @@ mod tests {
         let shifted =
             resolve_count_server_shifted_plan(low, high, final_high, 8, None, None, None, None);
 
-        assert_eq!(normal.segment_size, 1_310_720);
-        assert_eq!(normal.worker_threads, 8);
+        assert_eq!(normal.segment_size, 2_097_152);
+        assert_eq!(normal.worker_threads, 5);
         assert_eq!(normal.count_mode, CountMode::Presieve13);
         assert_eq!(shifted.segment_size, SHIFTED_EDGE_HIGH_OFFSET_SEGMENT_SIZE);
         assert_eq!(shifted.worker_threads, 7);

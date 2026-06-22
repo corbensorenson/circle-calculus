@@ -870,6 +870,29 @@ pub fn prime_count_shifted_single_segment_presieve13_with_scratch(
     )
 }
 
+pub fn prime_count_adjacent_shifted_presieve13_with_scratch(
+    batch_low: u64,
+    span: u64,
+    repetitions: usize,
+    range_low: u64,
+    range_high: u64,
+    segment_size: u64,
+    scratch: &mut PrimeCountScratch,
+) -> Result<Option<Vec<usize>>, RangeError> {
+    prime_count_adjacent_shifted_presieved_with_scratch(
+        batch_low,
+        span,
+        repetitions,
+        range_low,
+        range_high,
+        segment_size,
+        scratch,
+        13,
+        17,
+        refill_presieved13_odd_flags,
+    )
+}
+
 pub fn prime_count_shifted_single_segment_presieve17_with_scratch(
     low: u64,
     high: u64,
@@ -889,6 +912,140 @@ pub fn prime_count_shifted_single_segment_presieve17_with_scratch(
         19,
         refill_presieved17_odd_flags,
     )
+}
+
+pub fn prime_count_adjacent_shifted_presieve17_with_scratch(
+    batch_low: u64,
+    span: u64,
+    repetitions: usize,
+    range_low: u64,
+    range_high: u64,
+    segment_size: u64,
+    scratch: &mut PrimeCountScratch,
+) -> Result<Option<Vec<usize>>, RangeError> {
+    prime_count_adjacent_shifted_presieved_with_scratch(
+        batch_low,
+        span,
+        repetitions,
+        range_low,
+        range_high,
+        segment_size,
+        scratch,
+        17,
+        19,
+        refill_presieved17_odd_flags,
+    )
+}
+
+fn prime_count_adjacent_shifted_presieved_with_scratch(
+    batch_low: u64,
+    span: u64,
+    repetitions: usize,
+    mut range_low: u64,
+    range_high: u64,
+    segment_size: u64,
+    scratch: &mut PrimeCountScratch,
+    presieved_through: u64,
+    min_low: u64,
+    refill_flags: fn(&mut Vec<u8>, u64, usize),
+) -> Result<Option<Vec<usize>>, RangeError> {
+    if segment_size == 0 {
+        return Err(RangeError::SegmentSizeZero);
+    }
+    if repetitions == 0 {
+        return Ok(Some(Vec::new()));
+    }
+    if span == 0 {
+        return Ok(None);
+    }
+    let batch_span = span
+        .checked_mul(u64::try_from(repetitions).map_err(|_| RangeError::SegmentTooLarge)?)
+        .ok_or(RangeError::SegmentTooLarge)?;
+    let batch_high = batch_low
+        .checked_add(batch_span)
+        .ok_or(RangeError::SegmentTooLarge)?;
+    if range_low < batch_low || range_high > batch_high {
+        return Ok(None);
+    }
+
+    let mut counts = vec![0; repetitions];
+    if range_high <= range_low {
+        return Ok(Some(counts));
+    }
+    if use_scalar_range_fallback(range_low, range_high) {
+        return Ok(None);
+    }
+    if range_low < min_low {
+        add_small_prime_counts_to_adjacent_bins(
+            &mut counts,
+            batch_low,
+            span,
+            range_low,
+            range_high,
+            presieved_through,
+        )?;
+        range_low = range_low.max(min_low);
+    }
+    if range_high <= range_low {
+        return Ok(Some(counts));
+    }
+
+    let limit = (range_high - 1).isqrt();
+    if limit > BASE_PRIME_CACHE_LIMIT {
+        return Ok(None);
+    }
+
+    let PrimeCountScratch {
+        odd_flags,
+        base_primes,
+        base_prime_limit,
+        ..
+    } = scratch;
+    let base = cached_base_primes_slice(limit, base_primes, base_prime_limit)?;
+    let mut segment_low = range_low;
+    let dense_marking = use_dense_odd_byte_marking(range_high);
+    let first_odd_low = if segment_low % 2 == 0 {
+        segment_low + 1
+    } else {
+        segment_low
+    };
+    let mut cursors =
+        initial_sieve_cursors_after(base, first_odd_low, range_high, presieved_through)?;
+
+    while segment_low < range_high {
+        let segment_high = segment_low.saturating_add(segment_size).min(range_high);
+        let odd_low = if segment_low % 2 == 0 {
+            segment_low + 1
+        } else {
+            segment_low
+        };
+
+        if odd_low < segment_high {
+            let odd_count_u64 = ((segment_high - odd_low) + 1) / 2;
+            let odd_count =
+                usize::try_from(odd_count_u64).map_err(|_| RangeError::SegmentTooLarge)?;
+            refill_flags(odd_flags, odd_low, odd_count);
+            mark_active_sieve_cursors(
+                odd_flags,
+                &mut cursors,
+                odd_low,
+                segment_high,
+                dense_marking,
+            );
+            add_flag_counts_to_adjacent_bins(
+                &mut counts,
+                odd_flags,
+                odd_low,
+                segment_high,
+                batch_low,
+                span,
+            )?;
+        }
+
+        segment_low = segment_high;
+    }
+
+    Ok(Some(counts))
 }
 
 fn prime_count_shifted_single_segment_presieved_with_scratch(
@@ -3452,6 +3609,98 @@ fn small_prime_count_in_range_through(low: u64, high: u64, max_prime: u64) -> us
         .count()
 }
 
+fn add_small_prime_counts_to_adjacent_bins(
+    counts: &mut [usize],
+    batch_low: u64,
+    span: u64,
+    range_low: u64,
+    range_high: u64,
+    max_prime: u64,
+) -> Result<(), RangeError> {
+    for prime in [2, 3, 5, 7, 11, 13, 17, 19]
+        .into_iter()
+        .take_while(|&prime| prime <= max_prime)
+    {
+        if range_low <= prime && prime < range_high && prime >= batch_low {
+            let bin = usize::try_from((prime - batch_low) / span)
+                .map_err(|_| RangeError::SegmentTooLarge)?;
+            if let Some(count) = counts.get_mut(bin) {
+                *count += 1;
+            }
+        }
+    }
+    Ok(())
+}
+
+fn add_flag_counts_to_adjacent_bins(
+    counts: &mut [usize],
+    flags: &[u8],
+    odd_low: u64,
+    segment_high: u64,
+    batch_low: u64,
+    span: u64,
+) -> Result<(), RangeError> {
+    if flags.is_empty() || counts.is_empty() || segment_high <= odd_low {
+        return Ok(());
+    }
+    let first_bin = adjacent_bin_index(odd_low, batch_low, span)?;
+    let last_value = segment_high
+        .checked_sub(1)
+        .ok_or(RangeError::SegmentTooLarge)?;
+    let last_bin = adjacent_bin_index(last_value, batch_low, span)?;
+    let last_bin = last_bin.min(counts.len() - 1);
+
+    for bin in first_bin..=last_bin {
+        let bin_low = batch_low
+            .checked_add(
+                span.checked_mul(u64::try_from(bin).map_err(|_| RangeError::SegmentTooLarge)?)
+                    .ok_or(RangeError::SegmentTooLarge)?,
+            )
+            .ok_or(RangeError::SegmentTooLarge)?;
+        let bin_high = bin_low
+            .checked_add(span)
+            .ok_or(RangeError::SegmentTooLarge)?;
+        let overlap_low = odd_low.max(bin_low);
+        let overlap_high = segment_high.min(bin_high);
+        if let Some((start, end)) = odd_flag_index_range(odd_low, overlap_low, overlap_high)? {
+            counts[bin] += count_flag_bytes(&flags[start..end]);
+        }
+    }
+    Ok(())
+}
+
+fn adjacent_bin_index(value: u64, batch_low: u64, span: u64) -> Result<usize, RangeError> {
+    if value < batch_low || span == 0 {
+        return Err(RangeError::SegmentTooLarge);
+    }
+    usize::try_from((value - batch_low) / span).map_err(|_| RangeError::SegmentTooLarge)
+}
+
+fn odd_flag_index_range(
+    odd_low: u64,
+    range_low: u64,
+    range_high: u64,
+) -> Result<Option<(usize, usize)>, RangeError> {
+    if range_high <= range_low {
+        return Ok(None);
+    }
+    let start_odd = if range_low % 2 == 0 {
+        range_low
+            .checked_add(1)
+            .ok_or(RangeError::SegmentTooLarge)?
+    } else {
+        range_low
+    };
+    if start_odd >= range_high {
+        return Ok(None);
+    }
+    let start =
+        usize::try_from((start_odd - odd_low) / 2).map_err(|_| RangeError::SegmentTooLarge)?;
+    let len = usize::try_from((range_high - start_odd + 1) / 2)
+        .map_err(|_| RangeError::SegmentTooLarge)?;
+    Ok(Some((start, start + len)))
+}
+
 fn count_flag_bytes(flags: &[u8]) -> usize {
     // The sieve stores only 0/1 bytes. All u64 bit patterns are valid, and
     // align_to returns unaligned prefix/suffix bytes separately.
@@ -3775,6 +4024,84 @@ mod tests {
     }
 
     #[test]
+    fn adjacent_shifted_presieve13_matches_repeated_counts() {
+        let low = 1_000_000_000_000;
+        let span = 1_250_000;
+        let repetitions = 11;
+        let segment_size = 262_144;
+        let high = low + span * repetitions as u64;
+        let mut scratch = PrimeCountScratch::new();
+
+        let actual = prime_count_adjacent_shifted_presieve13_with_scratch(
+            low,
+            span,
+            repetitions,
+            low,
+            high,
+            segment_size,
+            &mut scratch,
+        )
+        .expect("adjacent shifted count should not fail")
+        .expect("high-offset adjacent shifted count should optimize");
+        let expected = (0..repetitions)
+            .map(|index| {
+                let bin_low = low + span * index as u64;
+                prime_count_in_range_presieve13(bin_low, bin_low + span, segment_size).unwrap()
+            })
+            .collect::<Vec<_>>();
+
+        assert_eq!(actual, expected);
+    }
+
+    #[test]
+    fn adjacent_shifted_presieve13_split_ranges_sum_to_full_batch() {
+        let low = 1_000_000_000_000;
+        let span = 1_250_000;
+        let repetitions = 9;
+        let segment_size = 196_608;
+        let high = low + span * repetitions as u64;
+        let split = low + span * 4 + 333_333;
+        let mut left_scratch = PrimeCountScratch::new();
+        let mut right_scratch = PrimeCountScratch::new();
+
+        let left = prime_count_adjacent_shifted_presieve13_with_scratch(
+            low,
+            span,
+            repetitions,
+            low,
+            split,
+            segment_size,
+            &mut left_scratch,
+        )
+        .expect("left adjacent shifted count should not fail")
+        .expect("left adjacent shifted count should optimize");
+        let right = prime_count_adjacent_shifted_presieve13_with_scratch(
+            low,
+            span,
+            repetitions,
+            split,
+            high,
+            segment_size,
+            &mut right_scratch,
+        )
+        .expect("right adjacent shifted count should not fail")
+        .expect("right adjacent shifted count should optimize");
+        let actual = left
+            .iter()
+            .zip(right.iter())
+            .map(|(left, right)| left + right)
+            .collect::<Vec<_>>();
+        let expected = (0..repetitions)
+            .map(|index| {
+                let bin_low = low + span * index as u64;
+                prime_count_in_range_presieve13(bin_low, bin_low + span, segment_size).unwrap()
+            })
+            .collect::<Vec<_>>();
+
+        assert_eq!(actual, expected);
+    }
+
+    #[test]
     fn shifted_single_segment_presieve17_matches_repeated_counts() {
         let low = 1_500_000_000_000;
         let high = 1_500_001_250_000;
@@ -3797,6 +4124,36 @@ mod tests {
             .map(|index| {
                 let delta = shift * index as u64;
                 prime_count_in_range_presieve17(low + delta, high + delta, segment_size).unwrap()
+            })
+            .collect::<Vec<_>>();
+
+        assert_eq!(actual, expected);
+    }
+
+    #[test]
+    fn adjacent_shifted_presieve17_matches_repeated_counts() {
+        let low = 1_500_000_000_000;
+        let span = 1_250_000;
+        let repetitions = 7;
+        let segment_size = 262_144;
+        let high = low + span * repetitions as u64;
+        let mut scratch = PrimeCountScratch::new();
+
+        let actual = prime_count_adjacent_shifted_presieve17_with_scratch(
+            low,
+            span,
+            repetitions,
+            low,
+            high,
+            segment_size,
+            &mut scratch,
+        )
+        .expect("adjacent shifted presieve17 count should not fail")
+        .expect("high-offset adjacent shifted presieve17 count should optimize");
+        let expected = (0..repetitions)
+            .map(|index| {
+                let bin_low = low + span * index as u64;
+                prime_count_in_range_presieve17(bin_low, bin_low + span, segment_size).unwrap()
             })
             .collect::<Vec<_>>();
 

@@ -10,6 +10,7 @@ readme = "README.md"
 keywords = ["prime", "sieve", "modular-arithmetic", "circle-calculus"]
 categories = ["mathematics", "algorithms", "command-line-utilities"]
 default-run = "circle-prime"
+exclude = ["**/.DS_Store"]
 
 [lib]
 name = "circle_prime"
