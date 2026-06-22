@@ -128,6 +128,71 @@ def test_hot_cold_decomposition_classifies_residual_thread_gap() -> None:
     assert decomposition.next_action == "thread_first_touch_reduction_required"
 
 
+def test_hot_cold_decomposition_uses_spawn_row_for_narrower_action() -> None:
+    rows = [
+        row
+        if row.name != "cold_count_binary_high_offset_noop"
+        else TimingRow(
+            name=row.name,
+            workload=row.workload,
+            segment_size=row.segment_size,
+            result=row.result,
+            rounds=row.rounds,
+            best_ms=0.40,
+        )
+        for row in hot_cold_rows()
+    ]
+    rows.append(
+        TimingRow(
+            name="cold_count_binary_high_offset_default_spawn_8t",
+            workload=10_000_000,
+            segment_size=1_507_328,
+            result=7,
+            rounds=17,
+            best_ms=1.35,
+        )
+    )
+
+    decomposition = summarize_hot_cold_decomposition(rows)
+
+    assert decomposition.cold_spawn_best_ms == pytest.approx(1.35)
+    assert decomposition.spawn_share_of_cold_extra == pytest.approx(1.35 / 2.4)
+    assert decomposition.residual_after_spawn_ms == pytest.approx(1.05)
+    assert decomposition.next_action == "scoped_thread_spawn_reduction_required"
+
+
+def test_hot_cold_decomposition_identifies_post_spawn_residual() -> None:
+    rows = [
+        row
+        if row.name != "cold_count_binary_high_offset_noop"
+        else TimingRow(
+            name=row.name,
+            workload=row.workload,
+            segment_size=row.segment_size,
+            result=row.result,
+            rounds=row.rounds,
+            best_ms=0.40,
+        )
+        for row in hot_cold_rows()
+    ]
+    rows.append(
+        TimingRow(
+            name="cold_count_binary_high_offset_default_spawn_8t",
+            workload=10_000_000,
+            segment_size=1_507_328,
+            result=7,
+            rounds=17,
+            best_ms=1.00,
+        )
+    )
+
+    decomposition = summarize_hot_cold_decomposition(rows)
+
+    assert decomposition.spawn_share_of_cold_extra == pytest.approx(1.00 / 2.4)
+    assert decomposition.residual_after_spawn_ms == pytest.approx(1.4)
+    assert decomposition.next_action == "scratch_or_marking_first_touch_required"
+
+
 def test_count_binary_overhead_passes_when_hot_lane_still_wins() -> None:
     result = check_count_binary_overhead(startup_bound_rows())
 

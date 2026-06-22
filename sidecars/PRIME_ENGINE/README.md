@@ -302,19 +302,19 @@ once, binning flags back into the requested intervals for both `presieve13` and
 `presieve17`; non-adjacent shifted requests fall back to the shifted
 single-segment mark plan. The latest lower-thread cold sweep keeps the
 count-only CLI below a clean promotion: the current adaptive default
-(`presieve13:1507328`, 7 effective workers) reached `0.893x` median and
-`0.854x` best versus cold `primesieve`, while the best expanded row
-(`presieve13:1441792`, 7 effective workers) reached `0.926x` median and
-`0.856x` best. `make
+(`presieve13:1507328`, 7 effective workers) reached `0.866x` median and
+`0.884x` best versus cold `primesieve`, while the best expanded row
+(`presieve17:1310720`, 8 effective workers) reached `0.873x` median and
+`0.882x` best. `make
 prime-engine-high-offset-count-binary-cold-candidate-check` rejected the lane
 again with no trial-ready candidate and best default-relative gain only
-`0.976x`. Treat the cold one-shot lane as below-parity until a candidate beats
+`1.008x`. Treat the cold one-shot lane as below-parity until a candidate beats
 cold `primesieve` by both median and best time. Earlier probes also rejected
 `presieve13:1703936`, `presieve13:1835008`, `presieve13:4194304`,
 `presieve17:3670016`, and one-shot worker-pool variants; noisy median parity
 without best-time parity is not a promotion. The same exact-repeat probe has persistent Circle
-`count-server` at `16.144x` median versus persistent `libprimesieve`, and the
-slim count-binary server row at `14.442x` median versus persistent
+`count-server` at `18.627x` median versus persistent `libprimesieve`, and the
+slim count-binary server row at `18.722x` median versus persistent
 `libprimesieve`; those are hot-service repeat throughput numbers, while the
 shifted fresh-interval count-binary probe is the cleaner competitive count
 claim at `1.227x` median versus persistent `libprimesieve`.
@@ -334,13 +334,15 @@ artifact and now also reads `prime_engine_high_offset_hot_cold_latest.csv` so
 the startup diagnosis has a local hot/cold decomposition gate; the competitive
 status targets refresh that hot/cold artifact before enforcing the check. The
 current diagnosis remains `cold_process_or_startup_bound`: the slim count-binary
-server is already `14.442x` versus persistent `libprimesieve`, while cold
+server is already `18.722x` versus persistent `libprimesieve`, while cold
 one-shot rows still trail cold `primesieve` on best time. The enforced best-time
-split is cold `circle-prime-count` at `5.540 ms`, persistent default
-`count-server` at `2.473 ms`, no-op
-fresh-process floor at `1.329 ms`, cold/hot `2.24x`, and no-op share `0.43x`
-of the cold-over-hot gap; residual after no-op is `1.738 ms`, and the enforced
-next action is `thread_first_touch_reduction_required`.
+split is cold `circle-prime-count` at `4.997 ms`, persistent default
+`count-server` at `1.741 ms`, no-op
+fresh-process floor at `1.720 ms`, scoped-spawn-only floor at `1.856 ms`,
+cold/hot `2.87x`, no-op share `0.53x`, and scoped-spawn share `0.57x`
+of the cold-over-hot gap; residual after no-op is `1.536 ms`, residual after
+scoped spawn is `1.400 ms`, and the enforced next action is
+`launch_amortization_required`.
 `make prime-engine-high-offset-count-binary-cold-confirm` is the focused
 one-shot confirmation for this weak lane: it runs 17 interleaved rounds of only
 cold `circle-prime-count` default versus cold `primesieve`, writes
@@ -356,8 +358,9 @@ without being held by focused confirmation. The sweep now keeps reduced-thread
 high-offset candidates plus explicit `balanced` and `dynamic` rows visible; the
 latest sweep/confirmation readout has no comparable stable candidate group that
 both beats the cold default and beats cold `primesieve` by median and best
-time. The best default-relative gain is only `0.976x`, so no row is
-trial-ready.
+time. The focused confirmation briefly shows a `1.032x` default-relative gain,
+but it still fails cold-`primesieve` parity; the combined sweep/confirmation
+readout keeps the best actionable gain at `1.008x`, so no row is trial-ready.
 `make prime-engine-high-offset-count-binary-candidate-confirm` is now the named
 confirmation target for that lane: it reruns the default plus those current
 reduced-thread candidates, writes
@@ -384,12 +387,13 @@ directly: a no-op fresh-process floor, adaptive-plan-only worker, serial
 default worker, minimal fresh-process segmented/default rows, the full
 `circle-prime` CLI row, the slim `circle-prime-count` CLI row, an optional
 cold `primesieve` row, and persistent `count-server` candidate rows. The
-latest full-status diagnostic has the slim cold count binary at `5.540 ms`
-best, the persistent default count-server row at `2.473 ms`, and the slim
-binary no-op process floor at `1.329 ms` on the tracked high-offset span. The
+latest full-status diagnostic has the slim cold count binary at `4.997 ms`
+best, the persistent default count-server row at `1.741 ms`, the slim
+binary no-op process floor at `1.720 ms`, and the scoped-spawn-only floor at
+`1.856 ms` on the tracked high-offset span. The
 strict interleaved count-binary probe still rejects promotion: the default slim
-count-binary row is `0.826x` median and `0.884x` best versus cold
-`primesieve`, with noisy samples. Treat best-only hot/cold evidence as
+count-binary row is `0.862x` median and `0.902x` best versus cold
+`primesieve`, with stable samples. Treat best-only hot/cold evidence as
 bottleneck evidence, not an external cold one-shot promotion claim.
 For build-profile probes, `scripts/benchmark_prime_external_controls.py` accepts
 `--circle-prime-bin` and `--circle-prime-count-bin` to measure alternate

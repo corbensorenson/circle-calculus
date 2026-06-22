@@ -220,16 +220,19 @@ the short competitive workflow.
   of leaving the caller idle behind channels.
   The current hard target is cold one-shot high-offset parity with `primesieve`.
   The latest full competitive status keeps the strict cold row below parity
-  (`0.826x` median and `0.884x` best versus cold `primesieve` on
+  (`0.862x` median and `0.902x` best versus cold `primesieve` on
   `[1e12, 1e12 + 1e7)`), while the slim persistent count-server row is already
-  `14.442x` median versus persistent `libprimesieve`. The enforced hot/cold
-  split is cold `circle-prime-count` at `5.540 ms`, persistent default
-  `count-server` at `2.473 ms`, no-op fresh-process floor at `1.329 ms`,
-  cold/hot `2.24x`, no-op share `0.43x`, and residual after no-op `1.738 ms`.
-  The current checker action is `thread_first_touch_reduction_required`:
+  `18.722x` median versus persistent `libprimesieve`. The enforced hot/cold
+  split is cold `circle-prime-count` at `4.997 ms`, persistent default
+  `count-server` at `1.741 ms`, no-op fresh-process floor at `1.720 ms`,
+  scoped-spawn-only floor at `1.856 ms`, cold/hot `2.87x`, no-op share `0.53x`,
+  spawn share `0.57x`, residual after no-op `1.536 ms`, and residual after
+  scoped spawn `1.400 ms`. The current checker action is
+  `launch_amortization_required`:
   prefer persistent, batched, prewarmed, or daemonized Circle interfaces for
   competitive claims, and only promote more cold CLI variants when they reduce
-  launch/thread first-touch cost or beat cold `primesieve` by both median and
+  launch, scoped-spawn, and post-spawn first-touch cost or beat cold
+  `primesieve` by both median and
   best time.
 - Benchmarks include control implementations: a straightforward full
   Sieve-of-Eratosthenes count, a guarded scalar trial-division count, and the
@@ -511,13 +514,14 @@ Current CPU findings:
   removed instead of promoted.
   Smaller cold worker-count/segment-size variants remain tracked as evidence
   lanes. The latest full competitive status rejects a cold one-shot promotion:
-  the default count-binary row is `0.826x` median and `0.884x` best versus cold
+  the default count-binary row is `0.862x` median and `0.902x` best versus cold
   `primesieve`, while the formal expanded sweep's best cold row
-  (`presieve13:1441792`, seven effective workers) reaches only `0.926x` median
-  and `0.856x` best. `presieve13:4194304` at three workers and
+  (`presieve17:1310720`, eight effective workers) reaches only `0.873x` median
+  and `0.882x` best. `presieve13:4194304` at three workers and
   `presieve17:3670016` at three workers also fail best-time parity, and the
   checker reports no trial-ready row with best default-relative gain only
-  `0.976x`. The same sweep records explicit `balanced` and `dynamic`
+  `1.008x` across sweep plus confirmation. The same sweep records explicit
+  `balanced` and `dynamic`
   count-binary rows; both remain rejected for this high-offset cold lane. The
   current `1010000` generated table is the measured compromise for the tracked
   `[1e12, 1e12 + 1e7)` cold count lane. Treat those rejected levers as closed
@@ -534,14 +538,14 @@ Current CPU findings:
   requests fall back to the shifted single-segment mark plan. It is measured
   only when the external-control harness is passed
   `--include-circle-count-binary`; the latest full competitive status has the
-  default count-only row at `0.826x` median and `0.884x` best versus cold
+  default count-only row at `0.862x` median and `0.902x` best versus cold
   `primesieve`, while the current expanded sweep's best cold row
-  (`presieve13:1441792`, seven effective workers) is `0.926x` median and
-  `0.856x` best.
+  (`presieve17:1310720`, eight effective workers) is `0.873x` median and
+  `0.882x` best.
   Treat the cold one-shot lane as below-parity until a candidate beats cold
   `primesieve` by both median and best time. The same exact-repeat
-  probe has persistent Circle `count-server` at `16.144x` median versus
-  persistent `libprimesieve`, and the slim count-binary server row at `14.442x`
+  probe has persistent Circle `count-server` at `18.627x` median versus
+  persistent `libprimesieve`, and the slim count-binary server row at `18.722x`
   median versus persistent `libprimesieve`; those are hot-service repeat
   throughput numbers, while the shifted fresh-interval count-binary probe is
   the cleaner competitive count claim at `1.227x` median versus persistent
@@ -557,13 +561,15 @@ Current CPU findings:
   the startup diagnosis has a local hot/cold decomposition gate; the competitive
   status targets refresh that hot/cold artifact before enforcing the check. The
   current diagnosis remains `cold_process_or_startup_bound`: the slim
-  count-binary server is already `14.442x` versus persistent `libprimesieve`,
+  count-binary server is already `18.722x` versus persistent `libprimesieve`,
   while cold one-shot rows still trail cold `primesieve` on best time. The
-  enforced best-time split is cold `circle-prime-count` at `5.540 ms`,
-  persistent default `count-server` at `2.473 ms`, no-op fresh-process floor at
-  `1.329 ms`, cold/hot `2.24x`, and no-op share `0.43x` of the cold-over-hot
-  gap; residual after no-op is `1.738 ms`, and the enforced next action is
-  `thread_first_touch_reduction_required`. `make
+  enforced best-time split is cold `circle-prime-count` at `4.997 ms`,
+  persistent default `count-server` at `1.741 ms`, no-op fresh-process floor at
+  `1.720 ms`, scoped-spawn-only floor at `1.856 ms`, cold/hot `2.87x`, no-op
+  share `0.53x`, and scoped-spawn share `0.57x` of the cold-over-hot gap;
+  residual after no-op is `1.536 ms`, residual after scoped spawn is
+  `1.400 ms`, and the enforced next action is
+  `launch_amortization_required`. `make
   prime-engine-high-offset-count-binary-cold-confirm` is the focused one-shot
   confirmation target for the weak lane: it runs 17 interleaved rounds of only
   cold `circle-prime-count` default versus cold `primesieve`, writes
@@ -580,9 +586,9 @@ Current CPU findings:
   official sweep added lower-thread large-segment candidates after manual
   subprocess timings showed possible wins; under the formal interleaved harness
   the best cold row against `primesieve` was still below parity
-  (`presieve13:1441792`, `0.926x` median, `0.856x` best), and the candidate
+  (`presieve17:1310720`, `0.873x` median, `0.882x` best), and the candidate
   checker reported no trial-ready row with best default-relative gain only
-  `0.976x`. `presieve13:4194304` at 3 workers and `presieve17:3670016` at 3
+  `1.008x`. `presieve13:4194304` at 3 workers and `presieve17:3670016` at 3
   workers also failed best-time parity. The sweep intentionally
   includes reduced-thread high-offset candidates and explicit `balanced` and
   `dynamic` split modes so the cold-start thread-spawn and split-strategy
@@ -592,8 +598,10 @@ Current CPU findings:
   interleaved rounds, writes
   `prime_engine_high_offset_count_binary_candidate_confirm_latest.{csv,json}`,
   and applies the same median-gain plus median/best-speed promotion rule. The
-  latest sweep/confirmation artifact gives no trial-ready row group, and the
-  best default-relative gain is only `0.976x`.
+  latest sweep/confirmation artifact gives no trial-ready row group; the
+  focused confirmation briefly shows a `1.032x` default-relative gain, but it
+  still fails cold-`primesieve` parity, and the combined sweep/confirmation
+  readout keeps the best actionable gain at `1.008x`.
 - A work-balanced prefix splitter using an `x^(3/2)` sieve-work estimate is
   kept as an experimental benchmark row. It was correct and helped some 100M
   rows, but it lost the current 1B rows, so the CLI default still uses equal

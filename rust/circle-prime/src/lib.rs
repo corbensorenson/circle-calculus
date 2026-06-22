@@ -45,8 +45,9 @@ pub use scalar::{
     PRIME_RANGE_COUNT_THEOREM_IDS, SMALL_PRIME_HORIZONS,
 };
 pub use segmented::{
-    base_primes, effective_parallel_thread_count, effective_prefix_pi_thread_count,
-    for_each_prime_in_range, prime_count_adjacent_shifted_presieve13_with_scratch,
+    base_primes, diagnostic_scoped_parallel_worker_spawn, effective_parallel_thread_count,
+    effective_prefix_pi_thread_count, for_each_prime_in_range,
+    prime_count_adjacent_shifted_presieve13_with_scratch,
     prime_count_adjacent_shifted_presieve17_with_scratch, prime_count_in_range,
     prime_count_in_range_bitpacked, prime_count_in_range_hybrid_wheel30_marks,
     prime_count_in_range_hybrid_wheel30_marks_parallel, prime_count_in_range_parallel,

@@ -1564,6 +1564,33 @@ where
     })
 }
 
+pub fn diagnostic_scoped_parallel_worker_spawn(worker_count: usize) -> Result<usize, RangeError> {
+    if worker_count == 0 {
+        return Err(RangeError::ThreadCountZero);
+    }
+    if worker_count == 1 {
+        return Ok(1);
+    }
+
+    thread::scope(|scope| {
+        let mut handles = Vec::with_capacity(worker_count - 1);
+        for _ in 1..worker_count {
+            handles.push(
+                thread::Builder::new()
+                    .stack_size(PARALLEL_WORKER_STACK_SIZE)
+                    .spawn_scoped(scope, || Ok::<usize, RangeError>(1))
+                    .map_err(|_| RangeError::WorkerPanic)?,
+            );
+        }
+
+        let mut total = 1usize;
+        for handle in handles {
+            total += handle.join().map_err(|_| RangeError::WorkerPanic)??;
+        }
+        Ok(total)
+    })
+}
+
 fn dynamic_parallel_segments_per_batch(segment_count: u64, workers: usize) -> u64 {
     let worker_count = u64::try_from(workers).unwrap_or(u64::MAX).max(1);
     let target_batches = worker_count

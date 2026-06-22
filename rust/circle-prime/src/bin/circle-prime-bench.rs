@@ -1038,6 +1038,20 @@ fn bench_cold_process_counts(rounds: usize) -> Vec<BenchRow> {
         },
     ));
     rows.push(measure(
+        "cold_count_binary_high_offset_default_spawn_8t",
+        HIGH_OFFSET_HIGH - HIGH_OFFSET_LOW,
+        high_offset_segment_size,
+        rounds,
+        || {
+            cold_count_binary_worker_spawn(
+                HIGH_OFFSET_LOW,
+                HIGH_OFFSET_HIGH,
+                high_offset_segment_size,
+                8,
+            )
+        },
+    ));
+    rows.push(measure(
         "cold_process_parallel_high_offset_default_range_count_1t",
         HIGH_OFFSET_HIGH - HIGH_OFFSET_LOW,
         high_offset_segment_size,
@@ -1557,6 +1571,31 @@ fn cold_count_binary_plan_resolution(
         .trim()
         .parse::<u64>()
         .expect("cold count-binary plan worker did not emit a worker count")
+}
+
+fn cold_count_binary_worker_spawn(low: u64, high: u64, segment_size: u64, threads: usize) -> u64 {
+    let executable = circle_prime_count_executable();
+    let output = Command::new(&executable)
+        .arg("--diagnostic-spawn")
+        .arg(low.to_string())
+        .arg(high.to_string())
+        .arg("--segment-size")
+        .arg(segment_size.to_string())
+        .arg("--threads")
+        .arg(threads.to_string())
+        .output()
+        .expect("failed to spawn cold count-binary scoped worker diagnostic");
+    assert!(
+        output.status.success(),
+        "cold count-binary scoped worker diagnostic failed: {}\nexecutable: {}",
+        String::from_utf8_lossy(&output.stderr),
+        executable.display(),
+    );
+    String::from_utf8(output.stdout)
+        .expect("cold count-binary scoped worker diagnostic emitted invalid UTF-8")
+        .trim()
+        .parse::<u64>()
+        .expect("cold count-binary scoped worker diagnostic did not emit a worker count")
 }
 
 fn measure_count_server_prime_count(

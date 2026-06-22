@@ -825,6 +825,19 @@ def test_rust_prime_count_binary_diagnostic_modes(circle_prime_count_bin: Path) 
         ).strip()
         == "7"
     )
+    assert (
+        run_circle_prime(
+            circle_prime_count_bin,
+            "--diagnostic-spawn",
+            "1000000000000",
+            "1000010000000",
+            "--segment-size",
+            str(DEFAULTS["parallel_edge_high_offset_segment_size"]),
+            "--threads",
+            "8",
+        ).strip()
+        == "7"
+    )
 
 
 def test_rust_prime_count_binary_explicit_default_uses_adaptive_mode(

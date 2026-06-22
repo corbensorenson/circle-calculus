@@ -6,7 +6,8 @@ use std::sync::mpsc;
 use std::thread::{self, JoinHandle};
 
 use circle_prime::{
-    effective_parallel_thread_count, prime_count_adjacent_shifted_presieve13_with_scratch,
+    diagnostic_scoped_parallel_worker_spawn, effective_parallel_thread_count,
+    prime_count_adjacent_shifted_presieve13_with_scratch,
     prime_count_adjacent_shifted_presieve17_with_scratch, prime_count_in_range,
     prime_count_in_range_parallel, prime_count_in_range_parallel_balanced,
     prime_count_in_range_parallel_dynamic, prime_count_in_range_presieve13,
@@ -78,6 +79,9 @@ fn run_args(mut args: impl Iterator<Item = String>) -> Result<(), String> {
     }
     if first == "--diagnostic-plan" {
         return diagnostic_plan_command(args);
+    }
+    if first == "--diagnostic-spawn" {
+        return diagnostic_spawn_command(args);
     }
     if matches!(first.as_str(), "--help" | "-h") {
         println!("{}", usage());
@@ -226,6 +230,67 @@ fn diagnostic_plan_command(mut args: impl Iterator<Item = String>) -> Result<(),
         explicit_mode,
     );
     println!("{}", plan.threads);
+    Ok(())
+}
+
+fn diagnostic_spawn_command(mut args: impl Iterator<Item = String>) -> Result<(), String> {
+    let Some(first) = args.next() else {
+        return Err("--diagnostic-spawn requires LOW HIGH".to_string());
+    };
+    let low = first
+        .parse::<u64>()
+        .map_err(|_| "LOW must fit in u64".to_string())?;
+    let high = args
+        .next()
+        .filter(|arg| !arg.starts_with("--"))
+        .ok_or_else(|| "--diagnostic-spawn requires LOW HIGH".to_string())?
+        .parse::<u64>()
+        .map_err(|_| "HIGH must fit in u64".to_string())?;
+    let mut requested_threads = 1usize;
+    let mut explicit_segment_size = None;
+    let mut explicit_mode = None;
+    while let Some(arg) = args.next() {
+        match arg.as_str() {
+            "--threads" => {
+                let Some(value) = args.next() else {
+                    continue;
+                };
+                requested_threads = value
+                    .parse::<usize>()
+                    .map_err(|_| "--threads must fit in usize".to_string())?;
+            }
+            "--segment-size" => {
+                let Some(value) = args.next() else {
+                    continue;
+                };
+                explicit_segment_size = Some(
+                    value
+                        .parse::<u64>()
+                        .map_err(|_| "--segment-size must fit in u64".to_string())?,
+                );
+            }
+            "--count-mode" => {
+                let Some(value) = args.next() else {
+                    continue;
+                };
+                explicit_mode = parse_count_mode_override(&value)?;
+            }
+            _ => {}
+        }
+    }
+    if requested_threads == 0 {
+        return Err("--threads must be greater than zero".to_string());
+    }
+    let plan = resolve_count_plan(
+        low,
+        high,
+        explicit_segment_size,
+        requested_threads,
+        explicit_mode,
+    );
+    let worker_count = diagnostic_scoped_parallel_worker_spawn(plan.threads)
+        .map_err(|err| format!("diagnostic scoped worker spawn failed: {err:?}"))?;
+    println!("{worker_count}");
     Ok(())
 }
 

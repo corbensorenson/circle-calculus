@@ -92,10 +92,13 @@ class HotColdDecomposition:
     hot_count_server_best_ms: float
     cold_noop_best_ms: float
     cold_plan_best_ms: float
+    cold_spawn_best_ms: float | None
     cold_over_hot_best: float
     cold_extra_best_ms: float
     noop_share_of_cold_extra: float
     residual_after_noop_ms: float
+    spawn_share_of_cold_extra: float | None
+    residual_after_spawn_ms: float | None
     diagnosis: str
     next_action: str
 
@@ -220,9 +223,11 @@ def main() -> int:
                 f"cold={hot_cold.cold_count_binary_best_ms:.3f} ms, "
                 f"hot={hot_cold.hot_count_server_best_ms:.3f} ms, "
                 f"noop={hot_cold.cold_noop_best_ms:.3f} ms, "
+                f"spawn={format_optional_ms(hot_cold.cold_spawn_best_ms)}, "
                 f"cold/hot={hot_cold.cold_over_hot_best:.2f}x, "
                 f"noop-share={hot_cold.noop_share_of_cold_extra:.2f}x, "
                 f"residual-after-noop={hot_cold.residual_after_noop_ms:.3f} ms, "
+                f"residual-after-spawn={format_optional_ms(hot_cold.residual_after_spawn_ms)}, "
                 f"next-action={hot_cold.next_action}"
             )
         print(message + ".")
@@ -404,6 +409,10 @@ def summarize_count_binary_overhead(rows: list[SpeedupRow]) -> CountBinaryOverhe
 def summarize_hot_cold_decomposition(rows: list[TimingRow]) -> HotColdDecomposition:
     cold_noop = find_timing_row(rows, "cold_count_binary_high_offset_noop")
     cold_plan = find_timing_row(rows, "cold_count_binary_high_offset_default_plan_8t")
+    cold_spawn = find_optional_timing_row(
+        rows,
+        "cold_count_binary_high_offset_default_spawn_8t",
+    )
     cold_count = find_timing_row(
         rows,
         "cold_count_binary_parallel_high_offset_default_range_count_8t",
@@ -421,23 +430,46 @@ def summarize_hot_cold_decomposition(rows: list[TimingRow]) -> HotColdDecomposit
         )
     residual_after_noop = max(0.0, cold_extra - cold_noop.best_ms)
     noop_share = cold_noop.best_ms / cold_extra
+    spawn_share = cold_spawn.best_ms / cold_extra if cold_spawn is not None else None
+    residual_after_spawn = (
+        max(0.0, cold_extra - cold_spawn.best_ms) if cold_spawn is not None else None
+    )
     return HotColdDecomposition(
         cold_count_binary_best_ms=cold_count.best_ms,
         hot_count_server_best_ms=hot_count.best_ms,
         cold_noop_best_ms=cold_noop.best_ms,
         cold_plan_best_ms=cold_plan.best_ms,
+        cold_spawn_best_ms=cold_spawn.best_ms if cold_spawn is not None else None,
         cold_over_hot_best=cold_count.best_ms / hot_count.best_ms,
         cold_extra_best_ms=cold_extra,
         noop_share_of_cold_extra=noop_share,
         residual_after_noop_ms=residual_after_noop,
+        spawn_share_of_cold_extra=spawn_share,
+        residual_after_spawn_ms=residual_after_spawn,
         diagnosis="cold_launch_thread_first_touch_bound",
-        next_action=classify_hot_cold_next_action(noop_share, residual_after_noop),
+        next_action=classify_hot_cold_next_action(
+            noop_share,
+            residual_after_noop,
+            spawn_share,
+            residual_after_spawn,
+        ),
     )
 
 
-def classify_hot_cold_next_action(noop_share: float, residual_after_noop_ms: float) -> str:
+def classify_hot_cold_next_action(
+    noop_share: float,
+    residual_after_noop_ms: float,
+    spawn_share: float | None = None,
+    residual_after_spawn_ms: float | None = None,
+) -> str:
     if noop_share >= 0.50:
         return "launch_amortization_required"
+    if spawn_share is not None and residual_after_spawn_ms is not None:
+        if spawn_share >= 0.50:
+            return "scoped_thread_spawn_reduction_required"
+        if residual_after_spawn_ms >= 0.50:
+            return "scratch_or_marking_first_touch_required"
+        return "cold_core_rebenchmark_required"
     if residual_after_noop_ms >= 0.50:
         return "thread_first_touch_reduction_required"
     return "cold_core_rebenchmark_required"
@@ -447,6 +479,14 @@ def find_timing_row(rows: list[TimingRow], name: str) -> TimingRow:
     matches = [row for row in rows if row.name == name]
     if not matches:
         raise ValueError(f"missing timing row {name!r} in high-offset hot/cold artifact")
+    matches.sort(key=lambda row: row.best_ms)
+    return matches[0]
+
+
+def find_optional_timing_row(rows: list[TimingRow], name: str) -> TimingRow | None:
+    matches = [row for row in rows if row.name == name]
+    if not matches:
+        return None
     matches.sort(key=lambda row: row.best_ms)
     return matches[0]
 
@@ -471,6 +511,10 @@ def find_row(
         )
     matches.sort(key=lambda row: row.median_speedup, reverse=True)
     return matches[0]
+
+
+def format_optional_ms(value: float | None) -> str:
+    return "n/a" if value is None else f"{value:.3f} ms"
 
 
 if __name__ == "__main__":
