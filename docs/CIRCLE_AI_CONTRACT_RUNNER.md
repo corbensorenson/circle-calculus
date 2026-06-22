@@ -196,8 +196,10 @@ Supported sections are `rope`, `kv_cache`, `sparse_attention`, and
 `shift_amount`; it is accepted only when it is a nonnegative exact multiple of
 `loop_period`, then the import report records a derived `shift_passes` source
 rather than pretending the amount was already a pass count. Explicit CLI flags
-override imported fields. This import step is only deterministic
-translation/provenance; the theorem-backed claim is the emitted receipt. Use
+override imported fields; an explicit `--shift-amount` override is recorded as
+a derived explicit source in the saved import report. This import step is only
+deterministic translation/provenance; the theorem-backed claim is the emitted
+receipt. Use
 `--architecture-config-import-report-out PATH` to save the schema-validated
 import report for audit logs. Its schema is
 `site/data/generated/circle_ai_architecture_config_import.schema.json`, and its

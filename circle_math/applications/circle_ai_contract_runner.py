@@ -1021,16 +1021,22 @@ def _derive_recurrence_architecture_shift_passes(
     parameters: dict[str, Any],
     parameter_sources: dict[str, Any],
     failures: list[str],
+    override_shift_amount: Any = _ARCHITECTURE_CONFIG_DEFAULT_MISSING,
 ) -> None:
-    found = _architecture_config_lookup_aliases(
-        "recurrence_schedule",
-        config,
-        RECURRENCE_ARCHITECTURE_SHIFT_AMOUNT_ALIASES,
-    )
-    if found is None:
-        return
+    if override_shift_amount is not _ARCHITECTURE_CONFIG_DEFAULT_MISSING:
+        shift_amount, field = override_shift_amount, "shift_amount"
+        derived_source = "derived_explicit_override"
+    else:
+        found = _architecture_config_lookup_aliases(
+            "recurrence_schedule",
+            config,
+            RECURRENCE_ARCHITECTURE_SHIFT_AMOUNT_ALIASES,
+        )
+        if found is None:
+            return
+        shift_amount, field = found
+        derived_source = "derived_architecture_config_field"
 
-    shift_amount, field = found
     source = parameter_sources.get("shift_passes", {}).get("source")
     if not _is_int(shift_amount) or shift_amount < 0:
         failures.append(f"{field} must be a nonnegative integer")
@@ -1053,7 +1059,21 @@ def _derive_recurrence_architecture_shift_passes(
 
     derived = shift_amount // loop_period
     current = parameters.get("shift_passes")
-    if source not in {"default", "missing"} and current != derived:
+    if (
+        derived_source == "derived_explicit_override"
+        and source == "explicit_override"
+        and current != derived
+    ):
+        failures.append(
+            f"{field} derives shift_passes={derived}, but explicit "
+            f"shift_passes is already {current}"
+        )
+        return
+    if (
+        derived_source == "derived_architecture_config_field"
+        and source not in {"default", "missing"}
+        and current != derived
+    ):
         failures.append(
             f"{field} derives shift_passes={derived}, but shift_passes is "
             f"already {current}"
@@ -1062,7 +1082,7 @@ def _derive_recurrence_architecture_shift_passes(
 
     parameters["shift_passes"] = derived
     parameter_sources["shift_passes"] = _architecture_parameter_source(
-        source="derived_architecture_config_field",
+        source=derived_source,
         field=field,
         value=derived,
         note=(
@@ -1413,8 +1433,11 @@ def build_architecture_config_import_report(
         aliases = ARCHITECTURE_CONFIG_PARAMETER_ALIASES[canonical]
         optional = ARCHITECTURE_CONFIG_OPTIONAL_PARAMETERS[canonical]
         defaults = ARCHITECTURE_CONFIG_PARAMETER_DEFAULTS[canonical]
+        supported_override_keys = set(aliases)
+        if canonical == "recurrence_schedule":
+            supported_override_keys.add("shift_amount")
         unsupported_overrides = sorted(
-            key for key in normalized_overrides if key not in aliases
+            key for key in normalized_overrides if key not in supported_override_keys
         )
         if unsupported_overrides:
             failures.append(
@@ -1468,6 +1491,10 @@ def build_architecture_config_import_report(
                 parameters=parameters,
                 parameter_sources=parameter_sources,
                 failures=failures,
+                override_shift_amount=normalized_overrides.get(
+                    "shift_amount",
+                    _ARCHITECTURE_CONFIG_DEFAULT_MISSING,
+                ),
             )
         if not failures:
             try:
@@ -5574,6 +5601,7 @@ def build_architecture_config_import_json_schema() -> dict[str, Any]:
                     "explicit_override",
                     "architecture_config_field",
                     "derived_architecture_config_field",
+                    "derived_explicit_override",
                     "default",
                     "missing",
                 ],

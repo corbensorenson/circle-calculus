@@ -380,6 +380,24 @@ def test_recurrence_architecture_config_accepts_looped_transformer_vocabulary(
     }
     assert receipt["evidence"]["fields"]["periodic_shift_amount"] == 18
 
+    override_report = build_architecture_config_import_report(
+        "recurrence",
+        config,
+        overrides={"shift_amount": 12},
+    )
+    jsonschema.validate(
+        override_report,
+        build_architecture_config_import_json_schema(),
+    )
+    assert override_report["ok"] is True
+    assert override_report["request"]["parameters"]["shift_passes"] == 2
+    assert override_report["parameter_sources"]["shift_passes"] == {
+        "source": "derived_explicit_override",
+        "field": "shift_amount",
+        "value": 2,
+        "note": "derived from shift_amount=12 divided by loop_period=6",
+    }
+
 
 def test_recurrence_architecture_config_rejects_nonperiodic_shift_amount() -> None:
     config = {
@@ -403,6 +421,20 @@ def test_recurrence_architecture_config_rejects_nonperiodic_shift_amount() -> No
     )
     with pytest.raises(ValueError, match="shift_amount must be an exact multiple"):
         build_contract_request_from_architecture_config("recurrence", config)
+
+
+def test_recurrence_architecture_config_rejects_conflicting_shift_overrides() -> None:
+    config = {"recurrence": {"period": 6}}
+
+    report = build_architecture_config_import_report(
+        "recurrence",
+        config,
+        overrides={"shift_passes": 3, "shift_amount": 12},
+    )
+
+    assert report["ok"] is False
+    assert report["request"] is None
+    assert "explicit shift_passes is already 3" in report["failures"][0]
 
 
 def test_rope_receipt_classifies_d19_margin_request(contract_pack: dict) -> None:
@@ -4683,6 +4715,48 @@ def test_circle_ai_certify_recurrence_accepts_looped_architecture_config_aliases
     assert import_report["parameter_sources"]["shift_passes"]["source"] == (
         "derived_architecture_config_field"
     )
+
+
+def test_circle_ai_certify_recurrence_architecture_config_shift_amount_override(
+    tmp_path: Path,
+) -> None:
+    import_report_path = tmp_path / "recurrence_architecture_import.json"
+
+    result = subprocess.run(
+        [
+            sys.executable,
+            str(SCRIPT),
+            "recurrence",
+            "--architecture-config-file",
+            str(ARCHITECTURE_CONFIG),
+            "--architecture-config-import-report-out",
+            str(import_report_path),
+            "--shift-amount",
+            "10",
+            "--format",
+            "json",
+        ],
+        cwd=ROOT,
+        check=True,
+        text=True,
+        capture_output=True,
+    )
+
+    receipt = json.loads(result.stdout)
+    import_report = json.loads(import_report_path.read_text(encoding="utf-8"))
+    jsonschema.validate(
+        import_report,
+        build_architecture_config_import_json_schema(),
+    )
+    assert import_report["request"] == receipt["request"]
+    assert receipt["normalized_request"]["periodic_shift_passes"] == 2
+    assert receipt["evidence"]["fields"]["periodic_shift_amount"] == 10
+    assert import_report["parameter_sources"]["shift_passes"] == {
+        "source": "derived_explicit_override",
+        "field": "shift_amount",
+        "value": 2,
+        "note": "derived from shift_amount=10 divided by loop_period=5",
+    }
 
 
 def test_circle_ai_certify_recurrence_rejects_nonperiodic_shift_amount() -> None:

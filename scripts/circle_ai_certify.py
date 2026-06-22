@@ -960,6 +960,7 @@ def _architecture_overrides_from_args(args: argparse.Namespace) -> dict[str, Any
             "selected_block_start": args.selected_block_start,
             "selected_block_width": args.selected_block_width,
             "shift_passes": args.shift_passes,
+            "shift_amount": args.shift_amount,
         }
     raise ValueError(f"{args.kind} does not support --architecture-config")
 
