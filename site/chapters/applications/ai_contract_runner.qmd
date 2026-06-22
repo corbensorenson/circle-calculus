@@ -174,12 +174,16 @@ Model-config summaries include parameter-source provenance, so a downstream
 reader can see whether RoPE values came from config fields, derived fields,
 explicit overrides, defaults, or omitted optional inputs. Architecture-config
 summaries include parameter-source provenance for the architecture-derived
-receipts emitted from that config. The default batch emits RoPE, KV-cache,
-sparse-attention, and recurrence receipts; pass `--architecture-config-kind` to
-restrict the set. It is the package-native batch handoff path and does not
-require importing repository-only scripts. Use the explicit `--receipt-out-dir`
-and related directory flags only when a downstream CI system needs a custom
-layout instead of the standard artifact directory.
+receipts emitted from that config. For RoPE, architecture sections such as
+`rope`, `model`, or `transformer` may provide an explicit rotary/head dimension
+or a hidden-size plus attention-head-count pair; the import report records the
+fields used and does not treat unrelated architecture fields as part of the
+theorem-linked claim. The default batch emits RoPE, KV-cache, sparse-attention,
+and recurrence receipts; pass `--architecture-config-kind` to restrict the set.
+It is the package-native batch handoff path and does not require importing
+repository-only scripts. Use the explicit `--receipt-out-dir` and related
+directory flags only when a downstream CI system needs a custom layout instead
+of the standard artifact directory.
 
 After copying that directory into another project, a standard-library verifier
 can check the runner report and every named sidecar without importing Circle:

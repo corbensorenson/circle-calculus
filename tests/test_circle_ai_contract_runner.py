@@ -334,6 +334,56 @@ def test_architecture_config_import_builds_contract_requests(
     assert rope_bundle["gate_report"]["ok"] is True
 
 
+def test_architecture_config_import_derives_rope_head_dim_from_model_section(
+    contract_pack: dict,
+) -> None:
+    config = {
+        "model": {
+            "hidden_size": 4096,
+            "num_attention_heads": 32,
+            "partial_rotary_factor": 0.5,
+            "rope_theta": 500000.0,
+            "max_position_embeddings": 131072,
+            "model_type": "llama-like",
+        }
+    }
+
+    report = build_architecture_config_import_report("rope", config)
+
+    jsonschema.validate(report, build_architecture_config_import_json_schema())
+    assert report["ok"] is True
+    assert report["parameters"]["head_dim"] == 64
+    assert report["parameters"]["base"] == 500000.0
+    assert report["parameters"]["context"] == 131072
+    assert report["parameter_sources"]["head_dim"] == {
+        "source": "derived_architecture_config_field",
+        "field": (
+            "model.hidden_size, model.num_attention_heads, "
+            "model.partial_rotary_factor"
+        ),
+        "value": 64,
+        "note": (
+            "derived from model.hidden_size / model.num_attention_heads, "
+            "adjusted by model.partial_rotary_factor"
+        ),
+    }
+    assert report["parameter_sources"]["base"]["field"] == "model.rope_theta"
+    assert report["parameter_sources"]["context"]["field"] == (
+        "model.max_position_embeddings"
+    )
+    assert report["unsupported_architecture_config_fields"] == ["model.model_type"]
+
+    receipt = build_validated_contract_receipt_from_architecture_config(
+        "rope",
+        config,
+        pack=contract_pack,
+    )
+    assert receipt["kind"] == "rope_position_distinguishability"
+    assert receipt["normalized_request"]["head_dim"] == 64
+    assert receipt["normalized_request"]["base"] == 500000.0
+    assert receipt["normalized_request"]["context_length"] == 131072
+
+
 def test_architecture_config_import_reports_unsupported_target_section_fields() -> None:
     config = {
         "recurrence": {
@@ -4795,6 +4845,67 @@ def test_circle_ai_certify_recurrence_accepts_looped_architecture_config_aliases
     assert import_report["parameter_sources"]["shift_passes"]["source"] == (
         "derived_architecture_config_field"
     )
+
+
+def test_circle_ai_certify_rope_architecture_config_derives_nested_model_head_dim(
+    tmp_path: Path,
+) -> None:
+    config_path = tmp_path / "nested_model_rope_config.json"
+    import_report_path = tmp_path / "rope_architecture_import.json"
+    config_path.write_text(
+        json.dumps(
+            {
+                "model": {
+                    "hidden_size": 4096,
+                    "num_attention_heads": 32,
+                    "rope_theta": 500000.0,
+                    "max_position_embeddings": 8192,
+                    "model_type": "llama-like",
+                }
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    result = subprocess.run(
+        [
+            sys.executable,
+            str(SCRIPT),
+            "rope",
+            "--architecture-config-file",
+            str(config_path),
+            "--architecture-config-import-report-out",
+            str(import_report_path),
+            "--format",
+            "json",
+        ],
+        cwd=ROOT,
+        check=True,
+        text=True,
+        capture_output=True,
+    )
+
+    receipt = json.loads(result.stdout)
+    assert receipt["kind"] == "rope_position_distinguishability"
+    assert receipt["request_passed"] is True
+    assert receipt["normalized_request"]["head_dim"] == 128
+    assert receipt["normalized_request"]["base"] == 500000.0
+    assert receipt["normalized_request"]["context_length"] == 8192
+    import_report = json.loads(import_report_path.read_text(encoding="utf-8"))
+    jsonschema.validate(
+        import_report,
+        build_architecture_config_import_json_schema(),
+    )
+    assert import_report["request"] == receipt["request"]
+    assert import_report["parameter_sources"]["head_dim"]["source"] == (
+        "derived_architecture_config_field"
+    )
+    assert import_report["parameter_sources"]["head_dim"]["field"] == (
+        "model.hidden_size, model.num_attention_heads"
+    )
+    assert import_report["unsupported_architecture_config_fields"] == [
+        "model.model_type"
+    ]
 
 
 def test_circle_ai_certify_recurrence_architecture_config_shift_amount_override(

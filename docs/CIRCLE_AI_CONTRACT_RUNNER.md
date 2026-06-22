@@ -188,18 +188,21 @@ python scripts/circle_ai_certify.py recurrence \
   --format json
 ```
 
-Supported sections are `rope`, `kv_cache`, `sparse_attention`, and
-`recurrence`, with a small set of documented aliases such as `rope_theta`,
-`rotary_dim`, `kv_cache_size`, `context_length`, `sliding_window`, `max_hops`,
-`max_recurrence_steps`, `horizon_steps`, `loop_budget`, `tokens`,
-`middle_block_width`, and `block_width`. Recurrence configs may also provide
-`shift_amount`; it is accepted only when it is a nonnegative exact multiple of
-`loop_period`, then the import report records a derived `shift_passes` source
-rather than pretending the amount was already a pass count. Explicit CLI flags
-override imported fields; an explicit `--shift-amount` override is recorded as
-a derived explicit source in the saved import report. This import step is only
-deterministic translation/provenance; the theorem-backed claim is the emitted
-receipt. Use
+Supported sections are `rope`, `model`, `transformer`, `kv_cache`,
+`sparse_attention`, and `recurrence`, with a small set of documented aliases
+such as `rope_theta`, `rotary_dim`, `hidden_size / num_attention_heads`,
+`partial_rotary_factor`, `kv_cache_size`, `context_length`, `sliding_window`,
+`max_hops`, `max_recurrence_steps`, `horizon_steps`, `loop_budget`, `tokens`,
+`middle_block_width`, and `block_width`. If a RoPE architecture section has no
+explicit rotary/head dimension but does have hidden size and attention-head
+count fields, the import report derives `head_dim` and records the exact fields
+used. Recurrence configs may also provide `shift_amount`; it is accepted only
+when it is a nonnegative exact multiple of `loop_period`, then the import report
+records a derived `shift_passes` source rather than pretending the amount was
+already a pass count. Explicit CLI flags override imported fields; an explicit
+`--shift-amount` override is recorded as a derived explicit source in the saved
+import report. This import step is only deterministic translation/provenance;
+the theorem-backed claim is the emitted receipt. Use
 `--architecture-config-import-report-out PATH` to save the schema-validated
 import report for audit logs. Its schema is
 `site/data/generated/circle_ai_architecture_config_import.schema.json`, and its

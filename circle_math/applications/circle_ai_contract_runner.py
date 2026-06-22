@@ -393,6 +393,8 @@ ROPE_MODEL_CONTEXT_KEYS = (
     "n_positions",
 )
 ROPE_MODEL_HEAD_DIM_KEYS = ("head_dim", "attention_head_dim")
+ROPE_MODEL_HIDDEN_SIZE_KEYS = ("hidden_size", "n_embd", "d_model")
+ROPE_MODEL_NUM_HEAD_KEYS = ("num_attention_heads", "n_head", "n_heads")
 ROPE_MODEL_ROTARY_DIM_KEYS = (
     "rotary_dim",
     "rotary_emb_dim",
@@ -413,6 +415,9 @@ ARCHITECTURE_CONFIG_SECTION_KEYS = {
         "rotary",
         "rotary_embedding",
         "position_embedding",
+        "model",
+        "transformer",
+        "language_model",
         "rope_position_distinguishability",
     ),
     "kv_cache_ring_buffer": (
@@ -636,6 +641,7 @@ ARCHITECTURE_CONFIG_PARAMETER_DEFAULTS: dict[str, dict[str, Any]] = {
         "base": 10000.0,
         "tolerance": 1e-6,
         "discretization": "round",
+        "requested_margin": None,
     },
     "kv_cache_ring_buffer": {
         "batch_tokens": [],
@@ -1006,6 +1012,10 @@ def _architecture_supported_config_fields(canonical: str) -> set[str]:
         supported.update(aliases)
     if canonical == "recurrence_schedule":
         supported.update(RECURRENCE_ARCHITECTURE_SHIFT_AMOUNT_ALIASES)
+    if canonical == "rope_position_distinguishability":
+        supported.update(ROPE_MODEL_HIDDEN_SIZE_KEYS)
+        supported.update(ROPE_MODEL_NUM_HEAD_KEYS)
+        supported.update(ROPE_MODEL_ROTARY_FRACTION_KEYS)
     return supported
 
 
@@ -1061,6 +1071,61 @@ def _architecture_config_lookup_aliases(
             if alias in section:
                 field = alias if section_key is None else f"{section_key}.{alias}"
                 return section[alias], field
+    return None
+
+
+def _derive_rope_architecture_head_dim(
+    config: Mapping[str, Any],
+) -> tuple[int, str, str] | None:
+    for section_key, section in _architecture_config_sections(
+        "rope_position_distinguishability",
+        config,
+    ):
+        hidden_key = _model_config_key(section, ROPE_MODEL_HIDDEN_SIZE_KEYS)
+        head_count_key = _model_config_key(section, ROPE_MODEL_NUM_HEAD_KEYS)
+        if hidden_key is None or head_count_key is None:
+            continue
+
+        def field_name(key: str) -> str:
+            return key if section_key is None else f"{section_key}.{key}"
+
+        hidden_field = field_name(hidden_key)
+        head_count_field = field_name(head_count_key)
+        hidden_size = _positive_int_value(
+            section[hidden_key],
+            field=hidden_field,
+        )
+        num_heads = _positive_int_value(
+            section[head_count_key],
+            field=head_count_field,
+        )
+        if hidden_size % num_heads != 0:
+            raise ValueError(
+                "architecture config hidden-size field must be divisible by "
+                "the attention-head-count field"
+            )
+        head_dim = hidden_size // num_heads
+        fraction = _optional_rotary_fraction(section)
+        fraction_key = _model_config_key(section, ROPE_MODEL_ROTARY_FRACTION_KEYS)
+        source_fields = [hidden_field, head_count_field]
+        note = f"derived from {hidden_field} / {head_count_field}"
+        if fraction is not None:
+            numerator = head_dim * fraction.numerator
+            if numerator % fraction.denominator != 0:
+                raise ValueError(
+                    "architecture config rotary fraction must produce an "
+                    "integer RoPE head_dim"
+                )
+            head_dim = numerator // fraction.denominator
+            if fraction_key is not None:
+                fraction_field = field_name(fraction_key)
+                source_fields.append(fraction_field)
+                note += f", adjusted by {fraction_field}"
+        return (
+            _even_rope_head_dim_value(head_dim, field="head_dim"),
+            ", ".join(source_fields),
+            note,
+        )
     return None
 
 
@@ -1512,6 +1577,31 @@ def build_architecture_config_import_report(
                     field=field,
                     value=value,
                 )
+            elif (
+                canonical == "rope_position_distinguishability"
+                and parameter == "head_dim"
+            ):
+                try:
+                    derived = _derive_rope_architecture_head_dim(config)
+                except ValueError as exc:
+                    failures.append(
+                        str(exc).replace("model config", "architecture config")
+                    )
+                    derived = None
+                if derived is not None:
+                    value, field, note = derived
+                    parameters[parameter] = value
+                    parameter_sources[parameter] = _architecture_parameter_source(
+                        source="derived_architecture_config_field",
+                        field=field,
+                        value=value,
+                        note=note,
+                    )
+                else:
+                    parameter_sources[parameter] = _architecture_parameter_source(
+                        source="missing",
+                        note="required for this contract kind",
+                    )
             elif parameter in optional:
                 default = defaults.get(
                     parameter,
