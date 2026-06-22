@@ -308,6 +308,21 @@ def test_check_circle_ai_certification_bundle_accepts_architecture_config_finger
         import_report["architecture_config_fingerprint"]
     )
 
+    text_result = subprocess.run(
+        [
+            sys.executable,
+            str(SCRIPT),
+            str(bundle_path),
+            "--require-architecture-config-fingerprint",
+            import_report["architecture_config_fingerprint"],
+        ],
+        cwd=ROOT,
+        check=True,
+        text=True,
+        capture_output=True,
+    )
+    assert "architecture_config=True" in text_result.stdout
+
     missing = subprocess.run(
         [
             sys.executable,

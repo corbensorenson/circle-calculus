@@ -2517,6 +2517,8 @@ def test_runner_check_report_schema_accepts_public_report() -> None:
                 "request_path": "examples/circle_ai_requests/rope_request.json",
                 "model_config_import_report_path": None,
                 "model_config_parameter_sources": None,
+                "architecture_config_import_report_path": None,
+                "architecture_config_parameter_sources": None,
                 "request_validation_report_path": None,
                 "certification_bundle_path": None,
                 "certification_bundle_check_path": None,
@@ -3661,6 +3663,22 @@ def test_circle_ai_certify_cli_artifact_dir_writes_architecture_import_sidecar(
     assert pinned_payload["pin_policy"][
         "required_architecture_config_fingerprints"
     ] == [import_report["architecture_config_fingerprint"]]
+
+    text_manifest_check = subprocess.run(
+        [
+            sys.executable,
+            str(ARTIFACT_MANIFEST_CHECK_SCRIPT),
+            str(manifest_path),
+            "--require-architecture-config-fingerprint",
+            import_report["architecture_config_fingerprint"],
+        ],
+        cwd=ROOT,
+        check=True,
+        text=True,
+        capture_output=True,
+    )
+    assert "model_config=False" in text_manifest_check.stdout
+    assert "architecture_config=True" in text_manifest_check.stdout
 
     pin_policy_path = tmp_path / "sparse_architecture_pin_policy.json"
     pin_policy_path.write_text(

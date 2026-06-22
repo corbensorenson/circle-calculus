@@ -693,6 +693,7 @@ def main() -> int:
                 f"decision={summary['decision_verdict']} "
                 f"assurance={summary['decision_assurance']} "
                 f"model_config={summary['has_model_config_import_report']} "
+                f"architecture_config={summary['has_architecture_config_import_report']} "
                 f"pack={summary['contract_pack_fingerprint'][:12]} "
                 f"receipt_fingerprint={summary['receipt_content_fingerprint'][:12]} "
                 f"failures={summary['failure_count']}"
