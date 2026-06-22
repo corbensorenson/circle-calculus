@@ -4248,6 +4248,90 @@ def build_contract_certification_bundle(
     }
 
 
+def build_rope_model_config_certification_bundle(
+    config: Mapping[str, Any],
+    *,
+    head_dim: int | None = None,
+    base: float | None = None,
+    context: int | None = None,
+    tolerance: float | None = None,
+    discretization: str | None = None,
+    requested_margin: str | Fraction | None = None,
+    pack: Mapping[str, Any] | None = None,
+    receipt_path: str = "<in-memory-receipt>",
+    required_statuses: Sequence[str] = (),
+    required_decision_verdicts: Sequence[str] = (),
+    required_assurance_levels: Sequence[str] = (),
+    require_passed: bool = False,
+) -> dict[str, Any]:
+    """Build a provenance-carrying certification bundle from a RoPE model config."""
+
+    import_report = build_rope_model_config_import_report(
+        config,
+        head_dim=head_dim,
+        base=base,
+        context=context,
+        tolerance=tolerance,
+        discretization=discretization,
+        requested_margin=requested_margin,
+    )
+    if not import_report["ok"]:
+        raise ValueError(
+            "invalid Circle AI RoPE model config import: "
+            + "; ".join(import_report["failures"])
+        )
+    request = import_report["request"]
+    assert isinstance(request, dict)
+    return build_contract_certification_bundle(
+        request,
+        pack=pack,
+        model_config_import_report=import_report,
+        receipt_path=receipt_path,
+        required_statuses=required_statuses,
+        required_decision_verdicts=required_decision_verdicts,
+        required_assurance_levels=required_assurance_levels,
+        require_passed=require_passed,
+    )
+
+
+def build_architecture_config_certification_bundle(
+    kind: str,
+    config: Mapping[str, Any],
+    *,
+    overrides: Mapping[str, Any] | None = None,
+    pack: Mapping[str, Any] | None = None,
+    receipt_path: str = "<in-memory-receipt>",
+    required_statuses: Sequence[str] = (),
+    required_decision_verdicts: Sequence[str] = (),
+    required_assurance_levels: Sequence[str] = (),
+    require_passed: bool = False,
+) -> dict[str, Any]:
+    """Build a provenance-carrying certification bundle from an architecture config."""
+
+    import_report = build_architecture_config_import_report(
+        kind,
+        config,
+        overrides=overrides,
+    )
+    if not import_report["ok"]:
+        raise ValueError(
+            "invalid Circle AI architecture config import: "
+            + "; ".join(import_report["failures"])
+        )
+    request = import_report["request"]
+    assert isinstance(request, dict)
+    return build_contract_certification_bundle(
+        request,
+        pack=pack,
+        architecture_config_import_report=import_report,
+        receipt_path=receipt_path,
+        required_statuses=required_statuses,
+        required_decision_verdicts=required_decision_verdicts,
+        required_assurance_levels=required_assurance_levels,
+        require_passed=require_passed,
+    )
+
+
 def receipt_summary_lines(receipt: Mapping[str, Any]) -> list[str]:
     """Return a compact text summary for humans."""
 

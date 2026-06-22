@@ -637,6 +637,7 @@ future sharper theorem.
 
 ```python
 from circle_math.applications import (
+    build_architecture_config_certification_bundle,
     build_contract_artifact_manifest_file_check_report,
     build_contract_certification_bundle,
     build_contract_certification_bundle_file_check_report,
@@ -646,6 +647,7 @@ from circle_math.applications import (
     build_contract_request,
     build_contract_request_validation_report,
     build_rope_contract_request_from_model_config,
+    build_rope_model_config_certification_bundle,
     build_validated_contract_receipt,
     build_validated_contract_receipt_from_request,
     build_validated_rope_receipt_from_model_config,
@@ -672,6 +674,16 @@ receipt = build_validated_rope_receipt_from_model_config(
     pack=pack,
 )
 assert receipt["request"] == request
+rope_bundle = build_rope_model_config_certification_bundle(
+    model_config,
+    requested_margin="1/328459",
+    pack=pack,
+    required_statuses=("proved",),
+    required_decision_verdicts=("passed",),
+    required_assurance_levels=("mixed_theorem_and_computation",),
+    require_passed=True,
+)
+assert rope_bundle["model_config_import_report"]["request"] == request
 
 request = build_contract_request(
     "rope",
@@ -768,6 +780,25 @@ bundle_check_report = build_contract_certification_bundle_file_check_report(
     require_passed=True,
 )
 assert bundle_check_report["ok"] is True
+
+architecture_config = {
+    "sparse_attention": {
+        "context_length": 9,
+        "sliding_window": 2,
+        "strides": [3, 4, 7],
+        "max_hops": 2,
+    }
+}
+architecture_bundle = build_architecture_config_certification_bundle(
+    "sparse-attention",
+    architecture_config,
+    pack=pack,
+    required_statuses=("proved",),
+    required_decision_verdicts=("passed",),
+    required_assurance_levels=("theorem_backed",),
+    require_passed=True,
+)
+assert architecture_bundle["architecture_config_import_report"]["ok"] is True
 ```
 
 The bundle's top-level `request_content_fingerprint` is the fingerprint of the
@@ -782,6 +813,10 @@ architecture-config fingerprint, parameter sources, and emitted request
 fingerprint. The
 embedded receipt still carries its own `request_content_fingerprint` for the
 canonical request that the certifier emitted after applying contract defaults.
+Use `build_rope_model_config_certification_bundle` or
+`build_architecture_config_certification_bundle` when a downstream Python
+consumer wants receipt, gate report, and source-config provenance in one
+schema-validated object.
 
 For every parameterized receipt, the first `validation_commands` entry is the
 request-specific replay command for those exact runner parameters. The remaining

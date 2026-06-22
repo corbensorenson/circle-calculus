@@ -34,12 +34,14 @@ from circle_math.applications import (
     build_compact_contract_receipt_json_schema,
     build_circulant_block_cyclic_mixer_receipt,
     build_cyclic_memory_receipt,
+    build_architecture_config_certification_bundle,
     build_architecture_config_import_report,
     build_architecture_config_import_json_schema,
     build_kv_cache_receipt,
     build_multicoil_phase_feature_receipt,
     build_recurrence_receipt,
     build_rope_contract_request_from_model_config,
+    build_rope_model_config_certification_bundle,
     build_rope_model_config_import_json_schema,
     build_rope_model_config_import_report,
     build_rope_request_parameters_from_model_config,
@@ -250,6 +252,22 @@ def test_architecture_config_import_builds_non_rope_contract_requests(
     assert recurrence_receipt["kind"] == "recurrence_schedule"
     assert recurrence_receipt["request_passed"] is True
     assert recurrence_receipt["normalized_request"]["sample_index"] == 9
+
+    sparse_bundle = build_architecture_config_certification_bundle(
+        "sparse-attention",
+        config,
+        pack=contract_pack,
+        required_statuses=("proved",),
+        required_decision_verdicts=("passed",),
+        required_assurance_levels=("theorem_backed",),
+        require_passed=True,
+    )
+    jsonschema.validate(sparse_bundle, build_contract_certification_bundle_json_schema())
+    assert sparse_bundle["ok"] is True
+    assert sparse_bundle["model_config_import_report"] is None
+    assert sparse_bundle["architecture_config_import_report"] == sparse_report
+    assert sparse_bundle["receipt"]["kind"] == "sparse_attention_coverage"
+    assert sparse_bundle["gate_report"]["ok"] is True
 
 
 def test_rope_receipt_classifies_d19_margin_request(contract_pack: dict) -> None:
@@ -1892,6 +1910,23 @@ def test_rope_model_config_public_api_builds_request_and_receipt(
     assert receipt["decision"]["verdict"] == "passed"
     assert receipt["proof_status"]["all_theorem_ids_proved"] is True
     assert validate_contract_receipt_against_pack(receipt, contract_pack) == []
+
+    bundle = build_rope_model_config_certification_bundle(
+        config,
+        requested_margin="1/328459",
+        pack=contract_pack,
+        required_statuses=("proved",),
+        required_decision_verdicts=("passed",),
+        required_assurance_levels=("mixed_theorem_and_computation",),
+        require_passed=True,
+    )
+    jsonschema.validate(bundle, build_contract_certification_bundle_json_schema())
+    assert bundle["ok"] is True
+    assert bundle["receipt"]["request"] == request
+    assert bundle["architecture_config_import_report"] is None
+    assert bundle["model_config_import_report"]["request"] == request
+    assert len(bundle["model_config_import_report"]["model_config_fingerprint"]) == 64
+    assert bundle["gate_report"]["ok"] is True
 
 
 def test_rope_model_config_import_handles_partial_rotary_factor() -> None:
