@@ -518,6 +518,7 @@ def test_standalone_batch_artifact_verifier_rejects_stale_runner_summary_metadat
     runner_check = json.loads(runner_check_path.read_text(encoding="utf-8"))
     runner_check["example_count"] = 2
     runner_check["selected_kinds"] = []
+    runner_check["kind_counts"] = {"rope_position_distinguishability": 2}
     runner_check_path.write_text(
         json.dumps(runner_check, indent=2, sort_keys=True) + "\n",
         encoding="utf-8",
@@ -547,6 +548,10 @@ def test_standalone_batch_artifact_verifier_rejects_stale_runner_summary_metadat
     rejection = json.loads(result.stderr)
     assert rejection["accepted"] is False
     assert rejection["runner_selected_kinds"] == []
+    assert rejection["runner_kind_counts"] == {
+        "rope_position_distinguishability": 2
+    }
+    assert rejection["kind_counts"] == {"rope_position_distinguishability": 1}
     assert rejection["observed_kinds"] == ["rope_position_distinguishability"]
     assert any(
         "example_count does not match summaries length" in failure
@@ -554,6 +559,10 @@ def test_standalone_batch_artifact_verifier_rejects_stale_runner_summary_metadat
     )
     assert any(
         "selected_kinds does not match observed summary kinds" in failure
+        for failure in rejection["failures"]
+    )
+    assert any(
+        "kind_counts does not match observed summary kinds" in failure
         for failure in rejection["failures"]
     )
 

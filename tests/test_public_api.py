@@ -700,6 +700,10 @@ def test_package_cli_unified_certify_batch_request_files_writes_compact_receipts
     assert report["failure_count"] == 0
     assert report["gate_policy"]["allowed_statuses"] == ["proved"]
     assert report["gate_policy"]["allowed_decision_verdicts"] == ["passed"]
+    assert report["kind_counts"] == {
+        "kv_cache_ring_buffer": 1,
+        "sparse_attention_coverage": 1,
+    }
     assert {summary["kind"] for summary in report["summaries"]} == {
         "kv_cache_ring_buffer",
         "sparse_attention_coverage",
@@ -860,6 +864,12 @@ def test_package_cli_unified_certify_batch_architecture_config_writes_import_rep
         "rope_position_distinguishability",
         "sparse_attention_coverage",
     ]
+    assert report["kind_counts"] == {
+        "kv_cache_ring_buffer": 1,
+        "recurrence_schedule": 1,
+        "rope_position_distinguishability": 1,
+        "sparse_attention_coverage": 1,
+    }
     architecture_summaries = [
         summary
         for summary in report["summaries"]
@@ -1256,6 +1266,12 @@ def test_public_api_runner_check_report_builds_from_in_memory_sources() -> None:
         "rope_position_distinguishability",
         "sparse_attention_coverage",
     ]
+    assert report["kind_counts"] == {
+        "kv_cache_ring_buffer": 2,
+        "recurrence_schedule": 1,
+        "rope_position_distinguishability": 2,
+        "sparse_attention_coverage": 1,
+    }
     summaries_by_type = {
         summary["source_type"]: summary for summary in report["summaries"]
     }
@@ -1357,6 +1373,11 @@ def test_contract_runner_check_schema_rejects_duplicate_gate_and_kind_values() -
     duplicate_unproved_report["summaries"] = [duplicate_unproved_summary]
     with pytest.raises(jsonschema.ValidationError):
         jsonschema.validate(duplicate_unproved_report, schema)
+
+    bad_kind_counts_report = dict(report)
+    bad_kind_counts_report["kind_counts"] = {"kv_cache_ring_buffer": 0}
+    with pytest.raises(jsonschema.ValidationError):
+        jsonschema.validate(bad_kind_counts_report, schema)
 
 
 def test_package_cli_unified_certify_writes_gate_and_replay_reports(tmp_path) -> None:

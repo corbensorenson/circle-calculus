@@ -218,7 +218,9 @@ verifier reports include a reusable `pin_policy`; pass that report back with
 `--pin-policy` to reject a future runner-check whose `gate_policy` has drifted
 from the pinned CI contract. Each runner summary includes both `theorem_count`
 and the concrete `theorem_ids` cited by that receipt, plus resolved/proved
-booleans and any unresolved or unproved theorem ids.
+booleans and any unresolved or unproved theorem ids. The top-level report also
+includes `kind_counts`, so a batch consumer can distinguish a one-family run
+from a full architecture-contract run without opening every receipt.
 
 Python callers can build the same schema-valid runner-check report in memory
 with `build_contract_runner_check_report`. The helper accepts versioned request

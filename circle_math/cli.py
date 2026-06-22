@@ -1405,6 +1405,10 @@ def _certify_batch_requests(args: argparse.Namespace) -> int:
         "failure_count": len(failures),
         "failures": failures,
         "selected_kinds": sorted(selected_kinds),
+        "kind_counts": {
+            kind: sum(1 for summary in summaries if summary["kind"] == kind)
+            for kind in sorted(selected_kinds)
+        },
         "gate_policy": {
             "allowed_statuses": list(args.require_status),
             "allowed_decision_verdicts": list(args.require_decision),

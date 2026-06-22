@@ -41,6 +41,17 @@ SUPPORTED_ASSURANCES = {
     "unsupported",
     "undecided",
 }
+SUPPORTED_CONTRACT_KINDS = {
+    "rope_position_distinguishability",
+    "kv_cache_ring_buffer",
+    "sparse_attention_coverage",
+    "recurrence_schedule",
+    "strided_candidate_fanout",
+    "cyclic_memory_residue_winding",
+    "multicoil_phase_feature",
+    "circulant_block_cyclic_mixer",
+    "seed_rule_exact_regeneration",
+}
 EXPECTED_SCHEMA_BY_SUMMARY_PATH = {
     "receipt_path": "circle_calculus.ai_contract_receipt.v0",
     "compact_receipt_path": "circle_calculus.ai_contract_compact_receipt.v0",
@@ -686,6 +697,31 @@ def verify_runner_check(
             "runner-check selected_kinds does not match observed summary kinds: "
             f"{sorted(set(selected_kinds))!r} != {sorted(set(observed_kinds))!r}"
         )
+    raw_kind_counts = report.get("kind_counts")
+    runner_kind_counts: dict[str, int] = {}
+    if not isinstance(raw_kind_counts, dict):
+        failures.append("runner-check kind_counts must be an object")
+    else:
+        for kind, count in raw_kind_counts.items():
+            if not isinstance(kind, str):
+                failures.append("runner-check kind_counts keys must be strings")
+                continue
+            if kind not in SUPPORTED_CONTRACT_KINDS:
+                failures.append(
+                    f"runner-check kind_counts has unsupported kind: {kind!r}"
+                )
+                continue
+            if not isinstance(count, int) or count < 1:
+                failures.append(
+                    f"runner-check kind_counts[{kind!r}] must be a positive integer"
+                )
+                continue
+            runner_kind_counts[kind] = count
+    if runner_kind_counts != kind_counts:
+        failures.append(
+            "runner-check kind_counts does not match observed summary kinds: "
+            f"{runner_kind_counts!r} != {kind_counts!r}"
+        )
     for kind in required_kinds:
         if kind not in kind_counts:
             failures.append(f"required contract kind is missing: {kind}")
@@ -778,6 +814,7 @@ def verify_runner_check(
         "runner_selected_kinds": selected_kinds,
         "observed_kinds": sorted(set(observed_kinds)),
         "kind_counts": kind_counts,
+        "runner_kind_counts": runner_kind_counts,
         "required_statuses": required_statuses,
         "required_decisions": required_decisions,
         "required_assurances": required_assurances,

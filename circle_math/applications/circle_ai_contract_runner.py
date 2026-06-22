@@ -4427,6 +4427,10 @@ def build_contract_runner_check_report(
         "failure_count": len(failures),
         "failures": failures,
         "selected_kinds": sorted(selected_kinds),
+        "kind_counts": {
+            kind: sum(1 for summary in summaries if summary["kind"] == kind)
+            for kind in sorted(selected_kinds)
+        },
         "gate_policy": _contract_runner_gate_policy(
             required_statuses=required_statuses,
             required_decision_verdicts=required_decision_verdicts,
@@ -6154,6 +6158,7 @@ def build_contract_runner_check_json_schema() -> dict[str, Any]:
             "failure_count",
             "failures",
             "selected_kinds",
+            "kind_counts",
             "gate_policy",
             "summaries",
         ],
@@ -6167,6 +6172,11 @@ def build_contract_runner_check_json_schema() -> dict[str, Any]:
                 "type": "array",
                 "items": {"enum": list(SUPPORTED_CONTRACT_KINDS)},
                 "uniqueItems": True,
+            },
+            "kind_counts": {
+                "type": "object",
+                "propertyNames": {"enum": list(SUPPORTED_CONTRACT_KINDS)},
+                "additionalProperties": {"type": "integer", "minimum": 1},
             },
             "gate_policy": gate_policy,
             "summaries": {"type": "array", "items": summary},

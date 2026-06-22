@@ -450,9 +450,10 @@ architecture-config import reports, request-validation preflights,
 certification bundles, bundle checks, and one schema-validated runner-check
 report without depending on repository-only scripts. Use `--artifact-dir` when
 the installed batch command should choose stable subdirectories for that
-portable handoff set. Each runner summary includes both `theorem_count` and the
-concrete `theorem_ids` cited by the receipt, plus resolved/proved booleans and
-any unresolved or unproved theorem ids. By default, each architecture
+portable handoff set. The top-level report includes `kind_counts`, and each
+runner summary includes both `theorem_count` and the concrete `theorem_ids`
+cited by the receipt, plus resolved/proved booleans and any unresolved or
+unproved theorem ids. By default, each architecture
 config emits RoPE, KV-cache, sparse-attention, and recurrence receipts; pass
 `--architecture-config-kind` to restrict that set globally, or set
 `circle_ai_contract_kinds` inside one architecture config to restrict that file
