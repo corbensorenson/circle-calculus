@@ -195,6 +195,11 @@ Compact receipt views are checked against
 derived from a validated full receipt and carry the full
 `receipt_content_fingerprint`; they are not a substitute for the audit receipt
 when reproducing or debugging a contract run.
+For sparse-attention receipts, the compact view includes both lag-side and
+query-side collision accounting: no-collision booleans, dedup-loss counts,
+pair-collision counts, pair-count-bounds-dedup-loss checks, and
+unique-plus-loss-equals-raw accounting. Downstream CI can therefore gate on
+candidate alias severity without reopening the full sparse certificate.
 Use `--receipt-check-out` with `--json-out` to write the same schema-validated
 pack-aware check report that a later `scripts/check_circle_ai_receipt.py` run
 would produce for the saved receipt.

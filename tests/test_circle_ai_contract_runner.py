@@ -322,6 +322,34 @@ def test_compact_receipt_public_api_surfaces_downstream_fields(
     ]["contract_content_fingerprint"]
 
 
+def test_compact_sparse_receipt_surfaces_collision_accounting(
+    contract_pack: dict,
+) -> None:
+    receipt = build_sparse_attention_receipt(
+        context=120,
+        strides=(7, 13),
+        path_length=3,
+        local_window=4,
+        pack=contract_pack,
+    )
+
+    compact = build_compact_contract_receipt(receipt)
+
+    jsonschema.validate(compact, build_compact_contract_receipt_json_schema())
+    selected = compact["selected_evidence"]
+    assert selected["coverage_complete"] is False
+    assert selected["theorem_side_lag_candidates_no_collision"] is True
+    assert selected["theorem_side_lag_candidate_dedup_loss"] == 0
+    assert selected["theorem_side_lag_candidate_collision_pair_count"] == 0
+    assert selected["lag_collision_pair_count_bounds_dedup_loss"] is True
+    assert selected["lag_dedup_loss_accounting_matches_raw"] is True
+    assert selected["theorem_side_query_candidates_no_collision"] is True
+    assert selected["theorem_side_query_candidate_dedup_loss"] == 0
+    assert selected["theorem_side_query_candidate_collision_pair_count"] == 0
+    assert selected["query_collision_pair_count_bounds_dedup_loss"] is True
+    assert selected["query_dedup_loss_accounting_matches_raw"] is True
+
+
 def test_rope_receipt_uses_d19_bank_bridge_for_smaller_context(
     contract_pack: dict,
 ) -> None:
@@ -570,6 +598,11 @@ def test_kv_sparse_and_recurrence_receipts_preserve_family_semantics(
     repair_plan_line = next(
         line for line in sparse_lines if line.startswith("sparse_repair_plan=")
     )
+    collision_accounting_line = next(
+        line
+        for line in sparse_lines
+        if line.startswith("sparse_collision_accounting=")
+    )
     assert any(line.startswith("sparse_budget=") for line in sparse_lines)
     assert any(line.startswith("sparse_zero_residue=") for line in sparse_lines)
     assert "complete_repair_window=119" in repair_line
@@ -587,6 +620,12 @@ def test_kv_sparse_and_recurrence_receipts_preserve_family_semantics(
     assert "final_window=119" in repair_plan_line
     assert "covers_context=True" in repair_plan_line
     assert "strictly_progresses=True" in repair_plan_line
+    assert "lag_no_collision=True" in collision_accounting_line
+    assert "lag_pairs_bound_loss=True" in collision_accounting_line
+    assert "lag_unique_plus_loss_eq_raw=True" in collision_accounting_line
+    assert "query_no_collision=True" in collision_accounting_line
+    assert "query_pairs_bound_loss=True" in collision_accounting_line
+    assert "query_unique_plus_loss_eq_raw=True" in collision_accounting_line
     assert sparse["proof_status"]["all_theorem_ids_proved"] is True
 
     assert recurrence["status"] == "proved"

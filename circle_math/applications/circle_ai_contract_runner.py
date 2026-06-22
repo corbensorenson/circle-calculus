@@ -259,8 +259,16 @@ COMPACT_RECEIPT_EVIDENCE_PATHS_BY_KIND = {
         "complete_repair_window_minimal_for_declared_stride_family",
         "uncovered_lag_interval_count",
         "largest_uncovered_interval_length",
+        "theorem_side_lag_candidates_no_collision",
+        "theorem_side_lag_candidate_dedup_loss",
         "theorem_side_lag_candidate_collision_pair_count",
+        "lag_collision_pair_count_bounds_dedup_loss",
+        "lag_dedup_loss_accounting_matches_raw",
+        "theorem_side_query_candidates_no_collision",
+        "theorem_side_query_candidate_dedup_loss",
         "theorem_side_query_candidate_collision_pair_count",
+        "query_collision_pair_count_bounds_dedup_loss",
+        "query_dedup_loss_accounting_matches_raw",
     ),
     "recurrence_schedule": (
         "fields.loop_period",
@@ -3573,6 +3581,21 @@ def receipt_summary_lines(receipt: Mapping[str, Any]) -> list[str]:
             f"query_unique={evidence['theorem_side_unique_query_candidate_count']} "
             "query_collision_pairs="
             f"{evidence['theorem_side_query_candidate_collision_pair_count']}"
+        )
+        lines.append(
+            "sparse_collision_accounting="
+            f"lag_no_collision={evidence['theorem_side_lag_candidates_no_collision']} "
+            f"lag_dedup_loss={evidence['theorem_side_lag_candidate_dedup_loss']} "
+            "lag_pairs_bound_loss="
+            f"{evidence['lag_collision_pair_count_bounds_dedup_loss']} "
+            "lag_unique_plus_loss_eq_raw="
+            f"{evidence['lag_dedup_loss_accounting_matches_raw']} "
+            f"query_no_collision={evidence['theorem_side_query_candidates_no_collision']} "
+            f"query_dedup_loss={evidence['theorem_side_query_candidate_dedup_loss']} "
+            "query_pairs_bound_loss="
+            f"{evidence['query_collision_pair_count_bounds_dedup_loss']} "
+            "query_unique_plus_loss_eq_raw="
+            f"{evidence['query_dedup_loss_accounting_matches_raw']}"
         )
         lines.append(
             "sparse_zero_residue="

@@ -227,11 +227,12 @@ They do not claim better reasoning, adaptive-exit quality, speed, or model
 performance.
 
 For sparse-attention requests, the human receipt includes `sparse_intervals=`,
-`sparse_interval_repair=`, and `sparse_repair_plan=` lines. These expose the
-first uncovered lag interval, the largest uncovered interval, the complete local
-repair threshold, and the deterministic interval-repair plan. They are finite
-coverage and budget facts, not claims about attention quality, layout optimality,
-runtime speed, or model accuracy.
+`sparse_interval_repair=`, `sparse_repair_plan=`, and
+`sparse_collision_accounting=` lines. These expose the first uncovered lag
+interval, the largest uncovered interval, the complete local repair threshold,
+the deterministic interval-repair plan, and lag/query candidate alias severity.
+They are finite coverage and budget facts, not claims about attention quality,
+layout optimality, runtime speed, or model accuracy.
 
 Use `--format json` when another project will consume the full audit result:
 
@@ -249,7 +250,10 @@ python scripts/circle_ai_certify.py sparse-attention \
 
 Use `--format compact-json` for a smaller pass/fail receipt view when the
 consumer only needs proof status, selected evidence fields, non-claims, and
-fingerprints.
+fingerprints. For sparse-attention receipts, the selected evidence includes
+lag-side and query-side no-collision booleans, dedup-loss counts,
+pair-collision counts, pair-count-bounds-dedup-loss checks, and
+unique-plus-loss-equals-raw accounting.
 
 Add `--request-validation-report-out reports/request_validation.json` when a
 single-config run should also save the schema-validated preflight report for the
