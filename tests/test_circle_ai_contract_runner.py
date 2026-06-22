@@ -791,6 +791,9 @@ def test_receipt_summary_lines_surface_proof_layer_counts(
     bank_bridge_line = next(
         line for line in lines if line.startswith("rope_d19_bank_bridge=")
     )
+    d19_request_line = next(
+        line for line in lines if line.startswith("rope_d19_request=")
+    )
     proof_layers = receipt["proof_layers"]
     assert f"proved_fields={len(proof_layers['proved_fields'])}" in proof_layer_line
     assert f"computed_fields={len(proof_layers['computed_fields'])}" in proof_layer_line
@@ -804,6 +807,8 @@ def test_receipt_summary_lines_surface_proof_layer_counts(
     )
     assert "verdict=passed" in decision_line
     assert "assurance=mixed_theorem_and_computation" in decision_line
+    assert "obstruction_gap=103993" in d19_request_line
+    assert "obstruction_turns=16551" in d19_request_line
     assert "applies=True" in bank_bridge_line
     assert "theorem_backed=True" in bank_bridge_line
     assert "radian_bank_form=True" in bank_bridge_line

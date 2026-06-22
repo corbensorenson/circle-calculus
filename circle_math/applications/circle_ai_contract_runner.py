@@ -4663,7 +4663,11 @@ def receipt_summary_lines(receipt: Mapping[str, Any]) -> list[str]:
                 f"status={classifier['request_status']} "
                 f"theorem_backed={classifier['theorem_backed_classification']} "
                 f"margin={classifier['requested_margin']} "
-                f"context={classifier['requested_context']}"
+                f"context={classifier['requested_context']} "
+                "obstruction_gap="
+                f"{classifier['impossible_obstruction_gap']} "
+                "obstruction_turns="
+                f"{classifier['impossible_obstruction_turns']}"
             )
         bank_bridge = evidence.get("standard_channel0_d19_bank_bridge")
         if isinstance(bank_bridge, dict):
