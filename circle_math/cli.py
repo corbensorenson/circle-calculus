@@ -621,6 +621,7 @@ def _apply_certify_batch_artifact_dir_defaults(args: argparse.Namespace) -> None
     if artifact_dir is None:
         return
     prefix = _default_certify_artifact_prefix(args)
+    args._artifact_prefix_value = prefix
     _fill_certify_batch_artifact_dir(
         args,
         "receipt_out_dir",
@@ -665,6 +666,88 @@ def _apply_certify_batch_artifact_dir_defaults(args: argparse.Namespace) -> None
     )
     if args.report_out is None:
         args.report_out = artifact_dir / f"{prefix}_runner_check.json"
+    _fill_certify_artifact_path(
+        args,
+        "artifact_manifest_out",
+        artifact_dir,
+        prefix,
+        "artifact_manifest",
+    )
+    _fill_certify_artifact_path(
+        args,
+        "artifact_manifest_check_out",
+        artifact_dir,
+        prefix,
+        "artifact_manifest_check",
+    )
+
+
+def _certify_batch_artifact_paths(
+    *,
+    report: dict[str, Any],
+    report_path: Path | None,
+) -> list[tuple[str, Path, str | None]]:
+    artifact_paths: list[tuple[str, Path, str | None]] = []
+    if report_path is not None:
+        artifact_paths.append(
+            (
+                "runner_check",
+                report_path,
+                CIRCLE_AI_CONTRACT_RUNNER_CHECK_SCHEMA_ID,
+            )
+        )
+    summary_path_schemas = (
+        (
+            "receipt_path",
+            "receipt_json",
+            CIRCLE_AI_CONTRACT_RECEIPT_SCHEMA_ID,
+        ),
+        (
+            "compact_receipt_path",
+            "compact_receipt_json",
+            CIRCLE_AI_CONTRACT_COMPACT_RECEIPT_SCHEMA_ID,
+        ),
+        (
+            "model_config_import_report_path",
+            "model_config_import_report",
+            CIRCLE_AI_ROPE_MODEL_CONFIG_IMPORT_SCHEMA_ID,
+        ),
+        (
+            "architecture_config_import_report_path",
+            "architecture_config_import_report",
+            CIRCLE_AI_ARCHITECTURE_CONFIG_IMPORT_SCHEMA_ID,
+        ),
+        (
+            "request_validation_report_path",
+            "request_validation_report",
+            CIRCLE_AI_CONTRACT_REQUEST_VALIDATION_SCHEMA_ID,
+        ),
+        (
+            "certification_bundle_path",
+            "certification_bundle",
+            CIRCLE_AI_CONTRACT_CERTIFICATION_BUNDLE_SCHEMA_ID,
+        ),
+        (
+            "certification_bundle_check_path",
+            "certification_bundle_check",
+            CIRCLE_AI_CONTRACT_CERTIFICATION_BUNDLE_FILE_CHECK_SCHEMA_ID,
+        ),
+    )
+    for index, summary in enumerate(report["summaries"], start=1):
+        if not isinstance(summary, dict):
+            continue
+        for path_key, label_suffix, schema_id in summary_path_schemas:
+            raw_path = summary.get(path_key)
+            if not isinstance(raw_path, str) or not raw_path:
+                continue
+            artifact_paths.append(
+                (
+                    f"summary_{index:03d}_{label_suffix}",
+                    Path(raw_path),
+                    schema_id,
+                )
+            )
+    return artifact_paths
 
 
 def _certify_artifact_paths(
@@ -1437,6 +1520,31 @@ def _certify_batch_requests(args: argparse.Namespace) -> int:
     _validate_contract_runner_check_report(report)
     if args.report_out is not None:
         _write_json_file(args.report_out, report)
+    if args.artifact_manifest_out is not None:
+        manifest = build_contract_artifact_manifest(
+            _certify_batch_artifact_paths(
+                report=report,
+                report_path=args.report_out,
+            ),
+            artifact_prefix=(
+                getattr(args, "_artifact_prefix_value", None)
+                or _safe_certify_artifact_prefix(
+                    Path(args.artifact_manifest_out).stem
+                )
+            ),
+            artifact_dir=args.artifact_dir,
+            required_statuses=args.require_status,
+            required_decision_verdicts=args.require_decision,
+            required_assurance_levels=args.require_assurance,
+            require_passed=args.require_passed,
+        )
+        _write_json_file(args.artifact_manifest_out, manifest)
+        if args.artifact_manifest_check_out is not None:
+            manifest_check = build_contract_artifact_manifest_file_check_report(
+                manifest,
+                manifest_path=args.artifact_manifest_out,
+            )
+            _write_json_file(args.artifact_manifest_check_out, manifest_check)
 
     if args.format == "json":
         print(json.dumps(report, indent=2, sort_keys=True))
@@ -1642,6 +1750,22 @@ def contract_certify_main() -> int:
         type=Path,
         help="Optional path for the batch runner-check JSON report.",
     )
+    batch_parser.add_argument(
+        "--artifact-manifest-out",
+        type=Path,
+        help=(
+            "Optional JSON manifest fingerprinting the batch runner-check "
+            "report and emitted sidecars."
+        ),
+    )
+    batch_parser.add_argument(
+        "--artifact-manifest-check-out",
+        type=Path,
+        help=(
+            "Optional JSON report validating the batch artifact manifest and "
+            "the files it names."
+        ),
+    )
     batch_parser.add_argument("--format", choices=("text", "json"), default="text")
     _add_receipt_gate_options(batch_parser)
     batch_parser.add_argument(
@@ -1824,6 +1948,17 @@ def contract_certify_main() -> int:
             batch_parser.error(
                 "--certification-bundle-check-out-dir requires "
                 "--certification-bundle-out-dir"
+            )
+        if (
+            args.artifact_manifest_check_out is not None
+            and args.artifact_manifest_out is None
+        ):
+            batch_parser.error(
+                "--artifact-manifest-check-out requires --artifact-manifest-out"
+            )
+        if args.artifact_manifest_out is not None and args.report_out is None:
+            batch_parser.error(
+                "--artifact-manifest-out requires --report-out or --artifact-dir"
             )
         return _certify_batch_requests(args)
     try:

@@ -447,12 +447,13 @@ Use `circle-ai-certify batch` when downstream CI has several versioned request
 files, standard RoPE model configs, or architecture configs and should
 write per-source full receipts, compact receipts, model-config and
 architecture-config import reports, request-validation preflights,
-certification bundles, bundle checks, and one schema-validated runner-check
-report without depending on repository-only scripts. Use `--artifact-dir` when
-the installed batch command should choose stable subdirectories for that
-portable handoff set. Pass `--require-kind` one or more times when CI should
-fail unless the batch emits at least one receipt for each required contract
-family. The top-level report records both `required_kinds` and `kind_counts`.
+certification bundles, bundle checks, one schema-validated runner-check report,
+and a batch artifact manifest/check without depending on repository-only
+scripts. Use `--artifact-dir` when the installed batch command should choose
+stable subdirectories and manifest paths for that portable handoff set. Pass
+`--require-kind` one or more times when CI should fail unless the batch emits at
+least one receipt for each required contract family. The top-level report records
+both `required_kinds` and `kind_counts`.
 Each runner summary includes both `theorem_count` and the concrete
 `theorem_ids` cited by the receipt, plus resolved/proved booleans and any
 unresolved or unproved theorem ids. By default, each architecture

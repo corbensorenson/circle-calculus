@@ -1152,7 +1152,11 @@ def test_package_cli_unified_certify_batch_artifact_dir_writes_portable_set(
 
     report = json.loads(result.stdout)
     report_path = artifact_dir / "architecture-suite_runner_check.json"
+    manifest_path = artifact_dir / "architecture-suite_artifact_manifest.json"
+    manifest_check_path = artifact_dir / "architecture-suite_artifact_manifest_check.json"
     assert json.loads(report_path.read_text()) == report
+    assert manifest_path.exists()
+    assert manifest_check_path.exists()
     jsonschema.validate(report, build_contract_runner_check_json_schema())
     assert report["ok"] is True
     assert report["example_count"] == 4
@@ -1174,6 +1178,26 @@ def test_package_cli_unified_certify_batch_artifact_dir_writes_portable_set(
     assert expected_dirs.issubset(
         {path.name for path in artifact_dir.iterdir() if path.is_dir()}
     )
+    manifest = json.loads(manifest_path.read_text())
+    manifest_check = json.loads(manifest_check_path.read_text())
+    checked_manifest = build_contract_artifact_manifest_file_check_report(
+        manifest,
+        manifest_path=manifest_path,
+    )
+    assert manifest_check == checked_manifest
+    assert manifest["artifact_prefix"] == "architecture-suite"
+    assert manifest["artifact_dir"] == str(artifact_dir)
+    assert manifest["artifact_count"] == 25
+    assert manifest_check["ok"] is True
+    assert {artifact["label"] for artifact in manifest["artifacts"]} >= {
+        "runner_check",
+        "summary_001_receipt_json",
+        "summary_001_compact_receipt_json",
+        "summary_001_architecture_config_import_report",
+        "summary_001_request_validation_report",
+        "summary_001_certification_bundle",
+        "summary_001_certification_bundle_check",
+    }
 
     for summary in report["summaries"]:
         for key in (

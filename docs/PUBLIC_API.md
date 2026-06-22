@@ -408,12 +408,13 @@ commands, non-claims, and full receipt fingerprint. Use
 versioned Circle request files, standard RoPE model configs, or project-level
 architecture configs and wants per-source full receipts, compact receipts,
 model-config and architecture-config import reports, request-validation
-preflights, certification bundles, bundle checks, and one runner-check summary
-without importing repository-only scripts. Use `--artifact-dir` when the
-installed batch command should choose stable subdirectories for that portable
-handoff set. Pass `--require-kind` one or more times when CI should fail unless
-the batch emits at least one receipt for each required contract family. The
-top-level report records both `required_kinds` and `kind_counts`, and each runner
+preflights, certification bundles, bundle checks, one runner-check summary, and
+a batch artifact manifest/check without importing repository-only scripts. Use
+`--artifact-dir` when the installed batch command should choose stable
+subdirectories and manifest paths for that portable handoff set. Pass
+`--require-kind` one or more times when CI should fail unless the batch emits at
+least one receipt for each required contract family. The top-level report
+records both `required_kinds` and `kind_counts`, and each runner
 summary includes both `theorem_count` and the concrete `theorem_ids` cited by
 the receipt, plus resolved/proved booleans and any unresolved or unproved
 theorem ids. Architecture configs emit RoPE, KV-cache, sparse-attention, and
