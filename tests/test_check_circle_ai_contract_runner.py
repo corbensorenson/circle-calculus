@@ -21,6 +21,12 @@ MODEL_CONFIG_IMPORT_SCHEMA = (
     / "generated"
     / "circle_ai_rope_model_config_import.schema.json"
 )
+ARCHITECTURE_CONFIG_IMPORT_SCHEMA = (
+    Path("site")
+    / "data"
+    / "generated"
+    / "circle_ai_architecture_config_import.schema.json"
+)
 REQUEST_VALIDATION_SCHEMA = (
     Path("site")
     / "data"
@@ -60,6 +66,10 @@ def _runner_check_schema() -> dict:
 
 def _model_config_import_schema() -> dict:
     return json.loads(MODEL_CONFIG_IMPORT_SCHEMA.read_text())
+
+
+def _architecture_config_import_schema() -> dict:
+    return json.loads(ARCHITECTURE_CONFIG_IMPORT_SCHEMA.read_text())
 
 
 def _request_validation_schema() -> dict:
@@ -141,12 +151,13 @@ def test_check_circle_ai_contract_runner_accepts_examples() -> None:
         text=True,
     )
 
-    assert "circle AI runner examples ok=True examples=11 failures=0" in result.stdout
+    assert "circle AI runner examples ok=True examples=14 failures=0" in result.stdout
     assert "kind=rope_position_distinguishability" in result.stdout
     assert "kind=kv_cache_ring_buffer" in result.stdout
     assert "kind=sparse_attention_coverage" in result.stdout
     assert "kind=recurrence_schedule" in result.stdout
     assert "type=model_config" in result.stdout
+    assert "type=architecture_config" in result.stdout
 
 
 def test_check_circle_ai_contract_runner_emits_json_report() -> None:
@@ -166,7 +177,7 @@ def test_check_circle_ai_contract_runner_emits_json_report() -> None:
     jsonschema.validate(payload, _runner_check_schema())
     assert payload["schema_id"] == "circle_calculus.ai_contract_runner_check.v0"
     assert payload["ok"] is True
-    assert payload["example_count"] == 11
+    assert payload["example_count"] == 14
     assert payload["failure_count"] == 0
     assert payload["failures"] == []
     assert payload["selected_kinds"] == []
@@ -218,16 +229,27 @@ def test_check_circle_ai_contract_runner_emits_json_report() -> None:
     assert {summary["source_type"] for summary in payload["summaries"]} == {
         "request",
         "model_config",
+        "architecture_config",
     }
     assert all(
         summary["model_config_parameter_sources"] is None
         for summary in payload["summaries"]
-        if summary["source_type"] == "request"
+        if summary["source_type"] != "model_config"
     )
     assert all(
         summary["model_config_parameter_sources"]
         for summary in payload["summaries"]
         if summary["source_type"] == "model_config"
+    )
+    assert all(
+        summary["architecture_config_parameter_sources"] is None
+        for summary in payload["summaries"]
+        if summary["source_type"] != "architecture_config"
+    )
+    assert all(
+        summary["architecture_config_parameter_sources"]
+        for summary in payload["summaries"]
+        if summary["source_type"] == "architecture_config"
     )
 
 
@@ -250,12 +272,13 @@ def test_check_circle_ai_contract_runner_filters_by_kind() -> None:
     jsonschema.validate(payload, _runner_check_schema())
     assert payload["ok"] is True
     assert payload["selected_kinds"] == ["sparse_attention_coverage"]
-    assert payload["example_count"] == 1
+    assert payload["example_count"] == 2
     assert {summary["kind"] for summary in payload["summaries"]} == {
         "sparse_attention_coverage"
     }
     assert {summary["source_type"] for summary in payload["summaries"]} == {
-        "request"
+        "request",
+        "architecture_config",
     }
 
 
@@ -292,6 +315,7 @@ def test_check_circle_ai_contract_runner_writes_receipts(tmp_path: Path) -> None
     out_dir = tmp_path / "receipts"
     compact_receipt_dir = tmp_path / "compact_receipts"
     import_report_dir = tmp_path / "imports"
+    architecture_import_report_dir = tmp_path / "architecture_imports"
     request_validation_dir = tmp_path / "request_validation"
     certification_bundle_dir = tmp_path / "certification_bundles"
     certification_bundle_check_dir = tmp_path / "certification_bundle_checks"
@@ -306,6 +330,8 @@ def test_check_circle_ai_contract_runner_writes_receipts(tmp_path: Path) -> None
             str(compact_receipt_dir),
             "--model-config-import-report-out-dir",
             str(import_report_dir),
+            "--architecture-config-import-report-out-dir",
+            str(architecture_import_report_dir),
             "--request-validation-report-out-dir",
             str(request_validation_dir),
             "--certification-bundle-out-dir",
@@ -384,10 +410,18 @@ def test_check_circle_ai_contract_runner_writes_receipts(tmp_path: Path) -> None
                 validation_report["request_content_fingerprint"]
                 == summary["source_content_fingerprint"]
             )
-        else:
+        elif summary["source_type"] == "model_config":
             assert (
                 validation_report["request_content_fingerprint"]
                 == summary["request_content_fingerprint"]
+            )
+        else:
+            import_report = json.loads(
+                Path(summary["architecture_config_import_report_path"]).read_text()
+            )
+            assert (
+                validation_report["request_content_fingerprint"]
+                == import_report["request_content_fingerprint"]
             )
         bundle = json.loads(Path(summary["certification_bundle_path"]).read_text())
         jsonschema.validate(bundle, _certification_bundle_schema())
@@ -410,10 +444,18 @@ def test_check_circle_ai_contract_runner_writes_receipts(tmp_path: Path) -> None
             assert bundle["request_content_fingerprint"] == summary[
                 "source_content_fingerprint"
             ]
-        else:
+        elif summary["source_type"] == "model_config":
             assert bundle["request_content_fingerprint"] == summary[
                 "request_content_fingerprint"
             ]
+        else:
+            import_report = json.loads(
+                Path(summary["architecture_config_import_report_path"]).read_text()
+            )
+            assert (
+                bundle["request_content_fingerprint"]
+                == import_report["request_content_fingerprint"]
+            )
         assert bundle["receipt"]["request_content_fingerprint"] == summary[
             "request_content_fingerprint"
         ]
@@ -422,11 +464,20 @@ def test_check_circle_ai_contract_runner_writes_receipts(tmp_path: Path) -> None
         ]
         if summary["source_type"] == "request":
             assert bundle["model_config_import_report"] is None
-        else:
+            assert bundle["architecture_config_import_report"] is None
+        elif summary["source_type"] == "model_config":
             assert bundle["model_config_import_report"]["ok"] is True
             assert (
                 bundle["model_config_import_report"]["parameter_sources"]
                 == summary["model_config_parameter_sources"]
+            )
+            assert bundle["architecture_config_import_report"] is None
+        else:
+            assert bundle["model_config_import_report"] is None
+            assert bundle["architecture_config_import_report"]["ok"] is True
+            assert (
+                bundle["architecture_config_import_report"]["parameter_sources"]
+                == summary["architecture_config_parameter_sources"]
             )
     import_report_summaries = [
         summary
@@ -437,8 +488,23 @@ def test_check_circle_ai_contract_runner_writes_receipts(tmp_path: Path) -> None
     assert all(
         summary["model_config_import_report_path"] for summary in import_report_summaries
     )
+    architecture_import_summaries = [
+        summary
+        for summary in payload["summaries"]
+        if summary["source_type"] == "architecture_config"
+    ]
+    assert architecture_import_summaries
+    assert all(
+        summary["architecture_config_import_report_path"]
+        for summary in architecture_import_summaries
+    )
     for summary in payload["summaries"]:
         if summary["source_type"] == "request":
+            assert summary["model_config_import_report_path"] is None
+            assert summary["architecture_config_import_report_path"] is None
+        if summary["source_type"] == "model_config":
+            assert summary["architecture_config_import_report_path"] is None
+        if summary["source_type"] == "architecture_config":
             assert summary["model_config_import_report_path"] is None
     for summary in import_report_summaries:
         import_report_path = Path(summary["model_config_import_report_path"])
@@ -460,6 +526,17 @@ def test_check_circle_ai_contract_runner_writes_receipts(tmp_path: Path) -> None
             import_report["parameter_sources"]
             == summary["model_config_parameter_sources"]
         )
+    for summary in architecture_import_summaries:
+        import_report_path = Path(summary["architecture_config_import_report_path"])
+        assert import_report_path.exists()
+        import_report = json.loads(import_report_path.read_text())
+        jsonschema.validate(import_report, _architecture_config_import_schema())
+        assert import_report["ok"] is True
+        assert import_report["request"]["kind"] == summary["kind"]
+        assert (
+            import_report["parameter_sources"]
+            == summary["architecture_config_parameter_sources"]
+        )
     for path in receipt_paths:
         receipt = json.loads(path.read_text())
         matching_summary = next(
@@ -480,6 +557,7 @@ def test_check_circle_ai_contract_runner_writes_report_file(tmp_path: Path) -> N
     receipt_dir = tmp_path / "receipts"
     compact_receipt_dir = tmp_path / "compact_receipts"
     import_report_dir = tmp_path / "imports"
+    architecture_import_report_dir = tmp_path / "architecture_imports"
     request_validation_dir = tmp_path / "request_validation"
     certification_bundle_dir = tmp_path / "certification_bundles"
     certification_bundle_check_dir = tmp_path / "certification_bundle_checks"
@@ -494,6 +572,8 @@ def test_check_circle_ai_contract_runner_writes_report_file(tmp_path: Path) -> N
             str(compact_receipt_dir),
             "--model-config-import-report-out-dir",
             str(import_report_dir),
+            "--architecture-config-import-report-out-dir",
+            str(architecture_import_report_dir),
             "--request-validation-report-out-dir",
             str(request_validation_dir),
             "--certification-bundle-out-dir",
@@ -508,11 +588,11 @@ def test_check_circle_ai_contract_runner_writes_report_file(tmp_path: Path) -> N
         text=True,
     )
 
-    assert "circle AI runner examples ok=True examples=11 failures=0" in result.stdout
+    assert "circle AI runner examples ok=True examples=14 failures=0" in result.stdout
     payload = json.loads(report_path.read_text())
     jsonschema.validate(payload, _runner_check_schema())
     assert payload["ok"] is True
-    assert len(payload["summaries"]) == 11
+    assert len(payload["summaries"]) == 14
     assert all(summary["receipt_path"] for summary in payload["summaries"])
     assert all(summary["compact_receipt_path"] for summary in payload["summaries"])
     assert all(
@@ -549,6 +629,13 @@ def test_check_circle_ai_contract_runner_writes_report_file(tmp_path: Path) -> N
         "source": "default",
         "note": "round",
     }
+    architecture_summary = next(
+        summary
+        for summary in payload["summaries"]
+        if summary["source_type"] == "architecture_config"
+    )
+    assert architecture_summary["architecture_config_import_report_path"]
+    assert architecture_summary["architecture_config_parameter_sources"]
 
 
 def test_check_circle_ai_contract_runner_bundle_check_requires_bundle_dir(
@@ -604,7 +691,7 @@ def test_check_circle_ai_contract_runner_accepts_batch_gate() -> None:
         "require_passed": True,
     }
     assert payload["selected_kinds"] == []
-    assert payload["example_count"] == 11
+    assert payload["example_count"] == 14
 
 
 def test_check_circle_ai_contract_runner_rejects_batch_gate() -> None:
@@ -633,7 +720,7 @@ def test_check_circle_ai_contract_runner_rejects_batch_gate() -> None:
         "require_passed": False,
     }
     assert payload["selected_kinds"] == []
-    assert payload["failure_count"] == 11
+    assert payload["failure_count"] == 14
     assert all("did not match required status set" in failure for failure in payload["failures"])
 
 
@@ -662,7 +749,7 @@ def test_check_circle_ai_contract_runner_rejects_decision_gate() -> None:
         "allowed_assurance_levels": [],
         "require_passed": False,
     }
-    assert payload["failure_count"] == 11
+    assert payload["failure_count"] == 14
     assert all(
         "did not match required decision set" in failure
         for failure in payload["failures"]
@@ -694,7 +781,7 @@ def test_check_circle_ai_contract_runner_rejects_assurance_gate() -> None:
         "allowed_assurance_levels": ["theorem_backed"],
         "require_passed": False,
     }
-    assert payload["failure_count"] == 9
+    assert payload["failure_count"] == 10
     assert all(
         "did not match required assurance set" in failure
         for failure in payload["failures"]

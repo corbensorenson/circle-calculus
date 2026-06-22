@@ -411,6 +411,7 @@ python scripts/check_circle_ai_contract_runner.py \
   --receipt-out-dir reports/circle_ai_receipts \
   --compact-receipt-out-dir reports/circle_ai_compact_receipts \
   --model-config-import-report-out-dir reports/circle_ai_imports \
+  --architecture-config-import-report-out-dir reports/circle_ai_architecture_imports \
   --request-validation-report-out-dir reports/circle_ai_request_validation \
   --certification-bundle-out-dir reports/circle_ai_certification_bundles \
   --certification-bundle-check-out-dir reports/circle_ai_certification_bundle_checks \
@@ -420,13 +421,13 @@ python scripts/check_circle_ai_contract_runner.py \
   --require-passed
 ```
 
-The checker also builds the compact receipt for every request/model-config
-example. It fails if selected compact evidence is empty, if proof-layer labels
-do not cover exactly the selected evidence paths, or if any selected path is
-still `unclassified`. Add `--compact-receipt-out-dir` to save those compact
-handoff files for every checked item. Its JSON report records the compact
-receipt path, selected-evidence count, unclassified count, and label set for
-each example.
+The checker also builds the compact receipt for every request, model-config, and
+architecture-config example. It fails if selected compact evidence is empty, if
+proof-layer labels do not cover exactly the selected evidence paths, or if any
+selected path is still `unclassified`. Add `--compact-receipt-out-dir` to save
+those compact handoff files for every checked item. Its JSON report records the
+compact receipt path, selected-evidence count, unclassified count, and label set
+for each example.
 
 Run the same checker for only one contract family:
 
@@ -456,6 +457,13 @@ were overridden, read from config fields, derived, defaulted, or omitted without
 reopening the import sidecar. When `--model-config-import-report-out-dir` is set,
 model-config summaries also point to the schema-validated import report that
 converted the config into a Circle request.
+Architecture-config summaries similarly inline
+`architecture_config_parameter_sources`, and
+`--architecture-config-import-report-out-dir` writes the schema-validated import
+reports for the KV-cache, sparse-attention, and recurrence receipts emitted from
+each architecture config. Optional architecture parameters that use receipt
+defaults are materialized in the emitted request and labeled with source
+`default`, so bundles can verify the import request against the receipt request.
 When `--request-validation-report-out-dir` is set, every summary also points to
 the schema-validated preflight report for the exact request that produced the
 receipt.
@@ -468,9 +476,12 @@ batch job should leave both portable artifacts and CI-readable pass/fail
 evidence beside them.
 By default it checks both `examples/circle_ai_requests/*.json` request files and
 `examples/circle_ai_model_configs/*.json` standard RoPE model configs, currently
-including 128k examples at RoPE bases `10000` and `500000`. Model config
-examples are first converted into versioned Circle request JSON, then checked
-by the same receipt path.
+including 128k examples at RoPE bases `10000` and `500000`, plus
+`examples/circle_ai_architecture_configs/*.json` non-RoPE architecture configs.
+Model config and architecture config examples are first converted into versioned
+Circle request JSON, then checked by the same receipt path. Each architecture
+config emits KV-cache, sparse-attention, and recurrence receipts by default;
+pass `--architecture-config-kind` to restrict that set.
 
 Validate a saved certification bundle that another project has already
 produced:

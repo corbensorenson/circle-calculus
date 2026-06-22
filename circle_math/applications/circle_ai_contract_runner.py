@@ -530,6 +530,24 @@ ARCHITECTURE_CONFIG_OPTIONAL_PARAMETERS = {
         "shift_passes",
     },
 }
+ARCHITECTURE_CONFIG_PARAMETER_DEFAULTS: dict[str, dict[str, Any]] = {
+    "kv_cache_ring_buffer": {
+        "batch_tokens": [],
+        "sink_size": 0,
+        "request_id": "read_request",
+    },
+    "sparse_attention_coverage": {},
+    "recurrence_schedule": {
+        "loop_period": 5,
+        "sample_index": 8,
+        "max_loops": 7,
+        "token_count": 8,
+        "selected_block_start": 2,
+        "selected_block_width": 3,
+        "shift_passes": 3,
+    },
+}
+_ARCHITECTURE_CONFIG_DEFAULT_MISSING = object()
 
 
 def canonical_contract_kind(kind: str) -> str:
@@ -1203,6 +1221,7 @@ def build_architecture_config_import_report(
     if canonical in ARCHITECTURE_CONFIG_SUPPORTED_KINDS:
         aliases = ARCHITECTURE_CONFIG_PARAMETER_ALIASES[canonical]
         optional = ARCHITECTURE_CONFIG_OPTIONAL_PARAMETERS[canonical]
+        defaults = ARCHITECTURE_CONFIG_PARAMETER_DEFAULTS[canonical]
         unsupported_overrides = sorted(
             key for key in normalized_overrides if key not in aliases
         )
@@ -1231,10 +1250,22 @@ def build_architecture_config_import_report(
                     value=value,
                 )
             elif parameter in optional:
-                parameter_sources[parameter] = _architecture_parameter_source(
-                    source="missing",
-                    note="optional; receipt builder default applies if omitted",
+                default = defaults.get(
+                    parameter,
+                    _ARCHITECTURE_CONFIG_DEFAULT_MISSING,
                 )
+                if default is not _ARCHITECTURE_CONFIG_DEFAULT_MISSING:
+                    parameters[parameter] = default
+                    parameter_sources[parameter] = _architecture_parameter_source(
+                        source="default",
+                        value=default,
+                        note="receipt builder default applied by importer",
+                    )
+                else:
+                    parameter_sources[parameter] = _architecture_parameter_source(
+                        source="missing",
+                        note="optional; receipt builder default applies if omitted",
+                    )
             else:
                 parameter_sources[parameter] = _architecture_parameter_source(
                     source="missing",
@@ -5083,6 +5114,7 @@ def build_architecture_config_import_json_schema() -> dict[str, Any]:
                 "enum": [
                     "explicit_override",
                     "architecture_config_field",
+                    "default",
                     "missing",
                 ],
             },

@@ -17,6 +17,7 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from circle_math.applications import (  # noqa: E402
+    build_architecture_config_import_report,
     build_contract_certification_bundle,
     build_contract_certification_bundle_file_check_json_schema,
     build_contract_certification_bundle_file_check_report,
@@ -41,6 +42,14 @@ from circle_math.applications.circle_ai_contract_runner import (  # noqa: E402
 
 DEFAULT_EXAMPLE_DIR = ROOT / "examples" / "circle_ai_requests"
 DEFAULT_MODEL_CONFIG_DIR = ROOT / "examples" / "circle_ai_model_configs"
+DEFAULT_ARCHITECTURE_CONFIG_DIR = (
+    ROOT / "examples" / "circle_ai_architecture_configs"
+)
+DEFAULT_ARCHITECTURE_CONFIG_KINDS = (
+    "kv-cache",
+    "sparse-attention",
+    "recurrence",
+)
 DEFAULT_PACK_PATH = ROOT / "site" / "data" / "generated" / "circle_ai_contract_pack.json"
 DEFAULT_REQUEST_SCHEMA = (
     ROOT / "site" / "data" / "generated" / "circle_ai_contract_request.schema.json"
@@ -54,6 +63,13 @@ DEFAULT_REQUEST_VALIDATION_SCHEMA = (
 )
 DEFAULT_MODEL_CONFIG_IMPORT_SCHEMA = (
     ROOT / "site" / "data" / "generated" / "circle_ai_rope_model_config_import.schema.json"
+)
+DEFAULT_ARCHITECTURE_CONFIG_IMPORT_SCHEMA = (
+    ROOT
+    / "site"
+    / "data"
+    / "generated"
+    / "circle_ai_architecture_config_import.schema.json"
 )
 DEFAULT_RECEIPT_SCHEMA = (
     ROOT / "site" / "data" / "generated" / "circle_ai_contract_receipt.schema.json"
@@ -106,6 +122,14 @@ def _model_config_paths(model_config_dir: Path | None) -> list[Path]:
     return sorted(model_config_dir.glob("*.json"))
 
 
+def _architecture_config_paths(architecture_config_dir: Path | None) -> list[Path]:
+    if architecture_config_dir is None:
+        return []
+    if not architecture_config_dir.exists():
+        return []
+    return sorted(architecture_config_dir.glob("*.json"))
+
+
 def _canonical_kind_filter(values: tuple[str, ...]) -> tuple[str, ...]:
     selected: list[str] = []
     seen: set[str] = set()
@@ -152,6 +176,8 @@ def _summary_from_receipt(
     request_path: Path | None,
     model_config_import_report_path: Path | None,
     model_config_parameter_sources: dict[str, Any] | None,
+    architecture_config_import_report_path: Path | None,
+    architecture_config_parameter_sources: dict[str, Any] | None,
     request_validation_report_path: Path | None,
     certification_bundle_path: Path | None,
     certification_bundle_check_path: Path | None,
@@ -174,6 +200,14 @@ def _summary_from_receipt(
             else _display_path(model_config_import_report_path)
         ),
         "model_config_parameter_sources": model_config_parameter_sources,
+        "architecture_config_import_report_path": (
+            None
+            if architecture_config_import_report_path is None
+            else _display_path(architecture_config_import_report_path)
+        ),
+        "architecture_config_parameter_sources": (
+            architecture_config_parameter_sources
+        ),
         "request_validation_report_path": (
             None
             if request_validation_report_path is None
@@ -286,11 +320,16 @@ def check_runner_examples(
     *,
     example_dir: Path = DEFAULT_EXAMPLE_DIR,
     model_config_dir: Path | None = DEFAULT_MODEL_CONFIG_DIR,
+    architecture_config_dir: Path | None = DEFAULT_ARCHITECTURE_CONFIG_DIR,
+    architecture_config_kinds: tuple[str, ...] = DEFAULT_ARCHITECTURE_CONFIG_KINDS,
     model_config_requested_margin: str | None = "1/328459",
     pack_path: Path = DEFAULT_PACK_PATH,
     request_schema_path: Path = DEFAULT_REQUEST_SCHEMA,
     request_validation_schema_path: Path = DEFAULT_REQUEST_VALIDATION_SCHEMA,
     model_config_import_schema_path: Path = DEFAULT_MODEL_CONFIG_IMPORT_SCHEMA,
+    architecture_config_import_schema_path: Path = (
+        DEFAULT_ARCHITECTURE_CONFIG_IMPORT_SCHEMA
+    ),
     receipt_schema_path: Path = DEFAULT_RECEIPT_SCHEMA,
     compact_receipt_schema_path: Path = DEFAULT_COMPACT_RECEIPT_SCHEMA,
     runner_check_schema_path: Path = DEFAULT_RUNNER_CHECK_SCHEMA,
@@ -298,6 +337,7 @@ def check_runner_examples(
     certification_bundle_check_schema_path: Path = DEFAULT_CERTIFICATION_BUNDLE_CHECK_SCHEMA,
     receipt_out_dir: Path | None = None,
     model_config_import_report_out_dir: Path | None = None,
+    architecture_config_import_report_out_dir: Path | None = None,
     request_validation_report_out_dir: Path | None = None,
     compact_receipt_out_dir: Path | None = None,
     certification_bundle_out_dir: Path | None = None,
@@ -309,9 +349,11 @@ def check_runner_examples(
     selected_kinds: tuple[str, ...] = (),
 ) -> dict[str, Any]:
     selected_kinds = _canonical_kind_filter(selected_kinds)
+    selected_architecture_kinds = _canonical_kind_filter(architecture_config_kinds)
     request_schema = _json(request_schema_path)
     request_validation_schema = _json(request_validation_schema_path)
     model_config_import_schema = _json(model_config_import_schema_path)
+    architecture_config_import_schema = _json(architecture_config_import_schema_path)
     receipt_schema = _json(receipt_schema_path)
     compact_receipt_schema = _json(compact_receipt_schema_path)
     runner_check_schema = _json(runner_check_schema_path)
@@ -320,6 +362,7 @@ def check_runner_examples(
     jsonschema.Draft202012Validator.check_schema(request_schema)
     jsonschema.Draft202012Validator.check_schema(request_validation_schema)
     jsonschema.Draft202012Validator.check_schema(model_config_import_schema)
+    jsonschema.Draft202012Validator.check_schema(architecture_config_import_schema)
     jsonschema.Draft202012Validator.check_schema(receipt_schema)
     jsonschema.Draft202012Validator.check_schema(compact_receipt_schema)
     jsonschema.Draft202012Validator.check_schema(runner_check_schema)
@@ -437,6 +480,8 @@ def check_runner_examples(
                 request_path=path,
                 model_config_import_report_path=None,
                 model_config_parameter_sources=None,
+                architecture_config_import_report_path=None,
+                architecture_config_parameter_sources=None,
                 request_validation_report_path=validation_report_path,
                 certification_bundle_path=certification_bundle_path,
                 certification_bundle_check_path=certification_bundle_check_path,
@@ -566,6 +611,8 @@ def check_runner_examples(
                 request_path=request_path,
                 model_config_import_report_path=import_report_path,
                 model_config_parameter_sources=import_report["parameter_sources"],
+                architecture_config_import_report_path=None,
+                architecture_config_parameter_sources=None,
                 request_validation_report_path=validation_report_path,
                 certification_bundle_path=certification_bundle_path,
                 certification_bundle_check_path=certification_bundle_check_path,
@@ -587,9 +634,180 @@ def check_runner_examples(
         except (ValueError, jsonschema.ValidationError, jsonschema.SchemaError) as exc:
             failures.append(f"{path}: {exc}")
 
+    architecture_config_paths = _architecture_config_paths(architecture_config_dir)
+    for path in architecture_config_paths:
+        try:
+            config = _json(path)
+        except (ValueError, json.JSONDecodeError) as exc:
+            failures.append(f"{path}: {exc}")
+            continue
+        for architecture_kind in selected_architecture_kinds:
+            canonical_architecture_kind = canonical_contract_kind(architecture_kind)
+            if selected_kinds and canonical_architecture_kind not in selected_kinds:
+                continue
+            try:
+                import_report = build_architecture_config_import_report(
+                    architecture_kind,
+                    config,
+                )
+                jsonschema.validate(
+                    import_report,
+                    architecture_config_import_schema,
+                )
+                import_report_path = None
+                artifact_stem = f"{path.stem}_{canonical_architecture_kind}"
+                if architecture_config_import_report_out_dir is not None:
+                    import_report_path = (
+                        architecture_config_import_report_out_dir
+                        / f"{artifact_stem}_architecture_import.json"
+                    )
+                    _write_json(import_report_path, import_report)
+                if not import_report["ok"]:
+                    failures.append(
+                        f"{path}:{architecture_kind}: "
+                        + "; ".join(import_report["failures"])
+                    )
+                    continue
+                request = import_report["request"]
+                if not isinstance(request, dict):
+                    failures.append(
+                        f"{path}:{architecture_kind}: architecture config "
+                        "import report did not emit a request"
+                    )
+                    continue
+                jsonschema.validate(request, request_schema)
+                validation_report = build_contract_request_validation_report(request)
+                jsonschema.validate(validation_report, request_validation_schema)
+                validation_report_path = None
+                if request_validation_report_out_dir is not None:
+                    validation_report_path = (
+                        request_validation_report_out_dir
+                        / f"{artifact_stem}_request_validation.json"
+                    )
+                    _write_json(validation_report_path, validation_report)
+                request_failures = validate_contract_request(request)
+                if request_failures:
+                    failures.append(
+                        f"{path}:{architecture_kind}: "
+                        + "; ".join(request_failures)
+                    )
+                    continue
+                receipt = build_validated_contract_receipt_from_request(
+                    request,
+                    pack=pack,
+                )
+                jsonschema.validate(receipt, receipt_schema)
+                compact_receipt = build_compact_contract_receipt(receipt)
+                jsonschema.validate(compact_receipt, compact_receipt_schema)
+                _append_compact_receipt_failures(
+                    path=path,
+                    compact_receipt=compact_receipt,
+                    failures=failures,
+                )
+                request_path = None
+                receipt_path = None
+                compact_receipt_path = None
+                if receipt_out_dir is not None:
+                    request_path = receipt_out_dir / f"{artifact_stem}_request.json"
+                    receipt_path = receipt_out_dir / f"{artifact_stem}_receipt.json"
+                    _write_json(request_path, request)
+                    _write_json(receipt_path, receipt)
+                if compact_receipt_out_dir is not None:
+                    compact_receipt_path = (
+                        compact_receipt_out_dir
+                        / f"{artifact_stem}_compact_receipt.json"
+                    )
+                    _write_json(compact_receipt_path, compact_receipt)
+                certification_bundle_path = None
+                certification_bundle_check_path = None
+                if certification_bundle_out_dir is not None:
+                    certification_bundle_path = (
+                        certification_bundle_out_dir
+                        / f"{artifact_stem}_certification_bundle.json"
+                    )
+                    bundle = build_contract_certification_bundle(
+                        request,
+                        pack=pack,
+                        architecture_config_import_report=import_report,
+                        receipt_path=(
+                            _display_path(receipt_path)
+                            if receipt_path is not None
+                            else "<in-memory-receipt>"
+                        ),
+                        required_statuses=required_statuses,
+                        required_decision_verdicts=required_decision_verdicts,
+                        required_assurance_levels=required_assurance_levels,
+                        require_passed=require_passed,
+                    )
+                    jsonschema.validate(bundle, certification_bundle_schema)
+                    _write_json(certification_bundle_path, bundle)
+                    if certification_bundle_check_out_dir is not None:
+                        certification_bundle_check_path = (
+                            certification_bundle_check_out_dir
+                            / f"{artifact_stem}_certification_bundle_check.json"
+                        )
+                        bundle_check = (
+                            build_contract_certification_bundle_file_check_report(
+                                bundle,
+                                pack=pack,
+                                bundle_path=_display_path(
+                                    certification_bundle_path
+                                ),
+                                required_statuses=required_statuses,
+                                required_decision_verdicts=(
+                                    required_decision_verdicts
+                                ),
+                                required_assurance_levels=(
+                                    required_assurance_levels
+                                ),
+                                require_passed=require_passed,
+                            )
+                        )
+                        jsonschema.validate(
+                            bundle_check,
+                            certification_bundle_check_schema,
+                        )
+                        _write_json(certification_bundle_check_path, bundle_check)
+                summary = _summary_from_receipt(
+                    source_type="architecture_config",
+                    source_path=path,
+                    source=config,
+                    request_path=request_path,
+                    model_config_import_report_path=None,
+                    model_config_parameter_sources=None,
+                    architecture_config_import_report_path=import_report_path,
+                    architecture_config_parameter_sources=import_report[
+                        "parameter_sources"
+                    ],
+                    request_validation_report_path=validation_report_path,
+                    certification_bundle_path=certification_bundle_path,
+                    certification_bundle_check_path=certification_bundle_check_path,
+                    receipt_path=receipt_path,
+                    compact_receipt_path=compact_receipt_path,
+                    receipt=receipt,
+                    compact_receipt=compact_receipt,
+                )
+                summaries.append(summary)
+                _append_gate_failures(
+                    path=path,
+                    summary=summary,
+                    failures=failures,
+                    required_statuses=required_statuses,
+                    required_decision_verdicts=required_decision_verdicts,
+                    required_assurance_levels=required_assurance_levels,
+                    require_passed=require_passed,
+                )
+            except (
+                ValueError,
+                jsonschema.ValidationError,
+                jsonschema.SchemaError,
+            ) as exc:
+                failures.append(f"{path}:{architecture_kind}: {exc}")
+
     if selected_kinds and not summaries:
         failures.append(
-            "no request or model-config examples matched selected kinds: "
+            "no request, model-config, or architecture-config examples "
+            "matched selected kinds: "
             + ", ".join(selected_kinds)
         )
 
@@ -619,7 +837,10 @@ def check_runner_examples(
 
 def main() -> int:
     parser = argparse.ArgumentParser(
-        description="Validate Circle AI contract-runner request/model-config examples.",
+        description=(
+            "Validate Circle AI contract-runner request, model-config, and "
+            "architecture-config examples."
+        ),
     )
     parser.add_argument("--example-dir", type=Path, default=DEFAULT_EXAMPLE_DIR)
     parser.add_argument(
@@ -627,6 +848,25 @@ def main() -> int:
         type=Path,
         default=DEFAULT_MODEL_CONFIG_DIR,
         help="Optional directory of standard RoPE model config JSON examples.",
+    )
+    parser.add_argument(
+        "--architecture-config-dir",
+        type=Path,
+        default=DEFAULT_ARCHITECTURE_CONFIG_DIR,
+        help=(
+            "Optional directory of non-RoPE architecture config JSON examples. "
+            "Use a missing directory to skip this source family."
+        ),
+    )
+    parser.add_argument(
+        "--architecture-config-kind",
+        action="append",
+        default=[],
+        help=(
+            "Architecture-config contract kind to emit, such as kv-cache, "
+            "sparse-attention, or recurrence. Defaults to all supported "
+            "architecture-config kinds."
+        ),
     )
     parser.add_argument(
         "--model-config-requested-margin",
@@ -666,6 +906,15 @@ def main() -> int:
         type=Path,
         default=DEFAULT_MODEL_CONFIG_IMPORT_SCHEMA,
         help="Generated JSON Schema used to validate standard-RoPE model-config import reports.",
+    )
+    parser.add_argument(
+        "--architecture-config-import-schema",
+        type=Path,
+        default=DEFAULT_ARCHITECTURE_CONFIG_IMPORT_SCHEMA,
+        help=(
+            "Generated JSON Schema used to validate non-RoPE "
+            "architecture-config import reports."
+        ),
     )
     parser.add_argument(
         "--runner-check-schema",
@@ -717,6 +966,14 @@ def main() -> int:
         help=(
             "Optional directory where schema-validated standard-RoPE "
             "model-config import reports are written."
+        ),
+    )
+    parser.add_argument(
+        "--architecture-config-import-report-out-dir",
+        type=Path,
+        help=(
+            "Optional directory where schema-validated non-RoPE "
+            "architecture-config import reports are written."
         ),
     )
     parser.add_argument(
@@ -788,6 +1045,10 @@ def main() -> int:
     report = check_runner_examples(
         example_dir=args.example_dir,
         model_config_dir=args.model_config_dir,
+        architecture_config_dir=args.architecture_config_dir,
+        architecture_config_kinds=tuple(
+            args.architecture_config_kind or DEFAULT_ARCHITECTURE_CONFIG_KINDS
+        ),
         model_config_requested_margin=(
             args.model_config_requested_margin
             if args.model_config_requested_margin
@@ -797,6 +1058,9 @@ def main() -> int:
         request_schema_path=args.request_schema,
         request_validation_schema_path=args.request_validation_schema,
         model_config_import_schema_path=args.model_config_import_schema,
+        architecture_config_import_schema_path=(
+            args.architecture_config_import_schema
+        ),
         receipt_schema_path=args.receipt_schema,
         compact_receipt_schema_path=args.compact_receipt_schema,
         runner_check_schema_path=args.runner_check_schema,
@@ -804,6 +1068,9 @@ def main() -> int:
         certification_bundle_check_schema_path=args.certification_bundle_check_schema,
         receipt_out_dir=args.receipt_out_dir,
         model_config_import_report_out_dir=args.model_config_import_report_out_dir,
+        architecture_config_import_report_out_dir=(
+            args.architecture_config_import_report_out_dir
+        ),
         request_validation_report_out_dir=args.request_validation_report_out_dir,
         compact_receipt_out_dir=args.compact_receipt_out_dir,
         certification_bundle_out_dir=args.certification_bundle_out_dir,
@@ -836,7 +1103,9 @@ def main() -> int:
                 "source="
                 f"{summary['source_path']} type={summary['source_type']} "
                 f"request={summary['request_path']} kind={summary['kind']} "
-                f"import_report={summary['model_config_import_report_path']} "
+                f"model_import={summary['model_config_import_report_path']} "
+                "architecture_import="
+                f"{summary['architecture_config_import_report_path']} "
                 f"request_validation={summary['request_validation_report_path']} "
                 f"bundle={summary['certification_bundle_path']} "
                 f"bundle_check={summary['certification_bundle_check_path']} "
