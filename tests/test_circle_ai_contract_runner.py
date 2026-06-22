@@ -47,6 +47,7 @@ from circle_math.applications import (
     build_validated_contract_receipt,
     build_validated_contract_receipt_from_request,
     build_validated_rope_receipt_from_model_config,
+    canonical_contract_kind,
     receipt_summary_lines,
     require_contract_receipt_gate,
     validate_contract_request,
@@ -60,6 +61,9 @@ ROOT = Path(__file__).resolve().parents[1]
 SCRIPT = ROOT / "scripts" / "circle_ai_certify.py"
 ARTIFACT_MANIFEST_CHECK_SCRIPT = (
     ROOT / "scripts" / "check_circle_ai_artifact_manifest.py"
+)
+EXAMPLE_REQUEST_FILES = tuple(
+    sorted((ROOT / "examples" / "circle_ai_requests").glob("*_request.json"))
 )
 STANDARD_ROPE_MODEL_CONFIG = (
     ROOT / "examples" / "circle_ai_model_configs" / "standard_rope_config.json"
@@ -3896,6 +3900,47 @@ def test_circle_ai_certify_cli_accepts_request_json(tmp_path: Path) -> None:
     assert guardrail["requested_margin_relation_to_ceiling"] == (
         "above_dirichlet_ceiling"
     )
+
+
+@pytest.mark.parametrize("request_path", EXAMPLE_REQUEST_FILES)
+def test_circle_ai_certify_request_examples_emit_classified_compact_receipts(
+    request_path: Path,
+) -> None:
+    request = json.loads(request_path.read_text(encoding="utf-8"))
+
+    result = subprocess.run(
+        [
+            sys.executable,
+            str(SCRIPT),
+            "request",
+            "--request-json",
+            str(request_path),
+            "--format",
+            "compact-json",
+            "--require-status",
+            "proved",
+            "--require-decision",
+            "passed",
+            "--require-passed",
+        ],
+        cwd=ROOT,
+        check=True,
+        text=True,
+        capture_output=True,
+    )
+
+    payload = json.loads(result.stdout)
+    jsonschema.validate(payload, build_compact_contract_receipt_json_schema())
+    assert payload["schema_id"] == "circle_calculus.ai_contract_compact_receipt.v0"
+    assert payload["kind"] == canonical_contract_kind(request["kind"])
+    assert payload["status"] == "proved"
+    assert payload["request_passed"] is True
+    assert payload["decision"]["verdict"] == "passed"
+    assert payload["selected_evidence"]
+    assert set(payload["selected_evidence_proof_layers"]) == set(
+        payload["selected_evidence"]
+    )
+    assert "unclassified" not in payload["selected_evidence_proof_layers"].values()
 
 
 def test_circle_ai_certify_cli_receipt_gate_accepts_passing_receipt() -> None:
