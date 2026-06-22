@@ -191,6 +191,7 @@ continuum-vortex, quantum-holonomy, or physics proof.
 ```python
 from circle_math.ai_contracts import (
     build_contract_pack,
+    build_rope_model_config_certification_bundle,
     build_rope_receipt,
     build_validated_rope_receipt_from_model_config,
 )
@@ -229,6 +230,14 @@ model_config = {
 
 receipt = build_validated_rope_receipt_from_model_config(model_config, pack=pack)
 print(receipt["request"]["parameters"])
+
+bundle = build_rope_model_config_certification_bundle(
+    model_config,
+    pack=pack,
+    required_statuses=("proved",),
+    required_decision_verdicts=("passed",),
+)
+print(bundle["model_config_import_report"]["parameter_sources"])
 ```
 
 If the model config declares `partial_rotary_factor` or `rotary_pct`, the
@@ -249,6 +258,7 @@ currently covers the KV-cache, sparse-attention, and recurrence contracts:
 
 ```python
 from circle_math.ai_contracts import (
+    build_architecture_config_certification_bundle,
     build_architecture_config_import_report,
     build_architecture_config_import_json_schema,
     build_validated_contract_receipt_from_architecture_config,
@@ -278,15 +288,26 @@ receipt = build_validated_contract_receipt_from_architecture_config(
     pack=pack,
 )
 assert receipt["kind"] == "kv_cache_ring_buffer"
+
+bundle = build_architecture_config_certification_bundle(
+    "kv-cache",
+    architecture_config,
+    pack=pack,
+    required_statuses=("proved",),
+    required_decision_verdicts=("passed",),
+    require_passed=True,
+)
+print(bundle["architecture_config_import_report"]["parameter_sources"])
 ```
 
 The architecture import report is provenance, not proof. It records which config
 field or explicit override supplied each request parameter; the receipt remains
 the theorem-linked artifact. The schema builder above matches
-`site/data/generated/circle_ai_architecture_config_import.schema.json`. Pass the
-same report as `architecture_config_import_report` when building a certification
-bundle so the bundle includes config-to-request provenance alongside the request
-preflight, receipt, and gate report.
+`site/data/generated/circle_ai_architecture_config_import.schema.json`.
+Use `build_rope_model_config_certification_bundle` or
+`build_architecture_config_certification_bundle` when downstream code wants
+config-to-request provenance alongside the request preflight, receipt, and gate
+report in one in-memory object.
 
 For in-memory batch checks, use the same runner-check report shape without a
 subprocess:

@@ -21,12 +21,16 @@ from circle_math.core import (
 )
 from circle_math.ai_contracts import (
     CONTRACT_PACK_SCHEMA_ID,
+    build_architecture_config_certification_bundle,
     build_architecture_config_import_json_schema,
     build_architecture_config_import_report,
+    build_contract_certification_bundle,
+    build_contract_certification_bundle_json_schema,
     build_contract_request_from_architecture_config,
     build_contract_pack,
     build_contract_runner_check_report,
     build_contract_runner_check_json_schema as build_facade_runner_check_json_schema,
+    build_rope_model_config_certification_bundle,
     build_rope_model_config_import_report,
     build_rope_request_parameters_from_model_config,
     build_validated_contract_receipt_from_architecture_config,
@@ -39,7 +43,6 @@ from circle_math.applications import (
     CIRCLE_AI_CONTRACT_RECEIPT_SCHEMA_ID,
     build_contract_artifact_manifest,
     build_contract_artifact_manifest_file_check_report,
-    build_contract_certification_bundle_json_schema,
     build_contract_runner_check_json_schema,
     build_rope_model_config_import_json_schema,
 )
@@ -141,6 +144,17 @@ def test_stable_rope_model_config_api_builds_receipt() -> None:
     assert receipt["normalized_request"]["context_length"] == 4096
     assert receipt["proof_status"]["all_theorem_ids_proved"] is True
 
+    bundle = build_rope_model_config_certification_bundle(
+        model_config,
+        pack=build_contract_pack(),
+        required_statuses=("proved",),
+        required_decision_verdicts=("passed",),
+    )
+    jsonschema.validate(bundle, build_contract_certification_bundle_json_schema())
+    assert bundle["ok"] is True
+    assert bundle["model_config_import_report"]["request"] == receipt["request"]
+    assert bundle["architecture_config_import_report"] is None
+
 
 def test_rope_model_config_report_tracks_partial_rotary_head_dim_source() -> None:
     model_config = {
@@ -223,6 +237,19 @@ def test_stable_request_api_builds_kv_cache_receipt() -> None:
     assert receipt["request"]["parameters"]["request_id"] == "example_read_request"
     assert receipt["proof_status"]["all_theorem_ids_proved"] is True
 
+    bundle = build_contract_certification_bundle(
+        request,
+        required_statuses=("proved",),
+        required_decision_verdicts=("passed",),
+        require_passed=True,
+    )
+    jsonschema.validate(bundle, build_contract_certification_bundle_json_schema())
+    assert bundle["ok"] is True
+    assert bundle["receipt"]["request"]["kind"] == "kv_cache_ring_buffer"
+    assert bundle["receipt"]["request"]["parameters"] == request["parameters"]
+    assert bundle["model_config_import_report"] is None
+    assert bundle["architecture_config_import_report"] is None
+
 
 def test_stable_architecture_config_api_builds_non_rope_receipts() -> None:
     config = json.loads(ARCHITECTURE_CONFIG.read_text(encoding="utf-8"))
@@ -249,6 +276,21 @@ def test_stable_architecture_config_api_builds_non_rope_receipts() -> None:
     assert recurrence_receipt["kind"] == "recurrence_schedule"
     assert recurrence_receipt["request_passed"] is True
     assert recurrence_receipt["normalized_request"]["loop_period"] == 5
+
+    sparse_bundle = build_architecture_config_certification_bundle(
+        "sparse-attention",
+        config,
+        required_statuses=("proved",),
+        required_decision_verdicts=("passed",),
+        required_assurance_levels=("theorem_backed",),
+        require_passed=True,
+    )
+    jsonschema.validate(sparse_bundle, build_contract_certification_bundle_json_schema())
+    assert sparse_bundle["ok"] is True
+    assert sparse_bundle["architecture_config_import_report"]["request"] == (
+        sparse_request
+    )
+    assert sparse_bundle["model_config_import_report"] is None
 
 
 def test_stable_artifact_manifest_public_api(tmp_path) -> None:

@@ -101,9 +101,12 @@ Use `circle_math.ai_contracts` to build public contract fixtures and receipts:
 
 ```python
 from circle_math.ai_contracts import (
+    build_architecture_config_certification_bundle,
+    build_contract_certification_bundle,
     build_architecture_config_import_report,
     build_contract_pack,
     build_contract_runner_check_report,
+    build_rope_model_config_certification_bundle,
     build_rope_receipt,
     build_validated_contract_receipt_from_architecture_config,
     build_validated_rope_receipt_from_model_config,
@@ -124,6 +127,15 @@ receipt_from_config = build_validated_rope_receipt_from_model_config(
     pack=pack,
 )
 assert receipt_from_config["kind"] == "rope_position_distinguishability"
+rope_bundle = build_rope_model_config_certification_bundle(
+    model_config,
+    pack=pack,
+    required_statuses=("proved",),
+    required_decision_verdicts=("passed",),
+)
+assert rope_bundle["model_config_import_report"]["request"] == (
+    receipt_from_config["request"]
+)
 
 architecture_config = {
     "kv_cache": {"cache_size": 16, "current": 31, "token": 20},
@@ -146,6 +158,18 @@ architecture_receipt = build_validated_contract_receipt_from_architecture_config
     pack=pack,
 )
 assert architecture_receipt["kind"] == "sparse_attention_coverage"
+architecture_bundle = build_architecture_config_certification_bundle(
+    "sparse-attention",
+    architecture_config,
+    pack=pack,
+    required_statuses=("proved",),
+    required_decision_verdicts=("passed",),
+    required_assurance_levels=("theorem_backed",),
+    require_passed=True,
+)
+assert architecture_bundle["architecture_config_import_report"]["request"] == (
+    architecture_receipt["request"]
+)
 
 runner_report = build_contract_runner_check_report(
     model_configs=[model_config],
@@ -178,6 +202,7 @@ adapter for the KV-cache, sparse-attention, and recurrence contracts:
 
 ```python
 from circle_math.ai_contracts import (
+    build_architecture_config_certification_bundle,
     build_architecture_config_import_json_schema,
     build_architecture_config_import_report,
     build_contract_request_from_architecture_config,
@@ -210,15 +235,22 @@ receipt = build_validated_contract_receipt_from_architecture_config(
     pack=pack,
 )
 assert receipt["request"] == request
+bundle = build_architecture_config_certification_bundle(
+    "sparse-attention",
+    architecture_config,
+    pack=pack,
+)
+assert bundle["architecture_config_import_report"]["request"] == request
 ```
 
 The config adapter is deterministic translation/provenance only; the receipt is
 the theorem-linked artifact. The import-report schema builder matches
 `site/data/generated/circle_ai_architecture_config_import.schema.json`. The same
-report can be passed as `architecture_config_import_report` to
-`build_contract_certification_bundle` when a downstream handoff should carry
-request preflight, receipt, gate report, and config-to-request provenance in one
-object.
+stable facade also exposes `build_contract_certification_bundle` for already
+versioned requests, plus `build_rope_model_config_certification_bundle` and
+`build_architecture_config_certification_bundle` when a downstream handoff
+should carry request preflight, receipt, gate report, and config-to-request
+provenance in one object.
 The same in-memory runner-check helper accepts non-RoPE architecture configs and
 emits KV-cache, sparse-attention, and recurrence summaries by default. Pass
 `architecture_config_kinds=("sparse-attention",)` when a caller only needs one
