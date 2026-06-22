@@ -31,7 +31,7 @@ const BASE_PRIME_ODD_BYTE_LIMIT: u64 = 10_000_000;
 const BASE_PRIME_BITSET_LIMIT: u64 = 100_000_000;
 const SCALAR_RANGE_FALLBACK_SPAN_LIMIT: u64 = 1_000_000;
 const DENSE_MARKING_BASE_LIMIT: u64 = 300_000;
-const HYBRID_DENSE_STEP_DIVISOR: usize = 5;
+const HYBRID_DENSE_STEP_DIVISOR: usize = 4;
 const DYNAMIC_PARALLEL_MAX_SEGMENTS_PER_BATCH: u64 = 64;
 const DYNAMIC_PARALLEL_TARGET_BATCHES_PER_WORKER: u64 = 4;
 const PARALLEL_WORKER_STACK_SIZE: usize = 128 * 1024;
@@ -2683,7 +2683,7 @@ fn mark_single_segment_base_multiples_after(
     let len = flags.len();
     if dense_marking {
         for &q in active_base {
-            let index = first_odd_multiple_index_at_or_after(q, odd_low)?;
+            let index = first_odd_multiple_index_at_or_after_fast(q, odd_low);
             if index >= len {
                 continue;
             }
@@ -2695,7 +2695,7 @@ fn mark_single_segment_base_multiples_after(
         let (dense_base, sparse_base) =
             split_base_primes_by_dense_step(active_base, dense_step_limit);
         for &q in dense_base {
-            let index = first_odd_multiple_index_at_or_after(q, odd_low)?;
+            let index = first_odd_multiple_index_at_or_after_fast(q, odd_low);
             if index >= len {
                 continue;
             }
@@ -2705,7 +2705,7 @@ fn mark_single_segment_base_multiples_after(
 
         let ptr = flags.as_mut_ptr();
         for &q in sparse_base {
-            let index = first_odd_multiple_index_at_or_after(q, odd_low)?;
+            let index = first_odd_multiple_index_at_or_after_fast(q, odd_low);
             if index >= len {
                 continue;
             }
@@ -2804,7 +2804,7 @@ fn push_single_segment_mark(
     odd_count: usize,
     dense: bool,
 ) -> Result<(), RangeError> {
-    let index = first_odd_multiple_index_at_or_after(q, odd_low)?;
+    let index = first_odd_multiple_index_at_or_after_fast(q, odd_low);
     if index >= odd_count {
         return Ok(());
     }
@@ -2862,7 +2862,7 @@ fn push_shifted_single_segment_mark(
     half_shift: u64,
     dense: bool,
 ) -> Result<(), RangeError> {
-    let index = first_odd_multiple_index_at_or_after(q, odd_low)?;
+    let index = first_odd_multiple_index_at_or_after_fast(q, odd_low);
     let step = usize::try_from(q).map_err(|_| RangeError::SegmentTooLarge)?;
     let half_shift_mod_step =
         usize::try_from(half_shift % q).map_err(|_| RangeError::SegmentTooLarge)?;
@@ -3110,11 +3110,25 @@ fn first_odd_multiple_at_or_after(q: u64, low: u64) -> u64 {
     low.saturating_add(odd_delta)
 }
 
+#[cfg(test)]
 fn first_odd_multiple_index_at_or_after(q: u64, odd_low: u64) -> Result<usize, RangeError> {
     debug_assert_eq!(q % 2, 1);
     debug_assert_eq!(odd_low % 2, 1);
+    usize::try_from(first_odd_multiple_index_delta(q, odd_low) / 2)
+        .map_err(|_| RangeError::SegmentTooLarge)
+}
+
+#[inline(always)]
+fn first_odd_multiple_index_at_or_after_fast(q: u64, odd_low: u64) -> usize {
+    debug_assert_eq!(q % 2, 1);
+    debug_assert_eq!(odd_low % 2, 1);
+    (first_odd_multiple_index_delta(q, odd_low) / 2) as usize
+}
+
+#[inline(always)]
+fn first_odd_multiple_index_delta(q: u64, odd_low: u64) -> u64 {
     let q_squared = q * q;
-    let delta = if q_squared >= odd_low {
+    if q_squared >= odd_low {
         q_squared - odd_low
     } else {
         let remainder = odd_low % q;
@@ -3128,8 +3142,7 @@ fn first_odd_multiple_index_at_or_after(q: u64, odd_low: u64) -> Result<usize, R
                 delta + q
             }
         }
-    };
-    usize::try_from(delta / 2).map_err(|_| RangeError::SegmentTooLarge)
+    }
 }
 
 fn ceil_multiple_saturating(n: u64, divisor: u64) -> u64 {
