@@ -341,6 +341,8 @@ def test_rope_receipt_classifies_d19_margin_request(contract_pack: dict) -> None
     classifier = receipt["evidence"]["standard_channel0_d19_request_classifier"]
     assert classifier["request_status"] == "proved"
     assert classifier["theorem_backed_classification"] is True
+    assert classifier["impossible_obstruction_gap"] == 103993
+    assert classifier["impossible_obstruction_turns"] == 16551
     assert "AIRA-T0238" in receipt["proof_status"]["theorem_ids"]
     nearest_bridge = receipt["evidence"]["real_phase_nearest_integer_bridge"]
     assert nearest_bridge["applies"] is True
@@ -449,6 +451,18 @@ def test_compact_receipt_public_api_surfaces_downstream_fields(
             "standard_channel0_d19_request_classifier.request_status"
         ]
         == "proved"
+    )
+    assert (
+        compact["selected_evidence"][
+            "standard_channel0_d19_request_classifier.impossible_obstruction_gap"
+        ]
+        == 103993
+    )
+    assert (
+        compact["selected_evidence"][
+            "standard_channel0_d19_request_classifier.impossible_obstruction_turns"
+        ]
+        == 16551
     )
     assert (
         compact["selected_evidence_proof_layers"][
@@ -719,6 +733,12 @@ def test_rope_receipt_distinguishes_impossible_and_undecided_margins(
     assert impossible["evidence"]["standard_channel0_d19_request_classifier"][
         "request_status"
     ] == "impossible"
+    assert impossible["evidence"]["standard_channel0_d19_request_classifier"][
+        "impossible_obstruction_gap"
+    ] == 103993
+    assert impossible["evidence"]["standard_channel0_d19_request_classifier"][
+        "impossible_obstruction_turns"
+    ] == 16551
     assert impossible["proof_status"]["all_theorem_ids_proved"] is True
     assert undecided["status"] == "undecided"
     assert undecided["request_passed"] is None

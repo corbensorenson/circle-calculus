@@ -248,6 +248,8 @@ COMPACT_RECEIPT_EVIDENCE_PATHS_BY_KIND = {
         "standard_channel0_d19_request_classifier.theorem_backed_classification",
         "standard_channel0_d19_request_classifier.requested_margin",
         "standard_channel0_d19_request_classifier.requested_context",
+        "standard_channel0_d19_request_classifier.impossible_obstruction_gap",
+        "standard_channel0_d19_request_classifier.impossible_obstruction_turns",
         "standard_channel0_d19_bank_bridge.applies",
         "standard_channel0_d19_bank_bridge.request_status",
         "standard_channel0_d19_bank_bridge.theorem_backed",

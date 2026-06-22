@@ -1227,6 +1227,8 @@ class StandardChannel0D19RangeRequestBracketCertificate:
     context_range_max_inclusive: int
     proved_margin: str
     impossible_margin_floor: str
+    impossible_obstruction_gap: int
+    impossible_obstruction_turns: int
     undecided_margin_interval_lower_exclusive: str
     undecided_margin_interval_upper_exclusive: str
     undecided_margin_interval_width: str
@@ -3526,6 +3528,8 @@ def certify_standard_channel0_d19_range_request_margin_bracket(
     context_max_inclusive = 196608
     proved_margin = Fraction(1, 328459)
     impossible_margin_floor = Fraction(1, 328458)
+    impossible_obstruction_gap = 103993
+    impossible_obstruction_turns = 16551
     undecided_margin_interval_width = impossible_margin_floor - proved_margin
     in_context_range = (
         context_min_exclusive < requested_context <= context_max_inclusive
@@ -3612,6 +3616,8 @@ def certify_standard_channel0_d19_range_request_margin_bracket(
         context_range_max_inclusive=context_max_inclusive,
         proved_margin=format_fraction(proved_margin),
         impossible_margin_floor=format_fraction(impossible_margin_floor),
+        impossible_obstruction_gap=impossible_obstruction_gap,
+        impossible_obstruction_turns=impossible_obstruction_turns,
         undecided_margin_interval_lower_exclusive=format_fraction(proved_margin),
         undecided_margin_interval_upper_exclusive=format_fraction(
             impossible_margin_floor

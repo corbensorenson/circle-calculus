@@ -758,6 +758,8 @@ def test_consumer_exposes_rope_planner_recommendations() -> None:
     assert d19_frontier["request_context"] == 131072
     assert d19_frontier["proved_margin"] == "1/328459"
     assert d19_frontier["impossible_margin_floor"] == "1/328458"
+    assert d19_frontier["impossible_obstruction_gap"] == 103993
+    assert d19_frontier["impossible_obstruction_turns"] == 16551
     assert d19_frontier["proved_status"] == "proved"
     assert d19_frontier["impossible_status"] == "impossible"
     assert d19_frontier["undecided_probe_margin_in_open_gap"] is True

@@ -1909,6 +1909,14 @@ FIELD_DESCRIPTION_OVERRIDES = {
         "Exact rational width of the D19 open interval between the proved "
         "margin threshold and the impossible margin floor."
     ),
+    "d19_impossible_obstruction_gap": (
+        "Concrete D19 gap whose nearest-integer witness obstructs any "
+        "standard-channel-0 margin at or above the impossible floor."
+    ),
+    "d19_impossible_obstruction_turns": (
+        "Integer turn count paired with the D19 obstruction gap in the "
+        "standard-channel-0 impossible branch."
+    ),
     "real_phase_nearest_integer_certificate_bridge": (
         "Boolean theorem-trail guard showing Lean includes the finite "
         "nearest-integer bridge from an abstract turn-ratio margin to "
@@ -2837,6 +2845,12 @@ def _generic_planner_recommendations(
                 "request_context": fields["d19_request_context"],
                 "proved_margin": fields["d19_proved_margin"],
                 "impossible_margin_floor": fields["d19_impossible_margin_floor"],
+                "impossible_obstruction_gap": fields[
+                    "d19_impossible_obstruction_gap"
+                ],
+                "impossible_obstruction_turns": fields[
+                    "d19_impossible_obstruction_turns"
+                ],
                 "proved_status": fields["d19_proved_request_status"],
                 "impossible_status": fields["d19_impossible_request_status"],
                 "undecided_margin": fields["d19_undecided_request_margin"],
@@ -2942,6 +2956,8 @@ def _generic_planner_recommendations(
                     "d19_request_context",
                     "d19_proved_margin",
                     "d19_impossible_margin_floor",
+                    "d19_impossible_obstruction_gap",
+                    "d19_impossible_obstruction_turns",
                     "d19_proved_request_status",
                     "d19_proved_request_theorem_backed_classification",
                     "d19_impossible_request_status",
@@ -3551,6 +3567,12 @@ def _rope_position_contract() -> dict[str, Any]:
         ),
         "d19_proved_margin": proved_request.proved_margin,
         "d19_impossible_margin_floor": proved_request.impossible_margin_floor,
+        "d19_impossible_obstruction_gap": (
+            impossible_request.impossible_obstruction_gap
+        ),
+        "d19_impossible_obstruction_turns": (
+            impossible_request.impossible_obstruction_turns
+        ),
         "d19_proved_request_margin": proved_request.requested_margin,
         "d19_proved_request_status": proved_request.request_status,
         "d19_proved_request_theorem_backed_classification": (

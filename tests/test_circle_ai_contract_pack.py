@@ -669,6 +669,8 @@ def test_generic_contract_pack_is_standalone_with_compatibility_aliases() -> Non
     assert rope_fields["d19_context_range_max_inclusive"] == 196608
     assert rope_fields["d19_proved_margin"] == "1/328459"
     assert rope_fields["d19_impossible_margin_floor"] == "1/328458"
+    assert rope_fields["d19_impossible_obstruction_gap"] == 103993
+    assert rope_fields["d19_impossible_obstruction_turns"] == 16551
     assert rope_fields["d19_proved_request_margin"] == "1/328459"
     assert rope_fields["d19_proved_request_status"] == "proved"
     assert rope_fields["d19_proved_request_relation"] == (
@@ -861,6 +863,8 @@ def test_generic_contract_pack_is_standalone_with_compatibility_aliases() -> Non
     assert rope_recommendations[1]["request_context"] == 131072
     assert rope_recommendations[1]["proved_margin"] == "1/328459"
     assert rope_recommendations[1]["impossible_margin_floor"] == "1/328458"
+    assert rope_recommendations[1]["impossible_obstruction_gap"] == 103993
+    assert rope_recommendations[1]["impossible_obstruction_turns"] == 16551
     assert rope_recommendations[1]["proved_status"] == "proved"
     assert rope_recommendations[1]["impossible_status"] == "impossible"
     assert rope_recommendations[1]["undecided_margin"] == "2/656917"
