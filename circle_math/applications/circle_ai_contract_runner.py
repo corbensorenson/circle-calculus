@@ -350,7 +350,13 @@ ROPE_DIRICHLET_GUARDRAIL_THEOREM_IDS = (
     "AIRA-T0240",
     "AIRA-T0241",
 )
-ROPE_MODEL_BASE_KEYS = ("rope_theta", "rope_base", "rotary_emb_base")
+ROPE_MODEL_BASE_KEYS = (
+    "rope_theta",
+    "rope_base",
+    "rotary_emb_base",
+    "rotary_base",
+    "rotary_theta",
+)
 ROPE_MODEL_CONTEXT_KEYS = (
     "max_position_embeddings",
     "max_seq_len",

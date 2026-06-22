@@ -241,7 +241,8 @@ conversion. If the config already declares an explicit rotary dimension such as
 rotary fraction again. For context length, it accepts
 `max_position_embeddings`, `max_seq_len`, `max_seq_length`,
 `max_sequence_length`, `model_max_length`, `seq_len`, `context_length`,
-`seq_length`, or `n_positions`.
+`seq_length`, or `n_positions`. For base/theta, it accepts `rope_theta`,
+`rope_base`, `rotary_emb_base`, `rotary_base`, or `rotary_theta`.
 
 For in-memory batch checks, use the same runner-check report shape without a
 subprocess:

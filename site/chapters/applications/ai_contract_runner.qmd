@@ -98,7 +98,8 @@ circle-ai-certify rope \
 The importer reads explicit RoPE dimensions such as `rotary_dim`,
 `rotary_emb_dim`, `rotary_ndims`, `qk_rope_head_dim`, or `rope_head_dim`;
 otherwise it reads `head_dim` or `hidden_size / num_attention_heads`, optional
-`partial_rotary_factor` or `rotary_pct`, `rope_theta` when present, and
+`partial_rotary_factor` or `rotary_pct`, base/theta fields `rope_theta`,
+`rope_base`, `rotary_emb_base`, `rotary_base`, or `rotary_theta`, and
 `max_position_embeddings`, `max_seq_len`, `max_seq_length`,
 `max_sequence_length`, `model_max_length`, `seq_len`, `context_length`,
 `seq_length`, or `n_positions`. Explicit CLI flags override inferred values.

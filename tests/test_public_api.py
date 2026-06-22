@@ -181,14 +181,19 @@ def test_rope_model_config_import_uses_context_length_alias() -> None:
         "hidden_size": 4096,
         "num_attention_heads": 32,
         "max_seq_len": 32768,
-        "rope_theta": 10000.0,
+        "rotary_base": 500000.0,
     }
 
     parameters = build_rope_request_parameters_from_model_config(model_config)
     assert parameters["context"] == 32768
+    assert parameters["base"] == 500000.0
 
     import_report = build_rope_model_config_import_report(model_config)
     jsonschema.validate(import_report, build_rope_model_config_import_json_schema())
+    assert import_report["parameter_sources"]["base"] == {
+        "source": "config_field",
+        "field": "rotary_base",
+    }
     assert import_report["parameter_sources"]["context"] == {
         "source": "config_field",
         "field": "max_seq_len",
