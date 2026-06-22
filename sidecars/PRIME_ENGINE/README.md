@@ -190,7 +190,7 @@ persistent `libprimesieve` on `[1e12, 1e12 + 1e7)` shifted batches, and
 `5.537x` median and `5.241x` best speedup over persistent `libprimecount`
 pi-diff, with stable samples.
 Native shifted default batches now use the measured edge high-offset
-`presieve13:1638400` plan, which resolves to 7 effective workers for this
+`presieve13:1310720` plan, which resolves to 8 effective workers for this
 10M span while leaving fixed high-offset defaults unchanged. The apparent
 best-vs-default gain in the latest shifted-candidate readout is `1.000x`, so
 the shifted gate records `keep_default` rather than a new trial candidate.

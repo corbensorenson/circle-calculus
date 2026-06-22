@@ -36,7 +36,7 @@ use circle_prime::{
 };
 
 const MAX_INSPECT_N: u128 = 100_000;
-const SHIFTED_EDGE_HIGH_OFFSET_SEGMENT_SIZE: u64 = 1_638_400;
+const SHIFTED_EDGE_HIGH_OFFSET_SEGMENT_SIZE: u64 = 1_310_720;
 const SHIFTED_LOWER_HIGH_OFFSET_SEGMENT_SIZE: u64 = 1_835_008;
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 enum CountMode {
@@ -2667,7 +2667,7 @@ mod tests {
         assert_eq!(normal.worker_threads, 7);
         assert_eq!(normal.count_mode, CountMode::Presieve13);
         assert_eq!(shifted.segment_size, SHIFTED_EDGE_HIGH_OFFSET_SEGMENT_SIZE);
-        assert_eq!(shifted.worker_threads, 7);
+        assert_eq!(shifted.worker_threads, 8);
         assert_eq!(shifted.count_mode, CountMode::Presieve13);
     }
 

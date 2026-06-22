@@ -1171,8 +1171,8 @@ def test_rust_prime_count_binary_server_shifted_default_uses_edge_plan(
     ]
     assert [payload["count"] for payload in payloads] == expected_counts
     for payload in payloads:
-        assert payload["segment_size"] == 1_638_400
-        assert payload["threads"] == 7
+        assert payload["segment_size"] == 1_310_720
+        assert payload["threads"] == 8
         assert payload["requested_threads"] == 8
         assert payload["count_mode"] == "presieve13"
         assert_prime_range_count_proof_contract(payload)
