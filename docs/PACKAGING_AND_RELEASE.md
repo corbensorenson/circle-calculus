@@ -35,10 +35,15 @@ Recorded locally on 2026-06-21:
 - `make public-api-docs` regenerated `docs/generated/PUBLIC_API_REFERENCE.md`.
 - `python -m pytest tests/test_public_api.py -q` passed:
   `27 passed in 151.21s`.
+- `python -m pytest --maxfail=1` completed the full configured pytest suite:
+  `1406 passed in 3509.58s`.
+- The remaining non-pytest sourcecheck targets passed, including manifest,
+  dictionary, paper/source trails, target manifests, application guardrails,
+  dimension checks, no-fake-proof checks, proof-depth audit, and `sitecheck`.
 - Clean Python artifact check passed with `build 1.2.1`, `twine 6.2.0`,
   `pkginfo 1.12.1.2`, and `packaging 26.2`: `python -m build` followed by
   `python -m twine check dist/*`.
-- Clean wheel smoke passed in `/tmp/circle-calculus-wheel-smoke-3`: importing
+- Clean wheel smoke passed in `/tmp/circle-calculus-wheel-smoke-final`: importing
   `circle_math.core`, building the contract pack, checking sparse-attention
   readiness, building a RoPE receipt, and running installed
   `circle-ai-certify sparse-attention --context 9 --strides 3,4,7
