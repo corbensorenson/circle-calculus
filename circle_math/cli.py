@@ -15,6 +15,8 @@ from dataclasses import asdict, is_dataclass
 from pathlib import Path
 from typing import Any
 
+import jsonschema
+
 from .ai_contracts import (
     CONTRACT_PACK_SCHEMA_ID,
     SUPPORTED_CONTRACT_KINDS,
@@ -48,6 +50,7 @@ from .applications import (
     build_contract_certification_bundle_file_check_report,
     build_contract_receipt_file_check_report,
     build_contract_receipt_gate_report,
+    build_contract_runner_check_json_schema,
     build_contract_request_validation_report,
     build_contract_receipt_replay_check_report,
     build_compact_contract_receipt,
@@ -226,6 +229,10 @@ def _load_json_object_from_args(
 def _write_json_file(path: Path, payload: Any) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n")
+
+
+def _validate_contract_runner_check_report(report: dict[str, Any]) -> None:
+    jsonschema.validate(report, build_contract_runner_check_json_schema())
 
 
 def _receipt_gate_failures(receipt: dict[str, Any], args: argparse.Namespace) -> list[str]:
@@ -1396,6 +1403,7 @@ def _certify_batch_requests(args: argparse.Namespace) -> int:
         },
         "summaries": summaries,
     }
+    _validate_contract_runner_check_report(report)
     if args.report_out is not None:
         _write_json_file(args.report_out, report)
 

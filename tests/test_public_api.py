@@ -48,6 +48,7 @@ from circle_math.applications import (
     build_contract_runner_check_json_schema,
     build_rope_model_config_import_json_schema,
 )
+from circle_math.cli import _validate_contract_runner_check_report
 from circle_math.contracts import contract_kinds, readiness_summary
 
 
@@ -1279,6 +1280,25 @@ def test_public_api_runner_check_report_builds_from_in_memory_sources() -> None:
         assert summary["architecture_config_parameter_sources"]
         assert summary["model_config_parameter_sources"] is None
     assert model_summary["compact_selected_evidence_unclassified_count"] == 0
+
+
+def test_package_cli_batch_report_boundary_rejects_schema_drift() -> None:
+    request = json.loads(
+        (ROOT / "examples" / "circle_ai_requests" / "kv_cache_request.json").read_text()
+    )
+    report = build_contract_runner_check_report(
+        requests=[request],
+        request_source_paths=["requests/kv_cache_request.json"],
+        required_statuses=["proved"],
+        required_decision_verdicts=["passed"],
+        require_passed=True,
+    )
+    _validate_contract_runner_check_report(report)
+
+    stale_report = dict(report)
+    stale_report.pop("selected_kinds")
+    with pytest.raises(jsonschema.ValidationError):
+        _validate_contract_runner_check_report(stale_report)
 
 
 def test_package_cli_unified_certify_writes_gate_and_replay_reports(tmp_path) -> None:
