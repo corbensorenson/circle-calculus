@@ -748,6 +748,71 @@ def test_extended_ready_contract_receipts_preserve_family_semantics(
     assert any(line.startswith("seed_rule=") for line in receipt_summary_lines(seed_rule))
 
 
+def test_extended_ready_contract_compact_receipts_surface_selected_evidence(
+    contract_pack: dict,
+) -> None:
+    cases = [
+        (
+            build_strided_candidate_fanout_receipt(pack=contract_pack),
+            {
+                "fields.full_coverage": (True, "proved"),
+                "fields.predicted_reach": (12, "proved"),
+                "fields.duplicate_count": (0, "proved"),
+                "fields.gcd": (1, "computed"),
+            },
+        ),
+        (
+            build_cyclic_memory_receipt(pack=contract_pack),
+            {
+                "fields.residue_slot": (7, "proved"),
+                "fields.winding": (2, "proved"),
+                "fields.same_residue_events": ([7, 15, 23, 31], "proved"),
+                "fields.max_alias_load": (4, "proved"),
+                "fields.event_index": (23, "computed"),
+            },
+        ),
+        (
+            build_multicoil_phase_feature_receipt(pack=contract_pack),
+            {
+                "fields.phase_tuple": ([2, 2], "proved"),
+                "fields.joint_repeat_horizon": (35, "proved"),
+                "fields.relative_period": (5, "proved"),
+                "fields.relative_phase": (3, "computed"),
+            },
+        ),
+        (
+            build_circulant_block_cyclic_mixer_receipt(pack=contract_pack),
+            {
+                "fields.max_abs_dense_delta": (0, "proved"),
+                "fields.circulant_parameters": (8, "proved"),
+                "fields.dense_parameters": (64, "proved"),
+                "fields.block_to_dense_ratio": (0.0625, "computed"),
+            },
+        ),
+        (
+            build_seed_rule_receipt(pack=contract_pack),
+            {
+                "fields.exact_regeneration": (True, "proved"),
+                "fields.generator_shorter": (True, "proved"),
+                "fields.storage_saving": (71, "proved"),
+                "fields.storage_saving_positive": (True, "proved"),
+            },
+        ),
+    ]
+
+    for receipt, expected_paths in cases:
+        compact = build_compact_contract_receipt(receipt)
+        jsonschema.validate(compact, build_compact_contract_receipt_json_schema())
+        selected = compact["selected_evidence"]
+        selected_layers = compact["selected_evidence_proof_layers"]
+        assert selected
+        assert set(selected_layers) == set(selected)
+        assert "unclassified" not in selected_layers.values()
+        for path, (expected_value, expected_layer) in expected_paths.items():
+            assert selected[path] == expected_value
+            assert selected_layers[path] == expected_layer
+
+
 def test_dispatcher_aliases_and_fingerprint_validation(contract_pack: dict) -> None:
     receipt = build_contract_receipt(
         "sparse-attention",

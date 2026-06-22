@@ -256,6 +256,10 @@ which labels each selected evidence path as `proved`, `computed`,
 sparse-attention receipts, the selected evidence includes lag-side and
 query-side no-collision booleans, dedup-loss counts, pair-collision counts,
 pair-count-bounds-dedup-loss checks, and unique-plus-loss-equals-raw accounting.
+The compact view also carries selected fields for strided fanout, cyclic memory,
+multicoil phase features, cyclic mixers, and seed-rule regeneration. Fields
+outside the theorem-backed minimum consumer set are labeled `computed`, not
+`proved`.
 
 Add `--request-validation-report-out reports/request_validation.json` when a
 single-config run should also save the schema-validated preflight report for the

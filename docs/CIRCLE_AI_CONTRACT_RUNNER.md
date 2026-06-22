@@ -203,6 +203,12 @@ query-side collision accounting: no-collision booleans, dedup-loss counts,
 pair-collision counts, pair-count-bounds-dedup-loss checks, and
 unique-plus-loss-equals-raw accounting. Downstream CI can therefore gate on
 candidate alias severity without reopening the full sparse certificate.
+The same compact view now exposes selected evidence for the extended ready
+families: strided fanout coverage/budget fields, cyclic-memory residue and
+alias fields, multicoil repeat/relative-phase fields, cyclic-mixer parameter
+accounting, and seed-rule exact-regeneration/storage fields. Fields that are
+not in a family contract's theorem-backed minimum consumer set remain labeled
+`computed` rather than `proved`.
 Use `--receipt-check-out` with `--json-out` to write the same schema-validated
 pack-aware check report that a later `scripts/check_circle_ai_receipt.py` run
 would produce for the saved receipt.
