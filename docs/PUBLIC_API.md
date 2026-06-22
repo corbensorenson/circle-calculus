@@ -417,7 +417,9 @@ config to restrict that file only. The copyable standard-library verifier
 `examples/downstream_ci_verify_circle_ai_batch.py` validates a saved
 runner-check report plus every receipt, compact receipt, import report,
 request-validation report, certification bundle, and bundle-check sidecar that
-the batch report names. Its summaries preserve unsupported
+the batch report names. It validates the runner report's own `gate_policy`, so
+stale reports missing current policy fields fail before being accepted as CI
+evidence. Its summaries preserve unsupported
 architecture-config field counts and names, so CI logs keep the boundary
 between certified request fields and source-config behavior that was not
 claimed. Add `--require-no-unsupported-architecture-fields` when downstream CI

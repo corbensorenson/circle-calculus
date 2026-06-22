@@ -207,6 +207,75 @@ def _string_list(value: object) -> list[str]:
     return [item for item in value if isinstance(item, str)]
 
 
+def _policy_string_list(
+    policy: dict[str, Any],
+    field: str,
+    *,
+    supported: set[str],
+) -> tuple[list[str], list[str]]:
+    value = policy.get(field)
+    if not isinstance(value, list):
+        return [], [f"runner gate_policy {field} must be a list"]
+    items: list[str] = []
+    failures: list[str] = []
+    for item in value:
+        if not isinstance(item, str):
+            failures.append(f"runner gate_policy {field} entries must be strings")
+            continue
+        items.append(item)
+    unsupported = sorted(set(items) - supported)
+    if unsupported:
+        failures.append(
+            f"runner gate_policy {field} has unsupported values: {unsupported}"
+        )
+    return items, failures
+
+
+def _runner_gate_policy(report: dict[str, Any]) -> tuple[dict[str, Any], list[str]]:
+    raw_policy = report.get("gate_policy")
+    if not isinstance(raw_policy, dict):
+        return {}, ["runner-check gate_policy must be an object"]
+    failures: list[str] = []
+    statuses, status_failures = _policy_string_list(
+        raw_policy,
+        "allowed_statuses",
+        supported=SUPPORTED_STATUSES,
+    )
+    decisions, decision_failures = _policy_string_list(
+        raw_policy,
+        "allowed_decision_verdicts",
+        supported=SUPPORTED_DECISIONS,
+    )
+    assurances, assurance_failures = _policy_string_list(
+        raw_policy,
+        "allowed_assurance_levels",
+        supported=SUPPORTED_ASSURANCES,
+    )
+    failures.extend(status_failures)
+    failures.extend(decision_failures)
+    failures.extend(assurance_failures)
+    require_passed = raw_policy.get("require_passed")
+    if not isinstance(require_passed, bool):
+        failures.append("runner gate_policy require_passed must be a boolean")
+        require_passed = False
+    require_no_unsupported = raw_policy.get(
+        "require_no_unsupported_architecture_fields"
+    )
+    if not isinstance(require_no_unsupported, bool):
+        failures.append(
+            "runner gate_policy require_no_unsupported_architecture_fields "
+            "must be a boolean"
+        )
+        require_no_unsupported = False
+    return {
+        "allowed_statuses": statuses,
+        "allowed_decision_verdicts": decisions,
+        "allowed_assurance_levels": assurances,
+        "require_passed": require_passed,
+        "require_no_unsupported_architecture_fields": require_no_unsupported,
+    }, failures
+
+
 def _sidecar_consistency_failures(
     summary: dict[str, Any],
     *,
@@ -378,6 +447,8 @@ def verify_runner_check(
         failures.append("runner-check report ok was not true")
     if report.get("failure_count") != 0:
         failures.append("runner-check failure_count was not zero")
+    runner_gate_policy, runner_gate_policy_failures = _runner_gate_policy(report)
+    failures.extend(runner_gate_policy_failures)
 
     raw_summaries = report.get("summaries")
     summaries: list[dict[str, Any]] = []
@@ -415,6 +486,49 @@ def verify_runner_check(
         if kind not in kind_counts:
             failures.append(f"required contract kind is missing: {kind}")
     for summary in summaries:
+        if (
+            runner_gate_policy.get("allowed_statuses")
+            and summary["status"] not in runner_gate_policy["allowed_statuses"]
+        ):
+            failures.append(
+                f"{summary['kind']} status {summary['status']!r} violates "
+                "runner gate_policy allowed_statuses"
+            )
+        if (
+            runner_gate_policy.get("allowed_decision_verdicts")
+            and summary["decision_verdict"]
+            not in runner_gate_policy["allowed_decision_verdicts"]
+        ):
+            failures.append(
+                f"{summary['kind']} decision {summary['decision_verdict']!r} "
+                "violates runner gate_policy allowed_decision_verdicts"
+            )
+        if (
+            runner_gate_policy.get("allowed_assurance_levels")
+            and summary["decision_assurance"]
+            not in runner_gate_policy["allowed_assurance_levels"]
+        ):
+            failures.append(
+                f"{summary['kind']} assurance {summary['decision_assurance']!r} "
+                "violates runner gate_policy allowed_assurance_levels"
+            )
+        if (
+            runner_gate_policy.get("require_passed") is True
+            and summary["request_passed"] is not True
+        ):
+            failures.append(
+                f"{summary['kind']} request_passed violated runner gate_policy"
+            )
+        if (
+            runner_gate_policy.get("require_no_unsupported_architecture_fields")
+            is True
+            and summary["unsupported_architecture_config_fields"]
+        ):
+            failures.append(
+                f"{summary['source_path']}:{summary['kind']} has unsupported "
+                "architecture-config fields despite runner gate_policy: "
+                + ", ".join(summary["unsupported_architecture_config_fields"])
+            )
         if required_statuses and summary["status"] not in set(required_statuses):
             failures.append(
                 f"{summary['kind']} status {summary['status']!r} not in "
@@ -462,6 +576,7 @@ def verify_runner_check(
         "required_statuses": required_statuses,
         "required_decisions": required_decisions,
         "required_assurances": required_assurances,
+        "runner_gate_policy": runner_gate_policy,
         "require_passed": require_passed,
         "require_receipts": require_receipts,
         "require_compact_receipts": require_compact_receipts,
