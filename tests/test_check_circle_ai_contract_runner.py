@@ -694,7 +694,7 @@ def test_check_circle_ai_contract_runner_rejects_assurance_gate() -> None:
         "allowed_assurance_levels": ["theorem_backed"],
         "require_passed": False,
     }
-    assert payload["failure_count"] == 8
+    assert payload["failure_count"] == 9
     assert all(
         "did not match required assurance set" in failure
         for failure in payload["failures"]
