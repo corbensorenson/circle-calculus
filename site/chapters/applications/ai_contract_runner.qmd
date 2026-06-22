@@ -121,7 +121,7 @@ Use `--format compact-json` when a downstream tool needs a small stable object
 instead of the full audit receipt:
 
 ```bash
-python scripts/circle_ai_certify.py rope \
+circle-ai-certify rope \
   --head-dim 128 \
   --base 10000 \
   --context 131072 \
@@ -136,6 +136,27 @@ the decision, proof-status summary, selected evidence fields, theorem ids,
 validation commands, non-claims, and fingerprints, including the full
 `receipt_content_fingerprint`. It does not replace the full receipt for audit
 or replay.
+
+For a downstream project that already has several versioned Circle request
+files, use the installed package batch mode:
+
+```bash
+circle-ai-certify batch \
+  --request-file examples/circle_ai_requests/kv_cache_request.json \
+  --request-file examples/circle_ai_requests/sparse_attention_request.json \
+  --receipt-out-dir reports/circle_ai_receipts \
+  --compact-receipt-out-dir reports/circle_ai_compact_receipts \
+  --report-out reports/circle_ai_runner_check.json \
+  --require-passed \
+  --require-status proved \
+  --require-decision passed \
+  --format json
+```
+
+That writes one full receipt per request, one compact receipt per request, and
+one runner-check report with schema id
+`circle_calculus.ai_contract_runner_check.v0`. It is the package-native batch
+handoff path; it does not require importing repository-only scripts.
 Use `--gate-report-out reports/rope_gate.json` for a compact pack-aware
 pass/fail report, `--receipt-check-out reports/rope_receipt_check.json` for a
 saved receipt validation report, and `--receipt-replay-check-out
@@ -155,10 +176,11 @@ choose stable names for the request, request-validation report, receipt,
 diagnostics, certification bundle, manifest, and check-report set.
 
 The repository-only `python scripts/circle_ai_certify.py` runner adds heavier
-audit workflows such as pin-policy checks and batch whole-directory artifact
-bundles. Use that script when a handoff needs the full repository audit trail
-rather than a single installed-package receipt, certification bundle, explicit
-artifact manifest, or package-managed artifact directory.
+audit workflows such as pin-policy checks, request preflight-only reports, and
+whole-directory artifact bundles. Use that script when a handoff needs the full
+repository audit trail rather than an installed-package receipt, batch request
+report, certification bundle, explicit artifact manifest, or package-managed
+artifact directory.
 
 Expected shape:
 
@@ -829,7 +851,8 @@ larger than the channel count; and rejects unknown top-level request keys or
 parameter names before a receipt is issued.
 The Python `validate_contract_request(request)` helper applies the same public
 checks for downstream code that does not invoke JSON Schema directly.
-The runner-check schema validates the batch report emitted by
+The runner-check schema validates the batch reports emitted by
+`circle-ai-certify batch --format json` and by
 `python scripts/check_circle_ai_contract_runner.py --format json`, including the
 per-request receipt fingerprints and optional receipt paths.
 
