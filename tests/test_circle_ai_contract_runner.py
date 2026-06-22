@@ -319,6 +319,92 @@ def test_architecture_config_import_builds_contract_requests(
     assert rope_bundle["gate_report"]["ok"] is True
 
 
+def test_recurrence_architecture_config_accepts_looped_transformer_vocabulary(
+    contract_pack: dict,
+) -> None:
+    config = {
+        "recursive_transformer": {
+            "period": 6,
+            "position": 9,
+            "horizon_steps": 8,
+            "tokens": 24,
+            "block_start": 6,
+            "block_width": 6,
+            "shift_amount": 18,
+        }
+    }
+
+    report = build_architecture_config_import_report("recurrence", config)
+    jsonschema.validate(report, build_architecture_config_import_json_schema())
+    assert report["ok"] is True
+    assert report["request"]["parameters"] == {
+        "loop_period": 6,
+        "sample_index": 9,
+        "max_loops": 8,
+        "token_count": 24,
+        "selected_block_start": 6,
+        "selected_block_width": 6,
+        "shift_passes": 3,
+    }
+    assert report["parameter_sources"]["max_loops"]["field"] == (
+        "recursive_transformer.horizon_steps"
+    )
+    assert report["parameter_sources"]["token_count"]["field"] == (
+        "recursive_transformer.tokens"
+    )
+    assert report["parameter_sources"]["shift_passes"] == {
+        "source": "derived_architecture_config_field",
+        "field": "recursive_transformer.shift_amount",
+        "value": 3,
+        "note": (
+            "derived from recursive_transformer.shift_amount=18 divided by "
+            "loop_period=6"
+        ),
+    }
+
+    receipt = build_validated_contract_receipt_from_architecture_config(
+        "recurrence",
+        config,
+        pack=contract_pack,
+    )
+    assert receipt["kind"] == "recurrence_schedule"
+    assert receipt["request_passed"] is True
+    assert receipt["normalized_request"] == {
+        "loop_period": 6,
+        "sample_index": 9,
+        "max_loops": 8,
+        "token_count": 24,
+        "selected_block_start": 6,
+        "selected_block_width": 6,
+        "periodic_shift_passes": 3,
+    }
+    assert receipt["evidence"]["fields"]["periodic_shift_amount"] == 18
+
+
+def test_recurrence_architecture_config_rejects_nonperiodic_shift_amount() -> None:
+    config = {
+        "recurrence": {
+            "period": 6,
+            "position": 9,
+            "horizon_steps": 8,
+            "tokens": 24,
+            "block_start": 6,
+            "block_width": 6,
+            "shift_amount": 7,
+        }
+    }
+
+    report = build_architecture_config_import_report("recurrence", config)
+    jsonschema.validate(report, build_architecture_config_import_json_schema())
+    assert report["ok"] is False
+    assert report["request"] is None
+    assert "recurrence.shift_amount must be an exact multiple of loop_period" in (
+        report["failures"][0]
+    )
+    with pytest.raises(ValueError, match="shift_amount must be an exact multiple"):
+        build_contract_request_from_architecture_config("recurrence", config)
+
+
 def test_rope_receipt_classifies_d19_margin_request(contract_pack: dict) -> None:
     receipt = build_rope_receipt(
         head_dim=128,
@@ -4534,6 +4620,69 @@ def test_circle_ai_certify_recurrence_accepts_looped_transformer_aliases() -> No
         "periodic_shift_passes": 3,
     }
     assert receipt["evidence"]["fields"]["periodic_shift_amount"] == 18
+
+
+def test_circle_ai_certify_recurrence_accepts_looped_architecture_config_aliases(
+    tmp_path: Path,
+) -> None:
+    config_path = tmp_path / "looped_transformer_config.json"
+    import_report_path = tmp_path / "recurrence_architecture_import.json"
+    config_path.write_text(
+        json.dumps(
+            {
+                "recursive_transformer": {
+                    "period": 6,
+                    "position": 9,
+                    "horizon_steps": 8,
+                    "tokens": 24,
+                    "block_start": 6,
+                    "block_width": 6,
+                    "shift_amount": 18,
+                }
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    result = subprocess.run(
+        [
+            sys.executable,
+            str(SCRIPT),
+            "recurrence",
+            "--architecture-config-file",
+            str(config_path),
+            "--architecture-config-import-report-out",
+            str(import_report_path),
+            "--format",
+            "json",
+        ],
+        cwd=ROOT,
+        check=True,
+        text=True,
+        capture_output=True,
+    )
+
+    receipt = json.loads(result.stdout)
+    assert receipt["kind"] == "recurrence_schedule"
+    assert receipt["request_passed"] is True
+    assert receipt["normalized_request"] == {
+        "loop_period": 6,
+        "sample_index": 9,
+        "max_loops": 8,
+        "token_count": 24,
+        "selected_block_start": 6,
+        "selected_block_width": 6,
+        "periodic_shift_passes": 3,
+    }
+    import_report = json.loads(import_report_path.read_text(encoding="utf-8"))
+    jsonschema.validate(
+        import_report,
+        build_architecture_config_import_json_schema(),
+    )
+    assert import_report["request"] == receipt["request"]
+    assert import_report["parameter_sources"]["shift_passes"]["source"] == (
+        "derived_architecture_config_field"
+    )
 
 
 def test_circle_ai_certify_recurrence_rejects_nonperiodic_shift_amount() -> None:

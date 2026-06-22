@@ -281,7 +281,14 @@ architecture_config = {
         "max_hops": 2,
         "local_window": 2,
     },
-    "recurrence": {"loop_period": 5, "max_recurrence_steps": 7},
+    "recurrence": {
+        "period": 5,
+        "horizon_steps": 7,
+        "tokens": 8,
+        "block_start": 2,
+        "block_width": 3,
+        "shift_amount": 15,
+    },
 }
 
 report = build_architecture_config_import_report(
@@ -313,6 +320,10 @@ The architecture import report is provenance, not proof. It records which config
 field or explicit override supplied each request parameter; the receipt remains
 the theorem-linked artifact. The schema builder above matches
 `site/data/generated/circle_ai_architecture_config_import.schema.json`.
+For recurrence configs, `shift_amount` is translated to `shift_passes` only when
+it is a nonnegative exact multiple of `loop_period`; the import report labels
+that parameter source as derived instead of treating a token shift as a pass
+count.
 Use `build_rope_model_config_certification_bundle` or
 `build_architecture_config_certification_bundle` when downstream code wants
 config-to-request provenance alongside the request preflight, receipt, and gate

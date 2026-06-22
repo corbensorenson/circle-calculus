@@ -311,9 +311,13 @@ python scripts/circle_ai_certify.py sparse-attention \
 
 The adapter reads documented sections such as `rope`, `kv_cache`,
 `sparse_attention`, and `recurrence`, plus aliases like `rotary_dim`,
-`rope_theta`, `context_length`, `sliding_window`, `max_hops`, and
-`max_recurrence_steps`. The config import is provenance only; the receipt remains
-the theorem-linked artifact. The saved import report is
+`rope_theta`, `context_length`, `sliding_window`, `max_hops`,
+`max_recurrence_steps`, `horizon_steps`, `loop_budget`, `tokens`, and
+`block_width`. For recurrence, `shift_amount` is accepted only when it is a
+nonnegative exact multiple of `loop_period`; the import report then records the
+canonical `shift_passes` value as a derived config field. The config import is
+provenance only; the receipt remains the theorem-linked artifact. The saved
+import report is
 validated against
 `site/data/generated/circle_ai_architecture_config_import.schema.json`; it
 records the source config fingerprint, the emitted request fingerprint, and

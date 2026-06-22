@@ -145,7 +145,14 @@ architecture_config = {
         "max_hops": 2,
         "local_window": 2,
     },
-    "recurrence": {"loop_period": 5, "max_recurrence_steps": 7},
+    "recurrence": {
+        "period": 5,
+        "horizon_steps": 7,
+        "tokens": 8,
+        "block_start": 2,
+        "block_width": 3,
+        "shift_amount": 15,
+    },
 }
 architecture_report = build_architecture_config_import_report(
     "sparse-attention",

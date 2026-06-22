@@ -58,6 +58,7 @@
             "enum": [
               "explicit_override",
               "architecture_config_field",
+              "derived_architecture_config_field",
               "default",
               "missing"
             ]

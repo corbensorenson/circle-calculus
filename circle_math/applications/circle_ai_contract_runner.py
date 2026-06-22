@@ -574,6 +574,10 @@ ARCHITECTURE_CONFIG_PARAMETER_ALIASES = {
             "max_loops",
             "max_recurrence_steps",
             "recurrence_steps",
+            "horizon_steps",
+            "loop_budget",
+            "loop_budget_steps",
+            "max_loop_budget",
             "num_iterations",
             "iterations",
         ),
@@ -582,6 +586,7 @@ ARCHITECTURE_CONFIG_PARAMETER_ALIASES = {
             "sequence_length",
             "context_length",
             "seq_len",
+            "tokens",
         ),
         "selected_block_start": (
             "selected_block_start",
@@ -600,6 +605,11 @@ ARCHITECTURE_CONFIG_PARAMETER_ALIASES = {
         ),
     },
 }
+RECURRENCE_ARCHITECTURE_SHIFT_AMOUNT_ALIASES = (
+    "shift_amount",
+    "periodic_shift_amount",
+    "whole_period_shift_amount",
+)
 ARCHITECTURE_CONFIG_OPTIONAL_PARAMETERS = {
     "rope_position_distinguishability": {
         "base",
@@ -992,6 +1002,76 @@ def _architecture_config_lookup(
     return None
 
 
+def _architecture_config_lookup_aliases(
+    canonical: str,
+    config: Mapping[str, Any],
+    aliases: Sequence[str],
+) -> tuple[Any, str] | None:
+    for section_key, section in _architecture_config_sections(canonical, config):
+        for alias in aliases:
+            if alias in section:
+                field = alias if section_key is None else f"{section_key}.{alias}"
+                return section[alias], field
+    return None
+
+
+def _derive_recurrence_architecture_shift_passes(
+    *,
+    config: Mapping[str, Any],
+    parameters: dict[str, Any],
+    parameter_sources: dict[str, Any],
+    failures: list[str],
+) -> None:
+    found = _architecture_config_lookup_aliases(
+        "recurrence_schedule",
+        config,
+        RECURRENCE_ARCHITECTURE_SHIFT_AMOUNT_ALIASES,
+    )
+    if found is None:
+        return
+
+    shift_amount, field = found
+    source = parameter_sources.get("shift_passes", {}).get("source")
+    if not _is_int(shift_amount) or shift_amount < 0:
+        failures.append(f"{field} must be a nonnegative integer")
+        return
+
+    loop_period = parameters.get("loop_period")
+    if not _is_int(loop_period) or loop_period <= 0:
+        failures.append(
+            f"{field} requires loop_period to be a positive integer before "
+            "deriving shift_passes"
+        )
+        return
+
+    if shift_amount % loop_period != 0:
+        failures.append(
+            f"{field} must be an exact multiple of loop_period "
+            f"({shift_amount} is not divisible by {loop_period})"
+        )
+        return
+
+    derived = shift_amount // loop_period
+    current = parameters.get("shift_passes")
+    if source not in {"default", "missing"} and current != derived:
+        failures.append(
+            f"{field} derives shift_passes={derived}, but shift_passes is "
+            f"already {current}"
+        )
+        return
+
+    parameters["shift_passes"] = derived
+    parameter_sources["shift_passes"] = _architecture_parameter_source(
+        source="derived_architecture_config_field",
+        field=field,
+        value=derived,
+        note=(
+            f"derived from {field}={shift_amount} divided by "
+            f"loop_period={loop_period}"
+        ),
+    )
+
+
 def _architecture_parameter_source(
     *,
     source: str,
@@ -1382,6 +1462,13 @@ def build_architecture_config_import_report(
                     source="missing",
                     note="required for this contract kind",
                 )
+        if canonical == "recurrence_schedule":
+            _derive_recurrence_architecture_shift_passes(
+                config=config,
+                parameters=parameters,
+                parameter_sources=parameter_sources,
+                failures=failures,
+            )
         if not failures:
             try:
                 request = build_contract_request(canonical, parameters)
@@ -5486,6 +5573,7 @@ def build_architecture_config_import_json_schema() -> dict[str, Any]:
                 "enum": [
                     "explicit_override",
                     "architecture_config_field",
+                    "derived_architecture_config_field",
                     "default",
                     "missing",
                 ],

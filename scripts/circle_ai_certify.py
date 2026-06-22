@@ -520,6 +520,8 @@ def parse_args() -> argparse.Namespace:
     )
     rope.add_argument(
         "--architecture-config",
+        "--architecture-config-file",
+        dest="architecture_config",
         type=Path,
         help=(
             "Optional project-level AI architecture config JSON. Reads explicit "
@@ -578,6 +580,8 @@ def parse_args() -> argparse.Namespace:
     add_common_options(kv)
     kv.add_argument(
         "--architecture-config",
+        "--architecture-config-file",
+        dest="architecture_config",
         type=Path,
         help=(
             "Optional AI architecture config JSON. Reads kv_cache/cache aliases "
@@ -604,6 +608,8 @@ def parse_args() -> argparse.Namespace:
     add_common_options(sparse)
     sparse.add_argument(
         "--architecture-config",
+        "--architecture-config-file",
+        dest="architecture_config",
         type=Path,
         help=(
             "Optional AI architecture config JSON. Reads sparse_attention/"
@@ -628,6 +634,8 @@ def parse_args() -> argparse.Namespace:
     add_common_options(recurrence)
     recurrence.add_argument(
         "--architecture-config",
+        "--architecture-config-file",
+        dest="architecture_config",
         type=Path,
         help=(
             "Optional AI architecture config JSON. Reads recurrence/loop aliases "
