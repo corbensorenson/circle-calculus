@@ -49,6 +49,9 @@ EXPECTED_SCHEMA_BY_LABEL = {
     "request_json": "circle_calculus.ai_contract_request.v0",
     "request_validation_report": "circle_calculus.ai_contract_request_validation.v0",
     "model_config_import_report": "circle_calculus.rope_model_config_import.v0",
+    "architecture_config_import_report": (
+        "circle_calculus.ai_architecture_config_import.v0"
+    ),
     "receipt_json": "circle_calculus.ai_contract_receipt.v0",
     "receipt_check": "circle_calculus.ai_contract_receipt_file_check.v0",
     "receipt_replay_check": "circle_calculus.ai_contract_receipt_replay_check.v0",
@@ -280,6 +283,10 @@ def _merge_pin_policy_args(
         _policy_string_list(policy, "required_model_config_fingerprints"),
         args.require_model_config_fingerprint,
     )
+    args.require_architecture_config_fingerprint = _merge_strings(
+        _policy_string_list(policy, "required_architecture_config_fingerprints"),
+        args.require_architecture_config_fingerprint,
+    )
     return _merge_normalized_params(
         _policy_normalized_params(policy),
         required_normalized_params,
@@ -294,6 +301,7 @@ def _pin_policy(
     required_recommendation_ids: list[str],
     required_validation_commands: list[str],
     required_model_config_fingerprints: list[str],
+    required_architecture_config_fingerprints: list[str],
     required_normalized_params: list[tuple[str, Any]],
 ) -> dict[str, Any]:
     return {
@@ -303,6 +311,9 @@ def _pin_policy(
         "required_recommendation_ids": required_recommendation_ids,
         "required_validation_commands": required_validation_commands,
         "required_model_config_fingerprints": required_model_config_fingerprints,
+        "required_architecture_config_fingerprints": (
+            required_architecture_config_fingerprints
+        ),
         "required_normalized_params": [
             {"key": key, "value": value} for key, value in required_normalized_params
         ],
@@ -473,6 +484,31 @@ def _load_model_config_import_artifact(
     base_dir: Path | None,
 ) -> dict[str, Any] | None:
     import_artifact = artifacts_by_label.get("model_config_import_report")
+    if import_artifact is None:
+        return None
+    raw_path = import_artifact.get("path")
+    if not isinstance(raw_path, str):
+        return None
+    import_path = _resolve_existing_artifact(
+        raw_path,
+        manifest_path=manifest_path,
+        base_dir=base_dir,
+    )
+    if import_path is None:
+        return None
+    try:
+        return _load_json_object(import_path)
+    except (OSError, ValueError, json.JSONDecodeError, UnicodeDecodeError):
+        return None
+
+
+def _load_architecture_config_import_artifact(
+    *,
+    artifacts_by_label: dict[str, dict[str, Any]],
+    manifest_path: Path,
+    base_dir: Path | None,
+) -> dict[str, Any] | None:
+    import_artifact = artifacts_by_label.get("architecture_config_import_report")
     if import_artifact is None:
         return None
     raw_path = import_artifact.get("path")
@@ -706,7 +742,11 @@ def _preflight_sidecar_summary_and_failures(
     labels: list[str] = []
     failures: list[str] = []
 
-    for label in ("request_validation_report", "model_config_import_report"):
+    for label in (
+        "request_validation_report",
+        "model_config_import_report",
+        "architecture_config_import_report",
+    ):
         artifact = artifacts_by_label.get(label)
         if artifact is None:
             continue
@@ -901,6 +941,11 @@ def verify_manifest(
         manifest_path=path,
         base_dir=base_dir,
     )
+    architecture_config_import = _load_architecture_config_import_artifact(
+        artifacts_by_label=artifacts_by_label,
+        manifest_path=path,
+        base_dir=base_dir,
+    )
     unsupported_model_config_fields = (
         model_config_import.get("unsupported_model_config_fields")
         if isinstance(model_config_import, dict)
@@ -1002,6 +1047,21 @@ def verify_manifest(
             if isinstance(unsupported_model_config_fields, list)
             else []
         ),
+        "architecture_config_fingerprint": (
+            architecture_config_import.get("architecture_config_fingerprint")
+            if isinstance(architecture_config_import, dict)
+            else None
+        ),
+        "architecture_config_fingerprint_short": _short(
+            architecture_config_import.get("architecture_config_fingerprint")
+            if isinstance(architecture_config_import, dict)
+            else None
+        ),
+        "architecture_config_import_kind": (
+            architecture_config_import.get("kind")
+            if isinstance(architecture_config_import, dict)
+            else None
+        ),
         "request_content_fingerprint": manifest.get("request_content_fingerprint"),
         "normalized_request_fingerprint": manifest.get(
             "normalized_request_fingerprint"
@@ -1039,6 +1099,7 @@ def verify_manifests(
     required_recommendation_ids: list[str],
     required_validation_commands: list[str],
     required_model_config_fingerprints: list[str],
+    required_architecture_config_fingerprints: list[str],
     required_normalized_params: list[tuple[str, Any]],
     required_statuses: list[str],
     required_decisions: list[str],
@@ -1145,6 +1206,23 @@ def verify_manifests(
             failures.append(
                 f"required model config fingerprint is missing: {fingerprint}"
             )
+    observed_architecture_config_fingerprints = sorted(
+        {
+            fingerprint
+            for summary in summaries
+            for fingerprint in (summary.get("architecture_config_fingerprint"),)
+            if isinstance(fingerprint, str)
+        }
+    )
+    observed_architecture_config_fingerprint_set = set(
+        observed_architecture_config_fingerprints
+    )
+    for fingerprint in required_architecture_config_fingerprints:
+        if fingerprint not in observed_architecture_config_fingerprint_set:
+            failures.append(
+                "required architecture config fingerprint is missing: "
+                f"{fingerprint}"
+            )
     for key, value in required_normalized_params:
         if not any(
             isinstance(summary.get("normalized_request"), dict)
@@ -1175,6 +1253,12 @@ def verify_manifests(
         "observed_model_config_fingerprint_count": len(
             observed_model_config_fingerprints
         ),
+        "required_architecture_config_fingerprints": (
+            required_architecture_config_fingerprints
+        ),
+        "observed_architecture_config_fingerprint_count": len(
+            observed_architecture_config_fingerprints
+        ),
         "required_normalized_params": [
             {"key": key, "value": value} for key, value in required_normalized_params
         ],
@@ -1185,6 +1269,9 @@ def verify_manifests(
             required_recommendation_ids=required_recommendation_ids,
             required_validation_commands=required_validation_commands,
             required_model_config_fingerprints=required_model_config_fingerprints,
+            required_architecture_config_fingerprints=(
+                required_architecture_config_fingerprints
+            ),
             required_normalized_params=required_normalized_params,
         ),
         "required_statuses": required_statuses,
@@ -1323,6 +1410,15 @@ def main() -> int:
         ),
     )
     parser.add_argument(
+        "--require-architecture-config-fingerprint",
+        action="append",
+        default=[],
+        help=(
+            "Require at least one architecture-config import artifact to expose "
+            "this source config SHA-256 fingerprint. May be repeated."
+        ),
+    )
+    parser.add_argument(
         "--pin-policy",
         type=Path,
         help=(
@@ -1380,6 +1476,9 @@ def main() -> int:
             required_validation_commands=args.require_validation_command,
             required_model_config_fingerprints=(
                 args.require_model_config_fingerprint
+            ),
+            required_architecture_config_fingerprints=(
+                args.require_architecture_config_fingerprint
             ),
             required_normalized_params=required_normalized_params,
             required_statuses=args.require_status,

@@ -15,6 +15,12 @@ SCRIPT = ROOT / "examples" / "downstream_ci_verify_circle_ai_artifacts.py"
 STANDARD_ROPE_MODEL_CONFIG = (
     ROOT / "examples" / "circle_ai_model_configs" / "standard_rope_config.json"
 )
+ARCHITECTURE_CONFIG = (
+    ROOT
+    / "examples"
+    / "circle_ai_architecture_configs"
+    / "basic_transformer_contract_config.json"
+)
 BASE_REQUIRED_LABELS = {
     "request_json",
     "request_validation_report",
@@ -126,6 +132,9 @@ def _emit_standard_artifacts(
     return artifact_dir / f"{prefix}_artifact_manifest.json", {
         "request": artifact_dir / f"{prefix}_request.json",
         "model_config_import": artifact_dir / f"{prefix}_model_config_import.json",
+        "architecture_config_import": (
+            artifact_dir / f"{prefix}_architecture_config_import.json"
+        ),
         "receipt": artifact_dir / f"{prefix}_receipt.json",
         "manifest_check": artifact_dir / f"{prefix}_artifact_manifest_check.json",
     }
@@ -144,6 +153,22 @@ def _emit_standard_rope_artifacts(tmp_path: Path) -> tuple[Path, dict[str, Path]
         ],
         prefix="standard_rope_config",
         required_assurance="mixed_theorem_and_computation",
+    )
+
+
+def _emit_sparse_architecture_artifacts(
+    tmp_path: Path,
+) -> tuple[Path, dict[str, Path]]:
+    return _emit_standard_artifacts(
+        tmp_path,
+        slug="sparse_architecture",
+        subcommand_args=[
+            "sparse-attention",
+            "--architecture-config",
+            str(ARCHITECTURE_CONFIG),
+        ],
+        prefix="sparse_attention",
+        required_assurance="theorem_backed",
     )
 
 
@@ -233,6 +258,8 @@ def test_standalone_artifact_verifier_accepts_standard_artifact_dirs(
     else:
         assert summary["model_config_fingerprint"] is None
         assert summary["unsupported_model_config_fields"] == []
+    assert summary["architecture_config_fingerprint"] is None
+    assert summary["architecture_config_import_kind"] is None
     assert summary["receipt_content_fingerprint_short"]
     assert summary["receipt_replay_check_present"] is True
     assert summary["receipt_replay_check_ok"] is True
@@ -250,6 +277,77 @@ def test_standalone_artifact_verifier_accepts_standard_artifact_dirs(
         expected_preflight_labels.append("model_config_import_report")
     assert summary["preflight_sidecar_count"] == len(expected_preflight_labels)
     assert summary["preflight_sidecar_labels"] == expected_preflight_labels
+    assert summary["preflight_sidecar_failure_count"] == 0
+    assert "mathematical proof" in payload["not_claimed"]
+
+
+def test_standalone_artifact_verifier_accepts_architecture_config_artifact_dir(
+    tmp_path: Path,
+) -> None:
+    manifest_path, paths = _emit_sparse_architecture_artifacts(tmp_path)
+    architecture_config_import = json.loads(
+        paths["architecture_config_import"].read_text(encoding="utf-8")
+    )
+    architecture_fingerprint = architecture_config_import[
+        "architecture_config_fingerprint"
+    ]
+
+    result = subprocess.run(
+        [
+            sys.executable,
+            str(SCRIPT),
+            str(manifest_path),
+            "--format",
+            "json",
+            "--require-status",
+            "proved",
+            "--require-decision",
+            "passed",
+            "--require-assurance",
+            "theorem_backed",
+            "--require-passed",
+            "--require-manifest-check",
+            "--require-label",
+            "architecture_config_import_report",
+            "--require-architecture-config-fingerprint",
+            architecture_fingerprint,
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+
+    payload = json.loads(result.stdout)
+    assert payload["accepted"] is True
+    assert payload["failure_count"] == 0
+    assert payload["required_architecture_config_fingerprints"] == [
+        architecture_fingerprint
+    ]
+    assert payload["observed_architecture_config_fingerprint_count"] == 1
+    assert payload["pin_policy"]["required_architecture_config_fingerprints"] == [
+        architecture_fingerprint
+    ]
+    summary = payload["manifests"][0]
+    assert summary["kind"] == "sparse_attention_coverage"
+    assert summary["artifact_count"] == 10
+    assert set(summary["artifact_labels"]) == (
+        BASE_REQUIRED_LABELS | {"architecture_config_import_report"}
+    )
+    assert summary["architecture_config_fingerprint"] == architecture_fingerprint
+    assert summary["architecture_config_fingerprint_short"] == (
+        architecture_fingerprint[:12]
+    )
+    assert summary["architecture_config_import_kind"] == (
+        "sparse_attention_coverage"
+    )
+    assert summary["model_config_fingerprint"] is None
+    assert summary["unsupported_model_config_fields"] == []
+    assert summary["preflight_sidecar_count"] == 2
+    assert summary["preflight_sidecar_labels"] == [
+        "request_validation_report",
+        "architecture_config_import_report",
+    ]
     assert summary["preflight_sidecar_failure_count"] == 0
     assert "mathematical proof" in payload["not_claimed"]
 
@@ -412,6 +510,8 @@ def test_standalone_artifact_verifier_accepts_multi_contract_kind_gate(
     assert payload["observed_model_config_fingerprint_count"] >= len(
         required_model_config_fingerprints
     )
+    assert payload["required_architecture_config_fingerprints"] == []
+    assert payload["observed_architecture_config_fingerprint_count"] == 0
     assert payload["required_normalized_params"] == [
         {"key": key, "value": value} for key, value in required_normalized_params
     ]
@@ -422,6 +522,7 @@ def test_standalone_artifact_verifier_accepts_multi_contract_kind_gate(
         "required_recommendation_ids": required_recommendation_ids,
         "required_validation_commands": required_validation_commands,
         "required_model_config_fingerprints": required_model_config_fingerprints,
+        "required_architecture_config_fingerprints": [],
         "required_normalized_params": [
             {"key": key, "value": value} for key, value in required_normalized_params
         ],
@@ -600,6 +701,51 @@ def test_standalone_artifact_verifier_rejects_stale_model_config_import_sidecar(
     assert summary["preflight_sidecar_failure_count"] == 1
     assert "model_config_import_report request_content_fingerprint" in "\n".join(
         payload["failures"]
+    )
+
+
+def test_standalone_artifact_verifier_rejects_stale_architecture_config_import_sidecar(
+    tmp_path: Path,
+) -> None:
+    manifest_path, paths = _emit_sparse_architecture_artifacts(tmp_path)
+    import_path = paths["architecture_config_import"]
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    import_report = json.loads(import_path.read_text(encoding="utf-8"))
+    import_report["request_content_fingerprint"] = "0" * 64
+    import_path.write_text(
+        json.dumps(import_report, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+    )
+    for artifact in manifest["artifacts"]:
+        if artifact["label"] == "architecture_config_import_report":
+            artifact["sha256"] = hashlib.sha256(import_path.read_bytes()).hexdigest()
+    manifest_path.write_text(
+        json.dumps(manifest, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+    )
+
+    result = subprocess.run(
+        [
+            sys.executable,
+            str(SCRIPT),
+            str(manifest_path),
+            "--format",
+            "json",
+        ],
+        cwd=ROOT,
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+
+    assert result.returncode == 4
+    payload = json.loads(result.stderr)
+    assert payload["accepted"] is False
+    summary = payload["manifests"][0]
+    assert summary["preflight_sidecar_count"] == 2
+    assert summary["preflight_sidecar_failure_count"] == 1
+    assert "architecture_config_import_report request_content_fingerprint" in (
+        "\n".join(payload["failures"])
     )
 
 

@@ -344,8 +344,8 @@ the manifest check still fails. Request-validation and model-config import
 sidecars are also checked against the manifest request fingerprint.
 It also accepts `--require-kind`, `--require-theorem-id`,
 `--require-evidence-field`, `--require-recommendation-id`, and
-`--require-validation-command` for first-party CI jobs that need the same
-policy pins as the copyable standalone verifier. For RoPE model-config imports,
+`--require-validation-command` for first-party CI jobs that need core
+policy pins. For RoPE model-config imports,
 add `--require-model-config-fingerprint FINGERPRINT` with the SHA-256 value
 from the model-config import report when CI must prove it is checking the same
 source `config.json`. Use
@@ -356,7 +356,11 @@ For a copyable standard-library-only downstream gate, use
 artifact-integrity checks without importing Circle or `jsonschema`. It also
 accepts `--pin-policy` with either a whole prior report or just the
 `pin_policy` object, and its JSON report records the merged `pin_policy` for
-replay.
+replay. The standalone verifier also validates
+`architecture_config_import_report` sidecars against the manifest request
+fingerprint and supports
+`--require-architecture-config-fingerprint FINGERPRINT` for non-RoPE
+architecture-config imports.
 The standard artifact-directory path and standalone verifier are covered for all
 nine ready receipt families, so downstream CI can adopt one gate shape across
 the current contract suite.
@@ -372,6 +376,9 @@ command emitted by the receipt.
 Add `--require-model-config-fingerprint FINGERPRINT` when a RoPE artifact
 directory was produced from a model `config.json` and CI must pin that source
 config hash.
+Add `--require-architecture-config-fingerprint FINGERPRINT` when a non-RoPE
+artifact directory was produced from an architecture config and CI must pin that
+source config hash.
 Add `--require-normalized-param KEY=JSON_VALUE` when CI needs to pin a top-level
 `normalized_request` value such as `head_dim=128` or `sequence_length=32`.
 First-party check reports include a `pin_policy` block recording these requested
