@@ -72,8 +72,8 @@ stability on this machine. Overnight targets are optional
 regression/tuning jobs, not the primary way to learn whether Circle is
 competitive.
 The latest refreshed smoke on 2026-06-22 passes current-binary provenance and
-has `circle_prime_count_binary_server_default_count` at `1.312x` median over
-persistent `libprimesieve` and `7.893x` median over persistent `libprimecount`
+has `circle_prime_count_binary_server_default_count` at `1.344x` median over
+persistent `libprimesieve` and `7.038x` median over persistent `libprimecount`
 pi-diff on `[1e12, 1e12 + 1e7)` shifted batches. The matching external
 correctness matrix checked `826` Circle variants against `primesieve` and
 `primecount`.

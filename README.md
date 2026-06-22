@@ -113,8 +113,8 @@ ring-buffer freshness, recurrence schedules, and circulant/block-cyclic mixer
 laws. They do not claim model-quality, speed, memory, context-length,
 deployment-safety, physics, or universal-compression improvements.
 
-The current contract surface distinguishes 9 public contract families from 6
-compatibility downstream-transfer contract families. The public package CLI can
+The current contract surface distinguishes 9 public contract families from
+6 compatibility downstream-transfer contract families. The public package CLI can
 issue single-config receipts or batch request/model-config handoff reports
 without importing repository-only scripts.
 
