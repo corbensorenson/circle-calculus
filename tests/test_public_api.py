@@ -21,6 +21,8 @@ from circle_math.core import (
 )
 from circle_math.ai_contracts import (
     CONTRACT_PACK_SCHEMA_ID,
+    architecture_config_contract_kind_hints,
+    architecture_config_selected_contract_kinds,
     build_architecture_config_certification_bundle,
     build_architecture_config_import_json_schema,
     build_architecture_config_import_report,
@@ -41,7 +43,6 @@ from circle_math.applications import circle_ai_contracts as contract_pack_module
 from circle_math.applications import (
     CIRCLE_AI_CONTRACT_COMPACT_RECEIPT_SCHEMA_ID,
     CIRCLE_AI_CONTRACT_RECEIPT_SCHEMA_ID,
-    architecture_config_selected_contract_kinds,
     build_contract_artifact_manifest,
     build_contract_artifact_manifest_file_check_report,
     build_contract_runner_check_json_schema,
@@ -326,6 +327,9 @@ def test_architecture_config_kind_hints_select_runner_contracts() -> None:
         architecture_config,
         ("rope", "kv-cache", "sparse-attention", "recurrence"),
     ) == ("rope_position_distinguishability",)
+    assert architecture_config_contract_kind_hints(architecture_config) == (
+        "rope_position_distinguishability",
+    )
 
     report = build_contract_runner_check_report(
         architecture_configs=[architecture_config],

@@ -9,6 +9,8 @@ from __future__ import annotations
 
 from .applications.circle_ai_contract_runner import (
     SUPPORTED_CONTRACT_KINDS,
+    architecture_config_contract_kind_hints,
+    architecture_config_selected_contract_kinds,
     build_architecture_config_certification_bundle,
     build_circulant_block_cyclic_mixer_receipt,
     build_contract_certification_bundle,
@@ -108,6 +110,8 @@ __all__ = [
     "PhaseChannelCollisionResult",
     "PhaseGrid2DCollisionReport",
     "SUPPORTED_CONTRACT_KINDS",
+    "architecture_config_contract_kind_hints",
+    "architecture_config_selected_contract_kinds",
     "build_architecture_config_certification_bundle",
     "build_circulant_block_cyclic_mixer_contract",
     "build_circulant_block_cyclic_mixer_receipt",

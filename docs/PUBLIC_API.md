@@ -269,7 +269,10 @@ provenance in one object.
 The same in-memory runner-check helper accepts architecture configs and emits
 RoPE, KV-cache, sparse-attention, and recurrence summaries by default. Pass
 `architecture_config_kinds=("sparse-attention",)` when a caller only needs one
-family.
+family. Use `architecture_config_selected_contract_kinds(config, defaults)` or
+`architecture_config_contract_kind_hints(config)` from `circle_math.ai_contracts`
+when a downstream adapter wants to honor the same `circle_ai_contract_kinds`
+metadata before running its own targeted validation.
 
 The same facade exposes reusable integer phase-bank helpers for sinusoidal,
 RoPE-family, scaled, and 2D positional phase descriptors:

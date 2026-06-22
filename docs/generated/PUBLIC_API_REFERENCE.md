@@ -159,6 +159,8 @@ model-quality results.
 | `PhaseChannelCollisionResult` | class | Residue/divisibility report for one channel and one position pair. |
 | `PhaseGrid2DCollisionReport` | class | Two-axis phase-grid report for 2D RoPE-style row/column banks. |
 | `SUPPORTED_CONTRACT_KINDS` | value | tuple |
+| `architecture_config_contract_kind_hints` | function | `architecture_config_contract_kind_hints(config: 'Mapping[str, Any]') -> 'tuple[str, ...] | None'` |
+| `architecture_config_selected_contract_kinds` | function | `architecture_config_selected_contract_kinds(config: 'Mapping[str, Any]', default_kinds: 'Sequence[str]') -> 'tuple[str, ...]'` |
 | `build_architecture_config_certification_bundle` | function | `build_architecture_config_certification_bundle(kind: 'str', config: 'Mapping[str, Any]', *, overrides: 'Mapping[str, Any] | None' = None, pack: 'Mapping[str, Any] | None' = None, receipt_path: 'str' = '<in-memory-receipt>', required_statuses: 'Sequence[str]' = (), required_decision_verdicts: 'Sequence[str]' = (), required_assurance_levels: 'Sequence[str]' = (), require_passed: 'bool' = False) -> 'dict[str, Any]'` |
 | `build_circulant_block_cyclic_mixer_contract` | function | `build_circulant_block_cyclic_mixer_contract(*, period: 'int' = 8, channel_count: 'int' = 128, block_size: 'int' = 8) -> 'dict[str, Any]'` |
 | `build_circulant_block_cyclic_mixer_receipt` | function | `build_circulant_block_cyclic_mixer_receipt(*, period: 'int' = 8, channel_count: 'int' = 128, block_size: 'int' = 8, pack: 'Mapping[str, Any] | None' = None) -> 'dict[str, Any]'` |
