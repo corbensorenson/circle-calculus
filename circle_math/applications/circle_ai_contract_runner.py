@@ -5133,6 +5133,8 @@ def build_contract_runner_check_json_schema() -> dict[str, Any]:
             "request_path",
             "model_config_import_report_path",
             "model_config_parameter_sources",
+            "architecture_config_import_report_path",
+            "architecture_config_parameter_sources",
             "request_validation_report_path",
             "certification_bundle_path",
             "certification_bundle_check_path",
@@ -5155,13 +5157,19 @@ def build_contract_runner_check_json_schema() -> dict[str, Any]:
             "compact_selected_evidence_labels",
         ],
         "properties": {
-            "source_type": {"enum": ["request", "model_config"]},
+            "source_type": {"enum": ["request", "model_config", "architecture_config"]},
             "source_path": {"type": "string", "minLength": 1},
             "source_content_fingerprint": fingerprint,
             "request_path": {"type": ["string", "null"]},
             "model_config_import_report_path": {"type": ["string", "null"]},
             "model_config_parameter_sources": {
                 "anyOf": [model_config_parameter_sources, {"type": "null"}],
+            },
+            "architecture_config_import_report_path": {
+                "type": ["string", "null"]
+            },
+            "architecture_config_parameter_sources": {
+                "anyOf": [{"type": "object"}, {"type": "null"}],
             },
             "request_validation_report_path": {"type": ["string", "null"]},
             "certification_bundle_path": {"type": ["string", "null"]},

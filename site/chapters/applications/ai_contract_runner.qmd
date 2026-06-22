@@ -148,16 +148,19 @@ validation commands, non-claims, and fingerprints, including the full
 or replay.
 
 For a downstream project that already has several versioned Circle request
-files or standard RoPE model configs, use the installed package batch mode:
+files, standard RoPE model configs, or non-RoPE architecture configs, use the
+installed package batch mode:
 
 ```bash
 circle-ai-certify batch \
   --request-file examples/circle_ai_requests/kv_cache_request.json \
   --request-file examples/circle_ai_requests/sparse_attention_request.json \
   --model-config-file examples/circle_ai_model_configs/standard_rope_config.json \
+  --architecture-config-file examples/circle_ai_architecture_configs/basic_transformer_contract_config.json \
   --receipt-out-dir reports/circle_ai_receipts \
   --compact-receipt-out-dir reports/circle_ai_compact_receipts \
   --model-config-import-report-out-dir reports/circle_ai_import_reports \
+  --architecture-config-import-report-out-dir reports/circle_ai_architecture_import_reports \
   --report-out reports/circle_ai_runner_check.json \
   --require-passed \
   --require-status proved \
@@ -166,13 +169,16 @@ circle-ai-certify batch \
 ```
 
 That writes one full receipt per accepted source, one compact receipt per
-accepted source, optional standard-RoPE model-config import reports, and one
-runner-check report with schema id
+accepted source, optional standard-RoPE model-config import reports, optional
+non-RoPE architecture-config import reports, and one runner-check report with schema id
 `circle_calculus.ai_contract_runner_check.v0`. Model-config summaries include
 parameter-source provenance, so a downstream reader can see whether RoPE values
 came from config fields, derived fields, explicit overrides, defaults, or
-omitted optional inputs. It is the package-native batch handoff path; it does
-not require importing repository-only scripts.
+omitted optional inputs. Architecture-config summaries include parameter-source
+provenance for the KV-cache, sparse-attention, and recurrence receipts emitted
+from that config; pass `--architecture-config-kind` to restrict that set. It is
+the package-native batch handoff path and does not require importing
+repository-only scripts.
 Use `--gate-report-out reports/rope_gate.json` for a compact pack-aware
 pass/fail report, `--receipt-check-out reports/rope_receipt_check.json` for a
 saved receipt validation report, and `--receipt-replay-check-out

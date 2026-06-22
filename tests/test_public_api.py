@@ -666,6 +666,90 @@ def test_package_cli_unified_certify_batch_model_configs_write_import_reports(
     assert summary["compact_selected_evidence_unclassified_count"] == 0
 
 
+def test_package_cli_unified_certify_batch_architecture_config_writes_import_reports(
+    tmp_path,
+) -> None:
+    receipt_dir = tmp_path / "receipts"
+    compact_dir = tmp_path / "compact_receipts"
+    import_dir = tmp_path / "architecture_imports"
+    report_path = tmp_path / "runner_report.json"
+
+    result = subprocess.run(
+        [
+            sys.executable,
+            "-c",
+            (
+                "import sys; "
+                "from circle_math.cli import contract_certify_main; "
+                "sys.exit(contract_certify_main())"
+            ),
+            "batch",
+            "--architecture-config-file",
+            str(ARCHITECTURE_CONFIG),
+            "--architecture-config-import-report-out-dir",
+            str(import_dir),
+            "--receipt-out-dir",
+            str(receipt_dir),
+            "--compact-receipt-out-dir",
+            str(compact_dir),
+            "--report-out",
+            str(report_path),
+            "--require-status",
+            "proved",
+            "--require-decision",
+            "passed",
+            "--require-passed",
+            "--format",
+            "json",
+        ],
+        text=True,
+        capture_output=True,
+        check=True,
+    )
+
+    report = json.loads(result.stdout)
+    saved_report = json.loads(report_path.read_text())
+    assert saved_report == report
+    jsonschema.validate(report, build_contract_runner_check_json_schema())
+    assert report["ok"] is True
+    assert report["example_count"] == 3
+    assert report["selected_kinds"] == [
+        "kv_cache_ring_buffer",
+        "recurrence_schedule",
+        "sparse_attention_coverage",
+    ]
+    assert {summary["source_type"] for summary in report["summaries"]} == {
+        "architecture_config"
+    }
+    assert {summary["kind"] for summary in report["summaries"]} == {
+        "kv_cache_ring_buffer",
+        "sparse_attention_coverage",
+        "recurrence_schedule",
+    }
+
+    for summary in report["summaries"]:
+        import_report = json.loads(
+            Path(summary["architecture_config_import_report_path"]).read_text()
+        )
+        jsonschema.validate(
+            import_report,
+            build_architecture_config_import_json_schema(),
+        )
+        assert import_report["ok"] is True
+        assert summary["architecture_config_parameter_sources"] == (
+            import_report["parameter_sources"]
+        )
+        assert summary["model_config_import_report_path"] is None
+        assert summary["model_config_parameter_sources"] is None
+        receipt = json.loads(Path(summary["receipt_path"]).read_text())
+        compact = json.loads(Path(summary["compact_receipt_path"]).read_text())
+        assert receipt["kind"] == summary["kind"]
+        assert compact["fingerprints"]["receipt_content_fingerprint"] == summary[
+            "receipt_content_fingerprint"
+        ]
+        assert summary["compact_selected_evidence_unclassified_count"] == 0
+
+
 def test_package_cli_unified_certify_batch_gate_writes_report_on_failure(
     tmp_path,
 ) -> None:
@@ -734,7 +818,10 @@ def test_package_cli_unified_certify_batch_requires_a_source() -> None:
     )
 
     assert result.returncode == 2
-    assert "at least one --request-file or --model-config-file is required" in (
+    assert (
+        "at least one --request-file, --model-config-file, or "
+        "--architecture-config-file is required"
+    ) in (
         result.stderr
     )
 

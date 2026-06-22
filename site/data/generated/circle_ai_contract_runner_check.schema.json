@@ -94,6 +94,22 @@
       "items": {
         "additionalProperties": false,
         "properties": {
+          "architecture_config_import_report_path": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "architecture_config_parameter_sources": {
+            "anyOf": [
+              {
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
           "certification_bundle_check_path": {
             "type": [
               "string",
@@ -451,7 +467,8 @@
           "source_type": {
             "enum": [
               "request",
-              "model_config"
+              "model_config",
+              "architecture_config"
             ]
           },
           "status": {
@@ -479,6 +496,8 @@
           "request_path",
           "model_config_import_report_path",
           "model_config_parameter_sources",
+          "architecture_config_import_report_path",
+          "architecture_config_parameter_sources",
           "request_validation_report_path",
           "certification_bundle_path",
           "certification_bundle_check_path",

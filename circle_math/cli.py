@@ -812,6 +812,8 @@ def _certify_batch_summary_from_receipt(
     request_path: Path | None = None,
     model_config_import_report_path: Path | None = None,
     model_config_parameter_sources: dict[str, Any] | None = None,
+    architecture_config_import_report_path: Path | None = None,
+    architecture_config_parameter_sources: dict[str, Any] | None = None,
     receipt_path: Path | None = None,
     compact_receipt_path: Path | None = None,
 ) -> dict[str, Any]:
@@ -830,6 +832,14 @@ def _certify_batch_summary_from_receipt(
             else str(model_config_import_report_path)
         ),
         "model_config_parameter_sources": model_config_parameter_sources,
+        "architecture_config_import_report_path": (
+            None
+            if architecture_config_import_report_path is None
+            else str(architecture_config_import_report_path)
+        ),
+        "architecture_config_parameter_sources": (
+            architecture_config_parameter_sources
+        ),
         "request_validation_report_path": None,
         "certification_bundle_path": None,
         "certification_bundle_check_path": None,
@@ -872,6 +882,11 @@ def _certify_batch_requests(args: argparse.Namespace) -> int:
     selected_kinds: set[str] = set()
     request_files = tuple(args.request_file or ())
     model_config_files = tuple(args.model_config_file or ())
+    architecture_config_files = tuple(args.architecture_config_file or ())
+    architecture_config_kinds = tuple(
+        args.architecture_config_kind
+        or ("kv-cache", "sparse-attention", "recurrence")
+    )
 
     for index, source_path in enumerate(request_files, start=1):
         try:
@@ -1017,6 +1032,109 @@ def _certify_batch_requests(args: argparse.Namespace) -> int:
         except (OSError, ValueError, json.JSONDecodeError) as exc:
             failures.append(f"{source_path}: {exc}")
 
+    architecture_config_start_index = len(request_files) + len(model_config_files) + 1
+    architecture_index = architecture_config_start_index
+    for source_path in architecture_config_files:
+        try:
+            source = _load_json_object_from_args(
+                argparse.ArgumentParser(prog="circle-ai-certify batch"),
+                inline_json=None,
+                json_file=source_path,
+                label="architecture-config",
+            )
+        except SystemExit as exc:
+            failures.append(
+                f"{source_path}: architecture config JSON could not be loaded ({exc})"
+            )
+            continue
+        except (OSError, ValueError, json.JSONDecodeError) as exc:
+            failures.append(f"{source_path}: {exc}")
+            continue
+
+        for architecture_kind in architecture_config_kinds:
+            try:
+                import_report = build_architecture_config_import_report(
+                    architecture_kind,
+                    source,
+                )
+                architecture_import_report_path = None
+                if args.architecture_config_import_report_out_dir is not None:
+                    architecture_import_report_path = _certify_batch_output_path(
+                        args.architecture_config_import_report_out_dir,
+                        index=architecture_index,
+                        source_path=source_path,
+                        suffix="architecture_config_import",
+                    )
+                    _write_json_file(
+                        architecture_import_report_path,
+                        import_report,
+                    )
+                if not import_report["ok"]:
+                    failures.append(
+                        f"{source_path}:{architecture_kind}: "
+                        + "; ".join(import_report["failures"])
+                    )
+                    architecture_index += 1
+                    continue
+                request = import_report["request"]
+                if not isinstance(request, dict):
+                    failures.append(
+                        f"{source_path}:{architecture_kind}: architecture "
+                        "config import report did not emit a request"
+                    )
+                    architecture_index += 1
+                    continue
+                receipt = build_validated_contract_receipt_from_request(
+                    request,
+                    pack=pack,
+                )
+                compact_receipt = build_compact_contract_receipt(receipt)
+                selected_kinds.add(receipt["kind"])
+
+                receipt_path = None
+                if args.receipt_out_dir is not None:
+                    receipt_path = _certify_batch_output_path(
+                        args.receipt_out_dir,
+                        index=architecture_index,
+                        source_path=source_path,
+                        suffix="receipt",
+                    )
+                    _write_json_file(receipt_path, receipt)
+
+                compact_receipt_path = None
+                if args.compact_receipt_out_dir is not None:
+                    compact_receipt_path = _certify_batch_output_path(
+                        args.compact_receipt_out_dir,
+                        index=architecture_index,
+                        source_path=source_path,
+                        suffix="compact_receipt",
+                    )
+                    _write_json_file(compact_receipt_path, compact_receipt)
+
+                summaries.append(
+                    _certify_batch_summary_from_receipt(
+                        source_type="architecture_config",
+                        source_path=source_path,
+                        source=source,
+                        receipt=receipt,
+                        compact_receipt=compact_receipt,
+                        architecture_config_import_report_path=(
+                            architecture_import_report_path
+                        ),
+                        architecture_config_parameter_sources=import_report[
+                            "parameter_sources"
+                        ],
+                        receipt_path=receipt_path,
+                        compact_receipt_path=compact_receipt_path,
+                    )
+                )
+                for failure in _receipt_gate_failures(receipt, args):
+                    failures.append(f"{source_path}:{architecture_kind}: {failure}")
+            except (OSError, ValueError, json.JSONDecodeError) as exc:
+                failures.append(f"{source_path}:{architecture_kind}: {exc}")
+            finally:
+                architecture_index += 1
+
     report = {
         "schema_id": CIRCLE_AI_CONTRACT_RUNNER_CHECK_SCHEMA_ID,
         "ok": not failures,
@@ -1124,10 +1242,40 @@ def contract_certify_main() -> int:
         ),
     )
     batch_parser.add_argument(
+        "--architecture-config-file",
+        "--architecture-config",
+        dest="architecture_config_file",
+        action="append",
+        default=[],
+        type=Path,
+        help=(
+            "Path to a non-RoPE architecture config JSON object with kv_cache, "
+            "sparse_attention, or recurrence sections. May be passed more than once."
+        ),
+    )
+    batch_parser.add_argument(
+        "--architecture-config-kind",
+        action="append",
+        choices=("kv-cache", "sparse-attention", "recurrence"),
+        default=[],
+        help=(
+            "Contract family to emit from each architecture config. Defaults "
+            "to kv-cache, sparse-attention, and recurrence when omitted."
+        ),
+    )
+    batch_parser.add_argument(
         "--model-config-import-report-out-dir",
         type=Path,
         help=(
             "Optional directory where standard-RoPE model-config import "
+            "reports are written."
+        ),
+    )
+    batch_parser.add_argument(
+        "--architecture-config-import-report-out-dir",
+        type=Path,
+        help=(
+            "Optional directory where non-RoPE architecture-config import "
             "reports are written."
         ),
     )
@@ -1297,9 +1445,14 @@ def contract_certify_main() -> int:
 
     args = parser.parse_args()
     if args.command == "batch":
-        if not args.request_file and not args.model_config_file:
+        if (
+            not args.request_file
+            and not args.model_config_file
+            and not args.architecture_config_file
+        ):
             batch_parser.error(
-                "at least one --request-file or --model-config-file is required"
+                "at least one --request-file, --model-config-file, or "
+                "--architecture-config-file is required"
             )
         return _certify_batch_requests(args)
     try:
