@@ -30,6 +30,7 @@ def test_circle_ai_request_examples_are_public_api_ready() -> None:
         "cyclic_mixer_request.json",
         "kv_cache_request.json",
         "multicoil_phase_request.json",
+        "rope_rational_turn_ratio_request.json",
         "recurrence_request.json",
         "rope_request.json",
         "seed_rule_request.json",

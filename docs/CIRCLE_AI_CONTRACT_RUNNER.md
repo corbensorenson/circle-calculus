@@ -414,6 +414,7 @@ Copyable starting points live under:
 
 ```text
 examples/circle_ai_requests/rope_request.json
+examples/circle_ai_requests/rope_rational_turn_ratio_request.json
 examples/circle_ai_requests/kv_cache_request.json
 examples/circle_ai_requests/sparse_attention_request.json
 examples/circle_ai_requests/recurrence_request.json

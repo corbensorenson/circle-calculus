@@ -1,0 +1,14 @@
+{
+  "schema_id": "circle_calculus.ai_contract_request.v0",
+  "kind": "rope_position_distinguishability",
+  "parameters": {
+    "head_dim": 128,
+    "base": 10000.0,
+    "context": 4096,
+    "tolerance": 0.000001,
+    "discretization": "round",
+    "requested_margin": "1/4099",
+    "turn_ratio_numerator": 1,
+    "turn_ratio_denominator": 4099
+  }
+}
