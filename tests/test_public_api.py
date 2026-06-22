@@ -24,6 +24,7 @@ from circle_math.ai_contracts import (
     build_contract_pack,
     build_contract_runner_check_report,
     build_contract_runner_check_json_schema as build_facade_runner_check_json_schema,
+    build_rope_model_config_import_report,
     build_rope_request_parameters_from_model_config,
     build_validated_contract_receipt_from_request,
     build_validated_rope_receipt_from_model_config,
@@ -35,6 +36,7 @@ from circle_math.applications import (
     build_contract_artifact_manifest,
     build_contract_artifact_manifest_file_check_report,
     build_contract_runner_check_json_schema,
+    build_rope_model_config_import_json_schema,
 )
 from circle_math.contracts import contract_kinds, readiness_summary
 
@@ -127,6 +129,28 @@ def test_stable_rope_model_config_api_builds_receipt() -> None:
     assert receipt["normalized_request"]["head_dim"] == 128
     assert receipt["normalized_request"]["context_length"] == 4096
     assert receipt["proof_status"]["all_theorem_ids_proved"] is True
+
+
+def test_rope_model_config_report_tracks_partial_rotary_head_dim_source() -> None:
+    model_config = {
+        "head_dim": 128,
+        "partial_rotary_factor": 0.5,
+        "max_position_embeddings": 8192,
+        "rope_theta": 10000.0,
+    }
+
+    parameters = build_rope_request_parameters_from_model_config(model_config)
+    assert parameters["head_dim"] == 64
+
+    import_report = build_rope_model_config_import_report(model_config)
+    jsonschema.validate(import_report, build_rope_model_config_import_json_schema())
+    head_dim_source = import_report["parameter_sources"]["head_dim"]
+    assert head_dim_source == {
+        "source": "derived_config_fields",
+        "fields": ["head_dim", "partial_rotary_factor"],
+        "note": "head_dim adjusted by rotary fraction",
+    }
+    assert import_report["request"]["parameters"]["head_dim"] == 64
 
 
 def test_stable_request_api_builds_kv_cache_receipt() -> None:

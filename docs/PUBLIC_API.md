@@ -134,6 +134,11 @@ assert runner_report["schema_id"] == "circle_calculus.ai_contract_runner_check.v
 assert runner_report["ok"] is True
 ```
 
+For partial-rotary configs, the importer uses `partial_rotary_factor` or
+`rotary_pct` to reduce the certified RoPE dimension and records both source
+fields in the model-config import report. Non-default `rope_scaling` remains
+outside the standard-RoPE importer.
+
 The same facade exposes reusable integer phase-bank helpers for sinusoidal,
 RoPE-family, scaled, and 2D positional phase descriptors:
 

@@ -573,10 +573,17 @@ def _rope_model_config_parameter_sources(
             "field": "head_dim",
         }
     elif head_dim_key is not None:
-        head_dim_source = {
-            "source": "config_field",
-            "field": head_dim_key,
-        }
+        if rotary_fraction_key is None:
+            head_dim_source = {
+                "source": "config_field",
+                "field": head_dim_key,
+            }
+        else:
+            head_dim_source = {
+                "source": "derived_config_fields",
+                "fields": [head_dim_key, rotary_fraction_key],
+                "note": "head_dim adjusted by rotary fraction",
+            }
     else:
         fields = ["hidden_size", "num_attention_heads"]
         if rotary_fraction_key is not None:

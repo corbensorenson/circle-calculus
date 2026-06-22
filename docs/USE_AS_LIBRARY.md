@@ -231,6 +231,12 @@ receipt = build_validated_rope_receipt_from_model_config(model_config, pack=pack
 print(receipt["request"]["parameters"])
 ```
 
+If the model config declares `partial_rotary_factor` or `rotary_pct`, the
+standard-RoPE importer certifies the resulting rotary sub-dimension rather than
+the full attention-head dimension. The import report records both the head
+dimension source and the rotary-fraction source so downstream CI can audit the
+conversion.
+
 For in-memory batch checks, use the same runner-check report shape without a
 subprocess:
 
