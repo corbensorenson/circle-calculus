@@ -8,6 +8,7 @@ Python package.
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import sys
 from dataclasses import asdict, is_dataclass
@@ -35,6 +36,7 @@ from .applications import (
     CIRCLE_AI_CONTRACT_RECEIPT_SCHEMA_ID,
     CIRCLE_AI_CONTRACT_REQUEST_SCHEMA_ID,
     CIRCLE_AI_CONTRACT_REQUEST_VALIDATION_SCHEMA_ID,
+    CIRCLE_AI_CONTRACT_RUNNER_CHECK_SCHEMA_ID,
     CIRCLE_AI_ROPE_MODEL_CONFIG_IMPORT_SCHEMA_ID,
     build_contract_artifact_manifest,
     build_contract_artifact_manifest_file_check_report,
@@ -251,6 +253,55 @@ def _parse_positive_int_csv(raw: str) -> tuple[int, ...]:
     return values
 
 
+_STATUS_CHOICES = (
+    "proved",
+    "impossible",
+    "undecided",
+    "numerical_only",
+    "outside_scope",
+)
+_DECISION_CHOICES = (
+    "passed",
+    "failed",
+    "undecided",
+    "numerical_only",
+    "outside_scope",
+)
+_ASSURANCE_CHOICES = (
+    "theorem_backed",
+    "mixed_theorem_and_computation",
+    "numerical_only",
+    "unsupported",
+    "undecided",
+)
+
+
+def _add_receipt_gate_options(parser: argparse.ArgumentParser) -> None:
+    parser.add_argument(
+        "--require-passed",
+        action="store_true",
+        help="Return nonzero unless each emitted receipt has request_passed=true.",
+    )
+    parser.add_argument(
+        "--require-status",
+        action="append",
+        choices=_STATUS_CHOICES,
+        default=[],
+    )
+    parser.add_argument(
+        "--require-decision",
+        action="append",
+        choices=_DECISION_CHOICES,
+        default=[],
+    )
+    parser.add_argument(
+        "--require-assurance",
+        action="append",
+        choices=_ASSURANCE_CHOICES,
+        default=[],
+    )
+
+
 def _add_certify_common_options(parser: argparse.ArgumentParser) -> None:
     parser.add_argument("--pack", type=Path, default=None)
     parser.add_argument(
@@ -347,35 +398,7 @@ def _add_certify_common_options(parser: argparse.ArgumentParser) -> None:
         choices=("text", "json", "compact-json"),
         default="text",
     )
-    parser.add_argument(
-        "--require-passed",
-        action="store_true",
-        help="Return nonzero unless the emitted receipt has request_passed=true.",
-    )
-    parser.add_argument(
-        "--require-status",
-        action="append",
-        choices=("proved", "impossible", "undecided", "numerical_only", "outside_scope"),
-        default=[],
-    )
-    parser.add_argument(
-        "--require-decision",
-        action="append",
-        choices=("passed", "failed", "undecided", "numerical_only", "outside_scope"),
-        default=[],
-    )
-    parser.add_argument(
-        "--require-assurance",
-        action="append",
-        choices=(
-            "theorem_backed",
-            "mixed_theorem_and_computation",
-            "numerical_only",
-            "unsupported",
-            "undecided",
-        ),
-        default=[],
-    )
+    _add_receipt_gate_options(parser)
 
 
 def _certify_pack_from_args(args: argparse.Namespace) -> dict[str, Any]:
@@ -686,6 +709,189 @@ def _certify_print_and_gate(
     return 2 if gate_failures else 0
 
 
+def _certify_json_fingerprint(value: Any) -> str:
+    payload = json.dumps(
+        _jsonable(value),
+        sort_keys=True,
+        separators=(",", ":"),
+    ).encode()
+    return hashlib.sha256(payload).hexdigest()
+
+
+def _certify_batch_output_path(
+    out_dir: Path,
+    *,
+    index: int,
+    source_path: Path,
+    suffix: str,
+) -> Path:
+    prefix = _safe_certify_artifact_prefix(
+        source_path.stem.removesuffix("_request")
+    )
+    return out_dir / f"{index:03d}_{prefix}_{suffix}.json"
+
+
+def _certify_batch_summary_from_receipt(
+    *,
+    source_path: Path,
+    source: dict[str, Any],
+    receipt: dict[str, Any],
+    compact_receipt: dict[str, Any],
+    receipt_path: Path | None,
+    compact_receipt_path: Path | None,
+) -> dict[str, Any]:
+    decision = receipt["decision"]
+    selected_evidence_layers = compact_receipt[
+        "selected_evidence_proof_layers"
+    ]
+    return {
+        "source_type": "request",
+        "source_path": str(source_path),
+        "source_content_fingerprint": _certify_json_fingerprint(source),
+        "request_path": None,
+        "model_config_import_report_path": None,
+        "model_config_parameter_sources": None,
+        "request_validation_report_path": None,
+        "certification_bundle_path": None,
+        "certification_bundle_check_path": None,
+        "receipt_path": None if receipt_path is None else str(receipt_path),
+        "compact_receipt_path": (
+            None if compact_receipt_path is None else str(compact_receipt_path)
+        ),
+        "kind": receipt["kind"],
+        "status": receipt["status"],
+        "request_passed": receipt["request_passed"],
+        "decision_verdict": decision["verdict"],
+        "decision_assurance": decision["assurance"],
+        "theorem_count": receipt["proof_status"]["theorem_count"],
+        "recommendation_count": len(receipt["recommendations"]),
+        "validation_command_count": len(receipt["validation_commands"]),
+        "normalized_request": receipt["normalized_request"],
+        "request_content_fingerprint": receipt["request_content_fingerprint"],
+        "normalized_request_fingerprint": receipt[
+            "normalized_request_fingerprint"
+        ],
+        "receipt_content_fingerprint": receipt["receipt_content_fingerprint"],
+        "compact_selected_evidence_count": len(
+            compact_receipt["selected_evidence"]
+        ),
+        "compact_selected_evidence_unclassified_count": sum(
+            1
+            for label in selected_evidence_layers.values()
+            if label == "unclassified"
+        ),
+        "compact_selected_evidence_labels": sorted(
+            set(selected_evidence_layers.values())
+        ),
+    }
+
+
+def _certify_batch_requests(args: argparse.Namespace) -> int:
+    pack = _certify_pack_from_args(args)
+    failures: list[str] = []
+    summaries: list[dict[str, Any]] = []
+    selected_kinds: set[str] = set()
+
+    for index, source_path in enumerate(args.request_file, start=1):
+        try:
+            source = _load_json_object_from_args(
+                argparse.ArgumentParser(prog="circle-ai-certify batch"),
+                inline_json=None,
+                json_file=source_path,
+                label="request",
+            )
+            receipt = build_validated_contract_receipt_from_request(
+                source,
+                pack=pack,
+            )
+            compact_receipt = build_compact_contract_receipt(receipt)
+            selected_kinds.add(receipt["kind"])
+
+            receipt_path = None
+            if args.receipt_out_dir is not None:
+                receipt_path = _certify_batch_output_path(
+                    args.receipt_out_dir,
+                    index=index,
+                    source_path=source_path,
+                    suffix="receipt",
+                )
+                _write_json_file(receipt_path, receipt)
+
+            compact_receipt_path = None
+            if args.compact_receipt_out_dir is not None:
+                compact_receipt_path = _certify_batch_output_path(
+                    args.compact_receipt_out_dir,
+                    index=index,
+                    source_path=source_path,
+                    suffix="compact_receipt",
+                )
+                _write_json_file(compact_receipt_path, compact_receipt)
+
+            summaries.append(
+                _certify_batch_summary_from_receipt(
+                    source_path=source_path,
+                    source=source,
+                    receipt=receipt,
+                    compact_receipt=compact_receipt,
+                    receipt_path=receipt_path,
+                    compact_receipt_path=compact_receipt_path,
+                )
+            )
+            for failure in _receipt_gate_failures(receipt, args):
+                failures.append(f"{source_path}: {failure}")
+        except SystemExit as exc:
+            failures.append(f"{source_path}: request JSON could not be loaded ({exc})")
+        except (OSError, ValueError, json.JSONDecodeError) as exc:
+            failures.append(f"{source_path}: {exc}")
+
+    report = {
+        "schema_id": CIRCLE_AI_CONTRACT_RUNNER_CHECK_SCHEMA_ID,
+        "ok": not failures,
+        "example_count": len(args.request_file),
+        "failure_count": len(failures),
+        "failures": failures,
+        "selected_kinds": sorted(selected_kinds),
+        "gate_policy": {
+            "allowed_statuses": list(args.require_status),
+            "allowed_decision_verdicts": list(args.require_decision),
+            "allowed_assurance_levels": list(args.require_assurance),
+            "require_passed": args.require_passed,
+        },
+        "summaries": summaries,
+    }
+    if args.report_out is not None:
+        _write_json_file(args.report_out, report)
+
+    if args.format == "json":
+        print(json.dumps(report, indent=2, sort_keys=True))
+    else:
+        print(
+            " ".join(
+                [
+                    f"schema_id={report['schema_id']}",
+                    f"ok={report['ok']}",
+                    f"source_count={report['example_count']}",
+                    f"failure_count={report['failure_count']}",
+                ]
+            )
+        )
+        for summary in summaries:
+            print(
+                " ".join(
+                    [
+                        f"source={summary['source_path']}",
+                        f"kind={summary['kind']}",
+                        f"status={summary['status']}",
+                        f"decision={summary['decision_verdict']}",
+                        f"compact_receipt={summary['compact_receipt_path']}",
+                    ]
+                )
+            )
+        for failure in failures:
+            print(f"contract batch gate failed: {failure}", file=sys.stderr)
+    return 0 if report["ok"] else 2
+
+
 def contract_certify_main() -> int:
     """Issue theorem-linked AI contract receipts from package-native subcommands."""
     parser = argparse.ArgumentParser(
@@ -710,6 +916,44 @@ def contract_certify_main() -> int:
         type=Path,
         help="Path to a versioned Circle AI contract request JSON object.",
     )
+
+    batch_parser = subparsers.add_parser(
+        "batch",
+        help=(
+            "Issue receipts for several versioned request JSON files and "
+            "write a runner-check summary."
+        ),
+    )
+    batch_parser.add_argument("--pack", type=Path, default=None)
+    batch_parser.add_argument(
+        "--request-file",
+        "--request-json",
+        dest="request_file",
+        action="append",
+        required=True,
+        type=Path,
+        help=(
+            "Path to a versioned Circle AI contract request JSON object. "
+            "May be passed more than once."
+        ),
+    )
+    batch_parser.add_argument(
+        "--receipt-out-dir",
+        type=Path,
+        help="Optional directory where full audit receipts are written.",
+    )
+    batch_parser.add_argument(
+        "--compact-receipt-out-dir",
+        type=Path,
+        help="Optional directory where compact downstream receipts are written.",
+    )
+    batch_parser.add_argument(
+        "--report-out",
+        type=Path,
+        help="Optional path for the batch runner-check JSON report.",
+    )
+    batch_parser.add_argument("--format", choices=("text", "json"), default="text")
+    _add_receipt_gate_options(batch_parser)
 
     rope_parser = subparsers.add_parser(
         "rope",
@@ -810,6 +1054,8 @@ def contract_certify_main() -> int:
     seed_rule_parser.add_argument("--n", type=int, default=128)
 
     args = parser.parse_args()
+    if args.command == "batch":
+        return _certify_batch_requests(args)
     try:
         _apply_certify_artifact_dir_defaults(args)
     except ValueError as exc:

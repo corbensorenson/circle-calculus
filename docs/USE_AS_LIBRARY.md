@@ -268,6 +268,7 @@ circle-ai-certify rope --model-config-file examples/circle_ai_model_configs/stan
 circle-ai-certify kv-cache --cache-size 16 --current 31 --token 20 --batch-tokens 20,24,29,31 --sink-size 4 --require-passed --format json
 circle-ai-certify sparse-attention --context 9 --strides 3,4,7 --path-length 2 --local-window 2 --format json
 circle-ai-certify sparse-attention --context 9 --strides 3,4,7 --path-length 2 --local-window 2 --format compact-json
+circle-ai-certify batch --request-file examples/circle_ai_requests/kv_cache_request.json --request-file examples/circle_ai_requests/sparse_attention_request.json --receipt-out-dir /tmp/circle_ai_receipts --compact-receipt-out-dir /tmp/circle_ai_compact_receipts --report-out /tmp/circle_ai_runner_report.json --require-passed --require-status proved --require-decision passed --format json
 circle-ai-certify recurrence --format json
 circle-ai-certify strided-fanout --format compact-json
 circle-ai-certify cyclic-memory --format compact-json
@@ -300,6 +301,10 @@ present.
 alias and JSON parameter object.
 Use `--request-file` when the input is already a versioned Circle request for
 RoPE, KV-cache, sparse attention, or recurrence.
+Use `circle-ai-certify batch` when downstream CI has several versioned request
+files and should write per-request full receipts, compact receipts, and one
+schema-validated runner-check report without depending on repository-only
+scripts.
 Use `--require-passed`, `--require-status`, `--require-decision`, and
 `--require-assurance` when the command is part of downstream CI. Gate failures
 return exit code `2` after writing the receipt, so CI logs keep the theorem

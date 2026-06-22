@@ -208,6 +208,17 @@ circle-ai-certify sparse-attention \
   --artifact-manifest-check-out /tmp/circle_sparse_manifest_check.json \
   --format json
 
+circle-ai-certify batch \
+  --request-file examples/circle_ai_requests/kv_cache_request.json \
+  --request-file examples/circle_ai_requests/sparse_attention_request.json \
+  --receipt-out-dir /tmp/circle_ai_receipts \
+  --compact-receipt-out-dir /tmp/circle_ai_compact_receipts \
+  --report-out /tmp/circle_ai_runner_report.json \
+  --require-passed \
+  --require-status proved \
+  --require-decision passed \
+  --format json
+
 circle-ai-certify strided-fanout --format compact-json
 circle-ai-certify cyclic-memory --format compact-json
 circle-ai-certify multicoil-phase --format compact-json
@@ -222,6 +233,10 @@ the receipt from the embedded request and compare stable fingerprints. Use
 `--format compact-json` or `--compact-json-out` when the handoff should expose
 only the stable decision, selected evidence, theorem summary, validation
 commands, non-claims, and full receipt fingerprint. Use
+`circle-ai-certify batch` when a downstream project already has several
+versioned Circle request files and wants per-request full receipts, compact
+receipts, and one runner-check summary without importing repository-only
+scripts. Use
 `--request-validation-report-out` when it wants the request preflight saved as
 a standalone JSON artifact. Use
 `--certification-bundle-out` and `--certification-bundle-check-out` when the

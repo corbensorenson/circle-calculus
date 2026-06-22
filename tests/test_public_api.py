@@ -5,6 +5,7 @@ import subprocess
 import sys
 from pathlib import Path
 
+import jsonschema
 import pytest
 
 from circle_math.core import (
@@ -31,6 +32,7 @@ from circle_math.applications import (
     CIRCLE_AI_CONTRACT_RECEIPT_SCHEMA_ID,
     build_contract_artifact_manifest,
     build_contract_artifact_manifest_file_check_report,
+    build_contract_runner_check_json_schema,
 )
 from circle_math.contracts import contract_kinds, readiness_summary
 
@@ -399,6 +401,81 @@ def test_package_cli_unified_certify_compact_json(tmp_path) -> None:
     assert "evidence" not in compact
     assert compact["selected_evidence"]["coverage_complete"] is True
     assert compact["fingerprints"]["receipt_content_fingerprint"]
+
+
+def test_package_cli_unified_certify_batch_request_files_writes_compact_receipts(
+    tmp_path,
+) -> None:
+    receipt_dir = tmp_path / "receipts"
+    compact_dir = tmp_path / "compact_receipts"
+    report_path = tmp_path / "runner_report.json"
+    request_dir = ROOT / "examples" / "circle_ai_requests"
+
+    result = subprocess.run(
+        [
+            sys.executable,
+            "-c",
+            (
+                "import sys; "
+                "from circle_math.cli import contract_certify_main; "
+                "sys.exit(contract_certify_main())"
+            ),
+            "batch",
+            "--request-file",
+            str(request_dir / "kv_cache_request.json"),
+            "--request-file",
+            str(request_dir / "sparse_attention_request.json"),
+            "--receipt-out-dir",
+            str(receipt_dir),
+            "--compact-receipt-out-dir",
+            str(compact_dir),
+            "--report-out",
+            str(report_path),
+            "--require-passed",
+            "--require-status",
+            "proved",
+            "--require-decision",
+            "passed",
+            "--format",
+            "json",
+        ],
+        text=True,
+        capture_output=True,
+        check=True,
+    )
+
+    report = json.loads(result.stdout)
+    saved_report = json.loads(report_path.read_text())
+    assert saved_report == report
+    jsonschema.validate(report, build_contract_runner_check_json_schema())
+    assert report["schema_id"] == "circle_calculus.ai_contract_runner_check.v0"
+    assert report["ok"] is True
+    assert report["example_count"] == 2
+    assert report["failure_count"] == 0
+    assert report["gate_policy"]["allowed_statuses"] == ["proved"]
+    assert report["gate_policy"]["allowed_decision_verdicts"] == ["passed"]
+    assert {summary["kind"] for summary in report["summaries"]} == {
+        "kv_cache_ring_buffer",
+        "sparse_attention_coverage",
+    }
+
+    for summary in report["summaries"]:
+        receipt_path = Path(summary["receipt_path"])
+        compact_path = Path(summary["compact_receipt_path"])
+        assert receipt_path.exists()
+        assert compact_path.exists()
+        receipt = json.loads(receipt_path.read_text())
+        compact = json.loads(compact_path.read_text())
+        assert receipt["receipt_content_fingerprint"] == summary[
+            "receipt_content_fingerprint"
+        ]
+        assert compact["schema_id"] == CIRCLE_AI_CONTRACT_COMPACT_RECEIPT_SCHEMA_ID
+        assert compact["fingerprints"]["receipt_content_fingerprint"] == summary[
+            "receipt_content_fingerprint"
+        ]
+        assert summary["compact_selected_evidence_count"] >= 1
+        assert summary["compact_selected_evidence_unclassified_count"] == 0
+        assert "unclassified" not in summary["compact_selected_evidence_labels"]
 
 
 def test_package_cli_unified_certify_writes_gate_and_replay_reports(tmp_path) -> None:
