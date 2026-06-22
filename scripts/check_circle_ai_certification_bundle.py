@@ -17,6 +17,7 @@ if str(ROOT) not in sys.path:
 
 from circle_math.applications import (  # noqa: E402
     CIRCLE_AI_CONTRACT_CERTIFICATION_BUNDLE_FILE_CHECK_SCHEMA_ID,
+    build_architecture_config_import_json_schema,
     build_contract_certification_bundle_file_check_report,
     build_contract_certification_bundle_file_check_json_schema,
     build_contract_certification_bundle_json_schema,
@@ -29,6 +30,7 @@ from circle_math.applications.circle_ai_contract_runner import (  # noqa: E402
     CERTIFICATION_BUNDLE_SCHEMA_PATH,
     DECISION_ASSURANCE_LEVELS,
     DECISION_VERDICTS,
+    ARCHITECTURE_CONFIG_IMPORT_SCHEMA_PATH,
     REQUEST_VALIDATION_SCHEMA_PATH,
     ROPE_MODEL_CONFIG_IMPORT_SCHEMA_PATH,
     STATUS_VALUES,
@@ -41,6 +43,9 @@ DEFAULT_BUNDLE_SCHEMA = ROOT / CERTIFICATION_BUNDLE_SCHEMA_PATH
 DEFAULT_REPORT_SCHEMA = ROOT / CERTIFICATION_BUNDLE_FILE_CHECK_SCHEMA_PATH
 DEFAULT_REQUEST_VALIDATION_SCHEMA = ROOT / REQUEST_VALIDATION_SCHEMA_PATH
 DEFAULT_MODEL_CONFIG_IMPORT_SCHEMA = ROOT / ROPE_MODEL_CONFIG_IMPORT_SCHEMA_PATH
+DEFAULT_ARCHITECTURE_CONFIG_IMPORT_SCHEMA = (
+    ROOT / ARCHITECTURE_CONFIG_IMPORT_SCHEMA_PATH
+)
 
 
 def _json_object(path: Path) -> dict[str, Any]:
@@ -336,6 +341,9 @@ def check_certification_bundle_files(
     report_schema_path: Path = DEFAULT_REPORT_SCHEMA,
     request_validation_schema_path: Path = DEFAULT_REQUEST_VALIDATION_SCHEMA,
     model_config_import_schema_path: Path = DEFAULT_MODEL_CONFIG_IMPORT_SCHEMA,
+    architecture_config_import_schema_path: Path = (
+        DEFAULT_ARCHITECTURE_CONFIG_IMPORT_SCHEMA
+    ),
     required_statuses: tuple[str, ...] = (),
     required_decision_verdicts: tuple[str, ...] = (),
     required_assurance_levels: tuple[str, ...] = (),
@@ -368,6 +376,11 @@ def check_certification_bundle_files(
         model_config_import_schema_path,
         build_rope_model_config_import_json_schema(),
         label="RoPE model config import",
+    )
+    _validate_schema_file(
+        architecture_config_import_schema_path,
+        build_architecture_config_import_json_schema(),
+        label="architecture config import",
     )
     pack = load_contract_pack(pack_path)
 
@@ -462,6 +475,11 @@ def main() -> int:
         "--model-config-import-schema",
         type=Path,
         default=DEFAULT_MODEL_CONFIG_IMPORT_SCHEMA,
+    )
+    parser.add_argument(
+        "--architecture-config-import-schema",
+        type=Path,
+        default=DEFAULT_ARCHITECTURE_CONFIG_IMPORT_SCHEMA,
     )
     parser.add_argument("--format", choices=("text", "json"), default="text")
     parser.add_argument(
@@ -630,6 +648,9 @@ def main() -> int:
         report_schema_path=args.report_schema,
         request_validation_schema_path=args.request_validation_schema,
         model_config_import_schema_path=args.model_config_import_schema,
+        architecture_config_import_schema_path=(
+            args.architecture_config_import_schema
+        ),
         required_statuses=tuple(args.require_status),
         required_decision_verdicts=tuple(args.require_decision),
         required_assurance_levels=tuple(args.require_assurance),
