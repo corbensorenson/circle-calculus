@@ -22,6 +22,12 @@ ARCHITECTURE_CONFIG = (
     / "circle_ai_architecture_configs"
     / "basic_transformer_contract_config.json"
 )
+ROPE_MODEL_ONLY_ARCHITECTURE_CONFIG = (
+    ROOT
+    / "examples"
+    / "circle_ai_architecture_configs"
+    / "rope_model_only_contract_config.json"
+)
 BASE_REQUIRED_LABELS = {
     "request_json",
     "request_validation_report",
@@ -207,6 +213,40 @@ def _emit_architecture_batch_artifacts(tmp_path: Path) -> Path:
     return artifact_dir / "architecture-suite_runner_check.json"
 
 
+def _emit_rope_model_only_architecture_batch_artifacts(tmp_path: Path) -> Path:
+    artifact_dir = tmp_path / "rope_model_only_architecture_batch"
+    subprocess.run(
+        [
+            sys.executable,
+            "-c",
+            (
+                "import sys; "
+                "from circle_math.cli import contract_certify_main; "
+                "sys.exit(contract_certify_main())"
+            ),
+            "batch",
+            "--architecture-config-file",
+            str(ROPE_MODEL_ONLY_ARCHITECTURE_CONFIG),
+            "--artifact-dir",
+            str(artifact_dir),
+            "--artifact-prefix",
+            "rope-model-only",
+            "--require-status",
+            "proved",
+            "--require-decision",
+            "passed",
+            "--require-passed",
+            "--format",
+            "json",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    return artifact_dir / "rope-model-only_runner_check.json"
+
+
 @pytest.mark.parametrize(
     (
         "slug",
@@ -362,6 +402,51 @@ def test_standalone_batch_artifact_verifier_accepts_architecture_batch(
         "sparse_attention_coverage",
     ]
     assert all(summary["failure_count"] == 0 for summary in payload["summaries"])
+    assert "mathematical proof" in payload["not_claimed"]
+
+
+def test_standalone_batch_artifact_verifier_accepts_rope_only_architecture_batch(
+    tmp_path: Path,
+) -> None:
+    runner_check_path = _emit_rope_model_only_architecture_batch_artifacts(tmp_path)
+
+    result = subprocess.run(
+        [
+            sys.executable,
+            str(BATCH_SCRIPT),
+            str(runner_check_path),
+            "--format",
+            "json",
+            "--require-status",
+            "proved",
+            "--require-decision",
+            "passed",
+            "--require-passed",
+            "--require-kind",
+            "rope_position_distinguishability",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+
+    runner_check = json.loads(runner_check_path.read_text(encoding="utf-8"))
+    assert runner_check["example_count"] == 1
+    assert runner_check["selected_kinds"] == ["rope_position_distinguishability"]
+    summary = runner_check["summaries"][0]
+    assert summary["source_type"] == "architecture_config"
+    assert summary["unsupported_architecture_config_fields"] == ["model.model_type"]
+
+    payload = json.loads(result.stdout)
+    assert payload["accepted"] is True
+    assert payload["source_count"] == 1
+    assert payload["failure_count"] == 0
+    assert payload["observed_kinds"] == ["rope_position_distinguishability"]
+    assert payload["kind_counts"] == {"rope_position_distinguishability": 1}
+    assert payload["summaries"][0]["failure_count"] == 0
+    assert payload["summaries"][0]["source_type"] == "architecture_config"
+    assert payload["summaries"][0]["kind"] == "rope_position_distinguishability"
     assert "mathematical proof" in payload["not_claimed"]
 
 
