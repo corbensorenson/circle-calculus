@@ -2564,6 +2564,53 @@ def test_circle_ai_certify_cli_imports_standard_rope_model_config(
     assert validate_contract_request(saved_request) == []
 
 
+def test_circle_ai_certify_cli_imports_model_config_directory(
+    tmp_path: Path,
+) -> None:
+    config_dir = tmp_path / "model"
+    config_dir.mkdir()
+    request_path = tmp_path / "circle_request.json"
+    (config_dir / "config.json").write_text(
+        json.dumps(
+            {
+                "hidden_size": 4096,
+                "num_attention_heads": 32,
+                "qk_rope_head_dim": 64,
+                "rope_theta": 10000.0,
+                "max_position_embeddings": 8192,
+            }
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+
+    result = subprocess.run(
+        [
+            sys.executable,
+            str(SCRIPT),
+            "rope",
+            "--model-config",
+            str(config_dir),
+            "--format",
+            "json",
+            "--request-out",
+            str(request_path),
+        ],
+        cwd=ROOT,
+        check=True,
+        text=True,
+        capture_output=True,
+    )
+
+    payload = json.loads(result.stdout)
+    assert payload["kind"] == "rope_position_distinguishability"
+    assert payload["request"]["parameters"]["head_dim"] == 64
+    assert payload["request"]["parameters"]["context"] == 8192
+    saved_request = json.loads(request_path.read_text())
+    assert saved_request == payload["request"]
+    assert validate_contract_request(saved_request) == []
+
+
 def test_circle_ai_certify_cli_imports_checked_in_model_config(
     tmp_path: Path,
 ) -> None:

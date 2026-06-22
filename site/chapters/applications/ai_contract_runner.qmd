@@ -78,7 +78,8 @@ circle-ai-certify rope \
 ```
 
 If you already have a standard RoPE model `config.json`, import the common
-fields directly:
+fields directly. The `--model-config` path may be the JSON file itself or the
+containing model directory with `config.json`:
 
 ```bash
 circle-ai-certify rope \

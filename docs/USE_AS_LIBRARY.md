@@ -317,10 +317,12 @@ sparse-attention, recurrence, strided-fanout, cyclic-memory, multicoil-phase,
 cyclic-mixer, seed-rule, and request-file receipts without using the
 repository-only scripts. It accepts `--model-config-file` for standard RoPE
 configs and writes the same theorem-linked receipt shape as the lower-level
-receipt command. Use `--request-out` to save the exact versioned Circle request
-and `--request-validation-report-out` to save the schema-validated request
-preflight report. Use `--model-config-import-report-out` to save the
-parameter-source audit report for a RoPE model config.
+receipt command. For RoPE imports, `--model-config-file` may point directly at
+the JSON file or at the containing model directory with `config.json`. Use
+`--request-out` to save the exact versioned Circle request and
+`--request-validation-report-out` to save the schema-validated request preflight
+report. Use `--model-config-import-report-out` to save the parameter-source
+audit report for a RoPE model config.
 Installed wheels carry a generated theorem-status snapshot under
 `circle_math/data/generated/theorem_status_index.json`, so contract readiness
 can still resolve theorem ids when the repository `manifests/` directory is not

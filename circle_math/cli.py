@@ -188,10 +188,17 @@ def _load_json_object_from_args(
     inline_json: str | None,
     json_file: Path | None,
     label: str,
+    allow_config_dir: bool = False,
 ) -> dict[str, Any]:
     if inline_json is not None and json_file is not None:
         parser.error(f"use either --{label} or --{label}-file, not both")
     if json_file is not None:
+        if json_file.is_dir():
+            if not allow_config_dir:
+                parser.error(f"{label}-file must be a JSON file, not a directory")
+            json_file = json_file / "config.json"
+        if not json_file.exists():
+            parser.error(f"{label}-file does not exist: {json_file}")
         raw = json_file.read_text()
     else:
         raw = inline_json or "{}"
@@ -866,6 +873,7 @@ def _certify_batch_requests(args: argparse.Namespace) -> int:
                 inline_json=None,
                 json_file=source_path,
                 label="model-config",
+                allow_config_dir=True,
             )
             import_report = build_rope_model_config_import_report(
                 source,
@@ -1047,8 +1055,8 @@ def contract_certify_main() -> int:
         default=[],
         type=Path,
         help=(
-            "Path to a standard RoPE model config JSON object. May be passed "
-            "more than once."
+            "Path to a standard RoPE model config JSON object, or a model "
+            "directory containing config.json. May be passed more than once."
         ),
     )
     batch_parser.add_argument(
@@ -1092,7 +1100,15 @@ def contract_certify_main() -> int:
         help="Issue a RoPE position-distinguishability receipt.",
     )
     _add_certify_common_options(rope_parser)
-    rope_parser.add_argument("--model-config-file", "--model-config", type=Path)
+    rope_parser.add_argument(
+        "--model-config-file",
+        "--model-config",
+        type=Path,
+        help=(
+            "Path to a standard RoPE model config JSON object, or a model "
+            "directory containing config.json."
+        ),
+    )
     rope_parser.add_argument("--model-config-import-report-out", type=Path)
     rope_parser.add_argument("--head-dim", type=int, default=None)
     rope_parser.add_argument("--base", type=float, default=None)
@@ -1407,8 +1423,9 @@ def contract_receipt_main() -> int:
         "--model-config-file",
         type=Path,
         help=(
-            "Path to a model config JSON object. Currently supported for "
-            "standard RoPE receipts only."
+            "Path to a model config JSON object, or a model directory "
+            "containing config.json. Currently supported for standard RoPE "
+            "receipts only."
         ),
     )
     parser.add_argument(
@@ -1542,6 +1559,7 @@ def contract_receipt_main() -> int:
             inline_json=None,
             json_file=args.model_config_file,
             label="model-config",
+            allow_config_dir=True,
         )
         import_report = build_rope_model_config_import_report(
             model_config,

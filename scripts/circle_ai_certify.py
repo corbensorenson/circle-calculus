@@ -479,8 +479,9 @@ def parse_args() -> argparse.Namespace:
         "--model-config",
         type=Path,
         help=(
-            "Optional model config.json to infer standard-RoPE head_dim, base, "
-            "and context. Explicit flags override inferred values."
+            "Optional model config.json, or model directory containing "
+            "config.json, to infer standard-RoPE head_dim, base, and context. "
+            "Explicit flags override inferred values."
         ),
     )
     rope.add_argument(
@@ -609,9 +610,20 @@ def _pack_from_args(args: argparse.Namespace) -> dict[str, Any] | None:
     return load_contract_pack(path)
 
 
-def _load_json_object(path: Path, *, label: str) -> dict[str, Any]:
+def _load_json_object(
+    path: Path,
+    *,
+    label: str,
+    allow_config_dir: bool = False,
+) -> dict[str, Any]:
     if not path.is_absolute():
         path = ROOT / path
+    if path.is_dir():
+        if not allow_config_dir:
+            raise SystemExit(f"{label} path must be a JSON file, not a directory")
+        path = path / "config.json"
+    if not path.exists():
+        raise SystemExit(f"{label} path does not exist: {path}")
     payload = json.loads(path.read_text(encoding="utf-8"))
     if not isinstance(payload, dict):
         raise SystemExit(f"{label} must be an object")
@@ -1605,7 +1617,11 @@ def main() -> int:
         try:
             request: dict[str, Any] | None = None
             if args.kind == "rope" and args.model_config is not None:
-                config = _load_json_object(args.model_config, label="model config JSON")
+                config = _load_json_object(
+                    args.model_config,
+                    label="model config JSON",
+                    allow_config_dir=True,
+                )
                 import_report = build_rope_model_config_import_report(
                     config,
                     head_dim=args.head_dim,

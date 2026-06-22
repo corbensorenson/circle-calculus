@@ -1263,6 +1263,58 @@ def test_package_cli_contract_receipt_from_rope_model_config_json(
     ]
 
 
+def test_package_cli_contract_receipt_from_rope_model_config_directory(
+    tmp_path,
+) -> None:
+    config_dir = tmp_path / "model"
+    config_dir.mkdir()
+    request_path = tmp_path / "request.json"
+    import_report_path = tmp_path / "import_report.json"
+    (config_dir / "config.json").write_text(
+        json.dumps(
+            {
+                "hidden_size": 4096,
+                "num_attention_heads": 32,
+                "qk_rope_head_dim": 64,
+                "max_position_embeddings": 8192,
+                "rope_theta": 10000.0,
+            }
+        )
+    )
+
+    result = subprocess.run(
+        [
+            sys.executable,
+            "-c",
+            (
+                "import sys; "
+                "from circle_math.cli import contract_receipt_main; "
+                "sys.exit(contract_receipt_main())"
+            ),
+            "--kind",
+            "rope",
+            "--model-config-file",
+            str(config_dir),
+            "--request-out",
+            str(request_path),
+            "--model-config-import-report-out",
+            str(import_report_path),
+            "--format",
+            "json",
+        ],
+        text=True,
+        capture_output=True,
+        check=True,
+    )
+    receipt = json.loads(result.stdout)
+    import_report = json.loads(import_report_path.read_text())
+    assert receipt["request"]["parameters"]["head_dim"] == 64
+    assert import_report["parameter_sources"]["head_dim"]["field"] == (
+        "qk_rope_head_dim"
+    )
+    assert json.loads(request_path.read_text()) == receipt["request"]
+
+
 def test_package_cli_rejects_scaled_rope_model_config_with_report(
     tmp_path,
 ) -> None:

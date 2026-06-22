@@ -247,6 +247,9 @@ circle-ai-certify cyclic-mixer --format compact-json
 circle-ai-certify seed-rule --format compact-json
 ```
 
+For RoPE imports, `--model-config-file` may point directly at a JSON file or at
+a model directory containing `config.json`.
+
 Use `--gate-report-out` when downstream CI needs a compact machine-readable
 pass/fail report, `--receipt-check-out` when it wants a pack-aware receipt
 validation artifact, and `--receipt-replay-check-out` when it wants to rebuild
@@ -296,6 +299,9 @@ circle-ai-contract-receipt \
   --parameters '{"context": 9, "strides": [3, 4, 7], "path_length": 2, "local_window": 2}' \
   --format json
 ```
+
+For RoPE imports, `--model-config-file` accepts either the `config.json` file
+itself or the containing model directory.
 
 ## Lean Imports
 
