@@ -211,8 +211,9 @@ still reports extra fields such as `model.model_type` as unsupported rather than
 folding them into the theorem-linked request. Add
 `--require-no-unsupported-architecture-fields` when downstream CI should fail on
 that boundary instead of accepting the receipt with an explicit non-claim. The
-verifier also validates the runner report's own `gate_policy`, so stale reports
-missing current policy fields fail before being accepted as CI evidence.
+verifier also validates the runner report's own `gate_policy`, `example_count`,
+and `selected_kinds`, so stale reports with mismatched metadata or missing
+current policy fields fail before being accepted as CI evidence.
 
 Python callers can build the same schema-valid runner-check report in memory
 with `build_contract_runner_check_report`. The helper accepts versioned request

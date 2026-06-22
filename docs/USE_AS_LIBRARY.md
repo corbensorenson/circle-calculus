@@ -457,9 +457,10 @@ KV-cache, sparse-attention, and recurrence receipts; pass
 only. The copyable
 standard-library verifier `examples/downstream_ci_verify_circle_ai_batch.py`
 validates a saved runner-check report plus every sidecar path that report names
-without importing Circle. It validates the runner report's own `gate_policy`, so
-stale reports missing current policy fields fail before being accepted as CI
-evidence. Its summaries preserve unsupported architecture-config
+without importing Circle. It validates the runner report's own `gate_policy`,
+`example_count`, and `selected_kinds`, so stale reports with mismatched metadata
+or missing current policy fields fail before being accepted as CI evidence. Its
+summaries preserve unsupported architecture-config
 field counts and names, so downstream CI logs keep the boundary between
 certified request fields and source-config behavior that was not claimed. Add
 `--require-no-unsupported-architecture-fields` when downstream CI should reject

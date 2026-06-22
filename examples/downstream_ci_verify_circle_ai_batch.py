@@ -482,6 +482,26 @@ def verify_runner_check(
     kind_counts = {
         kind: observed_kinds.count(kind) for kind in sorted(set(observed_kinds))
     }
+    if report.get("example_count") != len(summaries):
+        failures.append(
+            "runner-check example_count does not match summaries length: "
+            f"{report.get('example_count')!r} != {len(summaries)!r}"
+        )
+    raw_selected_kinds = report.get("selected_kinds")
+    selected_kinds: list[str] = []
+    if not isinstance(raw_selected_kinds, list):
+        failures.append("runner-check selected_kinds must be a list")
+    else:
+        for item in raw_selected_kinds:
+            if isinstance(item, str):
+                selected_kinds.append(item)
+            else:
+                failures.append("runner-check selected_kinds entries must be strings")
+    if sorted(set(selected_kinds)) != sorted(set(observed_kinds)):
+        failures.append(
+            "runner-check selected_kinds does not match observed summary kinds: "
+            f"{sorted(set(selected_kinds))!r} != {sorted(set(observed_kinds))!r}"
+        )
     for kind in required_kinds:
         if kind not in kind_counts:
             failures.append(f"required contract kind is missing: {kind}")
@@ -571,6 +591,7 @@ def verify_runner_check(
         "failure_count": len(failures),
         "failures": failures,
         "required_kinds": required_kinds,
+        "runner_selected_kinds": selected_kinds,
         "observed_kinds": sorted(set(observed_kinds)),
         "kind_counts": kind_counts,
         "required_statuses": required_statuses,

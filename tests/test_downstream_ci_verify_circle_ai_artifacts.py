@@ -502,6 +502,53 @@ def test_standalone_batch_artifact_verifier_rejects_stale_runner_gate_policy(
     )
 
 
+def test_standalone_batch_artifact_verifier_rejects_stale_runner_summary_metadata(
+    tmp_path: Path,
+) -> None:
+    runner_check_path = _emit_rope_model_only_architecture_batch_artifacts(tmp_path)
+    runner_check = json.loads(runner_check_path.read_text(encoding="utf-8"))
+    runner_check["example_count"] = 2
+    runner_check["selected_kinds"] = []
+    runner_check_path.write_text(
+        json.dumps(runner_check, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+    )
+
+    result = subprocess.run(
+        [
+            sys.executable,
+            str(BATCH_SCRIPT),
+            str(runner_check_path),
+            "--format",
+            "json",
+            "--require-status",
+            "proved",
+            "--require-decision",
+            "passed",
+            "--require-passed",
+            "--require-kind",
+            "rope_position_distinguishability",
+        ],
+        cwd=ROOT,
+        capture_output=True,
+        text=True,
+    )
+
+    assert result.returncode == 4
+    rejection = json.loads(result.stderr)
+    assert rejection["accepted"] is False
+    assert rejection["runner_selected_kinds"] == []
+    assert rejection["observed_kinds"] == ["rope_position_distinguishability"]
+    assert any(
+        "example_count does not match summaries length" in failure
+        for failure in rejection["failures"]
+    )
+    assert any(
+        "selected_kinds does not match observed summary kinds" in failure
+        for failure in rejection["failures"]
+    )
+
+
 def test_standalone_batch_artifact_verifier_rejects_unsupported_architecture_fields_when_required(
     tmp_path: Path,
 ) -> None:
