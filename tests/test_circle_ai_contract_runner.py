@@ -2624,6 +2624,24 @@ def test_circle_ai_certify_cli_accepts_architecture_config_non_rope(
     assert import_report["kind"] == "kv_cache_ring_buffer"
     assert import_report["request"]["kind"] == "kv_cache_ring_buffer"
 
+    text_result = subprocess.run(
+        [
+            sys.executable,
+            str(SCRIPT),
+            "kv-cache",
+            "--architecture-config",
+            str(ARCHITECTURE_CONFIG),
+            "--require-passed",
+        ],
+        cwd=ROOT,
+        check=True,
+        text=True,
+        capture_output=True,
+    )
+    assert "source_config=architecture_config" in text_result.stdout
+    assert "architecture_config_fingerprint=" in text_result.stdout
+    assert "kind=kv_cache_ring_buffer" in text_result.stdout
+
 
 def test_circle_ai_certify_cli_emits_compact_json_receipt() -> None:
     result = subprocess.run(
@@ -2716,6 +2734,25 @@ def test_circle_ai_certify_cli_imports_standard_rope_model_config(
     saved_request = json.loads(request_path.read_text())
     assert saved_request == payload["request"]
     assert validate_contract_request(saved_request) == []
+
+    text_result = subprocess.run(
+        [
+            sys.executable,
+            str(SCRIPT),
+            "rope",
+            "--model-config",
+            str(config_path),
+            "--requested-margin",
+            "1/328459",
+        ],
+        cwd=ROOT,
+        check=True,
+        text=True,
+        capture_output=True,
+    )
+    assert "source_config=model_config" in text_result.stdout
+    assert "model_config_fingerprint=" in text_result.stdout
+    assert "kind=rope_position_distinguishability" in text_result.stdout
 
 
 def test_circle_ai_certify_cli_imports_model_config_directory(

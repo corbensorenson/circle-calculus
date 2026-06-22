@@ -164,6 +164,9 @@ the schema-validated import report for audit logs. Its schema is
 `site/data/generated/circle_ai_architecture_config_import.schema.json`, and its
 fields record the source architecture-config fingerprint, the emitted request
 fingerprint, parameter-source provenance, and any import failures.
+In default text mode, config-backed runs also print a `source_config=` line with
+the source path, source config fingerprint, derived request kind, and request
+fingerprint, so a terminal log can be replayed or pinned later.
 When `--certification-bundle-out` is also used with `--architecture-config`,
 that same architecture import report is embedded in the bundle beside the
 request preflight, receipt, and gate report.
@@ -285,7 +288,8 @@ python scripts/circle_ai_certify.py rope \
 
 The bundle-check report is validated against
 `site/data/generated/circle_ai_contract_certification_bundle_file_check.schema.json`.
-In text mode, the certifier prints an `artifacts=` line listing every request,
+In text mode, config-backed certifier runs print a `source_config=` line before
+the optional `artifacts=` line. The `artifacts=` line lists every request,
 receipt, gate, bundle, or check file written by that invocation.
 Use `--artifact-dir reports/rope_contract` when you want the standard audit set
 without naming every file. It fills unset paths for:

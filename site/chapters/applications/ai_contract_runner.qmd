@@ -285,6 +285,9 @@ validated against
 `site/data/generated/circle_ai_architecture_config_import.schema.json`; it
 records the source config fingerprint, the emitted request fingerprint, and
 which field or explicit override supplied each request parameter.
+In default text mode, config-backed runs also print a `source_config=` line with
+the source path, source config fingerprint, derived request kind, and request
+fingerprint, so a terminal log can be replayed or pinned later.
 When `--certification-bundle-out` is also used with `--architecture-config`,
 that same architecture import report is embedded in the bundle beside the
 request preflight, receipt, and gate report.
@@ -345,6 +348,9 @@ exact request that produced the receipt. Add
 schema-validated artifact containing request preflight, receipt, gate report,
 and any model-config or architecture-config import report that records parameter
 provenance.
+In text mode, config-backed runs print source provenance before any artifact
+paths, making the source config fingerprint visible even when no sidecar is
+written.
 
 For a project that already stores configs as files, use the request schema:
 

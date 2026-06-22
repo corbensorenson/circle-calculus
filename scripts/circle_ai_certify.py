@@ -1699,6 +1699,39 @@ def _artifact_summary_line(args: argparse.Namespace) -> str | None:
     return "artifacts=" + " ".join(written)
 
 
+def _source_import_summary_line(
+    args: argparse.Namespace,
+    *,
+    model_config_import_report: Mapping[str, Any] | None,
+    architecture_config_import_report: Mapping[str, Any] | None,
+) -> str | None:
+    if model_config_import_report is not None:
+        request = model_config_import_report.get("request")
+        kind = request.get("kind") if isinstance(request, Mapping) else None
+        return (
+            "source_config=model_config "
+            f"path={_display_path(args.model_config)} "
+            "model_config_fingerprint="
+            f"{model_config_import_report.get('model_config_fingerprint')} "
+            f"kind={kind} "
+            "request_fingerprint="
+            f"{model_config_import_report.get('request_content_fingerprint')}"
+        )
+    if architecture_config_import_report is not None:
+        request = architecture_config_import_report.get("request")
+        kind = request.get("kind") if isinstance(request, Mapping) else None
+        return (
+            "source_config=architecture_config "
+            f"path={_display_path(args.architecture_config)} "
+            "architecture_config_fingerprint="
+            f"{architecture_config_import_report.get('architecture_config_fingerprint')} "
+            f"kind={kind} "
+            "request_fingerprint="
+            f"{architecture_config_import_report.get('request_content_fingerprint')}"
+        )
+    return None
+
+
 def main() -> int:
     args = parse_args()
     _apply_artifact_dir_defaults(args)
@@ -2005,6 +2038,13 @@ def main() -> int:
     else:
         for line in receipt_summary_lines(receipt):
             print(line)
+        source_line = _source_import_summary_line(
+            args,
+            model_config_import_report=model_config_import_report_for_bundle,
+            architecture_config_import_report=architecture_config_import_report_for_bundle,
+        )
+        if source_line is not None:
+            print(source_line)
         artifact_line = _artifact_summary_line(args)
         if artifact_line is not None:
             print(artifact_line)
