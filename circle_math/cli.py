@@ -41,6 +41,7 @@ from .applications import (
     CIRCLE_AI_CONTRACT_RUNNER_CHECK_SCHEMA_ID,
     CIRCLE_AI_ARCHITECTURE_CONFIG_IMPORT_SCHEMA_ID,
     CIRCLE_AI_ROPE_MODEL_CONFIG_IMPORT_SCHEMA_ID,
+    architecture_config_selected_contract_kinds,
     build_contract_artifact_manifest,
     build_contract_artifact_manifest_file_check_report,
     build_contract_certification_bundle,
@@ -889,6 +890,7 @@ def _certify_batch_summary_from_receipt(
     model_config_parameter_sources: dict[str, Any] | None = None,
     architecture_config_import_report_path: Path | None = None,
     architecture_config_parameter_sources: dict[str, Any] | None = None,
+    unsupported_architecture_config_fields: list[str] | None = None,
     request_validation_report_path: Path | None = None,
     certification_bundle_path: Path | None = None,
     certification_bundle_check_path: Path | None = None,
@@ -917,6 +919,11 @@ def _certify_batch_summary_from_receipt(
         ),
         "architecture_config_parameter_sources": (
             architecture_config_parameter_sources
+        ),
+        "unsupported_architecture_config_fields": (
+            []
+            if unsupported_architecture_config_fields is None
+            else unsupported_architecture_config_fields
         ),
         "request_validation_report_path": (
             None
@@ -1242,7 +1249,16 @@ def _certify_batch_requests(args: argparse.Namespace) -> int:
             failures.append(f"{source_path}: {exc}")
             continue
 
-        for architecture_kind in architecture_config_kinds:
+        try:
+            selected_architecture_kinds = architecture_config_selected_contract_kinds(
+                source,
+                architecture_config_kinds,
+            )
+        except ValueError as exc:
+            failures.append(f"{source_path}: {exc}")
+            continue
+
+        for architecture_kind in selected_architecture_kinds:
             try:
                 import_report = build_architecture_config_import_report(
                     architecture_kind,
@@ -1328,6 +1344,9 @@ def _certify_batch_requests(args: argparse.Namespace) -> int:
                         ),
                         architecture_config_parameter_sources=import_report[
                             "parameter_sources"
+                        ],
+                        unsupported_architecture_config_fields=import_report[
+                            "unsupported_architecture_config_fields"
                         ],
                         request_validation_report_path=request_validation_report_path,
                         certification_bundle_path=certification_bundle_path,

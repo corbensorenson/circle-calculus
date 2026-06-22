@@ -400,7 +400,8 @@ without importing repository-only scripts. Use `--artifact-dir` when the
 installed batch command should choose stable subdirectories for that portable
 handoff set. Architecture configs emit RoPE, KV-cache, sparse-attention, and
 recurrence receipts by default; pass `--architecture-config-kind` to restrict
-that set. The copyable standard-library verifier
+that set globally, or set `circle_ai_contract_kinds` inside one architecture
+config to restrict that file only. The copyable standard-library verifier
 `examples/downstream_ci_verify_circle_ai_batch.py` validates a saved
 runner-check report plus every receipt, compact receipt, import report,
 request-validation report, certification bundle, and bundle-check sidecar that

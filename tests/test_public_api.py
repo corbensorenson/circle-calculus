@@ -41,6 +41,7 @@ from circle_math.applications import circle_ai_contracts as contract_pack_module
 from circle_math.applications import (
     CIRCLE_AI_CONTRACT_COMPACT_RECEIPT_SCHEMA_ID,
     CIRCLE_AI_CONTRACT_RECEIPT_SCHEMA_ID,
+    architecture_config_selected_contract_kinds,
     build_contract_artifact_manifest,
     build_contract_artifact_manifest_file_check_report,
     build_contract_runner_check_json_schema,
@@ -55,6 +56,12 @@ ARCHITECTURE_CONFIG = (
     / "examples"
     / "circle_ai_architecture_configs"
     / "basic_transformer_contract_config.json"
+)
+ROPE_MODEL_ONLY_ARCHITECTURE_CONFIG = (
+    ROOT
+    / "examples"
+    / "circle_ai_architecture_configs"
+    / "rope_model_only_contract_config.json"
 )
 
 
@@ -308,6 +315,46 @@ def test_stable_architecture_config_api_builds_receipts() -> None:
         sparse_request
     )
     assert sparse_bundle["model_config_import_report"] is None
+
+
+def test_architecture_config_kind_hints_select_runner_contracts() -> None:
+    architecture_config = json.loads(
+        ROPE_MODEL_ONLY_ARCHITECTURE_CONFIG.read_text(encoding="utf-8")
+    )
+
+    assert architecture_config_selected_contract_kinds(
+        architecture_config,
+        ("rope", "kv-cache", "sparse-attention", "recurrence"),
+    ) == ("rope_position_distinguishability",)
+
+    report = build_contract_runner_check_report(
+        architecture_configs=[architecture_config],
+        architecture_config_source_paths=["configs/rope_model_only.json"],
+    )
+
+    jsonschema.validate(report, build_facade_runner_check_json_schema())
+    assert report["ok"] is True
+    assert report["example_count"] == 1
+    assert report["selected_kinds"] == ["rope_position_distinguishability"]
+    summary = report["summaries"][0]
+    assert summary["kind"] == "rope_position_distinguishability"
+    assert summary["architecture_config_parameter_sources"]["head_dim"][
+        "source"
+    ] == "derived_architecture_config_field"
+    assert summary["unsupported_architecture_config_fields"] == [
+        "model.model_type"
+    ]
+
+    with pytest.raises(ValueError, match="must not be empty"):
+        architecture_config_selected_contract_kinds(
+            {"circle_ai_contract_kinds": []},
+            ("rope",),
+        )
+    with pytest.raises(ValueError, match="not an architecture-config contract kind"):
+        architecture_config_selected_contract_kinds(
+            {"circle_ai_contract_kinds": ["seed-rule"]},
+            ("rope",),
+        )
 
 
 def test_stable_artifact_manifest_public_api(tmp_path) -> None:
@@ -863,6 +910,64 @@ def test_package_cli_unified_certify_batch_architecture_config_writes_import_rep
             "receipt_content_fingerprint"
         ]
         assert summary["compact_selected_evidence_unclassified_count"] == 0
+
+
+def test_package_cli_batch_honors_architecture_config_kind_hints(tmp_path) -> None:
+    receipt_dir = tmp_path / "receipts"
+    compact_dir = tmp_path / "compact_receipts"
+    import_dir = tmp_path / "architecture_imports"
+
+    result = subprocess.run(
+        [
+            sys.executable,
+            "-c",
+            (
+                "import sys; "
+                "from circle_math.cli import contract_certify_main; "
+                "sys.exit(contract_certify_main())"
+            ),
+            "batch",
+            "--architecture-config-file",
+            str(ROPE_MODEL_ONLY_ARCHITECTURE_CONFIG),
+            "--architecture-config-import-report-out-dir",
+            str(import_dir),
+            "--receipt-out-dir",
+            str(receipt_dir),
+            "--compact-receipt-out-dir",
+            str(compact_dir),
+            "--require-status",
+            "proved",
+            "--require-decision",
+            "passed",
+            "--require-passed",
+            "--format",
+            "json",
+        ],
+        text=True,
+        capture_output=True,
+        check=True,
+    )
+
+    report = json.loads(result.stdout)
+    jsonschema.validate(report, build_contract_runner_check_json_schema())
+    assert report["ok"] is True
+    assert report["example_count"] == 1
+    assert report["selected_kinds"] == ["rope_position_distinguishability"]
+    summary = report["summaries"][0]
+    assert summary["source_type"] == "architecture_config"
+    assert summary["kind"] == "rope_position_distinguishability"
+    assert summary["architecture_config_parameter_sources"]["head_dim"][
+        "source"
+    ] == "derived_architecture_config_field"
+    assert summary["unsupported_architecture_config_fields"] == [
+        "model.model_type"
+    ]
+    import_report = json.loads(
+        Path(summary["architecture_config_import_report_path"]).read_text()
+    )
+    assert import_report["request"] == json.loads(
+        Path(summary["receipt_path"]).read_text()
+    )["request"]
 
 
 def test_package_cli_unified_certify_batch_artifact_dir_writes_portable_set(

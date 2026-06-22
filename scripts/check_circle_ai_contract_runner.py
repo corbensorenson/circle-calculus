@@ -17,6 +17,7 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from circle_math.applications import (  # noqa: E402
+    architecture_config_selected_contract_kinds,
     build_architecture_config_import_report,
     build_contract_certification_bundle,
     build_contract_certification_bundle_file_check_json_schema,
@@ -647,7 +648,15 @@ def check_runner_examples(
         except (ValueError, json.JSONDecodeError) as exc:
             failures.append(f"{path}: {exc}")
             continue
-        for architecture_kind in selected_architecture_kinds:
+        try:
+            architecture_kinds_for_config = architecture_config_selected_contract_kinds(
+                config,
+                selected_architecture_kinds,
+            )
+        except ValueError as exc:
+            failures.append(f"{path}: {exc}")
+            continue
+        for architecture_kind in architecture_kinds_for_config:
             canonical_architecture_kind = canonical_contract_kind(architecture_kind)
             if selected_kinds and canonical_architecture_kind not in selected_kinds:
                 continue

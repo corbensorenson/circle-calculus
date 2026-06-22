@@ -409,6 +409,10 @@ ARCHITECTURE_CONFIG_SUPPORTED_KINDS = (
     "sparse_attention_coverage",
     "recurrence_schedule",
 )
+ARCHITECTURE_CONFIG_KIND_HINT_KEYS = (
+    "circle_ai_contract_kinds",
+    "circle_ai_contract_kind",
+)
 ARCHITECTURE_CONFIG_SECTION_KEYS = {
     "rope_position_distinguishability": (
         "rope",
@@ -670,6 +674,89 @@ def canonical_contract_kind(kind: str) -> str:
         supported = ", ".join(sorted(KIND_ALIASES))
         raise ValueError(f"unsupported contract kind {kind!r}; expected one of {supported}")
     return canonical
+
+
+def architecture_config_contract_kind_hints(
+    config: Mapping[str, Any],
+) -> tuple[str, ...] | None:
+    """Return canonical architecture-contract hints declared inside a config.
+
+    The hints select which architecture importers run for a project-level
+    config. They do not certify any behavior by themselves.
+    """
+
+    found_key = None
+    found_value: Any = None
+    for key in ARCHITECTURE_CONFIG_KIND_HINT_KEYS:
+        if key in config:
+            found_key = key
+            found_value = config[key]
+            break
+    if found_key is None:
+        return None
+
+    if isinstance(found_value, str):
+        raw_values = [
+            part.strip()
+            for part in found_value.replace(";", ",").split(",")
+            if part.strip()
+        ]
+    elif isinstance(found_value, Sequence) and not isinstance(
+        found_value,
+        (bytes, bytearray),
+    ):
+        raw_values = list(found_value)
+    else:
+        raise ValueError(
+            f"architecture config {found_key} must be a string or list of strings"
+        )
+
+    if not raw_values:
+        raise ValueError(f"architecture config {found_key} must not be empty")
+
+    selected: list[str] = []
+    seen: set[str] = set()
+    for raw in raw_values:
+        if not isinstance(raw, str):
+            raise ValueError(
+                f"architecture config {found_key} entries must be strings"
+            )
+        canonical = canonical_contract_kind(raw)
+        if canonical not in ARCHITECTURE_CONFIG_SUPPORTED_KINDS:
+            supported = ", ".join(ARCHITECTURE_CONFIG_SUPPORTED_KINDS)
+            raise ValueError(
+                f"architecture config {found_key} entry {raw!r} is not an "
+                f"architecture-config contract kind; expected one of {supported}"
+            )
+        if canonical not in seen:
+            seen.add(canonical)
+            selected.append(canonical)
+    return tuple(selected)
+
+
+def architecture_config_selected_contract_kinds(
+    config: Mapping[str, Any],
+    default_kinds: Sequence[str],
+) -> tuple[str, ...]:
+    """Return architecture-contract kinds selected by metadata or defaults."""
+
+    hinted = architecture_config_contract_kind_hints(config)
+    if hinted is not None:
+        return hinted
+    selected: list[str] = []
+    seen: set[str] = set()
+    for raw in default_kinds:
+        canonical = canonical_contract_kind(str(raw))
+        if canonical not in ARCHITECTURE_CONFIG_SUPPORTED_KINDS:
+            supported = ", ".join(ARCHITECTURE_CONFIG_SUPPORTED_KINDS)
+            raise ValueError(
+                f"default architecture config kind {raw!r} is not supported; "
+                f"expected one of {supported}"
+            )
+        if canonical not in seen:
+            seen.add(canonical)
+            selected.append(canonical)
+    return tuple(selected)
 
 
 def parse_fraction(value: str | Fraction | None) -> Fraction | None:
@@ -1043,7 +1130,9 @@ def _unsupported_architecture_config_fields(
     return sorted(
         str(field)
         for field in config
-        if field not in supported and field not in known_sections
+        if field not in supported
+        and field not in known_sections
+        and field not in ARCHITECTURE_CONFIG_KIND_HINT_KEYS
     )
 
 
@@ -4124,7 +4213,7 @@ def build_contract_runner_check_report(
     summaries: list[dict[str, Any]] = []
     failures: list[str] = []
     selected_kinds: set[str] = set()
-    selected_architecture_kinds = tuple(
+    default_architecture_kinds = tuple(
         architecture_config_kinds
         or ("rope", "kv-cache", "sparse-attention", "recurrence")
     )
@@ -4222,6 +4311,14 @@ def build_contract_runner_check_report(
             index,
             "architecture_config",
         )
+        try:
+            selected_architecture_kinds = architecture_config_selected_contract_kinds(
+                architecture_config,
+                default_architecture_kinds,
+            )
+        except ValueError as exc:
+            failures.append(f"{source_path}: {exc}")
+            continue
         for architecture_kind in selected_architecture_kinds:
             try:
                 import_report = build_architecture_config_import_report(

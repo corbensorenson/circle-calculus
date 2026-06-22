@@ -1,0 +1,11 @@
+{
+  "circle_ai_contract_kinds": ["rope"],
+  "model": {
+    "hidden_size": 4096,
+    "num_attention_heads": 32,
+    "partial_rotary_factor": 0.5,
+    "rope_theta": 500000.0,
+    "max_position_embeddings": 131072,
+    "model_type": "llama-like"
+  }
+}

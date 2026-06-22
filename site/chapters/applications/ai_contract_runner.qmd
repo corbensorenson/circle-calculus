@@ -180,10 +180,12 @@ or a hidden-size plus attention-head-count pair; the import report records the
 fields used and does not treat unrelated architecture fields as part of the
 theorem-linked claim. The default batch emits RoPE, KV-cache, sparse-attention,
 and recurrence receipts; pass `--architecture-config-kind` to restrict the set.
-It is the package-native batch handoff path and does not require importing
-repository-only scripts. Use the explicit `--receipt-out-dir` and related
-directory flags only when a downstream CI system needs a custom layout instead
-of the standard artifact directory.
+For model-only or otherwise partial architecture files, set
+`circle_ai_contract_kinds`, for example `["rope"]`, to restrict that one file
+without changing the whole batch command. It is the package-native batch
+handoff path and does not require importing repository-only scripts. Use the
+explicit `--receipt-out-dir` and related directory flags only when a downstream
+CI system needs a custom layout instead of the standard artifact directory.
 
 After copying that directory into another project, a standard-library verifier
 can check the runner report and every named sidecar without importing Circle:
@@ -686,7 +688,9 @@ By default the batch includes request-file examples, standard RoPE model-config
 examples currently including 128k examples at RoPE bases `10000` and `500000`,
 and architecture-config examples that emit RoPE, KV-cache, sparse-attention, and
 recurrence receipts by default. Pass `--architecture-config-kind` to restrict
-architecture-derived contract families.
+architecture-derived contract families globally, or set
+`circle_ai_contract_kinds` inside one architecture config to restrict that file
+only.
 
 Validate a saved certification bundle after it has been handed to another
 project:

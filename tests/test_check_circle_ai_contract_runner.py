@@ -151,7 +151,7 @@ def test_check_circle_ai_contract_runner_accepts_examples() -> None:
         text=True,
     )
 
-    assert "circle AI runner examples ok=True examples=16 failures=0" in result.stdout
+    assert "circle AI runner examples ok=True examples=17 failures=0" in result.stdout
     assert "kind=rope_position_distinguishability" in result.stdout
     assert "kind=kv_cache_ring_buffer" in result.stdout
     assert "kind=sparse_attention_coverage" in result.stdout
@@ -177,7 +177,7 @@ def test_check_circle_ai_contract_runner_emits_json_report() -> None:
     jsonschema.validate(payload, _runner_check_schema())
     assert payload["schema_id"] == "circle_calculus.ai_contract_runner_check.v0"
     assert payload["ok"] is True
-    assert payload["example_count"] == 16
+    assert payload["example_count"] == 17
     assert payload["failure_count"] == 0
     assert payload["failures"] == []
     assert payload["selected_kinds"] == []
@@ -301,7 +301,7 @@ def test_check_circle_ai_contract_runner_filters_model_configs_with_rope_alias()
     jsonschema.validate(payload, _runner_check_schema())
     assert payload["ok"] is True
     assert payload["selected_kinds"] == ["rope_position_distinguishability"]
-    assert payload["example_count"] == 5
+    assert payload["example_count"] == 6
     assert {summary["kind"] for summary in payload["summaries"]} == {
         "rope_position_distinguishability"
     }
@@ -333,7 +333,7 @@ def test_check_circle_ai_contract_runner_filters_rope_architecture_configs() -> 
     jsonschema.validate(payload, _runner_check_schema())
     assert payload["ok"] is True
     assert payload["selected_kinds"] == ["rope_position_distinguishability"]
-    assert payload["example_count"] == 5
+    assert payload["example_count"] == 6
     assert {summary["kind"] for summary in payload["summaries"]} == {
         "rope_position_distinguishability"
     }
@@ -629,11 +629,11 @@ def test_check_circle_ai_contract_runner_writes_report_file(tmp_path: Path) -> N
         text=True,
     )
 
-    assert "circle AI runner examples ok=True examples=16 failures=0" in result.stdout
+    assert "circle AI runner examples ok=True examples=17 failures=0" in result.stdout
     payload = json.loads(report_path.read_text())
     jsonschema.validate(payload, _runner_check_schema())
     assert payload["ok"] is True
-    assert len(payload["summaries"]) == 16
+    assert len(payload["summaries"]) == 17
     assert all(summary["receipt_path"] for summary in payload["summaries"])
     assert all(summary["compact_receipt_path"] for summary in payload["summaries"])
     assert all(
@@ -732,7 +732,7 @@ def test_check_circle_ai_contract_runner_accepts_batch_gate() -> None:
         "require_passed": True,
     }
     assert payload["selected_kinds"] == []
-    assert payload["example_count"] == 16
+    assert payload["example_count"] == 17
 
 
 def test_check_circle_ai_contract_runner_rejects_batch_gate() -> None:
@@ -761,7 +761,7 @@ def test_check_circle_ai_contract_runner_rejects_batch_gate() -> None:
         "require_passed": False,
     }
     assert payload["selected_kinds"] == []
-    assert payload["failure_count"] == 16
+    assert payload["failure_count"] == 17
     assert all("did not match required status set" in failure for failure in payload["failures"])
 
 
@@ -790,7 +790,7 @@ def test_check_circle_ai_contract_runner_rejects_decision_gate() -> None:
         "allowed_assurance_levels": [],
         "require_passed": False,
     }
-    assert payload["failure_count"] == 16
+    assert payload["failure_count"] == 17
     assert all(
         "did not match required decision set" in failure
         for failure in payload["failures"]
@@ -822,7 +822,7 @@ def test_check_circle_ai_contract_runner_rejects_assurance_gate() -> None:
         "allowed_assurance_levels": ["theorem_backed"],
         "require_passed": False,
     }
-    assert payload["failure_count"] == 12
+    assert payload["failure_count"] == 13
     assert all(
         "did not match required assurance set" in failure
         for failure in payload["failures"]

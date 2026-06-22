@@ -220,6 +220,14 @@ When `--certification-bundle-out` is also used with `--architecture-config`,
 that same architecture import report is embedded in the bundle beside the
 request preflight, receipt, and gate report.
 
+For package batch runs, an architecture config may include
+`"circle_ai_contract_kinds": ["rope"]` or a list such as
+`["rope", "kv-cache"]`. That metadata only selects which architecture importers
+run for that file. It is useful for model-only configs where the default batch
+behavior would otherwise try RoPE, KV-cache, sparse-attention, and recurrence.
+It does not certify the metadata itself, and unsupported fields inside selected
+sections are still reported as outside the theorem-linked claim.
+
 External projects can also use the versioned request schema directly:
 
 ```json
@@ -544,7 +552,8 @@ Model config and architecture config examples are first converted into versioned
 Circle request JSON, then checked by the same receipt path. Each architecture
 config emits RoPE, KV-cache, sparse-attention, and recurrence receipts by
 default; pass `--architecture-config-kind` to restrict any architecture-derived
-family.
+family globally, or set `circle_ai_contract_kinds` inside one architecture
+config to restrict that file only.
 
 Validate a saved certification bundle that another project has already
 produced:

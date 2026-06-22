@@ -76,6 +76,8 @@ from .circle_ai_contract_runner import (
     build_seed_rule_receipt,
     build_sparse_attention_receipt,
     build_strided_candidate_fanout_receipt,
+    architecture_config_contract_kind_hints,
+    architecture_config_selected_contract_kinds,
     build_architecture_config_import_report,
     build_rope_model_config_certification_bundle,
     build_validated_contract_receipt,
