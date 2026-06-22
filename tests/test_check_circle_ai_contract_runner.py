@@ -187,6 +187,17 @@ def test_check_circle_ai_contract_runner_emits_json_report() -> None:
         for summary in payload["summaries"]
     )
     assert all(summary["normalized_request"] for summary in payload["summaries"])
+    assert all(
+        summary["compact_selected_evidence_count"] > 0
+        for summary in payload["summaries"]
+    )
+    assert all(
+        summary["compact_selected_evidence_unclassified_count"] == 0
+        for summary in payload["summaries"]
+    )
+    assert all(
+        summary["compact_selected_evidence_labels"] for summary in payload["summaries"]
+    )
     assert any(
         summary["normalized_request"].get("head_dim") == 128
         for summary in payload["summaries"]
@@ -483,6 +494,14 @@ def test_check_circle_ai_contract_runner_writes_report_file(tmp_path: Path) -> N
         summary["certification_bundle_check_path"] for summary in payload["summaries"]
     )
     assert all(summary["source_content_fingerprint"] for summary in payload["summaries"])
+    assert all(
+        summary["compact_selected_evidence_count"] > 0
+        for summary in payload["summaries"]
+    )
+    assert all(
+        summary["compact_selected_evidence_unclassified_count"] == 0
+        for summary in payload["summaries"]
+    )
     model_config_summary = next(
         summary
         for summary in payload["summaries"]

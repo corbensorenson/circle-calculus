@@ -1846,7 +1846,12 @@ def build_recurrence_receipt(
                 "fields.periodic_shift_overthinking_boundary_invariant",
                 "fields.periodic_shift_active_at_step_invariant",
             ],
-            "computed_fields": [],
+            "computed_fields": [
+                "fields.loop_period",
+                "fields.sample_index",
+                "fields.total_inactive_token_work",
+                "fields.post_period_multi_extension_horizon_steps",
+            ],
             "numerical_only_fields": [],
             "unsupported_fields": [
                 "reasoning quality",
@@ -4385,6 +4390,9 @@ def build_contract_runner_check_json_schema() -> dict[str, Any]:
             "request_content_fingerprint",
             "normalized_request_fingerprint",
             "receipt_content_fingerprint",
+            "compact_selected_evidence_count",
+            "compact_selected_evidence_unclassified_count",
+            "compact_selected_evidence_labels",
         ],
         "properties": {
             "source_type": {"enum": ["request", "model_config"]},
@@ -4411,6 +4419,18 @@ def build_contract_runner_check_json_schema() -> dict[str, Any]:
             "request_content_fingerprint": fingerprint,
             "normalized_request_fingerprint": fingerprint,
             "receipt_content_fingerprint": fingerprint,
+            "compact_selected_evidence_count": {"type": "integer", "minimum": 1},
+            "compact_selected_evidence_unclassified_count": {
+                "type": "integer",
+                "minimum": 0,
+            },
+            "compact_selected_evidence_labels": {
+                "type": "array",
+                "items": {
+                    "enum": list(COMPACT_EVIDENCE_PROOF_LAYER_LABELS),
+                },
+                "uniqueItems": True,
+            },
         },
         "additionalProperties": False,
     }

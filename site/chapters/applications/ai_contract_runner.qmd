@@ -516,6 +516,11 @@ opening the import sidecar.
 It also records the batch gate policy. If a receipt violates the required
 status, decision, assurance, or pass condition, the checker still writes the
 report and exits nonzero.
+The checker also builds the compact receipt for every request/model-config
+example and fails if selected compact evidence is empty, if proof-layer labels
+do not cover exactly those selected paths, or if any selected path is
+`unclassified`. Each summary records the compact selected-evidence count,
+unclassified count, and label set.
 Use `--model-config-import-report-out-dir` when the model-config conversion
 itself should be saved as an audit artifact.
 Use `--request-validation-report-out-dir` when the request preflight report

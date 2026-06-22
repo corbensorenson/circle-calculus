@@ -385,6 +385,12 @@ python scripts/check_circle_ai_contract_runner.py \
   --require-passed
 ```
 
+The checker also builds the compact receipt for every request/model-config
+example. It fails if selected compact evidence is empty, if proof-layer labels
+do not cover exactly the selected evidence paths, or if any selected path is
+still `unclassified`. Its JSON report records the compact selected-evidence
+count, unclassified count, and label set for each example.
+
 Run the same checker for only one contract family:
 
 ```bash

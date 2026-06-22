@@ -2416,6 +2416,9 @@ def test_runner_check_report_schema_accepts_public_report() -> None:
                 "request_content_fingerprint": "0" * 64,
                 "normalized_request_fingerprint": "1" * 64,
                 "receipt_content_fingerprint": "2" * 64,
+                "compact_selected_evidence_count": 8,
+                "compact_selected_evidence_unclassified_count": 0,
+                "compact_selected_evidence_labels": ["numerical_only", "proved"],
             }
         ],
     }

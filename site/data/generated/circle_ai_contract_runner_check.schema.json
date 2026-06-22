@@ -106,6 +106,28 @@
               "null"
             ]
           },
+          "compact_selected_evidence_count": {
+            "minimum": 1,
+            "type": "integer"
+          },
+          "compact_selected_evidence_labels": {
+            "items": {
+              "enum": [
+                "proved",
+                "computed",
+                "numerical_only",
+                "unsupported",
+                "mixed",
+                "unclassified"
+              ]
+            },
+            "type": "array",
+            "uniqueItems": true
+          },
+          "compact_selected_evidence_unclassified_count": {
+            "minimum": 0,
+            "type": "integer"
+          },
           "decision_assurance": {
             "enum": [
               "theorem_backed",
@@ -466,7 +488,10 @@
           "normalized_request",
           "request_content_fingerprint",
           "normalized_request_fingerprint",
-          "receipt_content_fingerprint"
+          "receipt_content_fingerprint",
+          "compact_selected_evidence_count",
+          "compact_selected_evidence_unclassified_count",
+          "compact_selected_evidence_labels"
         ],
         "type": "object"
       },

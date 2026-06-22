@@ -157,8 +157,11 @@ def _summary_from_receipt(
     certification_bundle_check_path: Path | None,
     receipt_path: Path | None,
     receipt: dict[str, Any],
+    compact_receipt: dict[str, Any],
 ) -> dict[str, Any]:
     decision = receipt["decision"]
+    selected_evidence = compact_receipt["selected_evidence"]
+    selected_evidence_layers = compact_receipt["selected_evidence_proof_layers"]
     return {
         "source_type": source_type,
         "source_path": _display_path(source_path),
@@ -198,7 +201,39 @@ def _summary_from_receipt(
         "request_content_fingerprint": receipt["request_content_fingerprint"],
         "normalized_request_fingerprint": receipt["normalized_request_fingerprint"],
         "receipt_content_fingerprint": receipt["receipt_content_fingerprint"],
+        "compact_selected_evidence_count": len(selected_evidence),
+        "compact_selected_evidence_unclassified_count": sum(
+            1 for label in selected_evidence_layers.values() if label == "unclassified"
+        ),
+        "compact_selected_evidence_labels": sorted(set(selected_evidence_layers.values())),
     }
+
+
+def _append_compact_receipt_failures(
+    *,
+    path: Path,
+    compact_receipt: dict[str, Any],
+    failures: list[str],
+) -> None:
+    selected_evidence = compact_receipt["selected_evidence"]
+    selected_evidence_layers = compact_receipt["selected_evidence_proof_layers"]
+    if not selected_evidence:
+        failures.append(f"{path}: compact receipt selected_evidence was empty")
+    if set(selected_evidence_layers) != set(selected_evidence):
+        failures.append(
+            f"{path}: compact receipt proof-layer labels did not match "
+            "selected_evidence paths"
+        )
+    unclassified_paths = sorted(
+        path
+        for path, label in selected_evidence_layers.items()
+        if label == "unclassified"
+    )
+    if unclassified_paths:
+        failures.append(
+            f"{path}: compact receipt had unclassified selected evidence paths: "
+            + ", ".join(unclassified_paths)
+        )
 
 
 def _append_gate_failures(
@@ -332,9 +367,12 @@ def check_runner_examples(
                 continue
             receipt = build_validated_contract_receipt_from_request(request, pack=pack)
             jsonschema.validate(receipt, receipt_schema)
-            jsonschema.validate(
-                build_compact_contract_receipt(receipt),
-                compact_receipt_schema,
+            compact_receipt = build_compact_contract_receipt(receipt)
+            jsonschema.validate(compact_receipt, compact_receipt_schema)
+            _append_compact_receipt_failures(
+                path=path,
+                compact_receipt=compact_receipt,
+                failures=failures,
             )
             receipt_path = None
             if receipt_out_dir is not None:
@@ -390,6 +428,7 @@ def check_runner_examples(
                 certification_bundle_check_path=certification_bundle_check_path,
                 receipt_path=receipt_path,
                 receipt=receipt,
+                compact_receipt=compact_receipt,
             )
             summaries.append(summary)
             _append_gate_failures(
@@ -448,9 +487,12 @@ def check_runner_examples(
                 continue
             receipt = build_validated_contract_receipt_from_request(request, pack=pack)
             jsonschema.validate(receipt, receipt_schema)
-            jsonschema.validate(
-                build_compact_contract_receipt(receipt),
-                compact_receipt_schema,
+            compact_receipt = build_compact_contract_receipt(receipt)
+            jsonschema.validate(compact_receipt, compact_receipt_schema)
+            _append_compact_receipt_failures(
+                path=path,
+                compact_receipt=compact_receipt,
+                failures=failures,
             )
             request_path = None
             receipt_path = None
@@ -510,6 +552,7 @@ def check_runner_examples(
                 certification_bundle_check_path=certification_bundle_check_path,
                 receipt_path=receipt_path,
                 receipt=receipt,
+                compact_receipt=compact_receipt,
             )
             summaries.append(summary)
             _append_gate_failures(
