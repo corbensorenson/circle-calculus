@@ -505,6 +505,10 @@ Current CPU findings:
   count-server worker-pool implementation was also rejected: the local A/B
   dropped the cold row from `0.916x` median versus cold `primesieve` to
   `0.740x`, so the mpsc/thread teardown cost dominates for one-shot work.
+  A no-teardown variant that reused the one-shot worker pool, received all
+  worker results, and then let process exit reclaim idle workers still
+  regressed the cold row to `0.682x` median versus cold `primesieve`, so the
+  channel/scratch path itself remains too expensive for fresh CLI requests.
   A static-base-prime reciprocal table prototype targeted the remaining
   per-chunk modulo/division setup and produced one transient focused
   hot/cold win (`3.931 ms` best for `circle-prime-count` versus `4.155 ms`
@@ -512,6 +516,15 @@ Current CPU findings:
   cold confirmation twice; the stable rerun reported only `0.827x` median and
   `0.749x` best speedup versus cold `primesieve`, so the prototype was
   removed instead of promoted.
+  A later current-binary cold sweep over wider `presieve13`, `presieve17`, and
+  `segmented` thread/segment combinations found no parity row: the best median
+  candidate in that probe was `presieve13:1310720` at 8 workers with `0.923x`
+  median and `0.870x` best versus cold `primesieve`. A spawn-all chunk
+  scheduler that moved the caller's chunk onto its own scoped worker regressed
+  the cold default to `0.576x` median versus cold `primesieve`, so the caller
+  must keep doing one chunk. A base-prime active-slice pre-touch prototype also
+  failed to produce a durable win: it reported `0.889x` median while worsening
+  absolute cold median to `5.995 ms` and weakening hot-server ratios.
   Smaller cold worker-count/segment-size variants remain tracked as evidence
   lanes. The latest full competitive status rejects a cold one-shot promotion:
   the default count-binary row is `0.862x` median and `0.902x` best versus cold

@@ -370,13 +370,25 @@ fallback action is no promotion; no comparable stable row group is trial-ready.
 The one-shot worker-pool path is also closed as a cold-start lever: a local A/B
 fell from `0.916x` median versus cold `primesieve` to `0.740x`, so the
 server-style mpsc/thread teardown cost is not worth paying for one-shot CLI
-work.
+work. A no-teardown variant that reused the one-shot worker pool, received all
+worker results, and then let process exit reclaim idle workers still regressed
+the cold row to `0.682x` median versus cold `primesieve`, so the
+channel/scratch path itself remains too expensive for fresh CLI requests.
 A static-base-prime reciprocal table prototype targeted per-chunk
 modulo/division setup and produced one transient focused hot/cold win
 (`3.931 ms` best for `circle-prime-count` versus `4.155 ms` for cold
 `primesieve`), but it grew the slim binary and failed the isolated cold
 confirmation twice; the stable rerun reported only `0.827x` median and
 `0.749x` best speedup versus cold `primesieve`, so the prototype was removed.
+A later current-binary cold sweep over wider `presieve13`, `presieve17`, and
+`segmented` thread/segment combinations found no parity row: the best median
+candidate in that probe was `presieve13:1310720` at 8 workers with `0.923x`
+median and `0.870x` best versus cold `primesieve`. A spawn-all chunk scheduler
+that moved the caller's chunk onto its own scoped worker regressed the cold
+default to `0.576x` median versus cold `primesieve`, so the caller must keep
+doing one chunk. A base-prime active-slice pre-touch prototype also failed to
+produce a durable win: it reported `0.889x` median while worsening absolute
+cold median to `5.995 ms` and weakening hot-server ratios.
 A separate one-shot-only `circle-prime-count-cold` prototype removed stdin
 server and shifted-batch code and cut the binary from `1395168` to `1310896`
 bytes, but a 25-round interleaved A/B still left the existing
