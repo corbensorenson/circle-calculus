@@ -205,7 +205,9 @@ python examples/downstream_ci_verify_circle_ai_batch.py \
 The verifier output preserves unsupported architecture-config field counts and
 names. A model-only config that declares `circle_ai_contract_kinds: ["rope"]`
 still reports extra fields such as `model.model_type` as unsupported rather than
-folding them into the theorem-linked request.
+folding them into the theorem-linked request. Add
+`--require-no-unsupported-architecture-fields` when downstream CI should fail on
+that boundary instead of accepting the receipt with an explicit non-claim.
 
 Python callers can build the same schema-valid runner-check report in memory
 with `build_contract_runner_check_report`. The helper accepts versioned request

@@ -411,7 +411,9 @@ request-validation report, certification bundle, and bundle-check sidecar that
 the batch report names. Its summaries preserve unsupported
 architecture-config field counts and names, so CI logs keep the boundary
 between certified request fields and source-config behavior that was not
-claimed. For single-receipt commands, use `--artifact-manifest-out` and
+claimed. Add `--require-no-unsupported-architecture-fields` when downstream CI
+should reject any architecture config whose extra fields were not mapped into a
+theorem-linked request. For single-receipt commands, use `--artifact-manifest-out` and
 `--artifact-manifest-check-out` when the handoff also needs file fingerprints and
 a manifest self-check for every sidecar that invocation wrote.
 

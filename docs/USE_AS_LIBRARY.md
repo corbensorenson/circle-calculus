@@ -452,7 +452,10 @@ standard-library verifier `examples/downstream_ci_verify_circle_ai_batch.py`
 validates a saved runner-check report plus every sidecar path that report names
 without importing Circle. Its summaries preserve unsupported architecture-config
 field counts and names, so downstream CI logs keep the boundary between
-certified request fields and source-config behavior that was not claimed.
+certified request fields and source-config behavior that was not claimed. Add
+`--require-no-unsupported-architecture-fields` when downstream CI should reject
+any architecture config whose extra fields were not mapped into a theorem-linked
+request.
 Use `--require-passed`, `--require-status`, `--require-decision`, and
 `--require-assurance` when the command is part of downstream CI. Gate failures
 return exit code `2` after writing the receipt, so CI logs keep the theorem

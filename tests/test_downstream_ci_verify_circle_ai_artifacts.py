@@ -456,6 +456,46 @@ def test_standalone_batch_artifact_verifier_accepts_rope_only_architecture_batch
     assert "mathematical proof" in payload["not_claimed"]
 
 
+def test_standalone_batch_artifact_verifier_rejects_unsupported_architecture_fields_when_required(
+    tmp_path: Path,
+) -> None:
+    runner_check_path = _emit_rope_model_only_architecture_batch_artifacts(tmp_path)
+
+    result = subprocess.run(
+        [
+            sys.executable,
+            str(BATCH_SCRIPT),
+            str(runner_check_path),
+            "--format",
+            "json",
+            "--require-status",
+            "proved",
+            "--require-decision",
+            "passed",
+            "--require-passed",
+            "--require-kind",
+            "rope_position_distinguishability",
+            "--require-no-unsupported-architecture-fields",
+        ],
+        cwd=ROOT,
+        capture_output=True,
+        text=True,
+    )
+
+    assert result.returncode == 4
+    rejection = json.loads(result.stderr)
+    assert rejection["accepted"] is False
+    assert rejection["require_no_unsupported_architecture_fields"] is True
+    assert rejection["failure_count"] == 1
+    assert rejection["summaries"][0][
+        "unsupported_architecture_config_fields"
+    ] == ["model.model_type"]
+    assert any(
+        "unsupported architecture-config fields: model.model_type" in failure
+        for failure in rejection["failures"]
+    )
+
+
 def test_standalone_batch_artifact_verifier_rejects_missing_sidecar(
     tmp_path: Path,
 ) -> None:

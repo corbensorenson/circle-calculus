@@ -363,6 +363,7 @@ def verify_runner_check(
     require_compact_receipts: bool,
     require_request_validation: bool,
     require_bundles: bool,
+    require_no_unsupported_architecture_fields: bool,
 ) -> dict[str, Any]:
     _check_policy_values(
         statuses=required_statuses,
@@ -435,6 +436,18 @@ def verify_runner_check(
             )
         if require_passed and summary["request_passed"] is not True:
             failures.append(f"{summary['kind']} request_passed was not true")
+        unsupported_architecture_fields = summary[
+            "unsupported_architecture_config_fields"
+        ]
+        if (
+            require_no_unsupported_architecture_fields
+            and unsupported_architecture_fields
+        ):
+            failures.append(
+                f"{summary['source_path']}:{summary['kind']} has unsupported "
+                "architecture-config fields: "
+                f"{', '.join(unsupported_architecture_fields)}"
+            )
 
     return {
         "schema_id": EXAMPLE_SCHEMA_ID,
@@ -454,6 +467,9 @@ def verify_runner_check(
         "require_compact_receipts": require_compact_receipts,
         "require_request_validation": require_request_validation,
         "require_bundles": require_bundles,
+        "require_no_unsupported_architecture_fields": (
+            require_no_unsupported_architecture_fields
+        ),
         "summaries": summaries,
         "not_claimed": (
             "This is a downstream batch artifact-integrity gate. It is not a "
@@ -571,6 +587,15 @@ def main() -> int:
             "certification_bundle_check_path sidecars to be present."
         ),
     )
+    parser.add_argument(
+        "--require-no-unsupported-architecture-fields",
+        action="store_true",
+        help=(
+            "Fail if any architecture-config batch summary reports fields that "
+            "were present in the source config but unsupported by the emitted "
+            "theorem-linked request."
+        ),
+    )
     args = parser.parse_args()
 
     try:
@@ -586,6 +611,9 @@ def main() -> int:
             require_compact_receipts=not args.allow_missing_compact_receipts,
             require_request_validation=not args.allow_missing_request_validation,
             require_bundles=not args.allow_missing_bundles,
+            require_no_unsupported_architecture_fields=(
+                args.require_no_unsupported_architecture_fields
+            ),
         )
     except (OSError, ValueError, json.JSONDecodeError) as exc:
         failure = _failure_report(exc, args.runner_check)
