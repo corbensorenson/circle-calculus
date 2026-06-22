@@ -30,7 +30,8 @@
               "undecided"
             ]
           },
-          "type": "array"
+          "type": "array",
+          "uniqueItems": true
         },
         "allowed_decision_verdicts": {
           "items": {
@@ -42,7 +43,8 @@
               "outside_scope"
             ]
           },
-          "type": "array"
+          "type": "array",
+          "uniqueItems": true
         },
         "allowed_statuses": {
           "items": {
@@ -54,7 +56,8 @@
               "outside_scope"
             ]
           },
-          "type": "array"
+          "type": "array",
+          "uniqueItems": true
         },
         "require_no_unsupported_architecture_fields": {
           "type": "boolean"
@@ -92,7 +95,8 @@
           "seed_rule_exact_regeneration"
         ]
       },
-      "type": "array"
+      "type": "array",
+      "uniqueItems": true
     },
     "summaries": {
       "items": {

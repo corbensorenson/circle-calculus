@@ -6095,14 +6095,17 @@ def build_contract_runner_check_json_schema() -> dict[str, Any]:
             "allowed_statuses": {
                 "type": "array",
                 "items": {"enum": list(STATUS_VALUES)},
+                "uniqueItems": True,
             },
             "allowed_decision_verdicts": {
                 "type": "array",
                 "items": {"enum": list(DECISION_VERDICTS)},
+                "uniqueItems": True,
             },
             "allowed_assurance_levels": {
                 "type": "array",
                 "items": {"enum": list(DECISION_ASSURANCE_LEVELS)},
+                "uniqueItems": True,
             },
             "require_passed": {"type": "boolean"},
             "require_no_unsupported_architecture_fields": {"type": "boolean"},
@@ -6136,6 +6139,7 @@ def build_contract_runner_check_json_schema() -> dict[str, Any]:
             "selected_kinds": {
                 "type": "array",
                 "items": {"enum": list(SUPPORTED_CONTRACT_KINDS)},
+                "uniqueItems": True,
             },
             "gate_policy": gate_policy,
             "summaries": {"type": "array", "items": summary},

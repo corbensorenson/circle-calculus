@@ -1301,6 +1301,34 @@ def test_package_cli_batch_report_boundary_rejects_schema_drift() -> None:
         _validate_contract_runner_check_report(stale_report)
 
 
+def test_contract_runner_check_schema_rejects_duplicate_gate_and_kind_values() -> None:
+    request = json.loads(
+        (ROOT / "examples" / "circle_ai_requests" / "kv_cache_request.json").read_text()
+    )
+    report = build_contract_runner_check_report(
+        requests=[request],
+        request_source_paths=["requests/kv_cache_request.json"],
+        required_statuses=["proved"],
+        required_decision_verdicts=["passed"],
+        require_passed=True,
+    )
+    schema = build_contract_runner_check_json_schema()
+
+    duplicate_kind_report = dict(report)
+    duplicate_kind_report["selected_kinds"] = [
+        "kv_cache_ring_buffer",
+        "kv_cache_ring_buffer",
+    ]
+    with pytest.raises(jsonschema.ValidationError):
+        jsonschema.validate(duplicate_kind_report, schema)
+
+    duplicate_gate_report = dict(report)
+    duplicate_gate_report["gate_policy"] = dict(report["gate_policy"])
+    duplicate_gate_report["gate_policy"]["allowed_statuses"] = ["proved", "proved"]
+    with pytest.raises(jsonschema.ValidationError):
+        jsonschema.validate(duplicate_gate_report, schema)
+
+
 def test_package_cli_unified_certify_writes_gate_and_replay_reports(tmp_path) -> None:
     receipt_path = tmp_path / "receipt.json"
     gate_path = tmp_path / "gate.json"
