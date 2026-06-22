@@ -478,6 +478,55 @@ def test_package_cli_unified_certify_batch_request_files_writes_compact_receipts
         assert "unclassified" not in summary["compact_selected_evidence_labels"]
 
 
+def test_package_cli_unified_certify_batch_gate_writes_report_on_failure(
+    tmp_path,
+) -> None:
+    receipt_dir = tmp_path / "receipts"
+    compact_dir = tmp_path / "compact_receipts"
+    report_path = tmp_path / "runner_report.json"
+    request_file = ROOT / "examples" / "circle_ai_requests" / "kv_cache_request.json"
+
+    result = subprocess.run(
+        [
+            sys.executable,
+            "-c",
+            (
+                "import sys; "
+                "from circle_math.cli import contract_certify_main; "
+                "sys.exit(contract_certify_main())"
+            ),
+            "batch",
+            "--request-file",
+            str(request_file),
+            "--receipt-out-dir",
+            str(receipt_dir),
+            "--compact-receipt-out-dir",
+            str(compact_dir),
+            "--report-out",
+            str(report_path),
+            "--require-decision",
+            "failed",
+            "--format",
+            "json",
+        ],
+        text=True,
+        capture_output=True,
+    )
+
+    assert result.returncode == 2
+    report = json.loads(result.stdout)
+    saved_report = json.loads(report_path.read_text())
+    assert saved_report == report
+    jsonschema.validate(report, build_contract_runner_check_json_schema())
+    assert report["ok"] is False
+    assert report["example_count"] == 1
+    assert report["failure_count"] == 1
+    assert "decision.verdict 'passed' is not in ('failed',)" in report["failures"][0]
+    assert report["summaries"][0]["decision_verdict"] == "passed"
+    assert Path(report["summaries"][0]["receipt_path"]).exists()
+    assert Path(report["summaries"][0]["compact_receipt_path"]).exists()
+
+
 def test_package_cli_unified_certify_writes_gate_and_replay_reports(tmp_path) -> None:
     receipt_path = tmp_path / "receipt.json"
     gate_path = tmp_path / "gate.json"
