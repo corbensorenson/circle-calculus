@@ -607,6 +607,7 @@ AI_CONTRACT_BROAD_SURFACE_PATHS = {
     "docs/generated/PUBLIC_API_REFERENCE.md",
     "examples/circle_ai_contract_acceptance_policy.json",
     "examples/downstream_ci_accept_circle_ai_contracts.py",
+    "examples/downstream_ci_verify_circle_ai_batch.py",
     "examples/downstream_ci_verify_circle_ai_artifacts.py",
 }
 

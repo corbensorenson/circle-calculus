@@ -4,6 +4,8 @@ import json
 import subprocess
 import sys
 
+import pytest
+
 import scripts.targeted_check as targeted_check
 from scripts.check_circle_ai_contract_docs import STRICT_RECEIPT_TOKENS_BY_KIND
 from scripts.targeted_check import plan_for_files, plan_payload
@@ -605,8 +607,15 @@ def test_standalone_downstream_ci_example_change_runs_standalone_tests() -> None
     assert not contains_command(commands, "pytest", "tests/test_stride_family_certifier_cli.py")
 
 
-def test_standalone_artifact_verifier_change_runs_artifact_tests() -> None:
-    commands = commands_for(["examples/downstream_ci_verify_circle_ai_artifacts.py"])
+@pytest.mark.parametrize(
+    "path",
+    [
+        "examples/downstream_ci_verify_circle_ai_artifacts.py",
+        "examples/downstream_ci_verify_circle_ai_batch.py",
+    ],
+)
+def test_standalone_artifact_verifier_change_runs_artifact_tests(path: str) -> None:
+    commands = commands_for([path])
 
     assert contains_command(commands, "make", "circle-ai-contracts-ready")
     assert contains_command(commands, "pytest", "tests/test_circle_ai_contract_pack.py")

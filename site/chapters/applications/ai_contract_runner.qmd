@@ -181,6 +181,21 @@ require importing repository-only scripts. Use the explicit `--receipt-out-dir`
 and related directory flags only when a downstream CI system needs a custom
 layout instead of the standard artifact directory.
 
+After copying that directory into another project, a standard-library verifier
+can check the runner report and every named sidecar without importing Circle:
+
+```bash
+python examples/downstream_ci_verify_circle_ai_batch.py \
+  reports/circle_ai_contract_batch/architecture-suite_runner_check.json \
+  --require-status proved \
+  --require-decision passed \
+  --require-passed \
+  --require-kind rope_position_distinguishability \
+  --require-kind kv_cache_ring_buffer \
+  --require-kind sparse_attention_coverage \
+  --require-kind recurrence_schedule
+```
+
 Python callers can build the same schema-valid runner-check report in memory
 with `build_contract_runner_check_report`. The helper accepts versioned request
 objects, standard RoPE `model_configs`, and AI `architecture_configs`.

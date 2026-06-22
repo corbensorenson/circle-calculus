@@ -393,7 +393,11 @@ without importing repository-only scripts. Use `--artifact-dir` when the
 installed batch command should choose stable subdirectories for that portable
 handoff set. Architecture configs emit RoPE, KV-cache, sparse-attention, and
 recurrence receipts by default; pass `--architecture-config-kind` to restrict
-that set. For single-receipt commands, use `--artifact-manifest-out` and
+that set. The copyable standard-library verifier
+`examples/downstream_ci_verify_circle_ai_batch.py` validates a saved
+runner-check report plus every receipt, compact receipt, import report,
+request-validation report, certification bundle, and bundle-check sidecar that
+the batch report names. For single-receipt commands, use `--artifact-manifest-out` and
 `--artifact-manifest-check-out` when the handoff also needs file fingerprints
 and a manifest self-check for every sidecar that invocation wrote.
 

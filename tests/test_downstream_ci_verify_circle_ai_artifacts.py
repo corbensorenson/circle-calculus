@@ -12,6 +12,7 @@ import pytest
 ROOT = Path(__file__).resolve().parents[1]
 CERTIFIER = ROOT / "scripts" / "circle_ai_certify.py"
 SCRIPT = ROOT / "examples" / "downstream_ci_verify_circle_ai_artifacts.py"
+BATCH_SCRIPT = ROOT / "examples" / "downstream_ci_verify_circle_ai_batch.py"
 STANDARD_ROPE_MODEL_CONFIG = (
     ROOT / "examples" / "circle_ai_model_configs" / "standard_rope_config.json"
 )
@@ -172,6 +173,40 @@ def _emit_sparse_architecture_artifacts(
     )
 
 
+def _emit_architecture_batch_artifacts(tmp_path: Path) -> Path:
+    artifact_dir = tmp_path / "architecture_batch"
+    subprocess.run(
+        [
+            sys.executable,
+            "-c",
+            (
+                "import sys; "
+                "from circle_math.cli import contract_certify_main; "
+                "sys.exit(contract_certify_main())"
+            ),
+            "batch",
+            "--architecture-config-file",
+            str(ARCHITECTURE_CONFIG),
+            "--artifact-dir",
+            str(artifact_dir),
+            "--artifact-prefix",
+            "architecture-suite",
+            "--require-status",
+            "proved",
+            "--require-decision",
+            "passed",
+            "--require-passed",
+            "--format",
+            "json",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    return artifact_dir / "architecture-suite_runner_check.json"
+
+
 @pytest.mark.parametrize(
     (
         "slug",
@@ -279,6 +314,91 @@ def test_standalone_artifact_verifier_accepts_standard_artifact_dirs(
     assert summary["preflight_sidecar_labels"] == expected_preflight_labels
     assert summary["preflight_sidecar_failure_count"] == 0
     assert "mathematical proof" in payload["not_claimed"]
+
+
+def test_standalone_batch_artifact_verifier_accepts_architecture_batch(
+    tmp_path: Path,
+) -> None:
+    runner_check_path = _emit_architecture_batch_artifacts(tmp_path)
+
+    result = subprocess.run(
+        [
+            sys.executable,
+            str(BATCH_SCRIPT),
+            str(runner_check_path),
+            "--format",
+            "json",
+            "--require-status",
+            "proved",
+            "--require-decision",
+            "passed",
+            "--require-passed",
+            "--require-kind",
+            "rope_position_distinguishability",
+            "--require-kind",
+            "kv_cache_ring_buffer",
+            "--require-kind",
+            "sparse_attention_coverage",
+            "--require-kind",
+            "recurrence_schedule",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+
+    payload = json.loads(result.stdout)
+    assert payload["schema_id"] == (
+        "circle_calculus.downstream_ci_batch_artifact_acceptance.v0"
+    )
+    assert payload["accepted"] is True
+    assert payload["source_count"] == 4
+    assert payload["failure_count"] == 0
+    assert payload["observed_kinds"] == [
+        "kv_cache_ring_buffer",
+        "recurrence_schedule",
+        "rope_position_distinguishability",
+        "sparse_attention_coverage",
+    ]
+    assert all(summary["failure_count"] == 0 for summary in payload["summaries"])
+    assert "mathematical proof" in payload["not_claimed"]
+
+
+def test_standalone_batch_artifact_verifier_rejects_missing_sidecar(
+    tmp_path: Path,
+) -> None:
+    runner_check_path = _emit_architecture_batch_artifacts(tmp_path)
+    runner_check = json.loads(runner_check_path.read_text(encoding="utf-8"))
+    first_receipt = Path(runner_check["summaries"][0]["receipt_path"])
+    first_receipt.unlink()
+
+    result = subprocess.run(
+        [
+            sys.executable,
+            str(BATCH_SCRIPT),
+            str(runner_check_path),
+            "--format",
+            "json",
+            "--require-status",
+            "proved",
+            "--require-decision",
+            "passed",
+            "--require-passed",
+        ],
+        cwd=ROOT,
+        capture_output=True,
+        text=True,
+    )
+
+    assert result.returncode == 4
+    rejection = json.loads(result.stderr)
+    assert rejection["accepted"] is False
+    assert rejection["failure_count"] >= 1
+    assert any(
+        "receipt_path artifact is missing" in failure
+        for failure in rejection["failures"]
+    )
 
 
 def test_standalone_artifact_verifier_accepts_architecture_config_artifact_dir(

@@ -431,7 +431,10 @@ report without depending on repository-only scripts. Use `--artifact-dir` when
 the installed batch command should choose stable subdirectories for that
 portable handoff set. By default, each architecture config emits RoPE,
 KV-cache, sparse-attention, and recurrence receipts; pass
-`--architecture-config-kind` to restrict that set.
+`--architecture-config-kind` to restrict that set. The copyable
+standard-library verifier `examples/downstream_ci_verify_circle_ai_batch.py`
+validates a saved runner-check report plus every sidecar path that report names
+without importing Circle.
 Use `--require-passed`, `--require-status`, `--require-decision`, and
 `--require-assurance` when the command is part of downstream CI. Gate failures
 return exit code `2` after writing the receipt, so CI logs keep the theorem
