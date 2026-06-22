@@ -222,9 +222,10 @@ booleans and any unresolved or unproved theorem ids. When `--artifact-dir` is
 used, the batch command also writes an artifact manifest and manifest-check that
 fingerprint the runner report and every emitted receipt, compact receipt,
 import report, preflight, bundle, and bundle-check sidecar. The copyable
-verifier's `--artifact-manifest` option checks those fingerprints and confirms
-the manifest covers the runner report plus every emitted sidecar. The top-level
-report records `required_kinds` and `kind_counts`, so a batch consumer can assert that
+verifier checks the manifest automatically when the runner report names it;
+`--artifact-manifest` is only needed for older or relocated reports. The top-level
+report records `artifact_manifest_path`, `artifact_manifest_check_path`,
+`required_kinds`, and `kind_counts`, so a batch consumer can assert that
 RoPE, KV-cache, sparse-attention, recurrence, or another contract family was
 actually emitted instead of merely trusting that a full architecture-contract
 run happened. Use `circle-ai-certify batch --require-kind kv-cache` or the

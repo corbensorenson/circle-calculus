@@ -1155,6 +1155,8 @@ def test_package_cli_unified_certify_batch_artifact_dir_writes_portable_set(
     manifest_path = artifact_dir / "architecture-suite_artifact_manifest.json"
     manifest_check_path = artifact_dir / "architecture-suite_artifact_manifest_check.json"
     assert json.loads(report_path.read_text()) == report
+    assert report["artifact_manifest_path"] == str(manifest_path)
+    assert report["artifact_manifest_check_path"] == str(manifest_check_path)
     assert manifest_path.exists()
     assert manifest_check_path.exists()
     jsonschema.validate(report, build_contract_runner_check_json_schema())

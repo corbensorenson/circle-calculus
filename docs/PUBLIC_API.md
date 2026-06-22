@@ -424,9 +424,10 @@ config to restrict that file only. The copyable standard-library verifier
 `examples/downstream_ci_verify_circle_ai_batch.py` validates a saved
 runner-check report plus every receipt, compact receipt, import report,
 request-validation report, certification bundle, and bundle-check sidecar that
-the batch report names. Pass `--artifact-manifest` to also verify the batch
-manifest's SHA-256 fingerprints and coverage of the runner report plus every
-emitted sidecar. It validates the runner report's own `gate_policy`,
+the batch report names. When the runner report names a batch artifact manifest,
+the verifier also checks its SHA-256 fingerprints and coverage of the runner
+report plus every emitted sidecar; pass `--artifact-manifest` only to override
+or supply a relocated manifest. It validates the runner report's own `gate_policy`,
 `example_count`, `selected_kinds`, `required_kinds`, and `kind_counts`, so stale
 reports with mismatched metadata or missing current policy fields fail before
 being accepted as CI evidence. An

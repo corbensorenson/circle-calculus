@@ -409,15 +409,12 @@ def test_standalone_batch_artifact_verifier_accepts_rope_only_architecture_batch
     tmp_path: Path,
 ) -> None:
     runner_check_path = _emit_rope_model_only_architecture_batch_artifacts(tmp_path)
-    manifest_path = runner_check_path.with_name("rope-model-only_artifact_manifest.json")
 
     result = subprocess.run(
         [
             sys.executable,
             str(BATCH_SCRIPT),
             str(runner_check_path),
-            "--artifact-manifest",
-            str(manifest_path),
             "--format",
             "json",
             "--require-status",
@@ -445,6 +442,7 @@ def test_standalone_batch_artifact_verifier_accepts_rope_only_architecture_batch
     assert payload["accepted"] is True
     assert payload["artifact_manifest"]["ok"] is True
     assert payload["artifact_manifest"]["artifact_count"] == 7
+    assert payload["artifact_manifest_check"]["ok"] is True
     assert payload["source_count"] == 1
     assert payload["failure_count"] == 0
     assert payload["runner_gate_policy"][
@@ -589,8 +587,6 @@ def test_standalone_batch_artifact_verifier_rejects_stale_artifact_manifest_hash
             sys.executable,
             str(BATCH_SCRIPT),
             str(runner_check_path),
-            "--artifact-manifest",
-            str(manifest_path),
             "--format",
             "json",
             "--require-status",
@@ -608,6 +604,7 @@ def test_standalone_batch_artifact_verifier_rejects_stale_artifact_manifest_hash
     rejection = json.loads(result.stderr)
     assert rejection["accepted"] is False
     assert rejection["artifact_manifest"]["ok"] is False
+    assert rejection["artifact_manifest_check"]["ok"] is True
     assert any("artifact sha256 mismatch" in failure for failure in rejection["failures"])
 
 

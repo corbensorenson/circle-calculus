@@ -1506,6 +1506,16 @@ def _certify_batch_requests(args: argparse.Namespace) -> int:
         "selected_kinds": sorted(selected_kinds),
         "required_kinds": list(required_kinds),
         "kind_counts": kind_counts,
+        "artifact_manifest_path": (
+            None
+            if args.artifact_manifest_out is None
+            else str(args.artifact_manifest_out)
+        ),
+        "artifact_manifest_check_path": (
+            None
+            if args.artifact_manifest_check_out is None
+            else str(args.artifact_manifest_check_out)
+        ),
         "gate_policy": {
             "allowed_statuses": list(args.require_status),
             "allowed_decision_verdicts": list(args.require_decision),

@@ -20,6 +20,9 @@ from typing import Any
 
 REPORT_SCHEMA_ID = "circle_calculus.ai_contract_runner_check.v0"
 ARTIFACT_MANIFEST_SCHEMA_ID = "circle_calculus.ai_contract_artifact_manifest.v0"
+ARTIFACT_MANIFEST_CHECK_SCHEMA_ID = (
+    "circle_calculus.ai_contract_artifact_manifest_file_check.v0"
+)
 EXAMPLE_SCHEMA_ID = "circle_calculus.downstream_ci_batch_artifact_acceptance.v0"
 FAILURE_SCHEMA_ID = "circle_calculus.downstream_ci_batch_artifact_rejection.v0"
 SUPPORTED_STATUSES = {
@@ -170,6 +173,28 @@ def _load_artifact(
     return resolved, payload, []
 
 
+def _resolve_optional_report_artifact_path(
+    report: dict[str, Any],
+    field: str,
+    *,
+    report_path: Path,
+    base_dir: Path | None,
+) -> tuple[Path | None, list[str]]:
+    raw_path = report.get(field)
+    if raw_path is None:
+        return None, []
+    if not isinstance(raw_path, str) or not raw_path:
+        return None, [f"runner-check {field} must be a non-empty string or null"]
+    resolved = _resolve_existing_artifact(
+        raw_path,
+        report_path=report_path,
+        base_dir=base_dir,
+    )
+    if resolved is None:
+        return None, [f"runner-check {field} artifact is missing: {raw_path}"]
+    return resolved, []
+
+
 def _expected_manifest_paths(
     *,
     runner_check_path: Path,
@@ -290,6 +315,42 @@ def _verify_artifact_manifest(
 
     summary["ok"] = not failures
     summary["artifact_count"] = len(artifacts)
+    summary["failure_count"] = len(failures)
+    summary["failures"] = failures
+    return summary, failures
+
+
+def _verify_artifact_manifest_check(
+    manifest_check_path: Path | None,
+) -> tuple[dict[str, Any], list[str]]:
+    summary: dict[str, Any] = {
+        "path": None if manifest_check_path is None else str(manifest_check_path),
+        "present": manifest_check_path is not None,
+        "ok": None,
+        "failure_count": 0,
+        "failures": [],
+    }
+    if manifest_check_path is None:
+        return summary, []
+
+    failures: list[str] = []
+    try:
+        payload = _load_json_object(manifest_check_path)
+    except (OSError, ValueError, json.JSONDecodeError, UnicodeDecodeError) as exc:
+        failures.append(f"artifact manifest check is unreadable: {exc}")
+        summary["ok"] = False
+        summary["failure_count"] = len(failures)
+        summary["failures"] = failures
+        return summary, failures
+
+    if payload.get("schema_id") != ARTIFACT_MANIFEST_CHECK_SCHEMA_ID:
+        failures.append("artifact manifest check schema_id is unexpected")
+    if payload.get("ok") is not True:
+        failures.append("artifact manifest check ok was not true")
+    if payload.get("failure_count") != 0:
+        failures.append("artifact manifest check failure_count was not zero")
+
+    summary["ok"] = not failures
     summary["failure_count"] = len(failures)
     summary["failures"] = failures
     return summary, failures
@@ -781,6 +842,24 @@ def verify_runner_check(
         failures.append("runner-check failure_count was not zero")
     runner_gate_policy, runner_gate_policy_failures = _runner_gate_policy(report)
     failures.extend(runner_gate_policy_failures)
+    report_manifest_path, report_manifest_failures = (
+        _resolve_optional_report_artifact_path(
+            report,
+            "artifact_manifest_path",
+            report_path=path,
+            base_dir=base_dir,
+        )
+    )
+    failures.extend(report_manifest_failures)
+    report_manifest_check_path, report_manifest_check_failures = (
+        _resolve_optional_report_artifact_path(
+            report,
+            "artifact_manifest_check_path",
+            report_path=path,
+            base_dir=base_dir,
+        )
+    )
+    failures.extend(report_manifest_check_failures)
     if (
         expected_runner_gate_policy is not None
         and runner_gate_policy != expected_runner_gate_policy
@@ -968,19 +1047,32 @@ def verify_runner_check(
                 f"{', '.join(unsupported_architecture_fields)}"
             )
 
+    selected_manifest_path = artifact_manifest_path or report_manifest_path
+    if artifact_manifest_path is not None and report_manifest_path is not None:
+        if artifact_manifest_path.resolve() != report_manifest_path.resolve():
+            failures.append(
+                "--artifact-manifest does not match runner-check "
+                "artifact_manifest_path"
+            )
     artifact_manifest_summary, artifact_manifest_failures = _verify_artifact_manifest(
-        artifact_manifest_path,
+        selected_manifest_path,
         runner_check_path=path,
         base_dir=base_dir,
         summaries=summaries,
     )
     failures.extend(artifact_manifest_failures)
+    (
+        artifact_manifest_check_summary,
+        artifact_manifest_check_failures,
+    ) = _verify_artifact_manifest_check(report_manifest_check_path)
+    failures.extend(artifact_manifest_check_failures)
 
     return {
         "schema_id": EXAMPLE_SCHEMA_ID,
         "accepted": not failures,
         "runner_check_path": str(path),
         "artifact_manifest": artifact_manifest_summary,
+        "artifact_manifest_check": artifact_manifest_check_summary,
         "source_count": len(summaries),
         "failure_count": len(failures),
         "failures": failures,

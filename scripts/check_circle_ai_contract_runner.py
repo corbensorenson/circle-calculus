@@ -877,6 +877,8 @@ def check_runner_examples(
             kind: sum(1 for summary in summaries if summary["kind"] == kind)
             for kind in sorted({summary["kind"] for summary in summaries})
         },
+        "artifact_manifest_path": None,
+        "artifact_manifest_check_path": None,
         "gate_policy": {
             "allowed_statuses": list(required_statuses),
             "allowed_decision_verdicts": list(required_decision_verdicts),
