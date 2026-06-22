@@ -15,13 +15,13 @@
     "token": 20
   },
   "recurrence": {
-    "loop_period": 5,
-    "max_recurrence_steps": 7,
-    "middle_block_start": 2,
-    "middle_block_width": 3,
-    "sample_step": 8,
-    "sequence_length": 8,
-    "shift_periods": 3
+    "period": 5,
+    "horizon_steps": 7,
+    "block_start": 2,
+    "block_width": 3,
+    "position": 8,
+    "tokens": 8,
+    "shift_amount": 15
   },
   "sparse_attention": {
     "context_length": 9,

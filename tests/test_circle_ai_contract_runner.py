@@ -285,6 +285,18 @@ def test_architecture_config_import_builds_contract_requests(
     assert recurrence_receipt["kind"] == "recurrence_schedule"
     assert recurrence_receipt["request_passed"] is True
     assert recurrence_receipt["normalized_request"]["sample_index"] == 9
+    recurrence_report = build_architecture_config_import_report("recurrence", config)
+    assert recurrence_report["ok"] is True
+    assert recurrence_report["parameter_sources"]["max_loops"]["field"] == (
+        "recurrence.horizon_steps"
+    )
+    assert recurrence_report["parameter_sources"]["token_count"]["field"] == (
+        "recurrence.tokens"
+    )
+    assert recurrence_report["parameter_sources"]["shift_passes"]["source"] == (
+        "derived_architecture_config_field"
+    )
+    assert recurrence_report["request"]["parameters"]["shift_passes"] == 3
 
     sparse_bundle = build_architecture_config_certification_bundle(
         "sparse-attention",
