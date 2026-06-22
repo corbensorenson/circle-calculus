@@ -13,6 +13,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import shlex
 import sys
 from pathlib import Path
 from typing import Any
@@ -374,6 +375,115 @@ def _runner_validation_commands(
     if len(commands) != len(set(commands)):
         failures.append("runner-check validation_commands entries must be unique")
     return commands, failures
+
+
+def _command_path_matches(raw_path: str, target_path: Path) -> bool:
+    path = Path(raw_path)
+    candidates = [path]
+    if not path.is_absolute():
+        candidates.extend([Path.cwd() / path, target_path.parent / path])
+    target = target_path.resolve()
+    return any(candidate.resolve() == target for candidate in candidates)
+
+
+def _runner_validation_command_semantic_failures(
+    commands: list[str],
+    *,
+    report_path: Path,
+    required_kinds: list[str],
+    runner_gate_policy: dict[str, Any],
+) -> list[str]:
+    if not commands:
+        return ["runner-check validation_commands must include a self-check command"]
+
+    failures: list[str] = []
+    for index, command in enumerate(commands, start=1):
+        prefix = f"runner-check validation_commands[{index}]"
+        try:
+            tokens = shlex.split(command)
+        except ValueError as exc:
+            failures.append(f"{prefix} could not be parsed: {exc}")
+            continue
+        if len(tokens) < 5:
+            failures.append(f"{prefix} is too short to replay the batch verifier")
+            continue
+        if tokens[0] not in {"python", "python3"}:
+            failures.append(f"{prefix} must start with python or python3")
+        if tokens[1] != "examples/downstream_ci_verify_circle_ai_batch.py":
+            failures.append(f"{prefix} must call the downstream batch verifier")
+        if not _command_path_matches(tokens[2], report_path):
+            failures.append(f"{prefix} runner-check path does not match this report")
+
+        values = {
+            "--require-kind": [],
+            "--require-status": [],
+            "--require-decision": [],
+            "--require-assurance": [],
+        }
+        format_value: str | None = None
+        require_passed = False
+        require_no_unsupported = False
+        cursor = 3
+        while cursor < len(tokens):
+            token = tokens[cursor]
+            if token == "--format":
+                if cursor + 1 >= len(tokens):
+                    failures.append(f"{prefix} --format is missing a value")
+                    break
+                format_value = tokens[cursor + 1]
+                cursor += 2
+                continue
+            if token in values:
+                if cursor + 1 >= len(tokens):
+                    failures.append(f"{prefix} {token} is missing a value")
+                    break
+                values[token].append(tokens[cursor + 1])
+                cursor += 2
+                continue
+            if token == "--require-passed":
+                require_passed = True
+                cursor += 1
+                continue
+            if token == "--require-no-unsupported-architecture-fields":
+                require_no_unsupported = True
+                cursor += 1
+                continue
+            failures.append(f"{prefix} has unsupported argument: {token}")
+            cursor += 1
+
+        if format_value != "json":
+            failures.append(f"{prefix} must use --format json")
+        if values["--require-kind"] != required_kinds:
+            failures.append(
+                f"{prefix} required kinds do not match runner-check required_kinds"
+            )
+        if values["--require-status"] != runner_gate_policy.get("allowed_statuses", []):
+            failures.append(
+                f"{prefix} required statuses do not match runner gate_policy"
+            )
+        if (
+            values["--require-decision"]
+            != runner_gate_policy.get("allowed_decision_verdicts", [])
+        ):
+            failures.append(
+                f"{prefix} required decisions do not match runner gate_policy"
+            )
+        if (
+            values["--require-assurance"]
+            != runner_gate_policy.get("allowed_assurance_levels", [])
+        ):
+            failures.append(
+                f"{prefix} required assurances do not match runner gate_policy"
+            )
+        if require_passed != bool(runner_gate_policy.get("require_passed")):
+            failures.append(f"{prefix} require-passed flag does not match gate_policy")
+        if require_no_unsupported != bool(
+            runner_gate_policy.get("require_no_unsupported_architecture_fields")
+        ):
+            failures.append(
+                f"{prefix} unsupported-field flag does not match gate_policy"
+            )
+    return failures
 
 
 def _check_policy_values(
@@ -993,6 +1103,14 @@ def verify_runner_check(
     for kind in runner_required_kinds:
         if kind not in kind_counts:
             failures.append(f"runner-check required kind is missing: {kind}")
+    failures.extend(
+        _runner_validation_command_semantic_failures(
+            runner_validation_commands,
+            report_path=path,
+            required_kinds=runner_required_kinds,
+            runner_gate_policy=runner_gate_policy,
+        )
+    )
     for summary in summaries:
         if (
             runner_gate_policy.get("allowed_statuses")
