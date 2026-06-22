@@ -3,14 +3,15 @@
 
 This example intentionally uses only the Python standard library. A downstream
 project can copy it next to a ``circle-ai-certify batch --artifact-dir`` output
-and fail CI when the runner-check report or one of its sidecars is missing,
-schema-mismatched, stale, or outside the consumer's accepted proof-status
-policy.
+and fail CI when the runner-check report, artifact manifest, or one of its
+sidecars is missing, schema-mismatched, stale, fingerprint-mismatched, or
+outside the consumer's accepted proof-status policy.
 """
 
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import sys
 from pathlib import Path
@@ -18,6 +19,7 @@ from typing import Any
 
 
 REPORT_SCHEMA_ID = "circle_calculus.ai_contract_runner_check.v0"
+ARTIFACT_MANIFEST_SCHEMA_ID = "circle_calculus.ai_contract_artifact_manifest.v0"
 EXAMPLE_SCHEMA_ID = "circle_calculus.downstream_ci_batch_artifact_acceptance.v0"
 FAILURE_SCHEMA_ID = "circle_calculus.downstream_ci_batch_artifact_rejection.v0"
 SUPPORTED_STATUSES = {
@@ -76,6 +78,23 @@ def _load_json_object(path: Path) -> dict[str, Any]:
     if not isinstance(payload, dict):
         raise ValueError(f"{path} must contain a JSON object")
     return payload
+
+
+def _file_sha256(path: Path) -> str:
+    digest = hashlib.sha256()
+    with path.open("rb") as handle:
+        for block in iter(lambda: handle.read(1024 * 1024), b""):
+            digest.update(block)
+    return digest.hexdigest()
+
+
+def _artifact_schema_id(path: Path) -> str | None:
+    try:
+        payload = _load_json_object(path)
+    except (OSError, ValueError, json.JSONDecodeError, UnicodeDecodeError):
+        return None
+    schema_id = payload.get("schema_id")
+    return schema_id if isinstance(schema_id, str) else None
 
 
 def _short(value: object) -> str | None:
@@ -149,6 +168,131 @@ def _load_artifact(
     if payload.get("schema_id") != expected_schema:
         return resolved, payload, [f"{label} schema_id is unexpected"]
     return resolved, payload, []
+
+
+def _expected_manifest_paths(
+    *,
+    runner_check_path: Path,
+    summaries: list[dict[str, Any]],
+) -> dict[str, str]:
+    expected = {str(runner_check_path.resolve()): "runner_check"}
+    for index, summary in enumerate(summaries, start=1):
+        resolved_paths = summary.get("resolved_paths")
+        if not isinstance(resolved_paths, dict):
+            continue
+        for label, raw_path in resolved_paths.items():
+            if not isinstance(raw_path, str) or not raw_path:
+                continue
+            expected[str(Path(raw_path).resolve())] = f"summary_{index:03d}_{label}"
+    return expected
+
+
+def _verify_artifact_manifest(
+    manifest_path: Path | None,
+    *,
+    runner_check_path: Path,
+    base_dir: Path | None,
+    summaries: list[dict[str, Any]],
+) -> tuple[dict[str, Any], list[str]]:
+    summary: dict[str, Any] = {
+        "path": None if manifest_path is None else str(manifest_path),
+        "present": manifest_path is not None,
+        "ok": None,
+        "artifact_count": None,
+        "failure_count": 0,
+        "failures": [],
+    }
+    if manifest_path is None:
+        return summary, []
+
+    failures: list[str] = []
+    try:
+        manifest = _load_json_object(manifest_path)
+    except (OSError, ValueError, json.JSONDecodeError, UnicodeDecodeError) as exc:
+        failures.append(f"artifact manifest is unreadable: {exc}")
+        summary["ok"] = False
+        summary["failure_count"] = len(failures)
+        summary["failures"] = failures
+        return summary, failures
+
+    if manifest.get("schema_id") != ARTIFACT_MANIFEST_SCHEMA_ID:
+        failures.append("artifact manifest schema_id is unexpected")
+    if manifest.get("artifact_fingerprint_algorithm") != "sha256-file-v1":
+        failures.append("artifact manifest fingerprint algorithm is unexpected")
+    artifacts = manifest.get("artifacts")
+    if not isinstance(artifacts, list):
+        failures.append("artifact manifest artifacts must be a list")
+        artifacts = []
+    if manifest.get("artifact_count") != len(artifacts):
+        failures.append(
+            "artifact manifest artifact_count does not match artifacts length: "
+            f"{manifest.get('artifact_count')!r} != {len(artifacts)!r}"
+        )
+
+    manifest_paths: dict[str, str] = {}
+    seen_labels: set[str] = set()
+    for artifact in artifacts:
+        if not isinstance(artifact, dict):
+            failures.append("artifact manifest entry is not an object")
+            continue
+        label = artifact.get("label")
+        raw_path = artifact.get("path")
+        declared_exists = artifact.get("exists")
+        declared_sha256 = artifact.get("sha256")
+        declared_schema_id = artifact.get("content_schema_id")
+        if not isinstance(label, str) or not label:
+            failures.append("artifact manifest label must be a non-empty string")
+            label = "<invalid-label>"
+        elif label in seen_labels:
+            failures.append(f"artifact manifest duplicate label: {label}")
+        seen_labels.add(label)
+        if not isinstance(raw_path, str) or not raw_path:
+            failures.append(f"{label}: artifact path must be a non-empty string")
+            continue
+        resolved = _resolve_existing_artifact(
+            raw_path,
+            report_path=manifest_path,
+            base_dir=base_dir,
+        )
+        if declared_exists is not True:
+            failures.append(
+                f"{label}: artifact declared exists={declared_exists!r}, expected true"
+            )
+        if resolved is None:
+            failures.append(f"{label}: artifact file is missing: {raw_path}")
+            continue
+        resolved_key = str(resolved.resolve())
+        manifest_paths[resolved_key] = label
+        actual_sha256 = _file_sha256(resolved)
+        if declared_sha256 != actual_sha256:
+            failures.append(
+                f"{label}: artifact sha256 mismatch: "
+                f"{declared_sha256!r} != {actual_sha256!r}"
+            )
+        if declared_schema_id is not None:
+            actual_schema_id = _artifact_schema_id(resolved)
+            if declared_schema_id != actual_schema_id:
+                failures.append(
+                    f"{label}: artifact schema_id mismatch: "
+                    f"{declared_schema_id!r} != {actual_schema_id!r}"
+                )
+
+    expected_paths = _expected_manifest_paths(
+        runner_check_path=runner_check_path,
+        summaries=summaries,
+    )
+    for expected_path, expected_label in expected_paths.items():
+        if expected_path not in manifest_paths:
+            failures.append(
+                "artifact manifest is missing runner artifact coverage for "
+                f"{expected_label}: {expected_path}"
+            )
+
+    summary["ok"] = not failures
+    summary["artifact_count"] = len(artifacts)
+    summary["failure_count"] = len(failures)
+    summary["failures"] = failures
+    return summary, failures
 
 
 def _check_policy_values(
@@ -608,6 +752,7 @@ def _verify_summary(
 def verify_runner_check(
     path: Path,
     *,
+    artifact_manifest_path: Path | None,
     base_dir: Path | None,
     required_kinds: list[str],
     required_statuses: list[str],
@@ -823,10 +968,19 @@ def verify_runner_check(
                 f"{', '.join(unsupported_architecture_fields)}"
             )
 
+    artifact_manifest_summary, artifact_manifest_failures = _verify_artifact_manifest(
+        artifact_manifest_path,
+        runner_check_path=path,
+        base_dir=base_dir,
+        summaries=summaries,
+    )
+    failures.extend(artifact_manifest_failures)
+
     return {
         "schema_id": EXAMPLE_SCHEMA_ID,
         "accepted": not failures,
         "runner_check_path": str(path),
+        "artifact_manifest": artifact_manifest_summary,
         "source_count": len(summaries),
         "failure_count": len(failures),
         "failures": failures,
@@ -897,6 +1051,14 @@ def _print_text(report: dict[str, Any]) -> None:
         f"accepted={report['accepted']} sources={report['source_count']} "
         f"failures={report['failure_count']}"
     )
+    summary_failures = {
+        f"{summary['source_path']}:{summary['kind']}: {failure}"
+        for summary in report["summaries"]
+        for failure in summary["failures"]
+    }
+    for failure in report["failures"]:
+        if failure not in summary_failures:
+            print(f"failure={failure}", file=sys.stderr)
     for summary in report["summaries"]:
         print(
             "batch_summary "
@@ -923,6 +1085,15 @@ def main() -> int:
         ),
     )
     parser.add_argument("runner_check", type=Path)
+    parser.add_argument(
+        "--artifact-manifest",
+        type=Path,
+        help=(
+            "Optional batch artifact manifest emitted by circle-ai-certify "
+            "batch --artifact-dir. When provided, the verifier checks SHA-256 "
+            "fingerprints and coverage of the runner report plus sidecars."
+        ),
+    )
     parser.add_argument("--format", choices=("json", "text"), default="text")
     parser.add_argument(
         "--base-dir",
@@ -1005,6 +1176,7 @@ def main() -> int:
         expected_runner_gate_policy = _merge_pin_policy_args(args)
         report = verify_runner_check(
             args.runner_check,
+            artifact_manifest_path=args.artifact_manifest,
             base_dir=args.base_dir,
             required_kinds=args.require_kind,
             required_statuses=args.require_status,

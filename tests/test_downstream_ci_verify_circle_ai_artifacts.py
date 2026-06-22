@@ -409,12 +409,15 @@ def test_standalone_batch_artifact_verifier_accepts_rope_only_architecture_batch
     tmp_path: Path,
 ) -> None:
     runner_check_path = _emit_rope_model_only_architecture_batch_artifacts(tmp_path)
+    manifest_path = runner_check_path.with_name("rope-model-only_artifact_manifest.json")
 
     result = subprocess.run(
         [
             sys.executable,
             str(BATCH_SCRIPT),
             str(runner_check_path),
+            "--artifact-manifest",
+            str(manifest_path),
             "--format",
             "json",
             "--require-status",
@@ -440,6 +443,8 @@ def test_standalone_batch_artifact_verifier_accepts_rope_only_architecture_batch
 
     payload = json.loads(result.stdout)
     assert payload["accepted"] is True
+    assert payload["artifact_manifest"]["ok"] is True
+    assert payload["artifact_manifest"]["artifact_count"] == 7
     assert payload["source_count"] == 1
     assert payload["failure_count"] == 0
     assert payload["runner_gate_policy"][
@@ -565,6 +570,45 @@ def test_standalone_batch_artifact_verifier_rejects_stale_runner_summary_metadat
         "kind_counts does not match observed summary kinds" in failure
         for failure in rejection["failures"]
     )
+
+
+def test_standalone_batch_artifact_verifier_rejects_stale_artifact_manifest_hash(
+    tmp_path: Path,
+) -> None:
+    runner_check_path = _emit_rope_model_only_architecture_batch_artifacts(tmp_path)
+    manifest_path = runner_check_path.with_name("rope-model-only_artifact_manifest.json")
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    manifest["artifacts"][0]["sha256"] = "0" * 64
+    manifest_path.write_text(
+        json.dumps(manifest, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+    )
+
+    result = subprocess.run(
+        [
+            sys.executable,
+            str(BATCH_SCRIPT),
+            str(runner_check_path),
+            "--artifact-manifest",
+            str(manifest_path),
+            "--format",
+            "json",
+            "--require-status",
+            "proved",
+            "--require-decision",
+            "passed",
+            "--require-passed",
+        ],
+        cwd=ROOT,
+        capture_output=True,
+        text=True,
+    )
+
+    assert result.returncode == 4
+    rejection = json.loads(result.stderr)
+    assert rejection["accepted"] is False
+    assert rejection["artifact_manifest"]["ok"] is False
+    assert any("artifact sha256 mismatch" in failure for failure in rejection["failures"])
 
 
 def test_standalone_batch_artifact_verifier_rejects_missing_runner_required_kind(
