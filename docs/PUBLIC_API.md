@@ -325,6 +325,12 @@ circle-ai-certify rope \
   --model-config-import-report-out /tmp/circle_rope_import_report.json \
   --format json
 
+circle-ai-certify rope \
+  --architecture-config-file examples/circle_ai_architecture_configs/basic_transformer_contract_config.json \
+  --architecture-config-import-report-out /tmp/circle_rope_architecture_import.json \
+  --format json \
+  --require-passed
+
 circle-ai-certify kv-cache \
   --cache-size 16 \
   --current 31 \
@@ -353,9 +359,11 @@ circle-ai-certify batch \
   --request-file examples/circle_ai_requests/kv_cache_request.json \
   --request-file examples/circle_ai_requests/sparse_attention_request.json \
   --model-config-file examples/circle_ai_model_configs/standard_rope_config.json \
+  --architecture-config-file examples/circle_ai_architecture_configs/basic_transformer_contract_config.json \
   --receipt-out-dir /tmp/circle_ai_receipts \
   --compact-receipt-out-dir /tmp/circle_ai_compact_receipts \
   --model-config-import-report-out-dir /tmp/circle_ai_import_reports \
+  --architecture-config-import-report-out-dir /tmp/circle_ai_architecture_import_reports \
   --report-out /tmp/circle_ai_runner_report.json \
   --require-passed \
   --require-status proved \
@@ -380,10 +388,12 @@ the receipt from the embedded request and compare stable fingerprints. Use
 only the stable decision, selected evidence, theorem summary, validation
 commands, non-claims, and full receipt fingerprint. Use
 `circle-ai-certify batch` when a downstream project already has several
-versioned Circle request files or standard RoPE model configs and wants
-per-source full receipts, compact receipts, optional model-config import
-reports, and one runner-check summary without importing repository-only
-scripts. Use
+versioned Circle request files, standard RoPE model configs, or project-level
+architecture configs and wants per-source full receipts, compact receipts,
+optional model-config and architecture-config import reports, and one
+runner-check summary without importing repository-only scripts. Architecture
+configs emit RoPE, KV-cache, sparse-attention, and recurrence receipts by
+default; pass `--architecture-config-kind` to restrict that set. Use
 `--request-validation-report-out` when it wants the request preflight saved as
 a standalone JSON artifact. Use
 `--certification-bundle-out` and `--certification-bundle-check-out` when the

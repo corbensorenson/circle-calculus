@@ -391,6 +391,25 @@ def test_generated_public_api_reference_lists_console_scripts() -> None:
     )
 
 
+def test_public_docs_show_architecture_config_runner_handoff() -> None:
+    readme = (ROOT / "README.md").read_text()
+    public_api = (ROOT / "docs" / "PUBLIC_API.md").read_text()
+    use_as_library = (ROOT / "docs" / "USE_AS_LIBRARY.md").read_text()
+
+    assert (
+        "--architecture-config-file "
+        "examples/circle_ai_architecture_configs/basic_transformer_contract_config.json"
+    ) in readme
+    assert "--architecture-config-import-report-out-dir" in readme
+    assert (
+        "circle-ai-certify rope \\\n"
+        "  --architecture-config-file "
+        "examples/circle_ai_architecture_configs/basic_transformer_contract_config.json"
+    ) in public_api
+    assert "Architecture\nconfigs emit RoPE, KV-cache" in public_api
+    assert "circle-ai-certify rope --architecture-config-file" in use_as_library
+
+
 def test_package_cli_contract_receipt_json() -> None:
     result = subprocess.run(
         [
