@@ -124,12 +124,17 @@ The mapping is conservative:
 - Single-contract certifier, quickstart, results note, review packet, and guided Living Book lesson changes run the matching certifier tests plus `scripts/export_circle_ai_contracts.py`, `scripts/check_circle_ai_contract_pack.py`, `scripts/check_circle_ai_contract_docs.py`, and `scripts/circle_ai_contract_ready.py --kind ...` with a kind-specific digest. This keeps RoPE, KV-cache, sparse-attention, recurrence, fanout, cyclic-memory, phase-feature, mixer, and seed-rule edits from running unrelated contract lanes during the edit loop.
 - For the four flagship contracts, the same kind-specific path also runs the strict receipt command that a downstream consumer would pin: RoPE D19 position distinguishability, KV stale/sink-window freshness, sparse coverage/gap repair, and recurrence schedule/work-saving. Those receipt commands require named evidence fields, theorem ids, planner recommendations, recommendation evidence fields, recommendation theorem ids, and action-parameter paths. Secondary contracts still use readiness and digest checks only, unless they later gain a strict receipt policy.
 - Architecture-config examples under `examples/circle_ai_architecture_configs/`
-  run focused import, public-API, batch artifact-directory handoff,
-  artifact-verifier, runner-example, and kind-specific checks for the four
-  flagship contract families they can emit today: RoPE, KV-cache, sparse
-  attention, and recurrence schedules. This keeps real config fixture edits
-  from falling back to manifest/dictionary checks while avoiding unrelated
-  mixer, cyclic-memory, and seed-rule lanes.
+  run focused import, public-API, runner-example, and kind-specific checks for
+  the contract families selected by that config. Full architecture examples
+  also run the batch artifact-directory and artifact-verifier handoff checks.
+  Without per-file metadata, the targeted plan covers the four
+  architecture-config families emitted today: RoPE, KV-cache, sparse attention,
+  and recurrence schedules. If a config declares `circle_ai_contract_kinds`,
+  such as `["rope"]`, the plan narrows to that family and still runs the
+  kind-hint public-API and batch-runner tests. This keeps real config fixture
+  edits from falling back to manifest/dictionary checks while avoiding
+  unrelated mixer, cyclic-memory, seed-rule, or unselected architecture-contract
+  lanes.
 - Circle AI contract documentation changes under `docs/AI_CONTRACT_SUITE.md`, `docs/CIRCLE_AI_CONTRACTS_INTEGRATION.md`, `docs/CIRCLE_AI_CONTRACT_RUNNER.md`, and `site/chapters/applications/ai_contract_pack_audit.qmd` still use the broad pack path because those files document the whole generated minimum-field schema and the downstream runner surface.
 - The AI Contract Ladder lesson and audit page also use the broad pack path because they teach the whole public sequence across RoPE, KV cache, sparse attention, recurrence, and mixer contracts.
 - generative seed-rule source changes run the generative sidecar tests and the seed-rule contract readiness/digest path because seed-rule provenance is exported as a downstream-consumable AI contract.

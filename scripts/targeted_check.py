@@ -23,6 +23,9 @@ if str(ROOT) not in sys.path:
 PYTHON = sys.executable
 
 from scripts.check_circle_ai_contract_docs import STRICT_RECEIPT_TOKENS_BY_KIND
+from circle_math.applications.circle_ai_contract_runner import (
+    architecture_config_selected_contract_kinds,
+)
 
 
 @dataclass(frozen=True)
@@ -394,6 +397,36 @@ ARCHITECTURE_CONFIG_CONTRACT_KINDS = (
     "sparse_attention_coverage",
     "recurrence_schedule",
 )
+DEFAULT_ARCHITECTURE_CONFIG_KIND_ALIASES = (
+    "rope",
+    "kv-cache",
+    "sparse-attention",
+    "recurrence",
+)
+
+
+def architecture_config_contract_kinds(path: str) -> tuple[str, ...]:
+    """Return contract kinds selected by an architecture-config example.
+
+    Invalid or unreadable examples fall back to the conservative full
+    architecture-config surface; the targeted runner should never hide checks
+    because a changed config is malformed.
+    """
+
+    try:
+        config = json.loads((ROOT / path).read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return ARCHITECTURE_CONFIG_CONTRACT_KINDS
+    if not isinstance(config, dict):
+        return ARCHITECTURE_CONFIG_CONTRACT_KINDS
+    try:
+        selected = architecture_config_selected_contract_kinds(
+            config,
+            DEFAULT_ARCHITECTURE_CONFIG_KIND_ALIASES,
+        )
+    except ValueError:
+        return ARCHITECTURE_CONFIG_CONTRACT_KINDS
+    return tuple(kind for kind in ARCHITECTURE_CONFIG_CONTRACT_KINDS if kind in selected)
 
 
 def add_circle_ai_contract_core_checks(
@@ -463,42 +496,69 @@ def add_architecture_config_example_checks(
     checks: list[Check],
     seen: set[tuple[str, ...]],
     reason: str,
+    contract_kinds: Iterable[str],
 ) -> None:
+    selected = tuple(dict.fromkeys(contract_kinds))
+    has_rope = "rope_position_distinguishability" in selected
+    has_non_rope = any(kind != "rope_position_distinguishability" for kind in selected)
+
+    runner_tests: list[str] = []
+    if has_non_rope:
+        runner_tests.extend(
+            [
+                "tests/test_circle_ai_contract_runner.py::test_architecture_config_import_builds_contract_requests",
+                "tests/test_circle_ai_contract_runner.py::test_certification_bundle_public_api_embeds_architecture_config_import_report",
+                "tests/test_circle_ai_contract_runner.py::test_circle_ai_certify_cli_accepts_architecture_config_non_rope",
+            ]
+        )
+    if has_rope:
+        runner_tests.extend(
+            [
+                "tests/test_circle_ai_contract_runner.py::test_architecture_config_import_derives_rope_head_dim_from_model_section",
+                "tests/test_circle_ai_contract_runner.py::test_circle_ai_certify_cli_accepts_architecture_config_rope",
+                "tests/test_circle_ai_contract_runner.py::test_circle_ai_certify_rope_architecture_config_derives_nested_model_head_dim",
+            ]
+        )
     add(
         checks,
         seen,
         "Circle AI architecture-config runner tests",
-        pytest(
-            "tests/test_circle_ai_contract_runner.py::test_architecture_config_import_builds_non_rope_contract_requests",
-            "tests/test_circle_ai_contract_runner.py::test_certification_bundle_public_api_embeds_architecture_config_import_report",
-            "tests/test_circle_ai_contract_runner.py::test_circle_ai_certify_cli_accepts_architecture_config_non_rope",
-            "tests/test_circle_ai_contract_runner.py::test_circle_ai_certify_cli_accepts_architecture_config_rope",
-        ),
+        pytest(*runner_tests),
         reason,
     )
+
+    public_api_tests: list[str] = [
+        "tests/test_public_api.py::test_architecture_config_kind_hints_select_runner_contracts",
+        "tests/test_public_api.py::test_package_cli_batch_honors_architecture_config_kind_hints",
+    ]
+    if has_non_rope:
+        public_api_tests.extend(
+            [
+                "tests/test_public_api.py::test_stable_architecture_config_api_builds_receipts",
+                "tests/test_public_api.py::test_package_cli_unified_certify_batch_architecture_config_writes_import_reports",
+                "tests/test_public_api.py::test_package_cli_unified_certify_batch_artifact_dir_writes_portable_set",
+                "tests/test_public_api.py::test_package_cli_unified_certify_architecture_config",
+            ]
+        )
     add(
         checks,
         seen,
         "Circle AI architecture-config public API tests",
-        pytest(
-            "tests/test_public_api.py::test_stable_architecture_config_api_builds_non_rope_receipts",
-            "tests/test_public_api.py::test_package_cli_unified_certify_batch_architecture_config_writes_import_reports",
-            "tests/test_public_api.py::test_package_cli_unified_certify_batch_artifact_dir_writes_portable_set",
-            "tests/test_public_api.py::test_package_cli_unified_certify_architecture_config_non_rope",
-        ),
+        pytest(*public_api_tests),
         reason,
     )
-    add(
-        checks,
-        seen,
-        "Circle AI architecture-config artifact verifier tests",
-        pytest(
-            "tests/test_downstream_ci_verify_circle_ai_artifacts.py::test_standalone_artifact_verifier_accepts_architecture_config_artifact_dir",
-            "tests/test_downstream_ci_verify_circle_ai_artifacts.py::test_standalone_artifact_verifier_rejects_stale_architecture_config_import_sidecar",
-            "tests/test_downstream_ci_verify_circle_ai_artifacts.py::test_standalone_artifact_verifier_rejects_missing_architecture_config_fingerprint",
-        ),
-        reason,
-    )
+    if has_non_rope:
+        add(
+            checks,
+            seen,
+            "Circle AI architecture-config artifact verifier tests",
+            pytest(
+                "tests/test_downstream_ci_verify_circle_ai_artifacts.py::test_standalone_artifact_verifier_accepts_architecture_config_artifact_dir",
+                "tests/test_downstream_ci_verify_circle_ai_artifacts.py::test_standalone_artifact_verifier_rejects_stale_architecture_config_import_sidecar",
+                "tests/test_downstream_ci_verify_circle_ai_artifacts.py::test_standalone_artifact_verifier_rejects_missing_architecture_config_fingerprint",
+            ),
+            reason,
+        )
     add(
         checks,
         seen,
@@ -506,7 +566,7 @@ def add_architecture_config_example_checks(
         py("scripts/check_circle_ai_contract_runner.py"),
         reason,
     )
-    for kind in ARCHITECTURE_CONFIG_CONTRACT_KINDS:
+    for kind in selected:
         add_circle_ai_contract_kind_checks(checks, seen, reason, kind)
 
 
@@ -665,7 +725,7 @@ def ai_contract_impact(files: Iterable[str], *, full: bool = False) -> tuple[str
             continue
 
         if path.startswith("examples/circle_ai_architecture_configs/"):
-            impacted.update(ARCHITECTURE_CONFIG_CONTRACT_KINDS)
+            impacted.update(architecture_config_contract_kinds(path))
             continue
 
         if path == "Makefile":
@@ -887,10 +947,12 @@ def plan_for_files(files: Iterable[str], *, full: bool = False) -> list[Check]:
             )
 
         if path.startswith("examples/circle_ai_architecture_configs/"):
+            contract_kinds = architecture_config_contract_kinds(path)
             add_architecture_config_example_checks(
                 checks,
                 seen,
                 f"{path} changed a public AI architecture config example",
+                contract_kinds,
             )
 
         if path == "pyproject.toml" or path.startswith(".github/workflows/"):
