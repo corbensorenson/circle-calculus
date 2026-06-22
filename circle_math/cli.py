@@ -61,6 +61,14 @@ from .applications.rope_certifier import (
 from .contracts import contract_kinds, load_contract_pack, readiness_summary
 
 
+DEFAULT_ARCHITECTURE_CONFIG_KINDS = (
+    "rope",
+    "kv-cache",
+    "sparse-attention",
+    "recurrence",
+)
+
+
 def _jsonable(value: Any) -> Any:
     if is_dataclass(value):
         return asdict(value)
@@ -469,6 +477,9 @@ def _default_certify_artifact_prefix(args: argparse.Namespace) -> str:
         model_config_file = getattr(args, "model_config_file", None)
         if model_config_file is not None:
             return _safe_certify_artifact_prefix(Path(model_config_file).stem)
+        architecture_config_file = getattr(args, "architecture_config_file", None)
+        if architecture_config_file is not None:
+            return _safe_certify_artifact_prefix(Path(architecture_config_file).stem)
     if command in {"kv-cache", "sparse-attention", "recurrence"}:
         architecture_config_file = getattr(args, "architecture_config_file", None)
         if architecture_config_file is not None:
@@ -515,7 +526,8 @@ def _apply_certify_artifact_dir_defaults(args: argparse.Namespace) -> None:
             "model_config_import",
         )
     if (
-        getattr(args, "command", None) in {"kv-cache", "sparse-attention", "recurrence"}
+        getattr(args, "command", None)
+        in {"rope", "kv-cache", "sparse-attention", "recurrence"}
         and getattr(args, "architecture_config_file", None) is not None
     ):
         _fill_certify_artifact_path(
@@ -884,8 +896,7 @@ def _certify_batch_requests(args: argparse.Namespace) -> int:
     model_config_files = tuple(args.model_config_file or ())
     architecture_config_files = tuple(args.architecture_config_file or ())
     architecture_config_kinds = tuple(
-        args.architecture_config_kind
-        or ("kv-cache", "sparse-attention", "recurrence")
+        args.architecture_config_kind or DEFAULT_ARCHITECTURE_CONFIG_KINDS
     )
 
     for index, source_path in enumerate(request_files, start=1):
@@ -1249,18 +1260,18 @@ def contract_certify_main() -> int:
         default=[],
         type=Path,
         help=(
-            "Path to a non-RoPE architecture config JSON object with kv_cache, "
+            "Path to an AI architecture config JSON object with rope, kv_cache, "
             "sparse_attention, or recurrence sections. May be passed more than once."
         ),
     )
     batch_parser.add_argument(
         "--architecture-config-kind",
         action="append",
-        choices=("kv-cache", "sparse-attention", "recurrence"),
+        choices=DEFAULT_ARCHITECTURE_CONFIG_KINDS,
         default=[],
         help=(
             "Contract family to emit from each architecture config. Defaults "
-            "to kv-cache, sparse-attention, and recurrence when omitted."
+            "to all supported architecture-config kinds when omitted."
         ),
     )
     batch_parser.add_argument(
@@ -1275,8 +1286,7 @@ def contract_certify_main() -> int:
         "--architecture-config-import-report-out-dir",
         type=Path,
         help=(
-            "Optional directory where non-RoPE architecture-config import "
-            "reports are written."
+            "Optional directory where architecture-config import reports are written."
         ),
     )
     batch_parser.add_argument("--head-dim", type=int, default=None)
@@ -1322,6 +1332,17 @@ def contract_certify_main() -> int:
         ),
     )
     rope_parser.add_argument("--model-config-import-report-out", type=Path)
+    rope_parser.add_argument(
+        "--architecture-config-file",
+        "--architecture-config",
+        type=Path,
+        help=(
+            "Optional project-level AI architecture config JSON. Reads explicit "
+            "rope/rotary aliases and lets explicit flags override imported values. "
+            "Use --model-config for standard model config.json files."
+        ),
+    )
+    rope_parser.add_argument("--architecture-config-import-report-out", type=Path)
     rope_parser.add_argument("--head-dim", type=int, default=None)
     rope_parser.add_argument("--base", type=float, default=None)
     rope_parser.add_argument("--context", type=int, default=None)
@@ -1332,6 +1353,8 @@ def contract_certify_main() -> int:
         default=None,
     )
     rope_parser.add_argument("--requested-margin", default=None)
+    rope_parser.add_argument("--turn-ratio-numerator", type=int, default=None)
+    rope_parser.add_argument("--turn-ratio-denominator", type=int, default=None)
 
     kv_parser = subparsers.add_parser(
         "kv-cache",
@@ -1481,6 +1504,11 @@ def contract_certify_main() -> int:
             "--architecture-config-import-report-out requires "
             "--architecture-config-file"
         )
+    if (
+        getattr(args, "model_config_file", None) is not None
+        and getattr(args, "architecture_config_file", None) is not None
+    ):
+        parser.error("--model-config-file and --architecture-config-file cannot be combined")
     pack = _certify_pack_from_args(args)
     model_config_import_report: dict[str, Any] | None = None
     architecture_config_import_report: dict[str, Any] | None = None
@@ -1494,6 +1522,16 @@ def contract_certify_main() -> int:
             )
             receipt = build_validated_contract_receipt_from_request(request, pack=pack)
         elif args.command == "rope":
+            rope_parameters = {
+                "head_dim": args.head_dim,
+                "base": args.base,
+                "context": args.context,
+                "tolerance": args.tolerance,
+                "discretization": args.discretization,
+                "requested_margin": args.requested_margin,
+                "turn_ratio_numerator": args.turn_ratio_numerator,
+                "turn_ratio_denominator": args.turn_ratio_denominator,
+            }
             if args.model_config_file is not None:
                 config = _load_json_object_from_args(
                     rope_parser,
@@ -1526,21 +1564,38 @@ def contract_certify_main() -> int:
                     requested_margin=args.requested_margin,
                     pack=pack,
                 )
+            elif args.architecture_config_file is not None:
+                (
+                    request,
+                    architecture_config_import_report,
+                ) = _contract_request_from_architecture_config_args(
+                    rope_parser,
+                    args,
+                    "rope",
+                    rope_parameters,
+                )
+                receipt = build_validated_contract_receipt_from_request(
+                    request,
+                    pack=pack,
+                )
             else:
+                parameters = {
+                    "head_dim": 128 if args.head_dim is None else args.head_dim,
+                    "base": 10000.0 if args.base is None else args.base,
+                    "context": 32768 if args.context is None else args.context,
+                    "tolerance": 1e-6 if args.tolerance is None else args.tolerance,
+                    "discretization": (
+                        "round" if args.discretization is None else args.discretization
+                    ),
+                    "requested_margin": args.requested_margin,
+                }
+                if args.turn_ratio_numerator is not None:
+                    parameters["turn_ratio_numerator"] = args.turn_ratio_numerator
+                if args.turn_ratio_denominator is not None:
+                    parameters["turn_ratio_denominator"] = args.turn_ratio_denominator
                 request = build_contract_request(
                     "rope",
-                    {
-                        "head_dim": 128 if args.head_dim is None else args.head_dim,
-                        "base": 10000.0 if args.base is None else args.base,
-                        "context": 32768 if args.context is None else args.context,
-                        "tolerance": 1e-6 if args.tolerance is None else args.tolerance,
-                        "discretization": (
-                            "round"
-                            if args.discretization is None
-                            else args.discretization
-                        ),
-                        "requested_margin": args.requested_margin,
-                    },
+                    parameters,
                 )
                 receipt = build_validated_contract_receipt_from_request(
                     request,

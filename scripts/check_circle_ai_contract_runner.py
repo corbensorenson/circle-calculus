@@ -46,6 +46,7 @@ DEFAULT_ARCHITECTURE_CONFIG_DIR = (
     ROOT / "examples" / "circle_ai_architecture_configs"
 )
 DEFAULT_ARCHITECTURE_CONFIG_KINDS = (
+    "rope",
     "kv-cache",
     "sparse-attention",
     "recurrence",
@@ -854,7 +855,7 @@ def main() -> int:
         type=Path,
         default=DEFAULT_ARCHITECTURE_CONFIG_DIR,
         help=(
-            "Optional directory of non-RoPE architecture config JSON examples. "
+            "Optional directory of AI architecture config JSON examples. "
             "Use a missing directory to skip this source family."
         ),
     )
@@ -863,7 +864,7 @@ def main() -> int:
         action="append",
         default=[],
         help=(
-            "Architecture-config contract kind to emit, such as kv-cache, "
+            "Architecture-config contract kind to emit, such as rope, kv-cache, "
             "sparse-attention, or recurrence. Defaults to all supported "
             "architecture-config kinds."
         ),
@@ -912,7 +913,7 @@ def main() -> int:
         type=Path,
         default=DEFAULT_ARCHITECTURE_CONFIG_IMPORT_SCHEMA,
         help=(
-            "Generated JSON Schema used to validate non-RoPE "
+            "Generated JSON Schema used to validate "
             "architecture-config import reports."
         ),
     )
@@ -972,7 +973,7 @@ def main() -> int:
         "--architecture-config-import-report-out-dir",
         type=Path,
         help=(
-            "Optional directory where schema-validated non-RoPE "
+            "Optional directory where schema-validated "
             "architecture-config import reports are written."
         ),
     )

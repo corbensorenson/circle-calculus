@@ -197,8 +197,8 @@ For context length, the importer accepts `max_position_embeddings`,
 `max_seq_len`, `max_seq_length`, `max_sequence_length`, `model_max_length`,
 `seq_len`, `context_length`, `seq_length`, or `n_positions`.
 
-For non-RoPE AI configs, the facade exposes a source-tracked architecture
-adapter for the KV-cache, sparse-attention, and recurrence contracts:
+For project-level AI configs, the facade exposes a source-tracked architecture
+adapter for explicit RoPE, KV-cache, sparse-attention, and recurrence contracts:
 
 ```python
 from circle_math.ai_contracts import (
@@ -210,6 +210,14 @@ from circle_math.ai_contracts import (
 )
 
 architecture_config = {
+    "rope": {
+        "head_dim": 128,
+        "base": 10000.0,
+        "context_length": 4096,
+        "requested_margin": "1/4099",
+        "turn_ratio_numerator": 1,
+        "turn_ratio_denominator": 4099,
+    },
     "sparse_attention": {
         "context_length": 9,
         "strides": [3, 4, 7],
@@ -251,10 +259,10 @@ versioned requests, plus `build_rope_model_config_certification_bundle` and
 `build_architecture_config_certification_bundle` when a downstream handoff
 should carry request preflight, receipt, gate report, and config-to-request
 provenance in one object.
-The same in-memory runner-check helper accepts non-RoPE architecture configs and
-emits KV-cache, sparse-attention, and recurrence summaries by default. Pass
+The same in-memory runner-check helper accepts architecture configs and emits
+RoPE, KV-cache, sparse-attention, and recurrence summaries by default. Pass
 `architecture_config_kinds=("sparse-attention",)` when a caller only needs one
-of those families.
+family.
 
 The same facade exposes reusable integer phase-bank helpers for sinusoidal,
 RoPE-family, scaled, and 2D positional phase descriptors:

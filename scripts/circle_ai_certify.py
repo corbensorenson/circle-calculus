@@ -1062,6 +1062,8 @@ def _default_artifact_prefix(args: argparse.Namespace) -> str:
         )
     if args.kind == "rope" and args.model_config is not None:
         return _safe_artifact_prefix(Path(args.model_config).stem)
+    if args.kind == "rope" and getattr(args, "architecture_config", None) is not None:
+        return _safe_artifact_prefix(Path(args.architecture_config).stem)
     return {
         "rope": "rope",
         "kv-cache": "kv_cache",
@@ -1126,7 +1128,7 @@ def _apply_artifact_dir_defaults(args: argparse.Namespace) -> None:
             "model_config_import",
         )
     if (
-        args.kind in {"kv-cache", "sparse-attention", "recurrence"}
+        args.kind in {"rope", "kv-cache", "sparse-attention", "recurrence"}
         and getattr(args, "architecture_config", None) is not None
     ):
         _fill_artifact_path(

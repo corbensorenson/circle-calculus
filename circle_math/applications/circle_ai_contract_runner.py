@@ -3784,7 +3784,7 @@ def build_contract_runner_check_report(
     selected_kinds: set[str] = set()
     selected_architecture_kinds = tuple(
         architecture_config_kinds
-        or ("kv-cache", "sparse-attention", "recurrence")
+        or ("rope", "kv-cache", "sparse-attention", "recurrence")
     )
 
     for index, request in enumerate(requests):

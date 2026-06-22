@@ -253,8 +253,9 @@ rotary fraction again. For context length, it accepts
 `seq_length`, or `n_positions`. For base/theta, it accepts `rope_theta`,
 `rope_base`, `rotary_emb_base`, `rotary_base`, or `rotary_theta`.
 
-For non-RoPE architecture configs, use the explicit architecture adapter. It
-currently covers the KV-cache, sparse-attention, and recurrence contracts:
+For project-level architecture configs, use the explicit architecture adapter.
+It currently covers explicit RoPE, KV-cache, sparse-attention, and recurrence
+contracts:
 
 ```python
 from circle_math.ai_contracts import (
@@ -265,6 +266,14 @@ from circle_math.ai_contracts import (
 )
 
 architecture_config = {
+    "rope": {
+        "head_dim": 128,
+        "base": 10000.0,
+        "context_length": 4096,
+        "requested_margin": "1/4099",
+        "turn_ratio_numerator": 1,
+        "turn_ratio_denominator": 4099,
+    },
     "kv_cache": {"cache_size": 16, "current": 31, "token": 20, "sink_size": 4},
     "sparse_attention": {
         "context_length": 9,
@@ -330,11 +339,11 @@ print(runner_report["ok"])
 print(runner_report["summaries"][0]["model_config_parameter_sources"])
 ```
 
-When `architecture_configs` is populated, the in-memory report emits
+When `architecture_configs` is populated, the in-memory report emits RoPE,
 KV-cache, sparse-attention, and recurrence receipts by default, matching
 `circle-ai-certify batch --architecture-config-file`. Pass
 `architecture_config_kinds=("sparse-attention",)` when a downstream job only
-needs one non-RoPE contract family.
+needs one contract family.
 
 ## Python: Sparse-Attention Coverage Contract
 
@@ -402,8 +411,8 @@ the JSON file or at the containing model directory with `config.json`. Use
 report. Use `--model-config-import-report-out` to save the parameter-source
 audit report for a RoPE model config. Use
 `--architecture-config-import-report-out` with `--architecture-config-file` on
-KV-cache, sparse-attention, or recurrence runs to save the same parameter-source
-audit boundary for non-RoPE architecture configs.
+RoPE, KV-cache, sparse-attention, or recurrence runs to save the same
+parameter-source audit boundary for architecture configs.
 Installed wheels carry a generated theorem-status snapshot under
 `circle_math/data/generated/theorem_status_index.json`, so contract readiness
 can still resolve theorem ids when the repository `manifests/` directory is not
@@ -413,12 +422,12 @@ alias and JSON parameter object.
 Use `--request-file` when the input is already a versioned Circle request for
 RoPE, KV-cache, sparse attention, or recurrence.
 Use `circle-ai-certify batch` when downstream CI has several versioned request
-files, standard RoPE model configs, or non-RoPE architecture configs and should
+files, standard RoPE model configs, or architecture configs and should
 write per-source full receipts, compact receipts, optional model-config and
 architecture-config import reports, and one schema-validated runner-check
 report without depending on repository-only scripts. By default, each
-architecture config emits KV-cache, sparse-attention, and recurrence receipts;
-pass `--architecture-config-kind` to restrict that set.
+architecture config emits RoPE, KV-cache, sparse-attention, and recurrence
+receipts; pass `--architecture-config-kind` to restrict that set.
 Use `--require-passed`, `--require-status`, `--require-decision`, and
 `--require-assurance` when the command is part of downstream CI. Gate failures
 return exit code `2` after writing the receipt, so CI logs keep the theorem

@@ -514,9 +514,9 @@ including 128k examples at RoPE bases `10000` and `500000`, plus
 `examples/circle_ai_architecture_configs/*.json` architecture configs.
 Model config and architecture config examples are first converted into versioned
 Circle request JSON, then checked by the same receipt path. Each architecture
-config emits KV-cache, sparse-attention, and recurrence receipts by default;
-pass `--architecture-config-kind rope` to include the explicit RoPE section or
-use the same flag to restrict any architecture-derived family.
+config emits RoPE, KV-cache, sparse-attention, and recurrence receipts by
+default; pass `--architecture-config-kind` to restrict any architecture-derived
+family.
 
 Validate a saved certification bundle that another project has already
 produced:

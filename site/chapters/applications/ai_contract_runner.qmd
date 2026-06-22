@@ -176,19 +176,18 @@ parameter-source provenance, so a downstream reader can see whether RoPE values
 came from config fields, derived fields, explicit overrides, defaults, or
 omitted optional inputs. Architecture-config summaries include parameter-source
 provenance for the architecture-derived receipts emitted from that config. The
-default batch emits KV-cache, sparse-attention, and recurrence receipts; pass
-`--architecture-config-kind rope` to include the explicit RoPE section or use
-the same flag to restrict the set. It is
+default batch emits RoPE, KV-cache, sparse-attention, and recurrence receipts;
+pass `--architecture-config-kind` to restrict the set. It is
 the package-native batch handoff path and does not require importing
 repository-only scripts.
 
 Python callers can build the same schema-valid runner-check report in memory
 with `build_contract_runner_check_report`. The helper accepts versioned request
 objects, standard RoPE `model_configs`, and AI `architecture_configs`.
-When `architecture_configs` is populated, it emits KV-cache, sparse-attention,
-and recurrence summaries by default; pass `architecture_config_kinds=("rope",)`
-to include RoPE, or pass any supported kind list to restrict the contract
-families. This is the library path for downstream systems
+When `architecture_configs` is populated, it emits RoPE, KV-cache,
+sparse-attention, and recurrence summaries by default; pass any supported
+`architecture_config_kinds` list to restrict the contract families. This is the
+library path for downstream systems
 that already load configs and want the same pass/fail report without a
 subprocess.
 
@@ -653,9 +652,8 @@ Use `--certification-bundle-check-out-dir` with it when the batch should also
 write a schema-validated verification report for every bundle.
 By default the batch includes request-file examples, standard RoPE model-config
 examples currently including 128k examples at RoPE bases `10000` and `500000`,
-and architecture-config examples that emit KV-cache, sparse-attention, and
-recurrence receipts by default. Pass `--architecture-config-kind rope` to include
-the explicit RoPE architecture section or use the same flag to restrict
+and architecture-config examples that emit RoPE, KV-cache, sparse-attention, and
+recurrence receipts by default. Pass `--architecture-config-kind` to restrict
 architecture-derived contract families.
 
 Validate a saved certification bundle after it has been handed to another

@@ -200,7 +200,7 @@ def main() -> int:
         "--architecture-config-import-schema-out",
         default=str(DEFAULT_ARCHITECTURE_CONFIG_IMPORT_SCHEMA_OUT),
         help=(
-            "Output JSON Schema path for non-RoPE architecture config import "
+            "Output JSON Schema path for architecture config import "
             "reports. Defaults to "
             "site/data/generated/circle_ai_architecture_config_import.schema.json."
         ),

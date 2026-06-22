@@ -251,8 +251,25 @@ def test_stable_request_api_builds_kv_cache_receipt() -> None:
     assert bundle["architecture_config_import_report"] is None
 
 
-def test_stable_architecture_config_api_builds_non_rope_receipts() -> None:
+def test_stable_architecture_config_api_builds_receipts() -> None:
     config = json.loads(ARCHITECTURE_CONFIG.read_text(encoding="utf-8"))
+
+    rope_report = build_architecture_config_import_report(
+        "rope",
+        config,
+    )
+    jsonschema.validate(rope_report, build_architecture_config_import_json_schema())
+    assert rope_report["ok"] is True
+    assert rope_report["request"]["kind"] == "rope_position_distinguishability"
+    rope_receipt = build_validated_contract_receipt_from_architecture_config(
+        "rope",
+        config,
+    )
+    assert rope_receipt["kind"] == "rope_position_distinguishability"
+    assert rope_receipt["request_passed"] is True
+    assert "rational_turn_ratio_finite_margin_certificate" in rope_receipt[
+        "evidence"
+    ]
 
     sparse_report = build_architecture_config_import_report(
         "sparse-attention",
@@ -754,10 +771,11 @@ def test_package_cli_unified_certify_batch_architecture_config_writes_import_rep
     assert saved_report == report
     jsonschema.validate(report, build_contract_runner_check_json_schema())
     assert report["ok"] is True
-    assert report["example_count"] == 3
+    assert report["example_count"] == 4
     assert report["selected_kinds"] == [
         "kv_cache_ring_buffer",
         "recurrence_schedule",
+        "rope_position_distinguishability",
         "sparse_attention_coverage",
     ]
     assert {summary["source_type"] for summary in report["summaries"]} == {
@@ -765,6 +783,7 @@ def test_package_cli_unified_certify_batch_architecture_config_writes_import_rep
     }
     assert {summary["kind"] for summary in report["summaries"]} == {
         "kv_cache_ring_buffer",
+        "rope_position_distinguishability",
         "sparse_attention_coverage",
         "recurrence_schedule",
     }
@@ -896,7 +915,7 @@ def test_public_api_runner_check_report_builds_from_in_memory_sources() -> None:
 
     jsonschema.validate(report, build_facade_runner_check_json_schema())
     assert report["ok"] is True
-    assert report["example_count"] == 5
+    assert report["example_count"] == 6
     assert report["failure_count"] == 0
     assert report["gate_policy"]["allowed_statuses"] == ["proved"]
     assert report["gate_policy"]["allowed_decision_verdicts"] == ["passed"]
@@ -925,9 +944,10 @@ def test_public_api_runner_check_report_builds_from_in_memory_sources() -> None:
         for summary in report["summaries"]
         if summary["source_type"] == "architecture_config"
     ]
-    assert len(architecture_summaries) == 3
+    assert len(architecture_summaries) == 4
     assert {summary["kind"] for summary in architecture_summaries} == {
         "kv_cache_ring_buffer",
+        "rope_position_distinguishability",
         "sparse_attention_coverage",
         "recurrence_schedule",
     }
@@ -1271,9 +1291,54 @@ def test_package_cli_unified_certify_sparse_and_recurrence() -> None:
     assert recurrence_receipt["request_passed"] is True
 
 
-def test_package_cli_unified_certify_architecture_config_non_rope(
+def test_package_cli_unified_certify_architecture_config(
     tmp_path: Path,
 ) -> None:
+    rope_import_report_path = tmp_path / "rope_architecture_import.json"
+    rope_bundle_path = tmp_path / "rope_bundle.json"
+    rope_result = subprocess.run(
+        [
+            sys.executable,
+            "-c",
+            (
+                "import sys; "
+                "from circle_math.cli import contract_certify_main; "
+                "sys.exit(contract_certify_main())"
+            ),
+            "rope",
+            "--architecture-config-file",
+            str(ARCHITECTURE_CONFIG),
+            "--architecture-config-import-report-out",
+            str(rope_import_report_path),
+            "--certification-bundle-out",
+            str(rope_bundle_path),
+            "--format",
+            "json",
+            "--require-passed",
+            "--require-status",
+            "proved",
+        ],
+        text=True,
+        capture_output=True,
+        check=True,
+    )
+    rope_receipt = json.loads(rope_result.stdout)
+    assert rope_receipt["kind"] == "rope_position_distinguishability"
+    assert rope_receipt["request"]["parameters"]["turn_ratio_denominator"] == 4099
+    assert rope_receipt["request_passed"] is True
+    rope_import_report = json.loads(
+        rope_import_report_path.read_text(encoding="utf-8")
+    )
+    rope_bundle = json.loads(rope_bundle_path.read_text(encoding="utf-8"))
+    jsonschema.validate(
+        rope_import_report,
+        build_architecture_config_import_json_schema(),
+    )
+    jsonschema.validate(rope_bundle, build_contract_certification_bundle_json_schema())
+    assert rope_import_report["request"]["kind"] == "rope_position_distinguishability"
+    assert rope_bundle["architecture_config_import_report"] == rope_import_report
+    assert rope_bundle["model_config_import_report"] is None
+
     sparse_import_report_path = tmp_path / "sparse_architecture_import.json"
     sparse_bundle_path = tmp_path / "sparse_bundle.json"
     sparse_result = subprocess.run(
