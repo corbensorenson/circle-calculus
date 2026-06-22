@@ -38,12 +38,16 @@ PRIME_TEST_ENGINES = {
     "openssl_prime",
     "sympy_isprime",
 }
+GMPY2_PRIME_TEST_ENGINES = {"gmpy2_is_prime"}
+PARI_GP_PRIME_TEST_ENGINES = {"pari_gp_ispseudoprime", "pari_gp_isprime"}
 NEXT_SEARCH_ENGINES = {
     "circle_big_next",
     "circle_big_next_server",
     "circle_big_bpsw_next_server",
     "sympy_nextprime",
 }
+GMPY2_NEXT_SEARCH_ENGINES = {"gmpy2_next_prime"}
+PARI_GP_NEXT_SEARCH_ENGINES = {"pari_gp_nextprime"}
 FUZZY_ANY_ENGINES = {"circle_big_fuzzy_any", "circle_big_fuzzy_any_server"}
 
 
@@ -147,6 +151,22 @@ def main() -> int:
         action="store_false",
         help="Do not require BigUint fuzzy any-prime rows.",
     )
+    parser.add_argument(
+        "--require-gmpy2-controls",
+        action="store_true",
+        help=(
+            "Require optional GMP/gmpy2 BigUint control rows and metadata. "
+            "Use with benchmark --require-gmpy2."
+        ),
+    )
+    parser.add_argument(
+        "--require-pari-gp-controls",
+        action="store_true",
+        help=(
+            "Require optional PARI/GP BigUint control rows and metadata. "
+            "Use with benchmark --require-pari-gp."
+        ),
+    )
     args = parser.parse_args()
 
     failures = validate_artifact(
@@ -167,6 +187,8 @@ def main() -> int:
         ),
         require_bpsw_profile=args.require_bpsw_profile,
         require_fuzzy_any=args.require_fuzzy_any,
+        require_gmpy2_controls=args.require_gmpy2_controls,
+        require_pari_gp_controls=args.require_pari_gp_controls,
     )
     if failures:
         for failure in failures:
@@ -191,6 +213,8 @@ def validate_artifact(
     bpsw_prime_vs_sympy_cases: set[str] | None = None,
     require_bpsw_profile: bool = True,
     require_fuzzy_any: bool = True,
+    require_gmpy2_controls: bool = False,
+    require_pari_gp_controls: bool = False,
 ) -> list[str]:
     failures: list[str] = []
     if not csv_path.exists():
@@ -213,6 +237,14 @@ def validate_artifact(
         )
     )
     failures.extend(validate_required_rows(row_by_key, require_bpsw_profile, require_fuzzy_any))
+    failures.extend(
+        validate_optional_control_requirements(
+            metadata,
+            row_by_key,
+            require_gmpy2_controls=require_gmpy2_controls,
+            require_pari_gp_controls=require_pari_gp_controls,
+        )
+    )
     failures.extend(validate_row_agreement_and_timings(rows))
     failures.extend(
         validate_speed_floor(
@@ -254,6 +286,69 @@ def validate_artifact(
             minimum=min_bpsw_prime_vs_sympy,
         )
     )
+    return failures
+
+
+def validate_optional_control_requirements(
+    metadata: dict[str, Any],
+    row_by_key: dict[tuple[str, str, str], BigIntRow],
+    *,
+    require_gmpy2_controls: bool,
+    require_pari_gp_controls: bool,
+) -> list[str]:
+    failures: list[str] = []
+    optional = metadata.get("optional_controls") or {}
+    tools = metadata.get("tools") or {}
+
+    if require_gmpy2_controls:
+        if optional.get("gmpy2_enabled") is not True:
+            failures.append("metadata optional_controls.gmpy2_enabled is not true")
+        version = tools.get("gmpy2")
+        if not isinstance(version, str) or not version or version.startswith("unavailable"):
+            failures.append("metadata does not show an available gmpy2/GMP control")
+        failures.extend(
+            missing_optional_rows(
+                row_by_key,
+                prime_engines=GMPY2_PRIME_TEST_ENGINES,
+                next_engines=GMPY2_NEXT_SEARCH_ENGINES,
+            )
+        )
+
+    if require_pari_gp_controls:
+        if optional.get("pari_gp_enabled") is not True:
+            failures.append("metadata optional_controls.pari_gp_enabled is not true")
+        version = tools.get("pari_gp")
+        if not isinstance(version, str) or not version or version.startswith("unavailable"):
+            failures.append("metadata does not show an available PARI/GP control")
+        if not optional.get("pari_gp_binary"):
+            failures.append("metadata optional_controls.pari_gp_binary is missing")
+        failures.extend(
+            missing_optional_rows(
+                row_by_key,
+                prime_engines=PARI_GP_PRIME_TEST_ENGINES,
+                next_engines=PARI_GP_NEXT_SEARCH_ENGINES,
+            )
+        )
+    return failures
+
+
+def missing_optional_rows(
+    row_by_key: dict[tuple[str, str, str], BigIntRow],
+    *,
+    prime_engines: set[str],
+    next_engines: set[str],
+) -> list[str]:
+    failures: list[str] = []
+    for case in PRIME_CASES:
+        for engine in prime_engines:
+            if ("prime_test", case, engine) not in row_by_key:
+                failures.append(f"missing optional prime_test row: case={case}, engine={engine}")
+    for case in NEXT_CASES:
+        for engine in next_engines:
+            if ("next_search", case, engine) not in row_by_key:
+                failures.append(
+                    f"missing optional next_search row: case={case}, engine={engine}"
+                )
     return failures
 
 

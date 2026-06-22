@@ -8,8 +8,12 @@ from pathlib import Path
 
 from scripts.check_prime_bigint_controls import (
     FUZZY_ANY_ENGINES,
+    GMPY2_NEXT_SEARCH_ENGINES,
+    GMPY2_PRIME_TEST_ENGINES,
     NEXT_CASES,
     NEXT_SEARCH_ENGINES,
+    PARI_GP_NEXT_SEARCH_ENGINES,
+    PARI_GP_PRIME_TEST_ENGINES,
     PRIME_CASES,
     PRIME_TEST_ENGINES,
     validate_artifact,
@@ -25,6 +29,8 @@ def write_bigint_artifacts(
     omit_bpsw: bool = False,
     weak_bpsw_prime: bool = False,
     weak_bpsw_next: bool = False,
+    include_gmpy2: bool = False,
+    include_pari_gp: bool = False,
 ) -> tuple[Path, Path]:
     csv_path = tmp_path / "bigint.csv"
     metadata_path = tmp_path / "bigint.json"
@@ -41,6 +47,12 @@ def write_bigint_artifacts(
                 "circle_big_bpsw_test_server": 3.0 if weak_bpsw_prime else 1.0,
             }[engine]
             rows.append(row("prime_test", case, engine, median))
+        if include_gmpy2:
+            for engine in sorted(GMPY2_PRIME_TEST_ENGINES):
+                rows.append(row("prime_test", case, engine, 1.5))
+        if include_pari_gp:
+            for engine in sorted(PARI_GP_PRIME_TEST_ENGINES):
+                rows.append(row("prime_test", case, engine, 1.7))
     for case in sorted(NEXT_CASES):
         for engine in sorted(NEXT_SEARCH_ENGINES):
             if omit_bpsw and engine == "circle_big_bpsw_next_server":
@@ -52,6 +64,12 @@ def write_bigint_artifacts(
                 "circle_big_bpsw_next_server": 4.0 if weak_bpsw_next else 1.0,
             }[engine]
             rows.append(row("next_search", case, engine, median))
+        if include_gmpy2:
+            for engine in sorted(GMPY2_NEXT_SEARCH_ENGINES):
+                rows.append(row("next_search", case, engine, 1.4))
+        if include_pari_gp:
+            for engine in sorted(PARI_GP_NEXT_SEARCH_ENGINES):
+                rows.append(row("next_search", case, engine, 1.6))
         for engine in sorted(FUZZY_ANY_ENGINES):
             rows.append(row("fuzzy_any_search", case, engine, 2.5))
 
@@ -86,9 +104,20 @@ def write_bigint_artifacts(
                 "server_batch_size": 16,
                 "circle_prime": {"exists": True},
                 "big_fuzzy_model": {"exists": True},
+                "optional_controls": {
+                    "gmpy2_enabled": include_gmpy2,
+                    "pari_gp_enabled": include_pari_gp,
+                    "pari_gp_binary": "/usr/local/bin/gp" if include_pari_gp else None,
+                },
                 "tools": {
                     "openssl": "OpenSSL 3.6.3",
                     "sympy": "1.14.0",
+                    "gmpy2": "gmpy2 2.2.0 / GMP 6.3.0"
+                    if include_gmpy2
+                    else "unavailable: import gmpy2 failed",
+                    "pari_gp": "GP/PARI CALCULATOR Version 2.17.0"
+                    if include_pari_gp
+                    else "unavailable: gp not found",
                 },
                 "failures": [],
             }
@@ -200,3 +229,64 @@ def test_bigint_controls_checker_enforces_bpsw_prime_sympy_promotion_floor(
     assert any("circle_big_bpsw_test_server" in failure for failure in failures)
     assert any("sympy_isprime" in failure for failure in failures)
     assert any("curve25519_prime" in failure for failure in failures)
+
+
+def test_bigint_controls_checker_can_require_optional_gmpy2_rows(
+    tmp_path: Path,
+) -> None:
+    csv_path, metadata_path = write_bigint_artifacts(tmp_path, include_gmpy2=True)
+
+    failures = validate_artifact(
+        csv_path=csv_path,
+        metadata_path=metadata_path,
+        require_gmpy2_controls=True,
+    )
+
+    assert failures == []
+
+
+def test_bigint_controls_checker_reports_missing_optional_gmpy2_rows(
+    tmp_path: Path,
+) -> None:
+    csv_path, metadata_path = write_bigint_artifacts(tmp_path)
+
+    failures = validate_artifact(
+        csv_path=csv_path,
+        metadata_path=metadata_path,
+        require_gmpy2_controls=True,
+    )
+
+    assert any("gmpy2_enabled" in failure for failure in failures)
+    assert any("gmpy2_is_prime" in failure for failure in failures)
+    assert any("gmpy2_next_prime" in failure for failure in failures)
+
+
+def test_bigint_controls_checker_can_require_optional_pari_gp_rows(
+    tmp_path: Path,
+) -> None:
+    csv_path, metadata_path = write_bigint_artifacts(tmp_path, include_pari_gp=True)
+
+    failures = validate_artifact(
+        csv_path=csv_path,
+        metadata_path=metadata_path,
+        require_pari_gp_controls=True,
+    )
+
+    assert failures == []
+
+
+def test_bigint_controls_checker_reports_missing_optional_pari_gp_rows(
+    tmp_path: Path,
+) -> None:
+    csv_path, metadata_path = write_bigint_artifacts(tmp_path)
+
+    failures = validate_artifact(
+        csv_path=csv_path,
+        metadata_path=metadata_path,
+        require_pari_gp_controls=True,
+    )
+
+    assert any("pari_gp_enabled" in failure for failure in failures)
+    assert any("pari_gp_ispseudoprime" in failure for failure in failures)
+    assert any("pari_gp_isprime" in failure for failure in failures)
+    assert any("pari_gp_nextprime" in failure for failure in failures)

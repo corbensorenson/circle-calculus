@@ -127,8 +127,10 @@ When available, the same benchmark now adds optional GMP/gmpy2 rows
 (`gmpy2_is_prime`, `gmpy2_next_prime`) and optional PARI/GP rows
 (`pari_gp_ispseudoprime`, `pari_gp_isprime`, `pari_gp_nextprime`). These rows
 are agreement-checked when present, and can be made mandatory with
-`CIRCLE_PRIME_BIGINT_EXTRA_ARGS=--require-gmpy2` or
-`CIRCLE_PRIME_BIGINT_EXTRA_ARGS=--require-pari-gp`.
+`CIRCLE_PRIME_BIGINT_EXTRA_ARGS=--require-gmpy2` plus
+`CIRCLE_PRIME_BIGINT_CHECK_EXTRA_ARGS=--require-gmpy2-controls`, or
+`CIRCLE_PRIME_BIGINT_EXTRA_ARGS=--require-pari-gp` plus
+`CIRCLE_PRIME_BIGINT_CHECK_EXTRA_ARGS=--require-pari-gp-controls`.
 `big-test` and `big-next` now accept `--profile mr|bpsw`: `mr` uses the fixed
 Miller-Rabin base bank, while `bpsw` uses base-2 Miller-Rabin plus strong
 Lucas-Selfridge. The BigUint smoke records hot BPSW profile rows for test and
@@ -354,6 +356,12 @@ The one-shot worker-pool path is also closed as a cold-start lever: a local A/B
 fell from `0.916x` median versus cold `primesieve` to `0.740x`, so the
 server-style mpsc/thread teardown cost is not worth paying for one-shot CLI
 work.
+A static-base-prime reciprocal table prototype targeted per-chunk
+modulo/division setup and produced one transient focused hot/cold win
+(`3.931 ms` best for `circle-prime-count` versus `4.155 ms` for cold
+`primesieve`), but it grew the slim binary and failed the isolated cold
+confirmation twice; the stable rerun reported only `0.827x` median and
+`0.749x` best speedup versus cold `primesieve`, so the prototype was removed.
 A separate one-shot-only `circle-prime-count-cold` prototype removed stdin
 server and shifted-batch code and cut the binary from `1395168` to `1310896`
 bytes, but a 25-round interleaved A/B still left the existing

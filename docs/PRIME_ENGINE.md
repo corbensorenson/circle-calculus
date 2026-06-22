@@ -257,13 +257,16 @@ For best-current external comparisons, use:
 - GMP/gmpy2 for in-process arbitrary-precision probable-prime and next-prime
   controls when the Python `gmpy2` binding is installed. The BigUint benchmark
   auto-records `gmpy2_is_prime` and `gmpy2_next_prime` rows when available; use
-  `CIRCLE_PRIME_BIGINT_EXTRA_ARGS=--require-gmpy2` to make that a hard local
-  gate.
+  `CIRCLE_PRIME_BIGINT_EXTRA_ARGS=--require-gmpy2` and
+  `CIRCLE_PRIME_BIGINT_CHECK_EXTRA_ARGS=--require-gmpy2-controls` to make that
+  a hard local gate.
 - PARI/GP for arbitrary-precision `ispseudoprime`, certified `isprime`, and
   `nextprime` control rows when a `gp` executable is installed. The BigUint
   benchmark auto-records `pari_gp_ispseudoprime`, `pari_gp_isprime`, and
   `pari_gp_nextprime` rows when available; use
-  `CIRCLE_PRIME_BIGINT_EXTRA_ARGS=--require-pari-gp` to require them.
+  `CIRCLE_PRIME_BIGINT_EXTRA_ARGS=--require-pari-gp` and
+  `CIRCLE_PRIME_BIGINT_CHECK_EXTRA_ARGS=--require-pari-gp-controls` to require
+  them.
 
 The Makefile range-control targets require `primesieve` and `primecount`. This
 prevents a benchmark or overnight run from silently passing when the serious
@@ -495,6 +498,13 @@ Current CPU findings:
   count-server worker-pool implementation was also rejected: the local A/B
   dropped the cold row from `0.916x` median versus cold `primesieve` to
   `0.740x`, so the mpsc/thread teardown cost dominates for one-shot work.
+  A static-base-prime reciprocal table prototype targeted the remaining
+  per-chunk modulo/division setup and produced one transient focused
+  hot/cold win (`3.931 ms` best for `circle-prime-count` versus `4.155 ms`
+  for cold `primesieve`), but it grew the slim binary and failed the isolated
+  cold confirmation twice; the stable rerun reported only `0.827x` median and
+  `0.749x` best speedup versus cold `primesieve`, so the prototype was
+  removed instead of promoted.
   Smaller cold worker-count/segment-size variants remain tracked as evidence
   lanes. The refreshed lower-thread sweep surfaced `presieve13:2097152` at five
   workers with `1.015x` median but only `0.873x` best speedup versus cold
@@ -744,10 +754,13 @@ Current external goalpost:
   BigUint smoke's optional GMP/gmpy2 and PARI/GP rows before claiming
   large-prime parity. The concrete row names are `gmpy2_is_prime`,
   `gmpy2_next_prime`, `pari_gp_ispseudoprime`, `pari_gp_isprime`, and
-  `pari_gp_nextprime`; use `CIRCLE_PRIME_BIGINT_EXTRA_ARGS=--require-gmpy2` or
-  `CIRCLE_PRIME_BIGINT_EXTRA_ARGS=--require-pari-gp` on machines with those
-  controls installed. For certified arbitrary-precision primality, treat PARI
-  `isprime`/ECPP or fastECPP-class tooling as the proof-certificate bar.
+  `pari_gp_nextprime`; use `CIRCLE_PRIME_BIGINT_EXTRA_ARGS=--require-gmpy2`
+  with `CIRCLE_PRIME_BIGINT_CHECK_EXTRA_ARGS=--require-gmpy2-controls`, or
+  `CIRCLE_PRIME_BIGINT_EXTRA_ARGS=--require-pari-gp` with
+  `CIRCLE_PRIME_BIGINT_CHECK_EXTRA_ARGS=--require-pari-gp-controls`, on
+  machines with those controls installed. For certified arbitrary-precision
+  primality, treat PARI `isprime`/ECPP or fastECPP-class tooling as the
+  proof-certificate bar.
   Mersenne/GIMPS/OpenPFGW-style tools remain a separate special-form category,
   not a fair general interval count target.
 

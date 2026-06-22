@@ -225,6 +225,7 @@ CIRCLE_PRIME_BIGINT_SERVER_BATCH_SIZE ?= 16
 CIRCLE_PRIME_BIGINT_OUTPUT ?= sidecars/PRIME_ENGINE/results/prime_bigint_controls_latest.csv
 CIRCLE_PRIME_BIGINT_METADATA ?= sidecars/PRIME_ENGINE/results/prime_bigint_controls_latest.json
 CIRCLE_PRIME_BIGINT_EXTRA_ARGS ?=
+CIRCLE_PRIME_BIGINT_CHECK_EXTRA_ARGS ?=
 CIRCLE_PRIME_BIGINT_MIN_HOT_TEST_VS_OPENSSL ?= 1.5
 CIRCLE_PRIME_BIGINT_MIN_BPSW_TEST_VS_OPENSSL ?= 1.5
 CIRCLE_PRIME_BIGINT_MIN_BPSW_NEXT_VS_SYMPY ?= 1.1
@@ -612,7 +613,7 @@ prime-engine-bigint-smoke:
 	$(MAKE) prime-engine-bigint-check
 
 prime-engine-bigint-check:
-	python scripts/check_prime_bigint_controls.py --csv $(CIRCLE_PRIME_BIGINT_OUTPUT) --metadata $(CIRCLE_PRIME_BIGINT_METADATA) --expect-bench-rounds $(CIRCLE_PRIME_BIGINT_BENCH_ROUNDS) --expect-warmup-rounds $(CIRCLE_PRIME_BIGINT_WARMUP_ROUNDS) --expect-mr-rounds $(CIRCLE_PRIME_BIGINT_MR_ROUNDS) --expect-server-batch-size $(CIRCLE_PRIME_BIGINT_SERVER_BATCH_SIZE) --min-hot-test-vs-openssl $(CIRCLE_PRIME_BIGINT_MIN_HOT_TEST_VS_OPENSSL) --min-bpsw-test-vs-openssl $(CIRCLE_PRIME_BIGINT_MIN_BPSW_TEST_VS_OPENSSL) --min-bpsw-next-vs-sympy $(CIRCLE_PRIME_BIGINT_MIN_BPSW_NEXT_VS_SYMPY) --require-bpsw-profile --require-fuzzy-any
+	python scripts/check_prime_bigint_controls.py --csv $(CIRCLE_PRIME_BIGINT_OUTPUT) --metadata $(CIRCLE_PRIME_BIGINT_METADATA) --expect-bench-rounds $(CIRCLE_PRIME_BIGINT_BENCH_ROUNDS) --expect-warmup-rounds $(CIRCLE_PRIME_BIGINT_WARMUP_ROUNDS) --expect-mr-rounds $(CIRCLE_PRIME_BIGINT_MR_ROUNDS) --expect-server-batch-size $(CIRCLE_PRIME_BIGINT_SERVER_BATCH_SIZE) --min-hot-test-vs-openssl $(CIRCLE_PRIME_BIGINT_MIN_HOT_TEST_VS_OPENSSL) --min-bpsw-test-vs-openssl $(CIRCLE_PRIME_BIGINT_MIN_BPSW_TEST_VS_OPENSSL) --min-bpsw-next-vs-sympy $(CIRCLE_PRIME_BIGINT_MIN_BPSW_NEXT_VS_SYMPY) --require-bpsw-profile --require-fuzzy-any $(CIRCLE_PRIME_BIGINT_CHECK_EXTRA_ARGS)
 
 prime-engine-bigint-raw-sympy-promotion-check:
 	python scripts/check_prime_bigint_controls.py --csv $(CIRCLE_PRIME_BIGINT_OUTPUT) --metadata $(CIRCLE_PRIME_BIGINT_METADATA) --expect-bench-rounds $(CIRCLE_PRIME_BIGINT_BENCH_ROUNDS) --expect-warmup-rounds $(CIRCLE_PRIME_BIGINT_WARMUP_ROUNDS) --expect-mr-rounds $(CIRCLE_PRIME_BIGINT_MR_ROUNDS) --expect-server-batch-size $(CIRCLE_PRIME_BIGINT_SERVER_BATCH_SIZE) --min-hot-test-vs-openssl $(CIRCLE_PRIME_BIGINT_MIN_HOT_TEST_VS_OPENSSL) --min-bpsw-test-vs-openssl $(CIRCLE_PRIME_BIGINT_MIN_BPSW_TEST_VS_OPENSSL) --min-bpsw-next-vs-sympy $(CIRCLE_PRIME_BIGINT_MIN_BPSW_NEXT_VS_SYMPY) --min-bpsw-prime-vs-sympy $(CIRCLE_PRIME_BIGINT_MIN_BPSW_PRIME_VS_SYMPY) --bpsw-prime-vs-sympy-cases $(CIRCLE_PRIME_BIGINT_BPSW_PRIME_VS_SYMPY_CASES) --require-bpsw-profile --require-fuzzy-any
