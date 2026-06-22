@@ -294,17 +294,18 @@ the slim binary to avoid cold-start bloat. Shifted count-server batches detect
 adjacent windows when the shift equals the range span and sieve the full union
 once, binning flags back into the requested intervals for both `presieve13` and
 `presieve17`; non-adjacent shifted requests fall back to the shifted
-single-segment mark plan. The latest focused cold candidate probe, run while the
-machine was otherwise loaded, keeps the count-only CLI below a clean promotion:
-`presieve13:1507328` reached `0.922x` median and `0.906x` best versus cold
-`primesieve` in the cleanest stable sample, while noisy reruns sometimes cleared
-median parity but not best-time parity. Treat the cold one-shot lane as
-below-parity until a candidate beats cold `primesieve` by both median and best
-time. A later narrow 17-round cold worker-count probe rejected
-`presieve13:1703936` and `presieve13:1835008` six-worker candidates. The
-current `presieve13:1507328` default had a noisy `1.102x` median over cold
-`primesieve` in that run, but still lost best time at `0.881x`; that is not a
-promotion. The same exact-repeat probe has persistent Circle
+single-segment mark plan. The latest lower-thread cold sweep keeps the
+count-only CLI below a clean promotion: the current adaptive default
+(`presieve13:1507328`, 7 effective workers) reached `0.994x` median and
+`0.871x` best versus cold `primesieve`, while `presieve13:2097152` at 5
+workers reached `1.015x` median but only `0.873x` best. A focused 17-round
+candidate confirmation rejected the same lane again: the best confirmed
+default-relative gain was only `1.019x`, and no count-binary candidate beat
+cold `primesieve` by both median and best time. Treat the cold one-shot lane
+as below-parity until a candidate beats cold `primesieve` by both median and
+best time. Earlier probes also rejected `presieve13:1703936`,
+`presieve13:1835008`, and one-shot worker-pool variants; noisy median parity
+without best-time parity is not a promotion. The same exact-repeat probe has persistent Circle
 `count-server` at `15.668x` median versus persistent `libprimesieve`, and the
 slim count-binary server row at `15.494x` median versus persistent
 `libprimesieve`; those are hot-service repeat throughput numbers, while the
@@ -340,7 +341,7 @@ without being held by focused confirmation. The sweep now keeps reduced-thread
 high-offset candidates plus explicit `balanced` and `dynamic` rows visible; the
 latest sweep/confirmation readout has no comparable stable candidate group that
 both beats the cold default and beats cold `primesieve` by median and best
-time. Its noisy fallback best gain is `1.084x`, so the lane stays
+time. Its noisy fallback best gain is `1.021x`, so the lane stays
 `hold_small_gain_candidate`.
 `make prime-engine-high-offset-count-binary-candidate-confirm` is now the named
 confirmation target for that lane: it reruns the default plus those current
@@ -359,13 +360,19 @@ bytes, but a 25-round interleaved A/B still left the existing
 Builder/128 KiB-stack `circle-prime-count` row ahead at `0.989x` median versus
 cold `primesieve`; the prototype remained below parity and was removed.
 `make prime-engine-high-offset-hot-cold` now records the local bottleneck split
-directly: minimal fresh-process segmented/default rows, the full `circle-prime`
-CLI row, the slim `circle-prime-count` CLI row, and persistent `count-server`
-candidate rows. The latest short diagnostic has the slim cold count binary at
-`5.189 ms` best, the minimal adaptive default cold worker at `5.803 ms`, and the
-persistent default count-server row at `2.022 ms` on the tracked high-offset
-span. Treat that as process/thread-startup evidence, not an external promotion
-claim.
+directly: a no-op fresh-process floor, adaptive-plan-only worker, serial
+default worker, minimal fresh-process segmented/default rows, the full
+`circle-prime` CLI row, the slim `circle-prime-count` CLI row, an optional
+cold `primesieve` row, and persistent `count-server` candidate rows. The
+latest short diagnostic has the slim cold count binary at `4.458 ms` best
+versus cold `primesieve` at `4.271 ms` (`1.04x` slower), the slim binary no-op
+process floor at `1.343 ms`, slim binary adaptive plan resolution at `1.375 ms`,
+serial default count at `9.534 ms`, the minimal adaptive default cold worker at
+`4.329 ms`, the full `circle-prime` CLI at `4.314 ms`, and the persistent
+default count-server row at `1.895 ms` on the tracked high-offset span. The hot
+in-process default row is `2.046 ms`, so the residual cold gap is first-touch and
+thread-dispatch cost plus short-span count work, not default-plan calculation.
+Treat that as bottleneck evidence, not an external cold one-shot promotion claim.
 For build-profile probes, `scripts/benchmark_prime_external_controls.py` accepts
 `--circle-prime-bin` and `--circle-prime-count-bin` to measure alternate
 prebuilt binaries while keeping the normal `target/release` artifacts intact.

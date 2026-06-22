@@ -218,6 +218,15 @@ the short competitive workflow.
   cache; the server thread counts one chunk while the pool handles the
   remaining chunks, so hot-service timing measures sustained count work instead
   of leaving the caller idle behind channels.
+  The current hard target is cold one-shot high-offset parity with `primesieve`:
+  the latest focused diagnostic has `circle-prime-count` at `4.458 ms` best
+  versus cold `primesieve` at `4.271 ms` on `[1e12, 1e12 + 1e7)`, while the
+  hot persistent default count-server row is `1.895 ms`. The slim binary's
+  no-op fresh-process floor is `1.343 ms` and adaptive plan resolution is only
+  `1.375 ms`, so default selection costs about `0.032 ms`. The remaining gap is
+  first-touch/thread dispatch plus short-span count work, not default-selection
+  logic. Lower-thread candidates have not cleared the promotion rule because
+  they can reach median parity without best-time parity.
 - Benchmarks include control implementations: a straightforward full
   Sieve-of-Eratosthenes count, a guarded scalar trial-division count, and the
   optimized pure-Rust `primal` sieve.
@@ -487,13 +496,14 @@ Current CPU findings:
   dropped the cold row from `0.916x` median versus cold `primesieve` to
   `0.740x`, so the mpsc/thread teardown cost dominates for one-shot work.
   Smaller cold worker-count/segment-size variants remain tracked as evidence
-  lanes. The refreshed short sweep surfaced `presieve13:1572864:8`, resolving
-  to seven effective threads. The focused confirmation still does not validate
-  promotion: the current sweep/confirmation readout has no comparable stable
-  candidate group that both beats the cold default and beats cold `primesieve`
-  by median and best time. Its noisy fallback best gain is `1.084x`, so the gate
-  holds the lane as `hold_small_gain_candidate` instead of promoting a cold row
-  that still loses to the best cold control.
+  lanes. The refreshed lower-thread sweep surfaced `presieve13:2097152` at five
+  workers with `1.015x` median but only `0.873x` best speedup versus cold
+  `primesieve`. Focused confirmation still does not validate promotion: the
+  default row is `0.901x` median / `0.876x` best, the best candidate
+  (`presieve13:1835008`, six workers) is `0.918x` median / `0.884x` best, and
+  the best default-relative gain is only `1.019x`. The gate holds the lane as
+  `hold_small_gain_candidate` instead of promoting a cold row that still loses
+  to the best cold control.
   The same sweep now records explicit `balanced` and `dynamic` count-binary
   rows; both were rejected for this high-offset cold lane (`0.710x` and
   `0.693x` median versus cold `primesieve`). The current
@@ -511,12 +521,12 @@ Current CPU findings:
   intervals for both `presieve13` and `presieve17`; non-adjacent shifted
   requests fall back to the shifted single-segment mark plan. It is measured
   only when the external-control harness is passed
-  `--include-circle-count-binary`; the latest focused cold candidate probe has
-  the best stable count-only row, `presieve13:1507328`, at `0.922x` median and
-  `0.906x` best versus cold `primesieve`. Noisy reruns sometimes clear median
-  parity, but not best-time parity. Treat the cold one-shot lane as below-parity
-  until a candidate beats cold `primesieve` by both median and best time. The
-  same exact-repeat
+  `--include-circle-count-binary`; the latest focused cold candidate confirmation
+  has the default count-only row, `presieve13:1507328`, at `0.901x` median and
+  `0.876x` best versus cold `primesieve`, while the best candidate
+  (`presieve13:1835008`, six workers) is `0.918x` median and `0.884x` best.
+  Treat the cold one-shot lane as below-parity until a candidate beats cold
+  `primesieve` by both median and best time. The same exact-repeat
   probe has persistent Circle `count-server` at `15.668x` median versus
   persistent `libprimesieve`, and the slim count-binary server row at `15.494x`
   median versus persistent `libprimesieve`; those are hot-service repeat
@@ -557,7 +567,7 @@ Current CPU findings:
   and applies the same median-gain plus median/best-speed promotion rule. The
   latest sweep/confirmation artifact gives `hold_small_gain_candidate`; no
   comparable stable row group is trial-ready, and the noisy fallback best gain
-  is only `1.084x`.
+  is only `1.021x`.
 - A work-balanced prefix splitter using an `x^(3/2)` sieve-work estimate is
   kept as an experimental benchmark row. It was correct and helped some 100M
   rows, but it lost the current 1B rows, so the CLI default still uses equal

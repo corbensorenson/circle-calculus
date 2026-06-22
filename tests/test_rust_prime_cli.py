@@ -810,6 +810,23 @@ def test_rust_prime_count_binary_matches_high_offset_default(
     assert_prime_range_count_proof_contract(count_payload)
 
 
+def test_rust_prime_count_binary_diagnostic_modes(circle_prime_count_bin: Path) -> None:
+    assert run_circle_prime(circle_prime_count_bin, "--diagnostic-noop").strip() == "0"
+    assert (
+        run_circle_prime(
+            circle_prime_count_bin,
+            "--diagnostic-plan",
+            "1000000000000",
+            "1000010000000",
+            "--segment-size",
+            str(DEFAULTS["parallel_edge_high_offset_segment_size"]),
+            "--threads",
+            "8",
+        ).strip()
+        == "7"
+    )
+
+
 def test_rust_prime_count_binary_explicit_default_uses_adaptive_mode(
     circle_prime_count_bin: Path,
 ) -> None:

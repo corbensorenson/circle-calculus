@@ -71,6 +71,13 @@ fn run_args(mut args: impl Iterator<Item = String>) -> Result<(), String> {
     let Some(first) = args.next() else {
         return Err("circle-prime-count requires LOW HIGH".to_string());
     };
+    if first == "--diagnostic-noop" {
+        println!("0");
+        return Ok(());
+    }
+    if first == "--diagnostic-plan" {
+        return diagnostic_plan_command(args);
+    }
     if matches!(first.as_str(), "--help" | "-h") {
         println!("{}", usage());
         return Ok(());
@@ -159,6 +166,65 @@ fn run_args(mut args: impl Iterator<Item = String>) -> Result<(), String> {
     } else {
         println!("{count}");
     }
+    Ok(())
+}
+
+fn diagnostic_plan_command(mut args: impl Iterator<Item = String>) -> Result<(), String> {
+    let Some(first) = args.next() else {
+        return Err("--diagnostic-plan requires LOW HIGH".to_string());
+    };
+    let low = first
+        .parse::<u64>()
+        .map_err(|_| "LOW must fit in u64".to_string())?;
+    let high = args
+        .next()
+        .filter(|arg| !arg.starts_with("--"))
+        .ok_or_else(|| "--diagnostic-plan requires LOW HIGH".to_string())?
+        .parse::<u64>()
+        .map_err(|_| "HIGH must fit in u64".to_string())?;
+    let mut requested_threads = 1usize;
+    let mut explicit_segment_size = None;
+    let mut explicit_mode = None;
+    while let Some(arg) = args.next() {
+        match arg.as_str() {
+            "--threads" => {
+                let Some(value) = args.next() else {
+                    continue;
+                };
+                requested_threads = value
+                    .parse::<usize>()
+                    .map_err(|_| "--threads must fit in usize".to_string())?;
+            }
+            "--segment-size" => {
+                let Some(value) = args.next() else {
+                    continue;
+                };
+                explicit_segment_size = Some(
+                    value
+                        .parse::<u64>()
+                        .map_err(|_| "--segment-size must fit in u64".to_string())?,
+                );
+            }
+            "--count-mode" => {
+                let Some(value) = args.next() else {
+                    continue;
+                };
+                explicit_mode = parse_count_mode_override(&value)?;
+            }
+            _ => {}
+        }
+    }
+    if requested_threads == 0 {
+        return Err("--threads must be greater than zero".to_string());
+    }
+    let plan = resolve_count_plan(
+        low,
+        high,
+        explicit_segment_size,
+        requested_threads,
+        explicit_mode,
+    );
+    println!("{}", plan.threads);
     Ok(())
 }
 

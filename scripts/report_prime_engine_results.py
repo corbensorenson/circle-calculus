@@ -165,6 +165,8 @@ NEXT_PRIME_SEARCH_ROWS = {
 COLD_PROCESS_ROWS = {
     "cold_cli_parallel_default_range_count_8t",
     "cold_cli_parallel_high_offset_default_range_count_8t",
+    "cold_count_binary_high_offset_default_plan_8t",
+    "cold_count_binary_high_offset_noop",
     "cold_count_binary_parallel_high_offset_default_range_count_8t",
     "cold_process_high_offset_default_plan_8t",
     "cold_process_high_offset_noop_worker",
@@ -1139,6 +1141,10 @@ def summarize_high_offset_cold_hot_overhead(
     cold_count_binary = rows_by_name.get(
         "cold_count_binary_parallel_high_offset_default_range_count_8t"
     )
+    cold_count_binary_noop = rows_by_name.get("cold_count_binary_high_offset_noop")
+    cold_count_binary_plan = rows_by_name.get(
+        "cold_count_binary_high_offset_default_plan_8t"
+    )
     cold_noop = rows_by_name.get("cold_process_high_offset_noop_worker")
     cold_plan = rows_by_name.get("cold_process_high_offset_default_plan_8t")
     cold_serial_default = rows_by_name.get(
@@ -1209,9 +1215,26 @@ def summarize_high_offset_cold_hot_overhead(
             if cold_count_binary is not None
             else None
         ),
+        "cold_count_binary_noop_name": (
+            cold_count_binary_noop["name"] if cold_count_binary_noop else None
+        ),
+        "cold_count_binary_noop_best_ms": (
+            float(cold_count_binary_noop["best_ms"]) if cold_count_binary_noop else None
+        ),
+        "cold_count_binary_plan_name": (
+            cold_count_binary_plan["name"] if cold_count_binary_plan else None
+        ),
+        "cold_count_binary_plan_best_ms": (
+            float(cold_count_binary_plan["best_ms"]) if cold_count_binary_plan else None
+        ),
         "cold_count_binary_minus_noop_ms": (
             float(cold_count_binary["best_ms"]) - float(cold_noop["best_ms"])
             if cold_count_binary is not None and cold_noop is not None
+            else None
+        ),
+        "cold_count_binary_minus_binary_noop_ms": (
+            float(cold_count_binary["best_ms"]) - float(cold_count_binary_noop["best_ms"])
+            if cold_count_binary is not None and cold_count_binary_noop is not None
             else None
         ),
         "cold_process_noop_name": cold_noop["name"] if cold_noop else None,
@@ -4908,8 +4931,11 @@ def render_benchmark_markdown(summary: dict[str, Any]) -> list[str]:
                 for field in (
                     "cold_process_noop_best_ms",
                     "cold_process_plan_best_ms",
+                    "cold_count_binary_noop_best_ms",
+                    "cold_count_binary_plan_best_ms",
                     "cold_process_serial_default_best_ms",
                     "cold_count_binary_minus_noop_ms",
+                    "cold_count_binary_minus_binary_noop_ms",
                     "cold_external_primesieve_best_ms",
                 )
             )
@@ -4919,8 +4945,8 @@ def render_benchmark_markdown(summary: dict[str, Any]) -> list[str]:
                 [
                     "High-offset cold diagnostics:",
                     "",
-                    "| Workload | Noop ms | Plan ms | Serial Default ms | Count Binary ms | Count Binary - Noop ms | primesieve Cold ms | Count Binary / primesieve |",
-                    "| ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |",
+                    "| Workload | Bench Noop ms | Bench Plan ms | Count Binary Noop ms | Count Binary Plan ms | Serial Default ms | Count Binary ms | Count Binary - Binary Noop ms | primesieve Cold ms | Count Binary / primesieve |",
+                    "| ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |",
                 ]
             )
             for row in diagnostic_rows:
@@ -4928,9 +4954,11 @@ def render_benchmark_markdown(summary: dict[str, Any]) -> list[str]:
                     f"| {row['workload']} | "
                     f"{format_optional_ms(row['cold_process_noop_best_ms'])} | "
                     f"{format_optional_ms(row['cold_process_plan_best_ms'])} | "
+                    f"{format_optional_ms(row['cold_count_binary_noop_best_ms'])} | "
+                    f"{format_optional_ms(row['cold_count_binary_plan_best_ms'])} | "
                     f"{format_optional_ms(row['cold_process_serial_default_best_ms'])} | "
                     f"{format_optional_ms(row['cold_count_binary_best_ms'])} | "
-                    f"{format_optional_ms(row['cold_count_binary_minus_noop_ms'])} | "
+                    f"{format_optional_ms(row['cold_count_binary_minus_binary_noop_ms'])} | "
                     f"{format_optional_ms(row['cold_external_primesieve_best_ms'])} | "
                     f"{format_optional_ratio(row['cold_count_binary_over_external_primesieve'])} |"
                 )

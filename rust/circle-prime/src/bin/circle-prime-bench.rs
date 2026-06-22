@@ -1017,6 +1017,27 @@ fn bench_cold_process_counts(rounds: usize) -> Vec<BenchRow> {
         },
     ));
     rows.push(measure(
+        "cold_count_binary_high_offset_noop",
+        0,
+        0,
+        rounds,
+        cold_count_binary_noop,
+    ));
+    rows.push(measure(
+        "cold_count_binary_high_offset_default_plan_8t",
+        HIGH_OFFSET_HIGH - HIGH_OFFSET_LOW,
+        high_offset_segment_size,
+        rounds,
+        || {
+            cold_count_binary_plan_resolution(
+                HIGH_OFFSET_LOW,
+                HIGH_OFFSET_HIGH,
+                high_offset_segment_size,
+                8,
+            )
+        },
+    ));
+    rows.push(measure(
         "cold_process_parallel_high_offset_default_range_count_1t",
         HIGH_OFFSET_HIGH - HIGH_OFFSET_LOW,
         high_offset_segment_size,
@@ -1487,6 +1508,55 @@ fn cold_count_binary_prime_count(low: u64, high: u64, segment_size: u64, threads
         .trim()
         .parse::<u64>()
         .expect("cold count-binary benchmark worker did not emit a count")
+}
+
+fn cold_count_binary_noop() -> u64 {
+    let executable = circle_prime_count_executable();
+    let output = Command::new(&executable)
+        .arg("--diagnostic-noop")
+        .output()
+        .expect("failed to spawn cold count-binary noop worker");
+    assert!(
+        output.status.success(),
+        "cold count-binary noop worker failed: {}\nexecutable: {}",
+        String::from_utf8_lossy(&output.stderr),
+        executable.display(),
+    );
+    String::from_utf8(output.stdout)
+        .expect("cold count-binary noop worker emitted invalid UTF-8")
+        .trim()
+        .parse::<u64>()
+        .expect("cold count-binary noop worker did not emit a count")
+}
+
+fn cold_count_binary_plan_resolution(
+    low: u64,
+    high: u64,
+    segment_size: u64,
+    threads: usize,
+) -> u64 {
+    let executable = circle_prime_count_executable();
+    let output = Command::new(&executable)
+        .arg("--diagnostic-plan")
+        .arg(low.to_string())
+        .arg(high.to_string())
+        .arg("--segment-size")
+        .arg(segment_size.to_string())
+        .arg("--threads")
+        .arg(threads.to_string())
+        .output()
+        .expect("failed to spawn cold count-binary plan worker");
+    assert!(
+        output.status.success(),
+        "cold count-binary plan worker failed: {}\nexecutable: {}",
+        String::from_utf8_lossy(&output.stderr),
+        executable.display(),
+    );
+    String::from_utf8(output.stdout)
+        .expect("cold count-binary plan worker emitted invalid UTF-8")
+        .trim()
+        .parse::<u64>()
+        .expect("cold count-binary plan worker did not emit a worker count")
 }
 
 fn measure_count_server_prime_count(
