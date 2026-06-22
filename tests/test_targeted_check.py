@@ -469,6 +469,51 @@ def test_generic_contract_pack_change_runs_pack_tests() -> None:
     assert ("make", "check") not in commands
 
 
+def assert_public_api_surface_checks(commands: list[tuple[str, ...]]) -> None:
+    assert contains_command(commands, "scripts/generate_public_api_docs.py")
+    assert contains_command(commands, "pytest", "tests/test_public_api.py")
+    assert contains_command(commands, "make", "circle-ai-contracts-ready")
+    assert contains_command(commands, "pytest", "tests/test_circle_ai_contract_pack.py")
+    assert contains_command(commands, "pytest", "tests/test_circle_ai_contract_runner.py")
+    assert contains_command(commands, "scripts/check_circle_ai_contract_runner.py")
+    assert not contains_command(commands, "pytest", "tests/test_rotation.py")
+    assert ("make", "check") not in commands
+
+
+def test_public_api_facade_change_runs_public_api_and_contract_checks() -> None:
+    commands = commands_for(["circle_math/ai_contracts.py"])
+    payload = plan_payload(plan_for_files(["circle_math/ai_contracts.py"]), ["circle_math/ai_contracts.py"])
+
+    assert_public_api_surface_checks(commands)
+    assert payload["ai_contract_validation_scope"] == "all_contracts"
+
+
+def test_package_cli_change_runs_public_api_and_contract_runner_checks() -> None:
+    commands = commands_for(["circle_math/cli.py"])
+
+    assert_public_api_surface_checks(commands)
+
+
+def test_application_package_exports_change_runs_public_api_checks() -> None:
+    commands = commands_for(["circle_math/applications/__init__.py"])
+
+    assert_public_api_surface_checks(commands)
+
+
+def test_public_api_docs_change_runs_public_api_checks() -> None:
+    paths = [
+        "docs/PUBLIC_API.md",
+        "docs/USE_AS_LIBRARY.md",
+        "docs/generated/PUBLIC_API_REFERENCE.md",
+        "scripts/generate_public_api_docs.py",
+    ]
+
+    for path in paths:
+        commands = commands_for([path])
+
+        assert_public_api_surface_checks(commands)
+
+
 def test_generic_contract_exporter_change_runs_pack_tests_not_sparse_tests() -> None:
     commands = commands_for(["scripts/export_circle_ai_contracts.py"])
 

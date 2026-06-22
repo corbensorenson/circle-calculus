@@ -110,6 +110,14 @@ The mapping is conservative:
 - KV-cache Python or CLI changes run the KV-cache certifier tests.
 - sparse-attention / Circle AI changes run the sparse and Circle transformer tests.
 - Shared Circle AI contract-surface changes run `make circle-ai-contracts-ready`, the contract-pack tests, the importable consumer-adapter tests, the pinned acceptance-policy tests, the copyable example-consumer CLI tests, and the standalone downstream-CI tests. This broad path is reserved for schema/exporter/consumer changes that can affect every public contract family or the downstream artifact-pinning path. The regular readiness target also smokes the schema-sidecar validator, the first-party strict receipt path, the pinned flagship acceptance policy, its recommendation evidence-field pins, plus the example consumer's all-readiness, fingerprint, planner, single-readiness, digest, strict receipt paths, and the standard-library-only downstream CI acceptance example.
+- Packaged public API changes, including `circle_math/ai_contracts.py`,
+  `circle_math/cli.py`, `circle_math/applications/__init__.py`,
+  `scripts/generate_public_api_docs.py`, `docs/PUBLIC_API.md`,
+  `docs/USE_AS_LIBRARY.md`, and the generated public API reference, run the
+  same shared Circle AI contract path plus `tests/test_public_api.py` and
+  `scripts/generate_public_api_docs.py`. This catches import-surface,
+  console-script, package-CLI, generated-reference, and in-memory runner-report
+  drift without escalating straight to the full repository gate.
 - The JSON plan mirrors that decision with `ai_contract_validation_scope` and
   `impacted_ai_contract_kinds`, which downstream automation can use before
   deciding whether to run kind-specific checks or a full public pack gate.

@@ -314,6 +314,12 @@ def add_circle_ai_contract_checks(checks: list[Check], seen: set[tuple[str, ...]
     )
 
 
+def add_public_api_checks(checks: list[Check], seen: set[tuple[str, ...]], reason: str) -> None:
+    add(checks, seen, "public API docs", py("scripts/generate_public_api_docs.py"), reason)
+    add(checks, seen, "public API tests", pytest("tests/test_public_api.py"), reason)
+    add_circle_ai_contract_checks(checks, seen, reason)
+
+
 AI_CONTRACT_DIGEST_FIELDS = {
     "rope_position_distinguishability": (
         "d19_proved_request_status",
@@ -514,6 +520,9 @@ AI_CONTRACT_LEAN_PATH_KINDS = {
 }
 
 AI_CONTRACT_BROAD_SURFACE_PATHS = {
+    "circle_math/ai_contracts.py",
+    "circle_math/cli.py",
+    "circle_math/applications/__init__.py",
     "circle_math/applications/circle_ai.py",
     "circle_math/applications/circle_ai_contracts.py",
     "circle_math/applications/circle_ai_contract_consumer.py",
@@ -530,13 +539,27 @@ AI_CONTRACT_BROAD_SURFACE_PATHS = {
     "scripts/circle_ai_contract_ready.py",
     "scripts/example_consume_circle_ai_contract_pack.py",
     "scripts/export_circle_ai_contracts.py",
+    "scripts/generate_public_api_docs.py",
     "scripts/targeted_check.py",
     "docs/AI_CONTRACT_SUITE.md",
     "docs/CIRCLE_AI_CONTRACTS_INTEGRATION.md",
     "docs/CIRCLE_AI_CONTRACT_RUNNER.md",
+    "docs/PUBLIC_API.md",
+    "docs/USE_AS_LIBRARY.md",
+    "docs/generated/PUBLIC_API_REFERENCE.md",
     "examples/circle_ai_contract_acceptance_policy.json",
     "examples/downstream_ci_accept_circle_ai_contracts.py",
     "examples/downstream_ci_verify_circle_ai_artifacts.py",
+}
+
+PUBLIC_API_SURFACE_PATHS = {
+    "circle_math/ai_contracts.py",
+    "circle_math/cli.py",
+    "circle_math/applications/__init__.py",
+    "scripts/generate_public_api_docs.py",
+    "docs/PUBLIC_API.md",
+    "docs/USE_AS_LIBRARY.md",
+    "docs/generated/PUBLIC_API_REFERENCE.md",
 }
 
 AI_CONTRACT_GENERATED_PACK_ARTIFACTS = (
@@ -778,6 +801,9 @@ def plan_for_files(files: Iterable[str], *, full: bool = False) -> list[Check]:
                     f"{path} changed AI-contract or unclassified validation targets",
                 )
 
+        if path in PUBLIC_API_SURFACE_PATHS:
+            add_public_api_checks(checks, seen, f"{path} changed the packaged public API surface")
+
         if path in AI_CONTRACT_BROAD_SURFACE_PATHS:
             add_circle_ai_contract_checks(checks, seen, f"{path} changed public AI contract validation surface")
 
@@ -929,7 +955,12 @@ def plan_for_files(files: Iterable[str], *, full: bool = False) -> list[Check]:
                 add_site_checks(checks, seen, f"{path} feeds generated Living Book fixtures", widgets=True)
             if path.startswith("circle_math/dimensions/"):
                 add(checks, seen, "dimension Python tests", pytest("tests/dimensions/test_dimensional_scaffolding.py"), f"{path} changed")
-            if path.startswith("circle_math/") and not path.startswith("circle_math/applications/") and path != "circle_math/generative.py":
+            if (
+                path.startswith("circle_math/")
+                and not path.startswith("circle_math/applications/")
+                and path != "circle_math/generative.py"
+                and path not in PUBLIC_API_SURFACE_PATHS
+            ):
                 add(checks, seen, "core Python tests", pytest("tests/test_rotation.py", "tests/test_orbit_period.py", "tests/test_winding.py", "tests/test_scaling.py", "tests/test_prime_coils.py"), f"{path} changed")
             if path.startswith("scripts/site/"):
                 add_site_checks(checks, seen, f"{path} changed", widgets="widget" in path)

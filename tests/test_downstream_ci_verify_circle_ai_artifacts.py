@@ -87,7 +87,7 @@ STANDARD_ARTIFACT_CASES = [
         ["recurrence"],
         "recurrence",
         "recurrence_schedule",
-        "theorem_backed",
+        "mixed_theorem_and_computation",
         9,
         BASE_REQUIRED_LABELS,
     ),
