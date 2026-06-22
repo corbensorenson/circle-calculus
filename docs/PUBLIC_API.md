@@ -408,9 +408,12 @@ config to restrict that file only. The copyable standard-library verifier
 `examples/downstream_ci_verify_circle_ai_batch.py` validates a saved
 runner-check report plus every receipt, compact receipt, import report,
 request-validation report, certification bundle, and bundle-check sidecar that
-the batch report names. For single-receipt commands, use `--artifact-manifest-out` and
-`--artifact-manifest-check-out` when the handoff also needs file fingerprints
-and a manifest self-check for every sidecar that invocation wrote.
+the batch report names. Its summaries preserve unsupported
+architecture-config field counts and names, so CI logs keep the boundary
+between certified request fields and source-config behavior that was not
+claimed. For single-receipt commands, use `--artifact-manifest-out` and
+`--artifact-manifest-check-out` when the handoff also needs file fingerprints and
+a manifest self-check for every sidecar that invocation wrote.
 
 The lower-level installed receipt command accepts kind aliases plus JSON
 parameters directly. The same receipt shape works for all nine ready families:

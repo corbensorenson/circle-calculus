@@ -202,6 +202,11 @@ python examples/downstream_ci_verify_circle_ai_batch.py \
   --require-kind recurrence_schedule
 ```
 
+The verifier output preserves unsupported architecture-config field counts and
+names. A model-only config that declares `circle_ai_contract_kinds: ["rope"]`
+still reports extra fields such as `model.model_type` as unsupported rather than
+folding them into the theorem-linked request.
+
 Python callers can build the same schema-valid runner-check report in memory
 with `build_contract_runner_check_report`. The helper accepts versioned request
 objects, standard RoPE `model_configs`, and AI `architecture_configs`.

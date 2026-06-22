@@ -447,6 +447,12 @@ def test_standalone_batch_artifact_verifier_accepts_rope_only_architecture_batch
     assert payload["summaries"][0]["failure_count"] == 0
     assert payload["summaries"][0]["source_type"] == "architecture_config"
     assert payload["summaries"][0]["kind"] == "rope_position_distinguishability"
+    assert payload["summaries"][0][
+        "unsupported_architecture_config_field_count"
+    ] == 1
+    assert payload["summaries"][0]["unsupported_architecture_config_fields"] == [
+        "model.model_type"
+    ]
     assert "mathematical proof" in payload["not_claimed"]
 
 

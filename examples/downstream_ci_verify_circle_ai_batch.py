@@ -201,6 +201,12 @@ def _receipt_consistency_failures(
     return failures
 
 
+def _string_list(value: object) -> list[str]:
+    if not isinstance(value, list):
+        return []
+    return [item for item in value if isinstance(item, str)]
+
+
 def _sidecar_consistency_failures(
     summary: dict[str, Any],
     *,
@@ -318,6 +324,9 @@ def _verify_summary(
             architecture_config_import=loaded["architecture_config_import_report_path"],
         )
     )
+    unsupported_architecture_fields = _string_list(
+        summary.get("unsupported_architecture_config_fields")
+    )
 
     return {
         "source_type": summary.get("source_type"),
@@ -331,6 +340,10 @@ def _verify_summary(
         "receipt_content_fingerprint_short": _short(
             summary.get("receipt_content_fingerprint")
         ),
+        "unsupported_architecture_config_field_count": len(
+            unsupported_architecture_fields
+        ),
+        "unsupported_architecture_config_fields": unsupported_architecture_fields,
         "resolved_paths": resolved_paths,
         "failure_count": len(failures),
         "failures": failures,
@@ -481,6 +494,8 @@ def _print_text(report: dict[str, Any]) -> None:
             f"status={summary['status']} passed={summary['request_passed']} "
             f"decision={summary['decision_verdict']} "
             f"assurance={summary['decision_assurance']} "
+            "unsupported_architecture_fields="
+            f"{summary['unsupported_architecture_config_field_count']} "
             f"failures={summary['failure_count']}"
         )
         for failure in summary["failures"]:
