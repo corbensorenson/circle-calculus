@@ -90,6 +90,8 @@ STRICT_ROPE_RECEIPT_TOKENS = (
     "--field d19_proved_first_channel_context_wide_contract",
     "--field d19_proved_first_channel_radian_bank_form",
     "--field d19_proved_first_channel_bank_tolerance_rule",
+    "--field d19_impossible_obstruction_gap",
+    "--field d19_impossible_obstruction_turns",
     "--field d19_undecided_probe_margin_in_open_gap",
     "--field real_phase_nearest_integer_certificate_bridge",
     "--field real_phase_dirichlet_witness_guardrail",
@@ -127,6 +129,14 @@ STRICT_ROPE_RECEIPT_TOKENS = (
     (
         "--require-recommendation-evidence-field "
         "ROPE-USE-D19-MARGIN-FRONTIER=d19_undecided_probe_margin_in_open_gap"
+    ),
+    (
+        "--require-recommendation-evidence-field "
+        "ROPE-USE-D19-MARGIN-FRONTIER=d19_impossible_obstruction_gap"
+    ),
+    (
+        "--require-recommendation-evidence-field "
+        "ROPE-USE-D19-MARGIN-FRONTIER=d19_impossible_obstruction_turns"
     ),
     (
         "--require-recommendation-evidence-field "
@@ -204,6 +214,22 @@ STRICT_ROPE_RECEIPT_TOKENS = (
     (
         "--require-recommendation-action-parameter "
         "ROPE-USE-D19-MARGIN-FRONTIER=proved_branch_bank_transfer"
+    ),
+    (
+        "--require-recommendation-action-parameter "
+        "ROPE-USE-D19-MARGIN-FRONTIER=impossible_obstruction_gap"
+    ),
+    (
+        "--require-recommendation-action-parameter "
+        "ROPE-USE-D19-MARGIN-FRONTIER=impossible_obstruction_turns"
+    ),
+    (
+        "--require-recommendation-action-parameter-path "
+        "ROPE-USE-D19-MARGIN-FRONTIER=impossible_obstruction_gap"
+    ),
+    (
+        "--require-recommendation-action-parameter-path "
+        "ROPE-USE-D19-MARGIN-FRONTIER=impossible_obstruction_turns"
     ),
     (
         "--require-recommendation-action-parameter-path "

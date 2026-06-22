@@ -689,7 +689,7 @@ python scripts/circle_ai_contract_ready.py \
   --field d19_proved_first_channel_bank_shape --field d19_proved_first_channel_pair_scope \
   --field d19_proved_first_channel_context_wide_contract \
   --field d19_proved_first_channel_radian_bank_form \
-  --field d19_proved_first_channel_bank_tolerance_rule --field d19_undecided_probe_margin_in_open_gap \
+  --field d19_proved_first_channel_bank_tolerance_rule --field d19_impossible_obstruction_gap --field d19_impossible_obstruction_turns --field d19_undecided_probe_margin_in_open_gap \
   --field real_phase_nearest_integer_certificate_bridge \
   --field real_phase_dirichlet_witness_guardrail \
   --field real_phase_margin_ceiling_guardrail \
@@ -708,7 +708,7 @@ python scripts/circle_ai_contract_ready.py \
   --field d19_proved_first_channel_bank_shape --field d19_proved_first_channel_pair_scope \
   --field d19_proved_first_channel_context_wide_contract \
   --field d19_proved_first_channel_radian_bank_form \
-  --field d19_proved_first_channel_bank_tolerance_rule --field d19_undecided_probe_margin_in_open_gap \
+  --field d19_proved_first_channel_bank_tolerance_rule --field d19_impossible_obstruction_gap --field d19_impossible_obstruction_turns --field d19_undecided_probe_margin_in_open_gap \
   --field real_phase_nearest_integer_certificate_bridge \
   --field real_phase_dirichlet_witness_guardrail \
   --field real_phase_margin_ceiling_guardrail \
@@ -726,6 +726,8 @@ python scripts/circle_ai_contract_ready.py \
   --require-recommendation ROPE-USE-D19-MARGIN-FRONTIER \
   --require-recommendation-evidence-field ROPE-USE-D19-MARGIN-FRONTIER=d19_proved_first_channel_bank_transfer --require-recommendation-evidence-field ROPE-USE-D19-MARGIN-FRONTIER=d19_proved_first_channel_context_wide_contract \
   --require-recommendation-evidence-field ROPE-USE-D19-MARGIN-FRONTIER=d19_proved_first_channel_radian_bank_form --require-recommendation-evidence-field ROPE-USE-D19-MARGIN-FRONTIER=d19_undecided_probe_margin_in_open_gap \
+  --require-recommendation-evidence-field ROPE-USE-D19-MARGIN-FRONTIER=d19_impossible_obstruction_gap \
+  --require-recommendation-evidence-field ROPE-USE-D19-MARGIN-FRONTIER=d19_impossible_obstruction_turns \
   --require-recommendation-evidence-field ROPE-USE-D19-MARGIN-FRONTIER=real_phase_nearest_integer_certificate_bridge \
   --require-recommendation-evidence-field ROPE-USE-D19-MARGIN-FRONTIER=real_phase_dirichlet_witness_guardrail --require-recommendation-evidence-field ROPE-USE-D19-MARGIN-FRONTIER=real_phase_margin_ceiling_guardrail --require-recommendation-evidence-field ROPE-USE-D19-MARGIN-FRONTIER=real_phase_exact_weakest_margin_ceiling_guardrail \
   --require-recommendation-theorem ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0234 --require-recommendation-theorem ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0235 --require-recommendation-theorem ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0236 --require-recommendation-theorem ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0237 --require-recommendation-theorem ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0238 \
@@ -737,6 +739,10 @@ python scripts/circle_ai_contract_ready.py \
   --require-recommendation-theorem ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0183 \
   --require-recommendation-theorem ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0239 --require-recommendation-theorem ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0240 --require-recommendation-theorem ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0241 \
   --require-recommendation-action-parameter ROPE-USE-D19-MARGIN-FRONTIER=proved_branch_bank_transfer \
+  --require-recommendation-action-parameter ROPE-USE-D19-MARGIN-FRONTIER=impossible_obstruction_gap \
+  --require-recommendation-action-parameter ROPE-USE-D19-MARGIN-FRONTIER=impossible_obstruction_turns \
+  --require-recommendation-action-parameter-path ROPE-USE-D19-MARGIN-FRONTIER=impossible_obstruction_gap \
+  --require-recommendation-action-parameter-path ROPE-USE-D19-MARGIN-FRONTIER=impossible_obstruction_turns \
   --require-recommendation-action-parameter-path ROPE-USE-D19-MARGIN-FRONTIER=proved_branch_bank_transfer.applies --require-recommendation-action-parameter-path ROPE-USE-D19-MARGIN-FRONTIER=proved_branch_bank_transfer.context_wide_contract --require-recommendation-action-parameter-path ROPE-USE-D19-MARGIN-FRONTIER=proved_branch_bank_transfer.radian_bank_form \
   --require-recommendation-action-parameter-path ROPE-USE-D19-MARGIN-FRONTIER=proved_branch_bank_transfer.theorem_ids
 
@@ -875,7 +881,7 @@ python scripts/example_consume_circle_ai_contract_pack.py \
   --field d19_proved_first_channel_bank_shape --field d19_proved_first_channel_pair_scope \
   --field d19_proved_first_channel_context_wide_contract \
   --field d19_proved_first_channel_radian_bank_form \
-  --field d19_proved_first_channel_bank_tolerance_rule --field d19_undecided_probe_margin_in_open_gap \
+  --field d19_proved_first_channel_bank_tolerance_rule --field d19_impossible_obstruction_gap --field d19_impossible_obstruction_turns --field d19_undecided_probe_margin_in_open_gap \
   --field real_phase_nearest_integer_certificate_bridge \
   --field real_phase_dirichlet_witness_guardrail \
   --field real_phase_margin_ceiling_guardrail \
@@ -892,7 +898,7 @@ python scripts/example_consume_circle_ai_contract_pack.py \
   --field d19_proved_first_channel_bank_shape --field d19_proved_first_channel_pair_scope \
   --field d19_proved_first_channel_context_wide_contract \
   --field d19_proved_first_channel_radian_bank_form \
-  --field d19_proved_first_channel_bank_tolerance_rule --field d19_undecided_probe_margin_in_open_gap \
+  --field d19_proved_first_channel_bank_tolerance_rule --field d19_impossible_obstruction_gap --field d19_impossible_obstruction_turns --field d19_undecided_probe_margin_in_open_gap \
   --field real_phase_nearest_integer_certificate_bridge \
   --field real_phase_dirichlet_witness_guardrail \
   --field real_phase_margin_ceiling_guardrail \
@@ -910,6 +916,8 @@ python scripts/example_consume_circle_ai_contract_pack.py \
   --require-recommendation ROPE-USE-D19-MARGIN-FRONTIER \
   --require-recommendation-evidence-field ROPE-USE-D19-MARGIN-FRONTIER=d19_proved_first_channel_bank_transfer --require-recommendation-evidence-field ROPE-USE-D19-MARGIN-FRONTIER=d19_proved_first_channel_context_wide_contract \
   --require-recommendation-evidence-field ROPE-USE-D19-MARGIN-FRONTIER=d19_proved_first_channel_radian_bank_form --require-recommendation-evidence-field ROPE-USE-D19-MARGIN-FRONTIER=d19_undecided_probe_margin_in_open_gap \
+  --require-recommendation-evidence-field ROPE-USE-D19-MARGIN-FRONTIER=d19_impossible_obstruction_gap \
+  --require-recommendation-evidence-field ROPE-USE-D19-MARGIN-FRONTIER=d19_impossible_obstruction_turns \
   --require-recommendation-evidence-field ROPE-USE-D19-MARGIN-FRONTIER=real_phase_nearest_integer_certificate_bridge \
   --require-recommendation-evidence-field ROPE-USE-D19-MARGIN-FRONTIER=real_phase_dirichlet_witness_guardrail --require-recommendation-evidence-field ROPE-USE-D19-MARGIN-FRONTIER=real_phase_margin_ceiling_guardrail --require-recommendation-evidence-field ROPE-USE-D19-MARGIN-FRONTIER=real_phase_exact_weakest_margin_ceiling_guardrail \
   --require-recommendation-theorem ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0234 --require-recommendation-theorem ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0235 --require-recommendation-theorem ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0236 --require-recommendation-theorem ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0237 --require-recommendation-theorem ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0238 \
@@ -921,6 +929,10 @@ python scripts/example_consume_circle_ai_contract_pack.py \
   --require-recommendation-theorem ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0183 \
   --require-recommendation-theorem ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0239 --require-recommendation-theorem ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0240 --require-recommendation-theorem ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0241 \
   --require-recommendation-action-parameter ROPE-USE-D19-MARGIN-FRONTIER=proved_branch_bank_transfer \
+  --require-recommendation-action-parameter ROPE-USE-D19-MARGIN-FRONTIER=impossible_obstruction_gap \
+  --require-recommendation-action-parameter ROPE-USE-D19-MARGIN-FRONTIER=impossible_obstruction_turns \
+  --require-recommendation-action-parameter-path ROPE-USE-D19-MARGIN-FRONTIER=impossible_obstruction_gap \
+  --require-recommendation-action-parameter-path ROPE-USE-D19-MARGIN-FRONTIER=impossible_obstruction_turns \
   --require-recommendation-action-parameter-path ROPE-USE-D19-MARGIN-FRONTIER=proved_branch_bank_transfer.applies --require-recommendation-action-parameter-path ROPE-USE-D19-MARGIN-FRONTIER=proved_branch_bank_transfer.context_wide_contract --require-recommendation-action-parameter-path ROPE-USE-D19-MARGIN-FRONTIER=proved_branch_bank_transfer.radian_bank_form \
   --require-recommendation-action-parameter-path ROPE-USE-D19-MARGIN-FRONTIER=proved_branch_bank_transfer.theorem_ids
 

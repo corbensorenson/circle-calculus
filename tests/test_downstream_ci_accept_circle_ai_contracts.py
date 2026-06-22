@@ -50,6 +50,8 @@ def _policy_for(pack: dict) -> dict:
                     "d19_context_range_min_exclusive",
                     "d19_context_range_max_inclusive",
                     "d19_proved_request_status",
+                    "d19_impossible_obstruction_gap",
+                    "d19_impossible_obstruction_turns",
                     "d19_undecided_margin_open_gap",
                     "d19_undecided_margin_interval_width",
                     "d19_undecided_request_relation",
@@ -64,6 +66,8 @@ def _policy_for(pack: dict) -> dict:
                     "ROPE-USE-D19-MARGIN-FRONTIER": [
                         "d19_context_range_min_exclusive",
                         "d19_context_range_max_inclusive",
+                        "d19_impossible_obstruction_gap",
+                        "d19_impossible_obstruction_turns",
                         "d19_undecided_margin_interval_width",
                         "d19_undecided_request_relation",
                     ],
@@ -77,12 +81,16 @@ def _policy_for(pack: dict) -> dict:
                     "ROPE-USE-D19-MARGIN-FRONTIER": [
                         "applicable_context_range",
                         "classifier_regions",
+                        "impossible_obstruction_gap",
+                        "impossible_obstruction_turns",
                         "undecided_interval",
                     ],
                 },
                 "required_recommendation_action_parameter_paths": {
                     "ROPE-USE-D19-MARGIN-FRONTIER": [
                         "applicable_context_range.min_exclusive",
+                        "impossible_obstruction_gap",
+                        "impossible_obstruction_turns",
                         "classifier_regions[region=proved].theorem_ids",
                         "classifier_regions[region=undecided_margin_gap].condition",
                         "undecided_interval.width",
@@ -180,15 +188,15 @@ def test_standalone_downstream_ci_accepts_policy_and_emits_action_plan(
     assert payload["policy_summary"]["contract_summaries"][0] == {
         "kind": "rope_position_distinguishability",
         "contract_id": "CC-AI-CONTRACT-ROPE-001",
-        "required_field_count": 6,
+        "required_field_count": 8,
         "required_theorem_count": 1,
         "required_recommendation_ids": [
             "ROPE-USE-D19-MARGIN-FRONTIER",
         ],
         "required_recommendation_count": 1,
         "required_recommendation_theorem_count": 1,
-        "required_recommendation_action_parameter_count": 3,
-        "required_recommendation_action_parameter_path_count": 4,
+        "required_recommendation_action_parameter_count": 5,
+        "required_recommendation_action_parameter_path_count": 6,
         "content_fingerprint": pack["contract_fingerprint_index"][
             "rope_position_distinguishability"
         ]["content_fingerprint"],
@@ -222,6 +230,8 @@ def test_standalone_downstream_ci_accepts_policy_and_emits_action_plan(
         "ROPE-USE-D19-MARGIN-FRONTIER": [
             "applicable_context_range",
             "classifier_regions",
+            "impossible_obstruction_gap",
+            "impossible_obstruction_turns",
             "undecided_interval",
         ],
     }
@@ -230,6 +240,8 @@ def test_standalone_downstream_ci_accepts_policy_and_emits_action_plan(
     ] == {
         "ROPE-USE-D19-MARGIN-FRONTIER": [
             "applicable_context_range.min_exclusive",
+            "impossible_obstruction_gap",
+            "impossible_obstruction_turns",
             "classifier_regions[region=proved].theorem_ids",
             "classifier_regions[region=undecided_margin_gap].condition",
             "undecided_interval.width",
@@ -251,6 +263,12 @@ def test_standalone_downstream_ci_accepts_policy_and_emits_action_plan(
     assert payload["accepted_contracts"][0]["evidence_fields"][
         "d19_undecided_margin_interval_width"
     ] == "1/107884986222"
+    assert payload["accepted_contracts"][0]["evidence_fields"][
+        "d19_impossible_obstruction_gap"
+    ] == 103993
+    assert payload["accepted_contracts"][0]["evidence_fields"][
+        "d19_impossible_obstruction_turns"
+    ] == 16551
     assert payload["accepted_contracts"][0]["evidence_fields"][
         "d19_undecided_request_relation"
     ] == "strictly_between_thresholds"
@@ -350,12 +368,20 @@ def test_standalone_downstream_ci_can_include_planner_values(
     assert rope_frontier["evidence_values"][
         "d19_undecided_margin_interval_width"
     ] == "1/107884986222"
+    assert rope_frontier["evidence_values"]["d19_impossible_obstruction_gap"] == (
+        103993
+    )
+    assert rope_frontier["evidence_values"][
+        "d19_impossible_obstruction_turns"
+    ] == 16551
     assert rope_frontier["evidence_values"]["d19_undecided_request_relation"] == (
         "strictly_between_thresholds"
     )
     assert rope_frontier["missing_evidence_fields"] == []
     assert rope_frontier["action_parameters"]["request_context"] == 131072
     assert rope_frontier["action_parameters"]["proved_margin"] == "1/328459"
+    assert rope_frontier["action_parameters"]["impossible_obstruction_gap"] == 103993
+    assert rope_frontier["action_parameters"]["impossible_obstruction_turns"] == 16551
     assert rope_frontier["action_parameters"]["undecided_interval"] == {
         "lower_exclusive": "1/328459",
         "upper_exclusive": "1/328458",

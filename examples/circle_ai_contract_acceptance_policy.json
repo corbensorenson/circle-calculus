@@ -1,7 +1,7 @@
 {
   "contracts": [
     {
-      "expected_contract_fingerprint": "c9d31195f3d72a807fc93de0b95d2e8d8dc82f7f661f923f282ff9f61453404f",
+      "expected_contract_fingerprint": "a0f35d3e89e9b6eac555f0392450f4f75cf7e70f30cff44ec7434f61bd85b468",
       "kind": "rope_position_distinguishability",
       "required_fields": [
         "preset",
@@ -14,6 +14,8 @@
         "d19_request_context",
         "d19_proved_request_status",
         "d19_impossible_request_status",
+        "d19_impossible_obstruction_gap",
+        "d19_impossible_obstruction_turns",
         "d19_undecided_request_status",
         "d19_undecided_margin_open_gap",
         "d19_undecided_probe_margin_in_open_gap",
@@ -43,6 +45,8 @@
         "ROPE-USE-D19-MARGIN-FRONTIER": [
           "applicable_context_range.min_exclusive",
           "applicable_context_range.max_inclusive",
+          "impossible_obstruction_gap",
+          "impossible_obstruction_turns",
           "classifier_regions[region=proved].theorem_ids",
           "classifier_regions[region=undecided_margin_gap].condition",
           "classifier_regions[region=impossible].theorem_ids",
@@ -65,6 +69,8 @@
         "ROPE-USE-D19-MARGIN-FRONTIER": [
           "applicable_context_range",
           "classifier_regions",
+          "impossible_obstruction_gap",
+          "impossible_obstruction_turns",
           "undecided_interval",
           "proved_branch_bank_transfer"
         ]
@@ -83,6 +89,8 @@
           "d19_request_context",
           "d19_proved_request_status",
           "d19_impossible_request_status",
+          "d19_impossible_obstruction_gap",
+          "d19_impossible_obstruction_turns",
           "d19_undecided_request_status",
           "d19_undecided_margin_open_gap",
           "d19_undecided_probe_margin_in_open_gap",
@@ -391,7 +399,7 @@
       ]
     }
   ],
-  "expected_pack_fingerprint": "e91926b5c78812eb2c2f08bf11cf337a7b33f97dd7133bb0fcd383501bd78539",
+  "expected_pack_fingerprint": "df673f8a661fc89a26372685986c92f2221aaa617d6738fce5c2a76bd5d0eeae",
   "policy_id": "circle_ai_flagship_contracts_acceptance_v0",
   "policy_name": "Circle AI flagship contracts acceptance policy",
   "schema_id": "circle_calculus.ai_contract_acceptance_policy.v0"

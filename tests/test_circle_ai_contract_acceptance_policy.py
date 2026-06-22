@@ -590,6 +590,8 @@ def test_default_flagship_policy_matches_generated_contract_pack() -> None:
         "d19_request_context",
         "d19_proved_request_status",
         "d19_impossible_request_status",
+        "d19_impossible_obstruction_gap",
+        "d19_impossible_obstruction_turns",
         "d19_undecided_request_status",
         "d19_undecided_margin_open_gap",
         "d19_undecided_probe_margin_in_open_gap",
@@ -629,6 +631,8 @@ def test_default_flagship_policy_matches_generated_contract_pack() -> None:
         "d19_request_context",
         "d19_proved_request_status",
         "d19_impossible_request_status",
+        "d19_impossible_obstruction_gap",
+        "d19_impossible_obstruction_turns",
         "d19_undecided_request_status",
         "d19_undecided_margin_open_gap",
         "d19_undecided_probe_margin_in_open_gap",
@@ -715,6 +719,8 @@ def test_default_flagship_policy_matches_generated_contract_pack() -> None:
     ] == [
         "applicable_context_range",
         "classifier_regions",
+        "impossible_obstruction_gap",
+        "impossible_obstruction_turns",
         "undecided_interval",
         "proved_branch_bank_transfer",
     ]
@@ -732,6 +738,8 @@ def test_default_flagship_policy_matches_generated_contract_pack() -> None:
     ] == [
         "applicable_context_range.min_exclusive",
         "applicable_context_range.max_inclusive",
+        "impossible_obstruction_gap",
+        "impossible_obstruction_turns",
         "classifier_regions[region=proved].theorem_ids",
         "classifier_regions[region=undecided_margin_gap].condition",
         "classifier_regions[region=impossible].theorem_ids",
