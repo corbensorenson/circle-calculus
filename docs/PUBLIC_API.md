@@ -419,7 +419,10 @@ runner-check report plus every receipt, compact receipt, import report,
 request-validation report, certification bundle, and bundle-check sidecar that
 the batch report names. It validates the runner report's own `gate_policy`,
 `example_count`, and `selected_kinds`, so stale reports with mismatched metadata
-or missing current policy fields fail before being accepted as CI evidence. Its
+or missing current policy fields fail before being accepted as CI evidence. An
+accepted verifier report includes a reusable `pin_policy`; pass it back with
+`--pin-policy` to reject future batch reports whose runner `gate_policy` has
+drifted from the pinned CI contract. Its
 summaries preserve unsupported
 architecture-config field counts and names, so CI logs keep the boundary
 between certified request fields and source-config behavior that was not

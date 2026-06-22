@@ -445,6 +445,15 @@ def test_standalone_batch_artifact_verifier_accepts_rope_only_architecture_batch
     assert payload["runner_gate_policy"][
         "require_no_unsupported_architecture_fields"
     ] is False
+    assert payload["pin_policy"]["required_kinds"] == [
+        "rope_position_distinguishability"
+    ]
+    assert payload["pin_policy"]["required_statuses"] == ["proved"]
+    assert payload["pin_policy"]["required_decisions"] == ["passed"]
+    assert payload["pin_policy"]["require_passed"] is True
+    assert payload["pin_policy"]["expected_runner_gate_policy"] == payload[
+        "runner_gate_policy"
+    ]
     assert payload["observed_kinds"] == ["rope_position_distinguishability"]
     assert payload["kind_counts"] == {"rope_position_distinguishability": 1}
     assert payload["summaries"][0]["failure_count"] == 0
@@ -545,6 +554,73 @@ def test_standalone_batch_artifact_verifier_rejects_stale_runner_summary_metadat
     )
     assert any(
         "selected_kinds does not match observed summary kinds" in failure
+        for failure in rejection["failures"]
+    )
+
+
+def test_standalone_batch_artifact_verifier_rejects_runner_gate_policy_drift_with_pin_policy(
+    tmp_path: Path,
+) -> None:
+    runner_check_path = _emit_rope_model_only_architecture_batch_artifacts(tmp_path)
+
+    accepted = subprocess.run(
+        [
+            sys.executable,
+            str(BATCH_SCRIPT),
+            str(runner_check_path),
+            "--format",
+            "json",
+            "--require-status",
+            "proved",
+            "--require-decision",
+            "passed",
+            "--require-passed",
+            "--require-kind",
+            "rope_position_distinguishability",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    accepted_payload = json.loads(accepted.stdout)
+    policy_path = tmp_path / "batch_pin_policy_report.json"
+    policy_path.write_text(
+        json.dumps(accepted_payload, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+    )
+
+    runner_check = json.loads(runner_check_path.read_text(encoding="utf-8"))
+    runner_check["gate_policy"]["allowed_decision_verdicts"].append("undecided")
+    runner_check_path.write_text(
+        json.dumps(runner_check, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+    )
+
+    result = subprocess.run(
+        [
+            sys.executable,
+            str(BATCH_SCRIPT),
+            str(runner_check_path),
+            "--format",
+            "json",
+            "--pin-policy",
+            str(policy_path),
+        ],
+        cwd=ROOT,
+        capture_output=True,
+        text=True,
+    )
+
+    assert result.returncode == 4
+    rejection = json.loads(result.stderr)
+    assert rejection["accepted"] is False
+    assert rejection["expected_runner_gate_policy"] == accepted_payload[
+        "runner_gate_policy"
+    ]
+    assert rejection["runner_gate_policy"] != accepted_payload["runner_gate_policy"]
+    assert any(
+        "gate_policy does not match pinned expected_runner_gate_policy" in failure
         for failure in rejection["failures"]
     )
 

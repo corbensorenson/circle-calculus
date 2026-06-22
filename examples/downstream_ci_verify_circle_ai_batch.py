@@ -276,6 +276,149 @@ def _runner_gate_policy(report: dict[str, Any]) -> tuple[dict[str, Any], list[st
     }, failures
 
 
+def _load_pin_policy(path: Path | None) -> dict[str, Any]:
+    if path is None:
+        return {}
+    payload = _load_json_object(path)
+    if "pin_policy" in payload:
+        policy = payload["pin_policy"]
+        if not isinstance(policy, dict):
+            raise ValueError(f"{path} pin_policy must be a JSON object")
+        return policy
+    return payload
+
+
+def _policy_required_string_list(
+    policy: dict[str, Any],
+    key: str,
+    *,
+    supported: set[str] | None = None,
+) -> list[str]:
+    values = policy.get(key, [])
+    if not isinstance(values, list) or not all(
+        isinstance(value, str) for value in values
+    ):
+        raise ValueError(f"pin policy {key} must be a list of strings")
+    if supported is not None:
+        unsupported = sorted(set(values) - supported)
+        if unsupported:
+            raise ValueError(f"pin policy {key} has unsupported values: {unsupported}")
+    return list(values)
+
+
+def _policy_bool(policy: dict[str, Any], key: str) -> bool | None:
+    if key not in policy:
+        return None
+    value = policy[key]
+    if not isinstance(value, bool):
+        raise ValueError(f"pin policy {key} must be a boolean")
+    return value
+
+
+def _merge_strings(*groups: list[str]) -> list[str]:
+    merged: list[str] = []
+    seen: set[str] = set()
+    for group in groups:
+        for value in group:
+            if value not in seen:
+                seen.add(value)
+                merged.append(value)
+    return merged
+
+
+def _expected_runner_gate_policy(
+    policy: dict[str, Any],
+) -> dict[str, Any] | None:
+    if "expected_runner_gate_policy" not in policy:
+        return None
+    raw_policy = policy["expected_runner_gate_policy"]
+    if not isinstance(raw_policy, dict):
+        raise ValueError("pin policy expected_runner_gate_policy must be an object")
+    normalized, failures = _runner_gate_policy({"gate_policy": raw_policy})
+    if failures:
+        raise ValueError(
+            "pin policy expected_runner_gate_policy is invalid: "
+            + "; ".join(failures)
+        )
+    return normalized
+
+
+def _merge_pin_policy_args(args: argparse.Namespace) -> dict[str, Any] | None:
+    policy = _load_pin_policy(args.pin_policy)
+    args.require_kind = _merge_strings(
+        _policy_required_string_list(policy, "required_kinds"),
+        args.require_kind,
+    )
+    args.require_status = _merge_strings(
+        _policy_required_string_list(
+            policy,
+            "required_statuses",
+            supported=SUPPORTED_STATUSES,
+        ),
+        args.require_status,
+    )
+    args.require_decision = _merge_strings(
+        _policy_required_string_list(
+            policy,
+            "required_decisions",
+            supported=SUPPORTED_DECISIONS,
+        ),
+        args.require_decision,
+    )
+    args.require_assurance = _merge_strings(
+        _policy_required_string_list(
+            policy,
+            "required_assurances",
+            supported=SUPPORTED_ASSURANCES,
+        ),
+        args.require_assurance,
+    )
+    if _policy_bool(policy, "require_passed") is True:
+        args.require_passed = True
+    if _policy_bool(policy, "require_receipts") is True:
+        args.allow_missing_receipts = False
+    if _policy_bool(policy, "require_compact_receipts") is True:
+        args.allow_missing_compact_receipts = False
+    if _policy_bool(policy, "require_request_validation") is True:
+        args.allow_missing_request_validation = False
+    if _policy_bool(policy, "require_bundles") is True:
+        args.allow_missing_bundles = False
+    if _policy_bool(policy, "require_no_unsupported_architecture_fields") is True:
+        args.require_no_unsupported_architecture_fields = True
+    return _expected_runner_gate_policy(policy)
+
+
+def _pin_policy(
+    *,
+    required_kinds: list[str],
+    required_statuses: list[str],
+    required_decisions: list[str],
+    required_assurances: list[str],
+    require_passed: bool,
+    require_receipts: bool,
+    require_compact_receipts: bool,
+    require_request_validation: bool,
+    require_bundles: bool,
+    require_no_unsupported_architecture_fields: bool,
+    expected_runner_gate_policy: dict[str, Any],
+) -> dict[str, Any]:
+    return {
+        "required_kinds": required_kinds,
+        "required_statuses": required_statuses,
+        "required_decisions": required_decisions,
+        "required_assurances": required_assurances,
+        "require_passed": require_passed,
+        "require_receipts": require_receipts,
+        "require_compact_receipts": require_compact_receipts,
+        "require_request_validation": require_request_validation,
+        "require_bundles": require_bundles,
+        "require_no_unsupported_architecture_fields": (
+            require_no_unsupported_architecture_fields
+        ),
+        "expected_runner_gate_policy": expected_runner_gate_policy,
+    }
+
+
 def _sidecar_consistency_failures(
     summary: dict[str, Any],
     *,
@@ -433,6 +576,7 @@ def verify_runner_check(
     require_request_validation: bool,
     require_bundles: bool,
     require_no_unsupported_architecture_fields: bool,
+    expected_runner_gate_policy: dict[str, Any] | None,
 ) -> dict[str, Any]:
     _check_policy_values(
         statuses=required_statuses,
@@ -449,6 +593,14 @@ def verify_runner_check(
         failures.append("runner-check failure_count was not zero")
     runner_gate_policy, runner_gate_policy_failures = _runner_gate_policy(report)
     failures.extend(runner_gate_policy_failures)
+    if (
+        expected_runner_gate_policy is not None
+        and runner_gate_policy != expected_runner_gate_policy
+    ):
+        failures.append(
+            "runner-check gate_policy does not match pinned "
+            "expected_runner_gate_policy"
+        )
 
     raw_summaries = report.get("summaries")
     summaries: list[dict[str, Any]] = []
@@ -598,6 +750,7 @@ def verify_runner_check(
         "required_decisions": required_decisions,
         "required_assurances": required_assurances,
         "runner_gate_policy": runner_gate_policy,
+        "expected_runner_gate_policy": expected_runner_gate_policy,
         "require_passed": require_passed,
         "require_receipts": require_receipts,
         "require_compact_receipts": require_compact_receipts,
@@ -605,6 +758,21 @@ def verify_runner_check(
         "require_bundles": require_bundles,
         "require_no_unsupported_architecture_fields": (
             require_no_unsupported_architecture_fields
+        ),
+        "pin_policy": _pin_policy(
+            required_kinds=required_kinds,
+            required_statuses=required_statuses,
+            required_decisions=required_decisions,
+            required_assurances=required_assurances,
+            require_passed=require_passed,
+            require_receipts=require_receipts,
+            require_compact_receipts=require_compact_receipts,
+            require_request_validation=require_request_validation,
+            require_bundles=require_bundles,
+            require_no_unsupported_architecture_fields=(
+                require_no_unsupported_architecture_fields
+            ),
+            expected_runner_gate_policy=runner_gate_policy,
         ),
         "summaries": summaries,
         "not_claimed": (
@@ -732,9 +900,19 @@ def main() -> int:
             "theorem-linked request."
         ),
     )
+    parser.add_argument(
+        "--pin-policy",
+        type=Path,
+        help=(
+            "Merge requirements from a previous JSON report's pin_policy block "
+            "or from a standalone pin-policy object, including the expected "
+            "runner gate_policy."
+        ),
+    )
     args = parser.parse_args()
 
     try:
+        expected_runner_gate_policy = _merge_pin_policy_args(args)
         report = verify_runner_check(
             args.runner_check,
             base_dir=args.base_dir,
@@ -750,6 +928,7 @@ def main() -> int:
             require_no_unsupported_architecture_fields=(
                 args.require_no_unsupported_architecture_fields
             ),
+            expected_runner_gate_policy=expected_runner_gate_policy,
         )
     except (OSError, ValueError, json.JSONDecodeError) as exc:
         failure = _failure_report(exc, args.runner_check)
