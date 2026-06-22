@@ -389,6 +389,7 @@ AI_CONTRACT_DIGEST_FIELDS = {
 }
 
 ARCHITECTURE_CONFIG_CONTRACT_KINDS = (
+    "rope_position_distinguishability",
     "kv_cache_ring_buffer",
     "sparse_attention_coverage",
     "recurrence_schedule",
@@ -471,6 +472,7 @@ def add_architecture_config_example_checks(
             "tests/test_circle_ai_contract_runner.py::test_architecture_config_import_builds_non_rope_contract_requests",
             "tests/test_circle_ai_contract_runner.py::test_certification_bundle_public_api_embeds_architecture_config_import_report",
             "tests/test_circle_ai_contract_runner.py::test_circle_ai_certify_cli_accepts_architecture_config_non_rope",
+            "tests/test_circle_ai_contract_runner.py::test_circle_ai_certify_cli_accepts_architecture_config_rope",
         ),
         reason,
     )
@@ -481,6 +483,7 @@ def add_architecture_config_example_checks(
         pytest(
             "tests/test_public_api.py::test_stable_architecture_config_api_builds_non_rope_receipts",
             "tests/test_public_api.py::test_package_cli_unified_certify_batch_architecture_config_writes_import_reports",
+            "tests/test_public_api.py::test_package_cli_unified_certify_batch_artifact_dir_writes_portable_set",
             "tests/test_public_api.py::test_package_cli_unified_certify_architecture_config_non_rope",
         ),
         reason,

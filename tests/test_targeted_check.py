@@ -521,6 +521,7 @@ def test_architecture_config_example_change_runs_import_and_kind_checks() -> Non
 
     assert payload["ai_contract_validation_scope"] == "kind_specific"
     assert payload["impacted_ai_contract_kinds"] == [
+        "rope_position_distinguishability",
         "kv_cache_ring_buffer",
         "sparse_attention_coverage",
         "recurrence_schedule",
@@ -534,6 +535,16 @@ def test_architecture_config_example_change_runs_import_and_kind_checks() -> Non
         commands,
         "pytest",
         "tests/test_public_api.py::test_package_cli_unified_certify_architecture_config_non_rope",
+    )
+    assert contains_command(
+        commands,
+        "pytest",
+        "tests/test_circle_ai_contract_runner.py::test_circle_ai_certify_cli_accepts_architecture_config_rope",
+    )
+    assert contains_command(
+        commands,
+        "pytest",
+        "tests/test_public_api.py::test_package_cli_unified_certify_batch_artifact_dir_writes_portable_set",
     )
     assert contains_command(
         commands,
