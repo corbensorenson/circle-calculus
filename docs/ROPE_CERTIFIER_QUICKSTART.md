@@ -131,6 +131,22 @@ AIRA-T0056,AIRA-T0059,AIRA-T0182,AIRA-T0183,AIRA-T0214,AIRA-T0060,AIRA-T0177,AIR
 
 Lean proves that the declared turn ratio `1/4099` has finite-context nearest-integer margin `1/4099` for every positive gap below context `4096`, proves that the scalar nearest-gap margin can stand in for the floor/ceiling witness pair, proves the reusable exact-weakest-gap report contract, proves that the named gap `1` realizes the exact reported margin, proves that the finite nearest-integer certificate object is equivalent to the abstract margin predicate, proves that the certificate object is equivalent to the one-channel no-near-turn contract, then proves the corresponding named no-near-turn consequence. This is useful as the first complete certificate shape. It is not a proof that the standard `1 / (2π)` RoPE channel has the same kind of finite-context margin.
 
+The same declared-rational certificate is available through the unified AI
+contract runner:
+
+```bash
+python scripts/circle_ai_certify.py rope \
+  --context 4096 \
+  --requested-margin 1/4099 \
+  --turn-ratio-numerator 1 \
+  --turn-ratio-denominator 4099
+```
+
+Look for `rope_rational_turn_ratio=... requested_status=proved` in text output,
+or `evidence.rational_turn_ratio_finite_margin_certificate` in JSON output.
+Those fields certify the declared rational/discretized scalar turn ratio only;
+they do not upgrade the ordinary irrational RoPE schedule.
+
 For reduced rational turn ratios at the full denominator context, the certifier
 also cites the full-denominator existence theorem:
 

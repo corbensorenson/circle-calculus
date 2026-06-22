@@ -125,6 +125,14 @@
                             "tolerance": {
                               "minimum": 0,
                               "type": "number"
+                            },
+                            "turn_ratio_denominator": {
+                              "minimum": 1,
+                              "type": "integer"
+                            },
+                            "turn_ratio_numerator": {
+                              "minimum": 0,
+                              "type": "integer"
                             }
                           },
                           "type": "object"
@@ -1210,6 +1218,14 @@
                             "tolerance": {
                               "minimum": 0,
                               "type": "number"
+                            },
+                            "turn_ratio_denominator": {
+                              "minimum": 1,
+                              "type": "integer"
+                            },
+                            "turn_ratio_numerator": {
+                              "minimum": 0,
+                              "type": "integer"
                             }
                           },
                           "type": "object"
@@ -1909,6 +1925,14 @@
                         "tolerance": {
                           "minimum": 0,
                           "type": "number"
+                        },
+                        "turn_ratio_denominator": {
+                          "minimum": 1,
+                          "type": "integer"
+                        },
+                        "turn_ratio_numerator": {
+                          "minimum": 0,
+                          "type": "integer"
                         }
                       },
                       "type": "object"

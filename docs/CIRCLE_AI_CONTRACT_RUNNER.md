@@ -40,6 +40,13 @@ python scripts/circle_ai_certify.py rope \
   --format compact-json \
   --compact-json-out reports/rope_compact_receipt.json
 
+python scripts/circle_ai_certify.py rope \
+  --context 4096 \
+  --requested-margin 1/4099 \
+  --turn-ratio-numerator 1 \
+  --turn-ratio-denominator 4099 \
+  --format json
+
 python scripts/circle_ai_certify.py kv-cache \
   --cache-size 16 \
   --current 31 \
@@ -90,6 +97,16 @@ Add `--gate-report-out PATH` when CI also needs a schema-validated JSON gate
 report but does not need to save the full receipt. Add `--receipt-check-out
 PATH` with `--json-out PATH` when the report should point at a saved receipt
 file for audit logs.
+
+For explicitly rationalized or discretized phase policies, add
+`--turn-ratio-numerator N --turn-ratio-denominator D` to request the finite
+nearest-integer margin certificate for the declared scalar turn ratio `N/D`.
+For example, `1/4099` over context `4096` with requested margin `1/4099`
+emits `rational_turn_ratio_finite_margin_certificate` and the text line
+`rope_rational_turn_ratio=... requested_status=proved`. This is a
+theorem-backed certificate for that declared rational/discretized turn ratio,
+not a proof that the standard irrational RoPE frequency schedule has the same
+margin.
 
 For standard RoPE model configs, `--model-config` infers `head_dim` from
 `head_dim` or `hidden_size / num_attention_heads`, `base` from `rope_theta`

@@ -500,6 +500,123 @@ def test_rope_receipt_uses_d19_bank_bridge_for_smaller_context(
     assert receipt["proof_status"]["all_theorem_ids_proved"] is True
 
 
+def test_rope_receipt_accepts_declared_rational_turn_ratio_certificate(
+    contract_pack: dict,
+) -> None:
+    receipt = build_rope_receipt(
+        context=4096,
+        requested_margin="1/4099",
+        turn_ratio_numerator=1,
+        turn_ratio_denominator=4099,
+        pack=contract_pack,
+    )
+
+    assert validate_contract_receipt(receipt) == []
+    assert validate_contract_receipt_against_pack(receipt, contract_pack) == []
+    assert receipt["status"] == "proved"
+    assert receipt["request_passed"] is True
+    _assert_decision_matches_receipt(
+        receipt,
+        verdict="passed",
+        assurance="mixed_theorem_and_computation",
+    )
+    assert "standard_channel0_d19_request_classifier" not in receipt["evidence"]
+    certificate = receipt["evidence"][
+        "rational_turn_ratio_finite_margin_certificate"
+    ]
+    assert certificate["schema_id"] == (
+        "circle_calculus.rational_turn_ratio_finite_margin.v0"
+    )
+    assert certificate["numerator"] == 1
+    assert certificate["denominator"] == 4099
+    assert certificate["pass_certificate"] is True
+    assert certificate["requested_margin_status"] == "proved"
+    assert certificate["exact_nearest_gap_margin"] == "1/4099"
+    assert certificate["exact_nearest_gap"] == 1
+    assert "rational_turn_ratio_finite_margin_certificate" in receipt[
+        "proof_layers"
+    ]["proved_fields"]
+    assert any(
+        "declared rational turn-ratio certificate is not a proof" in boundary
+        for boundary in receipt["not_claimed"]
+    )
+    assert (
+        receipt["validation_commands"][0]
+        == "python scripts/circle_ai_certify.py rope --head-dim 128 "
+        "--base 10000.0 --context 4096 --tolerance 1e-06 "
+        "--discretization round --requested-margin 1/4099 "
+        "--turn-ratio-numerator 1 --turn-ratio-denominator 4099 --format json"
+    )
+
+    compact = build_compact_contract_receipt(receipt)
+    jsonschema.validate(compact, build_compact_contract_receipt_json_schema())
+    selected = compact["selected_evidence"]
+    selected_layers = compact["selected_evidence_proof_layers"]
+    assert (
+        selected[
+            "rational_turn_ratio_finite_margin_certificate.requested_margin_status"
+        ]
+        == "proved"
+    )
+    assert (
+        selected[
+            "rational_turn_ratio_finite_margin_certificate.exact_nearest_gap_margin"
+        ]
+        == "1/4099"
+    )
+    assert (
+        selected_layers[
+            "rational_turn_ratio_finite_margin_certificate.requested_margin_status"
+        ]
+        == "proved"
+    )
+
+    replay = build_contract_receipt_replay_check_report(
+        receipt,
+        contract_pack,
+        receipt_path="reports/rational_rope_receipt.json",
+    )
+    jsonschema.validate(replay, build_contract_receipt_replay_check_json_schema())
+    assert replay["ok"] is True
+    assert replay["comparison"]["all_replay_fields_match"] is True
+
+    summary_lines = receipt_summary_lines(receipt)
+    assert any(
+        line.startswith("rope_rational_turn_ratio=")
+        and "requested_status=proved" in line
+        for line in summary_lines
+    )
+
+
+def test_rope_receipt_rejects_unpaired_rational_turn_ratio() -> None:
+    with pytest.raises(ValueError, match="must be supplied together"):
+        build_rope_receipt(turn_ratio_numerator=1)
+
+    with pytest.raises(ValueError, match="turn_ratio_numerator"):
+        build_contract_request(
+            "rope",
+            {
+                "head_dim": 128,
+                "base": 10000.0,
+                "context": 4096,
+                "turn_ratio_numerator": 1,
+            },
+        )
+
+    request = {
+        "schema_id": "circle_calculus.ai_contract_request.v0",
+        "kind": "rope",
+        "parameters": {
+            "head_dim": 128,
+            "base": 10000.0,
+            "context": 4096,
+            "turn_ratio_numerator": 1,
+        },
+    }
+    failures = validate_contract_request(request)
+    assert any("turn_ratio_numerator" in failure for failure in failures)
+
+
 def test_rope_receipt_distinguishes_impossible_and_undecided_margins(
     contract_pack: dict,
 ) -> None:
@@ -2623,6 +2740,62 @@ def test_circle_ai_certify_cli_emits_json_receipt() -> None:
     assert payload["evidence"]["standard_channel0_d19_request_classifier"][
         "request_status"
     ] == "proved"
+
+
+def test_circle_ai_certify_cli_emits_rational_rope_receipt() -> None:
+    result = subprocess.run(
+        [
+            sys.executable,
+            str(SCRIPT),
+            "rope",
+            "--context",
+            "4096",
+            "--requested-margin",
+            "1/4099",
+            "--turn-ratio-numerator",
+            "1",
+            "--turn-ratio-denominator",
+            "4099",
+            "--format",
+            "json",
+        ],
+        cwd=ROOT,
+        check=True,
+        text=True,
+        capture_output=True,
+    )
+
+    payload = json.loads(result.stdout)
+    assert payload["status"] == "proved"
+    assert payload["request_passed"] is True
+    assert "standard_channel0_d19_request_classifier" not in payload["evidence"]
+    certificate = payload["evidence"][
+        "rational_turn_ratio_finite_margin_certificate"
+    ]
+    assert certificate["requested_margin_status"] == "proved"
+    assert certificate["exact_nearest_gap_margin"] == "1/4099"
+
+    text_result = subprocess.run(
+        [
+            sys.executable,
+            str(SCRIPT),
+            "rope",
+            "--context",
+            "4096",
+            "--requested-margin",
+            "1/4099",
+            "--turn-ratio-numerator",
+            "1",
+            "--turn-ratio-denominator",
+            "4099",
+        ],
+        cwd=ROOT,
+        check=True,
+        text=True,
+        capture_output=True,
+    )
+    assert "rope_rational_turn_ratio=" in text_result.stdout
+    assert "requested_status=proved" in text_result.stdout
 
 
 def test_circle_ai_certify_cli_accepts_architecture_config_non_rope(

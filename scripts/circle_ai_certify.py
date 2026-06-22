@@ -533,6 +533,23 @@ def parse_args() -> argparse.Namespace:
             "Currently classified by the D19 channel-0 range theorem when in scope."
         ),
     )
+    rope.add_argument(
+        "--turn-ratio-numerator",
+        type=int,
+        help=(
+            "Optional numerator for an explicitly declared rational/discretized "
+            "turn-ratio finite-margin certificate. Must be paired with "
+            "--turn-ratio-denominator."
+        ),
+    )
+    rope.add_argument(
+        "--turn-ratio-denominator",
+        type=int,
+        help=(
+            "Optional positive denominator for an explicitly declared "
+            "rational/discretized turn-ratio finite-margin certificate."
+        ),
+    )
 
     kv = subparsers.add_parser(
         "kv-cache",
@@ -886,7 +903,7 @@ def _architecture_parameters_from_args(
 
 def _parameters_from_args(args: argparse.Namespace) -> dict[str, Any]:
     if args.kind == "rope":
-        return {
+        parameters = {
             "head_dim": 128 if args.head_dim is None else args.head_dim,
             "base": 10000.0 if args.base is None else args.base,
             "context": 32768 if args.context is None else args.context,
@@ -896,6 +913,11 @@ def _parameters_from_args(args: argparse.Namespace) -> dict[str, Any]:
             else args.discretization,
             "requested_margin": args.requested_margin,
         }
+        if args.turn_ratio_numerator is not None:
+            parameters["turn_ratio_numerator"] = args.turn_ratio_numerator
+        if args.turn_ratio_denominator is not None:
+            parameters["turn_ratio_denominator"] = args.turn_ratio_denominator
+        return parameters
     if args.kind == "kv-cache":
         if args.architecture_config is not None:
             return _architecture_parameters_from_args(

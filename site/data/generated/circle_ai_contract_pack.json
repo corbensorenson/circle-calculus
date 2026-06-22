@@ -71,7 +71,7 @@
       "id": "CC-AI-CONTRACT-RECURRENCE-001"
     },
     "rope_position_distinguishability": {
-      "content_fingerprint": "22eb488ab06f5bb59e6b85f3a83169877644314fbc7f630f9f9554f73f1110a5",
+      "content_fingerprint": "4b6cde25382a3c0fd206ee624ef4d582ce4913a74e766471e7d890c6a05e0b9a",
       "content_fingerprint_algorithm": "sha256-json-v1",
       "id": "CC-AI-CONTRACT-ROPE-001"
     },
@@ -267,7 +267,7 @@
       ],
       "ready_for_downstream_fixture_use": true,
       "required_fields_present": true,
-      "theorem_count": 61,
+      "theorem_count": 73,
       "unproved_theorem_count": 0,
       "unproved_theorem_ids": [],
       "unresolved_theorem_count": 0,
@@ -2227,7 +2227,7 @@
         "unproved_theorem_ids": [],
         "unresolved_theorem_ids": []
       },
-      "content_fingerprint": "22eb488ab06f5bb59e6b85f3a83169877644314fbc7f630f9f9554f73f1110a5",
+      "content_fingerprint": "4b6cde25382a3c0fd206ee624ef4d582ce4913a74e766471e7d890c6a05e0b9a",
       "content_fingerprint_algorithm": "sha256-json-v1",
       "contract_passed": true,
       "dictionary_ids": [
@@ -2499,7 +2499,7 @@
           "proved"
         ],
         "source": "manifests/**/*.yaml",
-        "theorem_count": 61,
+        "theorem_count": 73,
         "theorems": [
           {
             "id": "AIRA-T0021",
@@ -2824,6 +2824,90 @@
             "status": "lean_proved"
           },
           {
+            "id": "AIRA-T0056",
+            "lean_name": "Circle.Applications.ropeTurnRatioFiniteMargin_natRatio_of_coprime_context_le_den",
+            "proved": true,
+            "resolved": true,
+            "status": "lean_proved"
+          },
+          {
+            "id": "AIRA-T0059",
+            "lean_name": "Circle.Applications.ropeTurnRatioFiniteMargin_iff_nearestIntegerWitnesses",
+            "proved": true,
+            "resolved": true,
+            "status": "lean_proved"
+          },
+          {
+            "id": "AIRA-T0060",
+            "lean_name": "Circle.Applications.RopeTurnRatioFiniteMarginCertificate.certifies",
+            "proved": true,
+            "resolved": true,
+            "status": "lean_proved"
+          },
+          {
+            "id": "AIRA-T0061",
+            "lean_name": "Circle.Applications.ropeRationalPreset4099_turnRatioFiniteMargin",
+            "proved": true,
+            "resolved": true,
+            "status": "lean_proved"
+          },
+          {
+            "id": "AIRA-T0062",
+            "lean_name": "Circle.Applications.not_ropeRationalPreset4099_nearTurn",
+            "proved": true,
+            "resolved": true,
+            "status": "lean_proved"
+          },
+          {
+            "id": "AIRA-T0177",
+            "lean_name": "Circle.Applications.ropeTurnRatioFiniteMarginCertificate_iff_finiteMargin",
+            "proved": true,
+            "resolved": true,
+            "status": "lean_proved"
+          },
+          {
+            "id": "AIRA-T0182",
+            "lean_name": "Circle.Applications.ropeTurnRatioGapNearestIntegerMargin_ge_iff_floor_ceil",
+            "proved": true,
+            "resolved": true,
+            "status": "lean_proved"
+          },
+          {
+            "id": "AIRA-T0183",
+            "lean_name": "Circle.Applications.ropeTurnRatioFiniteMargin_iff_gapNearestIntegerMargin",
+            "proved": true,
+            "resolved": true,
+            "status": "lean_proved"
+          },
+          {
+            "id": "AIRA-T0185",
+            "lean_name": "Circle.Applications.ropeRationalPreset4099_exactWeakestGapMargin",
+            "proved": true,
+            "resolved": true,
+            "status": "lean_proved"
+          },
+          {
+            "id": "AIRA-T0186",
+            "lean_name": "Circle.Applications.ropeTurnRatioFiniteMargin_pos_no_zero_error",
+            "proved": true,
+            "resolved": true,
+            "status": "lean_proved"
+          },
+          {
+            "id": "AIRA-T0187",
+            "lean_name": "Circle.Applications.ropeRationalPreset4099_noZeroTurnRatioError",
+            "proved": true,
+            "resolved": true,
+            "status": "lean_proved"
+          },
+          {
+            "id": "AIRA-T0196",
+            "lean_name": "Circle.Applications.ropeTurnRatioFiniteMarginCertificate_iff_no_nearTurn_below_scaled_margin",
+            "proved": true,
+            "resolved": true,
+            "status": "lean_proved"
+          },
+          {
             "id": "AIRA-T0214",
             "lean_name": "Circle.Applications.ropeTurnRatioExactWeakestGapMargin_iff_finiteMargin_and_realized",
             "proved": true,
@@ -2986,6 +3070,18 @@
         "AIRA-T0235",
         "AIRA-T0236",
         "AIRA-T0237",
+        "AIRA-T0056",
+        "AIRA-T0059",
+        "AIRA-T0060",
+        "AIRA-T0061",
+        "AIRA-T0062",
+        "AIRA-T0177",
+        "AIRA-T0182",
+        "AIRA-T0183",
+        "AIRA-T0185",
+        "AIRA-T0186",
+        "AIRA-T0187",
+        "AIRA-T0196",
         "AIRA-T0214",
         "AIRA-T0215",
         "AIRA-T0222",
@@ -8080,7 +8176,7 @@
       "schema_id": "circle_calculus.theseus_hive_ai_contracts.v0"
     }
   },
-  "pack_content_fingerprint": "0d4de6253ec22734f061228271cda060198fe2c9ee00a6bcf088952ce7756066",
+  "pack_content_fingerprint": "45d0422b3210b22570f7e531b2312bd41dea13142417bc411e488e8204c91bca",
   "planner_recommendation_index": {
     "FANOUT-AUDIT-DUPLICATE-COLLAPSED-BUDGET": {
       "action_kind": "audit_duplicate_collapsed_candidate_budget",

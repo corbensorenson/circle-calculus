@@ -223,6 +223,7 @@ proof_layers=proved_fields=... computed_fields=... numerical_only_fields=... uns
 rope_exact_discrete=pass=True ...
 rope_d19_request=status=proved theorem_backed=True ...
 rope_d19_bank_bridge=applies=True radian_bank_form=True ...
+rope_rational_turn_ratio=numerator=1 denominator=4099 pass=True requested_status=proved ...
 rope_dirichlet_guardrail=applies=True inv_context_margin=1/131072 ...
 not_claimed=...
 ```
@@ -235,6 +236,7 @@ Read that as:
 | `request_passed=True` | the requested margin is accepted by the current theorem-backed classifier |
 | `rope_exact_discrete` | exact integer-period phase-bank result for the declared discretization model |
 | `standard_channel0_d19_bank_bridge` | conditional first-channel bank no-near-turn payload backed by `AIRA-T0171`, `AIRA-T0172`, and `AIRA-T0234` through `AIRA-T0237` when its context/margin premises pass |
+| `rational_turn_ratio_finite_margin_certificate` | theorem-backed finite nearest-integer margin certificate for an explicitly declared rational/discretized scalar turn ratio such as `1/4099` |
 | `rope_dirichlet_guardrail` | theorem-backed `1/context` upper-bound guardrail from `AIRA-T0239` through `AIRA-T0241` |
 | `rope_real_phase_scan` | numerical diagnostic only |
 | `not_claimed` | boundary that prevents model-quality or full all-channel real-RoPE overclaims |
@@ -246,12 +248,16 @@ For smaller contexts below the D19 obstruction range, the receipt can still be
 `proved` when the `standard_channel0_d19_bank_bridge` applies: that bridge is a
 conditional one-separating-channel theorem for a finite bank whose first
 frequency is standard channel 0, not an independent all-channel margin theorem.
+For rationalized or discretized phase policies, pass
+`--turn-ratio-numerator N --turn-ratio-denominator D` to certify the declared
+scalar turn ratio `N/D`. This is a separate proof-carrying lane from the
+standard irrational RoPE schedule.
 
 ## Nine Runner Surfaces
 
 | Surface | Command | What The Receipt Checks |
 | --- | --- | --- |
-| RoPE | `python scripts/circle_ai_certify.py rope --head-dim 128 --base 10000 --context 131072 --requested-margin 1/328459` | exact integer-bank pass/fail plus optional D19 real-phase request classification |
+| RoPE | `python scripts/circle_ai_certify.py rope --head-dim 128 --base 10000 --context 131072 --requested-margin 1/328459` | exact integer-bank pass/fail plus optional D19 real-phase request classification or declared rational/discretized turn-ratio certificate |
 | KV-cache | `python scripts/circle_ai_certify.py kv-cache --cache-size 16 --current 31 --token 20 --batch-tokens 20,24,29,31 --sink-size 4` | retained-window, stale-member, live-window, and optional sink-plus-rolling-window request facts |
 | Sparse attention | `python scripts/circle_ai_certify.py sparse-attention --context 120 --strides 7,13 --path-length 3 --local-window 4` | covered lags, uncovered gaps, repair windows, and candidate-budget fields |
 | Recurrence | `python scripts/circle_ai_certify.py recurrence` | finite loop budget, active work, inactive work, exit step, and whole-period shift invariants |

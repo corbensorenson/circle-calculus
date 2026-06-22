@@ -46,6 +46,7 @@ from .circle_ai_contracts import (
 )
 from .rope_certifier import (
     RoPEConfig,
+    certify_rational_turn_ratio_finite_margin,
     certify_rope_positions,
     certify_standard_channel0_d19_bank_request,
     certify_standard_channel0_d19_range_request_margin_bracket,
@@ -251,6 +252,10 @@ COMPACT_RECEIPT_EVIDENCE_PATHS_BY_KIND = {
         "standard_channel0_d19_bank_bridge.request_status",
         "standard_channel0_d19_bank_bridge.theorem_backed",
         "standard_channel0_d19_bank_bridge.bank_shape",
+        "rational_turn_ratio_finite_margin_certificate.pass_certificate",
+        "rational_turn_ratio_finite_margin_certificate.requested_margin_status",
+        "rational_turn_ratio_finite_margin_certificate.exact_nearest_gap_margin",
+        "rational_turn_ratio_finite_margin_certificate.exact_nearest_gap",
         "real_phase_dirichlet_guardrail.applies",
         "real_phase_dirichlet_guardrail.requested_margin_relation_to_ceiling",
         "real_phase_dirichlet_guardrail.requested_margin_exceeds_ceiling",
@@ -954,6 +959,20 @@ def _runner_validation_command_for_request(request: Mapping[str, Any]) -> str:
         if parameters.get("requested_margin") is not None:
             parts.extend(
                 ["--requested-margin", _cli_value(parameters["requested_margin"])]
+            )
+        if "turn_ratio_numerator" in parameters:
+            parts.extend(
+                [
+                    "--turn-ratio-numerator",
+                    _cli_value(parameters["turn_ratio_numerator"]),
+                ]
+            )
+        if "turn_ratio_denominator" in parameters:
+            parts.extend(
+                [
+                    "--turn-ratio-denominator",
+                    _cli_value(parameters["turn_ratio_denominator"]),
+                ]
             )
     elif kind == "kv_cache_ring_buffer":
         for flag, key in (
@@ -1766,10 +1785,16 @@ def build_rope_receipt(
     tolerance: float = 1e-6,
     discretization: str = "round",
     requested_margin: str | Fraction | None = None,
+    turn_ratio_numerator: int | None = None,
+    turn_ratio_denominator: int | None = None,
     pack: Mapping[str, Any] | None = None,
 ) -> dict[str, Any]:
     """Build a theorem-linked receipt for one RoPE configuration."""
 
+    if (turn_ratio_numerator is None) != (turn_ratio_denominator is None):
+        raise ValueError(
+            "turn_ratio_numerator and turn_ratio_denominator must be supplied together"
+        )
     margin = parse_fraction(requested_margin)
     config = RoPEConfig(
         head_dim=head_dim,
@@ -1780,6 +1805,7 @@ def build_rope_receipt(
     )
     certificate = certify_rope_positions(config).to_dict()
     theorem_ids = list(certificate["theorem_ids"])
+    rational_certificate: dict[str, Any] | None = None
     evidence: dict[str, Any] = {
         "exact_discrete_pass": certificate["exact_discrete"]["pass_exact"],
         "exact_discretized_periods": certificate["exact_discrete"][
@@ -1832,7 +1858,37 @@ def build_rope_receipt(
     status = "proved"
     request_passed: bool | None = bool(certificate["exact_discrete"]["pass_exact"])
     d19_receipt_status: str | None = None
-    if margin is not None:
+    rational_receipt_status: str | None = None
+    if (
+        turn_ratio_numerator is not None
+        and turn_ratio_denominator is not None
+    ):
+        rational_certificate = certify_rational_turn_ratio_finite_margin(
+            numerator=turn_ratio_numerator,
+            denominator=turn_ratio_denominator,
+            context_length=context,
+            requested_margin=margin,
+        ).to_dict()
+        evidence["rational_turn_ratio_finite_margin_certificate"] = (
+            rational_certificate
+        )
+        theorem_ids.extend(rational_certificate["theorem_ids"])
+        rational_receipt_status = rational_certificate["requested_margin_status"]
+        if margin is None:
+            status = (
+                "proved" if rational_certificate["pass_certificate"] else "undecided"
+            )
+            request_passed = bool(rational_certificate["pass_certificate"])
+        elif rational_receipt_status == "proved":
+            status = "proved"
+            request_passed = True
+        elif rational_receipt_status == "impossible":
+            status = "impossible"
+            request_passed = False
+        else:
+            status = "undecided"
+            request_passed = None
+    elif margin is not None:
         d19 = certify_standard_channel0_d19_range_request_margin_bracket(
             requested_context=context,
             requested_margin=margin,
@@ -1887,6 +1943,20 @@ def build_rope_receipt(
         proof_layers["unsupported_fields"].append(
             "real_phase_dirichlet_guardrail requires context > 1"
         )
+    if rational_receipt_status is not None:
+        proof_layers["proved_fields"].append(
+            "rational_turn_ratio_finite_margin_certificate"
+        )
+    elif rational_certificate is not None:
+        if rational_certificate["pass_certificate"]:
+            proof_layers["proved_fields"].append(
+                "rational_turn_ratio_finite_margin_certificate"
+            )
+        else:
+            proof_layers["unsupported_fields"].append(
+                "rational_turn_ratio_finite_margin_certificate has no positive "
+                "finite-margin certificate"
+            )
     if d19_receipt_status in {"proved", "impossible", "undecided"}:
         proof_layers["proved_fields"].append(
             "standard_channel0_d19_request_classifier"
@@ -1895,8 +1965,8 @@ def build_rope_receipt(
         proof_layers["unsupported_fields"].append(
             "standard_channel0_d19_request_classifier outside its proved context range"
         )
-    if margin is not None:
-        bank_bridge = evidence["standard_channel0_d19_bank_bridge"]
+    bank_bridge = evidence.get("standard_channel0_d19_bank_bridge")
+    if isinstance(bank_bridge, Mapping):
         if bank_bridge["applies"]:
             proof_layers["proved_fields"].append(
                 "standard_channel0_d19_bank_bridge"
@@ -1906,33 +1976,47 @@ def build_rope_receipt(
                 "standard_channel0_d19_bank_bridge outside its certified "
                 "margin/context scope"
             )
+    request_parameters = {
+        "head_dim": head_dim,
+        "base": base,
+        "context": context,
+        "tolerance": tolerance,
+        "discretization": discretization,
+        "requested_margin": str(margin) if margin is not None else None,
+    }
+    normalized_parameters = {
+        "head_dim": config.head_dim,
+        "base": config.base,
+        "context_length": config.context_length,
+        "tolerance": config.tolerance,
+        "discretization": config.discretization,
+        "requested_margin": str(margin) if margin is not None else None,
+    }
+    if turn_ratio_numerator is not None and turn_ratio_denominator is not None:
+        request_parameters["turn_ratio_numerator"] = turn_ratio_numerator
+        request_parameters["turn_ratio_denominator"] = turn_ratio_denominator
+        normalized_parameters["turn_ratio_numerator"] = turn_ratio_numerator
+        normalized_parameters["turn_ratio_denominator"] = turn_ratio_denominator
+    not_claimed = [
+        certificate["claim_boundary"],
+        "The numerical real-phase scan is executable support, not a proof.",
+    ]
+    if rational_certificate is not None:
+        not_claimed.append(
+            "A declared rational turn-ratio certificate is not a proof of the "
+            "standard irrational RoPE schedule unless the architecture actually "
+            "uses that declared rational/discretized ratio."
+        )
     return _base_receipt(
         kind="rope_position_distinguishability",
-        request_parameters={
-            "head_dim": head_dim,
-            "base": base,
-            "context": context,
-            "tolerance": tolerance,
-            "discretization": discretization,
-            "requested_margin": str(margin) if margin is not None else None,
-        },
-        normalized_parameters={
-            "head_dim": config.head_dim,
-            "base": config.base,
-            "context_length": config.context_length,
-            "tolerance": config.tolerance,
-            "discretization": config.discretization,
-            "requested_margin": str(margin) if margin is not None else None,
-        },
+        request_parameters=request_parameters,
+        normalized_parameters=normalized_parameters,
         status=status,
         request_passed=request_passed,
         evidence=evidence,
         theorem_ids=theorem_ids,
         proof_layers=proof_layers,
-        not_claimed=[
-            certificate["claim_boundary"],
-            "The numerical real-phase scan is executable support, not a proof.",
-        ],
+        not_claimed=not_claimed,
         pack=pack,
     )
 
@@ -2700,6 +2784,8 @@ def _validate_request_parameters(
             "tolerance",
             "discretization",
             "requested_margin",
+            "turn_ratio_numerator",
+            "turn_ratio_denominator",
         }
         _require_allowed_keys(parameters, allowed=allowed, failures=failures)
         _require_positive_int(parameters, "head_dim", failures)
@@ -2727,6 +2813,15 @@ def _validate_request_parameters(
                     parse_fraction(margin)
                 except (ValueError, ZeroDivisionError):
                     failures.append("parameters.requested_margin must parse as a Fraction")
+        has_turn_ratio_numerator = "turn_ratio_numerator" in parameters
+        has_turn_ratio_denominator = "turn_ratio_denominator" in parameters
+        if has_turn_ratio_numerator != has_turn_ratio_denominator:
+            failures.append(
+                "parameters.turn_ratio_numerator and "
+                "parameters.turn_ratio_denominator must be supplied together"
+            )
+        _require_nonnegative_int(parameters, "turn_ratio_numerator", failures)
+        _require_positive_int(parameters, "turn_ratio_denominator", failures)
     elif canonical == "kv_cache_ring_buffer":
         allowed = {
             "cache_size",
@@ -4429,6 +4524,17 @@ def receipt_summary_lines(receipt: Mapping[str, Any]) -> list[str]:
                 f"{guardrail['requested_margin_relation_to_ceiling']} "
                 f"exceeds_ceiling={guardrail['requested_margin_exceeds_ceiling']}"
             )
+        rational = evidence.get("rational_turn_ratio_finite_margin_certificate")
+        if isinstance(rational, dict):
+            lines.append(
+                "rope_rational_turn_ratio="
+                f"numerator={rational['numerator']} "
+                f"denominator={rational['denominator']} "
+                f"pass={rational['pass_certificate']} "
+                f"requested_status={rational['requested_margin_status']} "
+                f"exact_margin={rational['exact_nearest_gap_margin']} "
+                f"exact_gap={rational['exact_nearest_gap']}"
+            )
     elif kind == "kv_cache_ring_buffer":
         window = evidence["window_certificate"]
         adapter = evidence["adapter_request_trace_certificate"]
@@ -4909,6 +5015,8 @@ def build_contract_request_json_schema() -> dict[str, Any]:
                             "tolerance": {"type": "number", "minimum": 0},
                             "discretization": {"enum": ["round", "floor", "ceil"]},
                             "requested_margin": {"type": ["string", "null"]},
+                            "turn_ratio_numerator": nonnegative_integer,
+                            "turn_ratio_denominator": positive_integer,
                         },
                         "additionalProperties": False,
                     },
