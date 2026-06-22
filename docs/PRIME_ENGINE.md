@@ -71,7 +71,7 @@ The competitive gates treat `primesieve` and `primecount` as serious controls,
 not loose examples. Benchmark metadata records their paths and `--version`
 strings, and the status/check targets require at least `primesieve 12.14` and
 `primecount 8.5` where those controls are used. Those were verified against the
-upstream release pages on 2026-06-21, so a stale local install now fails the
+upstream release pages on 2026-06-22, so a stale local install now fails the
 provenance gate instead of silently weakening the comparison.
 
 `make prime-engine-report` is a gated report command: it uses
@@ -219,14 +219,18 @@ the short competitive workflow.
   remaining chunks, so hot-service timing measures sustained count work instead
   of leaving the caller idle behind channels.
   The current hard target is cold one-shot high-offset parity with `primesieve`:
-  the latest focused diagnostic has `circle-prime-count` at `4.458 ms` best
-  versus cold `primesieve` at `4.271 ms` on `[1e12, 1e12 + 1e7)`, while the
-  hot persistent default count-server row is `1.895 ms`. The slim binary's
-  no-op fresh-process floor is `1.343 ms` and adaptive plan resolution is only
-  `1.375 ms`, so default selection costs about `0.032 ms`. The remaining gap is
-  first-touch/thread dispatch plus short-span count work, not default-selection
-  logic. Lower-thread candidates have not cleared the promotion rule because
-  they can reach median parity without best-time parity.
+  the latest focused hot/cold diagnostic has `circle-prime-count` at
+  `4.055 ms` best versus cold `primesieve` at `4.219 ms` on
+  `[1e12, 1e12 + 1e7)`, while the hot persistent default count-server row is
+  `1.680 ms`. The slim binary's no-op fresh-process floor is `1.506 ms`,
+  adaptive plan resolution is `1.238 ms`, and the minimal adaptive default cold
+  worker row is `4.177 ms`, so plan selection is not the limiting cost. The
+  stricter interleaved cold confirmation still rejects promotion: the default
+  slim row is `0.892x` median and `0.972x` best versus cold `primesieve`. The
+  remaining strict gap is first-touch/thread dispatch plus short-span count
+  work under cold process noise, not default-selection logic. Lower-thread and
+  segment candidates have not cleared the promotion rule because they can show
+  isolated best-time wins without stable median and best-time parity.
 - Benchmarks include control implementations: a straightforward full
   Sieve-of-Eratosthenes count, a guarded scalar trial-division count, and the
   optimized pure-Rust `primal` sieve.
@@ -506,17 +510,18 @@ Current CPU findings:
   `0.749x` best speedup versus cold `primesieve`, so the prototype was
   removed instead of promoted.
   Smaller cold worker-count/segment-size variants remain tracked as evidence
-  lanes. The refreshed lower-thread sweep surfaced `presieve13:2097152` at five
-  workers with `1.015x` median but only `0.873x` best speedup versus cold
-  `primesieve`. Focused confirmation still does not validate promotion: the
-  default row is `0.901x` median / `0.876x` best, the best candidate
-  (`presieve13:1835008`, six workers) is `0.918x` median / `0.884x` best, and
-  the best default-relative gain is only `1.019x`. The gate holds the lane as
-  `hold_small_gain_candidate` instead of promoting a cold row that still loses
-  to the best cold control.
-  The same sweep now records explicit `balanced` and `dynamic` count-binary
-  rows; both were rejected for this high-offset cold lane (`0.710x` and
-  `0.693x` median versus cold `primesieve`). The current
+  lanes. A current post-revert hot/cold refresh showed a best-only slim
+  count-binary win (`4.055 ms` versus cold `primesieve` at `4.219 ms`), but the
+  stricter interleaved cold confirmation still rejected promotion: the default
+  count-binary row was `0.892x` median and `0.972x` best versus cold
+  `primesieve`, with noisy samples. The current short sweep also found no
+  trial-ready stable candidate: the strongest cold best-time row was
+  `presieve17:1310720` at eight workers, but it reached only `0.903x` best and
+  `0.825x` median versus cold `primesieve`; the checker reported
+  `hold_small_gain_candidate` with only a noisy `1.037x` fallback best gain.
+  The same sweep records explicit `balanced` and `dynamic` count-binary rows;
+  both remain rejected for this high-offset cold lane (`0.785x` and `0.676x`
+  median versus cold `primesieve`). The current
   `1010000` generated table is the measured compromise for the tracked
   `[1e12, 1e12 + 1e7)` cold count lane. Treat those rejected levers as closed
   unless a future compiler/platform change provides new evidence.
@@ -532,9 +537,10 @@ Current CPU findings:
   requests fall back to the shifted single-segment mark plan. It is measured
   only when the external-control harness is passed
   `--include-circle-count-binary`; the latest focused cold candidate confirmation
-  has the default count-only row, `presieve13:1507328`, at `0.901x` median and
-  `0.876x` best versus cold `primesieve`, while the best candidate
-  (`presieve13:1835008`, six workers) is `0.918x` median and `0.884x` best.
+  has the default count-only row, `presieve13:1507328`, at `0.892x` median and
+  `0.972x` best versus cold `primesieve`, while the current short sweep's best
+  cold best-time candidate (`presieve17:1310720`, eight workers) is `0.903x`
+  best and `0.825x` median.
   Treat the cold one-shot lane as below-parity until a candidate beats cold
   `primesieve` by both median and best time. The same exact-repeat
   probe has persistent Circle `count-server` at `15.668x` median versus
@@ -577,7 +583,7 @@ Current CPU findings:
   and applies the same median-gain plus median/best-speed promotion rule. The
   latest sweep/confirmation artifact gives `hold_small_gain_candidate`; no
   comparable stable row group is trial-ready, and the noisy fallback best gain
-  is only `1.021x`.
+  is only `1.037x`.
 - A work-balanced prefix splitter using an `x^(3/2)` sieve-work estimate is
   kept as an experimental benchmark row. It was correct and helped some 100M
   rows, but it lost the current 1B rows, so the CLI default still uses equal

@@ -343,7 +343,7 @@ without being held by focused confirmation. The sweep now keeps reduced-thread
 high-offset candidates plus explicit `balanced` and `dynamic` rows visible; the
 latest sweep/confirmation readout has no comparable stable candidate group that
 both beats the cold default and beats cold `primesieve` by median and best
-time. Its noisy fallback best gain is `1.021x`, so the lane stays
+time. Its noisy fallback best gain is `1.037x`, so the lane stays
 `hold_small_gain_candidate`.
 `make prime-engine-high-offset-count-binary-candidate-confirm` is now the named
 confirmation target for that lane: it reruns the default plus those current
@@ -372,15 +372,16 @@ directly: a no-op fresh-process floor, adaptive-plan-only worker, serial
 default worker, minimal fresh-process segmented/default rows, the full
 `circle-prime` CLI row, the slim `circle-prime-count` CLI row, an optional
 cold `primesieve` row, and persistent `count-server` candidate rows. The
-latest short diagnostic has the slim cold count binary at `4.458 ms` best
-versus cold `primesieve` at `4.271 ms` (`1.04x` slower), the slim binary no-op
-process floor at `1.343 ms`, slim binary adaptive plan resolution at `1.375 ms`,
-serial default count at `9.534 ms`, the minimal adaptive default cold worker at
-`4.329 ms`, the full `circle-prime` CLI at `4.314 ms`, and the persistent
-default count-server row at `1.895 ms` on the tracked high-offset span. The hot
-in-process default row is `2.046 ms`, so the residual cold gap is first-touch and
-thread-dispatch cost plus short-span count work, not default-plan calculation.
-Treat that as bottleneck evidence, not an external cold one-shot promotion claim.
+latest short diagnostic has the slim cold count binary at `4.055 ms` best
+versus cold `primesieve` at `4.219 ms`, the slim binary no-op process floor at
+`1.506 ms`, slim binary adaptive plan resolution at `1.238 ms`, serial default
+count at `9.087 ms`, the minimal adaptive default cold worker at `4.177 ms`, the
+full `circle-prime` CLI at `3.721 ms`, and the persistent default count-server
+row at `1.680 ms` on the tracked high-offset span. The stricter interleaved cold
+confirmation still rejects promotion: the default slim count-binary row is
+`0.892x` median and `0.972x` best versus cold `primesieve`, with noisy samples.
+Treat the best-only hot/cold win as bottleneck evidence, not an external cold
+one-shot promotion claim.
 For build-profile probes, `scripts/benchmark_prime_external_controls.py` accepts
 `--circle-prime-bin` and `--circle-prime-count-bin` to measure alternate
 prebuilt binaries while keeping the normal `target/release` artifacts intact.
