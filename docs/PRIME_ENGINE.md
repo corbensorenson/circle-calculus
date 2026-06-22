@@ -525,6 +525,24 @@ Current CPU findings:
   must keep doing one chunk. A base-prime active-slice pre-touch prototype also
   failed to produce a durable win: it reported `0.889x` median while worsening
   absolute cold median to `5.995 ms` and weakening hot-server ratios.
+  A fixed-default probe that moved the edge high-offset segment from `1507328`
+  to the shifted-server `1310720` plan improved one short default median sample
+  to `0.903x` versus cold `primesieve`, and an A/B run saw the new default at
+  `1.040x` median but only `0.859x` best speedup. Because the stronger
+  calibration artifact still confirms `1507328`, and the new row fails
+  best-time parity, the fixed default stays at `1507328`. Replacing the
+  small-stack `thread::Builder::spawn_scoped` path with plain scoped spawns was
+  also rejected: it did not improve the slim cold count-binary best time and
+  left the row below best-time parity. Spawning the non-caller chunks in reverse
+  high-to-low order was also rejected: it produced a noisy median win but the
+  slim cold count-binary best-time speedup stayed at only `0.802x` versus cold
+  `primesieve`. Moving presieve13 segment-buffer capacity allocation onto the
+  caller before worker startup also regressed the slim cold median and the slim
+  server median, so worker-local allocation remains the current implementation.
+  Replacing checked `u64`-to-`usize` conversions for single-segment mark steps
+  with direct casts was also rejected: the focused run still had the slim cold
+  count-binary row below parity at `0.893x` best and `0.807x` median versus
+  cold `primesieve`.
   Smaller cold worker-count/segment-size variants remain tracked as evidence
   lanes. The latest full competitive status rejects a cold one-shot promotion:
   the default count-binary row is `0.862x` median and `0.902x` best versus cold
