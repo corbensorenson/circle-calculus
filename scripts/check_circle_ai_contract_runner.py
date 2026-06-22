@@ -872,6 +872,7 @@ def check_runner_examples(
         "failure_count": len(failures),
         "failures": failures,
         "selected_kinds": list(selected_kinds),
+        "required_kinds": [],
         "kind_counts": {
             kind: sum(1 for summary in summaries if summary["kind"] == kind)
             for kind in sorted({summary["kind"] for summary in summaries})

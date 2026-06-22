@@ -4223,6 +4223,7 @@ def build_contract_runner_check_report(
     tolerance: float | None = None,
     discretization: str | None = None,
     requested_margin: str | None = None,
+    required_kinds: Sequence[str] = (),
     required_statuses: Sequence[str] = (),
     required_decision_verdicts: Sequence[str] = (),
     required_assurance_levels: Sequence[str] = (),
@@ -4242,6 +4243,9 @@ def build_contract_runner_check_report(
         required_statuses=required_statuses,
         required_decision_verdicts=required_decision_verdicts,
         required_assurance_levels=required_assurance_levels,
+    )
+    normalized_required_kinds = tuple(
+        dict.fromkeys(canonical_contract_kind(str(kind)) for kind in required_kinds)
     )
     pack_dict = build_contract_pack() if pack is None else pack
     summaries: list[dict[str, Any]] = []
@@ -4420,6 +4424,14 @@ def build_contract_runner_check_report(
             ) as exc:
                 failures.append(f"{source_path}:{architecture_kind}: {exc}")
 
+    kind_counts = {
+        kind: sum(1 for summary in summaries if summary["kind"] == kind)
+        for kind in sorted(selected_kinds)
+    }
+    for kind in normalized_required_kinds:
+        if kind not in kind_counts:
+            failures.append(f"required contract kind is missing: {kind}")
+
     report = {
         "schema_id": RUNNER_CHECK_SCHEMA_ID,
         "ok": not failures,
@@ -4427,10 +4439,8 @@ def build_contract_runner_check_report(
         "failure_count": len(failures),
         "failures": failures,
         "selected_kinds": sorted(selected_kinds),
-        "kind_counts": {
-            kind: sum(1 for summary in summaries if summary["kind"] == kind)
-            for kind in sorted(selected_kinds)
-        },
+        "required_kinds": list(normalized_required_kinds),
+        "kind_counts": kind_counts,
         "gate_policy": _contract_runner_gate_policy(
             required_statuses=required_statuses,
             required_decision_verdicts=required_decision_verdicts,
@@ -6158,6 +6168,7 @@ def build_contract_runner_check_json_schema() -> dict[str, Any]:
             "failure_count",
             "failures",
             "selected_kinds",
+            "required_kinds",
             "kind_counts",
             "gate_policy",
             "summaries",
@@ -6169,6 +6180,11 @@ def build_contract_runner_check_json_schema() -> dict[str, Any]:
             "failure_count": {"type": "integer", "minimum": 0},
             "failures": string_list,
             "selected_kinds": {
+                "type": "array",
+                "items": {"enum": list(SUPPORTED_CONTRACT_KINDS)},
+                "uniqueItems": True,
+            },
+            "required_kinds": {
                 "type": "array",
                 "items": {"enum": list(SUPPORTED_CONTRACT_KINDS)},
                 "uniqueItems": True,

@@ -1066,6 +1066,14 @@ def _certify_batch_requests(args: argparse.Namespace) -> int:
     failures: list[str] = []
     summaries: list[dict[str, Any]] = []
     selected_kinds: set[str] = set()
+    try:
+        required_kinds = tuple(
+            dict.fromkeys(
+                canonical_contract_kind(str(kind)) for kind in args.require_kind
+            )
+        )
+    except ValueError as exc:
+        argparse.ArgumentParser(prog="circle-ai-certify batch").error(str(exc))
     request_files = tuple(args.request_file or ())
     model_config_files = tuple(args.model_config_file or ())
     architecture_config_files = tuple(args.architecture_config_file or ())
@@ -1398,6 +1406,14 @@ def _certify_batch_requests(args: argparse.Namespace) -> int:
             finally:
                 architecture_index += 1
 
+    kind_counts = {
+        kind: sum(1 for summary in summaries if summary["kind"] == kind)
+        for kind in sorted(selected_kinds)
+    }
+    for kind in required_kinds:
+        if kind not in kind_counts:
+            failures.append(f"required contract kind is missing: {kind}")
+
     report = {
         "schema_id": CIRCLE_AI_CONTRACT_RUNNER_CHECK_SCHEMA_ID,
         "ok": not failures,
@@ -1405,10 +1421,8 @@ def _certify_batch_requests(args: argparse.Namespace) -> int:
         "failure_count": len(failures),
         "failures": failures,
         "selected_kinds": sorted(selected_kinds),
-        "kind_counts": {
-            kind: sum(1 for summary in summaries if summary["kind"] == kind)
-            for kind in sorted(selected_kinds)
-        },
+        "required_kinds": list(required_kinds),
+        "kind_counts": kind_counts,
         "gate_policy": {
             "allowed_statuses": list(args.require_status),
             "allowed_decision_verdicts": list(args.require_decision),
@@ -1434,6 +1448,7 @@ def _certify_batch_requests(args: argparse.Namespace) -> int:
                     f"ok={report['ok']}",
                     f"source_count={report['example_count']}",
                     f"failure_count={report['failure_count']}",
+                    f"required_kinds={','.join(report['required_kinds'])}",
                     "require_no_unsupported_architecture_fields="
                     f"{report['gate_policy']['require_no_unsupported_architecture_fields']}",
                 ]
@@ -1551,6 +1566,16 @@ def contract_certify_main() -> int:
         help=(
             "Contract family to emit from each architecture config. Defaults "
             "to all supported architecture-config kinds when omitted."
+        ),
+    )
+    batch_parser.add_argument(
+        "--require-kind",
+        action="append",
+        default=[],
+        help=(
+            "Require at least one emitted receipt for this contract family. "
+            "May be passed more than once and accepts the same aliases as "
+            "--architecture-config-kind."
         ),
     )
     batch_parser.add_argument(

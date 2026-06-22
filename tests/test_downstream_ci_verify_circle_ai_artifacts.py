@@ -567,6 +567,46 @@ def test_standalone_batch_artifact_verifier_rejects_stale_runner_summary_metadat
     )
 
 
+def test_standalone_batch_artifact_verifier_rejects_missing_runner_required_kind(
+    tmp_path: Path,
+) -> None:
+    runner_check_path = _emit_rope_model_only_architecture_batch_artifacts(tmp_path)
+    runner_check = json.loads(runner_check_path.read_text(encoding="utf-8"))
+    runner_check["required_kinds"] = ["kv_cache_ring_buffer"]
+    runner_check_path.write_text(
+        json.dumps(runner_check, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+    )
+
+    result = subprocess.run(
+        [
+            sys.executable,
+            str(BATCH_SCRIPT),
+            str(runner_check_path),
+            "--format",
+            "json",
+            "--require-status",
+            "proved",
+            "--require-decision",
+            "passed",
+            "--require-passed",
+        ],
+        cwd=ROOT,
+        capture_output=True,
+        text=True,
+    )
+
+    assert result.returncode == 4
+    rejection = json.loads(result.stderr)
+    assert rejection["accepted"] is False
+    assert rejection["runner_required_kinds"] == ["kv_cache_ring_buffer"]
+    assert rejection["kind_counts"] == {"rope_position_distinguishability": 1}
+    assert any(
+        "runner-check required kind is missing: kv_cache_ring_buffer" in failure
+        for failure in rejection["failures"]
+    )
+
+
 def test_standalone_batch_artifact_verifier_rejects_stale_runner_theorem_links(
     tmp_path: Path,
 ) -> None:

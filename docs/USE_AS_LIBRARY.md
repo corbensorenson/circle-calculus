@@ -450,10 +450,12 @@ architecture-config import reports, request-validation preflights,
 certification bundles, bundle checks, and one schema-validated runner-check
 report without depending on repository-only scripts. Use `--artifact-dir` when
 the installed batch command should choose stable subdirectories for that
-portable handoff set. The top-level report includes `kind_counts`, and each
-runner summary includes both `theorem_count` and the concrete `theorem_ids`
-cited by the receipt, plus resolved/proved booleans and any unresolved or
-unproved theorem ids. By default, each architecture
+portable handoff set. Pass `--require-kind` one or more times when CI should
+fail unless the batch emits at least one receipt for each required contract
+family. The top-level report records both `required_kinds` and `kind_counts`.
+Each runner summary includes both `theorem_count` and the concrete
+`theorem_ids` cited by the receipt, plus resolved/proved booleans and any
+unresolved or unproved theorem ids. By default, each architecture
 config emits RoPE, KV-cache, sparse-attention, and recurrence receipts; pass
 `--architecture-config-kind` to restrict that set globally, or set
 `circle_ai_contract_kinds` inside one architecture config to restrict that file
@@ -461,8 +463,9 @@ only. The copyable
 standard-library verifier `examples/downstream_ci_verify_circle_ai_batch.py`
 validates a saved runner-check report plus every sidecar path that report names
 without importing Circle. It validates the runner report's own `gate_policy`,
-`example_count`, and `selected_kinds`, so stale reports with mismatched metadata
-or missing current policy fields fail before being accepted as CI evidence. An
+`example_count`, `selected_kinds`, `required_kinds`, and `kind_counts`, so stale
+reports with mismatched metadata or missing current policy fields fail before
+being accepted as CI evidence. An
 accepted verifier report includes a reusable `pin_policy`; pass it back with
 `--pin-policy` to reject future batch reports whose runner `gate_policy` has
 drifted from the pinned CI contract. Its

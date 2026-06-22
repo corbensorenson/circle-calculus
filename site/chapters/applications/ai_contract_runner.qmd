@@ -219,8 +219,12 @@ verifier reports include a reusable `pin_policy`; pass that report back with
 from the pinned CI contract. Each runner summary includes both `theorem_count`
 and the concrete `theorem_ids` cited by that receipt, plus resolved/proved
 booleans and any unresolved or unproved theorem ids. The top-level report also
-includes `kind_counts`, so a batch consumer can distinguish a one-family run
-from a full architecture-contract run without opening every receipt.
+records `required_kinds` and `kind_counts`, so a batch consumer can assert that
+RoPE, KV-cache, sparse-attention, recurrence, or another contract family was
+actually emitted instead of merely trusting that a full architecture-contract
+run happened. Use `circle-ai-certify batch --require-kind kv-cache` or the
+copyable verifier's `--require-kind` option when CI should reject a missing
+family before accepting the batch as evidence.
 
 Python callers can build the same schema-valid runner-check report in memory
 with `build_contract_runner_check_report`. The helper accepts versioned request
@@ -230,7 +234,9 @@ sparse-attention, and recurrence summaries by default; pass any supported
 `architecture_config_kinds` list to restrict the contract families. This is the
 library path for downstream systems
 that already load configs and want the same pass/fail report without a
-subprocess. Pass `require_no_unsupported_architecture_fields=True` when that
+subprocess. Pass `required_kinds=("rope", "kv-cache", ...)` when the in-memory
+runner report should fail unless the batch contains those contract families.
+Pass `require_no_unsupported_architecture_fields=True` when that
 in-memory report should reject architecture configs with source fields that were
 not mapped into the theorem-linked request.
 

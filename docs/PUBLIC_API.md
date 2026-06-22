@@ -183,6 +183,7 @@ runner_report = build_contract_runner_check_report(
     architecture_configs=[architecture_config],
     model_config_source_paths=["standard_rope_config.json"],
     architecture_config_source_paths=["basic_transformer_contract_config.json"],
+    required_kinds=("rope", "kv-cache", "sparse-attention", "recurrence"),
     required_statuses=("proved",),
     required_decision_verdicts=("passed",),
     pack=pack,
@@ -410,7 +411,9 @@ model-config and architecture-config import reports, request-validation
 preflights, certification bundles, bundle checks, and one runner-check summary
 without importing repository-only scripts. Use `--artifact-dir` when the
 installed batch command should choose stable subdirectories for that portable
-handoff set. The top-level report includes `kind_counts`, and each runner
+handoff set. Pass `--require-kind` one or more times when CI should fail unless
+the batch emits at least one receipt for each required contract family. The
+top-level report records both `required_kinds` and `kind_counts`, and each runner
 summary includes both `theorem_count` and the concrete `theorem_ids` cited by
 the receipt, plus resolved/proved booleans and any unresolved or unproved
 theorem ids. Architecture configs emit RoPE, KV-cache, sparse-attention, and
@@ -421,8 +424,9 @@ config to restrict that file only. The copyable standard-library verifier
 runner-check report plus every receipt, compact receipt, import report,
 request-validation report, certification bundle, and bundle-check sidecar that
 the batch report names. It validates the runner report's own `gate_policy`,
-`example_count`, and `selected_kinds`, so stale reports with mismatched metadata
-or missing current policy fields fail before being accepted as CI evidence. An
+`example_count`, `selected_kinds`, `required_kinds`, and `kind_counts`, so stale
+reports with mismatched metadata or missing current policy fields fail before
+being accepted as CI evidence. An
 accepted verifier report includes a reusable `pin_policy`; pass it back with
 `--pin-policy` to reject future batch reports whose runner `gate_policy` has
 drifted from the pinned CI contract. Its

@@ -98,6 +98,23 @@
     "ok": {
       "type": "boolean"
     },
+    "required_kinds": {
+      "items": {
+        "enum": [
+          "rope_position_distinguishability",
+          "kv_cache_ring_buffer",
+          "sparse_attention_coverage",
+          "recurrence_schedule",
+          "strided_candidate_fanout",
+          "cyclic_memory_residue_winding",
+          "multicoil_phase_feature",
+          "circulant_block_cyclic_mixer",
+          "seed_rule_exact_regeneration"
+        ]
+      },
+      "type": "array",
+      "uniqueItems": true
+    },
     "schema_id": {
       "const": "circle_calculus.ai_contract_runner_check.v0"
     },
@@ -599,6 +616,7 @@
     "failure_count",
     "failures",
     "selected_kinds",
+    "required_kinds",
     "kind_counts",
     "gate_policy",
     "summaries"

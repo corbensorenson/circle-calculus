@@ -697,6 +697,23 @@ def verify_runner_check(
             "runner-check selected_kinds does not match observed summary kinds: "
             f"{sorted(set(selected_kinds))!r} != {sorted(set(observed_kinds))!r}"
         )
+    raw_runner_required_kinds = report.get("required_kinds")
+    runner_required_kinds: list[str] = []
+    if not isinstance(raw_runner_required_kinds, list):
+        failures.append("runner-check required_kinds must be a list")
+    else:
+        for item in raw_runner_required_kinds:
+            if not isinstance(item, str):
+                failures.append("runner-check required_kinds entries must be strings")
+                continue
+            if item not in SUPPORTED_CONTRACT_KINDS:
+                failures.append(
+                    f"runner-check required_kinds has unsupported kind: {item!r}"
+                )
+                continue
+            runner_required_kinds.append(item)
+    if len(runner_required_kinds) != len(set(runner_required_kinds)):
+        failures.append("runner-check required_kinds entries must be unique")
     raw_kind_counts = report.get("kind_counts")
     runner_kind_counts: dict[str, int] = {}
     if not isinstance(raw_kind_counts, dict):
@@ -725,6 +742,9 @@ def verify_runner_check(
     for kind in required_kinds:
         if kind not in kind_counts:
             failures.append(f"required contract kind is missing: {kind}")
+    for kind in runner_required_kinds:
+        if kind not in kind_counts:
+            failures.append(f"runner-check required kind is missing: {kind}")
     for summary in summaries:
         if (
             runner_gate_policy.get("allowed_statuses")
@@ -811,6 +831,7 @@ def verify_runner_check(
         "failure_count": len(failures),
         "failures": failures,
         "required_kinds": required_kinds,
+        "runner_required_kinds": runner_required_kinds,
         "runner_selected_kinds": selected_kinds,
         "observed_kinds": sorted(set(observed_kinds)),
         "kind_counts": kind_counts,

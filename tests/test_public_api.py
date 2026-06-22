@@ -682,6 +682,10 @@ def test_package_cli_unified_certify_batch_request_files_writes_compact_receipts
             "proved",
             "--require-decision",
             "passed",
+            "--require-kind",
+            "kv-cache",
+            "--require-kind",
+            "sparse-attention",
             "--format",
             "json",
         ],
@@ -700,6 +704,10 @@ def test_package_cli_unified_certify_batch_request_files_writes_compact_receipts
     assert report["failure_count"] == 0
     assert report["gate_policy"]["allowed_statuses"] == ["proved"]
     assert report["gate_policy"]["allowed_decision_verdicts"] == ["passed"]
+    assert report["required_kinds"] == [
+        "kv_cache_ring_buffer",
+        "sparse_attention_coverage",
+    ]
     assert report["kind_counts"] == {
         "kv_cache_ring_buffer": 1,
         "sparse_attention_coverage": 1,
@@ -732,6 +740,49 @@ def test_package_cli_unified_certify_batch_request_files_writes_compact_receipts
         assert summary["compact_selected_evidence_count"] >= 1
         assert summary["compact_selected_evidence_unclassified_count"] == 0
         assert "unclassified" not in summary["compact_selected_evidence_labels"]
+
+
+def test_package_cli_unified_certify_batch_rejects_missing_required_kind(
+    tmp_path,
+) -> None:
+    report_path = tmp_path / "runner_report.json"
+    request_dir = ROOT / "examples" / "circle_ai_requests"
+
+    result = subprocess.run(
+        [
+            sys.executable,
+            "-c",
+            (
+                "import sys; "
+                "from circle_math.cli import contract_certify_main; "
+                "sys.exit(contract_certify_main())"
+            ),
+            "batch",
+            "--request-file",
+            str(request_dir / "kv_cache_request.json"),
+            "--report-out",
+            str(report_path),
+            "--require-kind",
+            "sparse-attention",
+            "--format",
+            "json",
+        ],
+        text=True,
+        capture_output=True,
+    )
+
+    assert result.returncode == 2
+    report = json.loads(result.stdout)
+    saved_report = json.loads(report_path.read_text())
+    assert saved_report == report
+    jsonschema.validate(report, build_contract_runner_check_json_schema())
+    assert report["ok"] is False
+    assert report["required_kinds"] == ["sparse_attention_coverage"]
+    assert report["kind_counts"] == {"kv_cache_ring_buffer": 1}
+    assert any(
+        "required contract kind is missing: sparse_attention_coverage" in failure
+        for failure in report["failures"]
+    )
 
 
 def test_package_cli_unified_certify_batch_model_configs_write_import_reports(
@@ -1249,6 +1300,7 @@ def test_public_api_runner_check_report_builds_from_in_memory_sources() -> None:
         architecture_config_source_paths=["configs/basic_transformer.json"],
         required_statuses=("proved",),
         required_decision_verdicts=("passed",),
+        required_kinds=("kv-cache", "rope", "sparse-attention", "recurrence"),
         require_passed=True,
     )
 
@@ -1265,6 +1317,12 @@ def test_public_api_runner_check_report_builds_from_in_memory_sources() -> None:
         "recurrence_schedule",
         "rope_position_distinguishability",
         "sparse_attention_coverage",
+    ]
+    assert report["required_kinds"] == [
+        "kv_cache_ring_buffer",
+        "rope_position_distinguishability",
+        "sparse_attention_coverage",
+        "recurrence_schedule",
     ]
     assert report["kind_counts"] == {
         "kv_cache_ring_buffer": 2,
@@ -1311,6 +1369,26 @@ def test_public_api_runner_check_report_builds_from_in_memory_sources() -> None:
     assert model_summary["compact_selected_evidence_unclassified_count"] == 0
 
 
+def test_contract_runner_check_report_rejects_missing_required_kind() -> None:
+    request = json.loads(
+        (ROOT / "examples" / "circle_ai_requests" / "kv_cache_request.json").read_text()
+    )
+    report = build_contract_runner_check_report(
+        requests=[request],
+        request_source_paths=["requests/kv_cache_request.json"],
+        required_kinds=["sparse-attention"],
+    )
+
+    jsonschema.validate(report, build_contract_runner_check_json_schema())
+    assert report["ok"] is False
+    assert report["required_kinds"] == ["sparse_attention_coverage"]
+    assert report["kind_counts"] == {"kv_cache_ring_buffer": 1}
+    assert any(
+        "required contract kind is missing: sparse_attention_coverage" in failure
+        for failure in report["failures"]
+    )
+
+
 def test_package_cli_batch_report_boundary_rejects_schema_drift() -> None:
     request = json.loads(
         (ROOT / "examples" / "circle_ai_requests" / "kv_cache_request.json").read_text()
@@ -1350,6 +1428,14 @@ def test_contract_runner_check_schema_rejects_duplicate_gate_and_kind_values() -
     ]
     with pytest.raises(jsonschema.ValidationError):
         jsonschema.validate(duplicate_kind_report, schema)
+
+    duplicate_required_kind_report = dict(report)
+    duplicate_required_kind_report["required_kinds"] = [
+        "kv_cache_ring_buffer",
+        "kv_cache_ring_buffer",
+    ]
+    with pytest.raises(jsonschema.ValidationError):
+        jsonschema.validate(duplicate_required_kind_report, schema)
 
     duplicate_gate_report = dict(report)
     duplicate_gate_report["gate_policy"] = dict(report["gate_policy"])
