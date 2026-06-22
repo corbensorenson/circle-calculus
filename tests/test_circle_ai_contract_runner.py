@@ -33,6 +33,7 @@ from circle_math.applications import (
     build_compact_contract_receipt_json_schema,
     build_circulant_block_cyclic_mixer_receipt,
     build_cyclic_memory_receipt,
+    build_architecture_config_import_report,
     build_kv_cache_receipt,
     build_multicoil_phase_feature_receipt,
     build_recurrence_receipt,
@@ -44,7 +45,9 @@ from circle_math.applications import (
     build_seed_rule_receipt,
     build_sparse_attention_receipt,
     build_strided_candidate_fanout_receipt,
+    build_contract_request_from_architecture_config,
     build_validated_contract_receipt,
+    build_validated_contract_receipt_from_architecture_config,
     build_validated_contract_receipt_from_request,
     build_validated_rope_receipt_from_model_config,
     canonical_contract_kind,
@@ -67,6 +70,12 @@ EXAMPLE_REQUEST_FILES = tuple(
 )
 STANDARD_ROPE_MODEL_CONFIG = (
     ROOT / "examples" / "circle_ai_model_configs" / "standard_rope_config.json"
+)
+ARCHITECTURE_CONFIG = (
+    ROOT
+    / "examples"
+    / "circle_ai_architecture_configs"
+    / "basic_transformer_contract_config.json"
 )
 PUBLIC_CONTRACT_PACK = ROOT / "site" / "data" / "generated" / "circle_ai_contract_pack.json"
 PACK_FINGERPRINT_ALGORITHM = "sha256-json-v1"
@@ -190,6 +199,54 @@ def _assert_decision_matches_receipt(
 @pytest.fixture(scope="module")
 def contract_pack() -> dict:
     return build_contract_pack()
+
+
+def test_architecture_config_import_builds_non_rope_contract_requests(
+    contract_pack: dict,
+) -> None:
+    config = json.loads(ARCHITECTURE_CONFIG.read_text(encoding="utf-8"))
+
+    sparse_report = build_architecture_config_import_report(
+        "sparse-attention",
+        config,
+    )
+    assert sparse_report["schema_id"] == "circle_calculus.ai_architecture_config_import.v0"
+    assert sparse_report["ok"] is True
+    assert sparse_report["kind"] == "sparse_attention_coverage"
+    assert sparse_report["parameter_sources"]["context"] == {
+        "source": "architecture_config_field",
+        "field": "sparse_attention.context_length",
+        "value": 9,
+    }
+    assert sparse_report["parameter_sources"]["path_length"]["field"] == (
+        "sparse_attention.max_hops"
+    )
+    sparse_request = build_contract_request_from_architecture_config(
+        "sparse-attention",
+        config,
+    )
+    assert sparse_request == sparse_report["request"]
+    assert validate_contract_request(sparse_request) == []
+
+    kv_receipt = build_validated_contract_receipt_from_architecture_config(
+        "kv-cache",
+        config,
+        pack=contract_pack,
+    )
+    assert kv_receipt["kind"] == "kv_cache_ring_buffer"
+    assert kv_receipt["request_passed"] is True
+    assert kv_receipt["normalized_request"]["sink_size"] == 4
+    assert kv_receipt["normalized_request"]["requested_tokens"] == [20, 24, 29, 31]
+
+    recurrence_receipt = build_validated_contract_receipt_from_architecture_config(
+        "recurrence",
+        config,
+        overrides={"sample_index": 9},
+        pack=contract_pack,
+    )
+    assert recurrence_receipt["kind"] == "recurrence_schedule"
+    assert recurrence_receipt["request_passed"] is True
+    assert recurrence_receipt["normalized_request"]["sample_index"] == 9
 
 
 def test_rope_receipt_classifies_d19_margin_request(contract_pack: dict) -> None:
@@ -2469,6 +2526,31 @@ def test_circle_ai_certify_cli_emits_json_receipt() -> None:
     assert payload["evidence"]["standard_channel0_d19_request_classifier"][
         "request_status"
     ] == "proved"
+
+
+def test_circle_ai_certify_cli_accepts_architecture_config_non_rope() -> None:
+    result = subprocess.run(
+        [
+            sys.executable,
+            str(SCRIPT),
+            "kv-cache",
+            "--architecture-config",
+            str(ARCHITECTURE_CONFIG),
+            "--format",
+            "json",
+            "--require-passed",
+        ],
+        cwd=ROOT,
+        check=True,
+        text=True,
+        capture_output=True,
+    )
+
+    payload = json.loads(result.stdout)
+    assert payload["kind"] == "kv_cache_ring_buffer"
+    assert payload["request"]["parameters"]["sink_size"] == 4
+    assert payload["request"]["parameters"]["batch_tokens"] == [20, 24, 29, 31]
+    assert payload["request_passed"] is True
 
 
 def test_circle_ai_certify_cli_emits_compact_json_receipt() -> None:

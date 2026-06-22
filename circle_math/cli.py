@@ -20,6 +20,7 @@ from .ai_contracts import (
     SUPPORTED_CONTRACT_KINDS,
     build_contract_pack,
     build_contract_request,
+    build_contract_request_from_architecture_config,
     build_rope_model_config_import_report,
     build_validated_contract_receipt,
     build_validated_contract_receipt_from_request,
@@ -412,6 +413,29 @@ def _certify_pack_from_args(args: argparse.Namespace) -> dict[str, Any]:
     return build_contract_pack() if args.pack is None else load_contract_pack(args.pack)
 
 
+def _contract_request_from_architecture_config_args(
+    parser: argparse.ArgumentParser,
+    args: argparse.Namespace,
+    kind: str,
+    overrides: dict[str, Any],
+) -> dict[str, Any]:
+    config = _load_json_object_from_args(
+        parser,
+        inline_json=None,
+        json_file=args.architecture_config_file,
+        label="architecture-config",
+    )
+    try:
+        return build_contract_request_from_architecture_config(
+            kind,
+            config,
+            overrides=overrides,
+        )
+    except ValueError as exc:
+        parser.error(str(exc))
+    raise AssertionError("parser.error should exit")
+
+
 def _safe_certify_artifact_prefix(raw: str) -> str:
     cleaned = "".join(
         character if character.isalnum() or character in {"-", "_"} else "_"
@@ -435,6 +459,10 @@ def _default_certify_artifact_prefix(args: argparse.Namespace) -> str:
         model_config_file = getattr(args, "model_config_file", None)
         if model_config_file is not None:
             return _safe_certify_artifact_prefix(Path(model_config_file).stem)
+    if command in {"kv-cache", "sparse-attention", "recurrence"}:
+        architecture_config_file = getattr(args, "architecture_config_file", None)
+        if architecture_config_file is not None:
+            return _safe_certify_artifact_prefix(Path(architecture_config_file).stem)
     return _safe_certify_artifact_prefix(command.replace("-", "_"))
 
 
@@ -1126,35 +1154,62 @@ def contract_certify_main() -> int:
         help="Issue a KV-cache ring-buffer freshness receipt.",
     )
     _add_certify_common_options(kv_parser)
-    kv_parser.add_argument("--cache-size", required=True, type=int)
-    kv_parser.add_argument("--current", required=True, type=int)
-    kv_parser.add_argument("--token", required=True, type=int)
-    kv_parser.add_argument("--batch-tokens", type=_parse_int_csv, default=())
-    kv_parser.add_argument("--sink-size", type=int, default=0)
-    kv_parser.add_argument("--request-id", default="read_request")
+    kv_parser.add_argument(
+        "--architecture-config-file",
+        "--architecture-config",
+        type=Path,
+        help=(
+            "Optional AI architecture config JSON. Reads kv_cache/cache aliases "
+            "and lets explicit flags override imported values."
+        ),
+    )
+    kv_parser.add_argument("--cache-size", type=int)
+    kv_parser.add_argument("--current", type=int)
+    kv_parser.add_argument("--token", type=int)
+    kv_parser.add_argument("--batch-tokens", type=_parse_int_csv)
+    kv_parser.add_argument("--sink-size", type=int)
+    kv_parser.add_argument("--request-id")
 
     sparse_parser = subparsers.add_parser(
         "sparse-attention",
         help="Issue a sparse-attention local-window plus stride-family receipt.",
     )
     _add_certify_common_options(sparse_parser)
-    sparse_parser.add_argument("--context", required=True, type=int)
-    sparse_parser.add_argument("--strides", required=True, type=_parse_positive_int_csv)
-    sparse_parser.add_argument("--path-length", required=True, type=int)
-    sparse_parser.add_argument("--local-window", required=True, type=int)
+    sparse_parser.add_argument(
+        "--architecture-config-file",
+        "--architecture-config",
+        type=Path,
+        help=(
+            "Optional AI architecture config JSON. Reads sparse_attention/"
+            "attention aliases and lets explicit flags override imported values."
+        ),
+    )
+    sparse_parser.add_argument("--context", type=int)
+    sparse_parser.add_argument("--strides", type=_parse_positive_int_csv)
+    sparse_parser.add_argument("--path-length", type=int)
+    sparse_parser.add_argument("--local-window", type=int)
 
     recurrence_parser = subparsers.add_parser(
         "recurrence",
         help="Issue a finite looped/recursive schedule receipt.",
     )
     _add_certify_common_options(recurrence_parser)
-    recurrence_parser.add_argument("--loop-period", type=int, default=5)
-    recurrence_parser.add_argument("--sample-index", type=int, default=8)
-    recurrence_parser.add_argument("--max-loops", type=int, default=7)
-    recurrence_parser.add_argument("--token-count", type=int, default=8)
-    recurrence_parser.add_argument("--selected-block-start", type=int, default=2)
-    recurrence_parser.add_argument("--selected-block-width", type=int, default=3)
-    recurrence_parser.add_argument("--shift-passes", type=int, default=3)
+    recurrence_parser.add_argument(
+        "--architecture-config-file",
+        "--architecture-config",
+        type=Path,
+        help=(
+            "Optional AI architecture config JSON. Reads recurrence/loop aliases "
+            "and lets explicit flags override imported values."
+        ),
+    )
+    recurrence_parser.add_argument("--loop-period", type=int)
+    recurrence_parser.add_argument("--sample-index", type=int)
+    recurrence_parser.add_argument("--max-loops", type=int)
+    recurrence_parser.add_argument("--token-count", type=int)
+    recurrence_parser.add_argument("--selected-block-start", type=int)
+    recurrence_parser.add_argument("--selected-block-width", type=int)
+    recurrence_parser.add_argument("--shift-passes", type=int)
 
     fanout_parser = subparsers.add_parser(
         "strided-fanout",
@@ -1291,42 +1346,106 @@ def contract_certify_main() -> int:
                     pack=pack,
                 )
         elif args.command == "kv-cache":
-            request = build_contract_request(
-                "kv-cache",
-                {
-                    "cache_size": args.cache_size,
-                    "current": args.current,
-                    "token": args.token,
-                    "batch_tokens": args.batch_tokens,
-                    "sink_size": args.sink_size,
-                    "request_id": args.request_id,
-                },
-            )
+            kv_parameters = {
+                "cache_size": args.cache_size,
+                "current": args.current,
+                "token": args.token,
+                "batch_tokens": args.batch_tokens,
+                "sink_size": args.sink_size,
+                "request_id": args.request_id,
+            }
+            if args.architecture_config_file is not None:
+                request = _contract_request_from_architecture_config_args(
+                    kv_parser,
+                    args,
+                    "kv-cache",
+                    kv_parameters,
+                )
+            else:
+                request = build_contract_request(
+                    "kv-cache",
+                    {
+                        "cache_size": args.cache_size,
+                        "current": args.current,
+                        "token": args.token,
+                        "batch_tokens": ()
+                        if args.batch_tokens is None
+                        else args.batch_tokens,
+                        "sink_size": 0 if args.sink_size is None else args.sink_size,
+                        "request_id": (
+                            "read_request"
+                            if args.request_id is None
+                            else args.request_id
+                        ),
+                    },
+                )
             receipt = build_validated_contract_receipt_from_request(request, pack=pack)
         elif args.command == "sparse-attention":
-            request = build_contract_request(
-                "sparse-attention",
-                {
-                    "context": args.context,
-                    "strides": args.strides,
-                    "path_length": args.path_length,
-                    "local_window": args.local_window,
-                },
-            )
+            sparse_parameters = {
+                "context": args.context,
+                "strides": args.strides,
+                "path_length": args.path_length,
+                "local_window": args.local_window,
+            }
+            if args.architecture_config_file is not None:
+                request = _contract_request_from_architecture_config_args(
+                    sparse_parser,
+                    args,
+                    "sparse-attention",
+                    sparse_parameters,
+                )
+            else:
+                request = build_contract_request(
+                    "sparse-attention",
+                    sparse_parameters,
+                )
             receipt = build_validated_contract_receipt_from_request(request, pack=pack)
         elif args.command == "recurrence":
-            request = build_contract_request(
-                "recurrence",
-                {
-                    "loop_period": args.loop_period,
-                    "sample_index": args.sample_index,
-                    "max_loops": args.max_loops,
-                    "token_count": args.token_count,
-                    "selected_block_start": args.selected_block_start,
-                    "selected_block_width": args.selected_block_width,
-                    "shift_passes": args.shift_passes,
-                },
-            )
+            recurrence_parameters = {
+                "loop_period": args.loop_period,
+                "sample_index": args.sample_index,
+                "max_loops": args.max_loops,
+                "token_count": args.token_count,
+                "selected_block_start": args.selected_block_start,
+                "selected_block_width": args.selected_block_width,
+                "shift_passes": args.shift_passes,
+            }
+            if args.architecture_config_file is not None:
+                request = _contract_request_from_architecture_config_args(
+                    recurrence_parser,
+                    args,
+                    "recurrence",
+                    recurrence_parameters,
+                )
+            else:
+                request = build_contract_request(
+                    "recurrence",
+                    {
+                        "loop_period": (
+                            5 if args.loop_period is None else args.loop_period
+                        ),
+                        "sample_index": (
+                            8 if args.sample_index is None else args.sample_index
+                        ),
+                        "max_loops": 7 if args.max_loops is None else args.max_loops,
+                        "token_count": (
+                            8 if args.token_count is None else args.token_count
+                        ),
+                        "selected_block_start": (
+                            2
+                            if args.selected_block_start is None
+                            else args.selected_block_start
+                        ),
+                        "selected_block_width": (
+                            3
+                            if args.selected_block_width is None
+                            else args.selected_block_width
+                        ),
+                        "shift_passes": (
+                            3 if args.shift_passes is None else args.shift_passes
+                        ),
+                    },
+                )
             receipt = build_validated_contract_receipt_from_request(request, pack=pack)
         elif args.command == "strided-fanout":
             request = build_contract_request(

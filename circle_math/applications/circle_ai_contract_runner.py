@@ -59,6 +59,9 @@ REQUEST_VALIDATION_SCHEMA_ID = "circle_calculus.ai_contract_request_validation.v
 ROPE_MODEL_CONFIG_IMPORT_SCHEMA_ID = (
     "circle_calculus.rope_model_config_import.v0"
 )
+ARCHITECTURE_CONFIG_IMPORT_SCHEMA_ID = (
+    "circle_calculus.ai_architecture_config_import.v0"
+)
 RUNNER_CHECK_SCHEMA_ID = "circle_calculus.ai_contract_runner_check.v0"
 RECEIPT_FILE_CHECK_SCHEMA_ID = "circle_calculus.ai_contract_receipt_file_check.v0"
 RECEIPT_REPLAY_CHECK_SCHEMA_ID = (
@@ -82,6 +85,9 @@ REQUEST_VALIDATION_SCHEMA_PATH = (
 )
 ROPE_MODEL_CONFIG_IMPORT_SCHEMA_PATH = (
     "site/data/generated/circle_ai_rope_model_config_import.schema.json"
+)
+ARCHITECTURE_CONFIG_IMPORT_SCHEMA_PATH = (
+    "site/data/generated/circle_ai_architecture_config_import.schema.json"
 )
 RECEIPT_SCHEMA_PATH = "site/data/generated/circle_ai_contract_receipt.schema.json"
 COMPACT_RECEIPT_SCHEMA_PATH = (
@@ -377,6 +383,153 @@ ROPE_MODEL_ROTARY_DIM_KEYS = (
     "rope_head_dim",
 )
 ROPE_MODEL_ROTARY_FRACTION_KEYS = ("partial_rotary_factor", "rotary_pct")
+ARCHITECTURE_CONFIG_SUPPORTED_KINDS = (
+    "kv_cache_ring_buffer",
+    "sparse_attention_coverage",
+    "recurrence_schedule",
+)
+ARCHITECTURE_CONFIG_SECTION_KEYS = {
+    "kv_cache_ring_buffer": (
+        "kv_cache",
+        "kv-cache",
+        "kv_cache_ring_buffer",
+        "cache",
+        "attention_cache",
+    ),
+    "sparse_attention_coverage": (
+        "sparse_attention",
+        "sparse-attention",
+        "sparse_attention_coverage",
+        "attention",
+        "sparse",
+    ),
+    "recurrence_schedule": (
+        "recurrence",
+        "recurrence_schedule",
+        "looped_recurrence",
+        "recursive_transformer",
+        "loop",
+    ),
+}
+ARCHITECTURE_CONFIG_PARAMETER_ALIASES = {
+    "kv_cache_ring_buffer": {
+        "cache_size": (
+            "cache_size",
+            "kv_cache_size",
+            "kv_cache_length",
+            "window_size",
+            "sliding_window",
+        ),
+        "current": (
+            "current",
+            "current_token",
+            "current_position",
+            "sequence_position",
+            "position",
+        ),
+        "token": (
+            "token",
+            "requested_token",
+            "read_token",
+            "token_index",
+        ),
+        "batch_tokens": (
+            "batch_tokens",
+            "requested_tokens",
+            "tokens",
+            "read_tokens",
+        ),
+        "sink_size": (
+            "sink_size",
+            "num_sink_tokens",
+            "attention_sink_size",
+            "sink_tokens",
+        ),
+        "request_id": ("request_id", "id", "name"),
+    },
+    "sparse_attention_coverage": {
+        "context": (
+            "context",
+            "context_length",
+            "sequence_length",
+            "seq_len",
+            "max_position_embeddings",
+        ),
+        "strides": (
+            "strides",
+            "attention_strides",
+            "sparse_attention_strides",
+            "dilation_strides",
+        ),
+        "path_length": (
+            "path_length",
+            "attention_path_length",
+            "sparse_path_length",
+            "max_hops",
+        ),
+        "local_window": (
+            "local_window",
+            "window",
+            "window_size",
+            "sliding_window",
+        ),
+    },
+    "recurrence_schedule": {
+        "loop_period": (
+            "loop_period",
+            "recurrence_period",
+            "ponder_period",
+            "period",
+        ),
+        "sample_index": (
+            "sample_index",
+            "sample_step",
+            "position",
+            "token_index",
+        ),
+        "max_loops": (
+            "max_loops",
+            "max_recurrence_steps",
+            "recurrence_steps",
+            "num_iterations",
+            "iterations",
+        ),
+        "token_count": (
+            "token_count",
+            "sequence_length",
+            "context_length",
+            "seq_len",
+        ),
+        "selected_block_start": (
+            "selected_block_start",
+            "block_start",
+            "middle_block_start",
+        ),
+        "selected_block_width": (
+            "selected_block_width",
+            "block_width",
+            "middle_block_width",
+        ),
+        "shift_passes": (
+            "shift_passes",
+            "periodic_shift_passes",
+            "shift_periods",
+        ),
+    },
+}
+ARCHITECTURE_CONFIG_OPTIONAL_PARAMETERS = {
+    "kv_cache_ring_buffer": {"batch_tokens", "sink_size", "request_id"},
+    "sparse_attention_coverage": set(),
+    "recurrence_schedule": {
+        "loop_period",
+        "sample_index",
+        "max_loops",
+        "token_count",
+        "selected_block_start",
+        "selected_block_width",
+        "shift_passes",
+    },
+}
 
 
 def canonical_contract_kind(kind: str) -> str:
@@ -698,6 +851,50 @@ def _json_fingerprint(value: Any) -> str:
     return hashlib.sha256(payload).hexdigest()
 
 
+def _architecture_config_sections(
+    canonical: str,
+    config: Mapping[str, Any],
+) -> tuple[tuple[str | None, Mapping[str, Any]], ...]:
+    sections: list[tuple[str | None, Mapping[str, Any]]] = []
+    for key in ARCHITECTURE_CONFIG_SECTION_KEYS.get(canonical, ()):
+        value = config.get(key)
+        if isinstance(value, Mapping):
+            sections.append((key, value))
+    sections.append((None, config))
+    return tuple(sections)
+
+
+def _architecture_config_lookup(
+    canonical: str,
+    config: Mapping[str, Any],
+    parameter: str,
+) -> tuple[Any, str] | None:
+    aliases = ARCHITECTURE_CONFIG_PARAMETER_ALIASES[canonical][parameter]
+    for section_key, section in _architecture_config_sections(canonical, config):
+        for alias in aliases:
+            if alias in section:
+                field = alias if section_key is None else f"{section_key}.{alias}"
+                return section[alias], field
+    return None
+
+
+def _architecture_parameter_source(
+    *,
+    source: str,
+    field: str | None = None,
+    value: Any = None,
+    note: str | None = None,
+) -> dict[str, Any]:
+    payload: dict[str, Any] = {"source": source}
+    if field is not None:
+        payload["field"] = field
+    if source != "missing":
+        payload["value"] = _json_ready_value(value)
+    if note is not None:
+        payload["note"] = note
+    return payload
+
+
 def _unique_strings(values: Iterable[str]) -> tuple[str, ...]:
     seen: set[str] = set()
     ordered: list[str] = []
@@ -942,6 +1139,153 @@ def build_rope_model_config_import_report(
             "Unsupported model-config features must not be silently certified as standard RoPE.",
         ],
     }
+
+
+def build_contract_request_from_architecture_config(
+    kind: str,
+    config: Mapping[str, Any],
+    *,
+    overrides: Mapping[str, Any] | None = None,
+) -> dict[str, Any]:
+    """Build a versioned request from a small AI architecture config object.
+
+    This adapter covers the finite structural contracts that have explicit
+    parameter aliases: KV-cache, sparse-attention coverage, and recurrence
+    schedules. RoPE keeps its more specific model-config importer because real
+    rotary configs need separate proof-boundary checks.
+    """
+
+    report = build_architecture_config_import_report(
+        kind,
+        config,
+        overrides=overrides,
+    )
+    if not report["ok"]:
+        raise ValueError(
+            "invalid Circle AI architecture config import: "
+            + "; ".join(report["failures"])
+        )
+    request = report["request"]
+    assert isinstance(request, dict)
+    return request
+
+
+def build_architecture_config_import_report(
+    kind: str,
+    config: Mapping[str, Any],
+    *,
+    overrides: Mapping[str, Any] | None = None,
+) -> dict[str, Any]:
+    """Return a source-tracked config import report for non-RoPE AI contracts."""
+
+    failures: list[str] = []
+    request: dict[str, Any] | None = None
+    parameters: dict[str, Any] = {}
+    parameter_sources: dict[str, Any] = {}
+    try:
+        canonical = canonical_contract_kind(kind)
+    except ValueError as exc:
+        canonical = None
+        failures.append(str(exc))
+
+    if canonical is not None and canonical not in ARCHITECTURE_CONFIG_SUPPORTED_KINDS:
+        failures.append(
+            "architecture config import currently supports "
+            + ", ".join(ARCHITECTURE_CONFIG_SUPPORTED_KINDS)
+        )
+
+    normalized_overrides = {
+        key: value
+        for key, value in (dict(overrides or {})).items()
+        if value is not None
+    }
+
+    if canonical in ARCHITECTURE_CONFIG_SUPPORTED_KINDS:
+        aliases = ARCHITECTURE_CONFIG_PARAMETER_ALIASES[canonical]
+        optional = ARCHITECTURE_CONFIG_OPTIONAL_PARAMETERS[canonical]
+        unsupported_overrides = sorted(
+            key for key in normalized_overrides if key not in aliases
+        )
+        if unsupported_overrides:
+            failures.append(
+                "overrides contains unsupported keys: "
+                + ", ".join(unsupported_overrides)
+            )
+        for parameter in aliases:
+            if parameter in normalized_overrides:
+                value = normalized_overrides[parameter]
+                parameters[parameter] = value
+                parameter_sources[parameter] = _architecture_parameter_source(
+                    source="explicit_override",
+                    field=parameter,
+                    value=value,
+                )
+                continue
+            found = _architecture_config_lookup(canonical, config, parameter)
+            if found is not None:
+                value, field = found
+                parameters[parameter] = value
+                parameter_sources[parameter] = _architecture_parameter_source(
+                    source="architecture_config_field",
+                    field=field,
+                    value=value,
+                )
+            elif parameter in optional:
+                parameter_sources[parameter] = _architecture_parameter_source(
+                    source="missing",
+                    note="optional; receipt builder default applies if omitted",
+                )
+            else:
+                parameter_sources[parameter] = _architecture_parameter_source(
+                    source="missing",
+                    note="required for this contract kind",
+                )
+        if not failures:
+            try:
+                request = build_contract_request(canonical, parameters)
+            except ValueError as exc:
+                failures.append(str(exc))
+
+    return {
+        "schema_id": ARCHITECTURE_CONFIG_IMPORT_SCHEMA_ID,
+        "request_schema_id": REQUEST_SCHEMA_ID,
+        "content_fingerprint_algorithm": FINGERPRINT_ALGORITHM,
+        "architecture_config_fingerprint": _json_fingerprint(
+            _json_ready_value(config)
+        ),
+        "request_content_fingerprint": (
+            _json_fingerprint(request) if request is not None else None
+        ),
+        "kind": canonical,
+        "ok": not failures,
+        "failure_count": len(failures),
+        "failures": failures,
+        "parameters": _json_ready_value(parameters),
+        "parameter_sources": parameter_sources,
+        "request": request,
+        "notes": [
+            "This report only records deterministic translation from an AI architecture config into a Circle request.",
+            "A successful import is not a proof; the emitted request still needs a theorem-linked receipt.",
+            "Unsupported architecture behavior must not be silently certified by alias matching.",
+        ],
+    }
+
+
+def build_validated_contract_receipt_from_architecture_config(
+    kind: str,
+    config: Mapping[str, Any],
+    *,
+    overrides: Mapping[str, Any] | None = None,
+    pack: Mapping[str, Any] | None = None,
+) -> dict[str, Any]:
+    """Build a pack-validated receipt from a non-RoPE AI architecture config."""
+
+    request = build_contract_request_from_architecture_config(
+        kind,
+        config,
+        overrides=overrides,
+    )
+    return build_validated_contract_receipt_from_request(request, pack=pack)
 
 
 def _default_pack(pack: Mapping[str, Any] | None) -> dict[str, Any]:

@@ -136,6 +136,29 @@ computed fields, unsupported fields, non-claims, recommendations, and
 fingerprints. The runner does not claim these contracts improve model quality;
 it certifies the finite structural facts that the contract pack actually backs.
 
+For non-RoPE AI configs that already store cache, sparse-attention, or recurrence
+settings, the runner can translate a small architecture config into the same
+versioned request shape:
+
+```bash
+python scripts/circle_ai_certify.py sparse-attention \
+  --architecture-config examples/circle_ai_architecture_configs/basic_transformer_contract_config.json \
+  --format json \
+  --require-passed
+
+python scripts/circle_ai_certify.py recurrence \
+  --architecture-config examples/circle_ai_architecture_configs/basic_transformer_contract_config.json \
+  --sample-index 9 \
+  --format json
+```
+
+Supported sections are `kv_cache`, `sparse_attention`, and `recurrence`, with a
+small set of documented aliases such as `kv_cache_size`, `context_length`,
+`sliding_window`, `max_hops`, `max_recurrence_steps`, and
+`middle_block_width`. Explicit CLI flags override imported fields. This import
+step is only deterministic translation/provenance; the theorem-backed claim is
+the emitted receipt.
+
 External projects can also use the versioned request schema directly:
 
 ```json

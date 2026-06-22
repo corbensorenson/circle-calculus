@@ -250,6 +250,21 @@ pack. They are useful as structural certifiers and fixture sources; they do not
 claim better training, inference quality, retrieval quality, or hardware
 efficiency.
 
+For non-RoPE configs, the runner can translate a small architecture JSON into a
+versioned request for the KV-cache, sparse-attention, or recurrence surfaces:
+
+```bash
+python scripts/circle_ai_certify.py sparse-attention \
+  --architecture-config examples/circle_ai_architecture_configs/basic_transformer_contract_config.json \
+  --format json \
+  --require-passed
+```
+
+The adapter reads documented sections such as `kv_cache`, `sparse_attention`,
+and `recurrence`, plus aliases like `context_length`, `sliding_window`,
+`max_hops`, and `max_recurrence_steps`. The config import is provenance only;
+the receipt remains the theorem-linked artifact.
+
 For KV-cache requests with positive `--sink-size`, the human receipt includes a
 `kv_cache_sink_window=` line with the generated pinned-prefix plus rolling-window
 request size, exact-policy flag, distinct-token flag, and sink-token retention

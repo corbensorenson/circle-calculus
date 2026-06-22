@@ -21,11 +21,13 @@ from circle_math.core import (
 )
 from circle_math.ai_contracts import (
     CONTRACT_PACK_SCHEMA_ID,
+    build_contract_request_from_architecture_config,
     build_contract_pack,
     build_contract_runner_check_report,
     build_contract_runner_check_json_schema as build_facade_runner_check_json_schema,
     build_rope_model_config_import_report,
     build_rope_request_parameters_from_model_config,
+    build_validated_contract_receipt_from_architecture_config,
     build_validated_contract_receipt_from_request,
     build_validated_rope_receipt_from_model_config,
 )
@@ -42,6 +44,12 @@ from circle_math.contracts import contract_kinds, readiness_summary
 
 
 ROOT = Path(__file__).resolve().parents[1]
+ARCHITECTURE_CONFIG = (
+    ROOT
+    / "examples"
+    / "circle_ai_architecture_configs"
+    / "basic_transformer_contract_config.json"
+)
 
 
 def test_stable_core_api_examples() -> None:
@@ -211,6 +219,26 @@ def test_stable_request_api_builds_kv_cache_receipt() -> None:
     assert receipt["request"]["parameters"]["cache_size"] == 16
     assert receipt["request"]["parameters"]["request_id"] == "example_read_request"
     assert receipt["proof_status"]["all_theorem_ids_proved"] is True
+
+
+def test_stable_architecture_config_api_builds_non_rope_receipts() -> None:
+    config = json.loads(ARCHITECTURE_CONFIG.read_text(encoding="utf-8"))
+
+    sparse_request = build_contract_request_from_architecture_config(
+        "sparse-attention",
+        config,
+    )
+    assert sparse_request["kind"] == "sparse_attention_coverage"
+    assert sparse_request["parameters"]["context"] == 9
+    assert sparse_request["parameters"]["path_length"] == 2
+
+    recurrence_receipt = build_validated_contract_receipt_from_architecture_config(
+        "recurrence",
+        config,
+    )
+    assert recurrence_receipt["kind"] == "recurrence_schedule"
+    assert recurrence_receipt["request_passed"] is True
+    assert recurrence_receipt["normalized_request"]["loop_period"] == 5
 
 
 def test_stable_artifact_manifest_public_api(tmp_path) -> None:
@@ -1082,6 +1110,60 @@ def test_package_cli_unified_certify_sparse_and_recurrence() -> None:
     recurrence_receipt = json.loads(recurrence_result.stdout)
     assert recurrence_receipt["kind"] == "recurrence_schedule"
     assert recurrence_receipt["request_passed"] is True
+
+
+def test_package_cli_unified_certify_architecture_config_non_rope() -> None:
+    sparse_result = subprocess.run(
+        [
+            sys.executable,
+            "-c",
+            (
+                "import sys; "
+                "from circle_math.cli import contract_certify_main; "
+                "sys.exit(contract_certify_main())"
+            ),
+            "sparse-attention",
+            "--architecture-config-file",
+            str(ARCHITECTURE_CONFIG),
+            "--format",
+            "json",
+            "--require-passed",
+            "--require-status",
+            "proved",
+        ],
+        text=True,
+        capture_output=True,
+        check=True,
+    )
+    sparse_receipt = json.loads(sparse_result.stdout)
+    assert sparse_receipt["kind"] == "sparse_attention_coverage"
+    assert sparse_receipt["request"]["parameters"]["strides"] == [3, 4, 7]
+    assert sparse_receipt["request_passed"] is True
+
+    recurrence_result = subprocess.run(
+        [
+            sys.executable,
+            "-c",
+            (
+                "import sys; "
+                "from circle_math.cli import contract_certify_main; "
+                "sys.exit(contract_certify_main())"
+            ),
+            "recurrence",
+            "--architecture-config-file",
+            str(ARCHITECTURE_CONFIG),
+            "--sample-index",
+            "9",
+            "--format",
+            "json",
+        ],
+        text=True,
+        capture_output=True,
+        check=True,
+    )
+    recurrence_receipt = json.loads(recurrence_result.stdout)
+    assert recurrence_receipt["kind"] == "recurrence_schedule"
+    assert recurrence_receipt["normalized_request"]["sample_index"] == 9
 
 
 @pytest.mark.parametrize(

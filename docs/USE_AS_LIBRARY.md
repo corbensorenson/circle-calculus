@@ -244,6 +244,44 @@ rotary fraction again. For context length, it accepts
 `seq_length`, or `n_positions`. For base/theta, it accepts `rope_theta`,
 `rope_base`, `rotary_emb_base`, `rotary_base`, or `rotary_theta`.
 
+For non-RoPE architecture configs, use the explicit architecture adapter. It
+currently covers the KV-cache, sparse-attention, and recurrence contracts:
+
+```python
+from circle_math.ai_contracts import (
+    build_architecture_config_import_report,
+    build_validated_contract_receipt_from_architecture_config,
+)
+
+architecture_config = {
+    "kv_cache": {"cache_size": 16, "current": 31, "token": 20, "sink_size": 4},
+    "sparse_attention": {
+        "context_length": 9,
+        "strides": [3, 4, 7],
+        "max_hops": 2,
+        "local_window": 2,
+    },
+    "recurrence": {"loop_period": 5, "max_recurrence_steps": 7},
+}
+
+report = build_architecture_config_import_report(
+    "sparse-attention",
+    architecture_config,
+)
+assert report["ok"]
+
+receipt = build_validated_contract_receipt_from_architecture_config(
+    "kv-cache",
+    architecture_config,
+    pack=pack,
+)
+assert receipt["kind"] == "kv_cache_ring_buffer"
+```
+
+The architecture import report is provenance, not proof. It records which config
+field or explicit override supplied each request parameter; the receipt remains
+the theorem-linked artifact.
+
 For in-memory batch checks, use the same runner-check report shape without a
 subprocess:
 

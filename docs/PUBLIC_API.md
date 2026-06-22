@@ -147,6 +147,39 @@ For context length, the importer accepts `max_position_embeddings`,
 `max_seq_len`, `max_seq_length`, `max_sequence_length`, `model_max_length`,
 `seq_len`, `context_length`, `seq_length`, or `n_positions`.
 
+For non-RoPE AI configs, the facade exposes a source-tracked architecture
+adapter for the KV-cache, sparse-attention, and recurrence contracts:
+
+```python
+from circle_math.ai_contracts import (
+    build_contract_request_from_architecture_config,
+    build_validated_contract_receipt_from_architecture_config,
+)
+
+architecture_config = {
+    "sparse_attention": {
+        "context_length": 9,
+        "strides": [3, 4, 7],
+        "max_hops": 2,
+        "local_window": 2,
+    }
+}
+
+request = build_contract_request_from_architecture_config(
+    "sparse-attention",
+    architecture_config,
+)
+receipt = build_validated_contract_receipt_from_architecture_config(
+    "sparse-attention",
+    architecture_config,
+    pack=pack,
+)
+assert receipt["request"] == request
+```
+
+The config adapter is deterministic translation/provenance only; the receipt is
+the theorem-linked artifact.
+
 The same facade exposes reusable integer phase-bank helpers for sinusoidal,
 RoPE-family, scaled, and 2D positional phase descriptors:
 

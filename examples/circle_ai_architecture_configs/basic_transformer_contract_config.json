@@ -1,0 +1,24 @@
+{
+  "kv_cache": {
+    "cache_size": 16,
+    "current": 31,
+    "requested_tokens": [20, 24, 29, 31],
+    "sink_size": 4,
+    "token": 20
+  },
+  "recurrence": {
+    "loop_period": 5,
+    "max_recurrence_steps": 7,
+    "middle_block_start": 2,
+    "middle_block_width": 3,
+    "sample_step": 8,
+    "sequence_length": 8,
+    "shift_periods": 3
+  },
+  "sparse_attention": {
+    "context_length": 9,
+    "local_window": 2,
+    "max_hops": 2,
+    "strides": [3, 4, 7]
+  }
+}

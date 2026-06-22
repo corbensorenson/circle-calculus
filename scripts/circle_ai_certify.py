@@ -8,7 +8,7 @@ import hashlib
 import json
 import sys
 from pathlib import Path
-from typing import Any
+from typing import Any, Mapping
 
 import jsonschema
 
@@ -31,6 +31,7 @@ from circle_math.applications import (  # noqa: E402
     build_contract_receipt_replay_check_report,
     build_contract_receipt_json_schema,
     build_contract_request,
+    build_contract_request_from_architecture_config,
     build_contract_request_validation_report,
     build_contract_request_validation_json_schema,
     build_compact_contract_receipt,
@@ -523,35 +524,59 @@ def parse_args() -> argparse.Namespace:
         help="Certify a KV-cache ring-buffer freshness request.",
     )
     add_common_options(kv)
-    kv.add_argument("--cache-size", required=True, type=int)
-    kv.add_argument("--current", required=True, type=int)
-    kv.add_argument("--token", required=True, type=int)
-    kv.add_argument("--batch-tokens", type=parse_tokens, default=())
-    kv.add_argument("--sink-size", type=int, default=0)
-    kv.add_argument("--request-id", default="read_request")
+    kv.add_argument(
+        "--architecture-config",
+        type=Path,
+        help=(
+            "Optional AI architecture config JSON. Reads kv_cache/cache aliases "
+            "and lets explicit flags override imported values."
+        ),
+    )
+    kv.add_argument("--cache-size", type=int)
+    kv.add_argument("--current", type=int)
+    kv.add_argument("--token", type=int)
+    kv.add_argument("--batch-tokens", type=parse_tokens)
+    kv.add_argument("--sink-size", type=int)
+    kv.add_argument("--request-id")
 
     sparse = subparsers.add_parser(
         "sparse-attention",
         help="Certify a local-window plus stride-family sparse-attention plan.",
     )
     add_common_options(sparse)
-    sparse.add_argument("--context", required=True, type=int)
-    sparse.add_argument("--strides", required=True, type=parse_strides)
-    sparse.add_argument("--path-length", required=True, type=int)
-    sparse.add_argument("--local-window", required=True, type=int)
+    sparse.add_argument(
+        "--architecture-config",
+        type=Path,
+        help=(
+            "Optional AI architecture config JSON. Reads sparse_attention/"
+            "attention aliases and lets explicit flags override imported values."
+        ),
+    )
+    sparse.add_argument("--context", type=int)
+    sparse.add_argument("--strides", type=parse_strides)
+    sparse.add_argument("--path-length", type=int)
+    sparse.add_argument("--local-window", type=int)
 
     recurrence = subparsers.add_parser(
         "recurrence",
         help="Certify a finite looped/recursive schedule.",
     )
     add_common_options(recurrence)
-    recurrence.add_argument("--loop-period", type=int, default=5)
-    recurrence.add_argument("--sample-index", type=int, default=8)
-    recurrence.add_argument("--max-loops", type=int, default=7)
-    recurrence.add_argument("--token-count", type=int, default=8)
-    recurrence.add_argument("--selected-block-start", type=int, default=2)
-    recurrence.add_argument("--selected-block-width", type=int, default=3)
-    recurrence.add_argument("--shift-passes", type=int, default=3)
+    recurrence.add_argument(
+        "--architecture-config",
+        type=Path,
+        help=(
+            "Optional AI architecture config JSON. Reads recurrence/loop aliases "
+            "and lets explicit flags override imported values."
+        ),
+    )
+    recurrence.add_argument("--loop-period", type=int)
+    recurrence.add_argument("--sample-index", type=int)
+    recurrence.add_argument("--max-loops", type=int)
+    recurrence.add_argument("--token-count", type=int)
+    recurrence.add_argument("--selected-block-start", type=int)
+    recurrence.add_argument("--selected-block-width", type=int)
+    recurrence.add_argument("--shift-passes", type=int)
 
     fanout = subparsers.add_parser(
         "strided-fanout",
@@ -761,6 +786,25 @@ def _validate_certification_bundle_check_report(
         )
 
 
+def _architecture_parameters_from_args(
+    args: argparse.Namespace,
+    kind: str,
+    overrides: Mapping[str, Any],
+) -> dict[str, Any]:
+    config = _load_json_object(
+        args.architecture_config,
+        label="architecture config JSON",
+    )
+    request = build_contract_request_from_architecture_config(
+        kind,
+        config,
+        overrides=overrides,
+    )
+    parameters = request["parameters"]
+    assert isinstance(parameters, dict)
+    return parameters
+
+
 def _parameters_from_args(args: argparse.Namespace) -> dict[str, Any]:
     if args.kind == "rope":
         return {
@@ -774,7 +818,7 @@ def _parameters_from_args(args: argparse.Namespace) -> dict[str, Any]:
             "requested_margin": args.requested_margin,
         }
     if args.kind == "kv-cache":
-        return {
+        overrides = {
             "cache_size": args.cache_size,
             "current": args.current,
             "token": args.token,
@@ -782,7 +826,33 @@ def _parameters_from_args(args: argparse.Namespace) -> dict[str, Any]:
             "sink_size": args.sink_size,
             "request_id": args.request_id,
         }
+        if args.architecture_config is not None:
+            return _architecture_parameters_from_args(
+                args,
+                "kv-cache",
+                overrides,
+            )
+        return {
+            "cache_size": args.cache_size,
+            "current": args.current,
+            "token": args.token,
+            "batch_tokens": () if args.batch_tokens is None else args.batch_tokens,
+            "sink_size": 0 if args.sink_size is None else args.sink_size,
+            "request_id": "read_request" if args.request_id is None else args.request_id,
+        }
     if args.kind == "sparse-attention":
+        overrides = {
+            "context": args.context,
+            "strides": args.strides,
+            "path_length": args.path_length,
+            "local_window": args.local_window,
+        }
+        if args.architecture_config is not None:
+            return _architecture_parameters_from_args(
+                args,
+                "sparse-attention",
+                overrides,
+            )
         return {
             "context": args.context,
             "strides": args.strides,
@@ -790,7 +860,7 @@ def _parameters_from_args(args: argparse.Namespace) -> dict[str, Any]:
             "local_window": args.local_window,
         }
     if args.kind == "recurrence":
-        return {
+        overrides = {
             "loop_period": args.loop_period,
             "sample_index": args.sample_index,
             "max_loops": args.max_loops,
@@ -798,6 +868,25 @@ def _parameters_from_args(args: argparse.Namespace) -> dict[str, Any]:
             "selected_block_start": args.selected_block_start,
             "selected_block_width": args.selected_block_width,
             "shift_passes": args.shift_passes,
+        }
+        if args.architecture_config is not None:
+            return _architecture_parameters_from_args(
+                args,
+                "recurrence",
+                overrides,
+            )
+        return {
+            "loop_period": 5 if args.loop_period is None else args.loop_period,
+            "sample_index": 8 if args.sample_index is None else args.sample_index,
+            "max_loops": 7 if args.max_loops is None else args.max_loops,
+            "token_count": 8 if args.token_count is None else args.token_count,
+            "selected_block_start": 2
+            if args.selected_block_start is None
+            else args.selected_block_start,
+            "selected_block_width": 3
+            if args.selected_block_width is None
+            else args.selected_block_width,
+            "shift_passes": 3 if args.shift_passes is None else args.shift_passes,
         }
     if args.kind == "strided-fanout":
         return {
