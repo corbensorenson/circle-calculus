@@ -665,7 +665,7 @@ def test_kv_sparse_and_recurrence_receipts_preserve_family_semantics(
     _assert_decision_matches_receipt(
         recurrence,
         verdict="passed",
-        assurance="theorem_backed",
+        assurance="mixed_theorem_and_computation",
     )
     fields = recurrence["evidence"]["fields"]
     assert fields["scheduled_work_saving"] > 0
