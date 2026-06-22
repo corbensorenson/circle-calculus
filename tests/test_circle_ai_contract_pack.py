@@ -287,6 +287,7 @@ def test_generic_contract_pack_is_standalone_with_compatibility_aliases() -> Non
         "--field d19_proved_first_channel_radian_bank_form "
         "--field d19_proved_first_channel_bank_tolerance_rule "
         "--field d19_undecided_probe_margin_in_open_gap "
+        "--field real_phase_nearest_integer_certificate_bridge "
         "--field real_phase_dirichlet_witness_guardrail "
         "--field real_phase_margin_ceiling_guardrail "
         "--field real_phase_exact_weakest_margin_ceiling_guardrail "
@@ -305,10 +306,14 @@ def test_generic_contract_pack_is_standalone_with_compatibility_aliases() -> Non
         "--field d19_proved_first_channel_radian_bank_form "
         "--field d19_proved_first_channel_bank_tolerance_rule "
         "--field d19_undecided_probe_margin_in_open_gap "
+        "--field real_phase_nearest_integer_certificate_bridge "
         "--field real_phase_dirichlet_witness_guardrail "
         "--field real_phase_margin_ceiling_guardrail "
         "--field real_phase_exact_weakest_margin_ceiling_guardrail "
+        "--require-theorem AIRA-T0058 --require-theorem AIRA-T0059 "
         "--require-theorem AIRA-T0171 --require-theorem AIRA-T0172 "
+        "--require-theorem AIRA-T0177 --require-theorem AIRA-T0178 "
+        "--require-theorem AIRA-T0182 --require-theorem AIRA-T0183 "
         "--require-theorem AIRA-T0234 --require-theorem AIRA-T0235 "
         "--require-theorem AIRA-T0236 --require-theorem AIRA-T0237 "
         "--require-theorem AIRA-T0238 --require-theorem AIRA-T0239 "
@@ -324,6 +329,8 @@ def test_generic_contract_pack_is_standalone_with_compatibility_aliases() -> Non
         "--require-recommendation-evidence-field "
         "ROPE-USE-D19-MARGIN-FRONTIER=d19_undecided_probe_margin_in_open_gap "
         "--require-recommendation-evidence-field "
+        "ROPE-USE-D19-MARGIN-FRONTIER=real_phase_nearest_integer_certificate_bridge "
+        "--require-recommendation-evidence-field "
         "ROPE-USE-D19-MARGIN-FRONTIER=real_phase_dirichlet_witness_guardrail "
         "--require-recommendation-evidence-field "
         "ROPE-USE-D19-MARGIN-FRONTIER=real_phase_margin_ceiling_guardrail "
@@ -337,6 +344,12 @@ def test_generic_contract_pack_is_standalone_with_compatibility_aliases() -> Non
         "--require-recommendation-theorem "
         "ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0236 --require-recommendation-theorem ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0237 "
         "--require-recommendation-theorem ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0238 "
+        "--require-recommendation-theorem ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0058 "
+        "--require-recommendation-theorem ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0059 "
+        "--require-recommendation-theorem ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0177 "
+        "--require-recommendation-theorem ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0178 "
+        "--require-recommendation-theorem ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0182 "
+        "--require-recommendation-theorem ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0183 "
         "--require-recommendation-theorem ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0239 "
         "--require-recommendation-theorem ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0240 "
         "--require-recommendation-theorem ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0241 "
@@ -681,6 +694,7 @@ def test_generic_contract_pack_is_standalone_with_compatibility_aliases() -> Non
     )
     assert rope_fields["d19_undecided_margin_open_gap"] is True
     assert rope_fields["d19_undecided_probe_margin_in_open_gap"] is True
+    assert rope_fields["real_phase_nearest_integer_certificate_bridge"] is True
     assert rope_fields["real_phase_dirichlet_witness_guardrail"] is True
     assert rope_fields["real_phase_margin_ceiling_guardrail"] is True
     assert rope_fields["real_phase_exact_weakest_margin_ceiling_guardrail"] is True
@@ -714,6 +728,8 @@ def test_generic_contract_pack_is_standalone_with_compatibility_aliases() -> Non
     assert "AIRA-T0216" in contracts["rope_position_distinguishability"]["theorem_ids"]
     assert "AIRA-T0221" in contracts["rope_position_distinguishability"]["theorem_ids"]
     assert "AIRA-T0214" in contracts["rope_position_distinguishability"]["theorem_ids"]
+    assert "AIRA-T0059" in contracts["rope_position_distinguishability"]["theorem_ids"]
+    assert "AIRA-T0183" in contracts["rope_position_distinguishability"]["theorem_ids"]
     assert "AIRA-T0231" in contracts["rope_position_distinguishability"]["theorem_ids"]
     assert "AIRA-T0232" in contracts["rope_position_distinguishability"]["theorem_ids"]
     assert "AIRA-T0233" in contracts["rope_position_distinguishability"]["theorem_ids"]
@@ -737,10 +753,14 @@ def test_generic_contract_pack_is_standalone_with_compatibility_aliases() -> Non
         "--field d19_proved_first_channel_radian_bank_form "
         "--field d19_proved_first_channel_bank_tolerance_rule "
         "--field d19_undecided_probe_margin_in_open_gap "
+        "--field real_phase_nearest_integer_certificate_bridge "
         "--field real_phase_dirichlet_witness_guardrail "
         "--field real_phase_margin_ceiling_guardrail "
         "--field real_phase_exact_weakest_margin_ceiling_guardrail "
+        "--require-theorem AIRA-T0058 --require-theorem AIRA-T0059 "
         "--require-theorem AIRA-T0171 --require-theorem AIRA-T0172 "
+        "--require-theorem AIRA-T0177 --require-theorem AIRA-T0178 "
+        "--require-theorem AIRA-T0182 --require-theorem AIRA-T0183 "
         "--require-theorem AIRA-T0234 --require-theorem AIRA-T0235 "
         "--require-theorem AIRA-T0236 --require-theorem AIRA-T0237 "
         "--require-theorem AIRA-T0238 --require-theorem AIRA-T0239 "
@@ -757,6 +777,8 @@ def test_generic_contract_pack_is_standalone_with_compatibility_aliases() -> Non
         "--require-recommendation-evidence-field "
         "ROPE-USE-D19-MARGIN-FRONTIER=d19_undecided_probe_margin_in_open_gap "
         "--require-recommendation-evidence-field "
+        "ROPE-USE-D19-MARGIN-FRONTIER=real_phase_nearest_integer_certificate_bridge "
+        "--require-recommendation-evidence-field "
         "ROPE-USE-D19-MARGIN-FRONTIER=real_phase_dirichlet_witness_guardrail "
         "--require-recommendation-evidence-field "
         "ROPE-USE-D19-MARGIN-FRONTIER=real_phase_margin_ceiling_guardrail "
@@ -770,6 +792,12 @@ def test_generic_contract_pack_is_standalone_with_compatibility_aliases() -> Non
         "--require-recommendation-theorem "
         "ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0236 --require-recommendation-theorem ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0237 "
         "--require-recommendation-theorem ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0238 "
+        "--require-recommendation-theorem ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0058 "
+        "--require-recommendation-theorem ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0059 "
+        "--require-recommendation-theorem ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0177 "
+        "--require-recommendation-theorem ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0178 "
+        "--require-recommendation-theorem ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0182 "
+        "--require-recommendation-theorem ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0183 "
         "--require-recommendation-theorem ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0239 "
         "--require-recommendation-theorem ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0240 "
         "--require-recommendation-theorem ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0241 "
@@ -816,6 +844,9 @@ def test_generic_contract_pack_is_standalone_with_compatibility_aliases() -> Non
         "evidence_fields"
     ]
     assert "d19_context_range_max_inclusive" in rope_recommendations[1][
+        "evidence_fields"
+    ]
+    assert "real_phase_nearest_integer_certificate_bridge" in rope_recommendations[1][
         "evidence_fields"
     ]
     assert "real_phase_dirichlet_witness_guardrail" in rope_recommendations[1][
@@ -910,8 +941,14 @@ def test_generic_contract_pack_is_standalone_with_compatibility_aliases() -> Non
         },
     ]
     assert rope_recommendations[1]["theorem_ids"] == [
+        "AIRA-T0058",
+        "AIRA-T0059",
         "AIRA-T0171",
         "AIRA-T0172",
+        "AIRA-T0177",
+        "AIRA-T0178",
+        "AIRA-T0182",
+        "AIRA-T0183",
         "AIRA-T0216",
         "AIRA-T0217",
         "AIRA-T0218",

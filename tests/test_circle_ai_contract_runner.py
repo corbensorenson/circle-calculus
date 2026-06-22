@@ -342,6 +342,18 @@ def test_rope_receipt_classifies_d19_margin_request(contract_pack: dict) -> None
     assert classifier["request_status"] == "proved"
     assert classifier["theorem_backed_classification"] is True
     assert "AIRA-T0238" in receipt["proof_status"]["theorem_ids"]
+    nearest_bridge = receipt["evidence"]["real_phase_nearest_integer_bridge"]
+    assert nearest_bridge["applies"] is True
+    assert nearest_bridge["positive_gap_count"] == 131071
+    assert nearest_bridge["certificate_payload"] == (
+        "for every positive in-context gap, check the floor and ceiling "
+        "nearest-integer endpoint errors"
+    )
+    assert "AIRA-T0059" in nearest_bridge["theorem_ids"]
+    assert "AIRA-T0183" in receipt["proof_status"]["theorem_ids"]
+    assert "real_phase_nearest_integer_bridge" in receipt["proof_layers"][
+        "proved_fields"
+    ]
     guardrail = receipt["evidence"]["real_phase_dirichlet_guardrail"]
     assert guardrail["applies"] is True
     assert guardrail["inv_context_margin"] == "1/131072"
@@ -421,6 +433,7 @@ def test_compact_receipt_public_api_surfaces_downstream_fields(
     ]["theorem_ids"]
     assert compact["proof_status_summary"]["all_theorem_ids_proved"] is True
     assert "AIRA-T0238" in compact["proof_status_summary"]["theorem_ids"]
+    assert "AIRA-T0183" in compact["proof_status_summary"]["theorem_ids"]
     assert compact["normalized_request"] == receipt["normalized_request"]
     assert compact["proof_layer_counts"] == compact["decision"][
         "proof_layer_counts"
@@ -448,6 +461,22 @@ def test_compact_receipt_public_api_surfaces_downstream_fields(
         == "numerical_only"
     )
     assert "exact_total_bank_collision_pair_count" in compact["selected_evidence"]
+    assert (
+        compact["selected_evidence"]["real_phase_nearest_integer_bridge.applies"]
+        is True
+    )
+    assert (
+        compact["selected_evidence"][
+            "real_phase_nearest_integer_bridge.positive_gap_count"
+        ]
+        == 131071
+    )
+    assert (
+        compact["selected_evidence_proof_layers"][
+            "real_phase_nearest_integer_bridge.applies"
+        ]
+        == "proved"
+    )
     assert "standard_channel0_d19_request_classifier" in compact[
         "evidence_field_names"
     ]

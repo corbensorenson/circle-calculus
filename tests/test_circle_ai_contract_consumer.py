@@ -780,8 +780,14 @@ def test_consumer_exposes_rope_planner_recommendations() -> None:
         ],
     }
     assert d19_frontier["theorem_ids"] == [
+        "AIRA-T0058",
+        "AIRA-T0059",
         "AIRA-T0171",
         "AIRA-T0172",
+        "AIRA-T0177",
+        "AIRA-T0178",
+        "AIRA-T0182",
+        "AIRA-T0183",
         "AIRA-T0216",
         "AIRA-T0217",
         "AIRA-T0218",
@@ -849,11 +855,14 @@ def test_consumer_exposes_top_level_planner_recommendation_index() -> None:
         "d19_proved_first_channel_context_wide_contract",
         "d19_proved_first_channel_radian_bank_form",
         "d19_proved_first_channel_bank_tolerance_rule",
+        "real_phase_nearest_integer_certificate_bridge",
         "real_phase_dirichlet_witness_guardrail",
         "real_phase_margin_ceiling_guardrail",
         "real_phase_exact_weakest_margin_ceiling_guardrail",
     ]
     assert "AIRA-T0216" in rope_frontier["theorem_ids"]
+    assert "AIRA-T0059" in rope_frontier["theorem_ids"]
+    assert "AIRA-T0183" in rope_frontier["theorem_ids"]
     assert "AIRA-T0234" in rope_frontier["theorem_ids"]
     assert "AIRA-T0235" in rope_frontier["theorem_ids"]
     assert "AIRA-T0236" in rope_frontier["theorem_ids"]

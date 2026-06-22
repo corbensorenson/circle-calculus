@@ -1,7 +1,7 @@
 {
   "contracts": [
     {
-      "expected_contract_fingerprint": "4b6cde25382a3c0fd206ee624ef4d582ce4913a74e766471e7d890c6a05e0b9a",
+      "expected_contract_fingerprint": "aac68c384f6ee2a2fa5c7f44defbe5a767b75f1dd89bbbeb4e5f5805be133d4e",
       "kind": "rope_position_distinguishability",
       "required_fields": [
         "preset",
@@ -27,6 +27,7 @@
         "d19_proved_first_channel_bank_shape",
         "d19_proved_first_channel_radian_bank_form",
         "d19_proved_first_channel_bank_tolerance_rule",
+        "real_phase_nearest_integer_certificate_bridge",
         "real_phase_dirichlet_witness_guardrail",
         "real_phase_margin_ceiling_guardrail",
         "real_phase_exact_weakest_margin_ceiling_guardrail"
@@ -95,6 +96,7 @@
           "d19_proved_first_channel_bank_shape",
           "d19_proved_first_channel_radian_bank_form",
           "d19_proved_first_channel_bank_tolerance_rule",
+          "real_phase_nearest_integer_certificate_bridge",
           "real_phase_dirichlet_witness_guardrail",
           "real_phase_margin_ceiling_guardrail",
           "real_phase_exact_weakest_margin_ceiling_guardrail"
@@ -113,6 +115,12 @@
           "AIRA-T0184"
         ],
         "ROPE-USE-D19-MARGIN-FRONTIER": [
+          "AIRA-T0058",
+          "AIRA-T0059",
+          "AIRA-T0177",
+          "AIRA-T0178",
+          "AIRA-T0182",
+          "AIRA-T0183",
           "AIRA-T0171",
           "AIRA-T0172",
           "AIRA-T0216",
@@ -129,6 +137,12 @@
         ]
       },
       "required_theorem_ids": [
+        "AIRA-T0058",
+        "AIRA-T0059",
+        "AIRA-T0177",
+        "AIRA-T0178",
+        "AIRA-T0182",
+        "AIRA-T0183",
         "AIRA-T0171",
         "AIRA-T0172",
         "AIRA-T0184",
@@ -377,7 +391,7 @@
       ]
     }
   ],
-  "expected_pack_fingerprint": "45d0422b3210b22570f7e531b2312bd41dea13142417bc411e488e8204c91bca",
+  "expected_pack_fingerprint": "cd7e471077ec2f6fc4b75f40051b5fcdffb47f56ef776b59f5e3bf61609d1efd",
   "policy_id": "circle_ai_flagship_contracts_acceptance_v0",
   "policy_name": "Circle AI flagship contracts acceptance policy",
   "schema_id": "circle_calculus.ai_contract_acceptance_policy.v0"

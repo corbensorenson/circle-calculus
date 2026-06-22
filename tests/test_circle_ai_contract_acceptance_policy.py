@@ -603,6 +603,7 @@ def test_default_flagship_policy_matches_generated_contract_pack() -> None:
         "d19_proved_first_channel_bank_shape",
         "d19_proved_first_channel_radian_bank_form",
         "d19_proved_first_channel_bank_tolerance_rule",
+        "real_phase_nearest_integer_certificate_bridge",
         "real_phase_dirichlet_witness_guardrail",
         "real_phase_margin_ceiling_guardrail",
         "real_phase_exact_weakest_margin_ceiling_guardrail",
@@ -641,11 +642,18 @@ def test_default_flagship_policy_matches_generated_contract_pack() -> None:
         "d19_proved_first_channel_bank_shape",
         "d19_proved_first_channel_radian_bank_form",
         "d19_proved_first_channel_bank_tolerance_rule",
+        "real_phase_nearest_integer_certificate_bridge",
         "real_phase_dirichlet_witness_guardrail",
         "real_phase_margin_ceiling_guardrail",
         "real_phase_exact_weakest_margin_ceiling_guardrail",
     ]
     assert rope_receipt["required_theorem_ids"] == [
+        "AIRA-T0058",
+        "AIRA-T0059",
+        "AIRA-T0177",
+        "AIRA-T0178",
+        "AIRA-T0182",
+        "AIRA-T0183",
         "AIRA-T0171",
         "AIRA-T0172",
         "AIRA-T0184",
@@ -673,6 +681,12 @@ def test_default_flagship_policy_matches_generated_contract_pack() -> None:
     assert rope_receipt["required_recommendation_theorem_ids"][
         "ROPE-USE-D19-MARGIN-FRONTIER"
     ] == [
+        "AIRA-T0058",
+        "AIRA-T0059",
+        "AIRA-T0177",
+        "AIRA-T0178",
+        "AIRA-T0182",
+        "AIRA-T0183",
         "AIRA-T0171",
         "AIRA-T0172",
         "AIRA-T0216",

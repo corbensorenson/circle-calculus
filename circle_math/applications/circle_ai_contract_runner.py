@@ -256,6 +256,9 @@ COMPACT_RECEIPT_EVIDENCE_PATHS_BY_KIND = {
         "rational_turn_ratio_finite_margin_certificate.requested_margin_status",
         "rational_turn_ratio_finite_margin_certificate.exact_nearest_gap_margin",
         "rational_turn_ratio_finite_margin_certificate.exact_nearest_gap",
+        "real_phase_nearest_integer_bridge.applies",
+        "real_phase_nearest_integer_bridge.positive_gap_count",
+        "real_phase_nearest_integer_bridge.certificate_payload",
         "real_phase_dirichlet_guardrail.applies",
         "real_phase_dirichlet_guardrail.requested_margin_relation_to_ceiling",
         "real_phase_dirichlet_guardrail.requested_margin_exceeds_ceiling",
@@ -360,6 +363,14 @@ ROPE_DIRICHLET_GUARDRAIL_THEOREM_IDS = (
     "AIRA-T0239",
     "AIRA-T0240",
     "AIRA-T0241",
+)
+ROPE_NEAREST_INTEGER_BRIDGE_THEOREM_IDS = (
+    "AIRA-T0058",
+    "AIRA-T0059",
+    "AIRA-T0177",
+    "AIRA-T0178",
+    "AIRA-T0182",
+    "AIRA-T0183",
 )
 ROPE_MODEL_BASE_KEYS = (
     "rope_theta",
@@ -1800,6 +1811,68 @@ def _rope_dirichlet_guardrail(
     }
 
 
+def _rope_nearest_integer_bridge(
+    *,
+    context: int,
+    requested_margin: Fraction | None,
+) -> dict[str, Any]:
+    """Return the theorem-backed finite nearest-integer certificate bridge."""
+
+    positive_gap_count = max(context - 1, 0)
+    requested_margin_text = (
+        str(requested_margin) if requested_margin is not None else None
+    )
+    return {
+        "applies": True,
+        "context": context,
+        "positive_gap_count": positive_gap_count,
+        "gap_range": "positive integer gaps 1 <= gap < context",
+        "requested_margin": requested_margin_text,
+        "certificate_predicate": (
+            "ropeTurnRatioNearestIntegerWitnesses turnRatio margin context"
+        ),
+        "certificate_payload": (
+            "for every positive in-context gap, check the floor and ceiling "
+            "nearest-integer endpoint errors"
+        ),
+        "scalar_margin_field": (
+            "ropeTurnRatioGapNearestIntegerMargin turnRatio gap"
+        ),
+        "positive_certificate_condition": (
+            "A requested margin is theorem-backed when it is at most the "
+            "scalar nearest-integer margin for every positive in-context gap."
+            if requested_margin is not None
+            else (
+                "Supply a requested margin, then certify that every positive "
+                "in-context gap has scalar nearest-integer margin at least "
+                "that request."
+            )
+        ),
+        "negative_certificate_condition": (
+            "One positive in-context gap with nearest-integer error below the "
+            "requested margin is an exact obstruction."
+            if requested_margin is not None
+            else (
+                "For a future requested margin, one positive in-context gap "
+                "with nearest-integer error below that request is an exact "
+                "obstruction."
+            )
+        ),
+        "theorem_backed": True,
+        "theorem_ids": list(ROPE_NEAREST_INTEGER_BRIDGE_THEOREM_IDS),
+        "claim": (
+            "Lean proves that the abstract finite-context turn-ratio margin "
+            "contract is equivalent to finite floor/ceiling nearest-integer "
+            "checks over the positive gaps below the context."
+        ),
+        "non_claim": (
+            "This bridge does not itself prove the requested margin, validate "
+            "the numerical scan, or prove a full all-channel standard-RoPE "
+            "separation theorem."
+        ),
+    }
+
+
 def _rope_standard_channel0_d19_bank_bridge(
     *,
     context: int,
@@ -1931,6 +2004,12 @@ def build_rope_receipt(
         context=context,
         requested_margin=margin,
     )
+    nearest_integer_bridge = _rope_nearest_integer_bridge(
+        context=context,
+        requested_margin=margin,
+    )
+    evidence["real_phase_nearest_integer_bridge"] = nearest_integer_bridge
+    theorem_ids.extend(nearest_integer_bridge["theorem_ids"])
     evidence["real_phase_dirichlet_guardrail"] = dirichlet_guardrail
     if dirichlet_guardrail["applies"]:
         theorem_ids.extend(dirichlet_guardrail["theorem_ids"])
@@ -2016,6 +2095,7 @@ def build_rope_receipt(
             "model quality or useful context-length improvement",
         ],
     }
+    proof_layers["proved_fields"].append("real_phase_nearest_integer_bridge")
     if dirichlet_guardrail["applies"]:
         proof_layers["proved_fields"].append("real_phase_dirichlet_guardrail")
     else:
@@ -4592,6 +4672,15 @@ def receipt_summary_lines(receipt: Mapping[str, Any]) -> list[str]:
                 f"radian_bank_form={bank_bridge['radian_bank_form']} "
                 f"bank_shape={bank_bridge['bank_shape']} "
                 f"status={bank_bridge['request_status']}"
+            )
+        nearest_bridge = evidence.get("real_phase_nearest_integer_bridge")
+        if isinstance(nearest_bridge, dict):
+            lines.append(
+                "rope_nearest_integer_bridge="
+                f"applies={nearest_bridge['applies']} "
+                f"positive_gaps={nearest_bridge['positive_gap_count']} "
+                f"theorem_backed={nearest_bridge['theorem_backed']} "
+                f"payload={nearest_bridge['certificate_payload']}"
             )
         guardrail = evidence.get("real_phase_dirichlet_guardrail")
         if isinstance(guardrail, dict):

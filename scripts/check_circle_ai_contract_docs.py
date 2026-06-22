@@ -91,11 +91,18 @@ STRICT_ROPE_RECEIPT_TOKENS = (
     "--field d19_proved_first_channel_radian_bank_form",
     "--field d19_proved_first_channel_bank_tolerance_rule",
     "--field d19_undecided_probe_margin_in_open_gap",
+    "--field real_phase_nearest_integer_certificate_bridge",
     "--field real_phase_dirichlet_witness_guardrail",
     "--field real_phase_margin_ceiling_guardrail",
     "--field real_phase_exact_weakest_margin_ceiling_guardrail",
+    "--require-theorem AIRA-T0058",
+    "--require-theorem AIRA-T0059",
     "--require-theorem AIRA-T0171",
     "--require-theorem AIRA-T0172",
+    "--require-theorem AIRA-T0177",
+    "--require-theorem AIRA-T0178",
+    "--require-theorem AIRA-T0182",
+    "--require-theorem AIRA-T0183",
     "--require-theorem AIRA-T0234",
     "--require-theorem AIRA-T0235",
     "--require-theorem AIRA-T0236",
@@ -120,6 +127,11 @@ STRICT_ROPE_RECEIPT_TOKENS = (
     (
         "--require-recommendation-evidence-field "
         "ROPE-USE-D19-MARGIN-FRONTIER=d19_undecided_probe_margin_in_open_gap"
+    ),
+    (
+        "--require-recommendation-evidence-field "
+        "ROPE-USE-D19-MARGIN-FRONTIER="
+        "real_phase_nearest_integer_certificate_bridge"
     ),
     (
         "--require-recommendation-evidence-field "
@@ -152,6 +164,30 @@ STRICT_ROPE_RECEIPT_TOKENS = (
     (
         "--require-recommendation-theorem "
         "ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0238"
+    ),
+    (
+        "--require-recommendation-theorem "
+        "ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0058"
+    ),
+    (
+        "--require-recommendation-theorem "
+        "ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0059"
+    ),
+    (
+        "--require-recommendation-theorem "
+        "ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0177"
+    ),
+    (
+        "--require-recommendation-theorem "
+        "ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0178"
+    ),
+    (
+        "--require-recommendation-theorem "
+        "ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0182"
+    ),
+    (
+        "--require-recommendation-theorem "
+        "ROPE-USE-D19-MARGIN-FRONTIER=AIRA-T0183"
     ),
     (
         "--require-recommendation-theorem "
