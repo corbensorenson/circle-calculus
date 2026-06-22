@@ -1,0 +1,7 @@
+{
+  "schema_id": "circle_calculus.ai_contract_request.v0",
+  "kind": "seed-rule",
+  "parameters": {
+    "n": 128
+  }
+}

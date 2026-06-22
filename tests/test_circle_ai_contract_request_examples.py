@@ -26,10 +26,15 @@ def test_circle_ai_request_examples_are_public_api_ready() -> None:
     paths = _example_requests()
 
     assert {path.name for path in paths} == {
+        "cyclic_memory_request.json",
+        "cyclic_mixer_request.json",
         "kv_cache_request.json",
+        "multicoil_phase_request.json",
         "recurrence_request.json",
         "rope_request.json",
+        "seed_rule_request.json",
         "sparse_attention_request.json",
+        "strided_fanout_request.json",
     }
 
     for path in paths:

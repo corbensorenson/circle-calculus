@@ -1,0 +1,10 @@
+{
+  "schema_id": "circle_calculus.ai_contract_request.v0",
+  "kind": "multicoil-phase",
+  "parameters": {
+    "periods": [5, 7],
+    "position": 37,
+    "query_position": 41,
+    "key_position": 18
+  }
+}

@@ -36,8 +36,13 @@ from .circle_ai_contract_consumer import (
 )
 from .circle_ai_contracts import (
     SCHEMA_ID as CONTRACT_PACK_SCHEMA_ID,
+    build_circulant_block_cyclic_mixer_contract,
     build_contract_pack,
+    build_cyclic_memory_contract,
+    build_multicoil_phase_feature_contract,
     build_recurrence_schedule_contract,
+    build_seed_rule_contract,
+    build_strided_candidate_fanout_contract,
 )
 from .rope_certifier import (
     RoPEConfig,
@@ -111,6 +116,11 @@ SUPPORTED_CONTRACT_KINDS = (
     "kv_cache_ring_buffer",
     "sparse_attention_coverage",
     "recurrence_schedule",
+    "strided_candidate_fanout",
+    "cyclic_memory_residue_winding",
+    "multicoil_phase_feature",
+    "circulant_block_cyclic_mixer",
+    "seed_rule_exact_regeneration",
 )
 KIND_ALIASES = {
     "rope": "rope_position_distinguishability",
@@ -126,12 +136,34 @@ KIND_ALIASES = {
     "recurrence": "recurrence_schedule",
     "recurrence-schedule": "recurrence_schedule",
     "recurrence_schedule": "recurrence_schedule",
+    "fanout": "strided_candidate_fanout",
+    "strided-fanout": "strided_candidate_fanout",
+    "strided_candidate_fanout": "strided_candidate_fanout",
+    "memory": "cyclic_memory_residue_winding",
+    "cyclic-memory": "cyclic_memory_residue_winding",
+    "cyclic_memory": "cyclic_memory_residue_winding",
+    "cyclic_memory_residue_winding": "cyclic_memory_residue_winding",
+    "phase-feature": "multicoil_phase_feature",
+    "multicoil-phase": "multicoil_phase_feature",
+    "multicoil_phase_feature": "multicoil_phase_feature",
+    "mixer": "circulant_block_cyclic_mixer",
+    "cyclic-mixer": "circulant_block_cyclic_mixer",
+    "circulant-mixer": "circulant_block_cyclic_mixer",
+    "circulant_block_cyclic_mixer": "circulant_block_cyclic_mixer",
+    "seed-rule": "seed_rule_exact_regeneration",
+    "seed_rule": "seed_rule_exact_regeneration",
+    "seed_rule_exact_regeneration": "seed_rule_exact_regeneration",
 }
 CONTRACT_KIND_CLI_SUBCOMMANDS = {
     "rope_position_distinguishability": "rope",
     "kv_cache_ring_buffer": "kv-cache",
     "sparse_attention_coverage": "sparse-attention",
     "recurrence_schedule": "recurrence",
+    "strided_candidate_fanout": "strided-fanout",
+    "cyclic_memory_residue_winding": "cyclic-memory",
+    "multicoil_phase_feature": "multicoil-phase",
+    "circulant_block_cyclic_mixer": "cyclic-mixer",
+    "seed_rule_exact_regeneration": "seed-rule",
 }
 STATUS_VALUES = (
     "proved",
@@ -624,6 +656,44 @@ def _runner_validation_command_for_request(request: Mapping[str, Any]) -> str:
         ):
             if key in parameters:
                 parts.extend([flag, _cli_value(parameters[key])])
+    elif kind == "strided_candidate_fanout":
+        for flag, key in (
+            ("--context-length", "context_length"),
+            ("--stride", "stride"),
+            ("--start-index", "start_index"),
+            ("--path-length", "path_length"),
+        ):
+            if key in parameters:
+                parts.extend([flag, _cli_value(parameters[key])])
+    elif kind == "cyclic_memory_residue_winding":
+        for flag, key in (
+            ("--bank-size", "bank_size"),
+            ("--event-index", "event_index"),
+            ("--event-count", "event_count"),
+        ):
+            if key in parameters:
+                parts.extend([flag, _cli_value(parameters[key])])
+    elif kind == "multicoil_phase_feature":
+        if "periods" in parameters:
+            parts.extend(["--periods", _cli_value(_cli_csv(parameters["periods"]))])
+        for flag, key in (
+            ("--position", "position"),
+            ("--query-position", "query_position"),
+            ("--key-position", "key_position"),
+        ):
+            if key in parameters:
+                parts.extend([flag, _cli_value(parameters[key])])
+    elif kind == "circulant_block_cyclic_mixer":
+        for flag, key in (
+            ("--period", "period"),
+            ("--channel-count", "channel_count"),
+            ("--block-size", "block_size"),
+        ):
+            if key in parameters:
+                parts.extend([flag, _cli_value(parameters[key])])
+    elif kind == "seed_rule_exact_regeneration":
+        if "n" in parameters:
+            parts.extend(["--n", _cli_value(parameters["n"])])
     parts.extend(["--format", "json"])
     return " ".join(parts)
 
@@ -1712,6 +1782,260 @@ def build_recurrence_receipt(
     )
 
 
+def _generic_ready_contract_receipt(
+    *,
+    kind: str,
+    request_parameters: Mapping[str, Any],
+    normalized_parameters: Mapping[str, Any],
+    payload: Mapping[str, Any],
+    unsupported_fields: Sequence[str],
+    pack: Mapping[str, Any] | None = None,
+) -> dict[str, Any]:
+    fields = payload.get("fields")
+    if not isinstance(fields, Mapping):
+        raise ValueError("generic Circle AI contract payload must contain fields")
+    consumer_check = payload.get("consumer_check")
+    if not isinstance(consumer_check, Mapping):
+        raise ValueError("generic Circle AI contract payload must contain consumer_check")
+    minimum_fields = {
+        field
+        for field in consumer_check.get("minimum_fields", [])
+        if isinstance(field, str)
+    }
+    proved_fields = [
+        "contract_passed",
+        "consumer_check.ready_for_downstream_fixture_use",
+        *[
+            f"fields.{field}"
+            for field in fields
+            if isinstance(field, str) and field in minimum_fields
+        ],
+    ]
+    computed_fields = [
+        f"fields.{field}"
+        for field in fields
+        if isinstance(field, str) and field not in minimum_fields
+    ]
+    not_claimed = payload.get("not_claimed")
+    theorem_ids = payload.get("theorem_ids")
+    if not isinstance(not_claimed, str):
+        raise ValueError("generic Circle AI contract payload must contain not_claimed")
+    if not isinstance(theorem_ids, Sequence) or isinstance(theorem_ids, (str, bytes)):
+        raise ValueError("generic Circle AI contract payload must contain theorem_ids")
+    return _base_receipt(
+        kind=kind,
+        request_parameters=request_parameters,
+        normalized_parameters=normalized_parameters,
+        status="proved",
+        request_passed=bool(payload.get("contract_passed")),
+        evidence=payload,
+        theorem_ids=[str(theorem_id) for theorem_id in theorem_ids],
+        proof_layers={
+            "proved_fields": proved_fields,
+            "computed_fields": computed_fields,
+            "numerical_only_fields": [],
+            "unsupported_fields": list(unsupported_fields),
+        },
+        not_claimed=[not_claimed],
+        pack=pack,
+    )
+
+
+def build_strided_candidate_fanout_receipt(
+    *,
+    context_length: int = 12,
+    stride: int = 5,
+    start_index: int = 0,
+    path_length: int = 12,
+    pack: Mapping[str, Any] | None = None,
+) -> dict[str, Any]:
+    """Build a theorem-linked receipt for finite strided candidate fanout."""
+
+    payload = build_strided_candidate_fanout_contract(
+        context_length=context_length,
+        stride=stride,
+        start_index=start_index,
+        path_length=path_length,
+    )
+    fields = payload["fields"]
+    return _generic_ready_contract_receipt(
+        kind="strided_candidate_fanout",
+        request_parameters={
+            "context_length": context_length,
+            "stride": stride,
+            "start_index": start_index,
+            "path_length": path_length,
+        },
+        normalized_parameters={
+            "context_length": fields["context_length"],
+            "stride": fields["stride"],
+            "start_index": fields["start_index"],
+            "path_length": path_length,
+        },
+        payload=payload,
+        unsupported_fields=[
+            "model-quality improvement",
+            "search-quality improvement",
+            "throughput or latency",
+            "optimal candidate schedule",
+        ],
+        pack=pack,
+    )
+
+
+def build_cyclic_memory_receipt(
+    *,
+    bank_size: int = 8,
+    event_index: int = 23,
+    event_count: int = 32,
+    pack: Mapping[str, Any] | None = None,
+) -> dict[str, Any]:
+    """Build a theorem-linked receipt for cyclic memory residue/winding facts."""
+
+    payload = build_cyclic_memory_contract(
+        bank_size=bank_size,
+        event_index=event_index,
+        event_count=event_count,
+    )
+    fields = payload["fields"]
+    return _generic_ready_contract_receipt(
+        kind="cyclic_memory_residue_winding",
+        request_parameters={
+            "bank_size": bank_size,
+            "event_index": event_index,
+            "event_count": event_count,
+        },
+        normalized_parameters={
+            "bank_size": fields["bank_size"],
+            "event_index": fields["event_index"],
+            "event_count": fields["event_count"],
+            "residue_slot": fields["residue_slot"],
+            "winding": fields["winding"],
+        },
+        payload=payload,
+        unsupported_fields=[
+            "retrieval quality",
+            "memory compression ratio for a real model",
+            "implementation-level cache safety",
+            "model-quality improvement",
+        ],
+        pack=pack,
+    )
+
+
+def build_multicoil_phase_feature_receipt(
+    *,
+    periods: Sequence[int] = (5, 7),
+    position: int = 37,
+    query_position: int = 41,
+    key_position: int = 18,
+    pack: Mapping[str, Any] | None = None,
+) -> dict[str, Any]:
+    """Build a theorem-linked receipt for finite MultiCoil phase features."""
+
+    payload = build_multicoil_phase_feature_contract(
+        periods=tuple(periods),
+        position=position,
+        query_position=query_position,
+        key_position=key_position,
+    )
+    fields = payload["fields"]
+    return _generic_ready_contract_receipt(
+        kind="multicoil_phase_feature",
+        request_parameters={
+            "periods": list(periods),
+            "position": position,
+            "query_position": query_position,
+            "key_position": key_position,
+        },
+        normalized_parameters={
+            "periods": list(fields["periods"]),
+            "position": fields["position"],
+            "query_position": fields["query_position"],
+            "key_position": fields["key_position"],
+            "joint_repeat_horizon": fields["joint_repeat_horizon"],
+        },
+        payload=payload,
+        unsupported_fields=[
+            "feature usefulness in a trained model",
+            "attention-quality improvement",
+            "training stability",
+            "all-real-phase RoPE separation",
+        ],
+        pack=pack,
+    )
+
+
+def build_circulant_block_cyclic_mixer_receipt(
+    *,
+    period: int = 8,
+    channel_count: int = 128,
+    block_size: int = 8,
+    pack: Mapping[str, Any] | None = None,
+) -> dict[str, Any]:
+    """Build a theorem-linked receipt for finite circulant/block-cyclic mixers."""
+
+    payload = build_circulant_block_cyclic_mixer_contract(
+        period=period,
+        channel_count=channel_count,
+        block_size=block_size,
+    )
+    fields = payload["fields"]
+    return _generic_ready_contract_receipt(
+        kind="circulant_block_cyclic_mixer",
+        request_parameters={
+            "period": period,
+            "channel_count": channel_count,
+            "block_size": block_size,
+        },
+        normalized_parameters={
+            "period": fields["period"],
+            "channel_count": fields["channel_count"],
+            "block_size": fields["block_size"],
+            "circulant_parameters": fields["circulant_parameters"],
+            "block_cyclic_parameters": fields["block_cyclic_parameters"],
+        },
+        payload=payload,
+        unsupported_fields=[
+            "accuracy improvement over dense layers",
+            "training speed",
+            "hardware efficiency",
+            "optimal mixer architecture",
+        ],
+        pack=pack,
+    )
+
+
+def build_seed_rule_receipt(
+    *,
+    n: int = 128,
+    pack: Mapping[str, Any] | None = None,
+) -> dict[str, Any]:
+    """Build a theorem-linked receipt for finite seed/rule regeneration."""
+
+    payload = build_seed_rule_contract(n=n)
+    fields = payload["fields"]
+    return _generic_ready_contract_receipt(
+        kind="seed_rule_exact_regeneration",
+        request_parameters={"n": n},
+        normalized_parameters={
+            "n": n,
+            "artifact_id": fields["artifact_id"],
+            "fixture_n": fields["fixture_n"],
+            "exact_regeneration": fields["exact_regeneration"],
+            "storage_saving": fields["storage_saving"],
+        },
+        payload=payload,
+        unsupported_fields=[
+            "global compression optimality",
+            "Kolmogorov complexity",
+            "learned generator discovery",
+            "model-quality improvement",
+        ],
+        pack=pack,
+    )
+
+
 def build_contract_receipt(
     kind: str,
     parameters: Mapping[str, Any],
@@ -1730,6 +2054,16 @@ def build_contract_receipt(
         return build_sparse_attention_receipt(pack=pack, **params)
     if canonical == "recurrence_schedule":
         return build_recurrence_receipt(pack=pack, **params)
+    if canonical == "strided_candidate_fanout":
+        return build_strided_candidate_fanout_receipt(pack=pack, **params)
+    if canonical == "cyclic_memory_residue_winding":
+        return build_cyclic_memory_receipt(pack=pack, **params)
+    if canonical == "multicoil_phase_feature":
+        return build_multicoil_phase_feature_receipt(pack=pack, **params)
+    if canonical == "circulant_block_cyclic_mixer":
+        return build_circulant_block_cyclic_mixer_receipt(pack=pack, **params)
+    if canonical == "seed_rule_exact_regeneration":
+        return build_seed_rule_receipt(pack=pack, **params)
     raise ValueError(f"unsupported contract kind: {kind}")
 
 
@@ -1954,6 +2288,56 @@ def _validate_request_parameters(
         _require_nonnegative_int(parameters, "selected_block_start", failures)
         _require_positive_int(parameters, "selected_block_width", failures)
         _require_nonnegative_int(parameters, "shift_passes", failures)
+    elif canonical == "strided_candidate_fanout":
+        allowed = {"context_length", "stride", "start_index", "path_length"}
+        _require_allowed_keys(parameters, allowed=allowed, failures=failures)
+        _require_positive_int(parameters, "context_length", failures)
+        _require_nonnegative_int(parameters, "stride", failures)
+        _require_nonnegative_int(parameters, "start_index", failures)
+        _require_positive_int(parameters, "path_length", failures)
+    elif canonical == "cyclic_memory_residue_winding":
+        allowed = {"bank_size", "event_index", "event_count"}
+        _require_allowed_keys(parameters, allowed=allowed, failures=failures)
+        _require_positive_int(parameters, "bank_size", failures)
+        _require_nonnegative_int(parameters, "event_index", failures)
+        _require_positive_int(parameters, "event_count", failures)
+        if (
+            _is_int(parameters.get("event_index"))
+            and _is_int(parameters.get("event_count"))
+            and parameters["event_index"] >= parameters["event_count"]
+        ):
+            failures.append("parameters.event_index must be less than event_count")
+    elif canonical == "multicoil_phase_feature":
+        allowed = {"periods", "position", "query_position", "key_position"}
+        _require_allowed_keys(parameters, allowed=allowed, failures=failures)
+        _require_int_sequence(
+            parameters,
+            "periods",
+            failures,
+            positive=True,
+            nonempty=True,
+        )
+        _require_nonnegative_int(parameters, "position", failures)
+        _require_nonnegative_int(parameters, "query_position", failures)
+        _require_nonnegative_int(parameters, "key_position", failures)
+    elif canonical == "circulant_block_cyclic_mixer":
+        allowed = {"period", "channel_count", "block_size"}
+        _require_allowed_keys(parameters, allowed=allowed, failures=failures)
+        _require_positive_int(parameters, "period", failures)
+        _require_positive_int(parameters, "channel_count", failures)
+        _require_positive_int(parameters, "block_size", failures)
+        if (
+            _is_int(parameters.get("block_size"))
+            and _is_int(parameters.get("channel_count"))
+            and parameters["block_size"] > parameters["channel_count"]
+        ):
+            failures.append(
+                "parameters.block_size must be less than or equal to channel_count"
+            )
+    elif canonical == "seed_rule_exact_regeneration":
+        allowed = {"n"}
+        _require_allowed_keys(parameters, allowed=allowed, failures=failures)
+        _require_positive_int(parameters, "n", failures)
     return failures
 
 
@@ -3236,6 +3620,82 @@ def receipt_summary_lines(receipt: Mapping[str, Any]) -> list[str]:
             "active_at_step_invariant="
             f"{fields['periodic_shift_active_at_step_invariant']}"
         )
+    elif kind == "strided_candidate_fanout":
+        fields = evidence["fields"]
+        lines.append(
+            "strided_fanout="
+            f"context_length={fields['context_length']} "
+            f"stride={fields['stride']} gcd={fields['gcd']} "
+            f"predicted_reach={fields['predicted_reach']} "
+            f"full_coverage={fields['full_coverage']}"
+        )
+        lines.append(
+            "strided_fanout_budget="
+            f"candidate_budget={fields['candidate_budget']} "
+            f"effective_budget={fields['effective_candidate_budget']} "
+            f"duplicates={fields['duplicate_count']} "
+            f"shortfall={fields['candidate_budget_shortfall']}"
+        )
+    elif kind == "cyclic_memory_residue_winding":
+        fields = evidence["fields"]
+        lines.append(
+            "cyclic_memory="
+            f"bank_size={fields['bank_size']} "
+            f"event_index={fields['event_index']} "
+            f"residue_slot={fields['residue_slot']} winding={fields['winding']}"
+        )
+        lines.append(
+            "cyclic_memory_aliases="
+            f"same_residue_events={fields['same_residue_events']} "
+            f"same_residue_windings={fields['same_residue_windings']} "
+            f"max_alias_load={fields['max_alias_load']}"
+        )
+    elif kind == "multicoil_phase_feature":
+        fields = evidence["fields"]
+        lines.append(
+            "multicoil_phase="
+            f"periods={fields['periods']} position={fields['position']} "
+            f"phase_tuple={fields['phase_tuple']} "
+            f"joint_repeat_horizon={fields['joint_repeat_horizon']}"
+        )
+        lines.append(
+            "multicoil_relative_phase="
+            f"query={fields['query_position']} key={fields['key_position']} "
+            f"relative_period={fields['relative_period']} "
+            f"relative_phase={fields['relative_phase']} "
+            f"shifted_relative_phase={fields['shifted_relative_phase']}"
+        )
+    elif kind == "circulant_block_cyclic_mixer":
+        fields = evidence["fields"]
+        lines.append(
+            "cyclic_mixer="
+            f"period={fields['period']} "
+            f"max_abs_dense_delta={fields['max_abs_dense_delta']} "
+            f"circulant_parameters={fields['circulant_parameters']} "
+            f"dense_parameters={fields['dense_parameters']}"
+        )
+        lines.append(
+            "cyclic_mixer_block_accounting="
+            f"channel_count={fields['channel_count']} "
+            f"block_size={fields['block_size']} "
+            f"block_cyclic_parameters={fields['block_cyclic_parameters']} "
+            f"block_to_dense_ratio={fields['block_to_dense_ratio']}"
+        )
+    elif kind == "seed_rule_exact_regeneration":
+        fields = evidence["fields"]
+        lines.append(
+            "seed_rule="
+            f"artifact_id={fields['artifact_id']} fixture_n={fields['fixture_n']} "
+            f"exact_regeneration={fields['exact_regeneration']} "
+            f"generator_shorter={fields['generator_shorter']}"
+        )
+        lines.append(
+            "seed_rule_storage="
+            f"explicit_length={fields['explicit_length']} "
+            f"generator_length={fields['generator_length']} "
+            f"storage_saving={fields['storage_saving']} "
+            f"storage_saving_positive={fields['storage_saving_positive']}"
+        )
     lines.append(f"not_claimed={'; '.join(receipt['not_claimed'])}")
     return lines
 
@@ -3390,6 +3850,31 @@ def build_contract_request_json_schema() -> dict[str, Any]:
         for alias, canonical in KIND_ALIASES.items()
         if canonical == "recurrence_schedule"
     ]
+    fanout_aliases = [
+        alias
+        for alias, canonical in KIND_ALIASES.items()
+        if canonical == "strided_candidate_fanout"
+    ]
+    memory_aliases = [
+        alias
+        for alias, canonical in KIND_ALIASES.items()
+        if canonical == "cyclic_memory_residue_winding"
+    ]
+    phase_aliases = [
+        alias
+        for alias, canonical in KIND_ALIASES.items()
+        if canonical == "multicoil_phase_feature"
+    ]
+    mixer_aliases = [
+        alias
+        for alias, canonical in KIND_ALIASES.items()
+        if canonical == "circulant_block_cyclic_mixer"
+    ]
+    seed_rule_aliases = [
+        alias
+        for alias, canonical in KIND_ALIASES.items()
+        if canonical == "seed_rule_exact_regeneration"
+    ]
     integer = {"type": "integer"}
     positive_integer = {"type": "integer", "minimum": 1}
     positive_even_integer = {"type": "integer", "minimum": 2, "multipleOf": 2}
@@ -3483,6 +3968,80 @@ def build_contract_request_json_schema() -> dict[str, Any]:
                             "selected_block_start": nonnegative_integer,
                             "selected_block_width": positive_integer,
                             "shift_passes": nonnegative_integer,
+                        },
+                        "additionalProperties": False,
+                    },
+                },
+            },
+            {
+                "properties": {
+                    "kind": {"enum": sorted(fanout_aliases)},
+                    "parameters": {
+                        "type": "object",
+                        "properties": {
+                            "context_length": positive_integer,
+                            "stride": nonnegative_integer,
+                            "start_index": nonnegative_integer,
+                            "path_length": positive_integer,
+                        },
+                        "additionalProperties": False,
+                    },
+                },
+            },
+            {
+                "properties": {
+                    "kind": {"enum": sorted(memory_aliases)},
+                    "parameters": {
+                        "type": "object",
+                        "properties": {
+                            "bank_size": positive_integer,
+                            "event_index": nonnegative_integer,
+                            "event_count": positive_integer,
+                        },
+                        "additionalProperties": False,
+                    },
+                },
+            },
+            {
+                "properties": {
+                    "kind": {"enum": sorted(phase_aliases)},
+                    "parameters": {
+                        "type": "object",
+                        "properties": {
+                            "periods": {
+                                "type": "array",
+                                "items": positive_integer,
+                                "minItems": 1,
+                            },
+                            "position": nonnegative_integer,
+                            "query_position": nonnegative_integer,
+                            "key_position": nonnegative_integer,
+                        },
+                        "additionalProperties": False,
+                    },
+                },
+            },
+            {
+                "properties": {
+                    "kind": {"enum": sorted(mixer_aliases)},
+                    "parameters": {
+                        "type": "object",
+                        "properties": {
+                            "period": positive_integer,
+                            "channel_count": positive_integer,
+                            "block_size": positive_integer,
+                        },
+                        "additionalProperties": False,
+                    },
+                },
+            },
+            {
+                "properties": {
+                    "kind": {"enum": sorted(seed_rule_aliases)},
+                    "parameters": {
+                        "type": "object",
+                        "properties": {
+                            "n": positive_integer,
                         },
                         "additionalProperties": False,
                     },

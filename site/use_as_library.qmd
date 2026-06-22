@@ -260,6 +260,11 @@ circle-ai-certify kv-cache --cache-size 16 --current 31 --token 20 --batch-token
 circle-ai-certify sparse-attention --context 9 --strides 3,4,7 --path-length 2 --local-window 2 --format json
 circle-ai-certify sparse-attention --context 9 --strides 3,4,7 --path-length 2 --local-window 2 --format compact-json
 circle-ai-certify recurrence --format json
+circle-ai-certify strided-fanout --format compact-json
+circle-ai-certify cyclic-memory --format compact-json
+circle-ai-certify multicoil-phase --format compact-json
+circle-ai-certify cyclic-mixer --format compact-json
+circle-ai-certify seed-rule --format compact-json
 circle-ai-contract-ready --kind sparse_attention_coverage
 circle-ai-contract-receipt --kind rope --model-config-file examples/circle_ai_model_configs/standard_rope_config.json
 circle-ai-contract-receipt --request-file examples/circle_ai_requests/kv_cache_request.json --request-out /tmp/circle_kv_request.json --require-passed --require-status proved --require-decision passed
@@ -280,8 +285,9 @@ For RoPE model configs, add `--request-out` and
 `--request-validation-report-out` when you want the exact Circle request and
 its schema-validated preflight report saved beside the receipt. Add
 `--model-config-import-report-out` for the parameter-source audit report.
-For KV-cache, sparse attention, recurrence, and already-normalized RoPE
-requests, use `--request-file` with a
+For KV-cache, sparse attention, recurrence, strided-fanout, cyclic-memory,
+multicoil-phase, cyclic-mixer, seed-rule, and already-normalized RoPE requests,
+use `--request-file` with a
 `circle_calculus.ai_contract_request.v0` JSON object.
 Use `--require-passed`, `--require-status`, `--require-decision`, and
 `--require-assurance` when the command should fail CI unless the emitted

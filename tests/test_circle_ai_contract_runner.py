@@ -31,14 +31,19 @@ from circle_math.applications import (
     build_contract_request_validation_json_schema,
     build_compact_contract_receipt,
     build_compact_contract_receipt_json_schema,
+    build_circulant_block_cyclic_mixer_receipt,
+    build_cyclic_memory_receipt,
     build_kv_cache_receipt,
+    build_multicoil_phase_feature_receipt,
     build_recurrence_receipt,
     build_rope_contract_request_from_model_config,
     build_rope_model_config_import_json_schema,
     build_rope_model_config_import_report,
     build_rope_request_parameters_from_model_config,
     build_rope_receipt,
+    build_seed_rule_receipt,
     build_sparse_attention_receipt,
+    build_strided_candidate_fanout_receipt,
     build_validated_contract_receipt,
     build_validated_contract_receipt_from_request,
     build_validated_rope_receipt_from_model_config,
@@ -620,6 +625,60 @@ def test_kv_sparse_and_recurrence_receipts_preserve_family_semantics(
     assert "required_steps_invariant=True" in periodic_shift_line
     assert "active_at_step_invariant=True" in periodic_shift_line
     assert recurrence["proof_status"]["all_theorem_ids_proved"] is True
+
+
+def test_extended_ready_contract_receipts_preserve_family_semantics(
+    contract_pack: dict,
+) -> None:
+    fanout = build_strided_candidate_fanout_receipt(pack=contract_pack)
+    memory = build_cyclic_memory_receipt(pack=contract_pack)
+    phase = build_multicoil_phase_feature_receipt(pack=contract_pack)
+    mixer = build_circulant_block_cyclic_mixer_receipt(pack=contract_pack)
+    seed_rule = build_seed_rule_receipt(pack=contract_pack)
+
+    for receipt in (fanout, memory, phase, mixer, seed_rule):
+        assert receipt["status"] == "proved"
+        assert receipt["request_passed"] is True
+        assert receipt["proof_status"]["all_theorem_ids_proved"] is True
+        assert receipt["proof_layers"]["numerical_only_fields"] == []
+        assert receipt["proof_layers"]["unsupported_fields"]
+        _assert_decision_matches_receipt(receipt, verdict="passed")
+        assert receipt["decision"]["assurance"] in {
+            "theorem_backed",
+            "mixed_theorem_and_computation",
+        }
+        assert validate_contract_receipt(receipt) == []
+
+    assert fanout["kind"] == "strided_candidate_fanout"
+    assert fanout["evidence"]["fields"]["full_coverage"] is True
+    assert "fields.full_coverage" in fanout["proof_layers"]["proved_fields"]
+    assert any(
+        line.startswith("strided_fanout=") for line in receipt_summary_lines(fanout)
+    )
+
+    assert memory["kind"] == "cyclic_memory_residue_winding"
+    assert memory["evidence"]["fields"]["residue_slot"] == 7
+    assert "fields.same_residue_events" in memory["proof_layers"]["proved_fields"]
+    assert any(
+        line.startswith("cyclic_memory=") for line in receipt_summary_lines(memory)
+    )
+
+    assert phase["kind"] == "multicoil_phase_feature"
+    assert phase["evidence"]["fields"]["joint_repeat_horizon"] == 35
+    assert "fields.phase_tuple" in phase["proof_layers"]["proved_fields"]
+    assert any(
+        line.startswith("multicoil_phase=") for line in receipt_summary_lines(phase)
+    )
+
+    assert mixer["kind"] == "circulant_block_cyclic_mixer"
+    assert mixer["evidence"]["fields"]["max_abs_dense_delta"] == 0
+    assert "fields.max_abs_dense_delta" in mixer["proof_layers"]["proved_fields"]
+    assert any(line.startswith("cyclic_mixer=") for line in receipt_summary_lines(mixer))
+
+    assert seed_rule["kind"] == "seed_rule_exact_regeneration"
+    assert seed_rule["evidence"]["fields"]["exact_regeneration"] is True
+    assert "fields.storage_saving" in seed_rule["proof_layers"]["proved_fields"]
+    assert any(line.startswith("seed_rule=") for line in receipt_summary_lines(seed_rule))
 
 
 def test_dispatcher_aliases_and_fingerprint_validation(contract_pack: dict) -> None:
@@ -1843,6 +1902,8 @@ def test_request_schema_accepts_public_aliases() -> None:
     )
     assert "rope" in schema["properties"]["kind"]["enum"]
     assert "rope_position_distinguishability" in schema["properties"]["kind"]["enum"]
+    assert "strided-fanout" in schema["properties"]["kind"]["enum"]
+    assert "seed-rule" in schema["properties"]["kind"]["enum"]
     assert schema["properties"]["parameters"]["type"] == "object"
 
 
@@ -1893,6 +1954,56 @@ def test_request_schema_validates_public_parameter_shapes() -> None:
         },
         schema,
     )
+    jsonschema.validate(
+        {
+            "schema_id": "circle_calculus.ai_contract_request.v0",
+            "kind": "strided-fanout",
+            "parameters": {
+                "context_length": 12,
+                "stride": 5,
+                "start_index": 0,
+                "path_length": 12,
+            },
+        },
+        schema,
+    )
+    jsonschema.validate(
+        {
+            "schema_id": "circle_calculus.ai_contract_request.v0",
+            "kind": "cyclic-memory",
+            "parameters": {"bank_size": 8, "event_index": 23, "event_count": 32},
+        },
+        schema,
+    )
+    jsonschema.validate(
+        {
+            "schema_id": "circle_calculus.ai_contract_request.v0",
+            "kind": "multicoil-phase",
+            "parameters": {
+                "periods": [5, 7],
+                "position": 37,
+                "query_position": 41,
+                "key_position": 18,
+            },
+        },
+        schema,
+    )
+    jsonschema.validate(
+        {
+            "schema_id": "circle_calculus.ai_contract_request.v0",
+            "kind": "cyclic-mixer",
+            "parameters": {"period": 8, "channel_count": 128, "block_size": 8},
+        },
+        schema,
+    )
+    jsonschema.validate(
+        {
+            "schema_id": "circle_calculus.ai_contract_request.v0",
+            "kind": "seed-rule",
+            "parameters": {"n": 128},
+        },
+        schema,
+    )
 
     missing_sparse_field = {
         "schema_id": "circle_calculus.ai_contract_request.v0",
@@ -1929,6 +2040,16 @@ def test_request_schema_validates_public_parameter_shapes() -> None:
         "kind": "recurrence",
         "parameters": {"selected_block_width": 0},
     }
+    empty_phase_periods = {
+        "schema_id": "circle_calculus.ai_contract_request.v0",
+        "kind": "multicoil-phase",
+        "parameters": {"periods": []},
+    }
+    zero_seed_rule_n = {
+        "schema_id": "circle_calculus.ai_contract_request.v0",
+        "kind": "seed-rule",
+        "parameters": {"n": 0},
+    }
 
     with pytest.raises(jsonschema.ValidationError):
         jsonschema.validate(missing_sparse_field, schema)
@@ -1942,6 +2063,10 @@ def test_request_schema_validates_public_parameter_shapes() -> None:
         jsonschema.validate(zero_recurrence_loop_budget, schema)
     with pytest.raises(jsonschema.ValidationError):
         jsonschema.validate(zero_recurrence_block_width, schema)
+    with pytest.raises(jsonschema.ValidationError):
+        jsonschema.validate(empty_phase_periods, schema)
+    with pytest.raises(jsonschema.ValidationError):
+        jsonschema.validate(zero_seed_rule_n, schema)
 
 
 def test_receipt_schema_exposes_runner_metadata() -> None:
@@ -3351,6 +3476,26 @@ def test_circle_ai_certify_cli_writes_model_config_certification_bundle(
         (
             ["recurrence"],
             "recurrence_schedule",
+        ),
+        (
+            ["strided-fanout"],
+            "strided_candidate_fanout",
+        ),
+        (
+            ["cyclic-memory"],
+            "cyclic_memory_residue_winding",
+        ),
+        (
+            ["multicoil-phase"],
+            "multicoil_phase_feature",
+        ),
+        (
+            ["cyclic-mixer"],
+            "circulant_block_cyclic_mixer",
+        ),
+        (
+            ["seed-rule"],
+            "seed_rule_exact_regeneration",
         ),
     ],
 )

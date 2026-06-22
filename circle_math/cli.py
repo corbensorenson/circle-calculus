@@ -764,6 +764,51 @@ def contract_certify_main() -> int:
     recurrence_parser.add_argument("--selected-block-width", type=int, default=3)
     recurrence_parser.add_argument("--shift-passes", type=int, default=3)
 
+    fanout_parser = subparsers.add_parser(
+        "strided-fanout",
+        help="Issue a finite strided candidate-fanout receipt.",
+    )
+    _add_certify_common_options(fanout_parser)
+    fanout_parser.add_argument("--context-length", type=int, default=12)
+    fanout_parser.add_argument("--stride", type=int, default=5)
+    fanout_parser.add_argument("--start-index", type=int, default=0)
+    fanout_parser.add_argument("--path-length", type=int, default=12)
+
+    memory_parser = subparsers.add_parser(
+        "cyclic-memory",
+        help="Issue a cyclic memory residue/winding receipt.",
+    )
+    _add_certify_common_options(memory_parser)
+    memory_parser.add_argument("--bank-size", type=int, default=8)
+    memory_parser.add_argument("--event-index", type=int, default=23)
+    memory_parser.add_argument("--event-count", type=int, default=32)
+
+    phase_parser = subparsers.add_parser(
+        "multicoil-phase",
+        help="Issue a MultiCoil phase-feature receipt.",
+    )
+    _add_certify_common_options(phase_parser)
+    phase_parser.add_argument("--periods", type=_parse_positive_int_csv, default=(5, 7))
+    phase_parser.add_argument("--position", type=int, default=37)
+    phase_parser.add_argument("--query-position", type=int, default=41)
+    phase_parser.add_argument("--key-position", type=int, default=18)
+
+    mixer_parser = subparsers.add_parser(
+        "cyclic-mixer",
+        help="Issue a circulant/block-cyclic mixer receipt.",
+    )
+    _add_certify_common_options(mixer_parser)
+    mixer_parser.add_argument("--period", type=int, default=8)
+    mixer_parser.add_argument("--channel-count", type=int, default=128)
+    mixer_parser.add_argument("--block-size", type=int, default=8)
+
+    seed_rule_parser = subparsers.add_parser(
+        "seed-rule",
+        help="Issue a finite seed/rule exact-regeneration receipt.",
+    )
+    _add_certify_common_options(seed_rule_parser)
+    seed_rule_parser.add_argument("--n", type=int, default=128)
+
     args = parser.parse_args()
     try:
         _apply_certify_artifact_dir_defaults(args)
@@ -884,6 +929,51 @@ def contract_certify_main() -> int:
                     "shift_passes": args.shift_passes,
                 },
             )
+            receipt = build_validated_contract_receipt_from_request(request, pack=pack)
+        elif args.command == "strided-fanout":
+            request = build_contract_request(
+                "strided-fanout",
+                {
+                    "context_length": args.context_length,
+                    "stride": args.stride,
+                    "start_index": args.start_index,
+                    "path_length": args.path_length,
+                },
+            )
+            receipt = build_validated_contract_receipt_from_request(request, pack=pack)
+        elif args.command == "cyclic-memory":
+            request = build_contract_request(
+                "cyclic-memory",
+                {
+                    "bank_size": args.bank_size,
+                    "event_index": args.event_index,
+                    "event_count": args.event_count,
+                },
+            )
+            receipt = build_validated_contract_receipt_from_request(request, pack=pack)
+        elif args.command == "multicoil-phase":
+            request = build_contract_request(
+                "multicoil-phase",
+                {
+                    "periods": args.periods,
+                    "position": args.position,
+                    "query_position": args.query_position,
+                    "key_position": args.key_position,
+                },
+            )
+            receipt = build_validated_contract_receipt_from_request(request, pack=pack)
+        elif args.command == "cyclic-mixer":
+            request = build_contract_request(
+                "cyclic-mixer",
+                {
+                    "period": args.period,
+                    "channel_count": args.channel_count,
+                    "block_size": args.block_size,
+                },
+            )
+            receipt = build_validated_contract_receipt_from_request(request, pack=pack)
+        elif args.command == "seed-rule":
+            request = build_contract_request("seed-rule", {"n": args.n})
             receipt = build_validated_contract_receipt_from_request(request, pack=pack)
         else:
             parser.error(f"unsupported command: {args.command}")

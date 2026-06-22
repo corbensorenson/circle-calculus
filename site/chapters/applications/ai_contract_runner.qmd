@@ -193,7 +193,7 @@ For smaller contexts below the D19 obstruction range, the receipt can still be
 conditional one-separating-channel theorem for a finite bank whose first
 frequency is standard channel 0, not an independent all-channel margin theorem.
 
-## Four Runner Surfaces
+## Nine Runner Surfaces
 
 | Surface | Command | What The Receipt Checks |
 | --- | --- | --- |
@@ -201,6 +201,16 @@ frequency is standard channel 0, not an independent all-channel margin theorem.
 | KV-cache | `python scripts/circle_ai_certify.py kv-cache --cache-size 16 --current 31 --token 20 --batch-tokens 20,24,29,31 --sink-size 4` | retained-window, stale-member, live-window, and optional sink-plus-rolling-window request facts |
 | Sparse attention | `python scripts/circle_ai_certify.py sparse-attention --context 120 --strides 7,13 --path-length 3 --local-window 4` | covered lags, uncovered gaps, repair windows, and candidate-budget fields |
 | Recurrence | `python scripts/circle_ai_certify.py recurrence` | finite loop budget, active work, inactive work, exit step, and whole-period shift invariants |
+| Strided fanout | `python scripts/circle_ai_certify.py strided-fanout` | finite strided candidate reachability, visited count, and path-budget accounting |
+| Cyclic memory | `python scripts/circle_ai_certify.py cyclic-memory` | residue slot, winding, and cyclic event-bank address facts |
+| Multicoil phase | `python scripts/circle_ai_certify.py multicoil-phase` | period-bank residues, repeat horizon, and relative phase features |
+| Cyclic mixer | `python scripts/circle_ai_certify.py cyclic-mixer` | circulant and block-cyclic parameter accounting for mixer layouts |
+| Seed rule | `python scripts/circle_ai_certify.py seed-rule` | exact regeneration and storage-accounting facts for a deterministic finite generator |
+
+The last five rows expose compact ready contracts from the same proof-carrying
+pack. They are useful as structural certifiers and fixture sources; they do not
+claim better training, inference quality, retrieval quality, or hardware
+efficiency.
 
 For KV-cache requests with positive `--sink-size`, the human receipt includes a
 `kv_cache_sink_window=` line with the generated pinned-prefix plus rolling-window
@@ -406,9 +416,9 @@ artifact-integrity checks without importing Circle or `jsonschema`. It also
 accepts `--pin-policy` with either a whole prior report or just the
 `pin_policy` object, and its JSON report records the merged `pin_policy` for
 replay.
-The standard artifact-directory path and standalone verifier are checked for
-RoPE, KV-cache, sparse attention, and recurrence receipts, so downstream CI can
-use the same gate shape across all four current contract families.
+The standard artifact-directory path and standalone verifier are checked for all
+nine ready receipt families, so downstream CI can use the same gate shape across
+the current contract suite.
 When a downstream job emits multiple manifests, add `--require-kind` for each
 contract family that must be present; the verifier fails if any required family
 is missing.
@@ -432,13 +442,18 @@ explicit `--require-*` flags are merged with the loaded pins.
 reports/check_report.json` accepts the same shape when regenerating a contract
 artifact set under a previously saved dependency policy.
 
-Checked-in examples are available for all four runner surfaces:
+Checked-in examples are available for all nine runner surfaces:
 
 ```text
 examples/circle_ai_requests/rope_request.json
 examples/circle_ai_requests/kv_cache_request.json
 examples/circle_ai_requests/sparse_attention_request.json
 examples/circle_ai_requests/recurrence_request.json
+examples/circle_ai_requests/strided_fanout_request.json
+examples/circle_ai_requests/cyclic_memory_request.json
+examples/circle_ai_requests/multicoil_phase_request.json
+examples/circle_ai_requests/cyclic_mixer_request.json
+examples/circle_ai_requests/seed_rule_request.json
 ```
 
 Check those examples and their generated receipts with:
@@ -472,9 +487,10 @@ python scripts/check_circle_ai_contract_runner.py \
 ```
 
 The filter accepts the same aliases as the request schema, including `rope`,
-`kv-cache`, `sparse-attention`, and `recurrence`. The JSON report records the
-canonical `selected_kinds` list so a downstream audit can distinguish a full
-batch check from a lane-specific check.
+`kv-cache`, `sparse-attention`, `recurrence`, `strided-fanout`,
+`cyclic-memory`, `multicoil-phase`, `cyclic-mixer`, and `seed-rule`. The JSON
+report records the canonical `selected_kinds` list so a downstream audit can
+distinguish a full batch check from a lane-specific check.
 
 The report file uses schema id `circle_calculus.ai_contract_runner_check.v0` and
 records the selected contract-kind filter, source type, source path, optional
@@ -787,10 +803,12 @@ site/data/generated/circle_ai_contract_artifact_manifest.schema.json
 site/data/generated/circle_ai_contract_artifact_manifest_file_check.schema.json
 ```
 
-The request schema is contract-specific: it accepts defaults for RoPE and
-recurrence, requires the core KV-cache and sparse-attention fields, rejects odd
-RoPE `head_dim` values, requires positive recurrence `max_loops` and
-`selected_block_width` values, and rejects unknown top-level request keys or
+The request schema is contract-specific: it accepts defaults for RoPE,
+recurrence, and the five compact ready families; requires the core KV-cache and
+sparse-attention fields; rejects odd RoPE `head_dim` values; requires positive
+recurrence `max_loops` and `selected_block_width` values; rejects empty
+multicoil period lists, nonpositive bank sizes, and cyclic-mixer block sizes
+larger than the channel count; and rejects unknown top-level request keys or
 parameter names before a receipt is issued.
 The Python `validate_contract_request(request)` helper applies the same public
 checks for downstream code that does not invoke JSON Schema directly.

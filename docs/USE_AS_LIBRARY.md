@@ -269,6 +269,11 @@ circle-ai-certify kv-cache --cache-size 16 --current 31 --token 20 --batch-token
 circle-ai-certify sparse-attention --context 9 --strides 3,4,7 --path-length 2 --local-window 2 --format json
 circle-ai-certify sparse-attention --context 9 --strides 3,4,7 --path-length 2 --local-window 2 --format compact-json
 circle-ai-certify recurrence --format json
+circle-ai-certify strided-fanout --format compact-json
+circle-ai-certify cyclic-memory --format compact-json
+circle-ai-certify multicoil-phase --format compact-json
+circle-ai-certify cyclic-mixer --format compact-json
+circle-ai-certify seed-rule --format compact-json
 circle-ai-contract-ready --kind sparse_attention_coverage
 circle-ai-contract-receipt --kind rope --model-config-file examples/circle_ai_model_configs/standard_rope_config.json --request-out /tmp/circle_rope_request.json --model-config-import-report-out /tmp/circle_rope_import_report.json
 circle-ai-contract-receipt --request-file examples/circle_ai_requests/kv_cache_request.json --request-out /tmp/circle_kv_request.json
@@ -279,7 +284,8 @@ circle-sparse-attention-certify --context 9 --strides 3,4,7 --path-length 2 --lo
 ```
 
 `circle-ai-certify` is the installed-package path for guided RoPE, KV-cache,
-sparse-attention, recurrence, and request-file receipts without using the
+sparse-attention, recurrence, strided-fanout, cyclic-memory, multicoil-phase,
+cyclic-mixer, seed-rule, and request-file receipts without using the
 repository-only scripts. It accepts `--model-config-file` for standard RoPE
 configs and writes the same theorem-linked receipt shape as the lower-level
 receipt command. Use `--request-out` to save the exact versioned Circle request

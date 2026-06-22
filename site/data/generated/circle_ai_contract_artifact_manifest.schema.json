@@ -149,6 +149,11 @@
         "kv_cache_ring_buffer",
         "sparse_attention_coverage",
         "recurrence_schedule",
+        "strided_candidate_fanout",
+        "cyclic_memory_residue_winding",
+        "multicoil_phase_feature",
+        "circulant_block_cyclic_mixer",
+        "seed_rule_exact_regeneration",
         null
       ],
       "type": [

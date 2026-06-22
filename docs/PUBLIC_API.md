@@ -207,6 +207,12 @@ circle-ai-certify sparse-attention \
   --artifact-manifest-out /tmp/circle_sparse_manifest.json \
   --artifact-manifest-check-out /tmp/circle_sparse_manifest_check.json \
   --format json
+
+circle-ai-certify strided-fanout --format compact-json
+circle-ai-certify cyclic-memory --format compact-json
+circle-ai-certify multicoil-phase --format compact-json
+circle-ai-certify cyclic-mixer --format compact-json
+circle-ai-certify seed-rule --format compact-json
 ```
 
 Use `--gate-report-out` when downstream CI needs a compact machine-readable
@@ -228,7 +234,9 @@ stable names for the complete request, receipt, diagnostics, bundle, manifest,
 and check-report set.
 
 The lower-level installed receipt command accepts kind aliases plus JSON
-parameters directly:
+parameters directly. The same receipt shape works for all nine ready families:
+`rope`, `kv-cache`, `sparse-attention`, `recurrence`, `strided-fanout`,
+`cyclic-memory`, `multicoil-phase`, `cyclic-mixer`, and `seed-rule`.
 
 ```bash
 circle-ai-contract-receipt \

@@ -80,7 +80,12 @@
           "rope_position_distinguishability",
           "kv_cache_ring_buffer",
           "sparse_attention_coverage",
-          "recurrence_schedule"
+          "recurrence_schedule",
+          "strided_candidate_fanout",
+          "cyclic_memory_residue_winding",
+          "multicoil_phase_feature",
+          "circulant_block_cyclic_mixer",
+          "seed_rule_exact_regeneration"
         ]
       },
       "type": "array"
@@ -124,7 +129,12 @@
               "rope_position_distinguishability",
               "kv_cache_ring_buffer",
               "sparse_attention_coverage",
-              "recurrence_schedule"
+              "recurrence_schedule",
+              "strided_candidate_fanout",
+              "cyclic_memory_residue_winding",
+              "multicoil_phase_feature",
+              "circulant_block_cyclic_mixer",
+              "seed_rule_exact_regeneration"
             ]
           },
           "model_config_import_report_path": {

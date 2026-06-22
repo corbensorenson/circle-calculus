@@ -5,6 +5,8 @@ import subprocess
 import sys
 from pathlib import Path
 
+import pytest
+
 from circle_math.core import (
     circular_convolution,
     circulant_matrix,
@@ -730,6 +732,48 @@ def test_package_cli_unified_certify_sparse_and_recurrence() -> None:
     recurrence_receipt = json.loads(recurrence_result.stdout)
     assert recurrence_receipt["kind"] == "recurrence_schedule"
     assert recurrence_receipt["request_passed"] is True
+
+
+@pytest.mark.parametrize(
+    ("subcommand_args", "expected_kind"),
+    [
+        (["strided-fanout"], "strided_candidate_fanout"),
+        (["cyclic-memory"], "cyclic_memory_residue_winding"),
+        (["multicoil-phase"], "multicoil_phase_feature"),
+        (["cyclic-mixer"], "circulant_block_cyclic_mixer"),
+        (["seed-rule"], "seed_rule_exact_regeneration"),
+    ],
+)
+def test_package_cli_unified_certify_extended_ready_contracts(
+    subcommand_args: list[str],
+    expected_kind: str,
+) -> None:
+    result = subprocess.run(
+        [
+            sys.executable,
+            "-c",
+            (
+                "import sys; "
+                "from circle_math.cli import contract_certify_main; "
+                "sys.exit(contract_certify_main())"
+            ),
+            *subcommand_args,
+            "--format",
+            "compact-json",
+            "--require-status",
+            "proved",
+            "--require-passed",
+        ],
+        text=True,
+        capture_output=True,
+        check=True,
+    )
+    compact_receipt = json.loads(result.stdout)
+    assert compact_receipt["kind"] == expected_kind
+    assert compact_receipt["status"] == "proved"
+    assert compact_receipt["request_passed"] is True
+    assert compact_receipt["proof_status_summary"]["all_theorem_ids_proved"] is True
+    assert compact_receipt["recommendation_ids"]
 
 
 def test_package_cli_contract_receipt_from_request_file(tmp_path) -> None:

@@ -1,0 +1,9 @@
+{
+  "schema_id": "circle_calculus.ai_contract_request.v0",
+  "kind": "cyclic-memory",
+  "parameters": {
+    "bank_size": 8,
+    "event_index": 23,
+    "event_count": 32
+  }
+}

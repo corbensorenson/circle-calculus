@@ -131,7 +131,7 @@ def test_check_circle_ai_contract_runner_accepts_examples() -> None:
         text=True,
     )
 
-    assert "circle AI runner examples ok=True examples=6 failures=0" in result.stdout
+    assert "circle AI runner examples ok=True examples=11 failures=0" in result.stdout
     assert "kind=rope_position_distinguishability" in result.stdout
     assert "kind=kv_cache_ring_buffer" in result.stdout
     assert "kind=sparse_attention_coverage" in result.stdout
@@ -156,7 +156,7 @@ def test_check_circle_ai_contract_runner_emits_json_report() -> None:
     jsonschema.validate(payload, _runner_check_schema())
     assert payload["schema_id"] == "circle_calculus.ai_contract_runner_check.v0"
     assert payload["ok"] is True
-    assert payload["example_count"] == 6
+    assert payload["example_count"] == 11
     assert payload["failure_count"] == 0
     assert payload["failures"] == []
     assert payload["selected_kinds"] == []
@@ -298,26 +298,43 @@ def test_check_circle_ai_contract_runner_writes_receipts(tmp_path: Path) -> None
 
     payload = json.loads(result.stdout)
     jsonschema.validate(payload, _runner_check_schema())
+    summary_count = len(payload["summaries"])
+    assert payload["example_count"] == summary_count
+    assert {
+        summary["kind"]
+        for summary in payload["summaries"]
+        if summary["source_type"] == "request"
+    } == {
+        "circulant_block_cyclic_mixer",
+        "cyclic_memory_residue_winding",
+        "kv_cache_ring_buffer",
+        "multicoil_phase_feature",
+        "recurrence_schedule",
+        "rope_position_distinguishability",
+        "seed_rule_exact_regeneration",
+        "sparse_attention_coverage",
+        "strided_candidate_fanout",
+    }
     receipt_paths = [Path(summary["receipt_path"]) for summary in payload["summaries"]]
-    assert len(receipt_paths) == 6
+    assert len(receipt_paths) == summary_count
     assert all(path.exists() for path in receipt_paths)
     validation_report_paths = [
         Path(summary["request_validation_report_path"])
         for summary in payload["summaries"]
     ]
-    assert len(validation_report_paths) == 6
+    assert len(validation_report_paths) == summary_count
     assert all(path.exists() for path in validation_report_paths)
     certification_bundle_paths = [
         Path(summary["certification_bundle_path"])
         for summary in payload["summaries"]
     ]
-    assert len(certification_bundle_paths) == 6
+    assert len(certification_bundle_paths) == summary_count
     assert all(path.exists() for path in certification_bundle_paths)
     certification_bundle_check_paths = [
         Path(summary["certification_bundle_check_path"])
         for summary in payload["summaries"]
     ]
-    assert len(certification_bundle_check_paths) == 6
+    assert len(certification_bundle_check_paths) == summary_count
     assert all(path.exists() for path in certification_bundle_check_paths)
     for summary in payload["summaries"]:
         validation_report = json.loads(
@@ -452,11 +469,11 @@ def test_check_circle_ai_contract_runner_writes_report_file(tmp_path: Path) -> N
         text=True,
     )
 
-    assert "circle AI runner examples ok=True examples=6 failures=0" in result.stdout
+    assert "circle AI runner examples ok=True examples=11 failures=0" in result.stdout
     payload = json.loads(report_path.read_text())
     jsonschema.validate(payload, _runner_check_schema())
     assert payload["ok"] is True
-    assert len(payload["summaries"]) == 6
+    assert len(payload["summaries"]) == 11
     assert all(summary["receipt_path"] for summary in payload["summaries"])
     assert all(
         summary["request_validation_report_path"] for summary in payload["summaries"]
@@ -539,7 +556,7 @@ def test_check_circle_ai_contract_runner_accepts_batch_gate() -> None:
         "require_passed": True,
     }
     assert payload["selected_kinds"] == []
-    assert payload["example_count"] == 6
+    assert payload["example_count"] == 11
 
 
 def test_check_circle_ai_contract_runner_rejects_batch_gate() -> None:
@@ -568,7 +585,7 @@ def test_check_circle_ai_contract_runner_rejects_batch_gate() -> None:
         "require_passed": False,
     }
     assert payload["selected_kinds"] == []
-    assert payload["failure_count"] == 6
+    assert payload["failure_count"] == 11
     assert all("did not match required status set" in failure for failure in payload["failures"])
 
 
@@ -597,7 +614,7 @@ def test_check_circle_ai_contract_runner_rejects_decision_gate() -> None:
         "allowed_assurance_levels": [],
         "require_passed": False,
     }
-    assert payload["failure_count"] == 6
+    assert payload["failure_count"] == 11
     assert all(
         "did not match required decision set" in failure
         for failure in payload["failures"]
@@ -629,7 +646,7 @@ def test_check_circle_ai_contract_runner_rejects_assurance_gate() -> None:
         "allowed_assurance_levels": ["theorem_backed"],
         "require_passed": False,
     }
-    assert payload["failure_count"] == 3
+    assert payload["failure_count"] == 8
     assert all(
         "did not match required assurance set" in failure
         for failure in payload["failures"]

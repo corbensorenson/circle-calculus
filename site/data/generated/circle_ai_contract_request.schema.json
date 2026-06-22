@@ -186,24 +186,192 @@
           "type": "object"
         }
       }
+    },
+    {
+      "properties": {
+        "kind": {
+          "enum": [
+            "fanout",
+            "strided-fanout",
+            "strided_candidate_fanout"
+          ]
+        },
+        "parameters": {
+          "additionalProperties": false,
+          "properties": {
+            "context_length": {
+              "minimum": 1,
+              "type": "integer"
+            },
+            "path_length": {
+              "minimum": 1,
+              "type": "integer"
+            },
+            "start_index": {
+              "minimum": 0,
+              "type": "integer"
+            },
+            "stride": {
+              "minimum": 0,
+              "type": "integer"
+            }
+          },
+          "type": "object"
+        }
+      }
+    },
+    {
+      "properties": {
+        "kind": {
+          "enum": [
+            "cyclic-memory",
+            "cyclic_memory",
+            "cyclic_memory_residue_winding",
+            "memory"
+          ]
+        },
+        "parameters": {
+          "additionalProperties": false,
+          "properties": {
+            "bank_size": {
+              "minimum": 1,
+              "type": "integer"
+            },
+            "event_count": {
+              "minimum": 1,
+              "type": "integer"
+            },
+            "event_index": {
+              "minimum": 0,
+              "type": "integer"
+            }
+          },
+          "type": "object"
+        }
+      }
+    },
+    {
+      "properties": {
+        "kind": {
+          "enum": [
+            "multicoil-phase",
+            "multicoil_phase_feature",
+            "phase-feature"
+          ]
+        },
+        "parameters": {
+          "additionalProperties": false,
+          "properties": {
+            "key_position": {
+              "minimum": 0,
+              "type": "integer"
+            },
+            "periods": {
+              "items": {
+                "minimum": 1,
+                "type": "integer"
+              },
+              "minItems": 1,
+              "type": "array"
+            },
+            "position": {
+              "minimum": 0,
+              "type": "integer"
+            },
+            "query_position": {
+              "minimum": 0,
+              "type": "integer"
+            }
+          },
+          "type": "object"
+        }
+      }
+    },
+    {
+      "properties": {
+        "kind": {
+          "enum": [
+            "circulant-mixer",
+            "circulant_block_cyclic_mixer",
+            "cyclic-mixer",
+            "mixer"
+          ]
+        },
+        "parameters": {
+          "additionalProperties": false,
+          "properties": {
+            "block_size": {
+              "minimum": 1,
+              "type": "integer"
+            },
+            "channel_count": {
+              "minimum": 1,
+              "type": "integer"
+            },
+            "period": {
+              "minimum": 1,
+              "type": "integer"
+            }
+          },
+          "type": "object"
+        }
+      }
+    },
+    {
+      "properties": {
+        "kind": {
+          "enum": [
+            "seed-rule",
+            "seed_rule",
+            "seed_rule_exact_regeneration"
+          ]
+        },
+        "parameters": {
+          "additionalProperties": false,
+          "properties": {
+            "n": {
+              "minimum": 1,
+              "type": "integer"
+            }
+          },
+          "type": "object"
+        }
+      }
     }
   ],
   "properties": {
     "kind": {
       "enum": [
+        "circulant-mixer",
+        "circulant_block_cyclic_mixer",
+        "cyclic-memory",
+        "cyclic-mixer",
+        "cyclic_memory",
+        "cyclic_memory_residue_winding",
+        "fanout",
         "kv",
         "kv-cache",
         "kv_cache",
         "kv_cache_ring_buffer",
+        "memory",
+        "mixer",
+        "multicoil-phase",
+        "multicoil_phase_feature",
+        "phase-feature",
         "recurrence",
         "recurrence-schedule",
         "recurrence_schedule",
         "rope",
         "rope_position_distinguishability",
+        "seed-rule",
+        "seed_rule",
+        "seed_rule_exact_regeneration",
         "sparse",
         "sparse-attention",
         "sparse_attention",
-        "sparse_attention_coverage"
+        "sparse_attention_coverage",
+        "strided-fanout",
+        "strided_candidate_fanout"
       ]
     },
     "parameters": {

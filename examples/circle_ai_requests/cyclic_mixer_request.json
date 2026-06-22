@@ -1,0 +1,9 @@
+{
+  "schema_id": "circle_calculus.ai_contract_request.v0",
+  "kind": "cyclic-mixer",
+  "parameters": {
+    "period": 8,
+    "channel_count": 128,
+    "block_size": 8
+  }
+}

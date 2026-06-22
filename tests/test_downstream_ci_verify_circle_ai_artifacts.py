@@ -19,6 +19,7 @@ BASE_REQUIRED_LABELS = {
     "request_json",
     "request_validation_report",
     "receipt_json",
+    "compact_receipt_json",
     "receipt_check",
     "receipt_replay_check",
     "gate_report",
@@ -38,7 +39,7 @@ STANDARD_ARTIFACT_CASES = [
         "standard_rope_config",
         "rope_position_distinguishability",
         "mixed_theorem_and_computation",
-        9,
+        10,
         BASE_REQUIRED_LABELS | {"model_config_import_report"},
     ),
     (
@@ -59,7 +60,7 @@ STANDARD_ARTIFACT_CASES = [
         "kv_cache",
         "kv_cache_ring_buffer",
         "theorem_backed",
-        8,
+        9,
         BASE_REQUIRED_LABELS,
     ),
     (
@@ -78,7 +79,7 @@ STANDARD_ARTIFACT_CASES = [
         "sparse_attention",
         "sparse_attention_coverage",
         "theorem_backed",
-        8,
+        9,
         BASE_REQUIRED_LABELS,
     ),
     (
@@ -87,7 +88,7 @@ STANDARD_ARTIFACT_CASES = [
         "recurrence",
         "recurrence_schedule",
         "theorem_backed",
-        8,
+        9,
         BASE_REQUIRED_LABELS,
     ),
 ]

@@ -118,6 +118,10 @@ def suggest_review_category(path: Path, decl_name: str) -> str:
         return "application_contract_bridge"
     if "/Physics/" in path_text:
         return "finite_physics_contract"
+    if "/Applications/CircularStatistics.lean" in path_text:
+        return "circular_statistics_contract"
+    if "/Applications/PhaseLoop.lean" in path_text:
+        return "finite_phase_loop_contract"
     if "/Generative/" in path_text:
         return "generative_fixture_contract"
     if "/Core/" in path_text:

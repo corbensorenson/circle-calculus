@@ -444,7 +444,8 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         description=(
             "Issue theorem-linked Circle AI contract receipts for user-supplied "
-            "RoPE, KV-cache, sparse-attention, and recurrence parameters."
+            "RoPE, KV-cache, sparse-attention, recurrence, and other ready "
+            "Circle AI contract parameters."
         ),
     )
     subparsers = parser.add_subparsers(dest="kind", required=True)
@@ -550,6 +551,51 @@ def parse_args() -> argparse.Namespace:
     recurrence.add_argument("--selected-block-start", type=int, default=2)
     recurrence.add_argument("--selected-block-width", type=int, default=3)
     recurrence.add_argument("--shift-passes", type=int, default=3)
+
+    fanout = subparsers.add_parser(
+        "strided-fanout",
+        help="Certify finite strided candidate-fanout reach and budget facts.",
+    )
+    add_common_options(fanout)
+    fanout.add_argument("--context-length", type=int, default=12)
+    fanout.add_argument("--stride", type=int, default=5)
+    fanout.add_argument("--start-index", type=int, default=0)
+    fanout.add_argument("--path-length", type=int, default=12)
+
+    memory = subparsers.add_parser(
+        "cyclic-memory",
+        help="Certify cyclic memory residue/winding and finite alias-load facts.",
+    )
+    add_common_options(memory)
+    memory.add_argument("--bank-size", type=int, default=8)
+    memory.add_argument("--event-index", type=int, default=23)
+    memory.add_argument("--event-count", type=int, default=32)
+
+    phase = subparsers.add_parser(
+        "multicoil-phase",
+        help="Certify MultiCoil phase tags and relative-phase invariants.",
+    )
+    add_common_options(phase)
+    phase.add_argument("--periods", type=parse_strides, default=(5, 7))
+    phase.add_argument("--position", type=int, default=37)
+    phase.add_argument("--query-position", type=int, default=41)
+    phase.add_argument("--key-position", type=int, default=18)
+
+    mixer = subparsers.add_parser(
+        "cyclic-mixer",
+        help="Certify circulant parity and block-cyclic mixer accounting facts.",
+    )
+    add_common_options(mixer)
+    mixer.add_argument("--period", type=int, default=8)
+    mixer.add_argument("--channel-count", type=int, default=128)
+    mixer.add_argument("--block-size", type=int, default=8)
+
+    seed_rule = subparsers.add_parser(
+        "seed-rule",
+        help="Certify finite seed/rule exact-regeneration and storage facts.",
+    )
+    add_common_options(seed_rule)
+    seed_rule.add_argument("--n", type=int, default=128)
 
     return parser.parse_args()
 
@@ -741,6 +787,34 @@ def _parameters_from_args(args: argparse.Namespace) -> dict[str, Any]:
             "selected_block_width": args.selected_block_width,
             "shift_passes": args.shift_passes,
         }
+    if args.kind == "strided-fanout":
+        return {
+            "context_length": args.context_length,
+            "stride": args.stride,
+            "start_index": args.start_index,
+            "path_length": args.path_length,
+        }
+    if args.kind == "cyclic-memory":
+        return {
+            "bank_size": args.bank_size,
+            "event_index": args.event_index,
+            "event_count": args.event_count,
+        }
+    if args.kind == "multicoil-phase":
+        return {
+            "periods": args.periods,
+            "position": args.position,
+            "query_position": args.query_position,
+            "key_position": args.key_position,
+        }
+    if args.kind == "cyclic-mixer":
+        return {
+            "period": args.period,
+            "channel_count": args.channel_count,
+            "block_size": args.block_size,
+        }
+    if args.kind == "seed-rule":
+        return {"n": args.n}
     raise SystemExit(f"unsupported subcommand: {args.kind}")
 
 
@@ -781,6 +855,11 @@ def _default_artifact_prefix(args: argparse.Namespace) -> str:
         "kv-cache": "kv_cache",
         "sparse-attention": "sparse_attention",
         "recurrence": "recurrence",
+        "strided-fanout": "strided_fanout",
+        "cyclic-memory": "cyclic_memory",
+        "multicoil-phase": "multicoil_phase",
+        "cyclic-mixer": "cyclic_mixer",
+        "seed-rule": "seed_rule",
     }.get(args.kind, _safe_artifact_prefix(args.kind))
 
 
