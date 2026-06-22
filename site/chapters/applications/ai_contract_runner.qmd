@@ -217,7 +217,9 @@ sparse-attention, and recurrence summaries by default; pass any supported
 `architecture_config_kinds` list to restrict the contract families. This is the
 library path for downstream systems
 that already load configs and want the same pass/fail report without a
-subprocess.
+subprocess. Pass `require_no_unsupported_architecture_fields=True` when that
+in-memory report should reject architecture configs with source fields that were
+not mapped into the theorem-linked request.
 
 Use `--gate-report-out reports/rope_gate.json` for a compact pack-aware
 pass/fail report, `--receipt-check-out reports/rope_receipt_check.json` for a
@@ -669,7 +671,9 @@ use receipt defaults are materialized in the emitted request and labeled
 receipt request.
 They also inline `unsupported_architecture_config_fields`, so batch reports show
 target-section behavior that was present in the source config but not certified
-by the emitted request.
+by the emitted request. Add `--require-no-unsupported-architecture-fields` when
+the checker should reject any architecture-config example with unmapped source
+fields instead of accepting the receipt with an explicit non-claim.
 It also records the batch gate policy. If a receipt violates the required
 status, decision, assurance, or pass condition, the checker still writes the
 report and exits nonzero.

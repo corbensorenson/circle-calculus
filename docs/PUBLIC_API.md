@@ -191,6 +191,11 @@ assert runner_report["schema_id"] == "circle_calculus.ai_contract_runner_check.v
 assert runner_report["ok"] is True
 ```
 
+Pass `require_no_unsupported_architecture_fields=True` when an in-memory
+architecture-config batch should fail if a source field was present but not
+mapped into the theorem-linked request. The default keeps those fields visible
+in `unsupported_architecture_config_fields` without rejecting the receipt.
+
 For partial-rotary configs, the importer uses `partial_rotary_factor` or
 `rotary_pct` to reduce the certified RoPE dimension and records both source
 fields in the model-config import report. If the config already exposes an

@@ -339,6 +339,7 @@ def test_architecture_config_kind_hints_select_runner_contracts() -> None:
     jsonschema.validate(report, build_facade_runner_check_json_schema())
     assert report["ok"] is True
     assert report["example_count"] == 1
+    assert report["gate_policy"]["require_no_unsupported_architecture_fields"] is False
     assert report["selected_kinds"] == ["rope_position_distinguishability"]
     summary = report["summaries"][0]
     assert summary["kind"] == "rope_position_distinguishability"
@@ -883,6 +884,34 @@ def test_package_cli_unified_certify_batch_architecture_config_writes_import_rep
     assert unsupported_architecture_report["summaries"][0][
         "unsupported_architecture_config_fields"
     ] == ["recurrence.adaptive_exit_policy"]
+
+    strict_unsupported_architecture_report = build_contract_runner_check_report(
+        architecture_configs=[
+            {
+                "recurrence": {
+                    "period": 5,
+                    "horizon_steps": 7,
+                    "shift_amount": 15,
+                    "adaptive_exit_policy": "entropy",
+                }
+            }
+        ],
+        architecture_config_kinds=("recurrence",),
+        require_no_unsupported_architecture_fields=True,
+    )
+    jsonschema.validate(
+        strict_unsupported_architecture_report,
+        build_facade_runner_check_json_schema(),
+    )
+    assert strict_unsupported_architecture_report["ok"] is False
+    assert strict_unsupported_architecture_report["gate_policy"][
+        "require_no_unsupported_architecture_fields"
+    ] is True
+    assert any(
+        "unsupported architecture-config fields: recurrence.adaptive_exit_policy"
+        in failure
+        for failure in strict_unsupported_architecture_report["failures"]
+    )
     assert {summary["source_type"] for summary in report["summaries"]} == {
         "architecture_config"
     }
@@ -1168,6 +1197,7 @@ def test_public_api_runner_check_report_builds_from_in_memory_sources() -> None:
     assert report["gate_policy"]["allowed_statuses"] == ["proved"]
     assert report["gate_policy"]["allowed_decision_verdicts"] == ["passed"]
     assert report["gate_policy"]["require_passed"] is True
+    assert report["gate_policy"]["require_no_unsupported_architecture_fields"] is False
     assert report["selected_kinds"] == [
         "kv_cache_ring_buffer",
         "recurrence_schedule",

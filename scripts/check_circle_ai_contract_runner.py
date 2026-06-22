@@ -292,6 +292,7 @@ def _append_gate_failures(
     required_decision_verdicts: tuple[str, ...],
     required_assurance_levels: tuple[str, ...],
     require_passed: bool,
+    require_no_unsupported_architecture_fields: bool,
 ) -> None:
     if required_statuses and summary["status"] not in required_statuses:
         failures.append(
@@ -320,6 +321,18 @@ def _append_gate_failures(
         failures.append(
             f"{path}: receipt request_passed was not true "
             f"(got {summary['request_passed']!r})"
+        )
+    unsupported_architecture_fields = summary[
+        "unsupported_architecture_config_fields"
+    ]
+    if (
+        require_no_unsupported_architecture_fields
+        and unsupported_architecture_fields
+    ):
+        failures.append(
+            f"{path}: {summary['kind']} has unsupported architecture-config "
+            "fields: "
+            + ", ".join(unsupported_architecture_fields)
         )
 
 
@@ -353,6 +366,7 @@ def check_runner_examples(
     required_decision_verdicts: tuple[str, ...] = (),
     required_assurance_levels: tuple[str, ...] = (),
     require_passed: bool = False,
+    require_no_unsupported_architecture_fields: bool = False,
     selected_kinds: tuple[str, ...] = (),
 ) -> dict[str, Any]:
     selected_kinds = _canonical_kind_filter(selected_kinds)
@@ -506,6 +520,9 @@ def check_runner_examples(
                 required_decision_verdicts=required_decision_verdicts,
                 required_assurance_levels=required_assurance_levels,
                 require_passed=require_passed,
+                require_no_unsupported_architecture_fields=(
+                    require_no_unsupported_architecture_fields
+                ),
             )
         except (ValueError, jsonschema.ValidationError, jsonschema.SchemaError) as exc:
             failures.append(f"{path}: {exc}")
@@ -637,6 +654,9 @@ def check_runner_examples(
                 required_decision_verdicts=required_decision_verdicts,
                 required_assurance_levels=required_assurance_levels,
                 require_passed=require_passed,
+                require_no_unsupported_architecture_fields=(
+                    require_no_unsupported_architecture_fields
+                ),
             )
         except (ValueError, jsonschema.ValidationError, jsonschema.SchemaError) as exc:
             failures.append(f"{path}: {exc}")
@@ -814,6 +834,9 @@ def check_runner_examples(
                     required_decision_verdicts=required_decision_verdicts,
                     required_assurance_levels=required_assurance_levels,
                     require_passed=require_passed,
+                    require_no_unsupported_architecture_fields=(
+                        require_no_unsupported_architecture_fields
+                    ),
                 )
             except (
                 ValueError,
@@ -841,6 +864,9 @@ def check_runner_examples(
             "allowed_decision_verdicts": list(required_decision_verdicts),
             "allowed_assurance_levels": list(required_assurance_levels),
             "require_passed": require_passed,
+            "require_no_unsupported_architecture_fields": (
+                require_no_unsupported_architecture_fields
+            ),
         },
         "summaries": summaries,
     }
@@ -1058,6 +1084,14 @@ def main() -> int:
         action="store_true",
         help="Exit nonzero unless every emitted receipt has request_passed=true.",
     )
+    parser.add_argument(
+        "--require-no-unsupported-architecture-fields",
+        action="store_true",
+        help=(
+            "Exit nonzero if any architecture-config example includes source "
+            "fields that were not mapped into the theorem-linked request."
+        ),
+    )
     args = parser.parse_args()
 
     report = check_runner_examples(
@@ -1097,6 +1131,9 @@ def main() -> int:
         required_decision_verdicts=tuple(args.require_decision),
         required_assurance_levels=tuple(args.require_assurance),
         require_passed=args.require_passed,
+        require_no_unsupported_architecture_fields=(
+            args.require_no_unsupported_architecture_fields
+        ),
         selected_kinds=tuple(args.kind),
     )
     if args.report_out is not None:
@@ -1114,7 +1151,9 @@ def main() -> int:
             f"{report['gate_policy']['allowed_decision_verdicts']} "
             "required_assurances="
             f"{report['gate_policy']['allowed_assurance_levels']} "
-            f"require_passed={report['gate_policy']['require_passed']}"
+            f"require_passed={report['gate_policy']['require_passed']} "
+            "require_no_unsupported_architecture_fields="
+            f"{report['gate_policy']['require_no_unsupported_architecture_fields']}"
         )
         for summary in report["summaries"]:
             print(

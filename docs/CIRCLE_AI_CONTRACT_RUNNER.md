@@ -533,7 +533,10 @@ defaults are materialized in the emitted request and labeled with source
 `default`, so bundles can verify the import request against the receipt request.
 The same summaries also inline `unsupported_architecture_config_fields`, so
 batch reports expose target-section behavior that was present in the source
-config but not certified by the emitted request.
+config but not certified by the emitted request. Add
+`--require-no-unsupported-architecture-fields` when the checker should reject
+any architecture-config example with unmapped source fields instead of accepting
+the receipt with an explicit non-claim.
 When `--request-validation-report-out-dir` is set, every summary also points to
 the schema-validated preflight report for the exact request that produced the
 receipt.

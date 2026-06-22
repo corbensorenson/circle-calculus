@@ -4174,6 +4174,26 @@ def _append_contract_runner_check_gate_failures(
         failures.append(f"{source_path}: receipt request_passed is not true")
 
 
+def _contract_runner_gate_policy(
+    *,
+    required_statuses: Sequence[str],
+    required_decision_verdicts: Sequence[str],
+    required_assurance_levels: Sequence[str],
+    require_passed: bool,
+    require_no_unsupported_architecture_fields: bool,
+) -> dict[str, Any]:
+    policy = _receipt_gate_policy(
+        required_statuses=required_statuses,
+        required_decision_verdicts=required_decision_verdicts,
+        required_assurance_levels=required_assurance_levels,
+        require_passed=require_passed,
+    )
+    policy["require_no_unsupported_architecture_fields"] = (
+        require_no_unsupported_architecture_fields
+    )
+    return policy
+
+
 def build_contract_runner_check_report(
     *,
     requests: Sequence[Mapping[str, Any]] = (),
@@ -4194,6 +4214,7 @@ def build_contract_runner_check_report(
     required_decision_verdicts: Sequence[str] = (),
     required_assurance_levels: Sequence[str] = (),
     require_passed: bool = False,
+    require_no_unsupported_architecture_fields: bool = False,
 ) -> dict[str, Any]:
     """Build a schema-valid batch runner report from in-memory inputs.
 
@@ -4343,20 +4364,22 @@ def build_contract_runner_check_report(
                     pack=pack_dict,
                 )
                 selected_kinds.add(str(receipt["kind"]))
-                summaries.append(
-                    _contract_runner_check_summary_from_receipt(
-                        source_type="architecture_config",
-                        source_path=source_path,
-                        source=architecture_config,
-                        receipt=receipt,
-                        architecture_config_parameter_sources=import_report[
-                            "parameter_sources"
-                        ],
-                        unsupported_architecture_config_fields=import_report[
-                            "unsupported_architecture_config_fields"
-                        ],
-                    )
+                unsupported_architecture_fields = import_report[
+                    "unsupported_architecture_config_fields"
+                ]
+                summary = _contract_runner_check_summary_from_receipt(
+                    source_type="architecture_config",
+                    source_path=source_path,
+                    source=architecture_config,
+                    receipt=receipt,
+                    architecture_config_parameter_sources=import_report[
+                        "parameter_sources"
+                    ],
+                    unsupported_architecture_config_fields=(
+                        unsupported_architecture_fields
+                    ),
                 )
+                summaries.append(summary)
                 _append_contract_runner_check_gate_failures(
                     source_path=f"{source_path}:{architecture_kind}",
                     receipt=receipt,
@@ -4366,6 +4389,17 @@ def build_contract_runner_check_report(
                     required_assurance_levels=required_assurance_levels,
                     require_passed=require_passed,
                 )
+                if (
+                    require_no_unsupported_architecture_fields
+                    and unsupported_architecture_fields
+                ):
+                    failures.append(
+                        f"{source_path}:{architecture_kind}: unsupported "
+                        "architecture-config fields: "
+                        + ", ".join(
+                            str(field) for field in unsupported_architecture_fields
+                        )
+                    )
             except (
                 ValueError,
                 jsonschema.ValidationError,
@@ -4380,11 +4414,14 @@ def build_contract_runner_check_report(
         "failure_count": len(failures),
         "failures": failures,
         "selected_kinds": sorted(selected_kinds),
-        "gate_policy": _receipt_gate_policy(
+        "gate_policy": _contract_runner_gate_policy(
             required_statuses=required_statuses,
             required_decision_verdicts=required_decision_verdicts,
             required_assurance_levels=required_assurance_levels,
             require_passed=require_passed,
+            require_no_unsupported_architecture_fields=(
+                require_no_unsupported_architecture_fields
+            ),
         ),
         "summaries": summaries,
     }
@@ -6052,6 +6089,7 @@ def build_contract_runner_check_json_schema() -> dict[str, Any]:
             "allowed_decision_verdicts",
             "allowed_assurance_levels",
             "require_passed",
+            "require_no_unsupported_architecture_fields",
         ],
         "properties": {
             "allowed_statuses": {
@@ -6067,6 +6105,7 @@ def build_contract_runner_check_json_schema() -> dict[str, Any]:
                 "items": {"enum": list(DECISION_ASSURANCE_LEVELS)},
             },
             "require_passed": {"type": "boolean"},
+            "require_no_unsupported_architecture_fields": {"type": "boolean"},
         },
         "additionalProperties": False,
     }

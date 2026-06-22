@@ -66,6 +66,7 @@ from circle_math.applications.circle_ai_contracts import build_contract_pack
 
 ROOT = Path(__file__).resolve().parents[1]
 SCRIPT = ROOT / "scripts" / "circle_ai_certify.py"
+CHECK_RUNNER_SCRIPT = ROOT / "scripts" / "check_circle_ai_contract_runner.py"
 ARTIFACT_MANIFEST_CHECK_SCRIPT = (
     ROOT / "scripts" / "check_circle_ai_artifact_manifest.py"
 )
@@ -2968,6 +2969,7 @@ def test_runner_check_report_schema_accepts_public_report() -> None:
             "allowed_decision_verdicts": ["passed"],
             "allowed_assurance_levels": ["mixed_theorem_and_computation"],
             "require_passed": True,
+            "require_no_unsupported_architecture_fields": False,
         },
         "summaries": [
             {
@@ -2979,6 +2981,7 @@ def test_runner_check_report_schema_accepts_public_report() -> None:
                 "model_config_parameter_sources": None,
                 "architecture_config_import_report_path": None,
                 "architecture_config_parameter_sources": None,
+                "unsupported_architecture_config_fields": [],
                 "request_validation_report_path": None,
                 "certification_bundle_path": None,
                 "certification_bundle_check_path": None,
@@ -3009,6 +3012,77 @@ def test_runner_check_report_schema_accepts_public_report() -> None:
 
     jsonschema.Draft202012Validator.check_schema(schema)
     jsonschema.validate(report, schema)
+
+
+def test_check_circle_ai_contract_runner_rejects_unsupported_architecture_fields_when_required(
+    tmp_path: Path,
+) -> None:
+    architecture_config_dir = tmp_path / "architecture_configs"
+    architecture_config_dir.mkdir()
+    (architecture_config_dir / "rope_model_only.json").write_text(
+        json.dumps(
+            {
+                "circle_ai_contract_kinds": ["rope"],
+                "model": {
+                    "hidden_size": 4096,
+                    "num_attention_heads": 32,
+                    "max_position_embeddings": 4096,
+                    "rope_theta": 10000,
+                    "model_type": "llama",
+                },
+                "rope": {
+                    "requested_margin": "1/4099",
+                    "turn_ratio_numerator": 1,
+                    "turn_ratio_denominator": 4099,
+                },
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    result = subprocess.run(
+        [
+            sys.executable,
+            str(CHECK_RUNNER_SCRIPT),
+            "--kind",
+            "rope",
+            "--model-config-dir",
+            str(tmp_path / "missing_model_configs"),
+            "--architecture-config-dir",
+            str(architecture_config_dir),
+            "--require-status",
+            "proved",
+            "--require-decision",
+            "passed",
+            "--require-passed",
+            "--require-no-unsupported-architecture-fields",
+            "--format",
+            "json",
+        ],
+        cwd=ROOT,
+        check=False,
+        text=True,
+        capture_output=True,
+    )
+
+    assert result.returncode == 1
+    report = json.loads(result.stdout)
+    jsonschema.validate(report, build_contract_runner_check_json_schema())
+    assert report["ok"] is False
+    assert report["gate_policy"]["require_no_unsupported_architecture_fields"] is True
+    assert report["failure_count"] == 1
+    assert any(
+        "unsupported architecture-config fields: model.model_type" in failure
+        for failure in report["failures"]
+    )
+    architecture_summary = next(
+        summary
+        for summary in report["summaries"]
+        if summary["source_type"] == "architecture_config"
+    )
+    assert architecture_summary["unsupported_architecture_config_fields"] == [
+        "model.model_type"
+    ]
 
 
 def test_circle_ai_certify_cli_emits_json_receipt() -> None:

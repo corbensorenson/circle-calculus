@@ -357,7 +357,10 @@ When `architecture_configs` is populated, the in-memory report emits RoPE,
 KV-cache, sparse-attention, and recurrence receipts by default, matching
 `circle-ai-certify batch --architecture-config-file`. Pass
 `architecture_config_kinds=("sparse-attention",)` when a downstream job only
-needs one contract family.
+needs one contract family. Pass
+`require_no_unsupported_architecture_fields=True` when the in-memory batch
+should fail if an architecture config contains source fields that were not
+mapped into the theorem-linked request.
 
 ## Python: Sparse-Attention Coverage Contract
 
