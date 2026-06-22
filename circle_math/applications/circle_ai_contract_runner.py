@@ -3036,6 +3036,251 @@ def _dependency_pin_policy(
     }
 
 
+def _contract_runner_check_source_path(
+    source_paths: Sequence[str],
+    index: int,
+    fallback_prefix: str,
+) -> str:
+    if index < len(source_paths):
+        value = str(source_paths[index])
+        if value:
+            return value
+    return f"<{fallback_prefix}:{index + 1}>"
+
+
+def _contract_runner_check_summary_from_receipt(
+    *,
+    source_type: str,
+    source_path: str,
+    source: Mapping[str, Any],
+    receipt: Mapping[str, Any],
+    model_config_parameter_sources: Mapping[str, Any] | None = None,
+) -> dict[str, Any]:
+    compact_receipt = build_compact_contract_receipt(receipt)
+    decision = receipt["decision"]
+    selected_evidence_layers = compact_receipt["selected_evidence_proof_layers"]
+    return {
+        "source_type": source_type,
+        "source_path": source_path,
+        "source_content_fingerprint": _json_fingerprint(_json_ready_value(source)),
+        "request_path": None,
+        "model_config_import_report_path": None,
+        "model_config_parameter_sources": (
+            None
+            if model_config_parameter_sources is None
+            else _json_ready_value(model_config_parameter_sources)
+        ),
+        "request_validation_report_path": None,
+        "certification_bundle_path": None,
+        "certification_bundle_check_path": None,
+        "receipt_path": None,
+        "compact_receipt_path": None,
+        "kind": receipt["kind"],
+        "status": receipt["status"],
+        "request_passed": receipt["request_passed"],
+        "decision_verdict": decision["verdict"],
+        "decision_assurance": decision["assurance"],
+        "theorem_count": receipt["proof_status"]["theorem_count"],
+        "recommendation_count": len(receipt["recommendations"]),
+        "validation_command_count": len(receipt["validation_commands"]),
+        "normalized_request": receipt["normalized_request"],
+        "request_content_fingerprint": receipt["request_content_fingerprint"],
+        "normalized_request_fingerprint": receipt["normalized_request_fingerprint"],
+        "receipt_content_fingerprint": receipt["receipt_content_fingerprint"],
+        "compact_selected_evidence_count": len(compact_receipt["selected_evidence"]),
+        "compact_selected_evidence_unclassified_count": sum(
+            1
+            for label in selected_evidence_layers.values()
+            if label == "unclassified"
+        ),
+        "compact_selected_evidence_labels": sorted(
+            set(selected_evidence_layers.values())
+        ),
+    }
+
+
+def _append_contract_runner_check_gate_failures(
+    *,
+    source_path: str,
+    receipt: Mapping[str, Any],
+    failures: list[str],
+    required_statuses: Sequence[str],
+    required_decision_verdicts: Sequence[str],
+    required_assurance_levels: Sequence[str],
+    require_passed: bool,
+) -> None:
+    if required_statuses and receipt.get("status") not in set(required_statuses):
+        failures.append(
+            f"{source_path}: receipt status {receipt.get('status')!r} "
+            f"is not in {tuple(required_statuses)!r}"
+        )
+    decision = receipt.get("decision")
+    if not isinstance(decision, Mapping):
+        decision = {}
+    if (
+        required_decision_verdicts
+        and decision.get("verdict") not in set(required_decision_verdicts)
+    ):
+        failures.append(
+            f"{source_path}: receipt decision.verdict "
+            f"{decision.get('verdict')!r} is not in "
+            f"{tuple(required_decision_verdicts)!r}"
+        )
+    if (
+        required_assurance_levels
+        and decision.get("assurance") not in set(required_assurance_levels)
+    ):
+        failures.append(
+            f"{source_path}: receipt decision.assurance "
+            f"{decision.get('assurance')!r} is not in "
+            f"{tuple(required_assurance_levels)!r}"
+        )
+    if require_passed and receipt.get("request_passed") is not True:
+        failures.append(f"{source_path}: receipt request_passed is not true")
+
+
+def build_contract_runner_check_report(
+    *,
+    requests: Sequence[Mapping[str, Any]] = (),
+    model_configs: Sequence[Mapping[str, Any]] = (),
+    pack: Mapping[str, Any] | None = None,
+    request_source_paths: Sequence[str] = (),
+    model_config_source_paths: Sequence[str] = (),
+    head_dim: int | None = None,
+    base: float | None = None,
+    context: int | None = None,
+    tolerance: float | None = None,
+    discretization: str | None = None,
+    requested_margin: str | None = None,
+    required_statuses: Sequence[str] = (),
+    required_decision_verdicts: Sequence[str] = (),
+    required_assurance_levels: Sequence[str] = (),
+    require_passed: bool = False,
+) -> dict[str, Any]:
+    """Build a schema-valid batch runner report from in-memory inputs.
+
+    This is the public Python API equivalent of the installed
+    ``circle-ai-certify batch`` command for callers that already loaded request
+    or standard-RoPE model-config objects. It returns summaries and gate
+    failures; it does not write receipts or sidecar files.
+    """
+
+    _validate_receipt_gate_policy(
+        required_statuses=required_statuses,
+        required_decision_verdicts=required_decision_verdicts,
+        required_assurance_levels=required_assurance_levels,
+    )
+    pack_dict = build_contract_pack() if pack is None else pack
+    summaries: list[dict[str, Any]] = []
+    failures: list[str] = []
+    selected_kinds: set[str] = set()
+
+    for index, request in enumerate(requests):
+        source_path = _contract_runner_check_source_path(
+            request_source_paths,
+            index,
+            "request",
+        )
+        try:
+            receipt = build_validated_contract_receipt_from_request(
+                request,
+                pack=pack_dict,
+            )
+            selected_kinds.add(str(receipt["kind"]))
+            summaries.append(
+                _contract_runner_check_summary_from_receipt(
+                    source_type="request",
+                    source_path=source_path,
+                    source=request,
+                    receipt=receipt,
+                )
+            )
+            _append_contract_runner_check_gate_failures(
+                source_path=source_path,
+                receipt=receipt,
+                failures=failures,
+                required_statuses=required_statuses,
+                required_decision_verdicts=required_decision_verdicts,
+                required_assurance_levels=required_assurance_levels,
+                require_passed=require_passed,
+            )
+        except (ValueError, jsonschema.ValidationError, jsonschema.SchemaError) as exc:
+            failures.append(f"{source_path}: {exc}")
+
+    for index, model_config in enumerate(model_configs):
+        source_path = _contract_runner_check_source_path(
+            model_config_source_paths,
+            index,
+            "model_config",
+        )
+        try:
+            import_report = build_rope_model_config_import_report(
+                model_config,
+                head_dim=head_dim,
+                base=base,
+                context=context,
+                tolerance=tolerance,
+                discretization=discretization,
+                requested_margin=requested_margin,
+            )
+            if not import_report["ok"]:
+                failures.append(
+                    f"{source_path}: " + "; ".join(import_report["failures"])
+                )
+                continue
+            receipt = build_validated_rope_receipt_from_model_config(
+                model_config,
+                head_dim=head_dim,
+                base=base,
+                context=context,
+                tolerance=tolerance,
+                discretization=discretization,
+                requested_margin=requested_margin,
+                pack=pack_dict,
+            )
+            selected_kinds.add(str(receipt["kind"]))
+            summaries.append(
+                _contract_runner_check_summary_from_receipt(
+                    source_type="model_config",
+                    source_path=source_path,
+                    source=model_config,
+                    receipt=receipt,
+                    model_config_parameter_sources=import_report[
+                        "parameter_sources"
+                    ],
+                )
+            )
+            _append_contract_runner_check_gate_failures(
+                source_path=source_path,
+                receipt=receipt,
+                failures=failures,
+                required_statuses=required_statuses,
+                required_decision_verdicts=required_decision_verdicts,
+                required_assurance_levels=required_assurance_levels,
+                require_passed=require_passed,
+            )
+        except (ValueError, jsonschema.ValidationError, jsonschema.SchemaError) as exc:
+            failures.append(f"{source_path}: {exc}")
+
+    report = {
+        "schema_id": RUNNER_CHECK_SCHEMA_ID,
+        "ok": not failures,
+        "example_count": len(summaries),
+        "failure_count": len(failures),
+        "failures": failures,
+        "selected_kinds": sorted(selected_kinds),
+        "gate_policy": _receipt_gate_policy(
+            required_statuses=required_statuses,
+            required_decision_verdicts=required_decision_verdicts,
+            required_assurance_levels=required_assurance_levels,
+            require_passed=require_passed,
+        ),
+        "summaries": summaries,
+    }
+    jsonschema.validate(report, build_contract_runner_check_json_schema())
+    return report
+
+
 def build_contract_receipt_file_check_report(
     receipt: Mapping[str, Any],
     pack: Mapping[str, Any],

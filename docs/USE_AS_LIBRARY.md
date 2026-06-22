@@ -231,6 +231,25 @@ receipt = build_validated_rope_receipt_from_model_config(model_config, pack=pack
 print(receipt["request"]["parameters"])
 ```
 
+For in-memory batch checks, use the same runner-check report shape without a
+subprocess:
+
+```python
+from circle_math.ai_contracts import build_contract_runner_check_report
+
+runner_report = build_contract_runner_check_report(
+    model_configs=[model_config],
+    model_config_source_paths=["standard_rope_config.json"],
+    required_statuses=("proved",),
+    required_decision_verdicts=("passed",),
+    pack=pack,
+)
+
+print(runner_report["schema_id"])
+print(runner_report["ok"])
+print(runner_report["summaries"][0]["model_config_parameter_sources"])
+```
+
 ## Python: Sparse-Attention Coverage Contract
 
 ```python

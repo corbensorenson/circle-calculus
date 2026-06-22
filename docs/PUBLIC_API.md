@@ -102,6 +102,7 @@ Use `circle_math.ai_contracts` to build public contract fixtures and receipts:
 ```python
 from circle_math.ai_contracts import (
     build_contract_pack,
+    build_contract_runner_check_report,
     build_rope_receipt,
     build_validated_rope_receipt_from_model_config,
 )
@@ -121,6 +122,16 @@ receipt_from_config = build_validated_rope_receipt_from_model_config(
     pack=pack,
 )
 assert receipt_from_config["kind"] == "rope_position_distinguishability"
+
+runner_report = build_contract_runner_check_report(
+    model_configs=[model_config],
+    model_config_source_paths=["standard_rope_config.json"],
+    required_statuses=("proved",),
+    required_decision_verdicts=("passed",),
+    pack=pack,
+)
+assert runner_report["schema_id"] == "circle_calculus.ai_contract_runner_check.v0"
+assert runner_report["ok"] is True
 ```
 
 The same facade exposes reusable integer phase-bank helpers for sinusoidal,

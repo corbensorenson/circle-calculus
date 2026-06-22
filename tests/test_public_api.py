@@ -22,6 +22,8 @@ from circle_math.core import (
 from circle_math.ai_contracts import (
     CONTRACT_PACK_SCHEMA_ID,
     build_contract_pack,
+    build_contract_runner_check_report,
+    build_contract_runner_check_json_schema as build_facade_runner_check_json_schema,
     build_rope_request_parameters_from_model_config,
     build_validated_contract_receipt_from_request,
     build_validated_rope_receipt_from_model_config,
@@ -625,6 +627,56 @@ def test_package_cli_unified_certify_batch_requires_a_source() -> None:
     assert "at least one --request-file or --model-config-file is required" in (
         result.stderr
     )
+
+
+def test_public_api_runner_check_report_builds_from_in_memory_sources() -> None:
+    request = json.loads(
+        (ROOT / "examples" / "circle_ai_requests" / "kv_cache_request.json").read_text()
+    )
+    model_config = json.loads(
+        (
+            ROOT
+            / "examples"
+            / "circle_ai_model_configs"
+            / "standard_rope_config.json"
+        ).read_text()
+    )
+
+    report = build_contract_runner_check_report(
+        requests=[request],
+        model_configs=[model_config],
+        request_source_paths=["requests/kv_cache_request.json"],
+        model_config_source_paths=["configs/standard_rope_config.json"],
+        required_statuses=("proved",),
+        required_decision_verdicts=("passed",),
+        require_passed=True,
+    )
+
+    jsonschema.validate(report, build_facade_runner_check_json_schema())
+    assert report["ok"] is True
+    assert report["example_count"] == 2
+    assert report["failure_count"] == 0
+    assert report["gate_policy"]["allowed_statuses"] == ["proved"]
+    assert report["gate_policy"]["allowed_decision_verdicts"] == ["passed"]
+    assert report["gate_policy"]["require_passed"] is True
+    assert report["selected_kinds"] == [
+        "kv_cache_ring_buffer",
+        "rope_position_distinguishability",
+    ]
+    summaries_by_type = {
+        summary["source_type"]: summary for summary in report["summaries"]
+    }
+    assert summaries_by_type["request"]["source_path"] == (
+        "requests/kv_cache_request.json"
+    )
+    assert summaries_by_type["request"]["kind"] == "kv_cache_ring_buffer"
+    model_summary = summaries_by_type["model_config"]
+    assert model_summary["source_path"] == "configs/standard_rope_config.json"
+    assert model_summary["kind"] == "rope_position_distinguishability"
+    assert model_summary["model_config_parameter_sources"]["head_dim"]["source"] == (
+        "derived_config_fields"
+    )
+    assert model_summary["compact_selected_evidence_unclassified_count"] == 0
 
 
 def test_package_cli_unified_certify_writes_gate_and_replay_reports(tmp_path) -> None:
