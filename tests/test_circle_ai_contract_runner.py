@@ -3662,6 +3662,40 @@ def test_circle_ai_certify_cli_artifact_dir_writes_architecture_import_sidecar(
         "required_architecture_config_fingerprints"
     ] == [import_report["architecture_config_fingerprint"]]
 
+    pin_policy_path = tmp_path / "sparse_architecture_pin_policy.json"
+    pin_policy_path.write_text(
+        json.dumps(pinned_payload, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+    )
+    replay_artifact_dir = tmp_path / "replay_architecture_artifacts"
+    subprocess.run(
+        [
+            sys.executable,
+            str(SCRIPT),
+            "sparse-attention",
+            "--architecture-config",
+            str(ARCHITECTURE_CONFIG),
+            "--artifact-dir",
+            str(replay_artifact_dir),
+            "--pin-policy",
+            str(pin_policy_path),
+        ],
+        cwd=ROOT,
+        check=True,
+        text=True,
+        capture_output=True,
+    )
+    replay_manifest_check = json.loads(
+        (replay_artifact_dir / f"{prefix}_artifact_manifest_check.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert replay_manifest_check["ok"] is True
+    assert replay_manifest_check["pin_policy"] == pinned_payload["pin_policy"]
+    assert replay_manifest_check["summaries"][0][
+        "architecture_config_fingerprint"
+    ] == import_report["architecture_config_fingerprint"]
+
     missing_architecture_fingerprint = subprocess.run(
         [
             sys.executable,
