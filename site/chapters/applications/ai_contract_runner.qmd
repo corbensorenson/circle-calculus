@@ -1034,6 +1034,9 @@ a reader can copy the replay path before opening the full JSON.
 When a single receipt is built from a model config or architecture config, the
 text summary also prints an import-boundary line with unsupported source-field
 counts, so unmodeled source-config behavior remains visible.
+Add `--require-no-unsupported-architecture-fields` when a direct
+architecture-config receipt or a batch report should reject that boundary
+instead of only reporting it.
 
 That returns the same schema as the CLI:
 

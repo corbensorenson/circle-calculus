@@ -329,6 +329,17 @@ def _add_receipt_gate_options(parser: argparse.ArgumentParser) -> None:
     )
 
 
+def _add_architecture_import_gate_options(parser: argparse.ArgumentParser) -> None:
+    parser.add_argument(
+        "--require-no-unsupported-architecture-fields",
+        action="store_true",
+        help=(
+            "Return nonzero when --architecture-config-file includes fields "
+            "that were not mapped into the theorem-linked request."
+        ),
+    )
+
+
 def _add_certify_common_options(parser: argparse.ArgumentParser) -> None:
     parser.add_argument("--pack", type=Path, default=None)
     parser.add_argument(
@@ -894,6 +905,23 @@ def _certify_import_summary_line(
     )
 
 
+def _architecture_import_gate_failures(
+    report: dict[str, Any] | None,
+    args: argparse.Namespace,
+) -> list[str]:
+    if not getattr(args, "require_no_unsupported_architecture_fields", False):
+        return []
+    if report is None:
+        return []
+    unsupported_fields = report.get("unsupported_architecture_config_fields", [])
+    if not unsupported_fields:
+        return []
+    return [
+        "unsupported architecture-config fields: "
+        + ", ".join(str(field) for field in unsupported_fields)
+    ]
+
+
 def _certify_print_and_gate(
     receipt: dict[str, Any],
     pack: dict[str, Any],
@@ -994,7 +1022,10 @@ def _certify_print_and_gate(
                 manifest_path=str(args.artifact_manifest_out),
             )
             _write_json_file(args.artifact_manifest_check_out, manifest_check)
-    gate_failures = _receipt_gate_failures(receipt, args)
+    gate_failures = [
+        *_receipt_gate_failures(receipt, args),
+        *_architecture_import_gate_failures(architecture_config_import_report, args),
+    ]
     if args.format == "json":
         print(json.dumps(receipt, indent=2, sort_keys=True))
     elif args.format == "compact-json":
@@ -1899,6 +1930,7 @@ def contract_certify_main() -> int:
         ),
     )
     rope_parser.add_argument("--architecture-config-import-report-out", type=Path)
+    _add_architecture_import_gate_options(rope_parser)
     rope_parser.add_argument("--head-dim", type=int, default=None)
     rope_parser.add_argument("--base", type=float, default=None)
     rope_parser.add_argument("--context", type=int, default=None)
@@ -1927,6 +1959,7 @@ def contract_certify_main() -> int:
         ),
     )
     kv_parser.add_argument("--architecture-config-import-report-out", type=Path)
+    _add_architecture_import_gate_options(kv_parser)
     kv_parser.add_argument("--cache-size", type=int)
     kv_parser.add_argument("--current", type=int)
     kv_parser.add_argument("--token", type=int)
@@ -1949,6 +1982,7 @@ def contract_certify_main() -> int:
         ),
     )
     sparse_parser.add_argument("--architecture-config-import-report-out", type=Path)
+    _add_architecture_import_gate_options(sparse_parser)
     sparse_parser.add_argument("--context", type=int)
     sparse_parser.add_argument("--strides", type=_parse_positive_int_csv)
     sparse_parser.add_argument("--path-length", type=int)
@@ -1969,6 +2003,7 @@ def contract_certify_main() -> int:
         ),
     )
     recurrence_parser.add_argument("--architecture-config-import-report-out", type=Path)
+    _add_architecture_import_gate_options(recurrence_parser)
     recurrence_parser.add_argument("--loop-period", type=int)
     recurrence_parser.add_argument("--sample-index", type=int)
     recurrence_parser.add_argument("--max-loops", type=int)

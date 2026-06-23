@@ -425,9 +425,10 @@ script path for strict audit checks; the second uses the installed
 and architecture-config imports also print import-boundary lines with
 unsupported source-field counts.
 
-Add `--require-no-unsupported-architecture-fields` to `circle-ai-certify batch`
-when the generated runner-check report should fail if an architecture config
-contains fields that Circle did not map into a theorem-linked request.
+Add `--require-no-unsupported-architecture-fields` to direct architecture-config
+receipt commands or to `circle-ai-certify batch` when the command should fail if
+an architecture config contains fields that Circle did not map into a
+theorem-linked request.
 
 `circle-ai-certify` is the installed-package path for guided RoPE, KV-cache,
 sparse-attention, recurrence, strided-fanout, cyclic-memory, multicoil-phase,

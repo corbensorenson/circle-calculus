@@ -2125,6 +2125,36 @@ def test_package_cli_unified_certify_architecture_config_text_surfaces_import_bo
         "unsupported_field_count=1 unsupported_fields=model.model_type"
     ]
 
+    strict_result = subprocess.run(
+        [
+            sys.executable,
+            "-c",
+            (
+                "import sys; "
+                "from circle_math.cli import contract_certify_main; "
+                "sys.exit(contract_certify_main())"
+            ),
+            "rope",
+            "--architecture-config-file",
+            str(ROPE_MODEL_ONLY_ARCHITECTURE_CONFIG),
+            "--require-no-unsupported-architecture-fields",
+            "--format",
+            "json",
+            "--require-passed",
+        ],
+        text=True,
+        capture_output=True,
+    )
+
+    assert strict_result.returncode == 2
+    strict_receipt = json.loads(strict_result.stdout)
+    assert strict_receipt["kind"] == "rope_position_distinguishability"
+    assert strict_receipt["request_passed"] is True
+    assert (
+        "contract receipt gate failed: unsupported architecture-config fields: "
+        "model.model_type"
+    ) in strict_result.stderr
+
 
 @pytest.mark.parametrize(
     ("subcommand_args", "expected_kind"),
