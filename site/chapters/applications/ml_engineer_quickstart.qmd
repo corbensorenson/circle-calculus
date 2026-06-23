@@ -1,0 +1,231 @@
+---
+title: "ML Engineer Quickstart"
+---
+
+This lesson is the shortest practical path through the Circle Calculus AI lane.
+It does not ask you to read Lean first. It gives you one intuition demo and
+four proof-carrying finite contracts.
+
+::: {.lesson-goal}
+
+## Goal
+
+Run the phase probe, then run RoPE, KV-cache, sparse-attention, and recurrence
+certificates. Learn how to read `proof_status`, `request_passed`, and
+`not_claimed` without confusing a finite contract with a model-quality claim.
+
+:::
+
+## The Pipeline
+
+```text
+periodic feature demo
+  -> RoPE position distinguishability
+  -> KV-cache freshness
+  -> sparse lag coverage
+  -> recurrence schedule accounting
+```
+
+Each command emits a text receipt. The first line tells you the contract kind.
+`proof_status` tells you whether cited theorem ids resolve and are proved.
+`decision` and `request_passed` tell you whether this particular request passed
+its finite contract. `not_claimed` is part of the artifact, not boilerplate.
+
+## 1. Phase Probe
+
+```bash
+python scripts/circle_phase_probe_demo.py --backend numpy
+```
+
+Expected summary:
+
+```text
+circle_phase_probe=READY period=8 backend=numpy train=32 test=16
+baseline=raw_position_linear train_accuracy=0.500000 test_accuracy=0.500000
+phase=circle_sin_cos_linear train_accuracy=1.000000 test_accuracy=1.000000
+non_claimed=This synthetic probe does not prove real model quality, speed, memory, context-length, or reasoning gains.
+```
+
+This is an executable intuition demo. It is not proof and not a benchmark.
+
+## 2. RoPE Contract
+
+```bash
+python scripts/circle_ai_certify.py rope \
+  --head-dim 128 \
+  --base 10000 \
+  --context 131072 \
+  --requested-margin 1/328459
+```
+
+Look for:
+
+```text
+kind=rope_position_distinguishability
+proof_status=theorems=55 resolved=True proved=True
+decision=verdict=passed ... request_passed=True
+rope_d19_request=status=proved theorem_backed=True margin=1/328459 context=131072
+```
+
+This is a D19 first-channel standard-RoPE margin frontier and conditional bank
+bridge. It is not a claim about useful context length, perplexity, speed,
+memory, training stability, or deployment.
+
+## 3. KV-Cache Contract
+
+```bash
+python scripts/circle_ai_certify.py kv-cache \
+  --cache-size 16 \
+  --current 31 \
+  --token 20 \
+  --batch-tokens 20,24,29,31 \
+  --sink-size 4
+```
+
+Look for:
+
+```text
+kind=kv_cache_ring_buffer
+proof_status=theorems=54 resolved=True proved=True
+decision=verdict=passed assurance=theorem_backed ... request_passed=True
+kv_cache_request=pass=True stale_count=0 first_stale_token=None
+```
+
+This checks finite slot, freshness, modeled-read, and sink-plus-rolling-window
+facts. It is not a paging, throughput, memory-saving, retrieval-quality, or
+implementation-correctness proof.
+
+## 4. Sparse-Attention Contract
+
+```bash
+python scripts/circle_ai_certify.py sparse-attention \
+  --context 120 \
+  --strides 7,13 \
+  --path-length 3 \
+  --local-window 4
+```
+
+Look for:
+
+```text
+kind=sparse_attention_coverage
+proof_status=theorems=132 resolved=True proved=True
+decision=verdict=failed assurance=theorem_backed ... request_passed=False
+sparse_attention=coverage_complete=False covered=10 uncovered=109 first_gap=5
+sparse_repair=complete_repair_window=119 ... complete_witness_lag=119
+```
+
+This is intentionally useful even when it fails: a theorem-backed gap
+certificate tells you what the declared plan misses. If a CI gate requires a
+passing request for this finite fixture, use:
+
+```bash
+python scripts/circle_ai_certify.py sparse-attention \
+  --context 120 \
+  --strides 7,13 \
+  --path-length 3 \
+  --local-window 119 \
+  --require-passed
+```
+
+## 5. Recurrence Contract
+
+```bash
+python scripts/circle_ai_certify.py recurrence \
+  --period 6 \
+  --position 9 \
+  --horizon-steps 8 \
+  --sequence-length 24 \
+  --block-start 6 \
+  --block-width 6 \
+  --shift-amount 18
+```
+
+Look for:
+
+```text
+kind=recurrence_schedule
+proof_status=theorems=64 resolved=True proved=True
+decision=verdict=passed ... request_passed=True
+recurrence_work=active=84 inactive=60 saving=60
+recurrence_periodic_shift=base_token=23 passes=3 shift=18 shifted_token=41
+```
+
+This checks finite loop-period, active-token work, post-period extension, and
+whole-period shift invariants. It is not a recursive-reasoning,
+adaptive-exit-quality, perplexity, throughput, memory-saving, or model-quality
+proof.
+
+## Python API
+
+Use `circle_math.ai_contracts` when another project wants receipts directly:
+
+```python
+from circle_math.ai_contracts import (
+    build_kv_cache_receipt,
+    build_recurrence_receipt,
+    build_rope_receipt,
+    build_sparse_attention_receipt,
+    receipt_summary_lines,
+)
+
+receipts = [
+    build_rope_receipt(
+        head_dim=128,
+        base=10000,
+        context=131072,
+        requested_margin="1/328459",
+    ),
+    build_kv_cache_receipt(
+        cache_size=16,
+        current=31,
+        token=20,
+        batch_tokens=[20, 24, 29, 31],
+        sink_size=4,
+    ),
+    build_sparse_attention_receipt(
+        context=120,
+        strides=[7, 13],
+        path_length=3,
+        local_window=4,
+    ),
+    build_recurrence_receipt(
+        loop_period=6,
+        sample_index=9,
+        max_loops=8,
+        token_count=24,
+        selected_block_start=6,
+        selected_block_width=6,
+        shift_passes=3,
+    ),
+]
+
+for receipt in receipts:
+    print(receipt_summary_lines(receipt)[0])
+    assert receipt["proof_status"]["all_theorem_ids_proved"] is True
+    assert receipt["not_claimed"]
+```
+
+Read `proof_status` separately from `request_passed`. A sparse receipt can be
+proved and still fail coverage, because it is proving the gap.
+
+::: {.warning-box}
+These receipts are proof-carrying finite structure checks. They do not prove
+model quality, reasoning ability, context-length improvement, speed, memory
+savings, deployment safety, or implementation correctness.
+:::
+
+## Source Trail
+
+<p>Standalone quickstart: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/docs/CIRCLE_AI_ML_ENGINEER_QUICKSTART.md">Circle AI ML Engineer Quickstart</a></p>
+
+<p>Runner details: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/docs/CIRCLE_AI_CONTRACT_RUNNER.md">Circle AI Contract Runner</a></p>
+
+<p>Python facade: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/circle_math/ai_contracts.py">circle_math/ai_contracts.py</a></p>
+
+<div class="book-navigation">
+<a href="circle_phase_probe_demo.qmd">Previous: Circle Phase Probe Demo</a>
+<a href="ai_contract_suite.qmd">Next: AI Contract Suite</a>
+</div>
+
+<script type="module" src="../../widgets/shared/widget_base.js"></script>

@@ -152,6 +152,8 @@ website:
             text: AI
           - href: chapters/applications/circle_phase_probe_demo.qmd
             text: Circle Phase Probe Demo
+          - href: chapters/applications/ml_engineer_quickstart.qmd
+            text: ML Engineer Quickstart
           - href: chapters/applications/rope_certifier.qmd
             text: RoPE Certifier
           - href: chapters/applications/position_phase_banks.qmd

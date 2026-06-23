@@ -75,12 +75,14 @@ Use this page as the guided entrance to the contract lane, then open the focused
 
 | Step | Lesson | What To Learn | First Command |
 | --- | --- | --- | --- |
-| 1 | [RoPE certifier](rope_certifier.qmd) | how a rotary phase bank becomes a position-distinguishability contract | `python scripts/circle_ai_contract_ready.py --kind rope_position_distinguishability` |
-| 2 | [KV-cache ring buffer](kv_cache_ring_buffer.qmd) | how residue plus overwrite boundary gives freshness and stale-read certificates | `python scripts/circle_ai_contract_ready.py --kind kv_cache_ring_buffer` |
-| 3 | [Sparse attention coverage](sparse_attention_contract.qmd) | how local windows and stride families expose covered lags, gaps, and repair targets | `python scripts/circle_ai_contract_ready.py --kind sparse_attention_coverage` |
-| 4 | [Looped recurrence contracts](looped_recurrence_contracts.qmd) | how recurrence schedules expose finite work, exit, and index-reuse contracts | `python scripts/circle_ai_contract_ready.py --kind recurrence_schedule` |
-| 5 | [AI contract runner](ai_contract_runner.qmd) | how to run the same contract shape on your own parameters and get a text/JSON receipt | `python scripts/circle_ai_certify.py rope --head-dim 128 --base 10000 --context 131072 --requested-margin 1/328459` |
-| 6 | [AI contract pack audit](ai_contract_pack_audit.qmd) | how another project consumes the public JSON pack without reading Lean files | `python scripts/circle_ai_contract_ready.py --fingerprints` |
+| 1 | [Circle phase probe demo](circle_phase_probe_demo.qmd) | why circle phase features can expose a synthetic periodic rule | `python scripts/circle_phase_probe_demo.py --backend numpy` |
+| 2 | [ML engineer quickstart](ml_engineer_quickstart.qmd) | how to run the four flagship receipts without reading Lean first | `python scripts/circle_ai_certify.py rope --head-dim 128 --base 10000 --context 131072 --requested-margin 1/328459` |
+| 3 | [RoPE certifier](rope_certifier.qmd) | how a rotary phase bank becomes a position-distinguishability contract | `python scripts/circle_ai_contract_ready.py --kind rope_position_distinguishability` |
+| 4 | [KV-cache ring buffer](kv_cache_ring_buffer.qmd) | how residue plus overwrite boundary gives freshness and stale-read certificates | `python scripts/circle_ai_contract_ready.py --kind kv_cache_ring_buffer` |
+| 5 | [Sparse attention coverage](sparse_attention_contract.qmd) | how local windows and stride families expose covered lags, gaps, and repair targets | `python scripts/circle_ai_contract_ready.py --kind sparse_attention_coverage` |
+| 6 | [Looped recurrence contracts](looped_recurrence_contracts.qmd) | how recurrence schedules expose finite work, exit, and index-reuse contracts | `python scripts/circle_ai_contract_ready.py --kind recurrence_schedule` |
+| 7 | [AI contract runner](ai_contract_runner.qmd) | how to run the same contract shape on your own parameters and get a text/JSON receipt | `python scripts/circle_ai_certify.py rope --head-dim 128 --base 10000 --context 131072 --requested-margin 1/328459` |
+| 8 | [AI contract pack audit](ai_contract_pack_audit.qmd) | how another project consumes the public JSON pack without reading Lean files | `python scripts/circle_ai_contract_ready.py --fingerprints` |
 
 Each focused lesson follows the same reading shape: concept, finite circular object, worked example, theorem ids, executable certificate, and exact non-claims. Use the audit pages only when you want the full theorem-card trail.
 
