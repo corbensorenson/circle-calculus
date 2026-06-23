@@ -186,6 +186,8 @@ def test_check_circle_ai_contract_runner_emits_json_report() -> None:
         "allowed_decision_verdicts": [],
         "allowed_assurance_levels": [],
         "require_passed": False,
+        "require_no_unsupported_model_config_fields": False,
+        "require_no_unsupported_architecture_fields": False,
     }
     assert all(
         len(summary["request_content_fingerprint"]) == 64
@@ -730,6 +732,8 @@ def test_check_circle_ai_contract_runner_accepts_batch_gate() -> None:
         "allowed_decision_verdicts": ["passed"],
         "allowed_assurance_levels": [],
         "require_passed": True,
+        "require_no_unsupported_model_config_fields": False,
+        "require_no_unsupported_architecture_fields": False,
     }
     assert payload["selected_kinds"] == []
     assert payload["example_count"] == 17
@@ -759,6 +763,8 @@ def test_check_circle_ai_contract_runner_rejects_batch_gate() -> None:
         "allowed_decision_verdicts": [],
         "allowed_assurance_levels": [],
         "require_passed": False,
+        "require_no_unsupported_model_config_fields": False,
+        "require_no_unsupported_architecture_fields": False,
     }
     assert payload["selected_kinds"] == []
     assert payload["failure_count"] == 17
@@ -789,6 +795,8 @@ def test_check_circle_ai_contract_runner_rejects_decision_gate() -> None:
         "allowed_decision_verdicts": ["failed"],
         "allowed_assurance_levels": [],
         "require_passed": False,
+        "require_no_unsupported_model_config_fields": False,
+        "require_no_unsupported_architecture_fields": False,
     }
     assert payload["failure_count"] == 17
     assert all(
@@ -821,6 +829,8 @@ def test_check_circle_ai_contract_runner_rejects_assurance_gate() -> None:
         "allowed_decision_verdicts": [],
         "allowed_assurance_levels": ["theorem_backed"],
         "require_passed": False,
+        "require_no_unsupported_model_config_fields": False,
+        "require_no_unsupported_architecture_fields": False,
     }
     assert payload["failure_count"] == 13
     assert all(

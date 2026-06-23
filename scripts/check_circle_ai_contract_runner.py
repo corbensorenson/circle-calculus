@@ -178,6 +178,7 @@ def _summary_from_receipt(
     request_path: Path | None,
     model_config_import_report_path: Path | None,
     model_config_parameter_sources: dict[str, Any] | None,
+    unsupported_model_config_fields: list[str] | None,
     architecture_config_import_report_path: Path | None,
     architecture_config_parameter_sources: dict[str, Any] | None,
     request_validation_report_path: Path | None,
@@ -203,6 +204,10 @@ def _summary_from_receipt(
             else _display_path(model_config_import_report_path)
         ),
         "model_config_parameter_sources": model_config_parameter_sources,
+        "unsupported_model_config_fields": (
+            [] if unsupported_model_config_fields is None
+            else unsupported_model_config_fields
+        ),
         "architecture_config_import_report_path": (
             None
             if architecture_config_import_report_path is None
@@ -305,6 +310,7 @@ def _append_gate_failures(
     required_decision_verdicts: tuple[str, ...],
     required_assurance_levels: tuple[str, ...],
     require_passed: bool,
+    require_no_unsupported_model_config_fields: bool,
     require_no_unsupported_architecture_fields: bool,
 ) -> None:
     if required_statuses and summary["status"] not in required_statuses:
@@ -334,6 +340,12 @@ def _append_gate_failures(
         failures.append(
             f"{path}: receipt request_passed was not true "
             f"(got {summary['request_passed']!r})"
+        )
+    unsupported_model_fields = summary["unsupported_model_config_fields"]
+    if require_no_unsupported_model_config_fields and unsupported_model_fields:
+        failures.append(
+            f"{path}: {summary['kind']} has unsupported model-config fields: "
+            + ", ".join(unsupported_model_fields)
         )
     unsupported_architecture_fields = summary[
         "unsupported_architecture_config_fields"
@@ -379,6 +391,7 @@ def check_runner_examples(
     required_decision_verdicts: tuple[str, ...] = (),
     required_assurance_levels: tuple[str, ...] = (),
     require_passed: bool = False,
+    require_no_unsupported_model_config_fields: bool = False,
     require_no_unsupported_architecture_fields: bool = False,
     selected_kinds: tuple[str, ...] = (),
 ) -> dict[str, Any]:
@@ -514,6 +527,7 @@ def check_runner_examples(
                 request_path=path,
                 model_config_import_report_path=None,
                 model_config_parameter_sources=None,
+                unsupported_model_config_fields=None,
                 architecture_config_import_report_path=None,
                 architecture_config_parameter_sources=None,
                 request_validation_report_path=validation_report_path,
@@ -533,6 +547,9 @@ def check_runner_examples(
                 required_decision_verdicts=required_decision_verdicts,
                 required_assurance_levels=required_assurance_levels,
                 require_passed=require_passed,
+                require_no_unsupported_model_config_fields=(
+                    require_no_unsupported_model_config_fields
+                ),
                 require_no_unsupported_architecture_fields=(
                     require_no_unsupported_architecture_fields
                 ),
@@ -648,6 +665,9 @@ def check_runner_examples(
                 request_path=request_path,
                 model_config_import_report_path=import_report_path,
                 model_config_parameter_sources=import_report["parameter_sources"],
+                unsupported_model_config_fields=import_report[
+                    "unsupported_model_config_fields"
+                ],
                 architecture_config_import_report_path=None,
                 architecture_config_parameter_sources=None,
                 request_validation_report_path=validation_report_path,
@@ -667,6 +687,9 @@ def check_runner_examples(
                 required_decision_verdicts=required_decision_verdicts,
                 required_assurance_levels=required_assurance_levels,
                 require_passed=require_passed,
+                require_no_unsupported_model_config_fields=(
+                    require_no_unsupported_model_config_fields
+                ),
                 require_no_unsupported_architecture_fields=(
                     require_no_unsupported_architecture_fields
                 ),
@@ -823,6 +846,7 @@ def check_runner_examples(
                     request_path=request_path,
                     model_config_import_report_path=None,
                     model_config_parameter_sources=None,
+                    unsupported_model_config_fields=None,
                     architecture_config_import_report_path=import_report_path,
                     architecture_config_parameter_sources=import_report[
                         "parameter_sources"
@@ -847,6 +871,9 @@ def check_runner_examples(
                     required_decision_verdicts=required_decision_verdicts,
                     required_assurance_levels=required_assurance_levels,
                     require_passed=require_passed,
+                    require_no_unsupported_model_config_fields=(
+                        require_no_unsupported_model_config_fields
+                    ),
                     require_no_unsupported_architecture_fields=(
                         require_no_unsupported_architecture_fields
                     ),
@@ -885,6 +912,9 @@ def check_runner_examples(
             "allowed_decision_verdicts": list(required_decision_verdicts),
             "allowed_assurance_levels": list(required_assurance_levels),
             "require_passed": require_passed,
+            "require_no_unsupported_model_config_fields": (
+                require_no_unsupported_model_config_fields
+            ),
             "require_no_unsupported_architecture_fields": (
                 require_no_unsupported_architecture_fields
             ),
@@ -1113,6 +1143,14 @@ def main() -> int:
             "fields that were not mapped into the theorem-linked request."
         ),
     )
+    parser.add_argument(
+        "--require-no-unsupported-model-config-fields",
+        action="store_true",
+        help=(
+            "Exit nonzero if any standard-RoPE model-config example includes "
+            "features that were not mapped into the theorem-linked request."
+        ),
+    )
     args = parser.parse_args()
 
     report = check_runner_examples(
@@ -1152,6 +1190,9 @@ def main() -> int:
         required_decision_verdicts=tuple(args.require_decision),
         required_assurance_levels=tuple(args.require_assurance),
         require_passed=args.require_passed,
+        require_no_unsupported_model_config_fields=(
+            args.require_no_unsupported_model_config_fields
+        ),
         require_no_unsupported_architecture_fields=(
             args.require_no_unsupported_architecture_fields
         ),
@@ -1173,6 +1214,8 @@ def main() -> int:
             "required_assurances="
             f"{report['gate_policy']['allowed_assurance_levels']} "
             f"require_passed={report['gate_policy']['require_passed']} "
+            "require_no_unsupported_model_config_fields="
+            f"{report['gate_policy']['require_no_unsupported_model_config_fields']} "
             "require_no_unsupported_architecture_fields="
             f"{report['gate_policy']['require_no_unsupported_architecture_fields']}"
         )
@@ -1194,6 +1237,8 @@ def main() -> int:
                 f"assurance={summary['decision_assurance']} "
                 f"theorems={summary['theorem_count']} "
                 f"recommendations={summary['recommendation_count']} "
+                "unsupported_model_fields="
+                f"{len(summary['unsupported_model_config_fields'])} "
                 "unsupported_architecture_fields="
                 f"{len(summary['unsupported_architecture_config_fields'])} "
                 f"receipt={summary['receipt_path']}"
