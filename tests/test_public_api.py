@@ -795,7 +795,10 @@ def test_package_cli_unified_certify_batch_request_files_writes_compact_receipts
 def test_package_cli_unified_certify_batch_text_prints_validation_command(
     tmp_path,
 ) -> None:
-    report_path = tmp_path / "runner_report.json"
+    artifact_dir = tmp_path / "batch_handoff"
+    report_path = artifact_dir / "kv-suite_runner_check.json"
+    manifest_path = artifact_dir / "kv-suite_artifact_manifest.json"
+    manifest_check_path = artifact_dir / "kv-suite_artifact_manifest_check.json"
     request_file = ROOT / "examples" / "circle_ai_requests" / "kv_cache_request.json"
 
     result = subprocess.run(
@@ -810,8 +813,10 @@ def test_package_cli_unified_certify_batch_text_prints_validation_command(
             "batch",
             "--request-file",
             str(request_file),
-            "--report-out",
-            str(report_path),
+            "--artifact-dir",
+            str(artifact_dir),
+            "--artifact-prefix",
+            "kv-suite",
             "--require-passed",
             "--require-status",
             "proved",
@@ -826,13 +831,19 @@ def test_package_cli_unified_certify_batch_text_prints_validation_command(
     )
 
     report = json.loads(report_path.read_text())
+    assert report["artifact_manifest_path"] == str(manifest_path)
+    assert report["artifact_manifest_check_path"] == str(manifest_check_path)
     assert report["validation_commands"] == [
         "python examples/downstream_ci_verify_circle_ai_batch.py "
         f"{report_path} --format json --require-status proved "
         "--require-decision passed --require-passed"
     ]
-    assert f"validation_command={report['validation_commands'][0]}" in (
-        result.stdout.splitlines()
+    stdout_lines = result.stdout.splitlines()
+    assert f"validation_command={report['validation_commands'][0]}" in stdout_lines
+    assert any(f"artifact_manifest={manifest_path}" in line for line in stdout_lines)
+    assert any(
+        f"artifact_manifest_check={manifest_check_path}" in line
+        for line in stdout_lines
     )
 
 

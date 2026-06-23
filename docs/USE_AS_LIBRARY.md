@@ -475,7 +475,9 @@ runner report plus every emitted sidecar; pass `--artifact-manifest` only to
 override or supply a relocated manifest. The runner report also records a
 top-level `validation_commands` list with the JSON-mode verifier command for the
 handoff. `circle-ai-certify batch --format text` prints that same command as a
-`validation_command=...` line for copyable handoffs. It validates the runner report's own `gate_policy`,
+`validation_command=...` line and includes `artifact_manifest=...` plus
+`artifact_manifest_check=...` fields for copyable handoffs. It validates the
+runner report's own `gate_policy`,
 `example_count`, `selected_kinds`, `required_kinds`, and `kind_counts`, so stale
 reports with mismatched metadata or missing current policy fields fail before
 being accepted as CI evidence. An

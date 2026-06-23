@@ -1605,6 +1605,8 @@ def _certify_batch_requests(args: argparse.Namespace) -> int:
                     f"source_count={report['example_count']}",
                     f"failure_count={report['failure_count']}",
                     f"required_kinds={','.join(report['required_kinds'])}",
+                    f"artifact_manifest={report['artifact_manifest_path']}",
+                    f"artifact_manifest_check={report['artifact_manifest_check_path']}",
                     "require_no_unsupported_architecture_fields="
                     f"{report['gate_policy']['require_no_unsupported_architecture_fields']}",
                 ]
