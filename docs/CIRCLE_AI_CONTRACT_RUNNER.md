@@ -878,6 +878,7 @@ architecture_bundle = build_architecture_config_certification_bundle(
     required_decision_verdicts=("passed",),
     required_assurance_levels=("theorem_backed",),
     require_passed=True,
+    require_no_unsupported_architecture_fields=True,
 )
 assert architecture_bundle["architecture_config_import_report"]["ok"] is True
 ```

@@ -312,9 +312,15 @@ bundle = build_architecture_config_certification_bundle(
     required_statuses=("proved",),
     required_decision_verdicts=("passed",),
     require_passed=True,
+    require_no_unsupported_architecture_fields=True,
 )
 print(bundle["architecture_config_import_report"]["parameter_sources"])
 ```
+
+Without `require_no_unsupported_architecture_fields=True`, unsupported
+source-config fields remain visible in the import report but do not by
+themselves fail the bundle. Use the strict flag when the config boundary is part
+of downstream CI policy.
 
 The architecture import report is provenance, not proof. It records which config
 field or explicit override supplied each request parameter; the receipt remains

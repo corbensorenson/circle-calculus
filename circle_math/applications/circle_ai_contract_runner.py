@@ -4783,6 +4783,74 @@ def build_contract_receipt_gate_report(
     )
 
 
+def _extend_receipt_file_check_report_failures(
+    report: dict[str, Any],
+    failures: Sequence[str],
+) -> dict[str, Any]:
+    if not failures:
+        return report
+    merged = dict(report)
+    existing_failures = merged.get("failures", [])
+    if not isinstance(existing_failures, list):
+        existing_failures = []
+    all_failures = [*existing_failures, *failures]
+    merged["ok"] = False
+    merged["failure_count"] = len(all_failures)
+    merged["failures"] = all_failures
+    summaries = merged.get("summaries")
+    if isinstance(summaries, list):
+        merged_summaries = []
+        for summary in summaries:
+            if isinstance(summary, dict):
+                next_summary = dict(summary)
+                next_summary["failure_count"] = len(all_failures)
+                merged_summaries.append(next_summary)
+            else:
+                merged_summaries.append(summary)
+        merged["summaries"] = merged_summaries
+    return merged
+
+
+def _strict_config_import_gate_failures(
+    *,
+    model_config_import_report: Mapping[str, Any] | None,
+    architecture_config_import_report: Mapping[str, Any] | None,
+    require_no_unsupported_model_config_fields: bool,
+    require_no_unsupported_architecture_fields: bool,
+) -> list[str]:
+    failures: list[str] = []
+    if (
+        require_no_unsupported_model_config_fields
+        and model_config_import_report is not None
+    ):
+        unsupported = model_config_import_report.get("unsupported_model_config_fields")
+        if isinstance(unsupported, Sequence) and not isinstance(unsupported, str):
+            unsupported_fields = [str(field) for field in unsupported]
+        else:
+            unsupported_fields = []
+        if unsupported_fields:
+            failures.append(
+                "unsupported model-config fields: " + ", ".join(unsupported_fields)
+            )
+    if (
+        require_no_unsupported_architecture_fields
+        and architecture_config_import_report is not None
+    ):
+        unsupported = architecture_config_import_report.get(
+            "unsupported_architecture_config_fields"
+        )
+        if isinstance(unsupported, Sequence) and not isinstance(unsupported, str):
+            unsupported_fields = [str(field) for field in unsupported]
+        else:
+            unsupported_fields = []
+        if unsupported_fields:
+            failures.append(
+                "unsupported architecture-config fields: "
+                + ", ".join(unsupported_fields)
+            )
+    return failures
+
+
 def require_contract_receipt_gate(
     receipt: Mapping[str, Any],
     pack: Mapping[str, Any],
@@ -4822,6 +4890,8 @@ def build_contract_certification_bundle(
     required_decision_verdicts: Sequence[str] = (),
     required_assurance_levels: Sequence[str] = (),
     require_passed: bool = False,
+    require_no_unsupported_model_config_fields: bool = False,
+    require_no_unsupported_architecture_fields: bool = False,
 ) -> dict[str, Any]:
     """Return request validation, receipt, and gate report in one public shape.
 
@@ -4863,6 +4933,16 @@ def build_contract_certification_bundle(
         None
         if architecture_config_import_report is None
         else dict(architecture_config_import_report)
+    )
+    strict_import_failures = _strict_config_import_gate_failures(
+        model_config_import_report=import_report,
+        architecture_config_import_report=architecture_import_report,
+        require_no_unsupported_model_config_fields=(
+            require_no_unsupported_model_config_fields
+        ),
+        require_no_unsupported_architecture_fields=(
+            require_no_unsupported_architecture_fields
+        ),
     )
 
     if import_report is not None:
@@ -4955,9 +5035,15 @@ def build_contract_certification_bundle(
                 required_assurance_levels=required_assurance_levels,
                 require_passed=require_passed,
             )
+            gate_report = _extend_receipt_file_check_report_failures(
+                gate_report,
+                strict_import_failures,
+            )
             failures.extend(gate_report["failures"])
         except ValueError as exc:
             failures.append(str(exc))
+    if gate_report is None:
+        failures.extend(strict_import_failures)
 
     return {
         "schema_id": CERTIFICATION_BUNDLE_SCHEMA_ID,
@@ -5005,6 +5091,7 @@ def build_rope_model_config_certification_bundle(
     required_decision_verdicts: Sequence[str] = (),
     required_assurance_levels: Sequence[str] = (),
     require_passed: bool = False,
+    require_no_unsupported_model_config_fields: bool = False,
 ) -> dict[str, Any]:
     """Build a provenance-carrying certification bundle from a RoPE model config."""
 
@@ -5033,6 +5120,9 @@ def build_rope_model_config_certification_bundle(
         required_decision_verdicts=required_decision_verdicts,
         required_assurance_levels=required_assurance_levels,
         require_passed=require_passed,
+        require_no_unsupported_model_config_fields=(
+            require_no_unsupported_model_config_fields
+        ),
     )
 
 
@@ -5047,6 +5137,7 @@ def build_architecture_config_certification_bundle(
     required_decision_verdicts: Sequence[str] = (),
     required_assurance_levels: Sequence[str] = (),
     require_passed: bool = False,
+    require_no_unsupported_architecture_fields: bool = False,
 ) -> dict[str, Any]:
     """Build a provenance-carrying certification bundle from an architecture config."""
 
@@ -5071,6 +5162,9 @@ def build_architecture_config_certification_bundle(
         required_decision_verdicts=required_decision_verdicts,
         required_assurance_levels=required_assurance_levels,
         require_passed=require_passed,
+        require_no_unsupported_architecture_fields=(
+            require_no_unsupported_architecture_fields
+        ),
     )
 
 

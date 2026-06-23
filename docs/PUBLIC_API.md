@@ -173,6 +173,7 @@ architecture_bundle = build_architecture_config_certification_bundle(
     required_decision_verdicts=("passed",),
     required_assurance_levels=("theorem_backed",),
     require_passed=True,
+    require_no_unsupported_architecture_fields=True,
 )
 assert architecture_bundle["architecture_config_import_report"]["request"] == (
     architecture_receipt["request"]
@@ -260,6 +261,7 @@ bundle = build_architecture_config_certification_bundle(
     "sparse-attention",
     architecture_config,
     pack=pack,
+    require_no_unsupported_architecture_fields=True,
 )
 assert bundle["architecture_config_import_report"]["request"] == request
 ```
@@ -273,6 +275,9 @@ versioned requests, plus `build_rope_model_config_certification_bundle` and
 should carry request preflight, receipt, gate report, and config-to-request
 provenance in one object. CLI certification bundles also reflect strict
 config-import gate failures in the bundle and embedded gate report.
+Library callers can pass `require_no_unsupported_architecture_fields=True` to
+the architecture-config bundle helper when unsupported source-config fields
+should fail the bundle instead of remaining provenance-only.
 The same in-memory runner-check helper accepts architecture configs and emits
 RoPE, KV-cache, sparse-attention, and recurrence summaries by default. Pass
 `architecture_config_kinds=("sparse-attention",)` when a caller only needs one

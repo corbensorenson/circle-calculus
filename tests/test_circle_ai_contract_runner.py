@@ -1977,6 +1977,74 @@ def test_certification_bundle_public_api_embeds_architecture_config_import_repor
     )
 
 
+def test_architecture_config_certification_bundle_strict_unsupported_fields(
+    contract_pack: dict,
+) -> None:
+    config = {
+        "circle_ai_contract_kinds": ["rope"],
+        "model": {
+            "hidden_size": 4096,
+            "num_attention_heads": 32,
+            "max_position_embeddings": 4096,
+            "rope_theta": 10000,
+            "model_type": "llama",
+        },
+        "rope": {
+            "requested_margin": "1/4099",
+            "turn_ratio_numerator": 1,
+            "turn_ratio_denominator": 4099,
+        },
+    }
+    import_report = build_architecture_config_import_report("rope", config)
+    assert import_report["ok"] is True
+    assert import_report["unsupported_architecture_config_fields"] == [
+        "model.model_type"
+    ]
+
+    soft_bundle = build_architecture_config_certification_bundle(
+        "rope",
+        config,
+        pack=contract_pack,
+        require_passed=True,
+    )
+    jsonschema.validate(soft_bundle, build_contract_certification_bundle_json_schema())
+    assert soft_bundle["ok"] is True
+    assert soft_bundle["gate_report"]["ok"] is True
+
+    strict_bundle = build_architecture_config_certification_bundle(
+        "rope",
+        config,
+        pack=contract_pack,
+        require_passed=True,
+        require_no_unsupported_architecture_fields=True,
+    )
+    jsonschema.validate(
+        strict_bundle,
+        build_contract_certification_bundle_json_schema(),
+    )
+    assert strict_bundle["ok"] is False
+    assert strict_bundle["failure_count"] == 1
+    assert (
+        "unsupported architecture-config fields: model.model_type"
+        in strict_bundle["failures"]
+    )
+    assert strict_bundle["gate_report"]["ok"] is False
+    assert strict_bundle["gate_report"]["failure_count"] == 1
+    assert (
+        "unsupported architecture-config fields: model.model_type"
+        in strict_bundle["gate_report"]["failures"]
+    )
+
+    direct_strict_bundle = build_contract_certification_bundle(
+        import_report["request"],
+        pack=contract_pack,
+        architecture_config_import_report=import_report,
+        require_passed=True,
+        require_no_unsupported_architecture_fields=True,
+    )
+    assert direct_strict_bundle["failures"] == strict_bundle["failures"]
+
+
 def test_certification_bundle_public_api_rejects_mismatched_model_config_import_report(
     contract_pack: dict,
 ) -> None:
