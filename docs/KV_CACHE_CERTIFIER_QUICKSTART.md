@@ -70,6 +70,12 @@ python scripts/kv_cache_certify.py \
   --json-out reports/kv_cache_certificate.json
 ```
 
+Python API users can call `build_kv_cache_receipt(...)` from
+`circle_math.ai_contracts`; see the shared examples in
+`docs/CIRCLE_AI_CONTRACT_RUNNER.md#python-api`. The receipt includes the same
+theorem ids, proof status, decision, validation commands, and non-claims as the
+CLI output.
+
 ## Reading The Certificate
 
 - `window_certificate`: the inspected token's slot, current slot, lag, retained-window status, next same-slot overwrite boundary, whether any later token up to the current read point reused the same slot, whether a stale token has the explicit same-slot overwrite witness `token + cache_size`, whether stale status is equivalent to the existence of a later same-slot write in the trace, and whether retained-window membership is equivalent to no later same-slot write in the trace up to `current`.

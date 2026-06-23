@@ -77,6 +77,12 @@ The top-level JSON schema is:
 circle_calculus.stride_family_sparse_attention_certificate.v0
 ```
 
+Python API users can call `build_sparse_attention_receipt(...)` from
+`circle_math.ai_contracts`; see the shared examples in
+`docs/CIRCLE_AI_CONTRACT_RUNNER.md#python-api`. A sparse receipt can be
+theorem-backed and still fail the requested coverage property. Treat that as a
+gap certificate, not as a passing architecture gate.
+
 ## Reading The Certificate
 
 - `schema_id`: the report format identifier, currently `circle_calculus.stride_family_sparse_attention_certificate.v0`.

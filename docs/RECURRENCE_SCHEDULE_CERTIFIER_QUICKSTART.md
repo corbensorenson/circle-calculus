@@ -14,6 +14,12 @@ python scripts/circle_ai_certify.py recurrence --period 6 --position 9 --horizon
 python scripts/circle_ai_contract_ready.py --kind recurrence_schedule --digest --field scheduled_work_saving --field post_period_multi_extension_scheduled_work_saving --include-recommendations
 ```
 
+Python API users can call `build_recurrence_receipt(...)` from
+`circle_math.ai_contracts`; see the shared examples in
+`docs/CIRCLE_AI_CONTRACT_RUNNER.md#python-api`. The receipt is the same
+theorem-linked finite schedule/index object emitted by
+`circle-ai-certify recurrence`, not a runtime or reasoning-quality result.
+
 The unified runner accepts looped-transformer-friendly aliases and normalizes
 them into the canonical receipt fields: `--period` is `loop_period`,
 `--position` is `sample_index`, `--horizon-steps` is `max_loops`,

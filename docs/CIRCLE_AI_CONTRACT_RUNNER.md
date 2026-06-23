@@ -716,6 +716,74 @@ this field; it still needs a D19-style certificate or future sharper theorem.
 
 ## Python API
 
+For ordinary Python use, start with the stable facade in
+`circle_math.ai_contracts`. These builders emit the same receipt shape as the
+CLI: `kind`, `status`, `request_passed`, `decision`, `proof_status`,
+`evidence`, `validation_commands`, and `not_claimed`.
+
+```python
+from circle_math.ai_contracts import (
+    build_kv_cache_receipt,
+    build_recurrence_receipt,
+    build_rope_receipt,
+    build_sparse_attention_receipt,
+    receipt_summary_lines,
+)
+
+rope = build_rope_receipt(
+    head_dim=128,
+    base=10000,
+    context=131072,
+    requested_margin="1/328459",
+)
+kv = build_kv_cache_receipt(
+    cache_size=16,
+    current=31,
+    token=20,
+    batch_tokens=[20, 24, 29, 31],
+    sink_size=4,
+    request_id="prefill_read",
+)
+sparse_gap = build_sparse_attention_receipt(
+    context=120,
+    strides=[7, 13],
+    path_length=3,
+    local_window=4,
+)
+sparse_pass = build_sparse_attention_receipt(
+    context=120,
+    strides=[7, 13],
+    path_length=3,
+    local_window=119,
+)
+recurrence = build_recurrence_receipt(
+    loop_period=6,
+    sample_index=9,
+    max_loops=8,
+    token_count=24,
+    selected_block_start=6,
+    selected_block_width=6,
+    shift_passes=3,
+)
+
+for receipt in [rope, kv, sparse_gap, sparse_pass, recurrence]:
+    print(receipt_summary_lines(receipt)[0])
+    assert receipt["proof_status"]["all_theorem_ids_proved"] is True
+    assert receipt["not_claimed"]
+
+assert sparse_gap["request_passed"] is False
+assert sparse_gap["decision"]["verdict"] == "failed"
+assert sparse_gap["decision"]["assurance"] == "theorem_backed"
+assert sparse_pass["request_passed"] is True
+```
+
+The `sparse_gap` receipt is still useful: it is a theorem-backed gap
+certificate for the declared sparse plan. Use a passing sparse receipt such as
+`sparse_pass` when a downstream CI gate requires `request_passed = true`.
+
+For lower-level bundle, artifact, replay, and config-import APIs, use the
+application helpers below.
+
 ```python
 from circle_math.applications import (
     build_architecture_config_certification_bundle,
@@ -834,7 +902,7 @@ request = {
         "context": 120,
         "strides": (7, 13),
         "path_length": 3,
-        "local_window": 4,
+        "local_window": 119,
     },
 }
 assert validate_contract_request(request) == []
