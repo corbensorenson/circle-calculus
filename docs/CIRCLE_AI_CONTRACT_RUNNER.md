@@ -521,7 +521,12 @@ also includes `source_content_fingerprint` so request files and model configs
 can be pinned in audit logs. Model-config summaries also inline
 `model_config_parameter_sources`, so audit logs can show which request values
 were overridden, read from config fields, derived, defaulted, or omitted without
-reopening the import sidecar. When `--model-config-import-report-out-dir` is set,
+reopening the import sidecar. They also inline
+`unsupported_model_config_fields`, so batch reports keep standard-RoPE
+source-config features that were not certified visible even when the import
+sidecar is not opened. Add `--require-no-unsupported-model-config-fields` when a
+batch should reject those model-config features instead of only reporting them.
+When `--model-config-import-report-out-dir` is set,
 model-config summaries also point to the schema-validated import report that
 converted the config into a Circle request.
 Architecture-config summaries similarly inline

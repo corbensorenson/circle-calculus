@@ -188,7 +188,10 @@ explicit `--receipt-out-dir` and related directory flags only when a downstream
 CI system needs a custom layout instead of the standard artifact directory.
 Add `--require-no-unsupported-architecture-fields` when the generated
 runner-check report should fail if an architecture config contains fields that
-Circle did not map into a theorem-linked request.
+Circle did not map into a theorem-linked request. Add
+`--require-no-unsupported-model-config-fields` when standard-RoPE model-config
+imports should reject unsupported model features rather than only reporting
+them.
 
 After copying that directory into another project, a standard-library verifier
 can check the runner report and every named sidecar without importing Circle:
@@ -210,7 +213,10 @@ names. A model-only config that declares `circle_ai_contract_kinds: ["rope"]`
 still reports extra fields such as `model.model_type` as unsupported rather than
 folding them into the theorem-linked request. Add
 `--require-no-unsupported-architecture-fields` when downstream CI should fail on
-that boundary instead of accepting the receipt with an explicit non-claim. The
+that boundary instead of accepting the receipt with an explicit non-claim. For
+standard-RoPE model configs, add
+`--require-no-unsupported-model-config-fields` to reject unsupported
+model-config features at the same batch gate. The
 verifier also validates the runner report's own `gate_policy`, `example_count`,
 and `selected_kinds`, so stale reports with mismatched metadata or missing
 current policy fields fail before being accepted as CI evidence. Accepted
@@ -703,6 +709,10 @@ target-section behavior that was present in the source config but not certified
 by the emitted request. Add `--require-no-unsupported-architecture-fields` when
 the checker should reject any architecture-config example with unmapped source
 fields instead of accepting the receipt with an explicit non-claim.
+Model-config summaries similarly inline `unsupported_model_config_fields`; add
+`--require-no-unsupported-model-config-fields` when a standard-RoPE batch should
+reject unsupported model-config features instead of only preserving the boundary
+in the report.
 It also records the batch gate policy. If a receipt violates the required
 status, decision, assurance, or pass condition, the checker still writes the
 report and exits nonzero.
@@ -1036,7 +1046,9 @@ text summary also prints an import-boundary line with unsupported source-field
 counts, so unmodeled source-config behavior remains visible.
 Add `--require-no-unsupported-architecture-fields` when a direct
 architecture-config receipt or a batch report should reject that boundary
-instead of only reporting it.
+instead of only reporting it. Add
+`--require-no-unsupported-model-config-fields` when RoPE model-config imports
+should enforce the same strict boundary.
 
 That returns the same schema as the CLI:
 

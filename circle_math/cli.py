@@ -340,6 +340,17 @@ def _add_architecture_import_gate_options(parser: argparse.ArgumentParser) -> No
     )
 
 
+def _add_model_config_import_gate_options(parser: argparse.ArgumentParser) -> None:
+    parser.add_argument(
+        "--require-no-unsupported-model-config-fields",
+        action="store_true",
+        help=(
+            "Return nonzero when --model-config-file includes standard-RoPE "
+            "features that were not mapped into the theorem-linked request."
+        ),
+    )
+
+
 def _add_certify_common_options(parser: argparse.ArgumentParser) -> None:
     parser.add_argument("--pack", type=Path, default=None)
     parser.add_argument(
@@ -792,6 +803,8 @@ def _certify_batch_validation_commands(
         parts.append("--require-passed")
     if args.require_no_unsupported_architecture_fields:
         parts.append("--require-no-unsupported-architecture-fields")
+    if args.require_no_unsupported_model_config_fields:
+        parts.append("--require-no-unsupported-model-config-fields")
     return [" ".join(_quote_cli_argument(part) for part in parts)]
 
 
@@ -922,6 +935,23 @@ def _architecture_import_gate_failures(
     ]
 
 
+def _model_config_import_gate_failures(
+    report: dict[str, Any] | None,
+    args: argparse.Namespace,
+) -> list[str]:
+    if not getattr(args, "require_no_unsupported_model_config_fields", False):
+        return []
+    if report is None:
+        return []
+    unsupported_fields = report.get("unsupported_model_config_fields", [])
+    if not unsupported_fields:
+        return []
+    return [
+        "unsupported model-config fields: "
+        + ", ".join(str(field) for field in unsupported_fields)
+    ]
+
+
 def _certify_print_and_gate(
     receipt: dict[str, Any],
     pack: dict[str, Any],
@@ -1024,6 +1054,7 @@ def _certify_print_and_gate(
             _write_json_file(args.artifact_manifest_check_out, manifest_check)
     gate_failures = [
         *_receipt_gate_failures(receipt, args),
+        *_model_config_import_gate_failures(model_config_import_report, args),
         *_architecture_import_gate_failures(architecture_config_import_report, args),
     ]
     if args.format == "json":
@@ -1087,6 +1118,7 @@ def _certify_batch_summary_from_receipt(
     request_path: Path | None = None,
     model_config_import_report_path: Path | None = None,
     model_config_parameter_sources: dict[str, Any] | None = None,
+    unsupported_model_config_fields: list[str] | None = None,
     architecture_config_import_report_path: Path | None = None,
     architecture_config_parameter_sources: dict[str, Any] | None = None,
     unsupported_architecture_config_fields: list[str] | None = None,
@@ -1111,6 +1143,11 @@ def _certify_batch_summary_from_receipt(
             else str(model_config_import_report_path)
         ),
         "model_config_parameter_sources": model_config_parameter_sources,
+        "unsupported_model_config_fields": (
+            []
+            if unsupported_model_config_fields is None
+            else unsupported_model_config_fields
+        ),
         "architecture_config_import_report_path": (
             None
             if architecture_config_import_report_path is None
@@ -1434,6 +1471,9 @@ def _certify_batch_requests(args: argparse.Namespace) -> int:
                     compact_receipt=compact_receipt,
                     model_config_import_report_path=model_config_import_report_path,
                     model_config_parameter_sources=import_report["parameter_sources"],
+                    unsupported_model_config_fields=import_report[
+                        "unsupported_model_config_fields"
+                    ],
                     request_validation_report_path=request_validation_report_path,
                     certification_bundle_path=certification_bundle_path,
                     certification_bundle_check_path=certification_bundle_check_path,
@@ -1442,6 +1482,8 @@ def _certify_batch_requests(args: argparse.Namespace) -> int:
                 )
             )
             for failure in _receipt_gate_failures(receipt, args):
+                failures.append(f"{source_path}: {failure}")
+            for failure in _model_config_import_gate_failures(import_report, args):
                 failures.append(f"{source_path}: {failure}")
         except SystemExit as exc:
             failures.append(
@@ -1637,6 +1679,9 @@ def _certify_batch_requests(args: argparse.Namespace) -> int:
             "require_no_unsupported_architecture_fields": (
                 args.require_no_unsupported_architecture_fields
             ),
+            "require_no_unsupported_model_config_fields": (
+                args.require_no_unsupported_model_config_fields
+            ),
         },
         "summaries": summaries,
     }
@@ -1684,6 +1729,8 @@ def _certify_batch_requests(args: argparse.Namespace) -> int:
                     f"artifact_manifest_check={report['artifact_manifest_check_path']}",
                     "require_no_unsupported_architecture_fields="
                     f"{report['gate_policy']['require_no_unsupported_architecture_fields']}",
+                    "require_no_unsupported_model_config_fields="
+                    f"{report['gate_policy']['require_no_unsupported_model_config_fields']}",
                 ]
             )
         )
@@ -1903,6 +1950,14 @@ def contract_certify_main() -> int:
             "fields that were not mapped into the theorem-linked request."
         ),
     )
+    batch_parser.add_argument(
+        "--require-no-unsupported-model-config-fields",
+        action="store_true",
+        help=(
+            "Exit nonzero if a standard-RoPE model-config batch source includes "
+            "features that were not mapped into the theorem-linked request."
+        ),
+    )
 
     rope_parser = subparsers.add_parser(
         "rope",
@@ -1919,6 +1974,7 @@ def contract_certify_main() -> int:
         ),
     )
     rope_parser.add_argument("--model-config-import-report-out", type=Path)
+    _add_model_config_import_gate_options(rope_parser)
     rope_parser.add_argument(
         "--architecture-config-file",
         "--architecture-config",
@@ -2480,6 +2536,7 @@ def contract_receipt_main() -> int:
             "Only valid with --model-config-file."
         ),
     )
+    _add_model_config_import_gate_options(parser)
     parser.add_argument(
         "--require-passed",
         action="store_true",
@@ -2516,6 +2573,7 @@ def contract_receipt_main() -> int:
     args = parser.parse_args()
 
     pack = build_contract_pack() if args.pack is None else load_contract_pack(args.pack)
+    model_config_import_report: dict[str, Any] | None = None
     if args.request_file is not None:
         if args.parameters is not None or args.parameters_file is not None:
             parser.error("use either --request-file or parameter JSON, not both")
@@ -2569,6 +2627,7 @@ def contract_receipt_main() -> int:
             discretization=args.discretization,
             requested_margin=args.requested_margin,
         )
+        model_config_import_report = import_report
         if args.model_config_import_report_out is not None:
             _write_json_file(args.model_config_import_report_out, import_report)
         if not import_report["ok"]:
@@ -2603,7 +2662,10 @@ def contract_receipt_main() -> int:
             parser.error(str(exc))
     if args.request_out is not None:
         _write_json_file(args.request_out, receipt["request"])
-    gate_failures = _receipt_gate_failures(receipt, args)
+    gate_failures = [
+        *_receipt_gate_failures(receipt, args),
+        *_model_config_import_gate_failures(model_config_import_report, args),
+    ]
     if args.format == "json":
         print(json.dumps(receipt, indent=2, sort_keys=True))
     else:

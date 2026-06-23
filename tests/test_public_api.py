@@ -341,6 +341,7 @@ def test_architecture_config_kind_hints_select_runner_contracts() -> None:
     assert report["ok"] is True
     assert report["example_count"] == 1
     assert report["gate_policy"]["require_no_unsupported_architecture_fields"] is False
+    assert report["gate_policy"]["require_no_unsupported_model_config_fields"] is False
     assert report["selected_kinds"] == ["rope_position_distinguishability"]
     summary = report["summaries"][0]
     assert summary["kind"] == "rope_position_distinguishability"
@@ -350,6 +351,7 @@ def test_architecture_config_kind_hints_select_runner_contracts() -> None:
     assert summary["unsupported_architecture_config_fields"] == [
         "model.model_type"
     ]
+    assert summary["unsupported_model_config_fields"] == []
 
     with pytest.raises(ValueError, match="must not be empty"):
         architecture_config_selected_contract_kinds(
@@ -925,6 +927,7 @@ def test_package_cli_unified_certify_batch_model_configs_write_import_reports(
             "proved",
             "--require-decision",
             "passed",
+            "--require-no-unsupported-model-config-fields",
             "--format",
             "json",
         ],
@@ -940,6 +943,10 @@ def test_package_cli_unified_certify_batch_model_configs_write_import_reports(
     assert report["ok"] is True
     assert report["example_count"] == 1
     assert report["gate_policy"]["require_no_unsupported_architecture_fields"] is False
+    assert report["gate_policy"]["require_no_unsupported_model_config_fields"] is True
+    assert "--require-no-unsupported-model-config-fields" in report[
+        "validation_commands"
+    ][0]
     assert report["selected_kinds"] == ["rope_position_distinguishability"]
     summary = report["summaries"][0]
     assert summary["source_type"] == "model_config"
@@ -953,6 +960,7 @@ def test_package_cli_unified_certify_batch_model_configs_write_import_reports(
     assert summary["model_config_parameter_sources"]["context"]["field"] == (
         "max_position_embeddings"
     )
+    assert summary["unsupported_model_config_fields"] == []
     import_report = json.loads(
         Path(summary["model_config_import_report_path"]).read_text()
     )
@@ -1211,6 +1219,7 @@ def test_package_cli_batch_rejects_unsupported_architecture_fields_when_required
     jsonschema.validate(report, build_contract_runner_check_json_schema())
     assert report["ok"] is False
     assert report["gate_policy"]["require_no_unsupported_architecture_fields"] is True
+    assert report["gate_policy"]["require_no_unsupported_model_config_fields"] is False
     assert report["failure_count"] == 1
     assert any(
         "unsupported architecture-config fields: model.model_type" in failure
@@ -1448,6 +1457,7 @@ def test_public_api_runner_check_report_builds_from_in_memory_sources() -> None:
     assert report["gate_policy"]["allowed_decision_verdicts"] == ["passed"]
     assert report["gate_policy"]["require_passed"] is True
     assert report["gate_policy"]["require_no_unsupported_architecture_fields"] is False
+    assert report["gate_policy"]["require_no_unsupported_model_config_fields"] is False
     assert report["selected_kinds"] == [
         "kv_cache_ring_buffer",
         "recurrence_schedule",
@@ -1477,6 +1487,7 @@ def test_public_api_runner_check_report_builds_from_in_memory_sources() -> None:
     model_summary = summaries_by_type["model_config"]
     assert model_summary["source_path"] == "configs/standard_rope_config.json"
     assert model_summary["kind"] == "rope_position_distinguishability"
+    assert model_summary["unsupported_model_config_fields"] == []
     assert model_summary["model_config_parameter_sources"]["head_dim"]["source"] == (
         "derived_config_fields"
     )
@@ -1496,6 +1507,7 @@ def test_public_api_runner_check_report_builds_from_in_memory_sources() -> None:
         assert summary["source_path"] == "configs/basic_transformer.json"
         assert summary["architecture_config_parameter_sources"]
         assert summary["model_config_parameter_sources"] is None
+        assert summary["unsupported_model_config_fields"] == []
     for summary in report["summaries"]:
         assert len(summary["theorem_ids"]) == summary["theorem_count"]
         assert summary["theorem_ids"]

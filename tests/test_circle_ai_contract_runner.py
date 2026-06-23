@@ -3000,6 +3000,7 @@ def test_runner_check_report_schema_accepts_public_report() -> None:
             "allowed_decision_verdicts": ["passed"],
             "allowed_assurance_levels": ["mixed_theorem_and_computation"],
             "require_passed": True,
+            "require_no_unsupported_model_config_fields": False,
             "require_no_unsupported_architecture_fields": False,
         },
         "summaries": [
@@ -3010,6 +3011,7 @@ def test_runner_check_report_schema_accepts_public_report() -> None:
                 "request_path": "examples/circle_ai_requests/rope_request.json",
                 "model_config_import_report_path": None,
                 "model_config_parameter_sources": None,
+                "unsupported_model_config_fields": [],
                 "architecture_config_import_report_path": None,
                 "architecture_config_parameter_sources": None,
                 "unsupported_architecture_config_fields": [],

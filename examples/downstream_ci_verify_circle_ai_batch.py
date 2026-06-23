@@ -422,7 +422,8 @@ def _runner_validation_command_semantic_failures(
         }
         format_value: str | None = None
         require_passed = False
-        require_no_unsupported = False
+        require_no_unsupported_architecture = False
+        require_no_unsupported_model = False
         cursor = 3
         while cursor < len(tokens):
             token = tokens[cursor]
@@ -445,7 +446,11 @@ def _runner_validation_command_semantic_failures(
                 cursor += 1
                 continue
             if token == "--require-no-unsupported-architecture-fields":
-                require_no_unsupported = True
+                require_no_unsupported_architecture = True
+                cursor += 1
+                continue
+            if token == "--require-no-unsupported-model-config-fields":
+                require_no_unsupported_model = True
                 cursor += 1
                 continue
             failures.append(f"{prefix} has unsupported argument: {token}")
@@ -477,11 +482,17 @@ def _runner_validation_command_semantic_failures(
             )
         if require_passed != bool(runner_gate_policy.get("require_passed")):
             failures.append(f"{prefix} require-passed flag does not match gate_policy")
-        if require_no_unsupported != bool(
+        if require_no_unsupported_architecture != bool(
             runner_gate_policy.get("require_no_unsupported_architecture_fields")
         ):
             failures.append(
-                f"{prefix} unsupported-field flag does not match gate_policy"
+                f"{prefix} unsupported architecture-field flag does not match gate_policy"
+            )
+        if require_no_unsupported_model != bool(
+            runner_gate_policy.get("require_no_unsupported_model_config_fields")
+        ):
+            failures.append(
+                f"{prefix} unsupported model-config-field flag does not match gate_policy"
             )
     return failures
 
@@ -645,12 +656,22 @@ def _runner_gate_policy(report: dict[str, Any]) -> tuple[dict[str, Any], list[st
             "must be a boolean"
         )
         require_no_unsupported = False
+    require_no_unsupported_model = raw_policy.get(
+        "require_no_unsupported_model_config_fields"
+    )
+    if not isinstance(require_no_unsupported_model, bool):
+        failures.append(
+            "runner gate_policy require_no_unsupported_model_config_fields "
+            "must be a boolean"
+        )
+        require_no_unsupported_model = False
     return {
         "allowed_statuses": statuses,
         "allowed_decision_verdicts": decisions,
         "allowed_assurance_levels": assurances,
         "require_passed": require_passed,
         "require_no_unsupported_architecture_fields": require_no_unsupported,
+        "require_no_unsupported_model_config_fields": require_no_unsupported_model,
     }, failures
 
 
@@ -763,6 +784,8 @@ def _merge_pin_policy_args(args: argparse.Namespace) -> dict[str, Any] | None:
         args.allow_missing_bundles = False
     if _policy_bool(policy, "require_no_unsupported_architecture_fields") is True:
         args.require_no_unsupported_architecture_fields = True
+    if _policy_bool(policy, "require_no_unsupported_model_config_fields") is True:
+        args.require_no_unsupported_model_config_fields = True
     return _expected_runner_gate_policy(policy)
 
 
@@ -778,6 +801,7 @@ def _pin_policy(
     require_request_validation: bool,
     require_bundles: bool,
     require_no_unsupported_architecture_fields: bool,
+    require_no_unsupported_model_config_fields: bool,
     expected_runner_gate_policy: dict[str, Any],
 ) -> dict[str, Any]:
     return {
@@ -792,6 +816,9 @@ def _pin_policy(
         "require_bundles": require_bundles,
         "require_no_unsupported_architecture_fields": (
             require_no_unsupported_architecture_fields
+        ),
+        "require_no_unsupported_model_config_fields": (
+            require_no_unsupported_model_config_fields
         ),
         "expected_runner_gate_policy": expected_runner_gate_policy,
     }
@@ -917,6 +944,9 @@ def _verify_summary(
     unsupported_architecture_fields = _string_list(
         summary.get("unsupported_architecture_config_fields")
     )
+    unsupported_model_fields = _string_list(
+        summary.get("unsupported_model_config_fields")
+    )
 
     return {
         "source_type": summary.get("source_type"),
@@ -930,6 +960,8 @@ def _verify_summary(
         "receipt_content_fingerprint_short": _short(
             summary.get("receipt_content_fingerprint")
         ),
+        "unsupported_model_config_field_count": len(unsupported_model_fields),
+        "unsupported_model_config_fields": unsupported_model_fields,
         "unsupported_architecture_config_field_count": len(
             unsupported_architecture_fields
         ),
@@ -955,6 +987,7 @@ def verify_runner_check(
     require_request_validation: bool,
     require_bundles: bool,
     require_no_unsupported_architecture_fields: bool,
+    require_no_unsupported_model_config_fields: bool,
     expected_runner_gate_policy: dict[str, Any] | None,
 ) -> dict[str, Any]:
     _check_policy_values(
@@ -1155,6 +1188,16 @@ def verify_runner_check(
                 "architecture-config fields despite runner gate_policy: "
                 + ", ".join(summary["unsupported_architecture_config_fields"])
             )
+        if (
+            runner_gate_policy.get("require_no_unsupported_model_config_fields")
+            is True
+            and summary["unsupported_model_config_fields"]
+        ):
+            failures.append(
+                f"{summary['source_path']}:{summary['kind']} has unsupported "
+                "model-config fields despite runner gate_policy: "
+                + ", ".join(summary["unsupported_model_config_fields"])
+            )
         if required_statuses and summary["status"] not in set(required_statuses):
             failures.append(
                 f"{summary['kind']} status {summary['status']!r} not in "
@@ -1179,6 +1222,7 @@ def verify_runner_check(
         unsupported_architecture_fields = summary[
             "unsupported_architecture_config_fields"
         ]
+        unsupported_model_fields = summary["unsupported_model_config_fields"]
         if (
             require_no_unsupported_architecture_fields
             and unsupported_architecture_fields
@@ -1187,6 +1231,12 @@ def verify_runner_check(
                 f"{summary['source_path']}:{summary['kind']} has unsupported "
                 "architecture-config fields: "
                 f"{', '.join(unsupported_architecture_fields)}"
+            )
+        if require_no_unsupported_model_config_fields and unsupported_model_fields:
+            failures.append(
+                f"{summary['source_path']}:{summary['kind']} has unsupported "
+                "model-config fields: "
+                f"{', '.join(unsupported_model_fields)}"
             )
 
     selected_manifest_path = artifact_manifest_path or report_manifest_path
@@ -1238,6 +1288,9 @@ def verify_runner_check(
         "require_no_unsupported_architecture_fields": (
             require_no_unsupported_architecture_fields
         ),
+        "require_no_unsupported_model_config_fields": (
+            require_no_unsupported_model_config_fields
+        ),
         "pin_policy": _pin_policy(
             required_kinds=required_kinds,
             required_statuses=required_statuses,
@@ -1250,6 +1303,9 @@ def verify_runner_check(
             require_bundles=require_bundles,
             require_no_unsupported_architecture_fields=(
                 require_no_unsupported_architecture_fields
+            ),
+            require_no_unsupported_model_config_fields=(
+                require_no_unsupported_model_config_fields
             ),
             expected_runner_gate_policy=runner_gate_policy,
         ),
@@ -1397,6 +1453,15 @@ def main() -> int:
         ),
     )
     parser.add_argument(
+        "--require-no-unsupported-model-config-fields",
+        action="store_true",
+        help=(
+            "Fail if any standard-RoPE model-config batch summary reports "
+            "features that were present in the source config but unsupported "
+            "by the emitted theorem-linked request."
+        ),
+    )
+    parser.add_argument(
         "--pin-policy",
         type=Path,
         help=(
@@ -1424,6 +1489,9 @@ def main() -> int:
             require_bundles=not args.allow_missing_bundles,
             require_no_unsupported_architecture_fields=(
                 args.require_no_unsupported_architecture_fields
+            ),
+            require_no_unsupported_model_config_fields=(
+                args.require_no_unsupported_model_config_fields
             ),
             expected_runner_gate_policy=expected_runner_gate_policy,
         )

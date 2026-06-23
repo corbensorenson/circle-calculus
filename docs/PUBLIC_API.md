@@ -393,7 +393,10 @@ circle-ai-certify seed-rule --format compact-json
 Add `--require-no-unsupported-architecture-fields` to direct architecture-config
 receipt commands or to `circle-ai-certify batch` when the command should fail if
 an architecture config contains fields that Circle did not map into a
-theorem-linked request.
+theorem-linked request. Add
+`--require-no-unsupported-model-config-fields` to RoPE model-config commands or
+batch runs when standard-RoPE imports should reject unsupported model-config
+features instead of only reporting the import boundary.
 
 For RoPE imports, `--model-config-file` may point directly at a JSON file or at
 a model directory containing `config.json`.
@@ -453,7 +456,11 @@ architecture-config field counts and names, so CI logs keep the boundary
 between certified request fields and source-config behavior that was not
 claimed. Add `--require-no-unsupported-architecture-fields` when downstream CI
 should reject any architecture config whose extra fields were not mapped into a
-theorem-linked request. For single-receipt commands, use `--artifact-manifest-out` and
+theorem-linked request. Model-config summaries preserve
+`unsupported_model_config_fields`; add
+`--require-no-unsupported-model-config-fields` when downstream CI should reject
+standard-RoPE model configs with unsupported features. For single-receipt
+commands, use `--artifact-manifest-out` and
 `--artifact-manifest-check-out` when the handoff also needs file fingerprints and
 a manifest self-check for every sidecar that invocation wrote.
 

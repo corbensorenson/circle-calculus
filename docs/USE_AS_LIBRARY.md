@@ -428,7 +428,10 @@ unsupported source-field counts.
 Add `--require-no-unsupported-architecture-fields` to direct architecture-config
 receipt commands or to `circle-ai-certify batch` when the command should fail if
 an architecture config contains fields that Circle did not map into a
-theorem-linked request.
+theorem-linked request. Add
+`--require-no-unsupported-model-config-fields` to RoPE model-config commands or
+batch runs when standard-RoPE imports should also reject any unsupported
+model-config feature instead of only surfacing it in the import report.
 
 `circle-ai-certify` is the installed-package path for guided RoPE, KV-cache,
 sparse-attention, recurrence, strided-fanout, cyclic-memory, multicoil-phase,
@@ -492,7 +495,11 @@ field counts and names, so downstream CI logs keep the boundary between
 certified request fields and source-config behavior that was not claimed. Add
 `--require-no-unsupported-architecture-fields` when downstream CI should reject
 any architecture config whose extra fields were not mapped into a theorem-linked
-request.
+request. Model-config summaries similarly preserve
+`unsupported_model_config_fields`; add
+`--require-no-unsupported-model-config-fields` when downstream CI should reject
+standard-RoPE model configs with unsupported features such as non-default
+`rope_scaling`.
 Use `--require-passed`, `--require-status`, `--require-decision`, and
 `--require-assurance` when the command is part of downstream CI. Gate failures
 return exit code `2` after writing the receipt, so CI logs keep the theorem

@@ -4103,6 +4103,7 @@ def _contract_runner_check_summary_from_receipt(
     source: Mapping[str, Any],
     receipt: Mapping[str, Any],
     model_config_parameter_sources: Mapping[str, Any] | None = None,
+    unsupported_model_config_fields: Sequence[str] = (),
     architecture_config_parameter_sources: Mapping[str, Any] | None = None,
     unsupported_architecture_config_fields: Sequence[str] = (),
 ) -> dict[str, Any]:
@@ -4120,6 +4121,7 @@ def _contract_runner_check_summary_from_receipt(
             if model_config_parameter_sources is None
             else _json_ready_value(model_config_parameter_sources)
         ),
+        "unsupported_model_config_fields": list(unsupported_model_config_fields),
         "architecture_config_import_report_path": None,
         "architecture_config_parameter_sources": (
             None
@@ -4217,6 +4219,7 @@ def _contract_runner_gate_policy(
     required_decision_verdicts: Sequence[str],
     required_assurance_levels: Sequence[str],
     require_passed: bool,
+    require_no_unsupported_model_config_fields: bool,
     require_no_unsupported_architecture_fields: bool,
 ) -> dict[str, Any]:
     policy = _receipt_gate_policy(
@@ -4227,6 +4230,9 @@ def _contract_runner_gate_policy(
     )
     policy["require_no_unsupported_architecture_fields"] = (
         require_no_unsupported_architecture_fields
+    )
+    policy["require_no_unsupported_model_config_fields"] = (
+        require_no_unsupported_model_config_fields
     )
     return policy
 
@@ -4252,6 +4258,7 @@ def build_contract_runner_check_report(
     required_decision_verdicts: Sequence[str] = (),
     required_assurance_levels: Sequence[str] = (),
     require_passed: bool = False,
+    require_no_unsupported_model_config_fields: bool = False,
     require_no_unsupported_architecture_fields: bool = False,
 ) -> dict[str, Any]:
     """Build a schema-valid batch runner report from in-memory inputs.
@@ -4333,6 +4340,7 @@ def build_contract_runner_check_report(
                     f"{source_path}: " + "; ".join(import_report["failures"])
                 )
                 continue
+            unsupported_model_fields = import_report["unsupported_model_config_fields"]
             receipt = build_validated_rope_receipt_from_model_config(
                 model_config,
                 head_dim=head_dim,
@@ -4353,6 +4361,7 @@ def build_contract_runner_check_report(
                     model_config_parameter_sources=import_report[
                         "parameter_sources"
                     ],
+                    unsupported_model_config_fields=unsupported_model_fields,
                 )
             )
             _append_contract_runner_check_gate_failures(
@@ -4364,6 +4373,14 @@ def build_contract_runner_check_report(
                 required_assurance_levels=required_assurance_levels,
                 require_passed=require_passed,
             )
+            if (
+                require_no_unsupported_model_config_fields
+                and unsupported_model_fields
+            ):
+                failures.append(
+                    f"{source_path}: unsupported model-config fields: "
+                    + ", ".join(str(field) for field in unsupported_model_fields)
+                )
         except (ValueError, jsonschema.ValidationError, jsonschema.SchemaError) as exc:
             failures.append(f"{source_path}: {exc}")
 
@@ -4473,6 +4490,9 @@ def build_contract_runner_check_report(
             required_decision_verdicts=required_decision_verdicts,
             required_assurance_levels=required_assurance_levels,
             require_passed=require_passed,
+            require_no_unsupported_model_config_fields=(
+                require_no_unsupported_model_config_fields
+            ),
             require_no_unsupported_architecture_fields=(
                 require_no_unsupported_architecture_fields
             ),
@@ -6082,6 +6102,7 @@ def build_contract_runner_check_json_schema() -> dict[str, Any]:
             "request_path",
             "model_config_import_report_path",
             "model_config_parameter_sources",
+            "unsupported_model_config_fields",
             "architecture_config_import_report_path",
             "architecture_config_parameter_sources",
             "unsupported_architecture_config_fields",
@@ -6120,6 +6141,7 @@ def build_contract_runner_check_json_schema() -> dict[str, Any]:
             "model_config_parameter_sources": {
                 "anyOf": [model_config_parameter_sources, {"type": "null"}],
             },
+            "unsupported_model_config_fields": string_list,
             "architecture_config_import_report_path": {
                 "type": ["string", "null"]
             },
@@ -6175,6 +6197,7 @@ def build_contract_runner_check_json_schema() -> dict[str, Any]:
             "allowed_decision_verdicts",
             "allowed_assurance_levels",
             "require_passed",
+            "require_no_unsupported_model_config_fields",
             "require_no_unsupported_architecture_fields",
         ],
         "properties": {
@@ -6194,6 +6217,7 @@ def build_contract_runner_check_json_schema() -> dict[str, Any]:
                 "uniqueItems": True,
             },
             "require_passed": {"type": "boolean"},
+            "require_no_unsupported_model_config_fields": {"type": "boolean"},
             "require_no_unsupported_architecture_fields": {"type": "boolean"},
         },
         "additionalProperties": False,
