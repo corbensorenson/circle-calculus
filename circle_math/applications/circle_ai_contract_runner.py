@@ -1441,6 +1441,14 @@ def _runner_validation_command_for_request(request: Mapping[str, Any]) -> str:
     return " ".join(parts)
 
 
+def _package_validation_command_for_request(request: Mapping[str, Any]) -> str:
+    script_prefix = "python scripts/circle_ai_certify.py "
+    command = _runner_validation_command_for_request(request)
+    if not command.startswith(script_prefix):
+        raise ValueError("request replay command did not use the expected script prefix")
+    return "circle-ai-certify " + command[len(script_prefix) :]
+
+
 def _as_string_set(value: Any) -> set[str]:
     if not isinstance(value, list):
         return set()
@@ -2021,6 +2029,7 @@ def _base_receipt(
         _unique_strings(
             (
                 _runner_validation_command_for_request(request_object),
+                _package_validation_command_for_request(request_object),
                 *support["validation_commands"],
             )
         )

@@ -2111,8 +2111,15 @@ def test_request_api_validates_and_builds_receipts(contract_pack: dict) -> None:
 
 
 def _assert_request_replay_command(receipt: dict, expected: str) -> None:
+    package_expected = expected.replace(
+        "python scripts/circle_ai_certify.py ",
+        "circle-ai-certify ",
+        1,
+    )
     assert receipt["validation_commands"][0] == expected
     assert receipt["support"]["validation_commands"][0] == expected
+    assert receipt["validation_commands"][1] == package_expected
+    assert receipt["support"]["validation_commands"][1] == package_expected
     assert receipt["validation_commands"] == receipt["support"]["validation_commands"]
     assert validate_contract_receipt(receipt) == []
 
@@ -2966,6 +2973,11 @@ def test_runner_check_report_schema_accepts_public_report() -> None:
         "failure_count": 0,
         "failures": [],
         "selected_kinds": [],
+        "required_kinds": [],
+        "kind_counts": {},
+        "artifact_manifest_path": None,
+        "artifact_manifest_check_path": None,
+        "validation_commands": [],
         "gate_policy": {
             "allowed_statuses": ["proved"],
             "allowed_decision_verdicts": ["passed"],
@@ -2995,8 +3007,13 @@ def test_runner_check_report_schema_accepts_public_report() -> None:
                 "decision_verdict": "passed",
                 "decision_assurance": "mixed_theorem_and_computation",
                 "theorem_count": 43,
+                "theorem_ids": ["AIRA-T0001"],
+                "all_theorem_ids_resolved": True,
+                "all_theorem_ids_proved": True,
+                "unresolved_theorem_ids": [],
+                "unproved_theorem_ids": [],
                 "recommendation_count": 2,
-                "validation_command_count": 2,
+                "validation_command_count": 3,
                 "normalized_request": {
                     "head_dim": 128,
                     "base": 10000.0,

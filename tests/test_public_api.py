@@ -650,6 +650,11 @@ def test_package_cli_unified_certify_request_file_text_prints_validation_command
     assert "--batch-tokens 20,24,29,31" in validation_lines[0]
     assert "--sink-size 4" in validation_lines[0]
     assert "--format json" in validation_lines[0]
+    assert validation_lines[1].startswith(
+        "validation_command=circle-ai-certify kv-cache"
+    )
+    assert "--cache-size 16" in validation_lines[1]
+    assert "--format json" in validation_lines[1]
 
 
 def test_package_cli_unified_certify_compact_json(tmp_path) -> None:
