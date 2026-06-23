@@ -144,6 +144,43 @@ def test_makefile_targeted_base_wrapper_forwards_to_cli() -> None:
     ) in result.stdout
 
 
+def test_makefile_fast_check_wrapper_forwards_to_cli() -> None:
+    result = subprocess.run(
+        [
+            "make",
+            "-n",
+            "fast-check",
+            "TARGETED_FILES=Circle/Applications/RoPECertifier.lean",
+        ],
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+
+    assert (
+        "python scripts/targeted_check.py --files "
+        "Circle/Applications/RoPECertifier.lean"
+    ) in result.stdout
+
+
+def test_makefile_fast_check_json_wrapper_forwards_to_cli() -> None:
+    result = subprocess.run(
+        [
+            "make",
+            "-n",
+            "fast-check-json",
+            "TARGETED_BASE=origin/main",
+        ],
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+
+    assert (
+        "python scripts/targeted_check.py --base origin/main --list --format json"
+    ) in result.stdout
+
+
 def test_targeted_check_cli_emits_full_json_plan_metadata() -> None:
     result = subprocess.run(
         [

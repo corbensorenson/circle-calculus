@@ -163,6 +163,7 @@ MAKEFILE_SITE_MARKERS = (
 )
 
 MAKEFILE_TARGETED_MARKERS = (
+    "fast-check",
     "targeted-check",
     "targeted_check",
     "targeted_",

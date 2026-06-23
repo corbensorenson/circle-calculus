@@ -88,9 +88,15 @@ cargo doc -p circle-prime --no-deps
 ## Verify
 
 ```bash
-make targeted-check
+make fast-check
 make check
 ```
+
+Use `make fast-check` for the local edit loop. It runs the same
+change-aware planner as `make targeted-check`, choosing focused Lean, Python,
+manifest, dictionary, paper, and Living Book checks from the files that changed.
+Use `make check` before release-grade proof/status/public-claim changes, and
+`make living-book-check` before treating the public book as ready.
 
 Core focused checks:
 

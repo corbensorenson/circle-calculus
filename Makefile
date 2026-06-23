@@ -436,6 +436,17 @@ check: lean sourcecheck
 
 sourcecheck: sidecarlean test manifest leannamecheck dictionary papermanifest paperlinks papersources researchmanifests capabilityshowcase circle-ai-contracts-ready claimlanguage phase4targets phase5targets phase6targets phase7targets phase8targets applicationguardrails glyphfixtures dimensioncheck nofake proofdepthaudit sitecheck
 
+.PHONY: fast-check fast-check-list fast-check-json
+
+fast-check:
+	python scripts/targeted_check.py $(strip $(TARGETED_WRAPPER_ARGS))
+
+fast-check-list:
+	python scripts/targeted_check.py $(strip $(TARGETED_WRAPPER_ARGS)) --list
+
+fast-check-json:
+	@python scripts/targeted_check.py $(strip $(TARGETED_WRAPPER_ARGS)) --list --format json
+
 targeted-check:
 	python scripts/targeted_check.py $(strip $(TARGETED_WRAPPER_ARGS))
 

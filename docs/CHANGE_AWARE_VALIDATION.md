@@ -9,37 +9,47 @@ Targeted validation is for speed while writing papers, proofs, certifiers, widge
 
 ## Commands
 
+Run the normal local edit-loop check:
+
+```bash
+make fast-check
+```
+
 Preview the inferred check plan:
 
 ```bash
-make targeted-check-list
+make fast-check-list
 ```
 
 Preview the inferred check plan as machine-readable JSON for Codex or other
 automation:
 
 ```bash
-make targeted-check-json
+make fast-check-json
 ```
 
-Run the inferred check plan:
+The `fast-check*` targets are the public convenience names for the same
+change-aware planner exposed by `targeted-check*`. Use the `targeted-check*`
+names when you want the internal target name explicitly:
 
 ```bash
 make targeted-check
+make targeted-check-list
+make targeted-check-json
 ```
 
 Run the inferred plan for explicit files:
 
 ```bash
-make targeted-check TARGETED_FILES="Circle/Applications/RoPECertifier.lean scripts/rope_certify.py"
+make fast-check TARGETED_FILES="Circle/Applications/RoPECertifier.lean scripts/rope_certify.py"
 ```
 
 Preview explicit-file or explicit-base plans:
 
 ```bash
-make targeted-check-list TARGETED_FILES="site/chapters/applications/rope_certifier.qmd"
-make targeted-check-list TARGETED_BASE=origin/main
-make targeted-check-json TARGETED_FILES="scripts/targeted_check.py"
+make fast-check-list TARGETED_FILES="site/chapters/applications/rope_certifier.qmd"
+make fast-check-list TARGETED_BASE=origin/main
+make fast-check-json TARGETED_FILES="scripts/targeted_check.py"
 ```
 
 Run the full gate through the same runner:
@@ -74,6 +84,9 @@ python scripts/targeted_check.py --files Circle/Applications/RoPECertifier.lean 
 The Makefile exposes the same bypass through `TARGETED_FILES`; use that form for normal local work so shell history keeps one consistent entry point.
 Use `make targeted-check-json` when another script or agent needs the planned
 commands without scraping text output.
+`make fast-check-json` is equivalent and is preferred for day-to-day local
+automation because its name describes the workflow rather than the internal
+router.
 The JSON payload includes `validation_scope`, `release_gate_required`,
 `release_gate_commands`, `changed_file_count`, `check_count`,
 `ai_contract_validation_scope`, `impacted_ai_contract_kinds`, and
