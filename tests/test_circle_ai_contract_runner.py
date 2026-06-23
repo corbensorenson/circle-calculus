@@ -1000,6 +1000,8 @@ def test_receipt_summary_lines_surface_proof_layer_counts(
     d19_request_line = next(
         line for line in lines if line.startswith("rope_d19_request=")
     )
+    for command in receipt["validation_commands"]:
+        assert f"validation_command={command}" in lines
     proof_layers = receipt["proof_layers"]
     assert f"proved_fields={len(proof_layers['proved_fields'])}" in proof_layer_line
     assert f"computed_fields={len(proof_layers['computed_fields'])}" in proof_layer_line

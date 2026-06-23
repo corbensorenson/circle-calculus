@@ -5052,6 +5052,9 @@ def receipt_summary_lines(receipt: Mapping[str, Any]) -> list[str]:
             f"validation_commands={len(receipt['validation_commands'])}"
         ),
     ]
+    lines.extend(
+        f"validation_command={command}" for command in receipt["validation_commands"]
+    )
     proof_layers = receipt["proof_layers"]
     lines.append(
         "proof_layers="

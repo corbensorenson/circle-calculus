@@ -607,6 +607,51 @@ def test_package_cli_unified_certify_request_file_gate() -> None:
     assert receipt["request_passed"] is True
 
 
+def test_package_cli_unified_certify_request_file_text_prints_validation_command() -> None:
+    request_file = ROOT / "examples" / "circle_ai_requests" / "kv_cache_request.json"
+
+    result = subprocess.run(
+        [
+            sys.executable,
+            "-c",
+            (
+                "import sys; "
+                "from circle_math.cli import contract_certify_main; "
+                "sys.exit(contract_certify_main())"
+            ),
+            "request",
+            "--request-file",
+            str(request_file),
+            "--require-passed",
+            "--require-status",
+            "proved",
+            "--require-decision",
+            "passed",
+            "--format",
+            "text",
+        ],
+        text=True,
+        capture_output=True,
+        check=True,
+    )
+
+    validation_lines = [
+        line
+        for line in result.stdout.splitlines()
+        if line.startswith("validation_command=")
+    ]
+    assert validation_lines
+    assert validation_lines[0].startswith(
+        "validation_command=python scripts/circle_ai_certify.py kv-cache"
+    )
+    assert "--cache-size 16" in validation_lines[0]
+    assert "--current 31" in validation_lines[0]
+    assert "--token 20" in validation_lines[0]
+    assert "--batch-tokens 20,24,29,31" in validation_lines[0]
+    assert "--sink-size 4" in validation_lines[0]
+    assert "--format json" in validation_lines[0]
+
+
 def test_package_cli_unified_certify_compact_json(tmp_path) -> None:
     compact_path = tmp_path / "compact_receipt.json"
     result = subprocess.run(

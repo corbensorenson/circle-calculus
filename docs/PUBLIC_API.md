@@ -403,7 +403,9 @@ validation artifact, and `--receipt-replay-check-out` when it wants to rebuild
 the receipt from the embedded request and compare stable fingerprints. Use
 `--format compact-json` or `--compact-json-out` when the handoff should expose
 only the stable decision, selected evidence, theorem summary, validation
-commands, non-claims, and full receipt fingerprint. Use
+commands, non-claims, and full receipt fingerprint. In text mode,
+single-receipt commands print each replay/check command as a
+`validation_command=...` line. Use
 `circle-ai-certify batch` when a downstream project already has several
 versioned Circle request files, standard RoPE model configs, or project-level
 architecture configs and wants per-source full receipts, compact receipts,
