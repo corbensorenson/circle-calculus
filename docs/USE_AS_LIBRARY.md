@@ -421,7 +421,9 @@ In text mode, single-receipt commands print each replay/check command as a
 `validation_command=...` line. JSON and compact JSON keep the same commands in
 the `validation_commands` field. The first replay command uses the repository
 script path for strict audit checks; the second uses the installed
-`circle-ai-certify` entry point for downstream projects.
+`circle-ai-certify` entry point for downstream projects. Text-mode model-config
+and architecture-config imports also print import-boundary lines with
+unsupported source-field counts.
 
 Add `--require-no-unsupported-architecture-fields` to `circle-ai-certify batch`
 when the generated runner-check report should fail if an architecture config

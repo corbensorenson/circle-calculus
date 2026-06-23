@@ -2091,6 +2091,41 @@ def test_package_cli_unified_certify_architecture_config(
     assert recurrence_import_report["request"]["parameters"]["sample_index"] == 9
 
 
+def test_package_cli_unified_certify_architecture_config_text_surfaces_import_boundary() -> None:
+    result = subprocess.run(
+        [
+            sys.executable,
+            "-c",
+            (
+                "import sys; "
+                "from circle_math.cli import contract_certify_main; "
+                "sys.exit(contract_certify_main())"
+            ),
+            "rope",
+            "--architecture-config-file",
+            str(ROPE_MODEL_ONLY_ARCHITECTURE_CONFIG),
+            "--format",
+            "text",
+            "--require-passed",
+        ],
+        text=True,
+        capture_output=True,
+        check=True,
+    )
+
+    import_lines = [
+        line
+        for line in result.stdout.splitlines()
+        if line.startswith("architecture_config_import=present")
+    ]
+    assert import_lines == [
+        "architecture_config_import=present ok=True "
+        "kind=rope_position_distinguishability "
+        "request_kind=rope_position_distinguishability "
+        "unsupported_field_count=1 unsupported_fields=model.model_type"
+    ]
+
+
 @pytest.mark.parametrize(
     ("subcommand_args", "expected_kind"),
     [

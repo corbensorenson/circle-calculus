@@ -408,7 +408,9 @@ commands, non-claims, and full receipt fingerprint. In text mode,
 single-receipt commands print each replay/check command as a
 `validation_command=...` line. Parameterized receipts keep the repository-script
 replay first for strict audit checks and the installed `circle-ai-certify`
-entry-point replay second for downstream projects. Use
+entry-point replay second for downstream projects. Text-mode model-config and
+architecture-config imports also print import-boundary lines with unsupported
+source-field counts, so unmodeled source-config behavior stays visible. Use
 `circle-ai-certify batch` when a downstream project already has several
 versioned Circle request files, standard RoPE model configs, or project-level
 architecture configs and wants per-source full receipts, compact receipts,

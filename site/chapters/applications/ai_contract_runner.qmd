@@ -1031,6 +1031,9 @@ projects. The remaining commands come from the contract pack and recheck
 fixture readiness, theorem coverage, and family-specific tests.
 The text summary prints those same commands as `validation_command=...` lines so
 a reader can copy the replay path before opening the full JSON.
+When a single receipt is built from a model config or architecture config, the
+text summary also prints an import-boundary line with unsupported source-field
+counts, so unmodeled source-config behavior remains visible.
 
 That returns the same schema as the CLI:
 

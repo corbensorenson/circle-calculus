@@ -866,6 +866,34 @@ def _certify_artifact_prefix(args: argparse.Namespace, receipt: dict[str, Any]) 
     return str(command).replace("-", "_")
 
 
+def _certify_import_summary_line(
+    label: str,
+    report: dict[str, Any],
+    *,
+    unsupported_field_key: str,
+) -> str:
+    unsupported_fields = report.get(unsupported_field_key, [])
+    if not isinstance(unsupported_fields, list):
+        unsupported_fields = []
+    request = report.get("request")
+    request_kind = request.get("kind") if isinstance(request, dict) else None
+    unsupported_text = (
+        ",".join(str(field) for field in unsupported_fields)
+        if unsupported_fields
+        else "-"
+    )
+    return " ".join(
+        [
+            f"{label}=present",
+            f"ok={report.get('ok')}",
+            f"kind={report.get('kind')}",
+            f"request_kind={request_kind}",
+            f"unsupported_field_count={len(unsupported_fields)}",
+            f"unsupported_fields={unsupported_text}",
+        ]
+    )
+
+
 def _certify_print_and_gate(
     receipt: dict[str, Any],
     pack: dict[str, Any],
@@ -975,6 +1003,22 @@ def _certify_print_and_gate(
     else:
         for line in receipt_summary_lines(receipt):
             print(line)
+        if model_config_import_report is not None:
+            print(
+                _certify_import_summary_line(
+                    "model_config_import",
+                    model_config_import_report,
+                    unsupported_field_key="unsupported_model_config_fields",
+                )
+            )
+        if architecture_config_import_report is not None:
+            print(
+                _certify_import_summary_line(
+                    "architecture_config_import",
+                    architecture_config_import_report,
+                    unsupported_field_key="unsupported_architecture_config_fields",
+                )
+            )
     for failure in gate_failures:
         print(f"contract receipt gate failed: {failure}", file=sys.stderr)
     return 2 if gate_failures else 0
