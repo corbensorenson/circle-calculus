@@ -499,7 +499,8 @@ Use `--receipt-check-out` with `--json-out` to write the same schema-validated
 pack-aware check report that a later `scripts/check_circle_ai_receipt.py` run
 would produce for the saved receipt.
 Use `--gate-report-out` without `--json-out` to write the same report shape for
-the in-memory receipt:
+the in-memory receipt. Strict model-config and architecture-config import gate
+failures are included in this sidecar before the command exits:
 
 ```bash
 python scripts/circle_ai_certify.py rope \

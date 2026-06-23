@@ -103,7 +103,9 @@ is not `true`.
 Add `--gate-report-out PATH` when CI also needs a schema-validated JSON gate
 report but does not need to save the full receipt. Add `--receipt-check-out
 PATH` with `--json-out PATH` when the report should point at a saved receipt
-file for audit logs.
+file for audit logs. When strict model-config or architecture-config import
+gates are enabled, the saved gate report includes those import-boundary
+failures too, so the sidecar matches the command exit status.
 
 For explicitly rationalized or discretized phase policies, add
 `--turn-ratio-numerator N --turn-ratio-denominator D` to request the finite
@@ -305,7 +307,8 @@ Use `--receipt-check-out` with `--json-out` to write the same schema-validated
 pack-aware check report that a later `scripts/check_circle_ai_receipt.py` run
 would produce for the saved receipt.
 Use `--gate-report-out` without `--json-out` to write the same gate shape for
-the in-memory receipt:
+the in-memory receipt. Strict model-config and architecture-config import gate
+failures are included in this sidecar before the command exits:
 
 ```bash
 python scripts/circle_ai_certify.py rope \

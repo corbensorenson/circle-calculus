@@ -958,6 +958,34 @@ def _model_config_import_gate_failures(
     ]
 
 
+def _extend_gate_report_failures(
+    report: dict[str, Any],
+    failures: list[str],
+) -> dict[str, Any]:
+    if not failures:
+        return report
+    merged = dict(report)
+    existing_failures = merged.get("failures", [])
+    if not isinstance(existing_failures, list):
+        existing_failures = []
+    all_failures = [*existing_failures, *failures]
+    merged["ok"] = False
+    merged["failure_count"] = len(all_failures)
+    merged["failures"] = all_failures
+    summaries = merged.get("summaries")
+    if isinstance(summaries, list):
+        merged_summaries = []
+        for summary in summaries:
+            if isinstance(summary, dict):
+                next_summary = dict(summary)
+                next_summary["failure_count"] = len(all_failures)
+                merged_summaries.append(next_summary)
+            else:
+                merged_summaries.append(summary)
+        merged["summaries"] = merged_summaries
+    return merged
+
+
 def _certify_print_and_gate(
     receipt: dict[str, Any],
     pack: dict[str, Any],
@@ -986,6 +1014,10 @@ def _certify_print_and_gate(
     receipt_path = (
         str(args.json_out) if args.json_out is not None else "<in-memory-receipt>"
     )
+    import_gate_failures = [
+        *_model_config_import_gate_failures(model_config_import_report, args),
+        *_architecture_import_gate_failures(architecture_config_import_report, args),
+    ]
     if args.gate_report_out is not None:
         gate_report = build_contract_receipt_gate_report(
             receipt,
@@ -995,6 +1027,10 @@ def _certify_print_and_gate(
             required_decision_verdicts=tuple(args.require_decision),
             required_assurance_levels=tuple(args.require_assurance),
             require_passed=args.require_passed,
+        )
+        gate_report = _extend_gate_report_failures(
+            gate_report,
+            import_gate_failures,
         )
         _write_json_file(args.gate_report_out, gate_report)
     if args.receipt_check_out is not None:
@@ -1060,8 +1096,7 @@ def _certify_print_and_gate(
             _write_json_file(args.artifact_manifest_check_out, manifest_check)
     gate_failures = [
         *_receipt_gate_failures(receipt, args),
-        *_model_config_import_gate_failures(model_config_import_report, args),
-        *_architecture_import_gate_failures(architecture_config_import_report, args),
+        *import_gate_failures,
     ]
     if args.format == "json":
         print(json.dumps(receipt, indent=2, sort_keys=True))

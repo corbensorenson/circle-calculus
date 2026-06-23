@@ -510,7 +510,9 @@ ids, proof layers, and non-claims needed to debug the rejection.
 Use `--gate-report-out`, `--receipt-check-out`, and
 `--receipt-replay-check-out` when CI should save compact machine-readable
 receipt diagnostics that verify both repository-script and installed-package
-replay commands. Use
+replay commands. Strict model-config and architecture-config import gate
+failures are included in the saved gate report, so the sidecar matches the
+command exit status. Use
 `--format compact-json` or `--compact-json-out` when downstream tools only need
 the stable receipt decision, selected evidence, theorem summary, replay
 commands, non-claims, and the full receipt fingerprint. Use

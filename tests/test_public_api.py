@@ -45,6 +45,7 @@ from circle_math.applications import (
     CIRCLE_AI_CONTRACT_RECEIPT_SCHEMA_ID,
     build_contract_artifact_manifest,
     build_contract_artifact_manifest_file_check_report,
+    build_contract_receipt_file_check_json_schema,
     build_contract_runner_check_json_schema,
     build_rope_model_config_import_json_schema,
 )
@@ -2109,7 +2110,9 @@ def test_package_cli_unified_certify_architecture_config(
     assert recurrence_import_report["request"]["parameters"]["sample_index"] == 9
 
 
-def test_package_cli_unified_certify_architecture_config_text_surfaces_import_boundary() -> None:
+def test_package_cli_unified_certify_architecture_config_text_surfaces_import_boundary(
+    tmp_path,
+) -> None:
     result = subprocess.run(
         [
             sys.executable,
@@ -2143,6 +2146,7 @@ def test_package_cli_unified_certify_architecture_config_text_surfaces_import_bo
         "unsupported_field_count=1 unsupported_fields=model.model_type"
     ]
 
+    gate_report_path = tmp_path / "strict_gate_report.json"
     strict_result = subprocess.run(
         [
             sys.executable,
@@ -2156,6 +2160,8 @@ def test_package_cli_unified_certify_architecture_config_text_surfaces_import_bo
             "--architecture-config-file",
             str(ROPE_MODEL_ONLY_ARCHITECTURE_CONFIG),
             "--require-no-unsupported-architecture-fields",
+            "--gate-report-out",
+            str(gate_report_path),
             "--format",
             "json",
             "--require-passed",
@@ -2168,6 +2174,15 @@ def test_package_cli_unified_certify_architecture_config_text_surfaces_import_bo
     strict_receipt = json.loads(strict_result.stdout)
     assert strict_receipt["kind"] == "rope_position_distinguishability"
     assert strict_receipt["request_passed"] is True
+    gate_report = json.loads(gate_report_path.read_text())
+    jsonschema.validate(gate_report, build_contract_receipt_file_check_json_schema())
+    assert gate_report["ok"] is False
+    assert gate_report["failure_count"] == 1
+    assert gate_report["summaries"][0]["failure_count"] == 1
+    assert (
+        "unsupported architecture-config fields: model.model_type"
+        in gate_report["failures"]
+    )
     assert (
         "contract receipt gate failed: unsupported architecture-config fields: "
         "model.model_type"
