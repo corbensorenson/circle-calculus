@@ -189,8 +189,7 @@ def rust_rows() -> list[str]:
     return rows
 
 
-def main() -> int:
-    OUT.parent.mkdir(parents=True, exist_ok=True)
+def render_public_api_reference() -> str:
     lines: list[str] = [
         "# Generated Public API Reference",
         "",
@@ -207,7 +206,12 @@ def main() -> int:
     lines.extend(console_script_rows())
     lines.extend(lean_rows())
     lines.extend(rust_rows())
-    OUT.write_text("\n".join(lines).rstrip() + "\n")
+    return "\n".join(lines).rstrip() + "\n"
+
+
+def main() -> int:
+    OUT.parent.mkdir(parents=True, exist_ok=True)
+    OUT.write_text(render_public_api_reference())
     print(f"wrote {OUT.relative_to(ROOT)}")
     return 0
 

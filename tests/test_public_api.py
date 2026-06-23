@@ -448,6 +448,13 @@ def test_generated_public_api_reference_lists_console_scripts() -> None:
     )
 
 
+def test_generated_public_api_reference_is_current() -> None:
+    from scripts.generate_public_api_docs import render_public_api_reference
+
+    reference = (ROOT / "docs" / "generated" / "PUBLIC_API_REFERENCE.md").read_text()
+    assert reference == render_public_api_reference()
+
+
 def test_public_docs_show_architecture_config_runner_handoff() -> None:
     readme = (ROOT / "README.md").read_text()
     public_api = (ROOT / "docs" / "PUBLIC_API.md").read_text()
