@@ -30,6 +30,7 @@ The claim is *not* that circular language automatically improves every domain. I
 
 - [Classical bridges](erdos_bridges.qmd) — Erdős-style combinatorics restated through Circle vocabulary (Lean-checked wrappers, not new results).
 - [AI](ai.qmd) — phase channels, cyclic memory, coil retrieval, routing, and adapter-block indexing seeds.
+- [Circle phase probe demo](circle_phase_probe_demo.qmd) — a tiny executable periodic-label probe showing circle phase features as a learning prelude, not a proof certificate.
 - [RoPE certifier](rope_certifier.qmd) — the flagship applied demo: proof-carrying position-distinguishability certificates for exact discretized rotary phase banks and the current bounded standard-channel frontier.
 - [Position phase banks](position_phase_banks.qmd) — generic finite residue/divisibility contracts for sinusoidal, RoPE-family, scaled, and 2D positional phase descriptors.
 - [AI contract ladder](ai_contract_ladder.qmd) — guided sequence from RoPE phase certificates to KV-cache freshness, sparse-attention coverage, recurrence schedules, and circulant mixer guarantees.

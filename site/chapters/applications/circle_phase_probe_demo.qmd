@@ -1,0 +1,128 @@
+---
+title: "Circle Phase Probe Demo"
+---
+
+This lesson is a small AI-facing bridge before the proof-carrying contract
+pages. It asks one narrow question: if the target rule is periodic, does a
+circle phase coordinate make the rule easier for a linear probe to read than a
+raw position ramp?
+
+::: {.lesson-goal}
+
+## Goal
+
+Run a deterministic synthetic probe, read the output, and keep the difference
+between an executable example and a proof certificate clear.
+
+:::
+
+## Concept
+
+The synthetic target is periodic:
+
+```text
+label(x) = 1 iff cos(2*pi*(x mod period)/period) >= 0
+```
+
+The baseline linear probe sees only:
+
+```text
+[1, x]
+```
+
+The circle-phase linear probe sees:
+
+```text
+[1, cos(2*pi*x/period), sin(2*pi*x/period)]
+```
+
+The periodic rule is built out of a circle coordinate, so the circle feature
+map exposes the relevant phase directly.
+
+## Picture
+
+```text
+position x
+   |
+   | raw-position baseline
+   v
+[1, x] ---------------------> linear probe
+
+position x
+   |
+   | circle phase feature
+   v
+[1, cos(theta), sin(theta)] -> linear probe
+
+theta = 2*pi*x/period
+```
+
+The diagram is explanatory only. The executable artifact is the Python demo,
+and it is not a Lean proof.
+
+## Run It
+
+```bash
+python scripts/circle_phase_probe_demo.py --backend numpy
+```
+
+Expected default output:
+
+```text
+circle_phase_probe=READY period=8 backend=numpy train=32 test=16
+baseline=raw_position_linear train_accuracy=0.500000 test_accuracy=0.500000
+phase=circle_sin_cos_linear train_accuracy=1.000000 test_accuracy=1.000000
+target_rule=label(x)=1 iff cos(2*pi*(x mod period)/period) >= 0
+non_claimed=This synthetic probe does not prove real model quality, speed, memory, context-length, or reasoning gains.
+```
+
+For machine-readable output:
+
+```bash
+python scripts/circle_phase_probe_demo.py --backend numpy --format json
+```
+
+MLX can be requested explicitly when available:
+
+```bash
+python scripts/circle_phase_probe_demo.py --backend mlx
+```
+
+The MLX path constructs the phase tensors with MLX and then uses NumPy least
+squares for this tiny deterministic probe. This is not an MLX training
+benchmark.
+
+## What To Notice
+
+The raw-position baseline is a straight ramp. It does not know that positions
+`0`, `8`, `16`, and `24` have the same phase in the default period-8 task. The
+circle-phase probe sends those positions to the same point on the circle, so a
+linear readout sees the periodic boundary directly.
+
+That is the same modeling instinct used by the RoPE and phase-bank pages: when
+the system already has phase, expose phase instead of pretending the boundary
+is a line.
+
+::: {.warning-box}
+This page is an executable intuition demo. It does not prove real transformer
+quality, inference speed, memory use, context length, reasoning ability, or
+deployment behavior. It is not proof, not performance claims, not model-quality
+claims, and not a real-data usefulness claim.
+:::
+
+## Source Trail
+
+<p>Python module: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/circle_math/applications/phase_probe.py">circle_math/applications/phase_probe.py</a></p>
+
+<p>CLI demo: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/scripts/circle_phase_probe_demo.py">scripts/circle_phase_probe_demo.py</a></p>
+
+<p>Tests: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/tests/test_circle_phase_probe.py">tests/test_circle_phase_probe.py</a></p>
+
+<p>Standalone note: <a href="https://github.com/corbensorenson/circle-calculus/blob/main/docs/CIRCLE_PHASE_PROBE_DEMO.md">Circle Phase Probe Demo</a></p>
+
+<div class="book-navigation">
+<a href="ai.qmd">Previous: AI</a>
+<a href="rope_certifier.qmd">Next: RoPE Certifier</a>
+</div>
+
+<script type="module" src="../../widgets/shared/widget_base.js"></script>

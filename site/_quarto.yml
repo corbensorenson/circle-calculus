@@ -150,6 +150,8 @@ website:
             text: Classical Bridges
           - href: chapters/applications/ai.qmd
             text: AI
+          - href: chapters/applications/circle_phase_probe_demo.qmd
+            text: Circle Phase Probe Demo
           - href: chapters/applications/rope_certifier.qmd
             text: RoPE Certifier
           - href: chapters/applications/position_phase_banks.qmd
