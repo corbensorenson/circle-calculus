@@ -3837,8 +3837,12 @@ def validate_contract_receipt(receipt: Mapping[str, Any]) -> list[str]:
     elif isinstance(request, dict):
         try:
             expected_replay_command = _runner_validation_command_for_request(request)
+            expected_package_replay_command = _package_validation_command_for_request(
+                request
+            )
         except (KeyError, TypeError, ValueError):
             expected_replay_command = None
+            expected_package_replay_command = None
         if (
             expected_replay_command is not None
             and validation_commands[0] != expected_replay_command
@@ -3846,6 +3850,17 @@ def validate_contract_receipt(receipt: Mapping[str, Any]) -> list[str]:
             failures.append(
                 "validation_commands[0] must replay the embedded request"
             )
+        if expected_package_replay_command is not None:
+            if len(validation_commands) < 2:
+                failures.append(
+                    "validation_commands[1] must replay the embedded request "
+                    "through the installed package entry point"
+                )
+            elif validation_commands[1] != expected_package_replay_command:
+                failures.append(
+                    "validation_commands[1] must replay the embedded request "
+                    "through the installed package entry point"
+                )
     if not isinstance(receipt.get("not_claimed"), list) or not receipt.get(
         "not_claimed"
     ):
