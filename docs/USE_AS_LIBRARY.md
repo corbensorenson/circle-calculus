@@ -496,7 +496,8 @@ return exit code `2` after writing the receipt, so CI logs keep the theorem
 ids, proof layers, and non-claims needed to debug the rejection.
 Use `--gate-report-out`, `--receipt-check-out`, and
 `--receipt-replay-check-out` when CI should save compact machine-readable
-receipt diagnostics without using repository-only scripts. Use
+receipt diagnostics that verify both repository-script and installed-package
+replay commands. Use
 `--format compact-json` or `--compact-json-out` when downstream tools only need
 the stable receipt decision, selected evidence, theorem summary, replay
 commands, non-claims, and the full receipt fingerprint. Use

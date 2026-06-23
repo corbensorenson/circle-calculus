@@ -146,6 +146,16 @@
       ],
       "type": "object"
     },
+    "package_replay_command": {
+      "minLength": 1,
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "package_replay_command_matches_request": {
+      "type": "boolean"
+    },
     "path": {
       "minLength": 1,
       "type": "string"
@@ -267,6 +277,8 @@
     "path",
     "replay_command",
     "replay_command_matches_request",
+    "package_replay_command",
+    "package_replay_command_matches_request",
     "original",
     "replayed",
     "comparison"

@@ -1678,6 +1678,8 @@ def test_package_cli_unified_certify_writes_gate_and_replay_reports(tmp_path) ->
     ]
     assert replay_report["schema_id"] == "circle_calculus.ai_contract_receipt_replay_check.v0"
     assert replay_report["ok"] is True
+    assert replay_report["package_replay_command"] == receipt["validation_commands"][1]
+    assert replay_report["package_replay_command_matches_request"] is True
     assert replay_report["comparison"]["all_replay_fields_match"] is True
     assert bundle["schema_id"] == "circle_calculus.ai_contract_certification_bundle.v0"
     assert bundle["ok"] is True

@@ -111,7 +111,9 @@ def main() -> int:
                 f"{str(original.get('receipt_content_fingerprint'))[:12]}->"
                 f"{str(replayed.get('receipt_content_fingerprint'))[:12]} "
                 "replay_command_matches_request="
-                f"{report['replay_command_matches_request']}"
+                f"{report['replay_command_matches_request']} "
+                "package_replay_command_matches_request="
+                f"{report['package_replay_command_matches_request']}"
             )
             for failure in report["failures"]:
                 print(f"failure: {failure}")

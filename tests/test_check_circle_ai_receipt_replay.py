@@ -77,6 +77,8 @@ def test_check_circle_ai_receipt_replay_accepts_saved_receipt(
     assert payload["ok"] is True
     assert payload["replay_command"] == receipt["validation_commands"][0]
     assert payload["replay_command_matches_request"] is True
+    assert payload["package_replay_command"] == receipt["validation_commands"][1]
+    assert payload["package_replay_command_matches_request"] is True
     assert payload["comparison"]["all_replay_fields_match"] is True
     assert payload["original"]["receipt_content_fingerprint"] == (
         receipt["receipt_content_fingerprint"]

@@ -1739,6 +1739,8 @@ def test_receipt_replay_check_report_public_api(contract_pack: dict) -> None:
     assert report["ok"] is True
     assert report["replay_command"] == receipt["validation_commands"][0]
     assert report["replay_command_matches_request"] is True
+    assert report["package_replay_command"] == receipt["validation_commands"][1]
+    assert report["package_replay_command_matches_request"] is True
     assert report["original"]["receipt_content_fingerprint"] == (
         receipt["receipt_content_fingerprint"]
     )
@@ -4052,6 +4054,9 @@ def test_circle_ai_certify_cli_artifact_dir_writes_standard_audit_set(
     ] is True
     assert artifact_manifest_report["summaries"][0][
         "receipt_replay_check_replay_command_matches_request"
+    ] is True
+    assert artifact_manifest_report["summaries"][0][
+        "receipt_replay_check_package_replay_command_matches_request"
     ] is True
     assert artifact_manifest_report["summaries"][0][
         "receipt_replay_check_all_replay_fields_match"

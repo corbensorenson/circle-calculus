@@ -551,8 +551,9 @@ hashes. The manifest-check report re-hashes those indexed files and verifies
 the manifest's mirrored receipt status fields. When a
 `_receipt_replay_check.json` sidecar is present, the manifest-check report also
 requires that replay report to be `ok`, that its replay command matches the
-embedded request, that all replay comparison fields match, and that its original
-and replayed receipt fingerprints match the saved receipt. The saved
+embedded request, that its installed-package replay command also matches, that
+all replay comparison fields match, and that its original and replayed receipt
+fingerprints match the saved receipt. The saved
 `_receipt_check.json`, `_gate_report.json`, and
 `_certification_bundle_check.json` sidecars are also audited: each must be `ok`,
 use the manifest's gate policy, and point back to the same receipt fingerprint.

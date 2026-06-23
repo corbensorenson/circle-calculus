@@ -400,7 +400,8 @@ a model directory containing `config.json`.
 Use `--gate-report-out` when downstream CI needs a compact machine-readable
 pass/fail report, `--receipt-check-out` when it wants a pack-aware receipt
 validation artifact, and `--receipt-replay-check-out` when it wants to rebuild
-the receipt from the embedded request and compare stable fingerprints. Use
+the receipt from the embedded request, compare stable fingerprints, and verify
+both repository-script and installed-package replay commands. Use
 `--format compact-json` or `--compact-json-out` when the handoff should expose
 only the stable decision, selected evidence, theorem summary, validation
 commands, non-claims, and full receipt fingerprint. In text mode,

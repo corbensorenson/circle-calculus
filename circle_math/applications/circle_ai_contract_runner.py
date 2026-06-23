@@ -4626,7 +4626,9 @@ def build_contract_receipt_replay_check_report(
     request = receipt.get("request")
     replayed: dict[str, Any] | None = None
     replay_command = None
+    package_replay_command = None
     replay_command_matches_request = False
+    package_replay_command_matches_request = False
     comparison = {
         "kind_matches": False,
         "contract_id_matches": False,
@@ -4644,6 +4646,7 @@ def build_contract_receipt_replay_check_report(
     else:
         try:
             replay_command = _runner_validation_command_for_request(request)
+            package_replay_command = _package_validation_command_for_request(request)
         except (KeyError, TypeError, ValueError) as exc:
             failures.append(f"receipt replay command could not be derived: {exc}")
         receipt_commands = receipt.get("validation_commands")
@@ -4652,6 +4655,14 @@ def build_contract_receipt_replay_check_report(
             if not replay_command_matches_request:
                 failures.append(
                     "receipt validation_commands[0] does not match replay command"
+                )
+            package_replay_command_matches_request = (
+                len(receipt_commands) > 1
+                and receipt_commands[1] == package_replay_command
+            )
+            if not package_replay_command_matches_request:
+                failures.append(
+                    "receipt validation_commands[1] does not match package replay command"
                 )
         try:
             replayed = build_validated_contract_receipt_from_request(
@@ -4699,6 +4710,10 @@ def build_contract_receipt_replay_check_report(
         "path": receipt_path,
         "replay_command": replay_command,
         "replay_command_matches_request": replay_command_matches_request,
+        "package_replay_command": package_replay_command,
+        "package_replay_command_matches_request": (
+            package_replay_command_matches_request
+        ),
         "original": original_summary,
         "replayed": replayed_summary,
         "comparison": comparison,
@@ -6428,6 +6443,7 @@ def build_contract_artifact_manifest_file_check_json_schema() -> dict[str, Any]:
             "receipt_replay_check_ok",
             "receipt_replay_check_failure_count",
             "receipt_replay_check_replay_command_matches_request",
+            "receipt_replay_check_package_replay_command_matches_request",
             "receipt_replay_check_all_replay_fields_match",
             "receipt_replay_check_original_receipt_fingerprint",
             "receipt_replay_check_replayed_receipt_fingerprint",
@@ -6491,6 +6507,9 @@ def build_contract_artifact_manifest_file_check_json_schema() -> dict[str, Any]:
                 "minimum": 0,
             },
             "receipt_replay_check_replay_command_matches_request": {
+                "type": ["boolean", "null"]
+            },
+            "receipt_replay_check_package_replay_command_matches_request": {
                 "type": ["boolean", "null"]
             },
             "receipt_replay_check_all_replay_fields_match": {
@@ -6908,6 +6927,7 @@ def _receipt_replay_artifact_summary_and_failures(
         "receipt_replay_check_ok": None,
         "receipt_replay_check_failure_count": None,
         "receipt_replay_check_replay_command_matches_request": None,
+        "receipt_replay_check_package_replay_command_matches_request": None,
         "receipt_replay_check_all_replay_fields_match": None,
         "receipt_replay_check_original_receipt_fingerprint": None,
         "receipt_replay_check_replayed_receipt_fingerprint": None,
@@ -6937,6 +6957,9 @@ def _receipt_replay_artifact_summary_and_failures(
     ok = payload.get("ok")
     failure_count = payload.get("failure_count")
     replay_command_matches = payload.get("replay_command_matches_request")
+    package_replay_command_matches = payload.get(
+        "package_replay_command_matches_request"
+    )
     comparison = payload.get("comparison")
     all_fields_match = (
         comparison.get("all_replay_fields_match")
@@ -6949,6 +6972,11 @@ def _receipt_replay_artifact_summary_and_failures(
     )
     summary["receipt_replay_check_replay_command_matches_request"] = (
         replay_command_matches if isinstance(replay_command_matches, bool) else None
+    )
+    summary["receipt_replay_check_package_replay_command_matches_request"] = (
+        package_replay_command_matches
+        if isinstance(package_replay_command_matches, bool)
+        else None
     )
     summary["receipt_replay_check_all_replay_fields_match"] = (
         all_fields_match if isinstance(all_fields_match, bool) else None
@@ -6997,6 +7025,10 @@ def _receipt_replay_artifact_summary_and_failures(
     if replay_command_matches is not True:
         failures.append(
             "receipt_replay_check replay_command_matches_request was not true"
+        )
+    if package_replay_command_matches is not True:
+        failures.append(
+            "receipt_replay_check package_replay_command_matches_request was not true"
         )
     if all_fields_match is not True:
         failures.append(
@@ -7630,6 +7662,8 @@ def build_contract_receipt_replay_check_json_schema() -> dict[str, Any]:
             "path",
             "replay_command",
             "replay_command_matches_request",
+            "package_replay_command",
+            "package_replay_command_matches_request",
             "original",
             "replayed",
             "comparison",
@@ -7648,6 +7682,11 @@ def build_contract_receipt_replay_check_json_schema() -> dict[str, Any]:
                 "minLength": 1,
             },
             "replay_command_matches_request": {"type": "boolean"},
+            "package_replay_command": {
+                "type": ["string", "null"],
+                "minLength": 1,
+            },
+            "package_replay_command_matches_request": {"type": "boolean"},
             "original": receipt_summary,
             "replayed": {
                 "anyOf": [receipt_summary, {"type": "null"}],
