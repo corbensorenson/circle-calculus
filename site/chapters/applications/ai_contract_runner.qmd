@@ -440,7 +440,8 @@ exact request that produced the receipt. Add
 `--certification-bundle-out reports/certification_bundle.json` when CI wants one
 schema-validated artifact containing request preflight, receipt, gate report,
 and any model-config or architecture-config import report that records parameter
-provenance.
+provenance. If strict config-import gates are enabled, the bundle and its
+embedded gate report also carry those import-boundary failures.
 In text mode, config-backed runs print source provenance before any artifact
 paths, making the source config fingerprint visible even when no sidecar is
 written.

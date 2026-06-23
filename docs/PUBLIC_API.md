@@ -271,7 +271,8 @@ stable facade also exposes `build_contract_certification_bundle` for already
 versioned requests, plus `build_rope_model_config_certification_bundle` and
 `build_architecture_config_certification_bundle` when a downstream handoff
 should carry request preflight, receipt, gate report, and config-to-request
-provenance in one object.
+provenance in one object. CLI certification bundles also reflect strict
+config-import gate failures in the bundle and embedded gate report.
 The same in-memory runner-check helper accepts architecture configs and emits
 RoPE, KV-cache, sparse-attention, and recurrence summaries by default. Pass
 `architecture_config_kinds=("sparse-attention",)` when a caller only needs one

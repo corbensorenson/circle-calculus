@@ -986,6 +986,29 @@ def _extend_gate_report_failures(
     return merged
 
 
+def _extend_certification_bundle_failures(
+    bundle: dict[str, Any],
+    failures: list[str],
+) -> dict[str, Any]:
+    if not failures:
+        return bundle
+    merged = dict(bundle)
+    existing_failures = merged.get("failures", [])
+    if not isinstance(existing_failures, list):
+        existing_failures = []
+    all_failures = [*existing_failures, *failures]
+    merged["ok"] = False
+    merged["failure_count"] = len(all_failures)
+    merged["failures"] = all_failures
+    gate_report = merged.get("gate_report")
+    if isinstance(gate_report, dict):
+        merged["gate_report"] = _extend_gate_report_failures(
+            gate_report,
+            failures,
+        )
+    return merged
+
+
 def _certify_print_and_gate(
     receipt: dict[str, Any],
     pack: dict[str, Any],
@@ -1062,6 +1085,10 @@ def _certify_print_and_gate(
             required_decision_verdicts=tuple(args.require_decision),
             required_assurance_levels=tuple(args.require_assurance),
             require_passed=args.require_passed,
+        )
+        bundle = _extend_certification_bundle_failures(
+            bundle,
+            import_gate_failures,
         )
         _write_json_file(args.certification_bundle_out, bundle)
         if args.certification_bundle_check_out is not None:
@@ -1271,6 +1298,10 @@ def _write_certify_batch_request_sidecars(
     model_config_import_report: dict[str, Any] | None = None,
     architecture_config_import_report: dict[str, Any] | None = None,
 ) -> tuple[Path | None, Path | None, Path | None]:
+    import_gate_failures = [
+        *_model_config_import_gate_failures(model_config_import_report, args),
+        *_architecture_import_gate_failures(architecture_config_import_report, args),
+    ]
     request_validation_report_path = None
     if args.request_validation_report_out_dir is not None:
         request_validation_report_path = _certify_batch_output_path(
@@ -1305,6 +1336,10 @@ def _write_certify_batch_request_sidecars(
             required_decision_verdicts=tuple(args.require_decision),
             required_assurance_levels=tuple(args.require_assurance),
             require_passed=args.require_passed,
+        )
+        bundle = _extend_certification_bundle_failures(
+            bundle,
+            import_gate_failures,
         )
         _write_json_file(certification_bundle_path, bundle)
         if args.certification_bundle_check_out_dir is not None:

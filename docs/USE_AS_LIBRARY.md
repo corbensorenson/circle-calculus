@@ -518,7 +518,8 @@ the stable receipt decision, selected evidence, theorem summary, replay
 commands, non-claims, and the full receipt fingerprint. Use
 `--certification-bundle-out` with `--certification-bundle-check-out` when the
 installed CLI should also archive a request-validation, receipt, gate, and
-bundle-check handoff object. For single-receipt commands, use
+bundle-check handoff object; strict config-import gate failures are reflected in
+the bundle and its embedded gate report. For single-receipt commands, use
 `--artifact-manifest-out` with `--artifact-manifest-check-out` when it should
 also fingerprint the sidecar files and verify the manifest. Use
 `--artifact-dir` when it should choose stable names for the sidecar set

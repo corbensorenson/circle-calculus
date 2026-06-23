@@ -93,7 +93,9 @@ also save the schema-validated preflight report for the exact request that
 produced the receipt. Add
 `--certification-bundle-out PATH` when CI wants one schema-validated artifact
 containing request preflight, receipt, gate report, and any model-config or
-architecture-config import report that records parameter provenance.
+architecture-config import report that records parameter provenance. If strict
+config-import gates are enabled, the bundle and its embedded gate report also
+carry those import-boundary failures.
 
 For CI gates, add `--require-status STATUS`, `--require-decision VERDICT`,
 `--require-assurance LEVEL`, and/or `--require-passed`. The runner still prints
@@ -329,7 +331,9 @@ Certification bundles are validated against
 `site/data/generated/circle_ai_contract_certification_bundle.schema.json`.
 Use `--certification-bundle-check-out` with `--certification-bundle-out` to
 write the same schema-validated bundle verification report that a later
-`scripts/check_circle_ai_certification_bundle.py` run would produce:
+`scripts/check_circle_ai_certification_bundle.py` run would produce. Strict
+config-import gate failures make the bundle and bundle-check report fail
+explicitly instead of leaving an apparently passing sidecar:
 
 ```bash
 python scripts/circle_ai_certify.py rope \

@@ -45,6 +45,7 @@ from circle_math.applications import (
     CIRCLE_AI_CONTRACT_RECEIPT_SCHEMA_ID,
     build_contract_artifact_manifest,
     build_contract_artifact_manifest_file_check_report,
+    build_contract_certification_bundle_file_check_json_schema,
     build_contract_receipt_file_check_json_schema,
     build_contract_runner_check_json_schema,
     build_rope_model_config_import_json_schema,
@@ -1195,6 +1196,8 @@ def test_package_cli_batch_honors_architecture_config_kind_hints(tmp_path) -> No
 def test_package_cli_batch_rejects_unsupported_architecture_fields_when_required(
     tmp_path,
 ) -> None:
+    bundle_dir = tmp_path / "certification_bundles"
+    bundle_check_dir = tmp_path / "certification_bundle_checks"
     result = subprocess.run(
         [
             sys.executable,
@@ -1213,6 +1216,10 @@ def test_package_cli_batch_rejects_unsupported_architecture_fields_when_required
             "passed",
             "--require-passed",
             "--require-no-unsupported-architecture-fields",
+            "--certification-bundle-out-dir",
+            str(bundle_dir),
+            "--certification-bundle-check-out-dir",
+            str(bundle_check_dir),
             "--format",
             "json",
         ],
@@ -1235,6 +1242,30 @@ def test_package_cli_batch_rejects_unsupported_architecture_fields_when_required
     assert report["summaries"][0]["unsupported_architecture_config_fields"] == [
         "model.model_type"
     ]
+    bundle_path = Path(report["summaries"][0]["certification_bundle_path"])
+    bundle_check_path = Path(
+        report["summaries"][0]["certification_bundle_check_path"]
+    )
+    assert bundle_path.exists()
+    assert bundle_check_path.exists()
+    bundle = json.loads(bundle_path.read_text())
+    jsonschema.validate(bundle, build_contract_certification_bundle_json_schema())
+    assert bundle["ok"] is False
+    assert (
+        "unsupported architecture-config fields: model.model_type"
+        in bundle["failures"]
+    )
+    assert bundle["gate_report"]["ok"] is False
+    assert (
+        "unsupported architecture-config fields: model.model_type"
+        in bundle["gate_report"]["failures"]
+    )
+    bundle_check = json.loads(bundle_check_path.read_text())
+    jsonschema.validate(
+        bundle_check,
+        build_contract_certification_bundle_file_check_json_schema(),
+    )
+    assert bundle_check["ok"] is False
 
 
 def test_package_cli_unified_certify_batch_artifact_dir_writes_portable_set(
@@ -2147,6 +2178,8 @@ def test_package_cli_unified_certify_architecture_config_text_surfaces_import_bo
     ]
 
     gate_report_path = tmp_path / "strict_gate_report.json"
+    bundle_path = tmp_path / "strict_certification_bundle.json"
+    bundle_check_path = tmp_path / "strict_certification_bundle_check.json"
     strict_result = subprocess.run(
         [
             sys.executable,
@@ -2162,6 +2195,10 @@ def test_package_cli_unified_certify_architecture_config_text_surfaces_import_bo
             "--require-no-unsupported-architecture-fields",
             "--gate-report-out",
             str(gate_report_path),
+            "--certification-bundle-out",
+            str(bundle_path),
+            "--certification-bundle-check-out",
+            str(bundle_check_path),
             "--format",
             "json",
             "--require-passed",
@@ -2183,6 +2220,28 @@ def test_package_cli_unified_certify_architecture_config_text_surfaces_import_bo
         "unsupported architecture-config fields: model.model_type"
         in gate_report["failures"]
     )
+    bundle = json.loads(bundle_path.read_text())
+    jsonschema.validate(bundle, build_contract_certification_bundle_json_schema())
+    assert bundle["ok"] is False
+    assert bundle["failure_count"] == 1
+    assert (
+        "unsupported architecture-config fields: model.model_type"
+        in bundle["failures"]
+    )
+    assert bundle["gate_report"]["ok"] is False
+    assert bundle["gate_report"]["failure_count"] == 1
+    assert (
+        "unsupported architecture-config fields: model.model_type"
+        in bundle["gate_report"]["failures"]
+    )
+    bundle_check = json.loads(bundle_check_path.read_text())
+    jsonschema.validate(
+        bundle_check,
+        build_contract_certification_bundle_file_check_json_schema(),
+    )
+    assert bundle_check["ok"] is False
+    assert bundle_check["failure_count"] == 1
+    assert "bundle ok was not true" in bundle_check["failures"][0]
     assert (
         "contract receipt gate failed: unsupported architecture-config fields: "
         "model.model_type"
