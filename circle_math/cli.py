@@ -918,6 +918,12 @@ def _certify_import_summary_line(
     )
 
 
+def _certify_unsupported_fields_text(fields: Any) -> str:
+    if not isinstance(fields, list) or not fields:
+        return "-"
+    return ",".join(str(field) for field in fields)
+
+
 def _architecture_import_gate_failures(
     report: dict[str, Any] | None,
     args: argparse.Namespace,
@@ -1745,6 +1751,14 @@ def _certify_batch_requests(args: argparse.Namespace) -> int:
                         f"type={summary['source_type']}",
                         f"status={summary['status']}",
                         f"decision={summary['decision_verdict']}",
+                        "unsupported_model_fields="
+                        + _certify_unsupported_fields_text(
+                            summary.get("unsupported_model_config_fields")
+                        ),
+                        "unsupported_architecture_fields="
+                        + _certify_unsupported_fields_text(
+                            summary.get("unsupported_architecture_config_fields")
+                        ),
                         f"compact_receipt={summary['compact_receipt_path']}",
                     ]
                 )

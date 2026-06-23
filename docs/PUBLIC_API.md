@@ -443,7 +443,9 @@ or supply a relocated manifest. The runner report also records a top-level
 In text mode, `circle-ai-certify batch` prints the same command as a
 `validation_command=...` line and includes `artifact_manifest=...` plus
 `artifact_manifest_check=...` fields so a human can find the portable handoff
-files without opening the JSON.
+files without opening the JSON. Each source line also prints
+`unsupported_model_fields=...` and `unsupported_architecture_fields=...`, so
+terminal logs preserve the same import-boundary signal as the JSON report.
 It validates the runner report's own `gate_policy`,
 `example_count`, `selected_kinds`, `required_kinds`, and `kind_counts`, so stale
 reports with mismatched metadata or missing current policy fields fail before

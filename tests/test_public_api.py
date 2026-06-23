@@ -847,6 +847,12 @@ def test_package_cli_unified_certify_batch_text_prints_validation_command(
         f"artifact_manifest_check={manifest_check_path}" in line
         for line in stdout_lines
     )
+    source_lines = [
+        line for line in stdout_lines if line.startswith(f"source={request_file}")
+    ]
+    assert len(source_lines) == 1
+    assert "unsupported_model_fields=-" in source_lines[0]
+    assert "unsupported_architecture_fields=-" in source_lines[0]
 
 
 def test_package_cli_unified_certify_batch_rejects_missing_required_kind(

@@ -239,7 +239,10 @@ copyable verifier's `--require-kind` option when CI should reject a missing
 family before accepting the batch as evidence.
 When the batch command runs in text mode, it also prints each verifier command
 as a `validation_command=...` line and includes the `artifact_manifest=...` and
-`artifact_manifest_check=...` paths for copyable human handoffs.
+`artifact_manifest_check=...` paths for copyable human handoffs. Each source
+line includes `unsupported_model_fields=...` and
+`unsupported_architecture_fields=...`, so the terminal log keeps the same
+import-boundary signal as the JSON report.
 
 Python callers can build the same schema-valid runner-check report in memory
 with `build_contract_runner_check_report`. The helper accepts versioned request
