@@ -21,6 +21,8 @@ Start with the public site: <https://corbensorenson.github.io/circle-calculus/>.
 - Use finite circular statistics contracts: [docs/CIRCULAR_STATISTICS_CONTRACTS.md](docs/CIRCULAR_STATISTICS_CONTRACTS.md)
 - Use finite cyclic equivariance contracts: [docs/CYCLIC_EQUIVARIANCE.md](docs/CYCLIC_EQUIVARIANCE.md)
 - Use phase loop/winding/locking contracts: [docs/PHASE_LOOP_CONTRACTS.md](docs/PHASE_LOOP_CONTRACTS.md)
+- Use proof-carrying AI contracts: [docs/AI_CONTRACT_SUITE.md](docs/AI_CONTRACT_SUITE.md)
+- Read current RoPE certifier findings: [docs/ROPE_CERTIFIER_RESULTS_NOTE.md](docs/ROPE_CERTIFIER_RESULTS_NOTE.md)
 - Consume AI/system contracts: [docs/CIRCLE_AI_CONTRACTS_INTEGRATION.md](docs/CIRCLE_AI_CONTRACTS_INTEGRATION.md)
 - Check contract schema/version policy: [docs/CONTRACT_SCHEMA_VERSIONING.md](docs/CONTRACT_SCHEMA_VERSIONING.md)
 - Browse circle research expansion ideas: [docs/CIRCLE_RESEARCH_EXPANSION_BACKLOG.md](docs/CIRCLE_RESEARCH_EXPANSION_BACKLOG.md)
